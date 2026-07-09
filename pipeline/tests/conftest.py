@@ -1,0 +1,61 @@
+"""Shared fixtures: an Aggregator fed from the hand-written CVE records,
+and a full set of built outputs (all offline, no network anywhere)."""
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from pipeline import metrics
+from pipeline.fetch_cvelist import iter_cve_records_from_dir
+from pipeline.fetch_epss import load_epss_file
+from pipeline.fetch_kev import load_kev_file
+
+FIXTURES = Path(__file__).parent / "fixtures"
+GENERATED_AT = "2026-07-09T00:00:00Z"
+
+
+@pytest.fixture()
+def agg() -> metrics.Aggregator:
+    aggregator = metrics.Aggregator()
+    aggregator.consume(iter_cve_records_from_dir(FIXTURES / "cvelist"))
+    return aggregator
+
+
+@pytest.fixture()
+def epss():
+    return load_epss_file(FIXTURES / "epss_scores.csv")
+
+
+@pytest.fixture()
+def kev():
+    return load_kev_file(FIXTURES / "kev.json")
+
+
+@pytest.fixture()
+def outputs(agg, epss, kev) -> dict[str, dict]:
+    """Every contracted output file, built from fixtures (min_cves=1)."""
+    import json
+
+    statuses = json.loads((FIXTURES / "nvd_statuses.json").read_text("utf-8"))
+    history_rows = [metrics.backlog_row(statuses, "2026-07-09")]
+    return {
+        "severity_inflation.json":
+            metrics.build_severity_inflation(agg, GENERATED_AT),
+        "nine_eight_flood.json":
+            metrics.build_nine_eight_flood(agg, GENERATED_AT),
+        "score_vs_reality.json":
+            metrics.build_score_vs_reality(agg, epss.scores, kev.cve_ids,
+                                           GENERATED_AT),
+        "nvd_decay.json":
+            metrics.build_nvd_decay(statuses, history_rows, GENERATED_AT),
+        "cna_leaderboard.json":
+            metrics.build_cna_leaderboard(agg, GENERATED_AT, min_cves=1),
+        "volume_curve.json": metrics.build_volume_curve(agg, GENERATED_AT),
+        "meta.json": metrics.build_meta(
+            GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
+            epss_model_version=epss.model_version,
+            epss_score_date=epss.score_date, epss_row_count=epss.row_count,
+            kev_catalog_version=kev.catalog_version, kev_count=kev.count,
+            nvd_source={"fetched_at": GENERATED_AT}),
+    }

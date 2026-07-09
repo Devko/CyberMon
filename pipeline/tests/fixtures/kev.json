@@ -1,0 +1,11 @@
+{
+ "title": "CISA Catalog of Known Exploited Vulnerabilities (fixture)",
+ "catalogVersion": "2026.07.08",
+ "dateReleased": "2026-07-08T12:00:00.0000Z",
+ "count": 3,
+ "vulnerabilities": [
+  {"cveID": "CVE-2023-0001", "vendorProject": "VendorX", "product": "Widget", "shortDescription": "Fixture KEV entry (critical)."},
+  {"cveID": "CVE-2023-0003", "vendorProject": "GitHub_M", "product": "Gadget", "shortDescription": "Fixture KEV entry rated 6.9 (below High)."},
+  {"cveID": "CVE-2024-0002", "vendorProject": "mitre", "product": "Thing", "shortDescription": "Fixture KEV entry with no CVSS score."}
+ ]
+}

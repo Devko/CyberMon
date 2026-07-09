@@ -1,0 +1,8 @@
+{
+ "Received": 290,
+ "Awaiting Analysis": 30412,
+ "Undergoing Analysis": 400,
+ "Analyzed": 200000,
+ "Modified": 50000,
+ "Rejected": 15000
+}

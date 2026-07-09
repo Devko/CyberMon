@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Pipeline download cache
+.cache/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local Claude Code session files (launch.json holds machine-specific paths)
+.claude/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

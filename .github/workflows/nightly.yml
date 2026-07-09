@@ -1,0 +1,96 @@
+name: Nightly data refresh
+
+# Runs the full pipeline against live sources, commits the refreshed
+# site/data/ (including the append-only history/nvd_backlog.csv, which
+# CANNOT be regenerated), then deploys the site to GitHub Pages.
+
+on:
+  schedule:
+    # 02:43 UTC — off-peak, deliberately not on the hour (GitHub delays
+    # and drops :00 cron jobs under load).
+    - cron: "43 2 * * *"
+  workflow_dispatch:
+
+# Never let two nightly runs overlap (the data commit + history append
+# is not safe to race). Queue instead of cancel so a manual dispatch
+# during the scheduled run still happens.
+concurrency:
+  group: cybermon-nightly
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Run pipeline and commit data
+    runs-on: ubuntu-latest
+    # Keyless NVD sweep is slow; allow plenty of headroom.
+    timeout-minutes: 120
+    permissions:
+      contents: write
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+
+      - name: Install pipeline dependencies
+        run: pip install -r pipeline/requirements.txt
+
+      # If this step fails, the job fails and the deploy job below is
+      # skipped — stale/broken data is never deployed. Do NOT add
+      # continue-on-error here.
+      - name: Run pipeline
+        env:
+          # Optional; the pipeline tolerates an empty value and falls
+          # back to slower keyless NVD paging.
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: python -m pipeline --out site/data
+
+      - name: Commit and push refreshed data
+        run: |
+          git config user.name "cybermon-bot"
+          git config user.email "cybermon-bot@users.noreply.github.com"
+          git add site/data
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "data: nightly refresh $(date -u +%Y-%m-%d) [skip ci]"
+            # Tolerate commits that landed on main while the pipeline ran.
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: refresh
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write
+      id-token: write
+    # Shared with ci.yml's deploy job so the two workflows never race
+    # a Pages deployment. Queue, don't cancel.
+    concurrency:
+      group: cybermon-pages-deploy
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
