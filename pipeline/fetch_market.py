@@ -11,7 +11,15 @@ Three public corpora feed one nightly sync-state file
   viciously — HTTP 429 with a *plaintext* (non-JSON) body and penalty
   windows that outlast a minute — so terms are spaced ``10s`` apart, a
   failed term gets exactly one retry after ``75s``, and a term that still
-  fails keeps its previously cached months for the night.
+  fails keeps its previously cached months for the night. Because a
+  penalty window that opens mid-pass punishes whichever terms happen to
+  trail it, the pass order is not fixed (a fixed order starves the same
+  tail terms night after night): terms with *no* cached GDELT months
+  fetch first — they are the ones rendering blank on the site, and a
+  single success heals them completely — and within the starved group
+  and the rest alike the starting offset rotates with the UTC day
+  ordinal (:func:`gdelt_term_order`), so every term periodically gets a
+  turn at the front.
 * **Hacker News via Algolia** (practitioner buzz) — one cheap request per
   *(term, month)* cell: ``hitsPerPage=0`` plus ``created_at_i`` month-bound
   filters, reading only ``nbHits`` (default tags, i.e. stories+comments).
@@ -45,7 +53,7 @@ from __future__ import annotations
 import json
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -225,6 +233,26 @@ def _pruned_state(state: dict | None, terms: list[TermDef],
 
 # -------------------------------------------------------------------- GDELT
 
+def _rotated(group: list[TermDef], offset: int) -> list[TermDef]:
+    k = offset % len(group) if group else 0
+    return group[k:] + group[:k]
+
+
+def gdelt_term_order(terms: list[TermDef], series: dict,
+                     day: date) -> list[TermDef]:
+    """Deterministic per-day fetch order for the GDELT pass (pure — same
+    inputs, same order): terms whose cached GDELT series is empty come
+    first, so the terms visibly blank on the site heal fastest, then the
+    terms that already have cached months. Within each group the starting
+    offset rotates with ``day``'s ordinal, so when a rate-limit penalty
+    bites mid-pass it lands on different terms each night instead of
+    starving a fixed tail."""
+    offset = day.toordinal()
+    starved = [t for t in terms if not series.get(t.id, {}).get("gdelt")]
+    cached = [t for t in terms if series.get(t.id, {}).get("gdelt")]
+    return _rotated(starved, offset) + _rotated(cached, offset)
+
+
 def _bucket_gdelt(payload: dict) -> dict[str, int]:
     """Sum the daily ``timeline[0].data`` points into ``{YYYY-MM: count}``."""
     timeline = payload.get("timeline") or []
@@ -268,10 +296,17 @@ def _fetch_gdelt(session, term: TermDef, sleep: Callable[[float], None],
 
 
 def _gdelt_pass(session, series: dict, terms: list[TermDef],
-                window_set: set[str], sleep: Callable[[float], None],
+                window_set: set[str], day: date,
+                sleep: Callable[[float], None],
                 log: Callable[[str], None]) -> None:
+    ordered = gdelt_term_order(terms, series, day)
+    starved = sum(1 for t in ordered
+                  if not series.get(t.id, {}).get("gdelt"))
+    if starved:
+        log(f"  market/gdelt: {starved} term(s) with no cached months "
+            f"fetch first")
     refreshed = kept = 0
-    for i, term in enumerate(terms):
+    for i, term in enumerate(ordered):
         if i:
             sleep(_GDELT_TERM_DELAY)
         monthly = _fetch_gdelt(session, term, sleep, log)
@@ -437,9 +472,11 @@ def sync_state(state: dict | None, terms: list[TermDef],
                log: Callable[[str], None] = print) -> dict:
     """Return up-to-date market sync state (``{version, last_sync, series,
     pending}``): prune the prior state to the rolling window, re-fetch the
-    whole GDELT and arXiv curves per term, refresh the two most recent HN
-    months per term, and drain up to ``backfill_batch`` HN cells from the
-    pending queue (see the module docstring for the per-source policy)."""
+    whole GDELT and arXiv curves per term (GDELT in the starved-first,
+    day-rotated order of :func:`gdelt_term_order`), refresh the two most
+    recent HN months per term, and drain up to ``backfill_batch`` HN cells
+    from the pending queue (see the module docstring for the per-source
+    policy)."""
     if session is None:
         import requests
 
@@ -448,7 +485,7 @@ def sync_state(state: dict | None, terms: list[TermDef],
     window = month_window(now, window_months)
     window_set = set(window)
     series, pending = _pruned_state(state, terms, window_set, log)
-    _gdelt_pass(session, series, terms, window_set, sleep, log)
+    _gdelt_pass(session, series, terms, window_set, now.date(), sleep, log)
     _arxiv_pass(session, series, terms, window, window_set, sleep, log)
     pending = _hn_pass(session, series, pending, terms, window,
                        backfill_batch, sleep, log)
