@@ -1,5 +1,5 @@
 // =============================================================================
-// cve.js — CVE Ecosystem tab (cve.html). Builds the six chart sections from
+// cve.js — CVE Ecosystem tab (cve.html). Builds the eight chart sections from
 // editorial.js, fetches each contract file independently, renders charts.
 // A failed fetch only takes down its own section (inline error card).
 // Shared chrome (masthead/nav/banner/footer) comes from common.js.
@@ -14,6 +14,8 @@ import { render as renderReality } from "./charts/reality.js";
 import { render as renderDecay } from "./charts/decay.js";
 import { render as renderCna } from "./charts/cna.js";
 import { render as renderVolume } from "./charts/volume.js";
+import { render as renderQuality } from "./charts/quality.js";
+import { render as renderCweShare } from "./charts/cwe_share.js";
 
 // RELATIVE paths only — must work under python -m http.server AND under a
 // GitHub Pages project subpath (/CyberMon/).
@@ -24,6 +26,8 @@ const SECTIONS = [
   { id: "decay", file: "data/nvd_decay.json", render: renderDecay },
   { id: "cna", file: "data/cna_leaderboard.json", render: renderCna },
   { id: "volume", file: "data/volume_curve.json", render: renderVolume },
+  { id: "quality", file: "data/advisory_quality.json", render: renderQuality },
+  { id: "cwe", file: "data/cwe_distribution.json", render: renderCweShare },
 ];
 
 // ---- section skeleton -------------------------------------------------------

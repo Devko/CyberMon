@@ -1,10 +1,11 @@
-"""KEV latency math: buckets, cohorts, negative latency, min_n, the join."""
+"""KEV latency math: buckets, cohorts, negative latency, min_n, the join.
+Plus the ransomware-share builder (no CVE join involved)."""
 from __future__ import annotations
 
 from pipeline import metrics
 from pipeline.fetch_kev import KevEntry
 from pipeline.kev_metrics import (BUCKETS, LAUNCH_CUTOFF, build_kev_latency,
-                                  latency_bucket)
+                                  build_kev_ransomware, latency_bucket)
 
 from .conftest import GENERATED_AT
 
@@ -16,8 +17,10 @@ def _agg(published_dates: dict[str, str]) -> metrics.Aggregator:
     return agg
 
 
-def _entry(cve_id: str, date_added: str, due_date: str | None = None):
-    return KevEntry(cve_id=cve_id, date_added=date_added, due_date=due_date)
+def _entry(cve_id: str, date_added: str, due_date: str | None = None,
+           ransomware_use: str | None = None):
+    return KevEntry(cve_id=cve_id, date_added=date_added, due_date=due_date,
+                    ransomware_use=ransomware_use)
 
 
 # ------------------------------------------------------------- bucket edges
@@ -206,3 +209,59 @@ def test_empty_backfill_median_is_null_never_zero():
                             GENERATED_AT, min_n=1)
     assert obj["launch_backfill"]["n"] == 0
     assert obj["launch_backfill"]["median_days"] is None
+
+
+# --------------------------------------------------------- ransomware share
+
+def test_fixture_ransomware_share_includes_seeding_era(kev):
+    obj = build_kev_ransomware(kev.entries, GENERATED_AT, min_n=1)
+    # Every dateAdded year charts — the 2021 seeding-era entry included.
+    assert obj["years"] == [
+        {"year": 2021, "total": 1, "known": 0, "pct_known": 0.0},
+        {"year": 2023, "total": 1, "known": 1, "pct_known": 100.0},
+        {"year": 2024, "total": 1, "known": 0, "pct_known": 0.0},
+    ]
+    assert obj["catalog"] == {"total": 3, "known": 1, "pct_known": 33.3}
+
+
+def test_ransomware_missing_field_counts_as_unknown():
+    entries = [_entry("CVE-2024-0001", "2024-01-11"),  # no field at all
+               _entry("CVE-2024-0002", "2024-01-12", None, "Unknown"),
+               _entry("CVE-2024-0003", "2024-01-13", None, "Known")]
+    obj = build_kev_ransomware(entries, GENERATED_AT, min_n=1)
+    assert obj["years"] == [{"year": 2024, "total": 3, "known": 1,
+                             "pct_known": 33.3}]
+
+
+def test_ransomware_flag_normalized_case_and_whitespace():
+    entries = [_entry("CVE-2024-0001", "2024-01-11", None, " known "),
+               _entry("CVE-2024-0002", "2024-01-12", None, "KNOWN"),
+               _entry("CVE-2024-0003", "2024-01-13", None, "unknown")]
+    obj = build_kev_ransomware(entries, GENERATED_AT, min_n=1)
+    assert obj["years"][0]["known"] == 2
+
+
+def test_ransomware_min_n_drops_thin_years():
+    entries = [_entry(f"CVE-2024-{i:04d}", "2024-01-11", None, "Known")
+               for i in range(1, 11)]
+    entries.append(_entry("CVE-2025-0001", "2025-01-11", None, "Known"))
+    obj = build_kev_ransomware(entries, GENERATED_AT, min_n=10)
+    assert [r["year"] for r in obj["years"]] == [2024]  # 2025 has n=1
+    # ... but the catalog totals stay unfiltered.
+    assert obj["catalog"] == {"total": 11, "known": 11, "pct_known": 100.0}
+
+
+def test_ransomware_undated_entries_count_only_in_catalog():
+    entries = [_entry("CVE-2024-0001", "2024-01-11", None, "Known"),
+               _entry("CVE-2024-0002", "", None, "Known"),        # blank
+               _entry("CVE-2024-0003", "not-a-date", None, "Known")]
+    obj = build_kev_ransomware(entries, GENERATED_AT, min_n=1)
+    assert obj["years"] == [{"year": 2024, "total": 1, "known": 1,
+                             "pct_known": 100.0}]
+    assert obj["catalog"]["total"] == 3 and obj["catalog"]["known"] == 3
+
+
+def test_ransomware_empty_catalog():
+    obj = build_kev_ransomware([], GENERATED_AT)
+    assert obj["years"] == []
+    assert obj["catalog"] == {"total": 0, "known": 0, "pct_known": 0.0}

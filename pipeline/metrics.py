@@ -97,6 +97,8 @@ class CveFacts:
     cna_scores: dict[str, float] = field(default_factory=dict)  # family -> score
     adp_scores: dict[str, float] = field(default_factory=dict)
     date_published: str | None = None  # day precision "YYYY-MM-DD"
+    cwe: str | None = None  # first cweId in the record (CNA preferred)
+    has_affected: bool = False  # any usable affected[] entry in the record
 
     @property
     def newest_cna_score(self) -> float | None:
@@ -149,6 +151,49 @@ def _scores_from_metrics(metrics: Any) -> dict[str, float]:
     return {family: score for family, (_key, score) in best.items()}
 
 
+def _first_cwe(container: Any) -> str | None:
+    """First cweId in a container's problemTypes, None when untagged.
+    Text-only problemTypes entries (no cweId) do not count as tagged."""
+    if not isinstance(container, dict):
+        return None
+    for pt in container.get("problemTypes") or []:
+        if not isinstance(pt, dict):
+            continue
+        for desc in pt.get("descriptions") or []:
+            if isinstance(desc, dict):
+                cwe = desc.get("cweId")
+                if isinstance(cwe, str) and cwe.startswith("CWE-"):
+                    return cwe
+    return None
+
+
+# Version strings that carry no actual version information. Old records
+# converted from the v4 format ship ``versions: [{"version": "n/a", ...}]``
+# — counting those as structured version data would flatter the corpus.
+_PLACEHOLDER_VERSIONS = frozenset({"", "n/a", "na", "unknown", "unspecified", "-"})
+# defaultStatus makes a concrete claim only when it says which way.
+_USABLE_DEFAULT_STATUS = frozenset({"affected", "unaffected"})
+
+
+def _has_usable_affected(container: Any) -> bool:
+    """True if any affected[] entry carries a concrete versions[] item or a
+    definite defaultStatus ("affected"/"unaffected"; "unknown" says nothing)."""
+    if not isinstance(container, dict):
+        return False
+    for aff in container.get("affected") or []:
+        if not isinstance(aff, dict):
+            continue
+        versions = aff.get("versions")
+        if isinstance(versions, list):
+            for v in versions:
+                if isinstance(v, dict) and isinstance(v.get("version"), str) \
+                        and v["version"].strip().lower() not in _PLACEHOLDER_VERSIONS:
+                    return True
+        if str(aff.get("defaultStatus", "")).lower() in _USABLE_DEFAULT_STATUS:
+            return True
+    return False
+
+
 def extract_facts(record: dict) -> CveFacts | None:
     """Reduce one cvelistV5 JSON record to :class:`CveFacts`.
 
@@ -176,11 +221,20 @@ def extract_facts(record: dict) -> CveFacts | None:
 
     containers = record.get("containers") or {}
     cna = containers.get("cna") or {}
+    adps = [a for a in (containers.get("adp") or []) if isinstance(a, dict)]
     adp_scores: dict[str, float] = {}
-    for adp in containers.get("adp") or []:
-        if isinstance(adp, dict):
-            for family, score in _scores_from_metrics(adp.get("metrics")).items():
-                adp_scores.setdefault(family, score)
+    for adp in adps:
+        for family, score in _scores_from_metrics(adp.get("metrics")).items():
+            adp_scores.setdefault(family, score)
+
+    cwe = _first_cwe(cna)
+    if cwe is None:
+        for adp in adps:
+            cwe = _first_cwe(adp)
+            if cwe is not None:
+                break
+    has_affected = _has_usable_affected(cna) or \
+        any(_has_usable_affected(adp) for adp in adps)
 
     return CveFacts(
         cve_id=cve_id,
@@ -192,6 +246,8 @@ def extract_facts(record: dict) -> CveFacts | None:
         date_published=(date_published[:10]
                         if isinstance(date_published, str)
                         and len(date_published) >= 10 else None),
+        cwe=cwe,
+        has_affected=has_affected,
     )
 
 
@@ -220,6 +276,12 @@ class Aggregator:
         # chart 5: cna -> year -> [CNA-assigned newest score]
         self.cna_year_scores: dict[str, dict[int, list[float]]] = \
             defaultdict(lambda: defaultdict(list))
+        # chart 7 (advisory quality): year -> missing-field counts over
+        # published records ("cwe" / "cvss" / "affected")
+        self.quality_missing: dict[int, Counter[str]] = defaultdict(Counter)
+        # chart 8 (bug-class inertia): year -> Counter of first-listed CWE
+        # per CWE-tagged published record
+        self.cwe_year_counts: dict[int, Counter[str]] = defaultdict(Counter)
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
@@ -245,9 +307,17 @@ class Aggregator:
         effective = facts.effective_score
         if effective is None:
             self.flood[facts.year]["unscored"] += 1
+            self.quality_missing[facts.year]["cvss"] += 1
         else:
             self.flood[facts.year][severity_bucket(effective)] += 1
             self.effective_by_cve[facts.cve_id] = effective
+
+        if facts.cwe is None:
+            self.quality_missing[facts.year]["cwe"] += 1
+        else:
+            self.cwe_year_counts[facts.year][facts.cwe] += 1
+        if not facts.has_affected:
+            self.quality_missing[facts.year]["affected"] += 1
 
     def consume(self, records: Iterable[dict]) -> None:
         for record in records:

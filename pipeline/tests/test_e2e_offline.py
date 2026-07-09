@@ -12,7 +12,9 @@ from pipeline.__main__ import main
 
 ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
-             "volume_curve.json", "kev_latency.json", "cna_concentration.json"]
+             "volume_curve.json", "kev_latency.json", "cna_concentration.json",
+             "advisory_quality.json", "cwe_distribution.json",
+             "kev_ransomware.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -64,6 +66,38 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert board["min_total"] == 1  # offline default, mirrors --min-cves
     assert board["cnas"][0] == {"cna": "mitre", "total": 2, "rejected": 1,
                                 "rejected_rate_pct": 50.0}
+
+    # Advisory quality: fixture-mode min_n=1, so every publication year
+    # charts; 2024's REJECTED record is excluded from the denominator.
+    quality = _load(tmp_path, "advisory_quality.json")
+    assert quality["min_n"] == 1
+    by_year = {y["year"]: y for y in quality["years"]}
+    assert sorted(by_year) == [2014, 2023, 2024, 2025]
+    assert by_year[2014]["pct_missing_cwe"] == 100.0
+    assert by_year[2024] == {"year": 2024, "n": 3,
+                             "missing_cwe": 2, "pct_missing_cwe": 66.7,
+                             "missing_cvss": 1, "pct_missing_cvss": 33.3,
+                             "missing_affected": 2,
+                             "pct_missing_affected": 66.7}
+
+    # CWE distribution: window = last 10 complete years; CWE-79 leads by
+    # volume, ties break by CWE number; unmapped CWE-1321 keeps its bare id.
+    cwe = _load(tmp_path, "cwe_distribution.json")
+    assert cwe["window"] == {"start_year": 2016, "end_year": 2025}
+    assert [t["id"] for t in cwe["top_cwes"]] == \
+        ["CWE-79", "CWE-416", "CWE-787", "CWE-1321"]
+    assert cwe["top_cwes"][-1]["name"] == "CWE-1321"
+    shares_2023 = next(y for y in cwe["years"] if y["year"] == 2023)["shares"]
+    assert shares_2023["CWE-79"] == 66.7 and shares_2023["other"] == 0.0
+
+    # KEV ransomware: all three entries dated; only the 2023 one is Known
+    # (the 2024 entry has no knownRansomwareCampaignUse field at all).
+    ransomware = _load(tmp_path, "kev_ransomware.json")
+    assert [(y["year"], y["total"], y["known"])
+            for y in ransomware["years"]] == [(2021, 1, 0), (2023, 1, 1),
+                                              (2024, 1, 0)]
+    assert ransomware["catalog"] == {"total": 3, "known": 1,
+                                     "pct_known": 33.3}
 
 
 def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):

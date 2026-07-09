@@ -329,3 +329,7 @@ VALIDATORS.update(market_contracts.VALIDATORS)
 from . import tier1_contracts  # noqa: E402
 
 VALIDATORS.update(tier1_contracts.VALIDATORS)
+
+from . import tier2_contracts  # noqa: E402
+
+VALIDATORS.update(tier2_contracts.VALIDATORS)

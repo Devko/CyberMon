@@ -21,7 +21,7 @@ Each module is its own directly linkable page with its own pipeline stage and
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
-*CVE severity has become meaningless — here are the receipts.* Six charts:
+*CVE severity has become meaningless — here are the receipts.* Eight charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't
@@ -37,6 +37,11 @@ Each module is its own directly linkable page with its own pipeline stage and
 5. **CNA rubber-stamp board** — CNAs ranked by average assigned severity and
    share of scores ≥ 9.0 (minimum 100 CVEs in a 3-year window).
 6. **Volume curve** — CVEs published and rejected per year.
+7. **Advisory quality** — share of each year's records missing a CWE, a
+   CVSS score, or usable affected-version data, checked against the record
+   itself.
+8. **Bug-class inertia** — the top-8 weakness classes of the last decade
+   and each one's share of the year's CWE-tagged records.
 
 ### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
 
@@ -50,10 +55,13 @@ research-vs-media divergence quadrant.
 ### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html) (live)
 
 *By the time the government confirms it's exploited, you've been exposed
-for months.* Days from CVE publication to CISA KEV listing (median/IQR by
-year, distribution buckets), remediation-deadline spans — with the 2021
-launch back-catalog quarantined from the trend (launch batch plus the 2022 back-catalog import waves), and negative latencies
-(listed before the CVE record existed) kept as the signal they are.
+for months.* Four charts: days from CVE publication to CISA KEV listing
+(median/IQR by year, distribution buckets), remediation-deadline spans,
+and the share of each year's listings flagged for known ransomware
+campaign use — with the 2021 launch back-catalog quarantined from the
+latency trend (launch batch plus the 2022 back-catalog import waves), and
+negative latencies (listed before the CVE record existed) kept as the
+signal they are.
 
 ### 04 · CNA Concentration — [concentration.html](https://devko.github.io/CyberMon/concentration.html) (live)
 
