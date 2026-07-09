@@ -112,25 +112,32 @@ welcome to reuse it, CC-BY style: just credit "CyberMon
 ## Local development
 
 ```bash
-# Install pipeline dependencies
-pip install -r pipeline/requirements.txt
+# Recommended: work in a virtualenv
+python3 -m venv .venv && source .venv/bin/activate
+
+# Install pipeline dependencies (+ dev tools: pytest, playwright)
+python3 -m pip install -r pipeline/requirements.txt -r pipeline/requirements-dev.txt
 
 # Run the tests
-python -m pytest pipeline/tests -q
+python3 -m pytest pipeline/tests -q
 
 # Full offline run against bundled fixtures (no network)
-python -m pipeline --offline-fixtures --out /tmp/out
+python3 -m pipeline --offline-fixtures --out /tmp/out
 
 # Regenerate the committed sample data (marks meta.json "sample": true)
-python tools/make_sample_data.py
+python3 tools/make_sample_data.py
 
 # Serve the site locally
-cd site && python -m http.server 8000
+cd site && python3 -m http.server 8000
 # then open http://localhost:8000/          (landing page)
 #      or  http://localhost:8000/cve.html   (CVE Ecosystem module)
+
+# Browser smoke test against the committed site (one-time browser install)
+playwright install chromium
+python3 tools/site_smoke.py
 ```
 
-A real (networked) run is `python -m pipeline --out site/data`; set
+A real (networked) run is `python3 -m pipeline --out site/data`; set
 `NVD_API_KEY` in the environment for faster NVD paging, or pass `--skip-nvd`
 to skip the NVD sweep entirely.
 
