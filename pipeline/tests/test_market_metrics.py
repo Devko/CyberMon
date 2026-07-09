@@ -243,7 +243,9 @@ def test_run_stage_skip_carries_prior_file_forward(tmp_path):
     assert obj["stale"] is True
     assert obj["generated_at"] == GENERATED_AT
     assert obj["terms"] == [] and obj["backfill_remaining"] == 2  # untouched
-    assert source == {"fetched_at": "2026-06-01T00:00:00Z", "stale": True}
+    # contract-complete even when stale (meta validator requires all fields)
+    assert source == {"fetched_at": "2026-06-01T00:00:00Z", "stale": True,
+                      "term_count": 0, "backfill_remaining": 2}
     market_contracts.validate("market_hype.json", obj)  # stale shape is valid
     assert any("carrying forward" in m for m in logs)
 

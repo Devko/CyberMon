@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import metrics
+from pipeline import concentration_metrics, kev_metrics, metrics
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_kev import load_kev_file
@@ -16,8 +16,8 @@ GENERATED_AT = "2026-07-09T00:00:00Z"
 
 
 @pytest.fixture()
-def agg() -> metrics.Aggregator:
-    aggregator = metrics.Aggregator()
+def agg(kev) -> metrics.Aggregator:
+    aggregator = metrics.Aggregator(kev_ids=kev.cve_ids)
     aggregator.consume(iter_cve_records_from_dir(FIXTURES / "cvelist"))
     return aggregator
 
@@ -53,6 +53,12 @@ def outputs(agg, epss, kev) -> dict[str, dict]:
         "cna_leaderboard.json":
             metrics.build_cna_leaderboard(agg, GENERATED_AT, min_cves=1),
         "volume_curve.json": metrics.build_volume_curve(agg, GENERATED_AT),
+        "kev_latency.json":
+            kev_metrics.build_kev_latency(agg, kev.entries, GENERATED_AT,
+                                          min_n=1),
+        "cna_concentration.json":
+            concentration_metrics.build_cna_concentration(agg, GENERATED_AT,
+                                                          min_total=1),
         "meta.json": metrics.build_meta(
             GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
             epss_model_version=epss.model_version,

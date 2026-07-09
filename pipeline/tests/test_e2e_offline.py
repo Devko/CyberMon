@@ -12,7 +12,7 @@ from pipeline.__main__ import main
 
 ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
-             "volume_curve.json"]
+             "volume_curve.json", "kev_latency.json", "cna_concentration.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -36,6 +36,34 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert decay["current"]["backlog_total"] == 31102  # 290 + 30412 + 400
     assert len(decay["history"]) == 1
     assert (tmp_path / "history" / "nvd_backlog.csv").exists()
+
+    # KEV latency: all 3 fixture entries join; the 2021-12-01 entry lands
+    # in the launch-backfill cohort, the other two in the trend stats.
+    latency = _load(tmp_path, "kev_latency.json")
+    assert latency["matched"] == {"total_kev": 3, "matched_cve": 3,
+                                  "unmatched_cve": 0}
+    assert latency["launch_backfill"]["n"] == 1
+    assert latency["launch_backfill"]["median_days"] == -612.0
+    assert [(y["year"], y["n"], y["median_days"])
+            for y in latency["latency_by_year"]] == [(2023, 1, 30.0),
+                                                     (2024, 1, -2.0)]
+    buckets = {b["bucket"]: b["n"] for b in latency["latency_buckets"]}
+    assert buckets["before_publish"] == 1 and buckets["8-30d"] == 1
+    assert latency["headline"]["latest_year"] == 2024
+
+    # CNA concentration: gap-filled 2014-2025 span, exact fixture counts.
+    conc = _load(tmp_path, "cna_concentration.json")
+    assert [y["year"] for y in conc["years"]] == list(range(2014, 2026))
+    by_year = {y["year"]: y for y in conc["years"]}
+    assert by_year[2014]["hhi"] == 10000.0
+    assert by_year[2020]["hhi"] == 0.0  # gap year
+    assert by_year[2024] == {"year": 2024, "cna_count": 3,
+                             "newcomer_count": 0, "top5_share": 100.0,
+                             "top10_share": 100.0, "hhi": 3333.3}
+    board = conc["rejection_leaderboard"]
+    assert board["min_total"] == 1  # offline default, mirrors --min-cves
+    assert board["cnas"][0] == {"cna": "mitre", "total": 2, "rejected": 1,
+                                "rejected_rate_pct": 50.0}
 
 
 def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):

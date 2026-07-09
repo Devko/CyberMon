@@ -136,7 +136,7 @@ def _validate_meta(obj: Any) -> None:
         _check_str(_get(src["market"], "fetched_at", "meta.sources.market"),
                    "meta.sources.market.fetched_at", ISO_UTC_RE)
         _check_int(_get(src["market"], "term_count", "meta.sources.market"),
-                   "meta.sources.market.term_count", minimum=1)
+                   "meta.sources.market.term_count")
         _check_int(_get(src["market"], "backfill_remaining",
                         "meta.sources.market"),
                    "meta.sources.market.backfill_remaining")
@@ -325,3 +325,7 @@ def validate(filename: str, obj: Any) -> None:
 from . import market_contracts  # noqa: E402
 
 VALIDATORS.update(market_contracts.VALIDATORS)
+
+from . import tier1_contracts  # noqa: E402
+
+VALIDATORS.update(tier1_contracts.VALIDATORS)

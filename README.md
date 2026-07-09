@@ -47,6 +47,20 @@ chatter (Hacker News), research output (arXiv cs.CR) — each term indexed
 to its own five-year peak. Hype curves, YoY risers/fallers, and a
 research-vs-media divergence quadrant.
 
+### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html) (live)
+
+*By the time the government confirms it's exploited, you've been exposed
+for months.* Days from CVE publication to CISA KEV listing (median/IQR by
+year, distribution buckets), remediation-deadline spans — with the 2021
+launch back-catalog quarantined from the trend (launch batch plus the 2022 back-catalog import waves), and negative latencies
+(listed before the CVE record existed) kept as the signal they are.
+
+### 04 · CNA Concentration — [concentration.html](https://devko.github.io/CyberMon/concentration.html) (live)
+
+*The CVE database is becoming a handful of vendors grading themselves at
+scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
+concentration index, newcomer counts, and a rejection-rate leaderboard.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —

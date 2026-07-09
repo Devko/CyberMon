@@ -24,6 +24,18 @@ export const C = {
   },
 
   versions: { v2: "#847e6d", v3: "#ded7c2", v4: "#a89f8a" },
+
+  // KEV latency ramp: accent reserved for "exploited before the CVE even
+  // published"; the rest fades newsprint-neutral as the gap grows.
+  latency: {
+    before_publish: "#ff4a3f",
+    "0-7d": "#c08a45",
+    "8-30d": "#ded7c2",
+    "31-90d": "#a89f8a",
+    "91-365d": "#77715f",
+    "1-3y": "#4b473d",
+    "3y+": "#312f2a",
+  },
 };
 
 export const MONO =

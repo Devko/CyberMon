@@ -223,3 +223,88 @@ dead zone. Every `headline` field is nullable — no eligible pair means
 The term list (ids, labels, per-source query strings) lives in
 `pipeline/market_terms.py`. Validator: `pipeline/market_contracts.py`
 (registered into `pipeline/contracts.py`'s dispatch).
+
+## site/data/kev_latency.json  (KEV Latency module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "matched": {"total_kev": 1635, "matched_cve": 1601, "unmatched_cve": 34},
+  "launch_backfill": {"date_added_before": "2023-01-01", "n": 866,
+                      "median_days": 1808.0},
+  "latency_by_year": [
+    {"year": 2022, "n": 214, "median_days": 39.0, "p25_days": 6.0,
+     "p75_days": 412.0, "pct_negative": 3.7, "pct_over_365d": 21.5}
+  ],
+  "latency_buckets": [
+    {"bucket": "before_publish", "n": 39, "pct": 3.6},
+    {"bucket": "0-7d", "n": 312, "pct": 28.9}
+  ],
+  "remediation_span_by_year": [
+    {"year": 2021, "n": 291, "median_days": 180.0, "p25_days": 180.0,
+     "p75_days": 180.0}
+  ],
+  "headline": {"latest_year": 2025, "median_days_latest": 27.0,
+               "pct_over_365d_latest": 15.2,
+               "baseline_year": 2022, "median_days_baseline": 39.0}
+}
+```
+
+Notes: `latency_days = KEV dateAdded − CVE datePublished`, day precision;
+negative values are KEPT (CISA sometimes lists a CVE before its record
+publishes — that ordering is signal). Entries with `dateAdded` before
+2023-01-01 are the catalog's seeding era — the November 2021 launch batch
+plus the back-catalog import waves that ran through 2022 (empirically: the
+median nominal "latency" of 2022 additions is 1,436 days vs 12 for 2023) —
+whose nominal "latency" measures the age of the inherited backlog, not
+triage speed; they are excluded from
+`latency_by_year`/`latency_buckets`/`headline` and reported once as
+`launch_backfill` (`median_days` null iff `n` = 0). KEV
+ids with no `datePublished` join in the corpus are counted in
+`matched.unmatched_cve` and excluded from all stats. Years plot only with
+≥ 10 matched entries (fixture mode: 1). `remediation_span_by_year` =
+`dueDate − dateAdded` by dateAdded year, INCLUDING the launch cohort (a
+deadline is policy, real regardless of CVE age). Buckets are fixed, in
+order: before_publish, 0-7d, 8-30d, 31-90d, 91-365d, 1-3y, 3y+ (lower
+edge inclusive). `headline.latest_year` is the last complete year that
+survived filters; `baseline_year` = latest − 3 when present, else the
+earliest surviving year — payload-authoritative, never derived.
+
+## site/data/cna_concentration.json  (CNA Concentration module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "years": [
+    {"year": 2025, "cna_count": 341, "newcomer_count": 47,
+     "top5_share": 34.9, "top10_share": 48.2, "hhi": 782.1}
+  ],
+  "rejection_leaderboard": {
+    "window_years": 5, "min_total": 50,
+    "cnas": [{"cna": "mitre", "total": 4820, "rejected": 1104,
+              "rejected_rate_pct": 22.9}]
+  },
+  "headline": {"latest_year": 2025, "cna_count_latest": 341,
+               "top5_share_latest": 34.9, "hhi_latest": 782.1,
+               "baseline_year": 2015, "top5_share_baseline": 71.8,
+               "hhi_baseline": 2510.3}
+}
+```
+
+Notes: `years` = the corpus's full publication span, gap-filled, NO
+minimum-volume filter (a single-CNA 1999 with `hhi` 10000.0 is history,
+not noise). `cna_count` = distinct CNAs with ≥ 1 published or rejected
+record that year; `newcomer_count` = CNAs whose first-ever activity is
+that year. `top5_share`/`top10_share` = the year's top-N CNAs by
+published count as a share of the year's published total. `hhi` is the
+standard Herfindahl-Hirschman index on its conventional **0–10000**
+scale — a documented exception to the 0–100 percentage rule; site copy
+must cite it on its own terms (top-N share and HHI can disagree).
+`rejection_leaderboard`: window = last `window_years` calendar years
+ending at the newest published year; `total = published + rejected`
+in-window, CNAs under `min_total` excluded; `rejected_rate_pct` =
+`100 * rejected / total` (bounded on purpose — the backlog's literal
+"rejected/published" is unbounded and is not shipped). Deliberately NOT
+shipped: any "reserved-but-never-published" rate — reserved-only IDs
+produce no record in the cvelistV5 release, so that stat would be
+survivorship-biased; it needs a different data source.

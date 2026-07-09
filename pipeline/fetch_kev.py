@@ -10,23 +10,40 @@ KEV_URL = ("https://www.cisa.gov/sites/default/files/feeds/"
 
 
 @dataclass
+class KevEntry:
+    """One KEV catalog entry: the CVE id plus the catalog's own dates."""
+
+    cve_id: str
+    date_added: str
+    due_date: str | None
+
+
+@dataclass
 class KevData:
     """Parsed KEV catalog: version metadata + the listed CVE ids."""
 
     catalog_version: str
     count: int
     cve_ids: list[str] = field(default_factory=list, repr=False)
+    entries: list[KevEntry] = field(default_factory=list, repr=False)
 
 
 def parse_kev(obj: dict) -> KevData:
-    """Extract catalog version and CVE ids from the KEV JSON document."""
-    cve_ids = [v["cveID"] for v in obj.get("vulnerabilities", [])
-               if isinstance(v, dict) and isinstance(v.get("cveID"), str)]
+    """Extract catalog version, CVE ids and entries from the KEV document."""
+    vulns = [v for v in obj.get("vulnerabilities", [])
+             if isinstance(v, dict) and isinstance(v.get("cveID"), str)]
+    cve_ids = [v["cveID"] for v in vulns]
+    entries = [KevEntry(cve_id=v["cveID"],
+                        date_added=str(v.get("dateAdded") or ""),
+                        due_date=(v["dueDate"]
+                                  if isinstance(v.get("dueDate"), str)
+                                  and v["dueDate"] else None))
+               for v in vulns]
     count = obj.get("count")
     if not isinstance(count, int) or isinstance(count, bool):
         count = len(cve_ids)
     return KevData(catalog_version=str(obj.get("catalogVersion", "unknown")),
-                   count=count, cve_ids=cve_ids)
+                   count=count, cve_ids=cve_ids, entries=entries)
 
 
 def load_kev_file(path: Path) -> KevData:

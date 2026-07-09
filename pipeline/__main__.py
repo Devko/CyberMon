@@ -26,7 +26,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import contracts, history, market_metrics, metrics
+from . import (concentration_metrics, contracts, history, kev_metrics,
+               market_metrics, metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -34,6 +35,7 @@ from .fetch_kev import KevData, fetch_kev, load_kev_file
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 DEFAULT_MIN_CVES = 100
+DEFAULT_MIN_REJECTION_N = 50
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -61,6 +63,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--min-cves", type=int, default=None,
                         help="CNA leaderboard volume threshold (default: "
                              f"{DEFAULT_MIN_CVES}; 1 in fixture mode)")
+    parser.add_argument("--concentration-window-years", type=int, default=5,
+                        help="CNA rejection leaderboard window (default: 5)")
+    parser.add_argument("--min-rejection-n", type=int, default=None,
+                        help="rejection leaderboard volume threshold "
+                             f"(default: {DEFAULT_MIN_REJECTION_N}; "
+                             "1 in fixture mode)")
     return parser.parse_args(argv)
 
 
@@ -182,7 +190,7 @@ def run(args: argparse.Namespace) -> int:
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
-    agg = metrics.Aggregator()
+    agg = metrics.Aggregator(kev_ids=kev.cve_ids)
     agg.consume(records)
     print(f"  {agg.cve_count} CVE records aggregated")
     if agg.cve_count == 0:
@@ -211,6 +219,17 @@ def run(args: argparse.Namespace) -> int:
                                           window_years=args.window_years,
                                           min_cves=min_cves),
         "volume_curve.json": metrics.build_volume_curve(agg, generated_at),
+        "kev_latency.json":
+            kev_metrics.build_kev_latency(
+                agg, kev.entries, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
+        "cna_concentration.json":
+            concentration_metrics.build_cna_concentration(
+                agg, generated_at,
+                window_years=args.concentration_window_years,
+                min_total=args.min_rejection_n
+                if args.min_rejection_n is not None else
+                (1 if args.offline_fixtures else DEFAULT_MIN_REJECTION_N)),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)

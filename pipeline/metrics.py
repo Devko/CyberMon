@@ -96,6 +96,7 @@ class CveFacts:
     cna: str
     cna_scores: dict[str, float] = field(default_factory=dict)  # family -> score
     adp_scores: dict[str, float] = field(default_factory=dict)
+    date_published: str | None = None  # day precision "YYYY-MM-DD"
 
     @property
     def newest_cna_score(self) -> float | None:
@@ -188,6 +189,9 @@ def extract_facts(record: dict) -> CveFacts | None:
         cna=str(meta.get("assignerShortName") or "unknown"),
         cna_scores=_scores_from_metrics(cna.get("metrics")),
         adp_scores=adp_scores,
+        date_published=(date_published[:10]
+                        if isinstance(date_published, str)
+                        and len(date_published) >= 10 else None),
     )
 
 
@@ -195,10 +199,16 @@ class Aggregator:
     """Folds a stream of :class:`CveFacts` into the aggregates the
     six output builders need. Never stores whole records."""
 
-    def __init__(self) -> None:
+    def __init__(self, kev_ids: Iterable[str] = ()) -> None:
         self.cve_count = 0
         self.published_by_year: Counter[int] = Counter()
         self.rejected_by_year: Counter[int] = Counter()
+        # KEV latency join: KEV-listed ids -> day-precision publish date
+        self.kev_ids: frozenset[str] = frozenset(kev_ids)
+        self.kev_published_dates: dict[str, str] = {}
+        # CNA concentration: year -> Counter of records per CNA
+        self.cna_year_published: dict[int, Counter[str]] = defaultdict(Counter)
+        self.cna_year_rejected: dict[int, Counter[str]] = defaultdict(Counter)
         # chart 1: year -> [score], per CVSS version family / blended
         self.version_scores: dict[str, dict[int, list[float]]] = {
             f: defaultdict(list) for f in ("v2", "v3", "v4")}
@@ -213,10 +223,16 @@ class Aggregator:
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
+        # KEV join first: a KEV listing is real even for records that were
+        # later rejected — the publish date is whatever the record carries.
+        if facts.date_published is not None and facts.cve_id in self.kev_ids:
+            self.kev_published_dates[facts.cve_id] = facts.date_published
         if facts.state == "REJECTED":
             self.rejected_by_year[facts.year] += 1
+            self.cna_year_rejected[facts.year][facts.cna] += 1
             return
         self.published_by_year[facts.year] += 1
+        self.cna_year_published[facts.year][facts.cna] += 1
 
         for family, score in facts.cna_scores.items():
             self.version_scores[family][facts.year].append(score)

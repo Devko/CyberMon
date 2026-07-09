@@ -25,6 +25,8 @@ export const editorial = {
     { id: "home", href: "index.html", label: "Overview" },
     { id: "cve", href: "cve.html", label: "CVE Ecosystem" },
     { id: "market", href: "market.html", label: "Security Market" },
+    { id: "kev", href: "kev.html", label: "KEV Latency" },
+    { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -62,6 +64,30 @@ export const editorial = {
           "Buzzword hype curves across news coverage (GDELT), practitioner chatter " +
           "(Hacker News), and research output (arXiv) — every term graded against its " +
           "own five-year peak, rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "kev",
+        href: "kev.html",
+        num: "03",
+        label: "KEV Latency",
+        headline: "By the time the government confirms it's exploited, you've been exposed for months.",
+        blurb:
+          "Days from CVE publication to CISA's Known Exploited Vulnerabilities listing, " +
+          "remediation deadlines, and the catalog's 2021–22 seeding era kept honestly separate from " +
+          "the real trend.",
+        live: true,
+      },
+      {
+        id: "concentration",
+        href: "concentration.html",
+        num: "04",
+        label: "CNA Concentration",
+        headline: "The CVE database is becoming a handful of vendors grading themselves at scale.",
+        blurb:
+          "CNA count, top-5/10 volume share, a formal concentration index, and who rejects " +
+          "more of their own reservations than they publish — rebuilt nightly from the same " +
+          "corpus as CVE Ecosystem.",
         live: true,
       },
     ],
@@ -336,6 +362,170 @@ export const editorial = {
         "publication year; “rejected” is records with state REJECTED, counted by the same year. " +
         "The log toggle only rescales the axis — same data. The current year is labeled " +
         "partial and refills nightly; comparing it to a finished year is a category error.",
+    },
+
+    // --------------------------------------------- kev.html · 1 · hero
+    latency: {
+      num: "01",
+      kicker: "Listing latency",
+      headline: "By the time CISA confirms it, the exploit had a head start.",
+      caption:
+        "For every CVE the government lists as Known Exploited, the gap from the CVE's own " +
+        "publication date to the day CISA added it to the catalog — median and interquartile " +
+        "range, one point per year CISA made the addition. The catalog's 2021–22 seeding era " +
+        "is excluded here (see the callout): it launched by inheriting a backlog of years-old " +
+        "CVEs and kept importing back-catalog through 2022, which would flatten the whole " +
+        "trend into one artificial spike. What's left is the catalog's actual cadence since — " +
+        "and it has been getting slower, not faster.",
+      statLabel: "Median days from CVE publication to KEV listing",
+      statLatest: "{latest_year}",
+      statAgo: "{ago_year}",
+      backfillNote:
+        "{n} entries were added in the catalog's seeding era (November 2021 launch through " +
+        "2022, before {date_added_before}) — median nominal latency {median_days} days. That " +
+        "figure is a catalog-import artifact, not a triage measurement, and is excluded from " +
+        "the chart above.",
+      methodology:
+        "For every entry in CISA's Known Exploited Vulnerabilities catalog that matches a CVE " +
+        "record in the cvelistV5 corpus, latency is the KEV dateAdded minus the CVE record's " +
+        "datePublished, in days. The trend cohort starts in 2023: the catalog launched in " +
+        "November 2021 by inheriting a backlog of years-old CVEs and kept bulk-importing its " +
+        "back-catalog through 2022 (the data shows the regime change — the median 'latency' " +
+        "of 2022 additions is 1,436 days; of 2023 additions, 12), so a seeding-era entry's " +
+        "nominal latency measures the age of the backlog, not the speed of triage — it is " +
+        "reported in the callout, never plotted in the trend. Negative " +
+        "latencies are kept as negative, not floored at zero: a KEV listing that predates its " +
+        "own CVE record is a real event — exploitation confirmed before the paperwork " +
+        "existed — and flooring it would quietly flatter the system. A year plots only if it " +
+        "has at least 10 matched entries. KEV entries with no matching CVE record in the " +
+        "corpus carry no publication date and are counted separately in the data file rather " +
+        "than silently dropped.",
+    },
+
+    // --------------------------------------------- kev.html · 2
+    buckets: {
+      num: "02",
+      kicker: "Latency distribution",
+      headline: "A third of KEV listings land inside a week. Six percent land three years late.",
+      caption:
+        "The same matched cohort as the trend above, folded into buckets: how many listings " +
+        "arrive before the CVE is even published, how many inside a week, a month, a quarter, " +
+        "a year — and how many take one to three years, or longer. A median hides its tails; " +
+        "this chart is the tails. The red bucket is the one worth staring at: exploitation " +
+        "confirmed before the vulnerability formally existed.",
+      methodology:
+        "Every matched entry in the trend cohort (added 2023 or later; the 2021–22 seeding " +
+        "era is excluded here for the same reason as above) is placed in exactly one bucket by " +
+        "its latency: before publish (latency below zero), 0–7d, 8–30d, 31–90d, 91–365d, " +
+        "1–3y, 3y+. Each bucket's lower edge is inclusive — a listing on day 8 is 8–30d, not " +
+        "0–7d. Percentages are shares of the matched cohort, not of the full catalog: an " +
+        "entry with no matching CVE record has no publication date, so it can't have a " +
+        "latency and isn't assigned one.",
+    },
+
+    // --------------------------------------------- kev.html · 3
+    remediation: {
+      num: "03",
+      kicker: "Remediation deadlines",
+      headline: "The deadline shrank as the list grew.",
+      caption:
+        "How long federal agencies get to fix each KEV entry: the gap from the day CISA " +
+        "lists a vulnerability to the remediation deadline it attaches, median and " +
+        "interquartile range per year of listing. Unlike the latency chart, the seeding era " +
+        "belongs here — the deadline is set the day the entry lands, back-catalog included, " +
+        "so this is a policy timeline, not a backlog artifact. The early catalog handed out " +
+        "months; the standing rule since has been three weeks.",
+      methodology:
+        "Remediation span is the KEV dueDate minus dateAdded, in days, for every catalog " +
+        "entry carrying both fields — no CVE match is needed, so this covers the catalog " +
+        "itself, 2021 launch cohort included. The launch batch is excluded from the latency " +
+        "trend because its nominal latency measures backlog age; its remediation spans, by " +
+        "contrast, are real policy decisions made on the listing date and belong in this " +
+        "chart. Lines are the median span of entries added each year; shaded bands span the " +
+        "25th–75th percentile. For context: BOD 22-01 gave agencies six months for the older " +
+        "launch-batch CVEs and two weeks for recent ones, and entries added since typically " +
+        "carry about three weeks — the chart shows what CISA actually assigned, not what the " +
+        "directive prescribes.",
+    },
+
+    // --------------------------------- concentration.html · 1 · hero
+    concentration: {
+      num: "01",
+      kicker: "Volume concentration",
+      headline: "More assignors than ever. The volume still belongs to a handful.",
+      caption:
+        "Three lines from one corpus: how many CVE Numbering Authorities published at least " +
+        "one record each year, and what share of the year's volume came from the top 5 and " +
+        "top 10 of them. The CNA program keeps growing — federation is the point — but growth " +
+        "in assignors has not meant dispersion in output. Most of the database still ships " +
+        "from the same short list of vendors, and the largest of them are scoring their own " +
+        "products while they're at it.",
+      statLabel: "Share of published CVEs from the year's top 5 CNAs",
+      statLatest: "{latest_year}",
+      statAgo: "{ago_year}",
+      methodology:
+        "Each CVE record's assigner (the CNA of record in cvelistV5) is counted by original " +
+        "publication year; a CNA is active in a year if it published at least one record. " +
+        "Top-5/top-10 share is the fraction of that year's volume from its five or ten " +
+        "largest assignors, membership recomputed every year — the names in the top 5 " +
+        "change, the concentration doesn't. The pipeline also computes a " +
+        "Herfindahl–Hirschman Index per year (the sum of squared volume shares, on the " +
+        "0–10,000 scale antitrust regulators use; {hhi_latest} for the latest year) as a " +
+        "formal concentration measure that sees the whole distribution, not just the head. " +
+        "HHI and top-N share can diverge — a fat head over a long tail moves them " +
+        "differently — so this chart reports both rather than picking the more dramatic " +
+        "one. Years with no published records still appear, at zero, so the axis never " +
+        "silently skips time. The current year is partial and refills nightly.",
+    },
+
+    // --------------------------------- concentration.html · 2
+    entrants: {
+      num: "02",
+      kicker: "New entrants",
+      headline: "New CNAs keep arriving. Most of them don't move the needle.",
+      caption:
+        "Bars count CNAs publishing their first-ever CVE record that year; the line is the " +
+        "total active roster. Recruitment is real — the program is adding assignors faster " +
+        "than it ever has. Hold that against the chart above and the punchline writes " +
+        "itself: the newcomers add count, not share. The head of the table absorbs the " +
+        "growth.",
+      methodology:
+        "A newcomer in year Y is a CNA whose earliest published record in the entire corpus " +
+        "falls in Y — first appearance in the data, not accreditation date, which the corpus " +
+        "doesn't carry. The active-roster line counts CNAs with at least one published " +
+        "record that year, the same definition as the concentration chart. Because first " +
+        "appearance is computed against the full corpus, the first charted year counts " +
+        "every CNA as new by construction — read the left edge accordingly. The current " +
+        "year is partial and refills nightly.",
+    },
+
+    // --------------------------------- concentration.html · 3
+    rejection: {
+      num: "03",
+      kicker: "Rejection board",
+      headline: "Who rejects more than they publish?",
+      caption:
+        "Over the last {window_years} years, each CNA's published records against its " +
+        "rejected ones — reservations formally withdrawn, duplicates collapsed, assignments " +
+        "walked back. A high rate isn't necessarily bad practice: rejection is the system's " +
+        "error-correction working in public, and a CNA that never rejects anything may " +
+        "simply never re-check its own work. The board exists because the rate varies by an " +
+        "order of magnitude across the program, and nobody publishes it.",
+      colCna: "CNA",
+      colTotal: "CVEs (pub+rej)",
+      colRejected: "rejected",
+      colRate: "rejection rate",
+      windowTemplate:
+        "CVE record states by assigner · last {window_years} years · min {min_total} records (published + rejected)",
+      methodology:
+        "For each assigner in cvelistV5, count records first published in the last " +
+        "{window_years} years by state: PUBLISHED versus REJECTED. Rejection rate is " +
+        "rejected over (published + rejected). CNAs with fewer than {min_total} total " +
+        "records in the window are excluded — a two-for-two rejection record is an " +
+        "anecdote, not a rate. Reserved-but-never-published IDs don't appear in the public " +
+        "corpus at all and can't be counted here: this board measures what was shipped and " +
+        "then withdrawn, not what was quietly never used. Default sort: rejection rate, " +
+        "descending. Click any column header to re-sort.",
     },
   },
 

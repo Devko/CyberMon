@@ -220,7 +220,11 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
         carried["stale"] = True
         log(f"  --skip-market: carrying forward market_hype.json "
             f"from {fetched_at}")
-        return carried, {"fetched_at": fetched_at, "stale": True}
+        # meta.sources.market must stay contract-complete even when stale.
+        return carried, {"fetched_at": fetched_at, "stale": True,
+                         "term_count": len(carried.get("terms", [])),
+                         "backfill_remaining":
+                             carried.get("backfill_remaining", 0)}
 
     # Live sync. fetch_market is imported lazily so the offline/skip paths
     # (and this module's unit tests) never require it to be importable.
