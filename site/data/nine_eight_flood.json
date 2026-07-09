@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-09T19:29:17Z",
+ "generated_at": "2026-07-09T20:03:30Z",
  "years": [
   {
    "year": 1999,
@@ -225,5 +225,10 @@
    "low": 1580,
    "unscored": 1816
   }
- ]
+ ],
+ "projection": {
+  "year": 2026,
+  "total": 72168,
+  "elapsed": 0.521
+ }
 }
