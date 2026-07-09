@@ -1,5 +1,5 @@
 // =============================================================================
-// main.js — CVE Ecosystem tab (index.html). Builds the six chart sections from
+// cve.js — CVE Ecosystem tab (cve.html). Builds the six chart sections from
 // editorial.js, fetches each contract file independently, renders charts.
 // A failed fetch only takes down its own section (inline error card).
 // Shared chrome (masthead/nav/banner/footer) comes from common.js.

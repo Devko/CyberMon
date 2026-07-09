@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CyberMon — a nightly ledger of security industry health</title>
-  <meta name="description" content="Nightly, reproducible dashboards on the security industry's own machinery: CVE ecosystem health (CVSS inflation, NVD backlog, CNA scoring habits) and a data-driven security market hype tracker.">
+  <title>CyberMon — CVE severity has become meaningless. Here are the receipts.</title>
+  <meta name="description" content="A nightly, reproducible dashboard on CVE ecosystem health: CVSS score inflation, the 9.8 flood, scores vs. real exploitation, NVD backlog decay, and CNA scoring habits.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
@@ -33,11 +33,12 @@
     </div>
   </footer>
 
-  <script type="module" src="js/home.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script type="module" src="js/cve.js"></script>
   <noscript>
     <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
-      CyberMon is a static, client-rendered site. Enable JavaScript — or jump straight to the
-      modules: <a href="cve.html">cve.html</a> and <a href="market.html">market.html</a>.
+      CyberMon is a static, client-rendered dashboard. Enable JavaScript to see the charts —
+      or read the raw JSON in <code>data/</code>; every number on this page comes from those files.
     </p>
   </noscript>
 </body>

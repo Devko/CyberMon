@@ -14,16 +14,57 @@ export const editorial = {
   metricsUrl: METRICS_URL,
 
   masthead: {
-    kicker: "A nightly ledger of security ecosystem health · rebuilt from open data every 24h",
-    thesis: "CVE severity has become meaningless — here are the receipts.",
-    sub: "Every chart below pairs a claim with the exact method that produced it. Disagree with a number? The pipeline is open; rerun it.",
+    kicker: "A nightly ledger of security industry health · rebuilt from open data every 24h",
+    thesis: "The security industry grades its own homework. CyberMon keeps the receipts.",
+    sub: "Every number on this site pairs a claim with the exact method that produced it. Disagree with one? The pipeline is open; rerun it.",
   },
 
   // Tabs in the shared top-nav. href values stay RELATIVE (GitHub Pages subpath).
+  // Every tab is its own page — direct-linkable and bookmarkable.
   nav: [
-    { id: "cve", href: "index.html", label: "CVE Ecosystem" },
+    { id: "home", href: "index.html", label: "Overview" },
+    { id: "cve", href: "cve.html", label: "CVE Ecosystem" },
     { id: "market", href: "market.html", label: "Security Market" },
   ],
+
+  // ------------------------------------------------- index.html (landing)
+  home: {
+    kicker: "Overview",
+    headline: "Pick a module.",
+    caption:
+      "CyberMon watches the machinery of the security industry itself — the scoring systems, " +
+      "the institutions, the market — not the vulnerability of the week. Each module below is " +
+      "its own page with its own nightly pipeline stage, its own data contracts, and its own " +
+      "expandable “how this is computed” footnotes.",
+    statusLive: "live",
+    statusSoon: "coming soon",
+    backlogNote:
+      "More modules are queued — the candidate list lives in the repo under docs/backlog.md.",
+    modules: [
+      {
+        id: "cve",
+        href: "cve.html",
+        num: "01",
+        label: "CVE Ecosystem",
+        headline: "CVE severity has become meaningless — here are the receipts.",
+        blurb:
+          "CVSS inflation, the 9.8 flood, scores vs. real-world exploitation, NVD backlog " +
+          "decay, CNA scoring habits. Six charts, rebuilt every night.",
+        live: true,
+      },
+      {
+        id: "market",
+        href: "market.html",
+        num: "02",
+        label: "Security Market",
+        headline: "The security industry runs on a hype curve. Nobody publishes the curve.",
+        blurb:
+          "Buzzword trajectories across vendor marketing, funding rounds, job postings, and " +
+          "conference CFPs. Pipeline under construction.",
+        live: false,
+      },
+    ],
+  },
 
   // ------------------------------------------------- market.html (stub tab)
   market: {

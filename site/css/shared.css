@@ -548,6 +548,81 @@ code {
   white-space: nowrap;
 }
 
+/* ------------------------------------------------- landing module cards --- */
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin: 6px 0 18px;
+}
+
+.module-card {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  padding: 22px 24px 20px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.module-card:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+  background: var(--panel-up);
+}
+
+.module-card.is-pending { border-style: dashed; }
+
+.module-card-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.module-card-num {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+}
+
+.tag-live {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+  background: var(--accent-dim);
+}
+
+.module-card-label {
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.module-card-headline {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.module-card:hover .module-card-headline { color: var(--accent); }
+
+.module-card-blurb {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 /* ---------------------------------------------------------------- footer -- */
 
 .footer {

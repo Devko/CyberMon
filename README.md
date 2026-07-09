@@ -1,20 +1,27 @@
-# CyberMon — CVE Ecosystem Health Dashboard
+# CyberMon — a nightly ledger of security industry health
 
-**CVE severity has become meaningless — here are the receipts.**
+**The security industry grades its own homework. CyberMon keeps the receipts.**
 
-CVSS scores inflate year over year, most "Critical" vulnerabilities are never
-exploited, NVD enrichment is decaying, and some CNAs rubber-stamp high
-severities. CyberMon tracks all of it nightly, from open data, with every
-number reproducible from the pipeline in this repo.
+CyberMon monitors the machinery of the security industry itself — the scoring
+systems, the institutions, the market — not the vulnerability of the week.
+Everything is rebuilt nightly from open data, and every number is reproducible
+from the pipeline in this repo.
 
-**Live dashboard:** https://devko.github.io/CyberMon/
+**Live site:** https://devko.github.io/CyberMon/
 
 Provocative headline, auditable methodology: every chart carries an editorial
 caption *and* an expandable "how this is computed" footnote linking back to
-the pipeline source. The site is meta — it never lists individual CVEs as
-news.
+the pipeline source.
 
-## The six charts
+## Modules
+
+Each module is its own directly linkable page with its own pipeline stage and
+[data contracts](docs/data-contracts.md). The landing page
+([index.html](site/index.html)) is the module directory.
+
+### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
+
+*CVE severity has become meaningless — here are the receipts.* Six charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't
@@ -30,6 +37,17 @@ news.
 5. **CNA rubber-stamp board** — CNAs ranked by average assigned severity and
    share of scores ≥ 9.0 (minimum 100 CVEs in a 3-year window).
 6. **Volume curve** — CVEs published and rejected per year.
+
+### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (coming soon)
+
+*The security industry runs on a hype curve. Nobody publishes the curve.*
+A data-driven hype-cycle tracker: buzzword trajectories across vendor
+marketing, funding rounds, job postings, and conference CFPs.
+
+### Next
+
+Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
+each entry names its thesis, open data sources, and feasibility.
 
 ## Architecture
 
@@ -80,7 +98,8 @@ python tools/make_sample_data.py
 
 # Serve the site locally
 cd site && python -m http.server 8000
-# then open http://localhost:8000/
+# then open http://localhost:8000/          (landing page)
+#      or  http://localhost:8000/cve.html   (CVE Ecosystem module)
 ```
 
 A real (networked) run is `python -m pipeline --out site/data`; set
@@ -98,8 +117,10 @@ comparability, CNA-vs-NVD scoring) — is in
 
 ## Roadmap
 
-A **hype-cycle tracker** (named-vuln media attention vs. actual exploitation)
-is planned as a second page, reusing the same nightly-pipeline pattern.
+The **Security Market** module (data-driven hype-cycle tracker) is the next
+build; the longer candidate list — with thesis, data sources, and feasibility
+per module — lives in [docs/backlog.md](docs/backlog.md). New modules follow
+the same pattern: one pipeline stage, one contracts section, one page.
 
 ## One-time setup (repo settings)
 
