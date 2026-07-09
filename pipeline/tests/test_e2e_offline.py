@@ -67,6 +67,12 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert board["cnas"][0] == {"cna": "mitre", "total": 2, "rejected": 1,
                                 "rejected_rate_pct": 50.0}
 
+    # The fixture corpus carries no current-year records, so none of the
+    # three flow charts may emit a pace projection (contracts allow absence).
+    for name in ("volume_curve.json", "nine_eight_flood.json",
+                 "cna_concentration.json"):
+        assert "projection" not in _load(tmp_path, name), name
+
     # Advisory quality: fixture-mode min_n=1, so every publication year
     # charts; 2024's REJECTED record is excluded from the denominator.
     quality = _load(tmp_path, "advisory_quality.json")

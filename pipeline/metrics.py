@@ -22,9 +22,11 @@ year embedded in the CVE ID. REJECTED records count only toward
 """
 from __future__ import annotations
 
+import calendar
 import statistics
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any, Iterable
 
 CVSS_BUCKETS = ["0.1-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
@@ -82,6 +84,40 @@ def _quartiles(scores: list[float]) -> tuple[float, float, float]:
         return s, s, s
     q = statistics.quantiles(scores, n=4, method="inclusive")
     return q[0], statistics.median(scores), q[2]
+
+
+# --------------------------------------------------------- pace projection
+
+# Below this elapsed fraction of the year (roughly before mid-February) a
+# full-year pace is noise: the divisor is so small that one busy or quiet
+# fortnight swings the projection by thousands, so none is emitted.
+PACE_MIN_ELAPSED = 0.125
+
+
+def year_elapsed(generated_at: str) -> float:
+    """Fraction of the UTC calendar year elapsed at ``generated_at``:
+    day-of-year / days-in-year, leap-year aware, day precision."""
+    day = datetime.strptime(generated_at[:10], "%Y-%m-%d")
+    days_in_year = 366 if calendar.isleap(day.year) else 365
+    return day.timetuple().tm_yday / days_in_year
+
+
+def pace_projection(count: int, generated_at: str) -> int | None:
+    """Full-year value of a partial-year *flow* count at its current pace:
+    ``round(count / year_elapsed(generated_at))``.
+
+    Returns None when the year is less than :data:`PACE_MIN_ELAPSED`
+    elapsed (see the comment above) or ``count`` is 0 — nothing to pace.
+
+    Flow metrics only — counts of events per year. A median doesn't scale
+    with elapsed time, a share is already normalized, and a distinct-entity
+    count (an active-CNA roster) is a headcount; none of those may ever be
+    fed through this helper.
+    """
+    elapsed = year_elapsed(generated_at)
+    if elapsed < PACE_MIN_ELAPSED or count == 0:
+        return None
+    return round(count / elapsed)
 
 
 # ------------------------------------------------------------ facts & agg
@@ -413,7 +449,9 @@ def build_severity_inflation(agg: Aggregator, generated_at: str,
 
 
 def build_nine_eight_flood(agg: Aggregator, generated_at: str) -> dict:
-    """Chart 2: stacked severity buckets per publication year (gap-filled)."""
+    """Chart 2: stacked severity buckets per publication year (gap-filled),
+    plus an optional full-year pace projection of the partial current
+    year's total (all published records, unscored included)."""
     years = []
     for year in agg.year_span():
         counts = agg.flood.get(year, Counter())
@@ -423,7 +461,16 @@ def build_nine_eight_flood(agg: Aggregator, generated_at: str) -> dict:
                       "medium": counts.get("medium", 0),
                       "low": counts.get("low", 0),
                       "unscored": counts.get("unscored", 0)})
-    return {"generated_at": generated_at, "years": years}
+    out = {"generated_at": generated_at, "years": years}
+    # agg.flood counts published records only (rejected never reach it),
+    # across every bucket including "unscored" — the flow being paced.
+    current_year = int(generated_at[:4])
+    total = sum(agg.flood.get(current_year, Counter()).values())
+    projected = pace_projection(total, generated_at)
+    if projected is not None:
+        out["projection"] = {"year": current_year, "total": projected,
+                             "elapsed": round(year_elapsed(generated_at), 3)}
+    return out
 
 
 def build_score_vs_reality(agg: Aggregator, epss_scores: dict[str, float],
@@ -526,12 +573,31 @@ def build_cna_leaderboard(agg: Aggregator, generated_at: str, *,
 
 
 def build_volume_curve(agg: Aggregator, generated_at: str) -> dict:
-    """Chart 6: CVEs published / rejected per year (gap-filled)."""
-    return {"generated_at": generated_at,
-            "years": [{"year": year,
-                       "published": agg.published_by_year.get(year, 0),
-                       "rejected": agg.rejected_by_year.get(year, 0)}
-                      for year in agg.year_span()]}
+    """Chart 6: CVEs published / rejected per year (gap-filled), plus an
+    optional full-year pace projection for the partial current year.
+
+    The projection is keyed off the published flow: it ships only when the
+    current year has published records and the year is far enough along
+    (see :func:`pace_projection`). Rejections pace alongside; a zero
+    rejected count so far paces to a zero projection.
+    """
+    out = {"generated_at": generated_at,
+           "years": [{"year": year,
+                      "published": agg.published_by_year.get(year, 0),
+                      "rejected": agg.rejected_by_year.get(year, 0)}
+                     for year in agg.year_span()]}
+    current_year = int(generated_at[:4])
+    projected = pace_projection(agg.published_by_year.get(current_year, 0),
+                                generated_at)
+    if projected is not None:
+        out["projection"] = {
+            "year": current_year,
+            "published": projected,
+            "rejected": pace_projection(
+                agg.rejected_by_year.get(current_year, 0), generated_at) or 0,
+            "elapsed": round(year_elapsed(generated_at), 3),
+        }
+    return out
 
 
 def build_meta(generated_at: str, *, cvelist_release: str, cve_count: int,

@@ -15,8 +15,8 @@ from __future__ import annotations
 from typing import Any, Callable
 
 from .contracts import (DATE_RE, _check_generated_at, _check_int,
-                        _check_list, _check_num, _check_sorted, _check_str,
-                        _fail, _get)
+                        _check_list, _check_num, _check_pace_projection,
+                        _check_sorted, _check_str, _fail, _get)
 
 # Must match kev_metrics.LAUNCH_CUTOFF / kev_metrics.BUCKETS. Hardcoded here
 # on purpose (as market_contracts hardcodes SOURCES): the contract states
@@ -190,6 +190,13 @@ def _validate_cna_concentration(obj: Any) -> None:
     for key in ("hhi_latest", "hhi_baseline"):
         _check_num(_get(headline, key, "cna_concentration.headline"),
                    f"cna_concentration.headline.{key}", 0.0, _HHI_HI)
+
+    # Optional: full-year pace projection of the current year's newcomers
+    # (first appearances are a flow; the active-CNA roster never projects).
+    if "projection" in obj:
+        _check_pace_projection(obj["projection"],
+                               "cna_concentration.projection",
+                               obj["generated_at"], {"newcomers": 1})
 
 
 VALIDATORS: dict[str, Callable[[Any], None]] = {

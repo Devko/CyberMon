@@ -14,6 +14,25 @@ General rules:
   writing (see `pipeline/contracts.py` — single source of truth as JSON
   Schema; site does not validate).
 
+Pace projections (optional `"projection"` key): exactly three files —
+`volume_curve.json`, `nine_eight_flood.json`, `cna_concentration.json` —
+may carry a full-year pace projection for the partial current year:
+`projected = round(count / elapsed)`, where `elapsed` = day-of-year ÷
+days-in-year (UTC, leap-year aware) at `generated_at`. `elapsed` ships in
+the block, rounded to **3** decimals — a documented exception to the
+1-decimal float rule. The key is ABSENT when `elapsed` < 0.125 (before
+roughly mid-February a pace is noise; the divisor is too small) or when
+the current year has no records to pace — consumers must treat absence as
+"no projection", never as zero. `projection.year` always equals the
+`generated_at` year. Projections exist ONLY for flow metrics — counts of
+events per year (records published, records rejected, first-appearance
+newcomers). Nothing else may ever be projected: a median doesn't scale
+with elapsed time, a share is already normalized to its year, and a
+distinct-entity count (the active-CNA roster) is a headcount rather than
+a flow. The math assumes the flow is uniform through the year and ignores
+seasonality and late-year backfill; the site must render projections
+visually distinct (dashed/hollow) and labeled.
+
 ## site/data/meta.json
 
 ```json
@@ -78,12 +97,19 @@ consumers must never derive either year themselves.
   "generated_at": "...",
   "years": [
     {"year": 2010, "critical": 312, "high": 1204, "medium": 2417, "low": 502, "unscored": 89}
-  ]
+  ],
+  "projection": {"year": 2026, "total": 48210, "elapsed": 0.521}
 }
 ```
 
 Buckets: critical ≥9.0, high 7.0–8.9, medium 4.0–6.9, low 0.1–3.9,
 `unscored` = published that year with no base score anywhere in the record.
+`projection` (optional; see "Pace projections" above): the current year's
+published total — the sum across all five buckets, `unscored` included,
+rejected records never counted — paced to a full year (`total` ≥ 1).
+There is deliberately no per-bucket projection: bucket *shares* shift
+within a year, and pacing each bucket separately would present the
+current mix as a full-year claim.
 
 ## site/data/score_vs_reality.json  (chart 3)
 
@@ -151,11 +177,17 @@ full org name where resolvable, else same as `cna`.
 ```json
 {
   "generated_at": "...",
-  "years": [{"year": 1999, "published": 1579, "rejected": 12}]
+  "years": [{"year": 1999, "published": 1579, "rejected": 12}],
+  "projection": {"year": 2026, "published": 51230, "rejected": 812,
+                 "elapsed": 0.521}
 }
 ```
 
 `rejected` = records with state REJECTED, counted by original publication year.
+`projection` (optional; see "Pace projections" above): the current year's
+published and rejected counts paced to a full year. Keyed off the
+published flow — it ships only when the current year has ≥ 1 published
+record (so `published` ≥ 1); `rejected` may legitimately pace to 0.
 
 ## site/data/advisory_quality.json  (chart 7)
 
@@ -375,7 +407,8 @@ earliest surviving year — payload-authoritative, never derived.
   "headline": {"latest_year": 2025, "cna_count_latest": 341,
                "top5_share_latest": 34.9, "hhi_latest": 782.1,
                "baseline_year": 2015, "top5_share_baseline": 71.8,
-               "hhi_baseline": 2510.3}
+               "hhi_baseline": 2510.3},
+  "projection": {"year": 2026, "newcomers": 52, "elapsed": 0.521}
 }
 ```
 
@@ -396,3 +429,9 @@ in-window, CNAs under `min_total` excluded; `rejected_rate_pct` =
 shipped: any "reserved-but-never-published" rate — reserved-only IDs
 produce no record in the cvelistV5 release, so that stat would be
 survivorship-biased; it needs a different data source.
+`projection` (optional; see "Pace projections" above): the current year's
+`newcomer_count` paced to a full year (`newcomers` ≥ 1). First
+appearances are events — a flow — so a pace applies, on the strong
+assumption that newcomers arrive uniformly through the year. `cna_count`
+is a roster headcount and is never projected; nor are the shares or the
+HHI. Validator: `pipeline/tier1_contracts.py`.

@@ -112,6 +112,20 @@ export const editorial = {
   methodologySourcePrefix: "Source of truth: ",
   methodologySourceLinkText: "pipeline/metrics.py",
 
+  // Shared by every chart that draws a full-year pace projection for the
+  // partial current year (volume curve, 9.8 flood, new entrants). The
+  // pipeline emits the projection only for flow metrics — see
+  // docs/data-contracts.md, "Pace projections".
+  projection: {
+    note:
+      "Dashed and hollow marks: the partial year carried forward at its " +
+      "current pace — calendar arithmetic, not a forecast.",
+    tooltipProjected: "{name} · projected full year ≈ {n}",
+    tooltipElapsed: "{pct} of the year elapsed",
+    floodLabel: "≈ {n} projected",
+    floodTooltipName: "All severities",
+  },
+
   sections: {
     // ------------------------------------------- market.html · 1 · hero
     hype: {
@@ -265,7 +279,14 @@ export const editorial = {
         "enrichment stalled in 2024, CISA's Vulnrichment program (the ADP container) began " +
         "backstopping the rest — a quarter of all 2024 records carry only a CISA score. " +
         "The share view normalizes each year to 100%. The current year (marked *) is " +
-        "partial and refills nightly.",
+        "partial and refills nightly. In the absolute view, a dashed marker at the " +
+        "current-year edge paces the partial year's total — all published records, " +
+        "unscored included — to twelve months: the count so far divided by the fraction " +
+        "of the UTC calendar year elapsed at generation time, shown only once 12.5% of " +
+        "the year has elapsed (roughly mid-February). The pace assumes uniform " +
+        "publication through the year and ignores seasonality and late-year backfill; " +
+        "the severity mix is deliberately unprojected, and the share view carries no " +
+        "marker because shares are already normalized to their year.",
     },
 
     // ------------------------------------------------------------------- 3
@@ -365,7 +386,13 @@ export const editorial = {
         "Counts come from the cvelistV5 corpus: “published” is CVE records by original " +
         "publication year; “rejected” is records with state REJECTED, counted by the same year. " +
         "The log toggle only rescales the axis — same data. The current year is labeled " +
-        "partial and refills nightly; it is not comparable to a finished year.",
+        "partial and refills nightly; it is not comparable to a finished year. The dashed " +
+        "segment and hollow marker pace that partial year to twelve months: the count so far " +
+        "divided by the fraction of the UTC calendar year elapsed at generation time. The " +
+        "projection appears only once 12.5% of the year has elapsed (roughly mid-February — " +
+        "earlier, the divisor is too small to mean anything), assumes publication runs " +
+        "uniformly through the year, and ignores seasonality and late-year backfill. The " +
+        "solid line keeps showing the actual partial count.",
     },
 
     // ------------------------------------------------------------------- 7
@@ -586,7 +613,14 @@ export const editorial = {
         "record that year, the same definition as the concentration chart. Because first " +
         "appearance is computed against the full corpus, the first charted year counts " +
         "every CNA as new by construction — read the left edge accordingly. The current " +
-        "year is partial and refills nightly.",
+        "year is partial and refills nightly. The hollow extension above the current-year " +
+        "bar paces the newcomer count to twelve months: newcomers so far divided by the " +
+        "fraction of the UTC calendar year elapsed at generation time, shown only once " +
+        "12.5% of the year has elapsed (roughly mid-February). First appearances are " +
+        "events, so a pace applies — under the strong assumption that newcomers arrive " +
+        "uniformly through the year, ignoring seasonality and late-year backfill. The " +
+        "active-roster line is never projected: a roster is a headcount, and a headcount " +
+        "has no pace.",
     },
 
     // --------------------------------- concentration.html · 3

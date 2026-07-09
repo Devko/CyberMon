@@ -269,6 +269,98 @@ def test_volume_curve_counts_rejected_by_publication_year(agg):
     assert by_year[2020] == {"year": 2020, "published": 0, "rejected": 0}
 
 
+# --------------------------------------------------------- pace projection
+
+def _agg_2026(*facts_list) -> metrics.Aggregator:
+    """Aggregator holding only hand-built facts (current-year scenarios)."""
+    agg = metrics.Aggregator()
+    for facts in facts_list:
+        agg.add(facts)
+    return agg
+
+
+def test_year_elapsed_mid_year_and_leap_year():
+    # 2026-07-02 is day 183 of a 365-day year.
+    assert metrics.year_elapsed("2026-07-02T00:00:00Z") == 183 / 365
+    # 2024 is a leap year: Feb 29 exists and the divisor is 366.
+    assert metrics.year_elapsed("2024-02-29T12:34:56Z") == 60 / 366
+    # Dec 31 means the whole year has elapsed, leap or not.
+    assert metrics.year_elapsed("2025-12-31T23:59:59Z") == 1.0
+    assert metrics.year_elapsed("2024-12-31T00:00:00Z") == 1.0
+
+
+def test_pace_projection_mid_year_math():
+    # 1000 records by day 183 of 365 -> round(1000 * 365 / 183) = 1995.
+    assert metrics.pace_projection(1000, "2026-07-02T00:00:00Z") == 1995
+    # A full year elapsed paces to the count itself.
+    assert metrics.pace_projection(42, "2026-12-31T00:00:00Z") == 42
+
+
+def test_pace_projection_leap_year_divisor():
+    # 60 events by day 60: a leap year paces to 366, a common year to 365.
+    assert metrics.pace_projection(60, "2024-02-29T00:00:00Z") == 366
+    assert metrics.pace_projection(60, "2023-03-01T00:00:00Z") == 365
+
+
+def test_pace_projection_threshold_cutoff():
+    # Day 45 of 365 = 0.1233 elapsed, below the 0.125 floor -> no number.
+    assert metrics.pace_projection(100, "2026-02-14T23:59:59Z") is None
+    # One day later clears the floor (46/365 = 0.126).
+    assert metrics.pace_projection(100, "2026-02-15T00:00:00Z") == 793
+
+
+def test_pace_projection_zero_count_is_none():
+    assert metrics.pace_projection(0, "2026-07-02T00:00:00Z") is None
+
+
+def test_volume_curve_projection_present_for_current_year():
+    agg = _agg_2026(
+        *[metrics.CveFacts(f"CVE-2026-{i:04d}", "PUBLISHED", 2026, "a")
+          for i in range(10)],
+        metrics.CveFacts("CVE-2026-9999", "REJECTED", 2026, "a"))
+    out = metrics.build_volume_curve(agg, GENERATED_AT)
+    # GENERATED_AT is 2026-07-09 = day 190 of 365 -> elapsed 0.521 (3 dp);
+    # published 10 -> round(10 / (190/365)) = 19; rejected 1 -> 2.
+    assert out["projection"] == {"year": 2026, "published": 19,
+                                 "rejected": 2, "elapsed": 0.521}
+
+
+def test_volume_curve_projection_rejected_paces_to_zero():
+    agg = _agg_2026(metrics.CveFacts("CVE-2026-0001", "PUBLISHED", 2026, "a"))
+    out = metrics.build_volume_curve(agg, GENERATED_AT)
+    assert out["projection"]["published"] == 2  # round(1 / 0.5205...)
+    assert out["projection"]["rejected"] == 0
+
+
+def test_volume_curve_projection_absent_without_current_year_records(agg):
+    # The fixture corpus ends in 2025; nothing to pace in 2026.
+    out = metrics.build_volume_curve(agg, GENERATED_AT)
+    assert "projection" not in out
+
+
+def test_volume_curve_projection_absent_below_threshold():
+    agg = _agg_2026(metrics.CveFacts("CVE-2026-0001", "PUBLISHED", 2026, "a"))
+    out = metrics.build_volume_curve(agg, "2026-02-01T00:00:00Z")
+    assert "projection" not in out
+
+
+def test_flood_projection_totals_published_including_unscored():
+    agg = _agg_2026(
+        metrics.CveFacts("CVE-2026-0001", "PUBLISHED", 2026, "a",
+                         cna_scores={"v3": 9.8}),
+        metrics.CveFacts("CVE-2026-0002", "PUBLISHED", 2026, "a"),  # unscored
+        metrics.CveFacts("CVE-2026-0003", "REJECTED", 2026, "a"))
+    out = metrics.build_nine_eight_flood(agg, GENERATED_AT)
+    # Total paced = published only (2: one critical + one unscored), the
+    # rejected record never counts -> round(2 / (190/365)) = 4.
+    assert out["projection"] == {"year": 2026, "total": 4, "elapsed": 0.521}
+
+
+def test_flood_projection_absent_without_current_year_records(agg):
+    out = metrics.build_nine_eight_flood(agg, GENERATED_AT)
+    assert "projection" not in out
+
+
 # --------------------------------------------------------- chart 4 helpers
 
 def test_backlog_row_and_nvd_decay():
