@@ -74,10 +74,28 @@ function renderFooterText() {
 }
 
 function renderMeta(meta) {
+  const banner = document.getElementById("sample-banner");
   if (meta.sample === true) {
-    const banner = document.getElementById("sample-banner");
     banner.textContent = editorial.sampleBanner;
     banner.hidden = false;
+  } else {
+    // Stale-edition check: if the nightly pipeline breaks, the site quietly
+    // ages — make it loud. Reuses the #sample-banner element deliberately so
+    // every page's HTML skeleton stays unchanged (one banner slot per page;
+    // the sample banner wins when both would apply).
+    const generated = Date.parse(meta.generated_at);
+    if (Number.isFinite(generated)) {
+      const ageMs = Date.now() - generated;
+      const staleAfterMs = 48 * 60 * 60 * 1000;
+      if (ageMs > staleAfterMs) {
+        banner.textContent = tpl(editorial.staleBanner, {
+          age_days: Math.floor(ageMs / (24 * 60 * 60 * 1000)),
+          generated_at: meta.generated_at,
+        });
+        banner.hidden = false;
+      }
+    }
+    // Unparsable generated_at: do nothing — a broken date is not proof of age.
   }
   const s = meta.sources || {};
   const metaEl = clear(document.getElementById("footer-meta"));
