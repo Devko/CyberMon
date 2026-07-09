@@ -1,4 +1,4 @@
 # Runtime dependencies (everything else is stdlib).
 requests>=2.28
 
-# Test-only (pipeline/tests): pytest>=7
+# Test/dev-only dependencies live in requirements-dev.txt.
