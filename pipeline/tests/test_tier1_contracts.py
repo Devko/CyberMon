@@ -174,3 +174,25 @@ def test_headline_missing_key_rejected(outputs):
         del obj["headline"][key]
         with pytest.raises(ContractViolation, match="missing required key"):
             tier1_contracts.validate(name, obj)
+
+
+def test_newcomer_projection_optional_but_checked_when_present(outputs):
+    ok = _corrupt(outputs, "cna_concentration.json")
+    assert "projection" not in ok  # fixture corpus has no current-year rows
+    ok["projection"] = {"year": 2026, "newcomers": 52, "elapsed": 0.521}
+    tier1_contracts.validate("cna_concentration.json", ok)
+
+
+def test_newcomer_projection_wrong_year_rejected(outputs):
+    obj = _corrupt(outputs, "cna_concentration.json")
+    obj["projection"] = {"year": 2025, "newcomers": 52, "elapsed": 0.521}
+    with pytest.raises(ContractViolation, match="generated_at year"):
+        tier1_contracts.validate("cna_concentration.json", obj)
+
+
+def test_newcomer_projection_zero_newcomers_rejected(outputs):
+    # A zero flow paces to nothing: the builder omits the key instead.
+    obj = _corrupt(outputs, "cna_concentration.json")
+    obj["projection"] = {"year": 2026, "newcomers": 0, "elapsed": 0.521}
+    with pytest.raises(ContractViolation, match="below minimum"):
+        tier1_contracts.validate("cna_concentration.json", obj)

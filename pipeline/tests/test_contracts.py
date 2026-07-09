@@ -159,6 +159,66 @@ def test_wrong_type_rejected(outputs):
         contracts.validate("nvd_decay.json", bad)
 
 
+# The `outputs` fixture builds from the fixture corpus (no current-year
+# records), so the projection key is absent there — these tests bolt a
+# hand-made block on and check both acceptance and each rejection rule.
+_VOLUME_PROJECTION = {"year": 2026, "published": 51230, "rejected": 812,
+                      "elapsed": 0.521}
+
+
+def test_pace_projection_optional_but_checked_when_present(outputs):
+    ok = _corrupt(outputs, "volume_curve.json")
+    assert "projection" not in ok  # fixture corpus: absence is the contract
+    ok["projection"] = dict(_VOLUME_PROJECTION)
+    contracts.validate("volume_curve.json", ok)
+
+    flood = _corrupt(outputs, "nine_eight_flood.json")
+    flood["projection"] = {"year": 2026, "total": 48210, "elapsed": 0.521}
+    contracts.validate("nine_eight_flood.json", flood)
+
+
+def test_pace_projection_wrong_year_rejected(outputs):
+    bad = _corrupt(outputs, "volume_curve.json")
+    bad["projection"] = dict(_VOLUME_PROJECTION, year=2025)
+    with pytest.raises(ContractViolation, match="generated_at year"):
+        contracts.validate("volume_curve.json", bad)
+
+
+def test_pace_projection_zero_published_rejected(outputs):
+    bad = _corrupt(outputs, "volume_curve.json")
+    bad["projection"] = dict(_VOLUME_PROJECTION, published=0)
+    with pytest.raises(ContractViolation, match="below minimum"):
+        contracts.validate("volume_curve.json", bad)
+
+
+def test_pace_projection_zero_rejected_count_is_legal(outputs):
+    ok = _corrupt(outputs, "volume_curve.json")
+    ok["projection"] = dict(_VOLUME_PROJECTION, rejected=0)
+    contracts.validate("volume_curve.json", ok)
+
+
+def test_pace_projection_elapsed_out_of_range_rejected(outputs):
+    for elapsed in (0.0, 1.001, -0.5):
+        bad = _corrupt(outputs, "volume_curve.json")
+        bad["projection"] = dict(_VOLUME_PROJECTION, elapsed=elapsed)
+        with pytest.raises(ContractViolation, match="outside"):
+            contracts.validate("volume_curve.json", bad)
+
+
+def test_pace_projection_unrounded_elapsed_rejected(outputs):
+    bad = _corrupt(outputs, "volume_curve.json")
+    bad["projection"] = dict(_VOLUME_PROJECTION, elapsed=0.5214)
+    with pytest.raises(ContractViolation, match="3 decimal"):
+        contracts.validate("volume_curve.json", bad)
+
+
+def test_flood_projection_zero_total_rejected(outputs):
+    bad = _corrupt(outputs, "nine_eight_flood.json")
+    bad["projection"] = {"year": 2026, "total": 0, "elapsed": 0.521}
+    with pytest.raises(ContractViolation, match="below minimum"):
+        contracts.validate("nine_eight_flood.json", bad)
+
+
 def test_committed_sample_data_conforms():
     """The samples committed under site/data must obey the same contracts."""
     import json

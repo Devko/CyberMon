@@ -116,6 +116,16 @@ export function hookResize() {
   });
 }
 
+// Muted footnote block appended after tooltipRows output (pace projections
+// etc.). Lines are plain text; they are escaped here.
+export function tooltipFootnote(lines) {
+  const body = lines.map((l) => `<div>${escapeHtml(l)}</div>`).join("");
+  return (
+    `<div style="margin-top:6px;padding-top:6px;` +
+    `border-top:1px dashed ${C.rule};color:${C.muted};">${body}</div>`
+  );
+}
+
 // Axis-tooltip formatter that hides helper series (names starting with "_").
 export function tooltipRows(params, valueFmt = (v) => v) {
   const rows = params

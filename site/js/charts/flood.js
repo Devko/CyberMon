@@ -1,6 +1,7 @@
 // Chart 2 — the 9.8 flood. Contract: site/data/nine_eight_flood.json
-import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, tooltipRows, fmtInt, fmtPct } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { C, MONO, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, tooltipRows, tooltipFootnote, fmtInt, fmtPct } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
+import { el } from "../dom.js";
 import { mkToggle } from "../ui.js";
 
 const BUCKETS = [
@@ -14,11 +15,18 @@ const BUCKETS = [
 
 export function render(slots, data) {
   const ed = editorial.sections.flood;
+  const edp = editorial.projection;
   // The generation year is still filling in — label it so its shorter bar
   // reads as "partial", not "decline".
   const genYear = Number(data.generated_at.slice(0, 4));
   const years = data.years.map((d) =>
     d.year === genYear ? `${d.year}*` : String(d.year));
+
+  // Optional full-year pace projection of the current-year total (absolute
+  // view only — shares are already normalized, so they never project).
+  const proj = data.projection;
+  const projIdx = proj ? data.years.findIndex((d) => d.year === proj.year) : -1;
+  const hasProj = projIdx > 0;
 
   const mkSeries = (normalized) =>
     BUCKETS.map(({ key, label }) => ({
@@ -37,6 +45,33 @@ export function render(slots, data) {
       }),
     }));
 
+  // Short dashed horizontal marker at the projected total height, spanning
+  // the last year interval, with a small mono label anchored to its right
+  // end (endLabel renders without symbols; per-point labels don't). Hidden
+  // from the axis tooltip via the "_" prefix; the formatter appends its
+  // own rows.
+  const projMarker = () => ({
+    name: "_projected total",
+    type: "line",
+    data: data.years.map((d, i) =>
+      i === projIdx - 1 || i === projIdx ? proj.total : null),
+    color: C.ink,
+    symbol: "none",
+    lineStyle: { width: 1.5, type: [3, 3], opacity: 0.9 },
+    endLabel: {
+      show: true,
+      formatter: tpl(edp.floodLabel, { n: fmtInt(proj.total) }),
+      color: C.muted,
+      fontFamily: MONO,
+      fontSize: 10,
+      align: "right",
+      verticalAlign: "bottom",
+      offset: [0, -6],
+    },
+    z: 6,
+    silent: true,
+  });
+
   const chart = mkChart(slots.chart);
 
   const setMode = (normalized) => {
@@ -48,8 +83,16 @@ export function render(slots, data) {
           ...baseTooltip,
           trigger: "axis",
           order: "seriesDesc",
-          formatter: (params) =>
-            tooltipRows(params, (v) => (normalized ? fmtPct(v) : fmtInt(v))),
+          formatter: (params) => {
+            let html = tooltipRows(params, (v) => (normalized ? fmtPct(v) : fmtInt(v)));
+            if (!normalized && hasProj && params.some((p) => p.dataIndex === projIdx)) {
+              html += tooltipFootnote([
+                tpl(edp.tooltipProjected, { name: edp.floodTooltipName, n: fmtInt(proj.total) }),
+                tpl(edp.tooltipElapsed, { pct: fmtPct(proj.elapsed * 100) }),
+              ]);
+            }
+            return html;
+          },
         },
         xAxis: catAxis(years, { boundaryGap: false }),
         yAxis: valAxis(
@@ -57,7 +100,10 @@ export function render(slots, data) {
             ? { max: 100, axisLabel: { color: C.muted, fontFamily: baseLegend.textStyle.fontFamily, fontSize: 11, formatter: "{value}%" } }
             : { max: null, axisLabel: { color: C.muted, fontFamily: baseLegend.textStyle.fontFamily, fontSize: 11, formatter: (v) => (v >= 1000 ? `${v / 1000}k` : v) } }
         ),
-        series: mkSeries(normalized),
+        series: [
+          ...mkSeries(normalized),
+          ...(!normalized && hasProj ? [projMarker()] : []),
+        ],
       },
       { replaceMerge: ["series", "yAxis"] }
     );
@@ -67,4 +113,5 @@ export function render(slots, data) {
     mkToggle([ed.toggleAbsolute, ed.toggleShare], (idx) => setMode(idx === 1))
   );
   setMode(false);
+  if (hasProj) slots.extra.append(el("p", "panel-note", edp.note));
 }

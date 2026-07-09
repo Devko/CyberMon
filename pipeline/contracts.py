@@ -87,6 +87,34 @@ def _check_generated_at(obj: Any, path: str) -> None:
     _check_str(_get(obj, "generated_at", path), f"{path}.generated_at", ISO_UTC_RE)
 
 
+def _check_pace_projection(proj: Any, path: str, generated_at: str,
+                           count_keys: dict[str, int]) -> None:
+    """Optional full-year pace projection block (flow metrics only —
+    docs/data-contracts.md, "Pace projections"). ``count_keys`` maps each
+    projected-count key to its minimum legal value. Checks: year equals the
+    generated_at year (a projection is only ever about the run's partial
+    current year), counts are ints at or above their minimum, and
+    ``elapsed`` is a fraction in (0, 1] rounded to 3 decimals (the
+    documented exception to the 1-decimal float rule)."""
+    year = _get(proj, "year", path)
+    _check_int(year, f"{path}.year", minimum=1990)
+    if year != int(generated_at[:4]):
+        _fail(f"{path}.year",
+              f"projection year {year} must equal the generated_at year "
+              f"{generated_at[:4]} (projections cover only the run's "
+              f"partial current year)")
+    for key, minimum in count_keys.items():
+        _check_int(_get(proj, key, path), f"{path}.{key}", minimum=minimum)
+    elapsed = _get(proj, "elapsed", path)
+    if isinstance(elapsed, bool) or not isinstance(elapsed, (int, float)):
+        _fail(f"{path}.elapsed", f"expected number, got {elapsed!r}")
+    if not 0.0 < elapsed <= 1.0:
+        _fail(f"{path}.elapsed", f"elapsed {elapsed} outside (0, 1]")
+    if abs(elapsed * 1000 - round(elapsed * 1000)) > 1e-6:
+        _fail(f"{path}.elapsed",
+              f"elapsed {elapsed} not rounded to 3 decimal places")
+
+
 def _check_year_stat(entry: Any, path: str, int_keys: list[str],
                      score_keys: list[str] = (), pct_keys: list[str] = ()) -> int:
     year = _get(entry, "year", path)
@@ -188,6 +216,11 @@ def _validate_nine_eight_flood(obj: Any) -> None:
     years = [_check_year_stat(e, f"nine_eight_flood.years[{i}]", SEVERITY_KEYS)
              for i, e in enumerate(entries)]
     _check_sorted(years, "nine_eight_flood.years")
+
+    # Optional: full-year pace projection of the current year's total.
+    if "projection" in obj:
+        _check_pace_projection(obj["projection"], "nine_eight_flood.projection",
+                               obj["generated_at"], {"total": 1})
 
 
 # ---------------------------------------------------- score_vs_reality.json
@@ -297,6 +330,13 @@ def _validate_volume_curve(obj: Any) -> None:
     years = [_check_year_stat(e, f"volume_curve.years[{i}]", ["published", "rejected"])
              for i, e in enumerate(entries)]
     _check_sorted(years, "volume_curve.years")
+
+    # Optional: full-year pace projection for the current year. Keyed off
+    # the published flow, so published >= 1; rejections may pace to 0.
+    if "projection" in obj:
+        _check_pace_projection(obj["projection"], "volume_curve.projection",
+                               obj["generated_at"],
+                               {"published": 1, "rejected": 0})
 
 
 VALIDATORS: dict[str, Callable[[Any], None]] = {

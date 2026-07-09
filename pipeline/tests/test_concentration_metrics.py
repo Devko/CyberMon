@@ -164,6 +164,33 @@ def test_headline_baseline_earliest_when_ten_years_back_absent():
     assert obj["headline"]["hhi_baseline"] == 10000.0
 
 
+# ----------------------------------------------------------- projection
+
+def test_projection_paces_current_year_newcomers():
+    agg = _agg([_facts("CVE-2025-0001", 2025, "old"),
+                _facts("CVE-2026-0001", 2026, "new")])
+    obj = build_cna_concentration(agg, GENERATED_AT, min_total=1)
+    # GENERATED_AT is 2026-07-09 = day 190 of 365; one 2026 newcomer
+    # paces to round(1 / (190/365)) = 2.
+    assert obj["projection"] == {"year": 2026, "newcomers": 2,
+                                 "elapsed": 0.521}
+
+
+def test_projection_absent_when_no_current_year_newcomers():
+    # "old" is active in 2026 but debuted in 2025: the roster grows with
+    # zero newcomers, and a zero flow has no pace.
+    agg = _agg([_facts("CVE-2025-0001", 2025, "old"),
+                _facts("CVE-2026-0001", 2026, "old")])
+    obj = build_cna_concentration(agg, GENERATED_AT, min_total=1)
+    assert "projection" not in obj
+
+
+def test_projection_absent_for_fixture_corpus(agg):
+    # Fixture records end in 2025 — no current-year row to pace.
+    obj = build_cna_concentration(agg, GENERATED_AT, min_total=1)
+    assert "projection" not in obj
+
+
 def test_leaderboard_window_ends_at_newest_published_year():
     # 2019 rejections fall outside a 2-year window ending 2021.
     agg = _agg([_facts("CVE-2019-0001", 2019, "a", state="REJECTED"),

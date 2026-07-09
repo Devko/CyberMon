@@ -21,7 +21,8 @@ publications would post a >100% "rate").
 """
 from __future__ import annotations
 
-from .metrics import Aggregator, _pct, _r1
+from .metrics import (Aggregator, _pct, _r1, pace_projection,
+                      year_elapsed)
 
 
 def _year_row(agg: Aggregator, year: int,
@@ -80,7 +81,14 @@ def _rejection_leaderboard(agg: Aggregator, *, window_years: int,
 def build_cna_concentration(agg: Aggregator, generated_at: str, *,
                             window_years: int = 5,
                             min_total: int = 50) -> dict:
-    """Assemble the cna_concentration.json object."""
+    """Assemble the cna_concentration.json object.
+
+    Carries an optional full-year pace projection for the current year's
+    ``newcomer_count`` — first appearances are events, a flow, so a pace
+    applies (assuming newcomers arrive uniformly through the year; the
+    chart methodology states that assumption). ``cna_count`` is a roster
+    headcount and is never projected.
+    """
     # First-ever activity year per CNA (published or rejected).
     first_activity: dict[str, int] = {}
     activity_years = sorted(set(agg.cna_year_published)
@@ -103,7 +111,7 @@ def build_cna_concentration(agg: Aggregator, generated_at: str, *,
     by_year = {row["year"]: row for row in years}
     baseline = by_year.get(latest_year - 10, years[0] if years else None)
 
-    return {
+    out = {
         "generated_at": generated_at,
         "years": years,
         "rejection_leaderboard": _rejection_leaderboard(
@@ -119,3 +127,10 @@ def build_cna_concentration(agg: Aggregator, generated_at: str, *,
             "hhi_baseline": baseline["hhi"] if baseline else 0.0,
         },
     }
+    newcomers = next((row["newcomer_count"] for row in years
+                      if row["year"] == current_year), 0)
+    projected = pace_projection(newcomers, generated_at)
+    if projected is not None:
+        out["projection"] = {"year": current_year, "newcomers": projected,
+                             "elapsed": round(year_elapsed(generated_at), 3)}
+    return out
