@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Iterator
 
 from . import (concentration_metrics, contracts, history, kev_metrics,
-               market_metrics, metrics)
+               market_metrics, metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -230,6 +230,18 @@ def run(args: argparse.Namespace) -> int:
                 min_total=args.min_rejection_n
                 if args.min_rejection_n is not None else
                 (1 if args.offline_fixtures else DEFAULT_MIN_REJECTION_N)),
+        "advisory_quality.json":
+            quality_metrics.build_advisory_quality(
+                agg, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
+        "cwe_distribution.json":
+            quality_metrics.build_cwe_distribution(
+                agg, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
+        "kev_ransomware.json":
+            kev_metrics.build_kev_ransomware(
+                kev.entries, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)

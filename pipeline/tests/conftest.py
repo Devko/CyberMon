@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import concentration_metrics, kev_metrics, metrics
+from pipeline import concentration_metrics, kev_metrics, metrics, quality_metrics
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_kev import load_kev_file
@@ -59,6 +59,15 @@ def outputs(agg, epss, kev) -> dict[str, dict]:
         "cna_concentration.json":
             concentration_metrics.build_cna_concentration(agg, GENERATED_AT,
                                                           min_total=1),
+        "advisory_quality.json":
+            quality_metrics.build_advisory_quality(agg, GENERATED_AT,
+                                                   min_n=1),
+        "cwe_distribution.json":
+            quality_metrics.build_cwe_distribution(agg, GENERATED_AT,
+                                                   min_n=1),
+        "kev_ransomware.json":
+            kev_metrics.build_kev_ransomware(kev.entries, GENERATED_AT,
+                                             min_n=1),
         "meta.json": metrics.build_meta(
             GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
             epss_model_version=epss.model_version,

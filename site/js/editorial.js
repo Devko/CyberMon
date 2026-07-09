@@ -51,7 +51,8 @@ export const editorial = {
         headline: "CVE severity has become meaningless — here are the receipts.",
         blurb:
           "CVSS inflation, the 9.8 flood, scores vs. real-world exploitation, NVD backlog " +
-          "decay, CNA scoring habits. Six charts, rebuilt every night.",
+          "decay, CNA scoring habits, advisory quality, bug-class inertia. Eight charts, " +
+          "rebuilt every night.",
         live: true,
       },
       {
@@ -74,8 +75,8 @@ export const editorial = {
         headline: "By the time the government confirms it's exploited, the exploit had a head start.",
         blurb:
           "Days from CVE publication to CISA's Known Exploited Vulnerabilities listing, " +
-          "remediation deadlines, and the catalog's 2021–22 seeding era kept honestly separate from " +
-          "the real trend.",
+          "remediation deadlines, the share of listings tied to known ransomware campaigns, " +
+          "and the catalog's 2021–22 seeding era kept honestly separate from the real trend.",
         live: true,
       },
       {
@@ -363,6 +364,68 @@ export const editorial = {
         "partial and refills nightly; it is not comparable to a finished year.",
     },
 
+    // ------------------------------------------------------------------- 7
+    quality: {
+      num: "07",
+      kicker: "Advisory quality",
+      headline: "A CVE record is still allowed to say almost nothing.",
+      caption:
+        "For each year's published CVE records, the share missing each of three " +
+        "machine-readable fields: a weakness class (CWE), a CVSS base score, and structured " +
+        "affected-version data. A gap on any line is work exported downstream — every " +
+        "scanner, triage queue, and dependency checker that meets the record has to " +
+        "reconstruct the same missing field by hand. The methodology note matters more than " +
+        "usual here: for two of these fields, the early corpus kept the data in NVD instead.",
+      legendCwe: "No CWE",
+      legendCvss: "No CVSS score",
+      legendAffected: "No usable version data",
+      methodology:
+        "For every published record in the cvelistV5 corpus (rejected records excluded), " +
+        "three checks against the record itself, CNA and ADP containers both: a CWE counts " +
+        "as present if any problemTypes description carries a cweId; a CVSS score counts if " +
+        "any metrics container carries a base score of any CVSS version; affected-version " +
+        "data counts if any affected[] entry has either a versions[] item with a concrete " +
+        "version string — placeholders like “n/a” and “unspecified” do not count — or a " +
+        "defaultStatus that commits to “affected” or “unaffected” (“unknown” commits to " +
+        "nothing). Each line is that year's missing count over its published total; the " +
+        "tooltip carries the counts. A year plots only with at least 500 published records. " +
+        "Read the CWE and CVSS lines against the corpus's history: before ~2018, " +
+        "classification and scoring happened downstream in NVD's own database, which this " +
+        "chart deliberately does not ingest — the early plateau charts where the data lived, " +
+        "and the decline since is the duty migrating into the record (the 9.8 flood chart " +
+        "tells the scoring half of that story). The current year (marked *) is partial and " +
+        "refills nightly.",
+    },
+
+    // ------------------------------------------------------------------- 8
+    cwe: {
+      num: "08",
+      kicker: "Bug-class inertia",
+      headline: "The bug classes outlast the news cycle.",
+      caption:
+        "The eight most common weakness classes of the last ten complete years, each " +
+        "tracked as its slice of that year's CWE-tagged records, with everything else " +
+        "pooled as “Other.” Memory-safety errors and the injection classics anchor the " +
+        "list across the whole window — a decade of churn in tooling, funding, and " +
+        "research agendas shows up here as a few points of drift.",
+      // rendered as a panel-note by cve.js (same slot the decay chart uses)
+      note:
+        "Shares are of CWE-tagged records only; each year's tooltip shows how much of " +
+        "that year's corpus carried a tag at all.",
+      otherLabel: "Other",
+      methodology:
+        "Each CWE-tagged published record contributes its first-listed CWE id (CNA " +
+        "container preferred, CISA-ADP as fallback) — one class per record, so a year's " +
+        "shares sum to roughly 100 after rounding. The top 8 are ranked by total tagged " +
+        "volume across the last ten complete calendar years; the partial current year is " +
+        "excluded from both the window and the ranking, because six months cannot rank a " +
+        "decade. Shares are of CWE-tagged records only, and coverage varies enormously by " +
+        "year — each year's tooltip carries its tagged count and its share of all " +
+        "published records, so the denominator is never hidden. A year plots only with at " +
+        "least 500 tagged records. Class names come from a small built-in map in the " +
+        "pipeline; ids the map doesn't know are shown as bare CWE numbers.",
+    },
+
     // --------------------------------------------- kev.html · 1 · hero
     latency: {
       num: "01",
@@ -445,6 +508,31 @@ export const editorial = {
         "launch-batch CVEs and two weeks for recent ones, and entries added since typically " +
         "carry about three weeks — the chart shows what CISA actually assigned, not what the " +
         "directive prescribes.",
+    },
+
+    // --------------------------------------------- kev.html · 4
+    ransomware: {
+      num: "04",
+      kicker: "Ransomware share",
+      headline: "The exploited list has a ransomware column.",
+      caption:
+        "CISA marks every KEV entry with whether the vulnerability is known to have been " +
+        "used in ransomware campaigns. Bars show the share of each year's new listings " +
+        "carrying that “Known” flag; the year's counts ride in the tooltip. The 2021–22 " +
+        "seeding years belong on this chart, same as the remediation deadlines: the flag " +
+        "rides on the entry itself, so a back-catalog import answers the question as well " +
+        "as a fresh listing does. Inside a catalog that is already a priority list, this " +
+        "flag is the sharpest tiebreaker it offers.",
+      methodology:
+        "Every entry in CISA's Known Exploited Vulnerabilities catalog carries " +
+        "knownRansomwareCampaignUse (“Known” or “Unknown”). Per calendar year of dateAdded: " +
+        "entries added, entries flagged “Known,” and the share. Entries missing the field " +
+        "count as “Unknown.” The catalog is read as a current snapshot — each entry shows " +
+        "CISA's present assessment, whichever year it was listed — which is why the seeding " +
+        "era charts here alongside the rest while the latency trend quarantines it. No " +
+        "CVE-record join is involved; the chart needs nothing beyond the catalog itself. A " +
+        "year plots only with at least 10 entries. The current year (marked *) is partial " +
+        "and refills nightly.",
     },
 
     // --------------------------------- concentration.html · 1 · hero

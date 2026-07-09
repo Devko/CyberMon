@@ -11,11 +11,15 @@ KEV_URL = ("https://www.cisa.gov/sites/default/files/feeds/"
 
 @dataclass
 class KevEntry:
-    """One KEV catalog entry: the CVE id plus the catalog's own dates."""
+    """One KEV catalog entry: the CVE id plus the catalog's own dates and
+    ransomware flag."""
 
     cve_id: str
     date_added: str
     due_date: str | None
+    # knownRansomwareCampaignUse ("Known"/"Unknown"); None when the feed
+    # omits the field — treated as "Unknown" downstream, never as "Known".
+    ransomware_use: str | None = None
 
 
 @dataclass
@@ -37,7 +41,11 @@ def parse_kev(obj: dict) -> KevData:
                         date_added=str(v.get("dateAdded") or ""),
                         due_date=(v["dueDate"]
                                   if isinstance(v.get("dueDate"), str)
-                                  and v["dueDate"] else None))
+                                  and v["dueDate"] else None),
+                        ransomware_use=(v["knownRansomwareCampaignUse"]
+                                        if isinstance(
+                                            v.get("knownRansomwareCampaignUse"),
+                                            str) else None))
                for v in vulns]
     count = obj.get("count")
     if not isinstance(count, int) or isinstance(count, bool):

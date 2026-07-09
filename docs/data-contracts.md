@@ -157,6 +157,94 @@ full org name where resolvable, else same as `cna`.
 
 `rejected` = records with state REJECTED, counted by original publication year.
 
+## site/data/advisory_quality.json  (chart 7)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 500,
+  "years": [
+    {"year": 2018, "n": 16555,
+     "missing_cwe": 9012, "pct_missing_cwe": 54.4,
+     "missing_cvss": 8123, "pct_missing_cvss": 49.1,
+     "missing_affected": 12002, "pct_missing_affected": 72.5}
+  ]
+}
+```
+
+Per publication year of *published* records (REJECTED excluded), how many
+are missing each machine-readable field, checked against the record itself
+(CNA and ADP containers): `missing_cwe` = no `problemTypes` description
+with a `cweId` anywhere in the record; `missing_cvss` = no CVSS base score
+in any metrics container (the same definition as `nine_eight_flood`'s
+`unscored`); `missing_affected` = no `affected[]` entry carrying either a
+`versions[]` item with a concrete version string (placeholders such as
+"n/a"/"unspecified" don't count) or a definite `defaultStatus`
+("affected"/"unaffected" — "unknown" doesn't count). Each `missing_*` ≤
+`n`; `pct_missing_* = 100 * missing / n`. Years with fewer than `min_n`
+published records are omitted (production 500; fixture mode 1). The
+current year appears when it clears `min_n` and is partial — the site
+labels it. Pre-2018 caveat: CWE and CVSS then lived downstream in NVD's
+database, which this chart deliberately does not ingest — the early years
+chart where the data lived, not sloppiness by today's CNAs.
+
+## site/data/cwe_distribution.json  (chart 8)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 500,
+  "window": {"start_year": 2016, "end_year": 2025},
+  "top_cwes": [{"id": "CWE-79", "name": "Cross-site scripting"}],
+  "years": [
+    {"year": 2016, "n_tagged": 4102, "n_published": 6447, "pct_tagged": 63.6,
+     "shares": {"CWE-79": 21.4, "other": 43.0}}
+  ]
+}
+```
+
+Each CWE-tagged published record contributes its **first-listed** cweId
+(CNA container preferred, ADP fallback) — one class per record, so a
+year's shares sum to ~100 (independent 1-decimal rounding). `window` =
+the last 10 *complete* calendar years ending at `generated_at`'s year − 1;
+the partial current year is excluded entirely (it cannot rank a decade).
+`top_cwes` = up to 8 ids ranked by total tagged volume across the window,
+ties broken by CWE number ascending; `name` comes from a small built-in
+map (`pipeline/quality_metrics.py`), falling back to the bare id.
+`years[].shares` carries **exactly** the `top_cwes` ids plus `"other"`
+(everything not in the top 8), each a share of that year's `n_tagged`.
+Shares describe the tagged subset only — `n_tagged`, `n_published` and
+`pct_tagged` ship per year so consumers can state the coverage. Years
+with fewer than `min_n` tagged records are omitted (production 500;
+fixture mode 1).
+
+## site/data/kev_ransomware.json  (KEV Latency module, chart 4)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "years": [
+    {"year": 2021, "total": 311, "known": 62, "pct_known": 19.9}
+  ],
+  "catalog": {"total": 1402, "known": 289, "pct_known": 20.6}
+}
+```
+
+Per calendar year of KEV `dateAdded`: entries added (`total`), entries
+whose `knownRansomwareCampaignUse` is "Known" (case-insensitive; a missing
+or "Unknown" field never counts), and `pct_known = 100 * known / total`.
+Unlike `kev_latency`, ALL cohorts belong here, the 2021–22 seeding era
+included: the catalog is read as a current snapshot, so every entry
+carries CISA's present assessment regardless of when it was listed — a
+back-catalog import is as real a data point as a fresh listing (same
+reasoning as the remediation spans). No CVE-corpus join is involved.
+Entries with an unparseable `dateAdded` join no year but still count in
+`catalog` (whole-catalog totals, unfiltered). Years with fewer than
+`min_n` entries are omitted (production 10; fixture mode 1). `known` ≤
+`total` everywhere. Validator: `pipeline/tier2_contracts.py` (registered
+into `pipeline/contracts.py`'s dispatch, as are the two charts above).
+
 ## site/data/market_hype.json  (Security Market module, all 3 charts)
 
 ```json
