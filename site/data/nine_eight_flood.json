@@ -1,0 +1,229 @@
+{
+ "generated_at": "2026-07-09T00:00:00Z",
+ "years": [
+  {
+   "year": 1999,
+   "critical": 78,
+   "high": 315,
+   "medium": 1014,
+   "low": 94,
+   "unscored": 78
+  },
+  {
+   "year": 2000,
+   "critical": 119,
+   "high": 442,
+   "medium": 1342,
+   "low": 128,
+   "unscored": 106
+  },
+  {
+   "year": 2001,
+   "critical": 167,
+   "high": 576,
+   "medium": 1658,
+   "low": 161,
+   "unscored": 134
+  },
+  {
+   "year": 2002,
+   "critical": 221,
+   "high": 719,
+   "medium": 1958,
+   "low": 195,
+   "unscored": 162
+  },
+  {
+   "year": 2003,
+   "critical": 282,
+   "high": 869,
+   "medium": 2244,
+   "low": 228,
+   "unscored": 190
+  },
+  {
+   "year": 2004,
+   "critical": 349,
+   "high": 1027,
+   "medium": 2516,
+   "low": 262,
+   "unscored": 218
+  },
+  {
+   "year": 2005,
+   "critical": 424,
+   "high": 1193,
+   "medium": 2773,
+   "low": 295,
+   "unscored": 246
+  },
+  {
+   "year": 2006,
+   "critical": 448,
+   "high": 1213,
+   "medium": 2676,
+   "low": 292,
+   "unscored": 243
+  },
+  {
+   "year": 2007,
+   "critical": 471,
+   "high": 1232,
+   "medium": 2583,
+   "low": 288,
+   "unscored": 240
+  },
+  {
+   "year": 2008,
+   "critical": 494,
+   "high": 1250,
+   "medium": 2489,
+   "low": 285,
+   "unscored": 237
+  },
+  {
+   "year": 2009,
+   "critical": 516,
+   "high": 1268,
+   "medium": 2398,
+   "low": 281,
+   "unscored": 234
+  },
+  {
+   "year": 2010,
+   "critical": 538,
+   "high": 1285,
+   "medium": 2307,
+   "low": 278,
+   "unscored": 231
+  },
+  {
+   "year": 2011,
+   "critical": 610,
+   "high": 1421,
+   "medium": 2426,
+   "low": 300,
+   "unscored": 250
+  },
+  {
+   "year": 2012,
+   "critical": 688,
+   "high": 1564,
+   "medium": 2533,
+   "low": 322,
+   "unscored": 268
+  },
+  {
+   "year": 2013,
+   "critical": 769,
+   "high": 1711,
+   "medium": 2632,
+   "low": 344,
+   "unscored": 287
+  },
+  {
+   "year": 2014,
+   "critical": 855,
+   "high": 1863,
+   "medium": 2722,
+   "low": 366,
+   "unscored": 305
+  },
+  {
+   "year": 2015,
+   "critical": 946,
+   "high": 2021,
+   "medium": 2801,
+   "low": 388,
+   "unscored": 324
+  },
+  {
+   "year": 2016,
+   "critical": 1605,
+   "high": 3369,
+   "medium": 4427,
+   "low": 633,
+   "unscored": 528
+  },
+  {
+   "year": 2017,
+   "critical": 2313,
+   "high": 4774,
+   "medium": 5948,
+   "low": 878,
+   "unscored": 732
+  },
+  {
+   "year": 2018,
+   "critical": 2602,
+   "high": 5285,
+   "medium": 6239,
+   "low": 952,
+   "unscored": 793
+  },
+  {
+   "year": 2019,
+   "critical": 2906,
+   "high": 5813,
+   "medium": 6500,
+   "low": 1025,
+   "unscored": 854
+  },
+  {
+   "year": 2020,
+   "critical": 3225,
+   "high": 6358,
+   "medium": 6727,
+   "low": 1099,
+   "unscored": 916
+  },
+  {
+   "year": 2021,
+   "critical": 3947,
+   "high": 7678,
+   "medium": 7682,
+   "low": 1301,
+   "unscored": 1084
+  },
+  {
+   "year": 2022,
+   "critical": 4711,
+   "high": 9046,
+   "medium": 8547,
+   "low": 1503,
+   "unscored": 1252
+  },
+  {
+   "year": 2023,
+   "critical": 6311,
+   "high": 11972,
+   "medium": 10673,
+   "low": 1952,
+   "unscored": 1626
+  },
+  {
+   "year": 2024,
+   "critical": 8001,
+   "high": 15003,
+   "medium": 7404,
+   "low": 2400,
+   "unscored": 7201
+  },
+  {
+   "year": 2025,
+   "critical": 9476,
+   "high": 17573,
+   "medium": 7915,
+   "low": 2760,
+   "unscored": 8280
+  },
+  {
+   "year": 2026,
+   "critical": 10920,
+   "high": 20228,
+   "medium": 8372,
+   "low": 3120,
+   "unscored": 9360
+  }
+ ]
+}

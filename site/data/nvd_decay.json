@@ -1,0 +1,57 @@
+{
+ "generated_at": "2026-07-09T00:00:00Z",
+ "current": {
+  "statuses": [
+   {
+    "status": "Awaiting Analysis",
+    "n": 31430
+   },
+   {
+    "status": "Undergoing Analysis",
+    "n": 400
+   },
+   {
+    "status": "Received",
+    "n": 290
+   }
+  ],
+  "backlog_total": 32120
+ },
+ "history": [
+  {
+   "date": "2026-01-09",
+   "backlog_total": 25040,
+   "awaiting_analysis": 24350
+  },
+  {
+   "date": "2026-02-09",
+   "backlog_total": 26120,
+   "awaiting_analysis": 25430
+  },
+  {
+   "date": "2026-03-09",
+   "backlog_total": 27240,
+   "awaiting_analysis": 26550
+  },
+  {
+   "date": "2026-04-09",
+   "backlog_total": 28400,
+   "awaiting_analysis": 27710
+  },
+  {
+   "date": "2026-05-09",
+   "backlog_total": 29600,
+   "awaiting_analysis": 28910
+  },
+  {
+   "date": "2026-06-09",
+   "backlog_total": 30840,
+   "awaiting_analysis": 30150
+  },
+  {
+   "date": "2026-07-09",
+   "backlog_total": 32120,
+   "awaiting_analysis": 31430
+  }
+ ]
+}

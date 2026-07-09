@@ -1,0 +1,145 @@
+{
+ "generated_at": "2026-07-09T00:00:00Z",
+ "years": [
+  {
+   "year": 1999,
+   "published": 1579,
+   "rejected": 23
+  },
+  {
+   "year": 2000,
+   "published": 2137,
+   "rejected": 32
+  },
+  {
+   "year": 2001,
+   "published": 2696,
+   "rejected": 40
+  },
+  {
+   "year": 2002,
+   "published": 3255,
+   "rejected": 48
+  },
+  {
+   "year": 2003,
+   "published": 3813,
+   "rejected": 57
+  },
+  {
+   "year": 2004,
+   "published": 4372,
+   "rejected": 65
+  },
+  {
+   "year": 2005,
+   "published": 4931,
+   "rejected": 73
+  },
+  {
+   "year": 2006,
+   "published": 4872,
+   "rejected": 73
+  },
+  {
+   "year": 2007,
+   "published": 4814,
+   "rejected": 72
+  },
+  {
+   "year": 2008,
+   "published": 4755,
+   "rejected": 71
+  },
+  {
+   "year": 2009,
+   "published": 4697,
+   "rejected": 70
+  },
+  {
+   "year": 2010,
+   "published": 4639,
+   "rejected": 69
+  },
+  {
+   "year": 2011,
+   "published": 5007,
+   "rejected": 75
+  },
+  {
+   "year": 2012,
+   "published": 5375,
+   "rejected": 80
+  },
+  {
+   "year": 2013,
+   "published": 5743,
+   "rejected": 86
+  },
+  {
+   "year": 2014,
+   "published": 6111,
+   "rejected": 91
+  },
+  {
+   "year": 2015,
+   "published": 6480,
+   "rejected": 97
+  },
+  {
+   "year": 2016,
+   "published": 10562,
+   "rejected": 158
+  },
+  {
+   "year": 2017,
+   "published": 14645,
+   "rejected": 219
+  },
+  {
+   "year": 2018,
+   "published": 15871,
+   "rejected": 238
+  },
+  {
+   "year": 2019,
+   "published": 17098,
+   "rejected": 256
+  },
+  {
+   "year": 2020,
+   "published": 18325,
+   "rejected": 274
+  },
+  {
+   "year": 2021,
+   "published": 21692,
+   "rejected": 325
+  },
+  {
+   "year": 2022,
+   "published": 25059,
+   "rejected": 375
+  },
+  {
+   "year": 2023,
+   "published": 32534,
+   "rejected": 488
+  },
+  {
+   "year": 2024,
+   "published": 40009,
+   "rejected": 600
+  },
+  {
+   "year": 2025,
+   "published": 46004,
+   "rejected": 690
+  },
+  {
+   "year": 2026,
+   "published": 52000,
+   "rejected": 780
+  }
+ ]
+}

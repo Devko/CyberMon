@@ -1,0 +1,22 @@
+{
+ "generated_at": "2026-07-09T00:00:00Z",
+ "sample": true,
+ "sources": {
+  "cvelist": {
+   "release": "sample",
+   "cve_count": 251342
+  },
+  "epss": {
+   "model_version": "v4",
+   "score_date": "2026-07-08",
+   "row_count": 248101
+  },
+  "kev": {
+   "catalog_version": "2026.07.08",
+   "count": 1402
+  },
+  "nvd": {
+   "fetched_at": "2026-07-09T00:00:00Z"
+  }
+ }
+}

@@ -1,0 +1,61 @@
+{
+ "generated_at": "2026-07-09T00:00:00Z",
+ "window_years": 3,
+ "min_cves": 100,
+ "cnas": [
+  {
+   "cna": "VendorX_S",
+   "org": "VendorX Security",
+   "n": 412,
+   "avg_cvss": 8.9,
+   "median_cvss": 9.1,
+   "pct_geq_9": 48.2,
+   "pct_geq_7": 88.1
+  },
+  {
+   "cna": "PatchCo",
+   "org": "PatchCo Ltd.",
+   "n": 233,
+   "avg_cvss": 8.4,
+   "median_cvss": 8.8,
+   "pct_geq_9": 39.5,
+   "pct_geq_7": 81.0
+  },
+  {
+   "cna": "BigCloud",
+   "org": "BigCloud Inc.",
+   "n": 1890,
+   "avg_cvss": 7.8,
+   "median_cvss": 8.0,
+   "pct_geq_9": 24.6,
+   "pct_geq_7": 63.2
+  },
+  {
+   "cna": "GitHub_M",
+   "org": "GitHub, Inc. (sample)",
+   "n": 1234,
+   "avg_cvss": 7.9,
+   "median_cvss": 8.1,
+   "pct_geq_9": 22.4,
+   "pct_geq_7": 61.0
+  },
+  {
+   "cna": "mitre",
+   "org": "MITRE Corporation",
+   "n": 3010,
+   "avg_cvss": 6.6,
+   "median_cvss": 6.8,
+   "pct_geq_9": 9.8,
+   "pct_geq_7": 44.0
+  },
+  {
+   "cna": "distro-sec",
+   "org": "Distro Security Team",
+   "n": 902,
+   "avg_cvss": 6.1,
+   "median_cvss": 6.3,
+   "pct_geq_9": 4.1,
+   "pct_geq_7": 31.7
+  }
+ ]
+}
