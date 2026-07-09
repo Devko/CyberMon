@@ -91,6 +91,60 @@ def test_leaderboard_sort_order_enforced(outputs):
         contracts.validate("cna_leaderboard.json", bad)
 
 
+def test_advisory_quality_missing_over_n_rejected(outputs):
+    bad = _corrupt(outputs, "advisory_quality.json")
+    bad["years"][0]["missing_cwe"] = bad["years"][0]["n"] + 1
+    with pytest.raises(ContractViolation, match="exceeds n"):
+        contracts.validate("advisory_quality.json", bad)
+
+
+def test_advisory_quality_unsorted_years_rejected(outputs):
+    bad = _corrupt(outputs, "advisory_quality.json")
+    assert len(bad["years"]) >= 2
+    bad["years"].reverse()
+    with pytest.raises(ContractViolation, match="sorted"):
+        contracts.validate("advisory_quality.json", bad)
+
+
+def test_cwe_distribution_share_key_mismatch_rejected(outputs):
+    bad = _corrupt(outputs, "cwe_distribution.json")
+    bad["years"][0]["shares"].pop("other")
+    with pytest.raises(ContractViolation, match="'other'"):
+        contracts.validate("cwe_distribution.json", bad)
+
+    bad = _corrupt(outputs, "cwe_distribution.json")
+    bad["years"][0]["shares"]["CWE-9999"] = 1.0
+    with pytest.raises(ContractViolation, match="'other'"):
+        contracts.validate("cwe_distribution.json", bad)
+
+
+def test_cwe_distribution_year_outside_window_rejected(outputs):
+    bad = _corrupt(outputs, "cwe_distribution.json")
+    bad["years"][0]["year"] = bad["window"]["start_year"] - 1
+    with pytest.raises(ContractViolation, match="outside window"):
+        contracts.validate("cwe_distribution.json", bad)
+
+
+def test_cwe_distribution_too_many_top_cwes_rejected(outputs):
+    bad = _corrupt(outputs, "cwe_distribution.json")
+    for i in range(9):
+        bad["top_cwes"].append({"id": f"CWE-9{i:03d}", "name": "x"})
+    with pytest.raises(ContractViolation, match="more than 8"):
+        contracts.validate("cwe_distribution.json", bad)
+
+
+def test_kev_ransomware_known_over_total_rejected(outputs):
+    bad = _corrupt(outputs, "kev_ransomware.json")
+    bad["years"][0]["known"] = bad["years"][0]["total"] + 1
+    with pytest.raises(ContractViolation, match="exceeds total"):
+        contracts.validate("kev_ransomware.json", bad)
+
+    bad = _corrupt(outputs, "kev_ransomware.json")
+    bad["catalog"]["known"] = bad["catalog"]["total"] + 1
+    with pytest.raises(ContractViolation, match="exceeds total"):
+        contracts.validate("kev_ransomware.json", bad)
+
+
 def test_history_bad_date_rejected(outputs):
     bad = _corrupt(outputs, "nvd_decay.json")
     bad["history"][0]["date"] = "07/09/2026"

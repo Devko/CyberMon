@@ -3,18 +3,24 @@ backfill queue, window pruning, and state round-trips — no network."""
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from pipeline import fetch_market
 from pipeline.market_metrics import build_market_hype
 from pipeline.market_terms import TermDef
 
 NOW = datetime(2026, 7, 9, 6, 0, 0, tzinfo=timezone.utc)
+# NOW's day ordinal (739806) is divisible by 2 and 3, so the per-day
+# rotation offset is 0 for the group sizes used below: expected orders
+# can be written out literally.
+DAY = NOW.date()
 
 TERM_A = TermDef("alpha", "Alpha", gdelt_query='"alpha" security',
                  hn_query='"alpha"', arxiv_query='"alpha"')
 TERM_B = TermDef("beta", "Beta", gdelt_query='"beta" security',
                  hn_query='"beta"', arxiv_query='"beta"')
+TERM_C = TermDef("gamma", "Gamma", gdelt_query='"gamma" security',
+                 hn_query='"gamma"', arxiv_query='"gamma"')
 
 
 class FakeResponse:
@@ -148,6 +154,70 @@ def test_gdelt_non_json_200_body_also_retries_then_keeps_cache():
     state = _sync(session, [TERM_A], state=prior, months=3)
     assert len(session.requests["gdelt"]) == 2
     assert state["series"]["alpha"]["gdelt"] == {"2026-06": 7}
+
+
+# -------------------------------------------------------- GDELT fetch order
+
+def _ids(terms):
+    return [t.id for t in terms]
+
+
+def test_gdelt_order_puts_starved_terms_first():
+    # alpha has an (edge-case) empty gdelt dict, gamma has no entry at
+    # all: both are starved and precede beta, whose curve is cached.
+    series = {"beta": {"gdelt": {"2026-06": 7}}, "alpha": {"gdelt": {}}}
+    order = fetch_market.gdelt_term_order([TERM_A, TERM_B, TERM_C],
+                                          series, DAY)
+    assert _ids(order) == ["alpha", "gamma", "beta"]
+
+
+def test_gdelt_order_rotates_daily_and_cycles():
+    terms = [TERM_A, TERM_B, TERM_C]
+    orders = [_ids(fetch_market.gdelt_term_order(
+        terms, {}, DAY + timedelta(days=i))) for i in range(4)]
+    assert orders[0] == ["alpha", "beta", "gamma"]
+    assert orders[1] == ["beta", "gamma", "alpha"]
+    assert orders[2] == ["gamma", "alpha", "beta"]
+    assert orders[3] == orders[0]  # cycle length == group size
+
+
+def test_gdelt_order_rotates_groups_independently():
+    # starved group [alpha, beta] rotates on its own modulus; the cached
+    # group [gamma] is a fixed point but still always comes after.
+    series = {"gamma": {"gdelt": {"2026-06": 1}}}
+    terms = [TERM_A, TERM_B, TERM_C]
+    day1 = DAY + timedelta(days=1)  # ordinal % 2 == 1
+    assert _ids(fetch_market.gdelt_term_order(terms, series, DAY)) == \
+        ["alpha", "beta", "gamma"]
+    assert _ids(fetch_market.gdelt_term_order(terms, series, day1)) == \
+        ["beta", "alpha", "gamma"]
+
+
+def test_gdelt_order_is_deterministic_and_pure_for_a_fixed_date():
+    terms = [TERM_A, TERM_B, TERM_C]
+    series = {"beta": {"gdelt": {"2026-06": 7}}}
+    first = fetch_market.gdelt_term_order(terms, series, date(2031, 2, 17))
+    assert fetch_market.gdelt_term_order(terms, series,
+                                         date(2031, 2, 17)) == first
+    assert sorted(_ids(first)) == ["alpha", "beta", "gamma"]  # permutation
+    assert terms == [TERM_A, TERM_B, TERM_C]  # inputs never mutated
+
+
+def test_gdelt_pass_fetches_starved_terms_first():
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"gdelt": {"2026-06": 7}}}, "pending": []}
+    session = FakeSession(gdelt=[_gdelt([("20260601T000000Z", 2)]),
+                                 _gdelt([("20260601T000000Z", 3)])])
+    logs = []
+    state = _sync(session, [TERM_A, TERM_B], state=prior, months=3,
+                  log=logs.append)
+    # beta (never fetched) jumps the watchlist order ahead of alpha
+    queries = [r["params"]["query"] for r in session.requests["gdelt"]]
+    assert queries == ['"beta" security', '"alpha" security']
+    assert state["series"]["beta"]["gdelt"] == {"2026-06": 2}
+    assert state["series"]["alpha"]["gdelt"] == {"2026-06": 3}
+    assert any("1 term(s) with no cached months fetch first" in m
+               for m in logs)
 
 
 # ----------------------------------------------------------------------- HN

@@ -1,0 +1,4 @@
+# Development/CI-only dependencies. Runtime deps stay in requirements.txt.
+pytest>=7        # pipeline test suite (pipeline/tests/)
+playwright       # headless-browser site smoke test (tools/site_smoke.py);
+                 # browsers install separately: playwright install chromium

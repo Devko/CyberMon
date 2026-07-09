@@ -21,6 +21,12 @@ year over ALL cohorts, including the 2021 launch.
 
 KEV ids with no ``datePublished`` join in the aggregated corpus are
 counted in ``matched.unmatched_cve`` and excluded from all stats.
+
+Ransomware share (kev_ransomware.json) needs no CVE join at all: it is the
+catalog's own ``knownRansomwareCampaignUse`` flag grouped by ``dateAdded``
+year. Like the remediation spans, ALL cohorts belong — the catalog snapshot
+carries CISA's current assessment on every entry, seeding era included, so
+a 2021 back-catalog import is as chartable as a fresh listing.
 """
 from __future__ import annotations
 
@@ -70,6 +76,52 @@ def _parse_date(s: object) -> date | None:
         return date.fromisoformat(s[:10])
     except ValueError:
         return None
+
+
+def _ransomware_known(entry: KevEntry) -> bool:
+    """True only for an explicit "Known" flag; a missing or "Unknown"
+    field never counts as ransomware use."""
+    return (entry.ransomware_use or "").strip().lower() == "known"
+
+
+def build_kev_ransomware(entries: Iterable[KevEntry],
+                         generated_at: str, *, min_n: int = 10) -> dict:
+    """Assemble the kev_ransomware.json object.
+
+    Per ``dateAdded`` calendar year: entries added, entries flagged
+    "Known" for ransomware campaign use, and the share. Entries with an
+    unparseable ``dateAdded`` cannot join a year but still count in the
+    catalog-wide totals. Years with fewer than ``min_n`` entries never
+    plot (a share of three listings is an anecdote).
+    """
+    entries = list(entries)
+    total_by_year: Counter[int] = Counter()
+    known_by_year: Counter[int] = Counter()
+    for entry in entries:
+        added = _parse_date(entry.date_added)
+        if added is None:
+            continue
+        total_by_year[added.year] += 1
+        if _ransomware_known(entry):
+            known_by_year[added.year] += 1
+
+    years = []
+    for year in sorted(total_by_year):
+        total = total_by_year[year]
+        if total < min_n:
+            continue
+        known = known_by_year.get(year, 0)
+        years.append({"year": year, "total": total, "known": known,
+                      "pct_known": _pct(known, total)})
+
+    catalog_known = sum(1 for e in entries if _ransomware_known(e))
+    return {
+        "generated_at": generated_at,
+        "min_n": min_n,
+        "years": years,
+        "catalog": {"total": len(entries), "known": catalog_known,
+                    "pct_known": _pct(catalog_known, len(entries))},
+    }
 
 
 def build_kev_latency(agg: Aggregator, entries: Iterable[KevEntry],

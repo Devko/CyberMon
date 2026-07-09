@@ -26,6 +26,8 @@ jobs:
     timeout-minutes: 120
     permissions:
       contents: write
+      # For the failure-alert step below (gh issue create/comment).
+      issues: write
     steps:
       - name: Check out main
         uses: actions/checkout@v4
@@ -88,6 +90,26 @@ jobs:
             git push origin HEAD:main
           fi
 
+      # Once per ISO week, freeze an immutable snapshot tag on HEAD. The
+      # append-only site/data/history/nvd_backlog.csv CANNOT be regenerated
+      # (this repo is its only copy), so a weekly tag is a rollback point if
+      # the file is ever corrupted or truncated by a bad run. Insurance, not
+      # the product: every failure mode here is swallowed so it can never
+      # take down the refresh itself (the pipeline-run step above still must
+      # NOT get continue-on-error — this leniency is for the backup only).
+      - name: Push weekly history backup tag
+        run: |
+          tag="data-backup-$(date -u +%G-W%V)"
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "Backup tag ${tag} already on origin; nothing to do."
+          else
+            # Annotated tag so the bot identity (configured above) is
+            # recorded as the tagger.
+            git tag -a "${tag}" -m "Weekly immutable snapshot of site/data (incl. history/)" HEAD \
+              && git push origin "refs/tags/${tag}" \
+              || echo "::warning::Could not push backup tag ${tag} (non-fatal; will retry next night this week)."
+          fi
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -95,6 +117,34 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
+      # If anything above failed, leave a paper trail where humans actually
+      # look. One open issue labeled nightly-failure collects every failing
+      # run as a comment, so a week of breakage threads in a single issue
+      # instead of spamming a new one per night.
+      - name: Alert on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # Explicit repo so gh works even if the failure hit the checkout.
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          # Make sure the label exists (first failure on a fresh fork);
+          # --force makes this a no-op when it already does.
+          gh label create nightly-failure \
+            --description "The nightly data refresh is broken" \
+            --color D93F0B --force || true
+          issue="$(gh issue list --label nightly-failure --state open \
+            --json number --jq '.[0].number // empty')"
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body "Nightly refresh failed again: $RUN_URL"
+          else
+            gh issue create \
+              --title "Nightly data refresh is failing" \
+              --label nightly-failure \
+              --body "The nightly data refresh failed — nothing was deployed. First failing run: $RUN_URL"
+          fi
 
   deploy:
     name: Deploy to GitHub Pages
