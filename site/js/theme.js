@@ -32,6 +32,12 @@ export const MONO =
 export const fmtInt = (n) => Number(n).toLocaleString("en-US");
 export const fmtPct = (v) => `${Number(v).toFixed(1)}%`;
 
+// ECharts tooltips render via innerHTML — every data-derived string
+// interpolated into a tooltip formatter must pass through this first.
+export const escapeHtml = (s) =>
+  String(s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
 // --- ECharts shared option fragments ----------------------------------------
 
 export const baseText = { color: C.muted, fontFamily: MONO, fontSize: 11 };
@@ -110,6 +116,6 @@ export function tooltipRows(params, valueFmt = (v) => v) {
         `<strong style="font-family:inherit">${valueFmt(p.value)}</strong></div>`
     )
     .join("");
-  const head = params.length ? `<div style="color:${C.muted};margin-bottom:4px;">${params[0].axisValueLabel ?? params[0].name}</div>` : "";
+  const head = params.length ? `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(params[0].axisValueLabel ?? params[0].name)}</div>` : "";
   return head + rows;
 }

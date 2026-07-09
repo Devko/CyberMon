@@ -1,5 +1,5 @@
 // Chart 4 — NVD decay. Contract: site/data/nvd_decay.json
-import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, tooltipRows, fmtInt, MONO } from "../theme.js";
+import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, tooltipRows, fmtInt, escapeHtml, MONO } from "../theme.js";
 import { editorial } from "../editorial.js";
 import { el } from "../dom.js";
 
@@ -25,7 +25,7 @@ export function render(slots, data) {
   const bars = mkChart(barsEl);
   bars.setOption({
     grid: { left: 8, right: 56, top: 10, bottom: 10, containLabel: true },
-    tooltip: { ...baseTooltip, formatter: (p) => `${p.name}<br><strong>${fmtInt(p.value)}</strong> CVEs` },
+    tooltip: { ...baseTooltip, formatter: (p) => `${escapeHtml(p.name)}<br><strong>${fmtInt(p.value)}</strong> CVEs` },
     xAxis: { type: "value", show: false },
     yAxis: catAxis(statuses.map((s) => s.status), { axisLine: { show: false } }),
     series: [{

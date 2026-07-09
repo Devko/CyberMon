@@ -1,5 +1,5 @@
 // Chart 3 — score vs. reality. Contract: site/data/score_vs_reality.json
-import { C, mkChart, catAxis, baseTooltip, baseGrid, fmtInt, fmtPct, MONO } from "../theme.js";
+import { C, mkChart, catAxis, baseTooltip, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
@@ -100,7 +100,7 @@ export function render(slots, data) {
   const kevChart = mkChart(kevEl);
   kevChart.setOption({
     grid: { left: 74, right: 40, top: 8, bottom: 8 },
-    tooltip: { ...baseTooltip, formatter: (p) => `CVSS ${p.name}<br><strong>${fmtInt(p.value)}</strong> KEV entries` },
+    tooltip: { ...baseTooltip, formatter: (p) => `CVSS ${escapeHtml(p.name)}<br><strong>${fmtInt(p.value)}</strong> KEV entries` },
     xAxis: { type: "value", show: false },
     yAxis: catAxis(kevCats, { axisLine: { show: false } }),
     series: [{
