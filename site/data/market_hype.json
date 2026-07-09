@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-09T12:39:29Z",
+ "generated_at": "2026-07-09T13:54:28Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -2628,12 +2628,7 @@
    },
    "yoy": {
     "gdelt": null,
-    "hn": {
-     "latest_month": "2026-07",
-     "pct_change": 60.0,
-     "n_latest_12m": 8,
-     "n_prior_12m": 5
-    },
+    "hn": null,
     "arxiv": null
    },
    "divergence": null
@@ -2955,12 +2950,7 @@
    },
    "yoy": {
     "gdelt": null,
-    "hn": {
-     "latest_month": "2026-07",
-     "pct_change": 0.0,
-     "n_latest_12m": 9,
-     "n_prior_12m": 9
-    },
+    "hn": null,
     "arxiv": null
    },
    "divergence": null
@@ -3582,12 +3572,7 @@
      "n_latest_12m": 123,
      "n_prior_12m": 182
     },
-    "hn": {
-     "latest_month": "2026-07",
-     "pct_change": -63.6,
-     "n_latest_12m": 4,
-     "n_prior_12m": 11
-    },
+    "hn": null,
     "arxiv": null
    },
    "divergence": null
@@ -4747,7 +4732,7 @@
      },
      {
       "month": "2026-07",
-      "n": 378,
+      "n": 380,
       "index": 11.6
      }
     ],
@@ -5149,8 +5134,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 296.9,
-     "n_latest_12m": 25424,
+     "pct_change": 297.0,
+     "n_latest_12m": 25426,
      "n_prior_12m": 6405
     },
     "hn": {
@@ -5172,7 +5157,308 @@
    "id": "ransomware",
    "label": "Ransomware",
    "series": {
-    "gdelt": [],
+    "gdelt": [
+     {
+      "month": "2021-08",
+      "n": 4230,
+      "index": 60.5
+     },
+     {
+      "month": "2021-09",
+      "n": 5192,
+      "index": 74.3
+     },
+     {
+      "month": "2021-10",
+      "n": 6990,
+      "index": 100.0
+     },
+     {
+      "month": "2021-11",
+      "n": 5666,
+      "index": 81.1
+     },
+     {
+      "month": "2021-12",
+      "n": 5933,
+      "index": 84.9
+     },
+     {
+      "month": "2022-01",
+      "n": 5584,
+      "index": 79.9
+     },
+     {
+      "month": "2022-02",
+      "n": 5227,
+      "index": 74.8
+     },
+     {
+      "month": "2022-03",
+      "n": 5476,
+      "index": 78.3
+     },
+     {
+      "month": "2022-04",
+      "n": 3689,
+      "index": 52.8
+     },
+     {
+      "month": "2022-05",
+      "n": 4015,
+      "index": 57.4
+     },
+     {
+      "month": "2022-06",
+      "n": 2913,
+      "index": 41.7
+     },
+     {
+      "month": "2022-07",
+      "n": 2701,
+      "index": 38.6
+     },
+     {
+      "month": "2022-08",
+      "n": 3142,
+      "index": 44.9
+     },
+     {
+      "month": "2022-09",
+      "n": 3775,
+      "index": 54.0
+     },
+     {
+      "month": "2022-10",
+      "n": 3180,
+      "index": 45.5
+     },
+     {
+      "month": "2022-11",
+      "n": 2983,
+      "index": 42.7
+     },
+     {
+      "month": "2022-12",
+      "n": 2898,
+      "index": 41.5
+     },
+     {
+      "month": "2023-01",
+      "n": 3270,
+      "index": 46.8
+     },
+     {
+      "month": "2023-02",
+      "n": 3801,
+      "index": 54.4
+     },
+     {
+      "month": "2023-03",
+      "n": 3262,
+      "index": 46.7
+     },
+     {
+      "month": "2023-04",
+      "n": 1518,
+      "index": 21.7
+     },
+     {
+      "month": "2023-05",
+      "n": 1775,
+      "index": 25.4
+     },
+     {
+      "month": "2023-06",
+      "n": 1974,
+      "index": 28.2
+     },
+     {
+      "month": "2023-07",
+      "n": 1473,
+      "index": 21.1
+     },
+     {
+      "month": "2023-08",
+      "n": 1638,
+      "index": 23.4
+     },
+     {
+      "month": "2023-09",
+      "n": 1442,
+      "index": 20.6
+     },
+     {
+      "month": "2023-10",
+      "n": 1306,
+      "index": 18.7
+     },
+     {
+      "month": "2023-11",
+      "n": 2088,
+      "index": 29.9
+     },
+     {
+      "month": "2023-12",
+      "n": 1532,
+      "index": 21.9
+     },
+     {
+      "month": "2024-01",
+      "n": 1395,
+      "index": 20.0
+     },
+     {
+      "month": "2024-02",
+      "n": 1976,
+      "index": 28.3
+     },
+     {
+      "month": "2024-03",
+      "n": 1766,
+      "index": 25.3
+     },
+     {
+      "month": "2024-04",
+      "n": 1431,
+      "index": 20.5
+     },
+     {
+      "month": "2024-05",
+      "n": 1813,
+      "index": 25.9
+     },
+     {
+      "month": "2024-06",
+      "n": 1809,
+      "index": 25.9
+     },
+     {
+      "month": "2024-07",
+      "n": 1888,
+      "index": 27.0
+     },
+     {
+      "month": "2024-08",
+      "n": 1445,
+      "index": 20.7
+     },
+     {
+      "month": "2024-09",
+      "n": 1071,
+      "index": 15.3
+     },
+     {
+      "month": "2024-10",
+      "n": 1255,
+      "index": 18.0
+     },
+     {
+      "month": "2024-11",
+      "n": 1235,
+      "index": 17.7
+     },
+     {
+      "month": "2024-12",
+      "n": 1318,
+      "index": 18.9
+     },
+     {
+      "month": "2025-01",
+      "n": 1053,
+      "index": 15.1
+     },
+     {
+      "month": "2025-02",
+      "n": 958,
+      "index": 13.7
+     },
+     {
+      "month": "2025-03",
+      "n": 1191,
+      "index": 17.0
+     },
+     {
+      "month": "2025-04",
+      "n": 1058,
+      "index": 15.1
+     },
+     {
+      "month": "2025-05",
+      "n": 1322,
+      "index": 18.9
+     },
+     {
+      "month": "2025-06",
+      "n": 691,
+      "index": 9.9
+     },
+     {
+      "month": "2025-07",
+      "n": 1636,
+      "index": 23.4
+     },
+     {
+      "month": "2025-08",
+      "n": 1371,
+      "index": 19.6
+     },
+     {
+      "month": "2025-09",
+      "n": 1403,
+      "index": 20.1
+     },
+     {
+      "month": "2025-10",
+      "n": 1677,
+      "index": 24.0
+     },
+     {
+      "month": "2025-11",
+      "n": 1337,
+      "index": 19.1
+     },
+     {
+      "month": "2025-12",
+      "n": 1125,
+      "index": 16.1
+     },
+     {
+      "month": "2026-01",
+      "n": 936,
+      "index": 13.4
+     },
+     {
+      "month": "2026-02",
+      "n": 801,
+      "index": 11.5
+     },
+     {
+      "month": "2026-03",
+      "n": 1101,
+      "index": 15.8
+     },
+     {
+      "month": "2026-04",
+      "n": 963,
+      "index": 13.8
+     },
+     {
+      "month": "2026-05",
+      "n": 1274,
+      "index": 18.2
+     },
+     {
+      "month": "2026-06",
+      "n": 994,
+      "index": 14.2
+     },
+     {
+      "month": "2026-07",
+      "n": 82,
+      "index": 1.2
+     }
+    ],
     "hn": [
      {
       "month": "2021-08",
@@ -5749,7 +6035,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-07",
+     "pct_change": -8.2,
+     "n_latest_12m": 13064,
+     "n_prior_12m": 14233
+    },
     "hn": {
      "latest_month": "2026-07",
      "pct_change": -1.7,
@@ -5763,7 +6054,12 @@
      "n_prior_12m": 60
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 11.2,
+    "arxiv_index_avg3m": 33.3,
+    "research_vs_media_index": 22.1,
+    "direction": "research_leads"
+   }
   },
   {
    "id": "supply_chain_security",
@@ -6067,8 +6363,8 @@
      },
      {
       "month": "2026-07",
-      "n": 206,
-      "index": 8.0
+      "n": 210,
+      "index": 8.1
      }
     ],
     "hn": [
@@ -6544,8 +6840,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 71.1,
-     "n_latest_12m": 9403,
+     "pct_change": 71.2,
+     "n_latest_12m": 9407,
      "n_prior_12m": 5495
     },
     "hn": {
@@ -7278,8 +7574,8 @@
      },
      {
       "month": "2026-07",
-      "n": 5,
-      "index": 5.8
+      "n": 6,
+      "index": 7.0
      }
     ],
     "arxiv": [
@@ -7569,8 +7865,8 @@
     "gdelt": null,
     "hn": {
      "latest_month": "2026-07",
-     "pct_change": -8.1,
-     "n_latest_12m": 306,
+     "pct_change": -7.8,
+     "n_latest_12m": 307,
      "n_prior_12m": 333
     },
     "arxiv": {
@@ -9062,12 +9358,7 @@
      "n_latest_12m": 632,
      "n_prior_12m": 695
     },
-    "hn": {
-     "latest_month": "2026-07",
-     "pct_change": 0.0,
-     "n_latest_12m": 1,
-     "n_prior_12m": 1
-    },
+    "hn": null,
     "arxiv": null
    },
    "divergence": null
@@ -9078,13 +9369,13 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "source": "gdelt",
-   "pct_change": 296.9
+   "pct_change": 297.0
   },
   "top_faller": {
    "term_id": "cnapp",
    "label": "CNAPP",
-   "source": "hn",
-   "pct_change": -63.6
+   "source": "gdelt",
+   "pct_change": -32.4
   },
   "top_divergence": {
    "term_id": "zero_trust",

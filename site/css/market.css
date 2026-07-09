@@ -49,6 +49,18 @@
 
 .sparkline-chart { display: block; width: 100%; height: 44px; }
 
+/* honest placeholder for terms whose media (GDELT) fetch hasn't landed */
+.sparkline-chart.sparkline-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  border: 1px dashed var(--rule);
+}
+
 .strip-note {
   font-family: var(--mono);
   font-size: 11.5px;

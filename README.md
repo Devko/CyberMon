@@ -38,11 +38,14 @@ Each module is its own directly linkable page with its own pipeline stage and
    share of scores ≥ 9.0 (minimum 100 CVEs in a 3-year window).
 6. **Volume curve** — CVEs published and rejected per year.
 
-### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (coming soon)
+### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
 
 *The security industry runs on a hype curve. Nobody publishes the curve.*
-A data-driven hype-cycle tracker: buzzword trajectories across vendor
-marketing, funding rounds, job postings, and conference CFPs.
+A data-driven hype-cycle tracker for 14 curated buzzwords across three
+independent attention signals — news coverage (GDELT), practitioner
+chatter (Hacker News), research output (arXiv cs.CR) — each term indexed
+to its own five-year peak. Hype curves, YoY risers/fallers, and a
+research-vs-media divergence quadrant.
 
 ### Next
 
@@ -75,13 +78,17 @@ reads a few-KB JSON file; there are no runtime queries.
 | [EPSS](https://www.first.org/epss/) (FIRST) | Daily exploitation-probability scores | Free with attribution per [EPSS usage guidance](https://www.first.org/epss/user-guide) |
 | [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Known Exploited Vulnerabilities catalog | US Government work; [CC0-style license](https://www.cisa.gov/sites/default/files/licenses/kev/license.txt) |
 | [NVD API 2.0](https://nvd.nist.gov/developers/vulnerabilities) (NIST) | Enrichment status (`vulnStatus`) only | Public domain (US Government); [NVD terms](https://nvd.nist.gov/general/faq) request attribution and prohibit implying endorsement |
+| [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
+| [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
+| [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
 nightly runs only fetch records modified since the last sync — seconds
-instead of a ~45-minute keyless corpus sweep. A full resweep is forced
-weekly (and whenever the state is missing or unreadable) so drift can never
-outlive `FULL_RESYNC_DAYS`.
+instead of a full corpus sweep. A full resweep is forced weekly (and
+whenever the state is missing or unreadable) so drift can never outlive
+`FULL_RESYNC_DAYS`; full sweeps read NVD's static yearly JSON feeds
+(CDN-served flat files, minutes total) instead of paging the API.
 
 `site/data/history/` — the nightly NVD backlog snapshots — is an **original
 dataset accumulated by this project**; NVD publishes no such history. You are
@@ -124,10 +131,10 @@ comparability, CNA-vs-NVD scoring) — is in
 
 ## Roadmap
 
-The **Security Market** module (data-driven hype-cycle tracker) is the next
-build; the longer candidate list — with thesis, data sources, and feasibility
-per module — lives in [docs/backlog.md](docs/backlog.md). New modules follow
-the same pattern: one pipeline stage, one contracts section, one page.
+The candidate list for further modules — with thesis, open data sources,
+and feasibility per module — lives in [docs/backlog.md](docs/backlog.md).
+New modules follow the same pattern: one pipeline stage, one contracts
+section, one page.
 
 ## One-time setup (repo settings)
 
@@ -141,8 +148,8 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 3. *(Optional)* **Settings → Secrets and variables → Actions → New repository
    secret: `NVD_API_KEY`** — request a free key at
    https://nvd.nist.gov/developers/request-an-api-key. Without it the
-   NVD stage still works but full resweeps take ~45 min instead of ~6
-   (incremental nights are fast either way).
+   NVD stage still works; the key only speeds up the incremental API
+   pulls (full resweeps use the static yearly feeds and need no key).
 
 ## Disclaimer & license
 

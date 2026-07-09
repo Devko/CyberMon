@@ -5,7 +5,10 @@ import { mkToggle } from "../ui.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.volume;
-  const years = data.years.map((d) => String(d.year));
+  // Label the still-filling generation year so its dip reads as "partial".
+  const genYear = Number(data.generated_at.slice(0, 4));
+  const years = data.years.map((d) =>
+    d.year === genYear ? `${d.year}*` : String(d.year));
 
   const chart = mkChart(slots.chart);
 

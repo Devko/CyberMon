@@ -80,6 +80,13 @@ export function render(slots, data) {
 
   // Init after the cards are in the DOM so ECharts can measure them.
   for (const c of cards) {
+    // A term whose GDELT fetch hasn't landed yet gets an honest label
+    // instead of an empty box that reads as a rendering bug.
+    if (!(c.term.series?.gdelt || []).length) {
+      c.mini.classList.add("sparkline-empty");
+      c.mini.textContent = "no media data yet";
+      continue;
+    }
     c.chart = mkChart(c.mini);
     c.chart.setOption({
       animation: false,
@@ -102,19 +109,26 @@ export function render(slots, data) {
 
   const optionFor = (term) => {
     rawLookup = {};
-    const series = SOURCES.map((s) => {
-      rawLookup[s.name] = new Map((term.series?.[s.key] || []).map((r) => [r.month, r]));
+    // Only sources that actually have data: an empty series would put a
+    // clickable legend entry over a chart with no line — reads as broken.
+    const present = SOURCES.filter((s) => (term.series?.[s.key] || []).length);
+    const series = present.map((s) => {
+      const rows = term.series?.[s.key] || [];
+      rawLookup[s.name] = new Map(rows.map((r) => [r.month, r]));
       return {
         name: s.name, type: "line", color: s.color,
         data: seriesFor(term, s.key),
-        symbol: "circle", symbolSize: 3, showSymbol: false,
+        // a 1-point series has no line segment: show the symbol or it is
+        // literally invisible
+        symbol: "circle", symbolSize: rows.length < 2 ? 5 : 3,
+        showSymbol: rows.length < 2,
         connectNulls: false,
         lineStyle: { width: 2 },
       };
     });
     return {
       grid: { ...baseGrid, top: 44 },
-      legend: { ...baseLegend, data: SOURCES.map((s) => s.name) },
+      legend: { ...baseLegend, data: present.map((s) => s.name) },
       tooltip: {
         ...baseTooltip, trigger: "axis",
         formatter: (params) => {

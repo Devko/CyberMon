@@ -22,7 +22,7 @@ jobs:
   refresh:
     name: Run pipeline and commit data
     runs-on: ubuntu-latest
-    # Keyless NVD sweep is slow; allow plenty of headroom.
+    # Slow upstreams (GDELT pacing, keyless NVD paging); allow headroom.
     timeout-minutes: 120
     permissions:
       contents: write

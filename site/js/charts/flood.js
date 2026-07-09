@@ -14,7 +14,11 @@ const BUCKETS = [
 
 export function render(slots, data) {
   const ed = editorial.sections.flood;
-  const years = data.years.map((d) => String(d.year));
+  // The generation year is still filling in — label it so its shorter bar
+  // reads as "partial", not "decline".
+  const genYear = Number(data.generated_at.slice(0, 4));
+  const years = data.years.map((d) =>
+    d.year === genYear ? `${d.year}*` : String(d.year));
 
   const mkSeries = (normalized) =>
     BUCKETS.map(({ key, label }) => ({

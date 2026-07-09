@@ -31,9 +31,13 @@ Three public corpora feed one nightly sync-state file
   for at least 3s between API requests; we sleep 3.1s after every one.
 
 The state is a cache, never a source of truth: months are pruned to the
-rolling window on every sync, pending entries whose month left the window
-(or whose term left the watchlist) are dropped, and missing/unreadable
-state simply rebuilds — GDELT and arXiv fully the next night, HN via the
+rolling window on every sync, and pending entries whose month left the
+window (or whose term left the watchlist) are dropped. A missing/unreadable
+state is first reconstructed from the previously published market_hype.json
+(:func:`reconstruct_state` — the raw ``n`` counts round-trip losslessly),
+so a lost cache does not restart the ~960-cell HN backfill from zero and
+regress the published data; with no usable published output either,
+everything rebuilds — GDELT and arXiv fully the next night, HN via the
 pending queue.
 """
 from __future__ import annotations
@@ -130,6 +134,50 @@ def save_state(cache_dir: Path, state: dict) -> None:
     tmp.write_text(json.dumps(state, separators=(",", ":")),
                    encoding="utf-8")
     tmp.replace(path)
+
+
+def reconstruct_state(out_dir: Path,
+                      log: Callable[[str], None] = print) -> dict | None:
+    """Best-effort sync state rebuilt from a previously published
+    ``out_dir/market_hype.json``, for when the cached state is lost (first
+    run on a fresh CI cache, actions/cache eviction): the raw ``n`` counts
+    per term/source/month become the series, window months absent from a
+    term's hn series re-enter the pending queue (oldest month first, like
+    the nightly enqueue), and ``last_sync`` carries the file's
+    ``generated_at``. None when the file is absent or unusable — the sync
+    then rebuilds from scratch, exactly as before."""
+    path = out_dir / "market_hype.json"
+    if not path.exists():
+        return None
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+        last_sync = str(obj["generated_at"])
+        window = month_window(
+            datetime.strptime(last_sync, "%Y-%m-%dT%H:%M:%SZ")
+                    .replace(tzinfo=timezone.utc),
+            int(obj.get("window_months") or 60))
+        series: dict[str, dict[str, dict[str, int]]] = {}
+        term_ids: list[str] = []
+        for term in obj["terms"]:
+            term_id = str(term["id"])
+            term_ids.append(term_id)
+            sources = {}
+            for source, points in (term.get("series") or {}).items():
+                months = {str(p["month"]): int(p["n"]) for p in points}
+                if months:
+                    sources[source] = months
+            if sources:
+                series[term_id] = sources
+        pending = [["hn", term_id, month]
+                   for month in window for term_id in term_ids
+                   if month not in series.get(term_id, {}).get("hn", {})]
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        log(f"warning: cannot reconstruct market state from {path}: {exc!r}")
+        return None
+    log("  market: reconstructed sync state from published market_hype.json "
+        f"({len(series)} term(s), {len(pending)} hn cell(s) re-queued)")
+    return {"version": STATE_VERSION, "last_sync": last_sync,
+            "series": series, "pending": pending}
 
 
 # ------------------------------------------------------------------ pruning

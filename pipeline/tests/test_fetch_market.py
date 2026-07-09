@@ -2,9 +2,11 @@
 backfill queue, window pruning, and state round-trips — no network."""
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 
 from pipeline import fetch_market
+from pipeline.market_metrics import build_market_hype
 from pipeline.market_terms import TermDef
 
 NOW = datetime(2026, 7, 9, 6, 0, 0, tzinfo=timezone.utc)
@@ -283,6 +285,72 @@ def test_load_state_none_on_missing_or_corrupt(tmp_path):
     warnings = []
     assert fetch_market.load_state(tmp_path, log=warnings.append) is None
     assert warnings and "unreadable" in warnings[0]
+
+
+# ------------------------------------------------------ state reconstruction
+
+def _publish(out_dir, state, terms, generated_at="2026-07-09T06:00:00Z"):
+    """Write ``out_dir/market_hype.json`` as the pipeline would publish it."""
+    obj = build_market_hype(state, terms, generated_at)
+    (out_dir / "market_hype.json").write_text(json.dumps(obj),
+                                              encoding="utf-8")
+    return obj
+
+
+def test_reconstruct_state_round_trips_published_counts(tmp_path):
+    window = fetch_market.month_window(NOW, 60)
+    state = {"version": 1, "last_sync": "2026-07-09T06:00:00Z",
+             "series": {"alpha": {
+                 "gdelt": {"2026-05": 40, "2026-06": 25},
+                 "hn": {m: i for i, m in enumerate(window)},
+                 "arxiv": {"2026-06": 3},
+             }},
+             "pending": []}
+    obj = _publish(tmp_path, state, [TERM_A])
+    logs = []
+    rebuilt = fetch_market.reconstruct_state(tmp_path, log=logs.append)
+    assert rebuilt == state  # a full hn history leaves nothing pending
+    assert any("reconstructed sync state" in m for m in logs)
+    # ... and building again from the rebuilt state reproduces the file
+    assert build_market_hype(rebuilt, [TERM_A],
+                             "2026-07-09T06:00:00Z") == obj
+
+
+def test_reconstruct_state_queues_window_months_missing_from_hn(tmp_path):
+    window = fetch_market.month_window(NOW, 60)
+    state = {"version": 1, "last_sync": "2026-07-09T06:00:00Z",
+             "series": {
+                 "alpha": {"hn": {m: 1 for m in window[2:]}},
+                 "beta": {"gdelt": {"2026-06": 9}},  # no hn cell at all
+             },
+             "pending": []}
+    _publish(tmp_path, state, [TERM_A, TERM_B])
+    rebuilt = fetch_market.reconstruct_state(tmp_path, log=lambda m: None)
+    assert rebuilt["series"] == state["series"]
+    # oldest months first (the order the nightly backfill drains), all
+    # terms per month: alpha's two missing months, beta's entire window
+    expected = []
+    for month in window:
+        if month in window[:2]:
+            expected.append(["hn", "alpha", month])
+        expected.append(["hn", "beta", month])
+    assert rebuilt["pending"] == expected
+
+
+def test_reconstruct_state_none_on_missing_or_corrupt_output(tmp_path):
+    assert fetch_market.reconstruct_state(tmp_path,
+                                          log=lambda m: None) is None
+    path = tmp_path / "market_hype.json"
+    warnings = []
+    path.write_text("{corrupt", encoding="utf-8")
+    assert fetch_market.reconstruct_state(tmp_path,
+                                          log=warnings.append) is None
+    path.write_text(json.dumps({"generated_at": "2026-07-09T06:00:00Z"}),
+                    encoding="utf-8")  # valid JSON, not the published shape
+    assert fetch_market.reconstruct_state(tmp_path,
+                                          log=warnings.append) is None
+    assert len(warnings) == 2
+    assert all("cannot reconstruct" in w for w in warnings)
 
 
 # ------------------------------------------------------------ full sync run

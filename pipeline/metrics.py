@@ -298,7 +298,14 @@ def build_severity_inflation(agg: Aggregator, generated_at: str,
                         "pct_high_critical": _pct(high, len(scores))})
 
     by_year = {row["year"]: row for row in blended}
-    latest_year = blended[-1]["year"] if blended else 0
+    # The headline never leans on the current (partial) year: six months of
+    # data would fake a trend the full-year series may not support. The
+    # partial year still plots — the chart labels it as partial.
+    current_year = int(generated_at[:4])
+    full_years = [row for row in blended if row["year"] < current_year]
+    latest = full_years[-1] if full_years else \
+        (blended[-1] if blended else None)
+    latest_year = latest["year"] if latest else 0
     # Prefer a ten-year lookback; else the earliest year that survived the
     # filters. Its year ships in the payload — the site must never imply a
     # baseline year the data doesn't actually contain.
@@ -311,7 +318,7 @@ def build_severity_inflation(agg: Aggregator, generated_at: str,
         "headline": {
             "latest_year": latest_year,
             "pct_high_critical_latest":
-                blended[-1]["pct_high_critical"] if blended else 0.0,
+                latest["pct_high_critical"] if latest else 0.0,
             "baseline_year": baseline["year"] if baseline else 0,
             "pct_high_critical_baseline":
                 baseline["pct_high_critical"] if baseline else 0.0,

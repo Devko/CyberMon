@@ -35,6 +35,10 @@ WINDOW_MONTHS = 60
 # |research_vs_media_index| must clear this before a direction is called;
 # a few index points of drift on 3-month averages is noise, not a signal.
 DIVERGENCE_DEAD_ZONE = 10.0
+# A (term, source) pair needs at least this many raw hits across the two
+# compared years before it may post a YoY percentage — 11 hits shrinking
+# to 4 is not a -63.6% market move, it's noise wearing a percent sign.
+MIN_YOY_VOLUME = 30
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 
 
@@ -58,17 +62,19 @@ def yoy(monthly: dict[str, int]) -> dict | None:
     """Year-over-year change on raw counts: the latest 12 populated months
     vs the 12 populated months before those.
 
-    None (never 0) when fewer than 24 months are populated or the prior
-    window sums to zero — a YoY against an empty baseline would be an
-    invented number.
+    None (never 0) when fewer than 24 months are populated, when the prior
+    window sums to zero (a YoY against an empty baseline would be an
+    invented number), or when the two windows together carry fewer than
+    ``MIN_YOY_VOLUME`` raw hits (a percentage of almost nothing is a
+    rumor, not a rate).
     """
     months = sorted(monthly)
     if len(months) < 24:
         return None
     n_prior = sum(monthly[m] for m in months[-24:-12])
-    if n_prior <= 0:
-        return None
     n_latest = sum(monthly[m] for m in months[-12:])
+    if n_prior <= 0 or n_prior + n_latest < MIN_YOY_VOLUME:
+        return None
     return {"latest_month": months[-1],
             "pct_change": _r1(100.0 * (n_latest - n_prior) / n_prior),
             "n_latest_12m": n_latest,
@@ -186,9 +192,12 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
       forward untouched, marked ``"stale": true``, with ``fetched_at``
       kept at its old value; (None, None) plus a warning when no prior
       file exists (a duplicated-but-relabeled snapshot would fake data);
-    * live — load the sync state from ``cache_dir``, sync at most
-      ``backfill_batch`` pending (source, term, month) cells via
-      ``fetch_market``, persist the state, and build for all of ``TERMS``.
+    * live — load the sync state from ``cache_dir`` (a lost cache is first
+      reconstructed from the previously published ``out_dir``/
+      market_hype.json so the HN backfill doesn't restart from zero),
+      sync at most ``backfill_batch`` pending (source, term, month) cells
+      via ``fetch_market``, persist the state, and build for all of
+      ``TERMS``.
     """
     if offline_fixtures:
         state = json.loads((FIXTURES_DIR / "market" / "state.json")
@@ -215,9 +224,12 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
 
     # Live sync. fetch_market is imported lazily so the offline/skip paths
     # (and this module's unit tests) never require it to be importable.
-    from .fetch_market import load_state, save_state, sync_state
+    from .fetch_market import (load_state, reconstruct_state, save_state,
+                               sync_state)
 
     state = load_state(cache_dir)
+    if state is None:
+        state = reconstruct_state(out_dir, log=log)
     state = sync_state(state, TERMS, window_months=WINDOW_MONTHS,
                        backfill_batch=backfill_batch, session=session,
                        sleep=sleep, log=log)

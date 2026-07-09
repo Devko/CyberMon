@@ -32,7 +32,10 @@ export function render(slots, data) {
 
   // ---- chart ----------------------------------------------------------------
   const years = data.blended.map((d) => d.year);
-  const cats = years.map(String);
+  // The generation year plots but is partial — mark it (the headline stat
+  // above already excludes it by contract).
+  const genYear = Number(data.generated_at.slice(0, 4));
+  const cats = years.map((y) => (y === genYear ? `${y}*` : String(y)));
   const byYear = (rows) => {
     const m = new Map(rows.map((r) => [r.year, r]));
     return (pick) => years.map((y) => (m.has(y) ? pick(m.get(y)) : null));

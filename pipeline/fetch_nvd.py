@@ -1,11 +1,21 @@
-"""NVD API 2.0: count CVEs by ``vulnStatus`` — nothing else.
+"""NVD: count CVEs by ``vulnStatus`` — nothing else.
 
-The API has no status filter, so counting requires seeing every record.
-Doing that nightly with a full corpus sweep is the pipeline's slow stage
-(~45 min keyless, ~6 min keyed, for ~370k CVEs), so the sweep is
-*incremental*: we keep a ``{cve_id: vulnStatus}`` map as sync state and,
-on later runs, ask only for records modified since the last sync
-(``lastModStartDate`` — typically a few thousand records, i.e. seconds).
+Neither the API nor the feeds have a status filter, so counting requires
+seeing every record. We keep a ``{cve_id: vulnStatus}`` map as sync state,
+and the two sync paths split by cost:
+
+* **full sweep** (no/stale/unreadable state) — NVD's static yearly JSON
+  feeds (https://nvd.nist.gov/feeds/json/cve/2.0/…), which are CDN-served
+  flat files: minutes total, no paging, no rate limits. Paging the whole
+  ~370k-record corpus through the API instead takes ~45 min keyless on a
+  good day and, on bad days, drips single pages for minutes with stalls
+  that outlive any read-timeout (measured 2026-07-09: 58s per 2000-record
+  page) — far past CI's timeout. The feeds regenerate only nightly, so the
+  swept snapshot can be up to ~24h stale; ``last_sync`` is back-dated by
+  ``FEED_STALENESS`` so the next incremental pull re-covers the gap.
+* **incremental** (fresh state) — the API, asked only for records modified
+  since the last sync (``lastModStartDate`` — typically a few thousand
+  records, i.e. seconds), merged into the cached map.
 
 Drift/corruption guards — the state is a cache, never a source of truth:
 
@@ -15,23 +25,34 @@ Drift/corruption guards — the state is a cache, never a source of truth:
 * the incremental window starts ``_OVERLAP`` before the last sync so clock
   skew between us and NVD cannot drop records.
 
-Rate limits are respected: 5 requests / 30 s without an API key, 50 / 30 s
-with one (``NVD_API_KEY`` env var, passed in by the caller). Transient
-failures (403/429/5xx — NVD uses 403 for rate limiting) are retried with
-exponential backoff. The CLI's ``--skip-nvd`` flag bypasses the stage
-entirely.
+API rate limits are respected: 5 requests / 30 s without an API key,
+50 / 30 s with one (``NVD_API_KEY`` env var, passed in by the caller).
+Transient API failures (403/429/5xx — NVD uses 403 for rate limiting) are
+retried with exponential backoff. The CLI's ``--skip-nvd`` flag bypasses
+the stage entirely.
 """
 from __future__ import annotations
 
+import gzip
+import io
+import json
 import time
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from typing import Callable
 
 NVD_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+FEED_URL = "https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-{year}.json.gz"
+FIRST_FEED_YEAR = 2002  # the 2002 feed carries 1999-2002
+USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
 PAGE_SIZE = 2000
 STATE_VERSION = 1
 FULL_RESYNC_DAYS = 7
+# The feeds regenerate nightly, so a freshly swept snapshot can be up to
+# ~24h stale; last_sync is back-dated by this much so the next incremental
+# API pull re-covers the gap.
+FEED_STALENESS = timedelta(hours=25)
+_FEED_TIMEOUT = (10.0, 300.0)  # (connect, read); feeds are large flat files
 _RETRY_STATUSES = {403, 429, 500, 502, 503, 504}
 _MAX_ATTEMPTS = 6
 # 30s window / 5 (or 50) requests, plus a little slack.
@@ -103,7 +124,10 @@ def fetch_status_counts(session=None, api_key: str | None = None,
                         timeout: float = 60.0,
                         sleep: Callable[[float], None] = time.sleep,
                         log: Callable[[str], None] = print) -> dict[str, int]:
-    """Page the whole NVD corpus and return ``{vulnStatus: count}``."""
+    """Page the whole NVD corpus through the API and return
+    ``{vulnStatus: count}``. Slow — kept for one-off/compat use; the sync
+    path's full sweeps read the yearly feeds instead (``full_sweep_state``).
+    """
     import requests
 
     session = session or requests.Session()
@@ -126,6 +150,56 @@ def _fmt_nvd(ts: datetime) -> str:
     """NVD's extended ISO-8601 with an explicit UTC offset."""
     return ts.strftime("%Y-%m-%dT%H:%M:%S.000+00:00")
 
+
+# --------------------------------------------- full sweep via yearly feeds --
+
+def _collect_feed_statuses(session, log: Callable[[str], None],
+                           now: datetime) -> dict[str, str]:
+    """Read the whole corpus from the static yearly feeds, return
+    ``{cve_id: vulnStatus}``. Each year's document is parsed and discarded
+    before the next download, so peak memory stays one feed's worth."""
+    statuses: dict[str, str] = {}
+    for year in range(FIRST_FEED_YEAR, now.year + 1):
+        resp = session.get(FEED_URL.format(year=year),
+                           headers={"User-Agent": USER_AGENT},
+                           timeout=_FEED_TIMEOUT)
+        if resp.status_code != 200:
+            raise RuntimeError(f"NVD feed {year} returned HTTP "
+                               f"{resp.status_code}")
+        with gzip.open(io.BytesIO(resp.content), "rt", encoding="utf-8") as f:
+            doc = json.load(f)
+        n = 0
+        for item in doc.get("vulnerabilities") or []:
+            cve = item.get("cve", {})
+            cve_id = cve.get("id")
+            if cve_id:
+                statuses[cve_id] = cve.get("vulnStatus") or "Unknown"
+                n += 1
+        total = doc.get("totalResults")
+        if total is not None and total != n:
+            log(f"  warning: feed {year} says totalResults={total}, "
+                f"parsed {n}")
+        log(f"  NVD feed {year}: {n} record(s), {len(statuses)} cumulative")
+    return statuses
+
+
+def full_sweep_state(session=None, log: Callable[[str], None] = print,
+                     now: datetime | None = None) -> dict:
+    """Build a complete sync state from the static yearly feeds.
+
+    ``last_sync`` is back-dated by ``FEED_STALENESS`` because the feeds
+    regenerate only nightly: the next incremental API pull then re-covers
+    up to a day of modifications the swept snapshot may have missed."""
+    import requests
+
+    session = session or requests.Session()
+    now = now or datetime.now(timezone.utc)
+    statuses = _collect_feed_statuses(session, log, now)
+    return {"version": STATE_VERSION, "last_full_sync": _iso(now),
+            "last_sync": _iso(now - FEED_STALENESS), "statuses": statuses}
+
+
+# ------------------------------------------------------------- sync policy --
 
 def _full_sweep_reason(state: dict | None, now: datetime) -> str | None:
     """Why the state can't be synced incrementally, or None if it can."""
@@ -151,8 +225,8 @@ def sync_status_state(state: dict | None, session=None,
                       log: Callable[[str], None] = print,
                       now: datetime | None = None) -> dict:
     """Return up-to-date sync state (``{version, last_full_sync, last_sync,
-    statuses}``), via an incremental ``lastModStartDate`` pull when the
-    given state allows it and a full corpus sweep when it doesn't."""
+    statuses}``), via an incremental ``lastModStartDate`` API pull when the
+    given state allows it and a full feed-based sweep when it doesn't."""
     import requests
 
     session = session or requests.Session()
@@ -160,10 +234,8 @@ def sync_status_state(state: dict | None, session=None,
 
     reason = _full_sweep_reason(state, now)
     if reason is not None:
-        log(f"  NVD: full sweep ({reason})")
-        statuses = _collect_statuses(session, api_key, timeout, sleep, log)
-        return {"version": STATE_VERSION, "last_full_sync": _iso(now),
-                "last_sync": _iso(now), "statuses": statuses}
+        log(f"  NVD: full sweep via yearly feeds ({reason})")
+        return full_sweep_state(session=session, log=log, now=now)
 
     window_start = _parse_iso(state["last_sync"]) - _OVERLAP
     changed = _collect_statuses(

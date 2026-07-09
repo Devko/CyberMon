@@ -146,6 +146,20 @@ def test_headline_baseline_falls_back_when_decade_ago_missing(agg):
     assert out["headline"]["pct_high_critical_baseline"] == 0.0
 
 
+def test_headline_ignores_partial_current_year():
+    agg = metrics.Aggregator()
+    for year, score in ((2024, 6.0), (2025, 7.5), (2026, 9.8)):
+        for _ in range(150):
+            agg.blended_scores[year].append(score)
+        agg.published_by_year[year] = 200
+    out = metrics.build_severity_inflation(agg, "2026-07-09T00:00:00Z")
+    # 2026 is the generation year -> partial; it plots but never headlines.
+    assert [r["year"] for r in out["blended"]] == [2024, 2025, 2026]
+    assert out["headline"]["latest_year"] == 2025
+    assert out["headline"]["pct_high_critical_latest"] == 100.0  # 7.5 >= 7
+    assert out["headline"]["baseline_year"] == 2024
+
+
 def test_inflation_filters_drop_thin_and_impossible_years():
     agg = metrics.Aggregator()
     for _ in range(150):

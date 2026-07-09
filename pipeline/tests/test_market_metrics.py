@@ -78,6 +78,14 @@ def test_yoy_needs_nonzero_prior_baseline():
     assert yoy(_monthly([0] * 12 + [10] * 12)) is None
 
 
+def test_yoy_needs_minimum_volume():
+    # 11 prior hits shrinking to 4 is noise, not a -63.6% market move.
+    assert yoy(_monthly([1] * 11 + [0] + [1] * 4 + [0] * 8)) is None
+    # exactly at the floor (15 + 15 = 30) a percentage may post
+    at_floor = yoy(_monthly([2] * 3 + [1] * 9 + [1] * 9 + [2] * 3))
+    assert at_floor is not None and at_floor["pct_change"] == 0.0
+
+
 def test_yoy_change_on_raw_counts():
     out = yoy(_monthly([10] * 12 + [15] * 12, start="2024-07"))
     assert out == {"latest_month": "2026-06", "pct_change": 50.0,
@@ -247,3 +255,48 @@ def test_run_stage_skip_without_prior_returns_nothing(tmp_path):
                             backfill_batch=5, log=logs.append)
     assert (obj, source) == (None, None)
     assert any("no previous market_hype.json" in m for m in logs)
+
+
+def _capture_sync(monkeypatch):
+    """Stub out fetch_market.sync_state, recording the state it was given
+    and returning it unchanged (None becomes a minimal empty state)."""
+    from pipeline import fetch_market
+
+    seen = {}
+
+    def fake_sync(state, terms, **kwargs):
+        seen["state"] = state
+        return state or {"version": 1, "last_sync": GENERATED_AT,
+                         "series": {}, "pending": []}
+
+    monkeypatch.setattr(fetch_market, "sync_state", fake_sync)
+    return seen
+
+
+def test_run_stage_live_reconstructs_lost_state_from_published_output(
+        tmp_path, monkeypatch):
+    from pipeline import fetch_market
+
+    prior = build_market_hype(_state({"aaa": {"hn": {"2026-06": 5}}}),
+                              [_term("aaa")], "2026-06-01T00:00:00Z")
+    (tmp_path / "market_hype.json").write_text(json.dumps(prior),
+                                               encoding="utf-8")
+    seen = _capture_sync(monkeypatch)
+    logs = []
+    run_stage(tmp_path, tmp_path / "cache", GENERATED_AT,
+              skip=False, offline_fixtures=False,
+              backfill_batch=5, log=logs.append)
+    assert any("reconstructed sync state" in m for m in logs)
+    assert seen["state"]["series"]["aaa"]["hn"] == {"2026-06": 5}
+    assert seen["state"]["last_sync"] == "2026-06-01T00:00:00Z"
+    # the reconstructed-then-synced state is persisted for the next night
+    assert fetch_market.load_state(tmp_path / "cache") == seen["state"]
+
+
+def test_run_stage_live_starts_fresh_when_nothing_to_reconstruct(
+        tmp_path, monkeypatch):
+    seen = _capture_sync(monkeypatch)
+    run_stage(tmp_path, tmp_path / "cache", GENERATED_AT,
+              skip=False, offline_fixtures=False,
+              backfill_batch=5, log=lambda m: None)
+    assert seen["state"] is None  # absent output -> fresh-state behavior

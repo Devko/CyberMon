@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-09T12:39:29Z",
+ "generated_at": "2026-07-09T13:54:28Z",
  "series": {
   "v2": [
    {
@@ -182,8 +182,8 @@
   }
  ],
  "headline": {
-  "latest_year": 2026,
-  "pct_high_critical_latest": 49.4,
+  "latest_year": 2025,
+  "pct_high_critical_latest": 40.6,
   "baseline_year": 2020,
   "pct_high_critical_baseline": 46.1
  }

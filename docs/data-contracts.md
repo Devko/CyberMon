@@ -64,10 +64,12 @@ Statistical filters (production runs; disabled for fixture corpora): every
 plotted point requires ≥ 100 scored CVEs that year; per-version points
 cannot predate the version's spec release (v3: 2015, v4: 2023 — CNAs
 backfill scores onto old records); `blended` points additionally require
-scores on ≥ 20% of that year's published CVEs. The headline baseline is
-`latest_year - 10` when that year survived the filters, else the earliest
-surviving year — `baseline_year` is authoritative; consumers must never
-derive the baseline year themselves.
+scores on ≥ 20% of that year's published CVEs. The headline never uses
+the generation year (it is partial — six months of data would fake a
+trend): `latest_year` is the last complete year that survived the
+filters. The baseline is `latest_year - 10` when that year survived,
+else the earliest surviving year — `baseline_year` is authoritative;
+consumers must never derive either year themselves.
 
 ## site/data/nine_eight_flood.json  (chart 2)
 
@@ -208,8 +210,10 @@ series), 1)` (all `0.0` when the peak is 0) — index-to-own-peak, NOT
 share-of-total, so editing the tracked-term list never reshapes other
 terms' history.
 
-`yoy[source]` is `null` unless the pair has ≥ 24 populated months AND a
-nonzero prior-12-month sum; `pct_change` is computed on raw counts.
+`yoy[source]` is `null` unless the pair has ≥ 24 populated months, a
+nonzero prior-12-month sum, AND at least 30 raw hits across the two
+compared windows (`MIN_YOY_VOLUME` — a percentage of almost nothing is a
+rumor, not a rate); `pct_change` is computed on raw counts.
 `divergence` is `null` unless both `gdelt` and `arxiv` have ≥ 3 populated
 months; `research_vs_media_index` = arxiv 3-month index average minus
 gdelt's; `direction` ∈ research_leads / media_leads / aligned with a ±10

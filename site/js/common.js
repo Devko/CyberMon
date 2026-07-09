@@ -91,6 +91,7 @@ function renderMeta(meta) {
       kev_version: s.kev?.catalog_version ?? "?",
       kev_count: (s.kev?.count ?? 0).toLocaleString("en-US"),
       nvd_fetched: s.nvd?.fetched_at ?? "?",
+      market_fetched: s.market?.fetched_at ?? "?",
     }))
   );
 }

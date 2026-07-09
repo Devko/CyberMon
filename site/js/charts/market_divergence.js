@@ -66,9 +66,13 @@ export function render(slots, data) {
     return;
   }
 
-  // Custom HTML legend chips (direction -> color), above the plot.
+  // Custom HTML legend chips (direction -> color), above the plot — only
+  // for directions that actually have a point (a "Media leads" chip over a
+  // plot with zero such points promises data that isn't there).
+  const presentDirs = new Set(scored.map((t) => t.divergence.direction));
   const legend = el("div", "quadrant-legend");
   for (const key of ["research_leads", "media_leads", "aligned"]) {
+    if (!presentDirs.has(key)) continue;
     const chip = el("span", "quadrant-chip");
     const dot = el("span", "quadrant-dot");
     dot.style.background = dirColor[key];
@@ -76,6 +80,12 @@ export function render(slots, data) {
     legend.append(chip);
   }
   slots.controls.append(legend);
+
+  // Coverage honesty: say how many terms are actually on the plot.
+  slots.extra.append(el("p", "panel-note", tpl(ed.coverageNote, {
+    plotted: scored.length,
+    total: (data.terms || []).length,
+  })));
 
   const points = scored.map((t) => ({
     name: t.label,

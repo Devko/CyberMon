@@ -95,7 +95,9 @@ export const editorial = {
         "shortcuts.",
       selectLabel: "Term",
       termCountNote: "Tracking {n} terms — curated list: pipeline/market_terms.py",
-      sparklineNote: "Click a card to load it above. Sparklines show the media (GDELT) index only.",
+      sparklineNote:
+        "Click a card to load it above. Sparklines show the media (GDELT) index only — terms " +
+        "still waiting on a media fetch show an honest blank, not an invented curve.",
       methodology:
         "For each tracked term and each of three sources — GDELT 2.0 (news article volume), " +
         "Hacker News (Algolia search API, stories and comments), arXiv (cs.CR preprint " +
@@ -104,10 +106,10 @@ export const editorial = {
         "recomputed nightly, so a new peak nudges every earlier point down proportionally. " +
         "Raw counts ride along in the tooltip for every point. Series are deliberately not " +
         "shown as a share of the tracked term list — adding or retiring a term would " +
-        "silently reshape every other term's history under that scheme. Hacker News has no " +
-        "per-month histogram endpoint, so five years of monthly history backfills over the " +
-        "first weeks; a term's line may start partway through the window until backfill " +
-        "catches up.",
+        "silently reshape every other term's history under that scheme. If a source's fetch " +
+        "fails or is rate-limited (GDELT throttles aggressively), that stretch stays blank " +
+        "until a nightly run heals it — a line that starts partway through the window is a " +
+        "gap in collection, not in the world.",
     },
 
     // ------------------------------------------- market.html · 2
@@ -128,14 +130,17 @@ export const editorial = {
       colChange: "YoY change",
       colVolume: "Last 12 months",
       eligibilityNote:
-        "Rows need a full two years of collected data to post a YoY figure; recently added " +
-        "or still-backfilling terms are omitted until then.",
+        "Rows need a full two years of collected data and a minimum volume to post a YoY " +
+        "figure; terms whose fetch hasn't completed for a source — new, mid-backfill, or " +
+        "waiting out an upstream rate limit — are omitted until then.",
       methodology:
         "For each (term, source) pair, sum raw monthly counts for the most recent twelve " +
         "populated months and the twelve months before that; YoY change is the percentage " +
         "difference between the two sums. Pairs with fewer than twenty-four populated " +
-        "months, or a zero-count prior-year baseline, are excluded — a missing number is " +
-        "honest, a fabricated one is not. Sort any column; default is steepest riser first.",
+        "months, a zero-count prior-year baseline, or fewer than thirty raw hits across " +
+        "both windows are excluded — a percentage of almost nothing is a rumor, not a " +
+        "rate, and a missing number is honest where a fabricated one is not. Sort any " +
+        "column; default is steepest riser first.",
     },
 
     // ------------------------------------------- market.html · 3
@@ -158,6 +163,9 @@ export const editorial = {
       legendResearchLeads: "Research leads",
       legendMediaLeads: "Media leads",
       legendAligned: "Aligned",
+      coverageNote:
+        "{plotted} of {total} tracked terms currently have enough data in both sources to " +
+        "plot; the rest join as collection fills in.",
       methodology:
         "Each axis is the term's own attention index (see Hype curves methodology), " +
         "averaged over the three most recent populated months, for GDELT (x) and arXiv " +
@@ -165,22 +173,23 @@ export const editorial = {
         "index points; scores beyond ±10 are labeled “research leads” or “media leads,” " +
         "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
         "both indices carry real month-to-month noise. Terms missing three recent " +
-        "populated months in either source (usually mid-backfill) are omitted.",
+        "populated months in either source — usually a source still waiting on " +
+        "collection — are omitted.",
     },
 
     // -------------------------------------------------------------- 1 · hero
     inflation: {
       num: "01",
       kicker: "Severity inflation",
-      headline: "Nearly half of everything ships as “High” or worse.",
+      headline: "Four of every ten CVEs ship as “High” or worse.",
       caption:
         "Median CVSS base score of newly published CVEs, year by year, split by scoring " +
-        "version — v3 runs structurally higher than v2, so the per-version lines and release " +
-        "markers keep a methodology change from masquerading as drift. The chart begins where " +
-        "CNA-assigned scores become dense enough to chart honestly (the footnote has the bar). " +
-        "What the dense years show: medians parked at the doorstep of “High,” and four to five " +
-        "of every ten scored CVEs rated 7.0 or worse. A scale whose midpoint lives that far up " +
-        "has stopped ranking anything.",
+        "version — v3 runs structurally higher than v2, so the version-split lines keep a " +
+        "methodology change from masquerading as drift. The chart begins where CNA-assigned " +
+        "scores become dense enough to chart honestly (the footnote has the bar). What the " +
+        "dense years show: medians parked at the doorstep of “High,” and four to five of " +
+        "every ten scored CVEs rated 7.0 or worse, year after year. A scale whose midpoint " +
+        "lives that far up has stopped ranking anything.",
       statLabel: "Share of scored CVEs rated High or Critical (base score ≥ 7.0)",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -195,9 +204,10 @@ export const editorial = {
         "that series; per-version points cannot predate the version's spec release (CNAs " +
         "backfill scores onto old records); and the blended line additionally requires scores " +
         "on at least 20% of the CVEs published that year — years with 1% coverage chart which " +
-        "records got backfilled, not what was published. The headline compares the latest year " +
-        "against the earliest year that clears these filters. The current year is partial and " +
-        "moves nightly.",
+        "records got backfilled, not what was published. The headline compares the latest " +
+        "COMPLETE year against the earliest year that clears these filters — the current year " +
+        "plots (labeled partial, refilled nightly) but never headlines: six months of data " +
+        "would fake a trend.",
     },
 
     // ------------------------------------------------------------------- 2
@@ -206,17 +216,26 @@ export const editorial = {
       kicker: "The 9.8 flood",
       headline: "“Critical” was an exception. Now it's a product line.",
       caption:
-        "Published CVEs per year, bucketed by base score. Watch the red band: Critical (≥ 9.0) " +
-        "grows faster than the corpus itself. Flip to share-of-year and the mix shift is plain — " +
-        "a rating that once flagged the rare emergency now arrives by the thousands, alongside a " +
-        "growing pile of CVEs that ship with no score at all.",
+        "Published CVEs per year, bucketed by base score. Watch the red band: a rating that " +
+        "was measured in dozens a decade ago is now a four-thousand-a-year product line. And " +
+        "unlike the early corpus — where most records shipped unscored — nearly everything " +
+        "now arrives pre-labeled, so the label does all the triage. The current year is " +
+        "partial; its bars are still filling in.",
       toggleAbsolute: "Absolute",
       toggleShare: "Share of year",
       methodology:
         "CVEs are bucketed by their base score (highest CVSS version available per record): " +
         "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.1–3.9. “Unscored” counts CVEs " +
-        "published that year with no base score anywhere in the record. The share view " +
-        "normalizes each year to 100%.",
+        "published that year with no base score anywhere in the CVE record itself — CNA or " +
+        "CISA-ADP container. Read the early years carefully: before ~2018 scoring wasn't " +
+        "done in the record at all — CNAs filed bare entries and NVD assigned CVSS " +
+        "downstream, in its own database (which this chart deliberately does not ingest). " +
+        "The unscored band's collapse since is the scoring duty migrating to the source: " +
+        "CNA self-scoring rose from ~1% of records (2017) to ~80% (now), and when NVD's " +
+        "enrichment stalled in 2024, CISA's Vulnrichment program (the ADP container) began " +
+        "backstopping the rest — a quarter of all 2024 records carry only a CISA score. " +
+        "The share view normalizes each year to 100%. The current year (marked *) is " +
+        "partial and refills nightly.",
     },
 
     // ------------------------------------------------------------------- 3
@@ -227,9 +246,9 @@ export const editorial = {
       caption:
         "Every scored CVE with a current EPSS estimate, placed on a grid: CVSS severity on one " +
         "axis, real-world exploitation probability on the other. If scores tracked risk, the mass " +
-        "would sit on the diagonal. It doesn't — most Critical-rated CVEs cluster in the " +
-        "lowest-probability column, while the catalog of vulnerabilities actually being exploited " +
-        "(CISA KEV) includes entries CVSS rated below High.",
+        "would sit on the diagonal. It doesn't — six in ten Critical-rated CVEs carry less than " +
+        "a 1% probability of exploitation, while the catalog of vulnerabilities actually being " +
+        "exploited (CISA KEV) includes entries CVSS rates below High.",
       statCriticalTemplate: "{pct} of Critical-rated CVEs have <1% probability of exploitation",
       statCriticalNote: "per EPSS, across {n} Critical CVEs with a current score",
       statKevTemplate: "{pct} of actively exploited vulnerabilities are rated below High",
@@ -251,20 +270,26 @@ export const editorial = {
       kicker: "NVD decay",
       headline: "The scorekeeper stopped keeping score.",
       caption:
-        "NVD's job is to enrich CVEs — analyze, score, tag. The bars show what its queue looks " +
-        "like right now, by NVD's own status labels. The line shows where that backlog is " +
-        "heading, one nightly snapshot at a time. A severity ecosystem whose referee runs a " +
-        "five-digit backlog is an ecosystem grading itself.",
+        "NVD's job is to enrich CVEs — analyze, score, tag. The bars show every CVE by NVD's " +
+        "own status label; the live queue is the sliver at the bottom, and it looks small for " +
+        "a reason: tens of thousands of CVEs were quietly stamped “Deferred” — analysis not " +
+        "pending, analysis cancelled. The queue wasn't worked off; it was reclassified away. " +
+        "The line tracks the remaining queue, one nightly snapshot at a time. An ecosystem " +
+        "whose referee retires from grading is an ecosystem grading itself.",
       note:
-        "NVD publishes no backlog history — this series is CyberMon's own nightly record.",
-      barsTitle: "Current backlog by NVD status",
+        "NVD publishes no backlog history — CyberMon started keeping this nightly record on " +
+        "{first_date}.",
+      barsTitle: "All CVEs by NVD status (log scale — queue statuses in red)",
       lineTitle: "Backlog total, nightly snapshots",
       methodology:
-        "Statuses come from the NVD 2.0 API's vulnStatus field at fetch time. “Backlog total” = " +
-        "Received + Awaiting Analysis + Undergoing Analysis. Because NVD exposes no historical " +
-        "series, CyberMon appends one row per nightly run to its own committed CSV " +
-        "(data/history/nvd_backlog.csv, last run per date wins) — the history you see starts " +
-        "when this project did.",
+        "Statuses come from NVD's vulnStatus field at fetch time (full corpus, synced " +
+        "incrementally against the API and reswept weekly from NVD's yearly feeds). “Backlog " +
+        "total” = Received + Awaiting Analysis + Undergoing Analysis; “Deferred” is NVD's " +
+        "label for CVEs it has decided not to enrich. The bar axis is logarithmic — the " +
+        "Modified pile is two orders of magnitude larger than the live queue and would " +
+        "otherwise erase it. Because NVD exposes no historical series, CyberMon appends one " +
+        "row per nightly run to its own committed CSV (data/history/nvd_backlog.csv, last " +
+        "run per date wins) — the history you see starts when this record did.",
     },
 
     // ------------------------------------------------------------------- 5
@@ -275,8 +300,9 @@ export const editorial = {
       caption:
         "CVE Numbering Authorities score the vulnerabilities they publish. These are their own " +
         "assigned numbers — not NVD's — ranked by how often they reach for 9-point-something. " +
-        "Some CNAs hand out a 9+ to nearly half their CVEs; others, publishing comparable " +
-        "volume, almost never do. Same scale, same spec. The difference is policy, not physics.",
+        "Some CNAs hand a 9+ to two of every five CVEs they score; others, at a hundred times " +
+        "the volume, almost never reach that shelf. Same scale, same spec. The difference is " +
+        "policy, not physics.",
       colCna: "CNA",
       colN: "CVEs",
       colAvg: "avg CVSS",
@@ -301,13 +327,15 @@ export const editorial = {
         "CVE records published per year, with rejections alongside. The curve explains the rest " +
         "of the page: at this volume, triage runs on the severity label alone — which is exactly " +
         "why an inflated label is expensive. The rejection line is the system's error-correction " +
-        "budget. It is not keeping pace.",
+        "budget: as a share of what ships, it keeps shrinking. The current year is partial — " +
+        "the apparent dip at the right edge is a year still being written.",
       toggleLinear: "Linear",
       toggleLog: "Log scale",
       methodology:
         "Counts come from the cvelistV5 corpus: “published” is CVE records by original " +
         "publication year; “rejected” is records with state REJECTED, counted by the same year. " +
-        "The log toggle only rescales the axis — same data.",
+        "The log toggle only rescales the axis — same data. The current year is labeled " +
+        "partial and refills nightly; comparing it to a finished year is a category error.",
     },
   },
 
@@ -316,14 +344,16 @@ export const editorial = {
     sourcesTemplate:
       "Sources — cvelistV5 release {cvelist_release} ({cve_count} CVEs) · " +
       "EPSS {epss_version} scores of {epss_date} · CISA KEV {kev_version} ({kev_count} entries) · " +
-      "NVD statuses fetched {nvd_fetched}",
+      "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, or FIRST. Charts aggregate public data; no individual CVE is news here.",
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, or arXiv. Charts aggregate " +
+      "public data; no individual CVE is news here.",
     dataNote:
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
-      "NVD API 2.0 (NIST).",
+      "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
+      "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
   },
 };
