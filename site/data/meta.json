@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-07-09T18:43:41Z",
+ "generated_at": "2026-07-09T19:29:17Z",
  "sample": false,
  "sources": {
   "cvelist": {
-   "release": "cve_2026-07-09_1700Z",
+   "release": "cve_2026-07-09_1800Z",
    "cve_count": 364118
   },
   "epss": {
@@ -16,10 +16,12 @@
    "count": 1635
   },
   "nvd": {
-   "fetched_at": "2026-07-09T18:43:41Z"
+   "fetched_at": "2026-07-09T18:43:41Z",
+   "stale": true
   },
   "market": {
    "fetched_at": "2026-07-09T18:43:41Z",
+   "stale": true,
    "term_count": 14,
    "backfill_remaining": 0
   }
