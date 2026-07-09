@@ -97,6 +97,10 @@ export const editorial = {
     "SYNTHETIC SAMPLE DATA — first real pipeline run pending. " +
     "Numbers below are shaped placeholders, not claims.",
 
+  staleBanner:
+    "THIS EDITION IS {age_days} DAYS OLD — the nightly refresh has not landed " +
+    "since {generated_at}. Numbers below are real but not current.",
+
   loadError: {
     title: "This section's data failed to load.",
     // {file} is rendered as an inline <code> element by the error card builder.
