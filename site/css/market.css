@@ -1,0 +1,161 @@
+/* ============================================================================
+   CyberMon — market.html-only styles (Security Market module).
+   Everything reusable lives in css/shared.css; this file adds only the
+   sparkline strip, the term selector, the diverging in-cell bars, the scatter
+   legend chips, and the honest empty-state card. No new colors — every value
+   comes from the shared.css custom properties.
+   ========================================================================== */
+
+/* ---------------------------------------- 1 · hype: sparkline strip ------- */
+
+.sparkline-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.sparkline-card {
+  appearance: none;
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  padding: 10px 12px 8px;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.sparkline-card:hover { border-color: var(--rule-strong); background: var(--panel-up); }
+
+.sparkline-card.is-active { border-color: var(--accent); background: var(--panel-up); }
+
+.sparkline-card:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+.sparkline-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sparkline-card.is-active .sparkline-label { color: var(--ink); }
+
+.sparkline-chart { display: block; width: 100%; height: 44px; }
+
+.strip-note {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  margin: 10px 0 0;
+}
+
+/* ---------------------------------------- 1 · hype: term selector --------- */
+
+.term-count {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  align-self: center;
+  margin-right: 14px;
+}
+
+.term-select-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.term-select {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink);
+  background: var(--panel-up);
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.term-select:hover { border-color: var(--muted); }
+
+.term-select:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+
+/* ---------------------------------------- 2 · risers: diverging bars ------ */
+
+.cellbar-diverging { width: 130px; }
+
+.cellbar-diverging::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule-strong);
+}
+
+.cellbar-diverging .pos,
+.cellbar-diverging .neg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  max-width: 50%;
+}
+
+.cellbar-diverging .pos { left: 50%; background: var(--accent); opacity: 0.75; }
+.cellbar-diverging .neg { right: 50%; background: var(--faint); opacity: 0.85; }
+
+.market-table .term-name { color: var(--ink); }
+
+.market-table .term-source { font-size: 11.5px; color: var(--muted); }
+
+/* ---------------------------------------- 3 · divergence: legend chips ---- */
+
+.quadrant-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.quadrant-chip { display: inline-flex; align-items: center; gap: 6px; }
+
+.quadrant-dot { display: inline-block; width: 8px; height: 8px; }
+
+/* ---------------------------------------- shared: honest empty state ------ */
+
+.nodata-card {
+  border: 1px dashed var(--rule-strong);
+  background: var(--panel);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 26px 24px;
+}
+
+/* stat card with nothing to report yet: drop the accent flag */
+.stat-card.is-empty { border-left-color: var(--rule-strong); }
+
+/* ---------------------------------------------------------------- mobile -- */
+
+@media (max-width: 720px) {
+  .sparkline-strip { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+  .sparkline-chart { height: 36px; }
+  .cellbar-diverging { width: 96px; }
+}

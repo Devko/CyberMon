@@ -47,7 +47,8 @@ General rules:
   "headline": {
     "latest_year": 2026,
     "pct_high_critical_latest": 59.1,
-    "pct_high_critical_decade_ago": 31.4
+    "baseline_year": 2020,
+    "pct_high_critical_baseline": 31.4
   }
 }
 ```
@@ -58,6 +59,15 @@ in each version series it has a score for, but exactly once in `blended`
 using the newest version's score). `pct_high_critical` = share of scored
 CVEs that year with base score ≥ 7.0. `blended` includes only scored CVEs;
 `n` = scored CVEs that year.
+
+Statistical filters (production runs; disabled for fixture corpora): every
+plotted point requires ≥ 100 scored CVEs that year; per-version points
+cannot predate the version's spec release (v3: 2015, v4: 2023 — CNAs
+backfill scores onto old records); `blended` points additionally require
+scores on ≥ 20% of that year's published CVEs. The headline baseline is
+`latest_year - 10` when that year survived the filters, else the earliest
+surviving year — `baseline_year` is authoritative; consumers must never
+derive the baseline year themselves.
 
 ## site/data/nine_eight_flood.json  (chart 2)
 
@@ -144,3 +154,68 @@ full org name where resolvable, else same as `cna`.
 ```
 
 `rejected` = records with state REJECTED, counted by original publication year.
+
+## site/data/market_hype.json  (Security Market module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "window_months": 60,
+  "sources": ["gdelt", "hn", "arxiv"],
+  "backfill_remaining": 812,
+  "terms": [
+    {
+      "id": "zero_trust",
+      "label": "Zero Trust",
+      "series": {
+        "gdelt": [{"month": "2023-04", "n": 812, "index": 12.4}],
+        "hn":    [{"month": "2023-06", "n": 41,  "index": 8.0}],
+        "arxiv": [{"month": "2023-05", "n": 4,   "index": 40.0}]
+      },
+      "yoy": {
+        "gdelt": {"latest_month": "2026-06", "pct_change": 340.2,
+                  "n_latest_12m": 41200, "n_prior_12m": 9360},
+        "hn": null,
+        "arxiv": {"latest_month": "2026-06", "pct_change": 118.6,
+                  "n_latest_12m": 61, "n_prior_12m": 28}
+      },
+      "divergence": {
+        "gdelt_index_avg3m": 88.1, "arxiv_index_avg3m": 61.4,
+        "research_vs_media_index": -26.7, "direction": "media_leads"
+      }
+    }
+  ],
+  "headline": {
+    "top_riser":  {"term_id": "agentic_ai", "label": "Agentic AI",
+                   "source": "gdelt", "pct_change": 340.2},
+    "top_faller": {"term_id": "sase", "label": "SASE",
+                   "source": "hn", "pct_change": -41.8},
+    "top_divergence": {"term_id": "post_quantum",
+                       "label": "Post-Quantum Cryptography",
+                       "research_vs_media_index": 55.6,
+                       "direction": "research_leads"}
+  }
+}
+```
+
+Notes: `window_months` = rolling window ending at the current calendar
+month. Each `series[source]` is sorted ascending by `month` (`YYYY-MM`),
+unique months, and may be SPARSE — months not yet fetched (HN backfill in
+progress) or outside a source's coverage are omitted, never zero-filled.
+`backfill_remaining` = pending (term, month) HN fetches. `n` = raw count
+from that source's API; `index` = `round(100 * n / max(n over the emitted
+series), 1)` (all `0.0` when the peak is 0) — index-to-own-peak, NOT
+share-of-total, so editing the tracked-term list never reshapes other
+terms' history.
+
+`yoy[source]` is `null` unless the pair has ≥ 24 populated months AND a
+nonzero prior-12-month sum; `pct_change` is computed on raw counts.
+`divergence` is `null` unless both `gdelt` and `arxiv` have ≥ 3 populated
+months; `research_vs_media_index` = arxiv 3-month index average minus
+gdelt's; `direction` ∈ research_leads / media_leads / aligned with a ±10
+dead zone. Every `headline` field is nullable — no eligible pair means
+`null`, never a fabricated number; ties break by `term_id` ascending.
+
+The term list (ids, labels, per-source query strings) lives in
+`pipeline/market_terms.py`. Validator: `pipeline/market_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).

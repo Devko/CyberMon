@@ -26,7 +26,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import contracts, history, metrics
+from . import contracts, history, market_metrics, metrics
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -50,6 +50,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--offline-fixtures", action="store_true",
                         help="run entirely from pipeline/tests/fixtures "
                              "(no network; CI smoke test)")
+    parser.add_argument("--skip-market", action="store_true",
+                        help="skip the market-hype fetch stage; carry the "
+                             "previous market_hype.json forward (marked stale)")
+    parser.add_argument("--market-backfill-batch", type=int, default=8,
+                        help="max HN backfill requests per run (default: 8; "
+                             "raise for a one-off accelerated backfill)")
     parser.add_argument("--window-years", type=int, default=3,
                         help="CNA leaderboard window (default: 3)")
     parser.add_argument("--min-cves", type=int, default=None,
@@ -77,6 +83,37 @@ def _gather_records(args: argparse.Namespace) -> tuple[str, Iterator[dict]]:
     return tag, iter_cve_records(zip_path)
 
 
+def _nvd_state_path(cache_dir: Path) -> Path:
+    return cache_dir / "nvd_status_state.json.gz"
+
+
+def _load_nvd_state(cache_dir: Path) -> dict | None:
+    """Cached NVD sync state, or None when absent/unreadable (the sync
+    then falls back to a full sweep — the state is only ever a cache)."""
+    import gzip
+
+    path = _nvd_state_path(cache_dir)
+    if not path.exists():
+        return None
+    try:
+        with gzip.open(path, "rt", encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError) as exc:
+        print(f"warning: ignoring unreadable NVD state {path}: {exc!r}")
+        return None
+
+
+def _save_nvd_state(cache_dir: Path, state: dict) -> None:
+    import gzip
+
+    path = _nvd_state_path(cache_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".tmp")
+    with gzip.open(tmp, "wt", encoding="utf-8") as f:
+        json.dump(state, f, separators=(",", ":"))
+    tmp.replace(path)
+
+
 def _gather_nvd(args: argparse.Namespace) -> dict[str, int] | None:
     """Fresh NVD status counts, or None when the stage is skipped."""
     if args.skip_nvd:
@@ -84,12 +121,13 @@ def _gather_nvd(args: argparse.Namespace) -> dict[str, int] | None:
     if args.offline_fixtures:
         return json.loads((FIXTURES_DIR / "nvd_statuses.json")
                           .read_text(encoding="utf-8"))
-    from .fetch_nvd import fetch_status_counts
+    from .fetch_nvd import status_counts, sync_status_state
 
     api_key = os.environ.get("NVD_API_KEY") or None
-    print(f"fetching NVD status counts ({'keyed' if api_key else 'keyless'}, "
-          "this is the slow stage) ...")
-    return fetch_status_counts(api_key=api_key)
+    print(f"syncing NVD status counts ({'keyed' if api_key else 'keyless'}) ...")
+    state = sync_status_state(_load_nvd_state(args.cache_dir), api_key=api_key)
+    _save_nvd_state(args.cache_dir, state)
+    return status_counts(state)
 
 
 def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
@@ -155,9 +193,14 @@ def run(args: argparse.Namespace) -> int:
     # ---- build -----------------------------------------------------------
     min_cves = args.min_cves if args.min_cves is not None else \
         (1 if args.offline_fixtures else DEFAULT_MIN_CVES)
+    # Fixture corpora are tiny; disable the hero chart's statistical filters
+    # there (the real thresholds are exercised by unit tests).
+    inflation_kwargs = {"min_n": 1, "min_share": 0.0} \
+        if args.offline_fixtures else {}
     outputs: dict[str, dict] = {
         "severity_inflation.json":
-            metrics.build_severity_inflation(agg, generated_at),
+            metrics.build_severity_inflation(agg, generated_at,
+                                             **inflation_kwargs),
         "nine_eight_flood.json":
             metrics.build_nine_eight_flood(agg, generated_at),
         "score_vs_reality.json":
@@ -173,6 +216,12 @@ def run(args: argparse.Namespace) -> int:
         args, nvd_statuses, generated_at)
     if nvd_decay is not None:
         outputs["nvd_decay.json"] = nvd_decay
+    market_hype, market_source = market_metrics.run_stage(
+        args.out, args.cache_dir, generated_at,
+        skip=args.skip_market, offline_fixtures=args.offline_fixtures,
+        backfill_batch=args.market_backfill_batch)
+    if market_hype is not None:
+        outputs["market_hype.json"] = market_hype
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -180,6 +229,8 @@ def run(args: argparse.Namespace) -> int:
         epss_score_date=epss.score_date, epss_row_count=epss.row_count,
         kev_catalog_version=kev.catalog_version, kev_count=kev.count,
         nvd_source=nvd_source)
+    if market_source is not None:
+        outputs["meta.json"]["sources"]["market"] = market_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

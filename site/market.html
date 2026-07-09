@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CyberMon — Security Market (module under construction)</title>
-  <meta name="description" content="Coming soon: a live, data-driven hype-cycle tracker for the security industry — buzzword trajectories across vendor marketing, funding rounds, job postings, and conference CFPs.">
+  <title>CyberMon — Security Market: a data-driven hype-cycle tracker for the security industry.</title>
+  <meta name="description" content="Security Market — a data-driven hype-cycle tracker for the security industry: buzzword attention indexed across global media (GDELT), Hacker News, and arXiv research, with year-over-year risers and research-vs-media divergence. Rebuilt nightly from open data.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/market.css">
 </head>
 <body>
 
@@ -33,10 +34,12 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
   <script type="module" src="js/market.js"></script>
   <noscript>
     <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
-      CyberMon is a static, client-rendered dashboard. Enable JavaScript to see this page.
+      CyberMon is a static, client-rendered dashboard. Enable JavaScript to see the charts —
+      or read the raw JSON in <code>data/</code>; every number on this page comes from those files.
     </p>
   </noscript>
 </body>

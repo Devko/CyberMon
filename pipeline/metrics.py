@@ -249,13 +249,37 @@ class Aggregator:
 
 # --------------------------------------------------------- output builders
 
-def build_severity_inflation(agg: Aggregator, generated_at: str) -> dict:
-    """Chart 1 (hero): per-version median/IQR per year + blended trend."""
+# A per-version data point may not predate its CVSS spec: CNAs backfill
+# scores onto old records (a v4 score on a CVE published 2017), and charting
+# that as "v4 median in 2017" would be historical nonsense.
+VERSION_INTRODUCED = {"v2": 0, "v3": 2015, "v4": 2023}
+
+
+def build_severity_inflation(agg: Aggregator, generated_at: str,
+                             min_n: int = 100,
+                             min_share: float = 0.2) -> dict:
+    """Chart 1 (hero): per-version median/IQR per year + blended trend.
+
+    Statistical honesty filters (documented in the chart's methodology
+    footnote — change both together):
+
+    * every plotted point needs at least ``min_n`` scored CVEs that year;
+      CNA-container CVSS in cvelistV5 is sparse before ~2017 and a
+      median-of-16 is noise, not trend;
+    * per-version points cannot predate the version's spec release
+      (``VERSION_INTRODUCED``) — backfilled scores land on old records;
+    * blended points additionally need scores for at least ``min_share``
+      of the CVEs published that year, because a year where 1% of records
+      carry a score charts selection bias (which CVEs got backfilled),
+      not the population.
+    """
     series: dict[str, list[dict]] = {}
     for family in ("v2", "v3", "v4"):
         rows = []
         for year in sorted(agg.version_scores[family]):
             scores = agg.version_scores[family][year]
+            if len(scores) < min_n or year < VERSION_INTRODUCED[family]:
+                continue
             p25, median, p75 = _quartiles(scores)
             rows.append({"year": year, "n": len(scores), "median": _r1(median),
                          "p25": _r1(p25), "p75": _r1(p75)})
@@ -264,6 +288,10 @@ def build_severity_inflation(agg: Aggregator, generated_at: str) -> dict:
     blended = []
     for year in sorted(agg.blended_scores):
         scores = agg.blended_scores[year]
+        published = agg.published_by_year.get(year, 0)
+        share = len(scores) / published if published else 0.0
+        if len(scores) < min_n or share < min_share:
+            continue
         high = sum(1 for s in scores if s >= 7.0)
         blended.append({"year": year, "n": len(scores),
                         "median": _r1(statistics.median(scores)),
@@ -271,7 +299,10 @@ def build_severity_inflation(agg: Aggregator, generated_at: str) -> dict:
 
     by_year = {row["year"]: row for row in blended}
     latest_year = blended[-1]["year"] if blended else 0
-    decade_ago = by_year.get(latest_year - 10, blended[0] if blended else None)
+    # Prefer a ten-year lookback; else the earliest year that survived the
+    # filters. Its year ships in the payload — the site must never imply a
+    # baseline year the data doesn't actually contain.
+    baseline = by_year.get(latest_year - 10, blended[0] if blended else None)
     return {
         "generated_at": generated_at,
         "series": series,
@@ -281,8 +312,9 @@ def build_severity_inflation(agg: Aggregator, generated_at: str) -> dict:
             "latest_year": latest_year,
             "pct_high_critical_latest":
                 blended[-1]["pct_high_critical"] if blended else 0.0,
-            "pct_high_critical_decade_ago":
-                decade_ago["pct_high_critical"] if decade_ago else 0.0,
+            "baseline_year": baseline["year"] if baseline else 0,
+            "pct_high_critical_baseline":
+                baseline["pct_high_critical"] if baseline else 0.0,
         },
     }
 

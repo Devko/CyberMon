@@ -76,6 +76,13 @@ reads a few-KB JSON file; there are no runtime queries.
 | [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Known Exploited Vulnerabilities catalog | US Government work; [CC0-style license](https://www.cisa.gov/sites/default/files/licenses/kev/license.txt) |
 | [NVD API 2.0](https://nvd.nist.gov/developers/vulnerabilities) (NIST) | Enrichment status (`vulnStatus`) only | Public domain (US Government); [NVD terms](https://nvd.nist.gov/general/faq) request attribution and prohibit implying endorsement |
 
+The NVD stage is **incremental**: a per-CVE status map is kept as cached
+sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
+nightly runs only fetch records modified since the last sync — seconds
+instead of a ~45-minute keyless corpus sweep. A full resweep is forced
+weekly (and whenever the state is missing or unreadable) so drift can never
+outlive `FULL_RESYNC_DAYS`.
+
 `site/data/history/` — the nightly NVD backlog snapshots — is an **original
 dataset accumulated by this project**; NVD publishes no such history. You are
 welcome to reuse it, CC-BY style: just credit "CyberMon
@@ -134,7 +141,8 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 3. *(Optional)* **Settings → Secrets and variables → Actions → New repository
    secret: `NVD_API_KEY`** — request a free key at
    https://nvd.nist.gov/developers/request-an-api-key. Without it the
-   nightly NVD sweep still works, just slower.
+   NVD stage still works but full resweeps take ~45 min instead of ~6
+   (incremental nights are fast either way).
 
 ## Disclaimer & license
 

@@ -1,22 +1,27 @@
 {
- "generated_at": "2026-07-09T00:00:00Z",
- "sample": true,
+ "generated_at": "2026-07-09T12:39:29Z",
+ "sample": false,
  "sources": {
   "cvelist": {
-   "release": "sample",
-   "cve_count": 251342
+   "release": "cve_2026-07-09_1100Z",
+   "cve_count": 364118
   },
   "epss": {
-   "model_version": "v4",
+   "model_version": "v2026.06.15",
    "score_date": "2026-07-08",
-   "row_count": 248101
+   "row_count": 346176
   },
   "kev": {
-   "catalog_version": "2026.07.08",
-   "count": 1402
+   "catalog_version": "2026.07.07",
+   "count": 1635
   },
   "nvd": {
-   "fetched_at": "2026-07-09T00:00:00Z"
+   "fetched_at": "2026-07-09T12:39:29Z"
+  },
+  "market": {
+   "fetched_at": "2026-07-09T12:39:29Z",
+   "term_count": 14,
+   "backfill_remaining": 0
   }
  }
 }

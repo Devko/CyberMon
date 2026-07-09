@@ -18,8 +18,11 @@ export function render(slots, data) {
           el("span", "hero-num accent", fmtPct(h.pct_high_critical_latest)),
           el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
           el("span", "hero-vs", "vs"),
-          el("span", "hero-num", fmtPct(h.pct_high_critical_decade_ago)),
-          el("span", "hero-when", tpl(ed.statAgo, { ago_year: h.latest_year - 10 }))
+          el("span", "hero-num", fmtPct(h.pct_high_critical_baseline)),
+          // baseline_year comes from the payload — per the contract, the
+          // baseline is the earliest year that survived the sample-size
+          // filters, not necessarily latest_year - 10.
+          el("span", "hero-when", tpl(ed.statAgo, { ago_year: h.baseline_year }))
         );
         return row;
       })()

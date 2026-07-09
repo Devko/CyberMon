@@ -131,6 +131,16 @@ def _validate_meta(obj: Any) -> None:
         _check_str(_get(src["nvd"], "fetched_at", "meta.sources.nvd"),
                    "meta.sources.nvd.fetched_at", ISO_UTC_RE)
 
+    # Optional for the same reason (--skip-market with no prior data).
+    if "market" in src:
+        _check_str(_get(src["market"], "fetched_at", "meta.sources.market"),
+                   "meta.sources.market.fetched_at", ISO_UTC_RE)
+        _check_int(_get(src["market"], "term_count", "meta.sources.market"),
+                   "meta.sources.market.term_count", minimum=1)
+        _check_int(_get(src["market"], "backfill_remaining",
+                        "meta.sources.market"),
+                   "meta.sources.market.backfill_remaining")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -162,7 +172,9 @@ def _validate_severity_inflation(obj: Any) -> None:
     headline = _get(obj, "headline", "severity_inflation")
     _check_int(_get(headline, "latest_year", "severity_inflation.headline"),
                "severity_inflation.headline.latest_year", minimum=1990)
-    for k in ("pct_high_critical_latest", "pct_high_critical_decade_ago"):
+    _check_int(_get(headline, "baseline_year", "severity_inflation.headline"),
+               "severity_inflation.headline.baseline_year", minimum=1990)
+    for k in ("pct_high_critical_latest", "pct_high_critical_baseline"):
         _check_num(_get(headline, k, "severity_inflation.headline"),
                    f"severity_inflation.headline.{k}", 0.0, 100.0)
 
@@ -305,3 +317,11 @@ def validate(filename: str, obj: Any) -> None:
     filename has no contract (an output file we never agreed to emit).
     """
     VALIDATORS[filename](obj)
+
+
+# Module contracts register themselves here. Imported at the bottom on
+# purpose: market_contracts reuses this module's private helpers at import
+# time, so it must load only after they are all defined.
+from . import market_contracts  # noqa: E402
+
+VALIDATORS.update(market_contracts.VALIDATORS)

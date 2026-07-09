@@ -1,412 +1,174 @@
 {
- "generated_at": "2026-07-09T00:00:00Z",
+ "generated_at": "2026-07-09T12:39:29Z",
  "series": {
   "v2": [
    {
-    "year": 1999,
-    "n": 1500,
-    "median": 5.0,
-    "p25": 4.3,
+    "year": 2023,
+    "n": 1931,
+    "median": 5.2,
+    "p25": 4.0,
+    "p75": 6.5
+   },
+   {
+    "year": 2024,
+    "n": 2965,
+    "median": 6.5,
+    "p25": 5.0,
     "p75": 6.8
    },
    {
-    "year": 2000,
-    "n": 2030,
-    "median": 5.0,
-    "p25": 4.3,
-    "p75": 6.8
-   },
-   {
-    "year": 2001,
-    "n": 2561,
-    "median": 5.1,
-    "p25": 4.3,
-    "p75": 6.9
-   },
-   {
-    "year": 2002,
-    "n": 3092,
-    "median": 5.2,
-    "p25": 4.3,
-    "p75": 6.9
-   },
-   {
-    "year": 2003,
-    "n": 3622,
-    "median": 5.2,
-    "p25": 4.3,
-    "p75": 7.0
-   },
-   {
-    "year": 2004,
-    "n": 4153,
-    "median": 5.2,
-    "p25": 4.3,
-    "p75": 7.0
-   },
-   {
-    "year": 2005,
-    "n": 4684,
-    "median": 5.3,
-    "p25": 4.3,
-    "p75": 7.0
-   },
-   {
-    "year": 2006,
-    "n": 4628,
-    "median": 5.3,
-    "p25": 4.3,
-    "p75": 7.1
-   },
-   {
-    "year": 2007,
-    "n": 4573,
-    "median": 5.4,
-    "p25": 4.3,
-    "p75": 7.1
-   },
-   {
-    "year": 2008,
-    "n": 4517,
-    "median": 5.5,
-    "p25": 4.3,
-    "p75": 7.2
-   },
-   {
-    "year": 2009,
-    "n": 4462,
-    "median": 5.5,
-    "p25": 4.3,
-    "p75": 7.2
-   },
-   {
-    "year": 2010,
-    "n": 4407,
-    "median": 5.5,
-    "p25": 4.3,
-    "p75": 7.2
-   },
-   {
-    "year": 2011,
-    "n": 4756,
-    "median": 5.6,
-    "p25": 4.3,
-    "p75": 7.3
-   },
-   {
-    "year": 2012,
-    "n": 5106,
-    "median": 5.7,
-    "p25": 4.3,
-    "p75": 7.3
-   },
-   {
-    "year": 2013,
-    "n": 5455,
-    "median": 5.7,
-    "p25": 4.3,
-    "p75": 7.4
-   },
-   {
-    "year": 2014,
-    "n": 5805,
-    "median": 5.8,
-    "p25": 4.3,
-    "p75": 7.4
-   },
-   {
-    "year": 2015,
-    "n": 6156,
-    "median": 5.8,
-    "p25": 4.3,
-    "p75": 7.4
-   },
-   {
-    "year": 2016,
-    "n": 10033,
-    "median": 5.8,
-    "p25": 4.3,
+    "year": 2025,
+    "n": 5899,
+    "median": 6.5,
+    "p25": 5.0,
     "p75": 7.5
    },
    {
-    "year": 2017,
-    "n": 13912,
-    "median": 5.9,
-    "p25": 4.3,
+    "year": 2026,
+    "n": 3482,
+    "median": 6.5,
+    "p25": 5.0,
     "p75": 7.5
    }
   ],
   "v3": [
    {
-    "year": 2016,
-    "n": 5016,
-    "median": 7.5,
-    "p25": 6.1,
-    "p75": 8.8
-   },
-   {
     "year": 2017,
-    "n": 6956,
-    "median": 7.5,
-    "p25": 6.2,
+    "n": 214,
+    "median": 8.3,
+    "p25": 7.5,
     "p75": 8.8
    },
    {
     "year": 2018,
-    "n": 15077,
-    "median": 7.6,
-    "p25": 6.2,
-    "p75": 8.9
+    "n": 1553,
+    "median": 6.5,
+    "p25": 5.3,
+    "p75": 8.0
    },
    {
     "year": 2019,
-    "n": 16243,
-    "median": 7.7,
-    "p25": 6.2,
-    "p75": 9.0
+    "n": 2413,
+    "median": 6.5,
+    "p25": 5.3,
+    "p75": 7.8
    },
    {
     "year": 2020,
-    "n": 17408,
-    "median": 7.7,
-    "p25": 6.3,
-    "p75": 9.0
+    "n": 5732,
+    "median": 6.7,
+    "p25": 5.4,
+    "p75": 7.8
    },
    {
     "year": 2021,
-    "n": 20607,
-    "median": 7.8,
-    "p25": 6.3,
-    "p75": 9.1
+    "n": 8039,
+    "median": 7.1,
+    "p25": 5.4,
+    "p75": 7.8
    },
    {
     "year": 2022,
-    "n": 23806,
-    "median": 7.8,
-    "p25": 6.4,
-    "p75": 9.1
+    "n": 10684,
+    "median": 6.6,
+    "p25": 5.3,
+    "p75": 7.8
    },
    {
     "year": 2023,
-    "n": 30907,
-    "median": 7.8,
-    "p25": 6.4,
-    "p75": 9.2
+    "n": 17322,
+    "median": 6.5,
+    "p25": 5.4,
+    "p75": 7.8
    },
    {
     "year": 2024,
-    "n": 32807,
-    "median": 7.9,
-    "p25": 6.5,
-    "p75": 9.2
+    "n": 25400,
+    "median": 6.5,
+    "p25": 5.4,
+    "p75": 7.8
    },
    {
     "year": 2025,
-    "n": 37723,
-    "median": 8.0,
-    "p25": 6.6,
-    "p75": 9.2
+    "n": 30302,
+    "median": 6.5,
+    "p25": 5.3,
+    "p75": 7.5
    },
    {
     "year": 2026,
-    "n": 42640,
-    "median": 8.0,
-    "p25": 6.6,
-    "p75": 9.3
+    "n": 24784,
+    "median": 7.1,
+    "p25": 5.5,
+    "p75": 8.1
    }
   ],
   "v4": [
    {
     "year": 2024,
-    "n": 4921,
-    "median": 7.3,
-    "p25": 5.9,
-    "p75": 8.6
+    "n": 3566,
+    "median": 6.7,
+    "p25": 5.3,
+    "p75": 8.2
    },
    {
     "year": 2025,
-    "n": 5658,
-    "median": 7.3,
-    "p25": 5.9,
-    "p75": 8.6
+    "n": 12419,
+    "median": 6.9,
+    "p25": 5.3,
+    "p75": 8.4
    },
    {
     "year": 2026,
-    "n": 6396,
-    "median": 7.3,
-    "p25": 5.9,
+    "n": 13112,
+    "median": 6.9,
+    "p25": 5.3,
     "p75": 8.6
    }
   ]
  },
  "blended": [
   {
-   "year": 1999,
-   "n": 1500,
-   "median": 5.0,
-   "pct_high_critical": 25.0
-  },
-  {
-   "year": 2000,
-   "n": 2030,
-   "median": 5.0,
-   "pct_high_critical": 26.3
-  },
-  {
-   "year": 2001,
-   "n": 2561,
-   "median": 5.1,
-   "pct_high_critical": 27.6
-  },
-  {
-   "year": 2002,
-   "n": 3092,
-   "median": 5.2,
-   "pct_high_critical": 28.9
-  },
-  {
-   "year": 2003,
-   "n": 3622,
-   "median": 5.2,
-   "pct_high_critical": 30.2
-  },
-  {
-   "year": 2004,
-   "n": 4153,
-   "median": 5.2,
-   "pct_high_critical": 31.5
-  },
-  {
-   "year": 2005,
-   "n": 4684,
-   "median": 5.3,
-   "pct_high_critical": 32.8
-  },
-  {
-   "year": 2006,
-   "n": 4628,
-   "median": 5.3,
-   "pct_high_critical": 34.1
-  },
-  {
-   "year": 2007,
-   "n": 4573,
-   "median": 5.4,
-   "pct_high_critical": 35.4
-  },
-  {
-   "year": 2008,
-   "n": 4517,
-   "median": 5.5,
-   "pct_high_critical": 36.7
-  },
-  {
-   "year": 2009,
-   "n": 4462,
-   "median": 5.5,
-   "pct_high_critical": 38.0
-  },
-  {
-   "year": 2010,
-   "n": 4407,
-   "median": 5.5,
-   "pct_high_critical": 39.3
-  },
-  {
-   "year": 2011,
-   "n": 4756,
-   "median": 5.6,
-   "pct_high_critical": 40.6
-  },
-  {
-   "year": 2012,
-   "n": 5106,
-   "median": 5.7,
-   "pct_high_critical": 41.9
-  },
-  {
-   "year": 2013,
-   "n": 5455,
-   "median": 5.7,
-   "pct_high_critical": 43.2
-  },
-  {
-   "year": 2014,
-   "n": 5805,
-   "median": 5.8,
-   "pct_high_critical": 44.5
-  },
-  {
-   "year": 2015,
-   "n": 6156,
-   "median": 5.8,
-   "pct_high_critical": 45.8
-  },
-  {
-   "year": 2016,
-   "n": 10033,
-   "median": 7.4,
-   "pct_high_critical": 47.1
-  },
-  {
-   "year": 2017,
-   "n": 13912,
-   "median": 7.5,
-   "pct_high_critical": 48.4
-  },
-  {
-   "year": 2018,
-   "n": 15077,
-   "median": 7.5,
-   "pct_high_critical": 49.7
-  },
-  {
-   "year": 2019,
-   "n": 16243,
-   "median": 7.6,
-   "pct_high_critical": 51.0
-  },
-  {
    "year": 2020,
-   "n": 17408,
-   "median": 7.6,
-   "pct_high_critical": 52.3
+   "n": 5736,
+   "median": 6.7,
+   "pct_high_critical": 46.1
   },
   {
    "year": 2021,
-   "n": 20607,
-   "median": 7.7,
-   "pct_high_critical": 53.6
+   "n": 8043,
+   "median": 7.1,
+   "pct_high_critical": 51.1
   },
   {
    "year": 2022,
-   "n": 23806,
-   "median": 7.7,
-   "pct_high_critical": 54.9
+   "n": 10688,
+   "median": 6.6,
+   "pct_high_critical": 46.9
   },
   {
    "year": 2023,
-   "n": 30907,
-   "median": 7.8,
-   "pct_high_critical": 56.2
+   "n": 17325,
+   "median": 6.5,
+   "pct_high_critical": 41.6
   },
   {
    "year": 2024,
-   "n": 32807,
-   "median": 7.8,
-   "pct_high_critical": 57.5
+   "n": 26419,
+   "median": 6.5,
+   "pct_high_critical": 41.6
   },
   {
    "year": 2025,
-   "n": 37723,
-   "median": 7.9,
-   "pct_high_critical": 58.8
+   "n": 34825,
+   "median": 6.5,
+   "pct_high_critical": 40.6
   },
   {
    "year": 2026,
-   "n": 42640,
-   "median": 7.9,
-   "pct_high_critical": 60.0
+   "n": 30095,
+   "median": 6.9,
+   "pct_high_critical": 49.4
   }
  ],
  "annotations": [
@@ -421,7 +183,8 @@
  ],
  "headline": {
   "latest_year": 2026,
-  "pct_high_critical_latest": 60.0,
-  "pct_high_critical_decade_ago": 47.1
+  "pct_high_critical_latest": 49.4,
+  "baseline_year": 2020,
+  "pct_high_critical_baseline": 46.1
  }
 }

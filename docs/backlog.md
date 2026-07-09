@@ -1,7 +1,16 @@
 # Module backlog
 
 Candidate monitoring modules, beyond the two that exist today
-(01 · CVE Ecosystem — live; 02 · Security Market — under construction).
+(01 · CVE Ecosystem — live; 02 · Security Market — live).
+
+**Verified spare data sources for Security Market v1.1** (live-tested
+2026-07-09): SEC EDGAR full-text search (free JSON API, mandatory
+User-Agent header, history to 2001 — an "enterprise/investor attention"
+lane) and Wikipedia Pageviews REST API (server-side monthly aggregates,
+one request per term for the whole history, the most reliable API tested —
+designated fallback if GDELT's rate limiting becomes intolerable).
+Rejected: Stack Exchange (too sparse), GitHub search (workable but
+rate-limit-cramped; future 4th source at best).
 
 House rules for any module that ships (same bar as the existing two):
 

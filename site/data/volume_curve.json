@@ -1,145 +1,145 @@
 {
- "generated_at": "2026-07-09T00:00:00Z",
+ "generated_at": "2026-07-09T12:39:29Z",
  "years": [
   {
    "year": 1999,
-   "published": 1579,
-   "rejected": 23
+   "published": 320,
+   "rejected": 1
   },
   {
    "year": 2000,
-   "published": 2137,
+   "published": 1437,
    "rejected": 32
   },
   {
    "year": 2001,
-   "published": 2696,
-   "rejected": 40
+   "published": 1323,
+   "rejected": 3
   },
   {
    "year": 2002,
-   "published": 3255,
-   "rejected": 48
+   "published": 1690,
+   "rejected": 9
   },
   {
    "year": 2003,
-   "published": 3813,
-   "rejected": 57
+   "published": 1223,
+   "rejected": 16
   },
   {
    "year": 2004,
-   "published": 4372,
-   "rejected": 65
+   "published": 1612,
+   "rejected": 15
   },
   {
    "year": 2005,
-   "published": 4931,
-   "rejected": 73
+   "published": 6708,
+   "rejected": 97
   },
   {
    "year": 2006,
-   "published": 4872,
-   "rejected": 73
+   "published": 6885,
+   "rejected": 61
   },
   {
    "year": 2007,
-   "published": 4814,
-   "rejected": 72
+   "published": 7211,
+   "rejected": 81
   },
   {
    "year": 2008,
-   "published": 4755,
-   "rejected": 71
+   "published": 5673,
+   "rejected": 36
   },
   {
    "year": 2009,
-   "published": 4697,
-   "rejected": 70
+   "published": 5732,
+   "rejected": 57
   },
   {
    "year": 2010,
    "published": 4639,
-   "rejected": 69
+   "rejected": 49
   },
   {
    "year": 2011,
-   "published": 5007,
-   "rejected": 75
+   "published": 4150,
+   "rejected": 49
   },
   {
    "year": 2012,
-   "published": 5375,
-   "rejected": 80
+   "published": 5288,
+   "rejected": 100
   },
   {
    "year": 2013,
-   "published": 5743,
-   "rejected": 86
-  },
-  {
-   "year": 2014,
-   "published": 6111,
-   "rejected": 91
-  },
-  {
-   "year": 2015,
-   "published": 6480,
-   "rejected": 97
-  },
-  {
-   "year": 2016,
-   "published": 10562,
-   "rejected": 158
-  },
-  {
-   "year": 2017,
-   "published": 14645,
+   "published": 5187,
    "rejected": 219
   },
   {
+   "year": 2014,
+   "published": 7928,
+   "rejected": 86
+  },
+  {
+   "year": 2015,
+   "published": 6494,
+   "rejected": 102
+  },
+  {
+   "year": 2016,
+   "published": 6457,
+   "rejected": 70
+  },
+  {
+   "year": 2017,
+   "published": 14642,
+   "rejected": 3653
+  },
+  {
    "year": 2018,
-   "published": 15871,
-   "rejected": 238
+   "published": 16510,
+   "rejected": 2188
   },
   {
    "year": 2019,
-   "published": 17098,
-   "rejected": 256
+   "published": 17308,
+   "rejected": 1921
   },
   {
    "year": 2020,
-   "published": 18325,
-   "rejected": 274
+   "published": 18363,
+   "rejected": 1410
   },
   {
    "year": 2021,
-   "published": 21692,
-   "rejected": 325
+   "published": 20177,
+   "rejected": 2201
   },
   {
    "year": 2022,
-   "published": 25059,
-   "rejected": 375
+   "published": 25000,
+   "rejected": 1499
   },
   {
    "year": 2023,
-   "published": 32534,
-   "rejected": 488
+   "published": 28848,
+   "rejected": 546
   },
   {
    "year": 2024,
-   "published": 40009,
-   "rejected": 600
+   "published": 39930,
+   "rejected": 813
   },
   {
    "year": 2025,
-   "published": 46004,
-   "rejected": 690
+   "published": 48168,
+   "rejected": 1864
   },
   {
    "year": 2026,
-   "published": 52000,
-   "rejected": 780
+   "published": 37567,
+   "rejected": 470
   }
  ]
 }

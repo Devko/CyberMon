@@ -42,6 +42,28 @@ jobs:
       - name: Install pipeline dependencies
         run: pip install -r pipeline/requirements.txt
 
+      # NVD incremental-sync state (per-CVE status map). A cache miss is
+      # harmless: the pipeline just does a full corpus sweep and rebuilds
+      # it. The key is unique per run so the updated state is saved after
+      # every night; restore-keys picks up the newest previous one.
+      - name: Restore NVD sync state
+        uses: actions/cache@v4
+        with:
+          path: .cache/nvd_status_state.json.gz
+          key: nvd-status-state-${{ github.run_id }}
+          restore-keys: |
+            nvd-status-state-
+
+      # Market-hype sync state (per-term monthly counts + HN backfill
+      # queue). Same self-healing semantics as the NVD state above.
+      - name: Restore market-hype sync state
+        uses: actions/cache@v4
+        with:
+          path: .cache/market_state.json
+          key: market-state-${{ github.run_id }}
+          restore-keys: |
+            market-state-
+
       # If this step fails, the job fails and the deploy job below is
       # skipped — stale/broken data is never deployed. Do NOT add
       # continue-on-error here.

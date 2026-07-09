@@ -59,37 +59,12 @@ export const editorial = {
         label: "Security Market",
         headline: "The security industry runs on a hype curve. Nobody publishes the curve.",
         blurb:
-          "Buzzword trajectories across vendor marketing, funding rounds, job postings, and " +
-          "conference CFPs. Pipeline under construction.",
-        live: false,
+          "Buzzword hype curves across news coverage (GDELT), practitioner chatter " +
+          "(Hacker News), and research output (arXiv) — every term graded against its " +
+          "own five-year peak, rebuilt nightly.",
+        live: true,
       },
     ],
-  },
-
-  // ------------------------------------------------- market.html (stub tab)
-  market: {
-    pageTitle: "CyberMon — Security Market (module under construction)",
-    kicker: "Module 02 — Security Market",
-    headline: "The security industry runs on a hype curve. Nobody publishes the curve.",
-    caption:
-      "Analysts sell you their read of the cycle once a year, methodology sealed. This module " +
-      "will track the hype itself, continuously and in the open: which words the industry is " +
-      "betting on, where the money follows, and how long each wave takes to break. Same house " +
-      "rules as the CVE dashboard — provocative headline, auditable methodology, nightly " +
-      "pipeline, raw JSON you can check.",
-    statusTag: "signal pending",
-    statusLine: "COMING SOON — the pipeline for this module is under construction.",
-    signalsTitle: "Planned signal sources",
-    signals: [
-      { name: "Vendor marketing language", note: "buzzword trajectories across product pages and press releases" },
-      { name: "Funding rounds", note: "where investors say the hype is" },
-      { name: "Job postings", note: "what the market actually staffs for" },
-      { name: "Conference CFPs", note: "what practitioners want to talk about next year" },
-    ],
-    promise:
-      "Nothing ships here until its nightly pipeline does. When this tab goes live, every curve " +
-      "on it will come with the same expandable “how this is computed” footnote as everything else " +
-      "on CyberMon.",
   },
 
   sampleBanner:
@@ -107,19 +82,106 @@ export const editorial = {
   methodologySourceLinkText: "pipeline/metrics.py",
 
   sections: {
+    // ------------------------------------------- market.html · 1 · hero
+    hype: {
+      num: "01",
+      kicker: "Hype curves",
+      headline: "Every term is graded against its own best month.",
+      caption:
+        "Media mentions (GDELT news coverage), practitioner chatter (Hacker News), and " +
+        "research output (arXiv cs.CR preprints) for one term at a time, each indexed to " +
+        "its own five-year peak so a slow-burning research topic and a marketing blitz " +
+        "can share an axis without one drowning the other. Pick a term; the cards are " +
+        "shortcuts.",
+      selectLabel: "Term",
+      termCountNote: "Tracking {n} terms — curated list: pipeline/market_terms.py",
+      sparklineNote: "Click a card to load it above. Sparklines show the media (GDELT) index only.",
+      methodology:
+        "For each tracked term and each of three sources — GDELT 2.0 (news article volume), " +
+        "Hacker News (Algolia search API, stories and comments), arXiv (cs.CR preprint " +
+        "count) — the pipeline pulls a monthly count over a rolling five-year window. Each " +
+        "series is indexed to its own highest month in that window (peak = 100); this is " +
+        "recomputed nightly, so a new peak nudges every earlier point down proportionally. " +
+        "Raw counts ride along in the tooltip for every point. Series are deliberately not " +
+        "shown as a share of the tracked term list — adding or retiring a term would " +
+        "silently reshape every other term's history under that scheme. Hacker News has no " +
+        "per-month histogram endpoint, so five years of monthly history backfills over the " +
+        "first weeks; a term's line may start partway through the window until backfill " +
+        "catches up.",
+    },
+
+    // ------------------------------------------- market.html · 2
+    risers: {
+      num: "02",
+      kicker: "Risers & fallers",
+      headline: "Same twelve months, opposite direction.",
+      caption:
+        "Year-over-year change in mention volume, term by term and source by source — the " +
+        "last twelve collected months against the twelve before that. A term can rise in " +
+        "the press while falling on Hacker News; the board keeps sources separate on " +
+        "purpose, because hype and adoption are not the same claim.",
+      statRiserLabel: "Steepest riser",
+      statFallerLabel: "Steepest faller",
+      statTemplate: "{label} · {source}",
+      colTerm: "Term",
+      colSource: "Source",
+      colChange: "YoY change",
+      colVolume: "Last 12 months",
+      eligibilityNote:
+        "Rows need a full two years of collected data to post a YoY figure; recently added " +
+        "or still-backfilling terms are omitted until then.",
+      methodology:
+        "For each (term, source) pair, sum raw monthly counts for the most recent twelve " +
+        "populated months and the twelve months before that; YoY change is the percentage " +
+        "difference between the two sums. Pairs with fewer than twenty-four populated " +
+        "months, or a zero-count prior-year baseline, are excluded — a missing number is " +
+        "honest, a fabricated one is not. Sort any column; default is steepest riser first.",
+    },
+
+    // ------------------------------------------- market.html · 3
+    divergence: {
+      num: "03",
+      kicker: "Research vs. media divergence",
+      headline: "Some terms are ahead of the papers. Others are ahead of the proof.",
+      caption:
+        "Each term placed by how close it currently sits to its own research peak (arXiv, " +
+        "vertical) versus its own media peak (GDELT, horizontal). Above the line, academia " +
+        "is further into the cycle than the press has noticed. Below the line, marketing " +
+        "has outrun the research base. On the line, the two move together.",
+      statLabel: "Widest divergence",
+      statTemplate: "{label} · {direction}, {points} index points apart",
+      directionResearchLeads: "research leads",
+      directionMediaLeads: "media leads",
+      directionAligned: "aligned",
+      xAxisLabel: "Media attention index (GDELT, % of own 5y peak)",
+      yAxisLabel: "Research attention index (arXiv, % of own 5y peak)",
+      legendResearchLeads: "Research leads",
+      legendMediaLeads: "Media leads",
+      legendAligned: "Aligned",
+      methodology:
+        "Each axis is the term's own attention index (see Hype curves methodology), " +
+        "averaged over the three most recent populated months, for GDELT (x) and arXiv " +
+        "(y). A term's divergence score is the y-axis value minus the x-axis value, in " +
+        "index points; scores beyond ±10 are labeled “research leads” or “media leads,” " +
+        "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
+        "both indices carry real month-to-month noise. Terms missing three recent " +
+        "populated months in either source (usually mid-backfill) are omitted.",
+    },
+
     // -------------------------------------------------------------- 1 · hero
     inflation: {
       num: "01",
       kicker: "Severity inflation",
-      headline: "The average vulnerability is now “High.”",
+      headline: "Nearly half of everything ships as “High” or worse.",
       caption:
-        "Median CVSS base score of newly published CVEs, year by year. Part of the climb is " +
-        "methodology — CVSS v3 scores run structurally higher than v2, which is why the " +
-        "per-version lines and the release markers are on the chart — but the drift continues " +
-        "inside each version's own era. When the middle of the distribution sits at “High,” " +
-        "the word stops ranking anything.",
+        "Median CVSS base score of newly published CVEs, year by year, split by scoring " +
+        "version — v3 runs structurally higher than v2, so the per-version lines and release " +
+        "markers keep a methodology change from masquerading as drift. The chart begins where " +
+        "CNA-assigned scores become dense enough to chart honestly (the footnote has the bar). " +
+        "What the dense years show: medians parked at the doorstep of “High,” and four to five " +
+        "of every ten scored CVEs rated 7.0 or worse. A scale whose midpoint lives that far up " +
+        "has stopped ranking anything.",
       statLabel: "Share of scored CVEs rated High or Critical (base score ≥ 7.0)",
-      statTemplate: "{latest_pct} today vs {ago_pct} a decade ago",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
       methodology:
@@ -128,7 +190,14 @@ export const editorial = {
         "shaded bands span the 25th–75th percentile (IQR). A record scored under several versions " +
         "appears in each version's series, but exactly once in the blended line, using its newest " +
         "version's score. “% High or Critical” is the share of scored CVEs that year with base " +
-        "score ≥ 7.0; unscored CVEs are excluded. Vertical markers are CVSS spec releases.",
+        "score ≥ 7.0; unscored CVEs are excluded. Vertical markers are CVSS spec releases. " +
+        "Honesty filters: a point is plotted only if that year has at least 100 scored CVEs in " +
+        "that series; per-version points cannot predate the version's spec release (CNAs " +
+        "backfill scores onto old records); and the blended line additionally requires scores " +
+        "on at least 20% of the CVEs published that year — years with 1% coverage chart which " +
+        "records got backfilled, not what was published. The headline compares the latest year " +
+        "against the earliest year that clears these filters. The current year is partial and " +
+        "moves nightly.",
     },
 
     // ------------------------------------------------------------------- 2

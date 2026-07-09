@@ -62,7 +62,8 @@ def main() -> None:
                         {"year": 2023, "label": "CVSS v4.0 released"}],
         "headline": {"latest_year": 2026,
                      "pct_high_critical_latest": blended[-1]["pct_high_critical"],
-                     "pct_high_critical_decade_ago": blended[-11]["pct_high_critical"]},
+                     "baseline_year": blended[-11]["year"],
+                     "pct_high_critical_baseline": blended[-11]["pct_high_critical"]},
     })
 
     # --- nine_eight_flood.json ---

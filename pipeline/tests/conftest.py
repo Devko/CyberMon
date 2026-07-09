@@ -41,7 +41,8 @@ def outputs(agg, epss, kev) -> dict[str, dict]:
     history_rows = [metrics.backlog_row(statuses, "2026-07-09")]
     return {
         "severity_inflation.json":
-            metrics.build_severity_inflation(agg, GENERATED_AT),
+            metrics.build_severity_inflation(agg, GENERATED_AT,
+                                             min_n=1, min_share=0.0),
         "nine_eight_flood.json":
             metrics.build_nine_eight_flood(agg, GENERATED_AT),
         "score_vs_reality.json":

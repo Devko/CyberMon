@@ -103,7 +103,8 @@ def test_extract_facts_ignores_non_cve_documents():
 # ---------------------------------------------------- chart 1: severity
 
 def test_severity_series_and_blended_dedup(agg):
-    out = metrics.build_severity_inflation(agg, GENERATED_AT)
+    out = metrics.build_severity_inflation(agg, GENERATED_AT,
+                                           min_n=1, min_share=0.0)
 
     v2_2014 = next(r for r in out["series"]["v2"] if r["year"] == 2014)
     assert v2_2014["n"] == 2 and v2_2014["median"] == 5.4
@@ -127,18 +128,46 @@ def test_severity_series_and_blended_dedup(agg):
 
 
 def test_pct_high_critical_edge_at_7(agg):
-    out = metrics.build_severity_inflation(agg, GENERATED_AT)
+    out = metrics.build_severity_inflation(agg, GENERATED_AT,
+                                           min_n=1, min_share=0.0)
     b2023 = next(r for r in out["blended"] if r["year"] == 2023)
     # scores 9.8, 7.0, 6.9 -> 7.0 counts as high, 6.9 does not.
     assert b2023["n"] == 3 and b2023["pct_high_critical"] == 66.7
 
 
-def test_headline_falls_back_when_decade_ago_missing(agg):
-    out = metrics.build_severity_inflation(agg, GENERATED_AT)
+def test_headline_baseline_falls_back_when_decade_ago_missing(agg):
+    out = metrics.build_severity_inflation(agg, GENERATED_AT,
+                                           min_n=1, min_share=0.0)
     assert out["headline"]["latest_year"] == 2025
     assert out["headline"]["pct_high_critical_latest"] == 100.0
-    # 2015 has no data: falls back to the earliest blended year (2014, 0%).
-    assert out["headline"]["pct_high_critical_decade_ago"] == 0.0
+    # 2015 has no data: falls back to the earliest blended year (2014, 0%),
+    # and the payload names that year explicitly.
+    assert out["headline"]["baseline_year"] == 2014
+    assert out["headline"]["pct_high_critical_baseline"] == 0.0
+
+
+def test_inflation_filters_drop_thin_and_impossible_years():
+    agg = metrics.Aggregator()
+    for _ in range(150):
+        # 150 v4 scores backfilled onto CVEs published 2019 (v4 didn't
+        # exist), 150 legitimate ones on 2024 CVEs.
+        agg.version_scores["v4"][2019].append(9.0)
+        agg.version_scores["v4"][2024].append(7.0)
+        agg.blended_scores[2019].append(9.0)
+        agg.blended_scores[2024].append(7.0)
+    for _ in range(50):  # under min_n=100 -> dropped everywhere
+        agg.version_scores["v3"][2020].append(6.0)
+        agg.blended_scores[2020].append(6.0)
+    agg.published_by_year[2019] = 10000  # 1.5% coverage -> blended dropped
+    agg.published_by_year[2020] = 100
+    agg.published_by_year[2024] = 300    # 50% coverage -> kept
+
+    out = metrics.build_severity_inflation(agg, GENERATED_AT)  # prod defaults
+
+    assert [r["year"] for r in out["series"]["v4"]] == [2024]  # no 2019
+    assert out["series"]["v3"] == []                           # n=50 < 100
+    assert [r["year"] for r in out["blended"]] == [2024]
+    assert out["headline"]["baseline_year"] == 2024
 
 
 # ---------------------------------------------------- chart 2: 9.8 flood
