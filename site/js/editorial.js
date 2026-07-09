@@ -71,7 +71,7 @@ export const editorial = {
         href: "kev.html",
         num: "03",
         label: "KEV Latency",
-        headline: "By the time the government confirms it's exploited, you've been exposed for months.",
+        headline: "By the time the government confirms it's exploited, the exploit had a head start.",
         blurb:
           "Days from CVE publication to CISA's Known Exploited Vulnerabilities listing, " +
           "remediation deadlines, and the catalog's 2021–22 seeding era kept honestly separate from " +
@@ -406,7 +406,7 @@ export const editorial = {
     buckets: {
       num: "02",
       kicker: "Latency distribution",
-      headline: "A third of KEV listings land inside a week. Six percent land three years late.",
+      headline: "Nearly four in ten KEV listings land inside a week. One in seven lands three years late.",
       caption:
         "The same matched cohort as the trend above, folded into buckets: how many listings " +
         "arrive before the CVE is even published, how many inside a week, a month, a quarter, " +

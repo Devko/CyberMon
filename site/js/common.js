@@ -90,8 +90,8 @@ function renderMeta(meta) {
       epss_date: s.epss?.score_date ?? "?",
       kev_version: s.kev?.catalog_version ?? "?",
       kev_count: (s.kev?.count ?? 0).toLocaleString("en-US"),
-      nvd_fetched: s.nvd?.fetched_at ?? "?",
-      market_fetched: s.market?.fetched_at ?? "?",
+      nvd_fetched: (s.nvd?.fetched_at ?? "?") + (s.nvd?.stale ? " (carried forward)" : ""),
+      market_fetched: (s.market?.fetched_at ?? "?") + (s.market?.stale ? " (carried forward)" : ""),
     }))
   );
 }
