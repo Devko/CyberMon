@@ -36,8 +36,8 @@ export const editorial = {
     caption:
       "CyberMon watches the machinery of the security industry itself — the scoring systems, " +
       "the institutions, the market — not the vulnerability of the week. Each module below is " +
-      "its own page with its own nightly pipeline stage, its own data contracts, and its own " +
-      "expandable “how this is computed” footnotes.",
+      "a separate page with its own nightly pipeline stage, data contracts, and expandable " +
+      "“how this is computed” footnotes.",
     statusLive: "live",
     statusSoon: "coming soon",
     backlogNote:
@@ -164,9 +164,8 @@ export const editorial = {
         "populated months and the twelve months before that; YoY change is the percentage " +
         "difference between the two sums. Pairs with fewer than twenty-four populated " +
         "months, a zero-count prior-year baseline, or fewer than thirty raw hits across " +
-        "both windows are excluded — a percentage of almost nothing is a rumor, not a " +
-        "rate, and a missing number is honest where a fabricated one is not. Sort any " +
-        "column; default is steepest riser first.",
+        "both windows are excluded — a percentage computed on a handful of hits means " +
+        "nothing. Sort any column; default is steepest riser first.",
     },
 
     // ------------------------------------------- market.html · 3
@@ -300,8 +299,8 @@ export const editorial = {
         "own status label; the live queue is the sliver at the bottom, and it looks small for " +
         "a reason: tens of thousands of CVEs were quietly stamped “Deferred” — analysis not " +
         "pending, analysis cancelled. The queue wasn't worked off; it was reclassified away. " +
-        "The line tracks the remaining queue, one nightly snapshot at a time. An ecosystem " +
-        "whose referee retires from grading is an ecosystem grading itself.",
+        "The line tracks the remaining queue, one nightly snapshot at a time. When the " +
+        "referee stops grading, the industry grades itself.",
       note:
         "NVD publishes no backlog history — CyberMon started keeping this nightly record on " +
         "{first_date}.",
@@ -327,8 +326,8 @@ export const editorial = {
         "CVE Numbering Authorities score the vulnerabilities they publish. These are their own " +
         "assigned numbers — not NVD's — ranked by how often they reach for 9-point-something. " +
         "Some CNAs hand a 9+ to two of every five CVEs they score; others, at a hundred times " +
-        "the volume, almost never reach that shelf. Same scale, same spec. The difference is " +
-        "policy, not physics.",
+        "the volume, almost never reach that shelf. Same scale, same spec — the gap is " +
+        "scoring policy.",
       colCna: "CNA",
       colN: "CVEs",
       colAvg: "avg CVSS",
@@ -361,7 +360,7 @@ export const editorial = {
         "Counts come from the cvelistV5 corpus: “published” is CVE records by original " +
         "publication year; “rejected” is records with state REJECTED, counted by the same year. " +
         "The log toggle only rescales the axis — same data. The current year is labeled " +
-        "partial and refills nightly; comparing it to a finished year is a category error.",
+        "partial and refills nightly; it is not comparable to a finished year.",
     },
 
     // --------------------------------------------- kev.html · 1 · hero
@@ -486,9 +485,8 @@ export const editorial = {
       caption:
         "Bars count CNAs publishing their first-ever CVE record that year; the line is the " +
         "total active roster. Recruitment is real — the program is adding assignors faster " +
-        "than it ever has. Hold that against the chart above and the punchline writes " +
-        "itself: the newcomers add count, not share. The head of the table absorbs the " +
-        "growth.",
+        "than it ever has. Hold that against the chart above: the newcomers add count, " +
+        "not share. The head of the table absorbs the growth.",
       methodology:
         "A newcomer in year Y is a CNA whose earliest published record in the entire corpus " +
         "falls in Y — first appearance in the data, not accreditation date, which the corpus " +
