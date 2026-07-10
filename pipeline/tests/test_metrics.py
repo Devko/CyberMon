@@ -361,6 +361,29 @@ def test_flood_projection_absent_without_current_year_records(agg):
     assert "projection" not in out
 
 
+def test_flood_record_era_marks_first_year_at_threshold():
+    # 2024: 1 scored of 20 (5%, below), 2025: 2 scored of 20 (10%, at
+    # threshold) -> the marker lands on 2025, the FIRST qualifying year.
+    facts = []
+    for year, scored in ((2024, 1), (2025, 2)):
+        for i in range(scored):
+            facts.append(metrics.CveFacts(f"CVE-{year}-1{i:03}", "PUBLISHED",
+                                          year, "a", cna_scores={"v3": 8.0}))
+        for i in range(20 - scored):
+            facts.append(metrics.CveFacts(f"CVE-{year}-2{i:03}", "PUBLISHED",
+                                          year, "a"))
+    out = metrics.build_nine_eight_flood(_agg_2026(*facts), GENERATED_AT)
+    assert out["record_era"] == {"year": 2025,
+                                 "min_share": metrics.RECORD_ERA_MIN_SHARE}
+
+
+def test_flood_record_era_absent_when_never_reached():
+    facts = [metrics.CveFacts(f"CVE-2025-0{i:03}", "PUBLISHED", 2025, "a")
+             for i in range(15)]
+    out = metrics.build_nine_eight_flood(_agg_2026(*facts), GENERATED_AT)
+    assert "record_era" not in out
+
+
 # --------------------------------------------------------- chart 4 helpers
 
 def test_backlog_row_and_nvd_decay():

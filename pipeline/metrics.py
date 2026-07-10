@@ -93,6 +93,13 @@ def _quartiles(scores: list[float]) -> tuple[float, float, float]:
 # fortnight swings the projection by thousands, so none is emitted.
 PACE_MIN_ELAPSED = 0.125
 
+# The 9.8-flood era marker: the first year in which at least this share of
+# published records carry a base score in the CVE record itself (CNA/ADP
+# containers) rather than only downstream in NVD's database. 10% marks
+# where in-record scoring stops being a rounding error (2.9% in 2017,
+# 10.6% in 2018 in the real corpus).
+RECORD_ERA_MIN_SHARE = 0.10
+
 
 def year_elapsed(generated_at: str) -> float:
     """Fraction of the UTC calendar year elapsed at ``generated_at``:
@@ -462,6 +469,20 @@ def build_nine_eight_flood(agg: Aggregator, generated_at: str) -> dict:
                       "low": counts.get("low", 0),
                       "unscored": counts.get("unscored", 0)})
     out = {"generated_at": generated_at, "years": years}
+    # Era marker: the first year where at least RECORD_ERA_MIN_SHARE of
+    # published records carry a score in the record itself (CNA/ADP
+    # containers). Left of this line the corpus is nearly score-free not
+    # because nothing was scored, but because scoring lived downstream in
+    # NVD's database, which this chart deliberately does not ingest. The
+    # marker puts that caveat on the chart instead of only in the footnote.
+    for row in years:
+        total_y = sum(row[k] for k in
+                      ("critical", "high", "medium", "low", "unscored"))
+        scored_y = total_y - row["unscored"]
+        if total_y and scored_y / total_y >= RECORD_ERA_MIN_SHARE:
+            out["record_era"] = {"year": row["year"],
+                                 "min_share": RECORD_ERA_MIN_SHARE}
+            break
     # agg.flood counts published records only (rejected never reach it),
     # across every bucket including "unscored" — the flow being paced.
     current_year = int(generated_at[:4])

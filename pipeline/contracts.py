@@ -222,6 +222,21 @@ def _validate_nine_eight_flood(obj: Any) -> None:
         _check_pace_projection(obj["projection"], "nine_eight_flood.projection",
                                obj["generated_at"], {"total": 1})
 
+    # Optional: the in-record scoring era marker — the first year in which
+    # scores embedded in the CVE record stop being a rounding error. Absent
+    # when no charted year clears the threshold (tiny fixture corpora).
+    if "record_era" in obj:
+        era = obj["record_era"]
+        year = _get(era, "year", "nine_eight_flood.record_era")
+        _check_int(year, "nine_eight_flood.record_era.year", minimum=1999)
+        if year not in years:
+            _fail("nine_eight_flood.record_era.year",
+                  "must be one of the charted years")
+        share = _get(era, "min_share", "nine_eight_flood.record_era")
+        if not isinstance(share, float) or not 0.0 < share < 1.0:
+            _fail("nine_eight_flood.record_era.min_share",
+                  "must be a float in (0, 1)")
+
 
 # ---------------------------------------------------- score_vs_reality.json
 
