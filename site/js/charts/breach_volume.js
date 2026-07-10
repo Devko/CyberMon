@@ -1,5 +1,5 @@
 // Breach 2 — volume. Contract: site/data/breach_ledger.json (shared;
-// breaches.js fetches it once). Bars: breaches catalogued per year (left,
+// breaches.js fetches it once). Bars: breaches cataloged per year (left,
 // linear counts). Line: accounts exposed per year (right, log axis — one
 // mega-dump outweighs an ordinary year). The bars carry the pace
 // projection as a hollow ghost extension (concentration_entrants.js

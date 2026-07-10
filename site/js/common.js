@@ -131,6 +131,7 @@ function renderMeta(meta) {
       attack_version: (s.attack?.latest_version ?? "?") + (s.attack?.stale ? " (carried forward)" : ""),
       attack_versions: (s.attack?.version_count ?? 0).toLocaleString("en-US"),
       apnic_fetched: s.apnic?.fetched_at ?? "?",
+      epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US"),
     }))
   );
 }

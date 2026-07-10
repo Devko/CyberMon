@@ -21,7 +21,9 @@ const COLS = [
 const FLAG_THRESHOLD = 50;
 
 function fmtGap(v) {
-  return v === null || v === undefined ? "—" : `${fmtInt(Math.round(v))}d`;
+  // one decimal for half-day medians so the display matches the data file
+  return v === null || v === undefined ? "—"
+    : Number.isInteger(v) ? `${fmtInt(v)}d` : `${v.toFixed(1)}d`;
 }
 
 export function render(slots, data) {

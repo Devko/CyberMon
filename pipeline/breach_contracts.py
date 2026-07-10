@@ -25,7 +25,7 @@ IMPORT_CUTOFF = "2014-01-01"
 EXCLUSION_REASONS = ["fabricated", "spam_list", "malware", "stealer_log"]
 MAX_TOP_CLASSES = 6
 # Lag stats are bounded generously (~135 years); a lag may be
-# legitimately negative (a breach catalogued before its self-reported,
+# legitimately negative (a breach cataloged before its self-reported,
 # usually month-rounded, breach date).
 _DAYS_LO, _DAYS_HI = -50000.0, 50000.0
 # Catalog-year floor: HIBP launched December 2013.
@@ -107,7 +107,7 @@ def _validate_breach_ledger(obj: Any) -> None:
         year = _get(e, "year", path)
         _check_int(year, f"{path}.year", minimum=_MIN_ADDED_YEAR)
         years.append(year)
-        # A volume year exists only because >= 1 breach was catalogued.
+        # A volume year exists only because >= 1 breach was cataloged.
         _check_int(_get(e, "breaches", path), f"{path}.breaches", minimum=1)
         _check_int(_get(e, "records", path), f"{path}.records")
     _check_years_sorted_unique(years, "breach_ledger.volume_by_year")

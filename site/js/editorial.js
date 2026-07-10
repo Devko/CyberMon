@@ -28,9 +28,9 @@ export const editorial = {
     { id: "kev", href: "kev.html", label: "KEV Latency" },
     { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
     { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
-    { id: "extortion", href: "extortion.html", label: "Extortion" },
+    { id: "extortion", href: "extortion.html", label: "Extortion Ledger" },
     { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
-    { id: "hygiene", href: "hygiene.html", label: "Hygiene" },
+    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index" },
     { id: "guards", href: "guards.html", label: "Security Products" },
     { id: "epss", href: "epss.html", label: "EPSS Report Card" },
     { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
@@ -58,7 +58,8 @@ export const editorial = {
         headline: "CVE severity has become meaningless — here are the receipts.",
         blurb:
           "CVSS inflation, the 9.8 flood, scores vs. real-world exploitation, NVD backlog " +
-          "decay, CNA scoring habits, advisory quality, bug-class inertia. Eight charts, " +
+          "decay, CNA scoring habits, the volume curve, advisory quality, bug-class " +
+          "inertia. Eight charts, " +
           "rebuilt every night.",
         live: true,
       },
@@ -165,7 +166,7 @@ export const editorial = {
         href: "epss.html",
         num: "10",
         label: "EPSS Report Card",
-        headline: "The industry's exploit forecast is never graded. CyberMon grades it.",
+        headline: "The industry's exploit forecast rarely gets an outside grade. CyberMon grades it.",
         blurb:
           "For every CVE that CISA later confirmed exploited, the EPSS score published " +
           "the day before the KEV listing — the forecast's last chance to sound the " +
@@ -783,8 +784,8 @@ export const editorial = {
       headline: "The breach is old news before it makes the news.",
       caption:
         "For every breach in the public catalog, the gap between the date the breach " +
-        "happened and the day Have I Been Pwned catalogued it — median and interquartile " +
-        "range, grouped by the year of cataloguing. The launch-month import stays in the " +
+        "happened and the day Have I Been Pwned cataloged it — median and interquartile " +
+        "range, grouped by the year of cataloging. The launch-month import stays in the " +
         "callout below, out of the trend. What the live-era record shows: the typical gap " +
         "is measured in months, and roughly a third of entries take more than a year to " +
         "surface. Vendors sell dwell-time figures measured on their own customers; this " +
@@ -802,7 +803,7 @@ export const editorial = {
         "breach in the Have I Been Pwned catalog (the volume chart's methodology has the " +
         "cohort arithmetic). BreachDate is self-reported and usually rounded to the first " +
         "of a month, so individual lags carry day-level noise; medians absorb it. The line " +
-        "is the median lag of breaches catalogued each year; the shaded band spans the " +
+        "is the median lag of breaches cataloged each year; the shaded band spans the " +
         "25th–75th percentile. The trend starts in 2014, and the cutoff comes from the " +
         "data: HIBP launched on 2013-12-04 by importing breaches that were already " +
         "public — six of its seven opening-import entries predate the service itself, with " +
@@ -811,7 +812,7 @@ export const editorial = {
         "entering the catalog in every later year, and those stay in the trend on " +
         "purpose: a breach surfacing years late is exactly the phenomenon this chart " +
         "measures, and only the opening import is an artifact of the catalog's own " +
-        "birthday. A lag can be negative — a breach catalogued before its stated breach " +
+        "birthday. A lag can be negative — a breach cataloged before its stated breach " +
         "date — and is kept as negative rather than floored at zero (the KEV latency " +
         "chart applies the same rule): it flags date quality in the source record, and " +
         "flooring it would quietly hide that. A year plots only with at least 10 cohort " +
@@ -825,18 +826,18 @@ export const editorial = {
       source: "Have I Been Pwned breach catalog",
       headline: "The breach business has no slow years.",
       caption:
-        "Breaches catalogued per year, and the accounts exposed inside them — bars count " +
+        "Breaches cataloged per year, and the accounts exposed inside them — bars count " +
         "incidents, the line counts accounts, on a log axis because a single mega-dump " +
         "can outweigh a whole ordinary year. Read the line's floor: even the quietest " +
         "year of the live era spilled tens of millions of accounts. And read the whole " +
         "chart as a floor on reality — the catalog holds what surfaced publicly and got " +
         "loaded, nothing more. The current year is partial and refills nightly.",
       catalogNote:
-        "Cohort: {cohort} of {total} catalogued breaches. Excluded: {fabricated} " +
+        "Cohort: {cohort} of {total} cataloged breaches. Excluded: {fabricated} " +
         "fabricated, {spam_list} spam lists, {malware} malware corpora, {stealer_log} " +
         "stealer-log batches — real data in the last two cases, but a breached " +
         "organization is the unit this ledger counts.",
-      legendBreaches: "Breaches catalogued",
+      legendBreaches: "Breaches cataloged",
       legendRecords: "Accounts exposed",
       methodology:
         "Counts come from the full Have I Been Pwned breach catalog, grouped by the " +
@@ -852,12 +853,12 @@ export const editorial = {
         "audit trail. Accounts per year is the sum of PwnCount, HIBP's count of " +
         "compromised accounts per breach; the same person appears once per breach " +
         "they're in, so the sum counts exposures rather than people. The import-era " +
-        "additions of December 2013 chart here like any other year — a catalogued breach " +
-        "is a catalogued breach; only the lag chart quarantines the import. In the bars, " +
+        "additions of December 2013 chart here like any other year — a cataloged breach " +
+        "is a cataloged breach; only the lag chart quarantines the import. In the bars, " +
         "a dashed hollow extension paces the partial current year's breach count to " +
         "twelve months: the count so far divided by the fraction of the UTC calendar " +
         "year elapsed at generation time, shown only once 12.5% of the year has elapsed " +
-        "(roughly mid-February), under the strong assumption that cataloguing runs " +
+        "(roughly mid-February), under the strong assumption that cataloging runs " +
         "uniformly through the year. The accounts line is deliberately never projected: " +
         "one mega-dump can carry more accounts than the rest of the year combined, so a " +
         "records pace would dress one upload up as a forecast.",
@@ -1016,7 +1017,8 @@ export const editorial = {
         "Each point is one release of the MITRE ATT&CK enterprise matrix, read from its " +
         "immutable STIX 2.1 bundle in the mitre-attack/attack-stix-data repository; its " +
         "x-position is the release date carried by that repository's index.json, so gaps " +
-        "between points are real calendar gaps (releases land roughly twice a year). A " +
+        "between points are real calendar gaps (major releases land about twice a year, "
+        + "with point releases between). A " +
         "technique is a STIX attack-pattern object whose x_mitre_is_subtechnique flag is " +
         "false or absent; a sub-technique is the same object type with the flag true. Both " +
         "lines count active objects only: anything carrying revoked: true or " +
@@ -1195,7 +1197,7 @@ export const editorial = {
         "what the product is for. Bars show the share of each year's new listings that " +
         "are security products — VPN appliances, firewalls, endpoint protection, secure " +
         "gateways: the things bought to keep attackers out. About one in nine entries " +
-        "in the whole catalog is a product sold to enforce security. The 2021–22 " +
+        "in the whole catalog is in a product sold to enforce security. The 2021–22 " +
         "seeding years chart like any other year: the classification rides on the entry " +
         "itself, so a back-catalog import answers the question as well as a fresh " +
         "listing does.",
@@ -1253,7 +1255,7 @@ export const editorial = {
         "half the vendor's entries classify as security products",
       methodology:
         "For every vendor label in the catalog (whitespace-normalized but never " +
-        "merged — Pulse Secure predates Ivanti's acquisition and keeps its own row, " +
+        "merged — Pulse Secure entries predate Ivanti's acquisition and keep that label, " +
         "because the catalog's attribution is the record), the board counts total " +
         "entries, security-classified entries (per the classifier described in the " +
         "hero's footnote), first and last dateAdded, and the median gap in days " +
@@ -1299,17 +1301,17 @@ export const editorial = {
       source: "EPSS (FIRST.org) · CISA KEV",
       headline: "The day before confirmation, the forecast was calm.",
       caption:
-        "EPSS is the industry's only public exploitation forecast, and this site already " +
-        "calls it the best model available — which is exactly why somebody should grade " +
+        "EPSS is the industry's de facto public exploitation forecast, and this site already " +
+        "calls it the best public model — which is exactly why somebody should grade " +
         "it. For every vulnerability CISA added to its Known Exploited catalog, this " +
         "chart reads the EPSS score published the day before the listing — the model's " +
         "last daily forecast while the listing was still in the future — banded into " +
         "under 1%, 1–10%, and 10% or higher. EPSS predicts exploitation within 30 days, " +
         "and a KEV listing means exploitation was already observed, so on listing eve " +
-        "the model should be at its most alarmed. Instead, in its recent years most " +
+        "the model should be at its most alarmed. Instead, in the catalog's recent years most " +
         "arrive having been scored below one percent the day before. Listings that " +
         "could not have a prior score are counted separately, never as misses.",
-      statLabel: "KEV additions scored under 1% on listing eve",
+      statLabel: "Graded KEV additions scored under 1% on listing eve",
       statLatest: "{latest_year}",
       statAgo: "whole catalog",
       legendBelow: "under 1% the day before",
@@ -1318,7 +1320,7 @@ export const editorial = {
       // Filled by the renderer from catalog counts; the pending sentence is
       // appended only while the historical backfill is still incomplete.
       note:
-        "{ungradeable} of {total} catalog entries had no possible day-before score — " +
+        "{ungradeable} of {total} catalog entries had no day-before score to grade — " +
         "{before_pub} were listed before (or the day) their CVE record published — and " +
         "are counted separately, never as misses.",
       pendingNote:
@@ -1335,7 +1337,10 @@ export const editorial = {
         "CVE publication to KEV listing is measured in weeks on this site's own KEV " +
         "Latency page), so listing eve is the moment the model has had every chance to " +
         "be alarmed — a sub-1% score there is the strongest possible form of miss, not " +
-        "a timing technicality. Bands are shares of graded entries only. An entry " +
+        "a timing technicality. The exception is fast listings: an entry added within " +
+        "days of its CVE publishing gives a model that reads public signals little " +
+        "runway, and such entries stay in the cohort — read the strongest-miss framing " +
+        "with that in mind. Bands are shares of graded entries only. An entry " +
         "listed before, or the same day, its CVE record published cannot have a " +
         "day-before score and is reported separately; so are entries whose lookup is " +
         "still pending — partial coverage is disclosed, never blended. One fairness " +
@@ -1360,9 +1365,9 @@ export const editorial = {
         "load-bearing, not decoration: v1 through v5 are different models with " +
         "materially different score distributions, and pooling them into one histogram " +
         "would be the same landmine as mixing CVSS v2 with v3 scores. Read each model " +
-        "on its own terms; what they share is the shape — across every era, much of " +
-        "the confirmed-exploited cohort sits in the buckets the model reserves for " +
-        "“unlikely.”",
+        "on its own terms; what changes is where the mass sits — the v2-era model pushed " +
+        "most of this cohort above 1%, while every model since 2023 has placed the " +
+        "majority below it.",
       methodology:
         "Each graded entry contributes its day-before probability to one bucket: " +
         "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive — the " +
@@ -1388,7 +1393,7 @@ export const editorial = {
         "calibrates differently — but a percentile is: it says where a CVE ranked " +
         "among everything the model scored that same day. This view re-grades the " +
         "same cohort on that scale, and it is the fairest scale available to the " +
-        "model. Even here, roughly a third of the graded cohort sat in the bottom " +
+        "model. Even here, nearly three in ten of the graded cohort sat in the bottom " +
         "half of that day's ranking — confirmed-exploited vulnerabilities the model " +
         "placed behind roughly a hundred thousand others on listing eve.",
       statBig: "{n} of {total}",
@@ -1397,7 +1402,7 @@ export const editorial = {
       yAxisLabel: "share of graded entries",
       methodology:
         "Each graded entry contributes the percentile EPSS published alongside its " +
-        "day-before score: the share of all CVEs scored that day with a lower score. " +
+        "day-before score: the share of all CVEs scored that day with an equal or lower score. " +
         "FIRST recomputes percentiles daily against that day's whole corpus, which " +
         "makes them comparable across model versions in a way raw probabilities are " +
         "not — a v2 probability and a v4 probability mean different things, but " +
@@ -1439,7 +1444,7 @@ export const editorial = {
         "The rare inverse — an ID minted after its publication year, a late-December " +
         "reservation published under January's clock — clamps to age zero, and the " +
         "clamp count ships in the data file (the real corpus currently contains " +
-        "none). Records with no datePublished date themselves from the ID and count " +
+        "none). Records without a datePublished take their date from the ID and count " +
         "as same-year by construction. A year plots only with at least 500 published " +
         "records. The current year (marked *) is partial and refills nightly; the " +
         "headline compares complete years only, and the baseline year ships in the " +
@@ -1454,7 +1459,7 @@ export const editorial = {
       headline: "Disclosure has a favorite weekday.",
       caption:
         "How each year's records spread across the week: the latest complete year " +
-        "beside the year a decade before it. Tuesday leads the current week with " +
+        "beside the year a decade before it. In the latest complete year, Tuesday leads with " +
         "roughly a quarter of all records, the weekend is close to silent, and ten " +
         "years ago the peak sat a day later, on Wednesday. The spike is a property " +
         "of publication workflows — advisories go out when release processes run, " +
@@ -1528,7 +1533,8 @@ export const editorial = {
       "Ransomwhere {ransomwhere_addresses} addresses / {ransomwhere_txs} transactions " +
       "fetched {ransomwhere_fetched} · " +
       "ATT&CK enterprise v{attack_version} ({attack_versions} releases) · " +
-      "APNIC DNSSEC series fetched {apnic_fetched}",
+      "APNIC DNSSEC series fetched {apnic_fetched} · " +
+      "EPSS history: {epss_graded} KEV entries graded",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
@@ -1564,7 +1570,7 @@ export const editorial = {
   // Rendered by js/carousel.js, printed by tools/make_carousels.py.
   carousel: {
     edition: "Edition {generated_at}",
-    slideFooter: "cybermon · devko.github.io/CyberMon · data: {sources}",
+    slideFooter: "CyberMon · devko.github.io/CyberMon · data: {sources}",
     siteUrl: "devko.github.io/CyberMon",
     closingSources: "Data: {sources}",
     // Per-module primary upstreams, short enough for a slide footer. The

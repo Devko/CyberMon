@@ -73,7 +73,7 @@ concentration index, newcomer counts, and a rejection-rate leaderboard.
 
 *Dwell time is a marketing number. Breach disclosure is a public record.*
 Three charts over the Have I Been Pwned breach catalog: days from breach
-to public cataloguing (median/IQR per catalog year, with the December
+to public cataloging (median/IQR per catalog year, with the December
 2013 launch import quarantined from the trend), breaches and accounts
 exposed per year (with a pace projection for the partial year), and the
 share of each year's breaches spilling the top data classes. Fabricated
@@ -127,9 +127,10 @@ board with first/last listing dates and the median gap between
 consecutive listings, and the ransomware-flag split between exploited
 security products and the rest of the catalog. No new upstream source:
 everything derives from the KEV feed the pipeline already fetches.
+
 ### 10 · EPSS Report Card — [epss.html](https://devko.github.io/CyberMon/epss.html) (live)
 
-*The industry's exploit forecast is never graded. CyberMon grades it.*
+*The industry's exploit forecast rarely gets an outside grade. CyberMon grades it.*
 Three charts grading EPSS — the site's own yardstick for CVSS — against
 the outcome it exists to predict: for every CVE that CISA later confirmed
 exploited (KEV), the EPSS score published **the day before** the listing.
@@ -144,6 +145,7 @@ is fetched from FIRST's API exactly once and cached
 from the published `epss_report.json`, and a normal night costs 1–2 API
 requests. The one-time historical backfill is batch-capped
 (`--epss-backfill-batch`) so CI can never accidentally run it.
+
 ### 11 · CVE Calendar — [calendar.html](https://devko.github.io/CyberMon/calendar.html) (live)
 
 *The CVE stream keeps vendor time.* Three charts on publication timing,

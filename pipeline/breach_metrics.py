@@ -1,8 +1,8 @@
 """Breach disclosure ledger metrics (breach_ledger.json).
 
 How long does a breach take to reach the public record? Lag =
-``AddedDate - BreachDate`` in days, per calendar year of cataloguing.
-A lag can be negative (a breach catalogued before its self-reported
+``AddedDate - BreachDate`` in days, per calendar year of cataloging.
+A lag can be negative (a breach cataloged before its self-reported
 breach date — BreachDate is usually rounded to the first of a month);
 negative lags are KEPT, never floored to zero, the same rule the KEV
 latency module applies: flooring would hide a date-quality signal.
@@ -34,7 +34,7 @@ purpose: a breach surfacing years late is the measured phenomenon;
 only the opening import is an artifact of the catalog's own birthday.
 
 Volume and data-class shares include ALL cohort years, import era too
-(kev_ransomware reasoning: a catalogued breach is a catalogued breach;
+(kev_ransomware reasoning: a cataloged breach is a cataloged breach;
 only the lag stat is distorted by the import).
 """
 from __future__ import annotations
@@ -202,7 +202,7 @@ def build_breach_ledger(breaches: Iterable[HibpBreach], generated_at: str,
         "headline": headline,
     }
 
-    # Breaches catalogued per year are a flow, so the partial current year
+    # Breaches cataloged per year are a flow, so the partial current year
     # gets a pace projection (docs/data-contracts.md, "Pace projections").
     # Records exposed are deliberately NOT projected: one mega-dump can
     # outweigh the rest of the year, so a records pace would present one
