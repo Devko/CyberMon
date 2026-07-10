@@ -1,0 +1,2813 @@
+{
+ "generated_at": "2026-07-10T06:39:51Z",
+ "window": "30_day",
+ "world": {
+  "cc": "XA",
+  "series": [
+   {
+    "month": "2013-10",
+    "validating_pc": 8.6
+   },
+   {
+    "month": "2013-11",
+    "validating_pc": 8.8
+   },
+   {
+    "month": "2013-12",
+    "validating_pc": 9.1
+   },
+   {
+    "month": "2014-01",
+    "validating_pc": 9.2
+   },
+   {
+    "month": "2014-02",
+    "validating_pc": 9.4
+   },
+   {
+    "month": "2014-03",
+    "validating_pc": 10.0
+   },
+   {
+    "month": "2014-04",
+    "validating_pc": 10.8
+   },
+   {
+    "month": "2014-05",
+    "validating_pc": 11.5
+   },
+   {
+    "month": "2014-06",
+    "validating_pc": 12.1
+   },
+   {
+    "month": "2014-07",
+    "validating_pc": 12.0
+   },
+   {
+    "month": "2014-08",
+    "validating_pc": 11.7
+   },
+   {
+    "month": "2014-09",
+    "validating_pc": 12.3
+   },
+   {
+    "month": "2014-10",
+    "validating_pc": 12.5
+   },
+   {
+    "month": "2014-11",
+    "validating_pc": 12.3
+   },
+   {
+    "month": "2014-12",
+    "validating_pc": 12.5
+   },
+   {
+    "month": "2015-01",
+    "validating_pc": 12.6
+   },
+   {
+    "month": "2015-02",
+    "validating_pc": 12.6
+   },
+   {
+    "month": "2015-03",
+    "validating_pc": 13.4
+   },
+   {
+    "month": "2015-04",
+    "validating_pc": 12.2
+   },
+   {
+    "month": "2015-05",
+    "validating_pc": 14.4
+   },
+   {
+    "month": "2015-06",
+    "validating_pc": 14.2
+   },
+   {
+    "month": "2015-07",
+    "validating_pc": 13.3
+   },
+   {
+    "month": "2015-08",
+    "validating_pc": 10.8
+   },
+   {
+    "month": "2015-09",
+    "validating_pc": 12.4
+   },
+   {
+    "month": "2015-10",
+    "validating_pc": 14.4
+   },
+   {
+    "month": "2015-11",
+    "validating_pc": 13.9
+   },
+   {
+    "month": "2015-12",
+    "validating_pc": 13.9
+   },
+   {
+    "month": "2016-01",
+    "validating_pc": 15.2
+   },
+   {
+    "month": "2016-02",
+    "validating_pc": 14.6
+   },
+   {
+    "month": "2016-03",
+    "validating_pc": 9.8
+   },
+   {
+    "month": "2016-04",
+    "validating_pc": 13.4
+   },
+   {
+    "month": "2016-05",
+    "validating_pc": 14.3
+   },
+   {
+    "month": "2016-06",
+    "validating_pc": 14.8
+   },
+   {
+    "month": "2016-07",
+    "validating_pc": 14.6
+   },
+   {
+    "month": "2016-08",
+    "validating_pc": 15.5
+   },
+   {
+    "month": "2016-09",
+    "validating_pc": 13.2
+   },
+   {
+    "month": "2016-10",
+    "validating_pc": 15.0
+   },
+   {
+    "month": "2016-11",
+    "validating_pc": 14.8
+   },
+   {
+    "month": "2016-12",
+    "validating_pc": 16.1
+   },
+   {
+    "month": "2017-01",
+    "validating_pc": 14.6
+   },
+   {
+    "month": "2017-02",
+    "validating_pc": 14.6
+   },
+   {
+    "month": "2017-03",
+    "validating_pc": 14.5
+   },
+   {
+    "month": "2017-04",
+    "validating_pc": 14.4
+   },
+   {
+    "month": "2017-05",
+    "validating_pc": 14.5
+   },
+   {
+    "month": "2017-06",
+    "validating_pc": 13.5
+   },
+   {
+    "month": "2017-07",
+    "validating_pc": 12.3
+   },
+   {
+    "month": "2017-08",
+    "validating_pc": 12.3
+   },
+   {
+    "month": "2017-09",
+    "validating_pc": 12.4
+   },
+   {
+    "month": "2017-10",
+    "validating_pc": 11.9
+   },
+   {
+    "month": "2017-11",
+    "validating_pc": 11.9
+   },
+   {
+    "month": "2017-12",
+    "validating_pc": 12.1
+   },
+   {
+    "month": "2018-01",
+    "validating_pc": 11.6
+   },
+   {
+    "month": "2018-02",
+    "validating_pc": 11.8
+   },
+   {
+    "month": "2018-03",
+    "validating_pc": 11.7
+   },
+   {
+    "month": "2018-04",
+    "validating_pc": 12.0
+   },
+   {
+    "month": "2018-05",
+    "validating_pc": 12.2
+   },
+   {
+    "month": "2018-06",
+    "validating_pc": 12.8
+   },
+   {
+    "month": "2018-07",
+    "validating_pc": 14.0
+   },
+   {
+    "month": "2018-08",
+    "validating_pc": 13.8
+   },
+   {
+    "month": "2018-09",
+    "validating_pc": 15.1
+   },
+   {
+    "month": "2018-10",
+    "validating_pc": 14.5
+   },
+   {
+    "month": "2018-11",
+    "validating_pc": 12.1
+   },
+   {
+    "month": "2018-12",
+    "validating_pc": 16.6
+   },
+   {
+    "month": "2019-01",
+    "validating_pc": 18.7
+   },
+   {
+    "month": "2019-02",
+    "validating_pc": 19.0
+   },
+   {
+    "month": "2019-03",
+    "validating_pc": 17.9
+   },
+   {
+    "month": "2019-04",
+    "validating_pc": 17.1
+   },
+   {
+    "month": "2019-05",
+    "validating_pc": 19.4
+   },
+   {
+    "month": "2019-06",
+    "validating_pc": 22.2
+   },
+   {
+    "month": "2019-07",
+    "validating_pc": 23.2
+   },
+   {
+    "month": "2019-08",
+    "validating_pc": 22.8
+   },
+   {
+    "month": "2019-09",
+    "validating_pc": 24.0
+   },
+   {
+    "month": "2019-10",
+    "validating_pc": 23.9
+   },
+   {
+    "month": "2019-11",
+    "validating_pc": 24.1
+   },
+   {
+    "month": "2019-12",
+    "validating_pc": 24.8
+   },
+   {
+    "month": "2020-01",
+    "validating_pc": 24.3
+   },
+   {
+    "month": "2020-02",
+    "validating_pc": 23.3
+   },
+   {
+    "month": "2020-03",
+    "validating_pc": 24.6
+   },
+   {
+    "month": "2020-04",
+    "validating_pc": 24.8
+   },
+   {
+    "month": "2020-05",
+    "validating_pc": 25.5
+   },
+   {
+    "month": "2020-06",
+    "validating_pc": 25.5
+   },
+   {
+    "month": "2020-07",
+    "validating_pc": 25.9
+   },
+   {
+    "month": "2020-08",
+    "validating_pc": 25.3
+   },
+   {
+    "month": "2020-09",
+    "validating_pc": 25.2
+   },
+   {
+    "month": "2020-10",
+    "validating_pc": 25.4
+   },
+   {
+    "month": "2020-11",
+    "validating_pc": 25.5
+   },
+   {
+    "month": "2020-12",
+    "validating_pc": 24.8
+   },
+   {
+    "month": "2021-01",
+    "validating_pc": 24.6
+   },
+   {
+    "month": "2021-02",
+    "validating_pc": 24.7
+   },
+   {
+    "month": "2021-03",
+    "validating_pc": 25.3
+   },
+   {
+    "month": "2021-04",
+    "validating_pc": 26.4
+   },
+   {
+    "month": "2021-05",
+    "validating_pc": 25.8
+   },
+   {
+    "month": "2021-06",
+    "validating_pc": 26.2
+   },
+   {
+    "month": "2021-07",
+    "validating_pc": 25.3
+   },
+   {
+    "month": "2021-08",
+    "validating_pc": 27.4
+   },
+   {
+    "month": "2021-09",
+    "validating_pc": 27.0
+   },
+   {
+    "month": "2021-10",
+    "validating_pc": 27.3
+   },
+   {
+    "month": "2021-11",
+    "validating_pc": 28.6
+   },
+   {
+    "month": "2021-12",
+    "validating_pc": 27.9
+   },
+   {
+    "month": "2022-01",
+    "validating_pc": 27.1
+   },
+   {
+    "month": "2022-02",
+    "validating_pc": 28.8
+   },
+   {
+    "month": "2022-03",
+    "validating_pc": 31.1
+   },
+   {
+    "month": "2022-04",
+    "validating_pc": 29.9
+   },
+   {
+    "month": "2022-05",
+    "validating_pc": 30.3
+   },
+   {
+    "month": "2022-06",
+    "validating_pc": 30.1
+   },
+   {
+    "month": "2022-07",
+    "validating_pc": 27.9
+   },
+   {
+    "month": "2022-08",
+    "validating_pc": 30.9
+   },
+   {
+    "month": "2022-09",
+    "validating_pc": 31.2
+   },
+   {
+    "month": "2022-10",
+    "validating_pc": 31.1
+   },
+   {
+    "month": "2022-11",
+    "validating_pc": 31.4
+   },
+   {
+    "month": "2022-12",
+    "validating_pc": 29.7
+   },
+   {
+    "month": "2023-01",
+    "validating_pc": 29.6
+   },
+   {
+    "month": "2023-02",
+    "validating_pc": 31.6
+   },
+   {
+    "month": "2023-03",
+    "validating_pc": 32.0
+   },
+   {
+    "month": "2023-04",
+    "validating_pc": 31.3
+   },
+   {
+    "month": "2023-05",
+    "validating_pc": 30.8
+   },
+   {
+    "month": "2023-06",
+    "validating_pc": 30.8
+   },
+   {
+    "month": "2023-07",
+    "validating_pc": 30.9
+   },
+   {
+    "month": "2023-08",
+    "validating_pc": 30.9
+   },
+   {
+    "month": "2023-09",
+    "validating_pc": 30.8
+   },
+   {
+    "month": "2023-10",
+    "validating_pc": 30.6
+   },
+   {
+    "month": "2023-11",
+    "validating_pc": 30.8
+   },
+   {
+    "month": "2023-12",
+    "validating_pc": 31.7
+   },
+   {
+    "month": "2024-01",
+    "validating_pc": 30.9
+   },
+   {
+    "month": "2024-02",
+    "validating_pc": 30.5
+   },
+   {
+    "month": "2024-03",
+    "validating_pc": 30.9
+   },
+   {
+    "month": "2024-04",
+    "validating_pc": 31.4
+   },
+   {
+    "month": "2024-05",
+    "validating_pc": 32.4
+   },
+   {
+    "month": "2024-06",
+    "validating_pc": 33.3
+   },
+   {
+    "month": "2024-07",
+    "validating_pc": 34.7
+   },
+   {
+    "month": "2024-08",
+    "validating_pc": 34.3
+   },
+   {
+    "month": "2024-09",
+    "validating_pc": 33.7
+   },
+   {
+    "month": "2024-10",
+    "validating_pc": 34.9
+   },
+   {
+    "month": "2024-11",
+    "validating_pc": 35.6
+   },
+   {
+    "month": "2024-12",
+    "validating_pc": 35.5
+   },
+   {
+    "month": "2025-01",
+    "validating_pc": 35.1
+   },
+   {
+    "month": "2025-02",
+    "validating_pc": 34.7
+   },
+   {
+    "month": "2025-03",
+    "validating_pc": 35.7
+   },
+   {
+    "month": "2025-04",
+    "validating_pc": 34.8
+   },
+   {
+    "month": "2025-05",
+    "validating_pc": 34.9
+   },
+   {
+    "month": "2025-06",
+    "validating_pc": 34.4
+   },
+   {
+    "month": "2025-07",
+    "validating_pc": 35.3
+   },
+   {
+    "month": "2025-08",
+    "validating_pc": 36.4
+   },
+   {
+    "month": "2025-09",
+    "validating_pc": 36.2
+   },
+   {
+    "month": "2025-10",
+    "validating_pc": 35.8
+   },
+   {
+    "month": "2025-11",
+    "validating_pc": 35.3
+   },
+   {
+    "month": "2025-12",
+    "validating_pc": 34.7
+   },
+   {
+    "month": "2026-01",
+    "validating_pc": 34.3
+   },
+   {
+    "month": "2026-02",
+    "validating_pc": 34.9
+   },
+   {
+    "month": "2026-03",
+    "validating_pc": 34.4
+   },
+   {
+    "month": "2026-04",
+    "validating_pc": 34.7
+   },
+   {
+    "month": "2026-05",
+    "validating_pc": 35.3
+   },
+   {
+    "month": "2026-06",
+    "validating_pc": 38.2
+   },
+   {
+    "month": "2026-07",
+    "validating_pc": 38.5
+   }
+  ],
+  "latest": {
+   "date": "2026-07-07",
+   "validating_pc": 38.5,
+   "partial_pc": 8.8,
+   "seen": 493075676
+  },
+  "baseline": {
+   "month": "2016-07",
+   "validating_pc": 14.6
+  }
+ },
+ "economies": [
+  {
+   "cc": "PH",
+   "name": "Philippines",
+   "latest_pc": 93.5,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 12.8
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 13.6
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 15.4
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 16.7
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 13.9
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 11.6
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 10.9
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 16.0
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 11.0
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 8.9
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 20.4
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 21.3
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 22.3
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 21.8
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 18.7
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 15.1
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 13.9
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 12.2
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 15.5
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 13.0
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 14.9
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 12.6
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 14.8
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 15.5
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 15.5
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 15.7
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 18.7
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 18.4
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 19.6
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 20.7
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 21.2
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 21.1
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 20.1
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 23.9
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 25.9
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 27.5
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 35.4
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 36.3
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 37.7
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 44.2
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 43.8
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 64.3
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 73.0
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 75.4
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 78.5
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 92.1
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 93.2
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 92.9
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 93.4
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 93.6
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 93.5
+    }
+   ]
+  },
+  {
+   "cc": "NG",
+   "name": "Nigeria",
+   "latest_pc": 60.7,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 3.2
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 3.5
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 6.2
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 9.6
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 11.8
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 15.9
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 18.6
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 11.0
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 4.9
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 2.7
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 3.3
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 3.2
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 2.2
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 7.5
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 4.9
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 2.6
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 1.4
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 2.3
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 2.2
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 4.4
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 2.4
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 3.1
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 3.5
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 4.7
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 5.8
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 6.0
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 5.5
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 4.3
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 5.3
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 9.4
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 9.5
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 13.3
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 12.4
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 8.2
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 9.2
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 20.4
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 21.0
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 19.1
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 12.4
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 9.4
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 15.8
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 17.2
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 16.9
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 15.8
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 17.0
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 16.3
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 15.0
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 16.6
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 14.1
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 14.4
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 60.8
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 60.7
+    }
+   ]
+  },
+  {
+   "cc": "IN",
+   "name": "India",
+   "latest_pc": 54.2,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 4.4
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 5.0
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 6.6
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 7.5
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 8.1
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 9.8
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 9.6
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 10.8
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 13.9
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 10.9
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 19.4
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 18.9
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 20.1
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 16.2
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 5.9
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 4.3
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 3.2
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 2.9
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 3.9
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 10.6
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 27.8
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 31.6
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 48.9
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 57.0
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 53.5
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 51.4
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 54.0
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 52.0
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 53.6
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 55.3
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 55.6
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 55.6
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 58.9
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 59.8
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 59.0
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 59.9
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 59.7
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 60.1
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 60.9
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 61.8
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 63.3
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 60.7
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 62.3
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 61.1
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 62.7
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 59.3
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 53.2
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 56.0
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 41.0
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 43.2
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 53.9
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 54.2
+    }
+   ]
+  },
+  {
+   "cc": "BR",
+   "name": "Brazil",
+   "latest_pc": 50.7,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 13.8
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 14.3
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 18.1
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 19.1
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 18.8
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 20.0
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 32.8
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 36.1
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 36.1
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 36.3
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 37.6
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 33.3
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 42.4
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 42.7
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 37.9
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 40.9
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 36.3
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 37.7
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 38.3
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 43.6
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 40.8
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 39.4
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 41.0
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 42.4
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 44.9
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 51.7
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 54.3
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 45.4
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 42.2
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 43.7
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 44.1
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 45.8
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 47.4
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 53.4
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 52.3
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 50.6
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 50.3
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 50.6
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 50.5
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 51.3
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 52.1
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 51.1
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 53.1
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 50.8
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 51.9
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 52.1
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 51.2
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 50.2
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 50.2
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 49.8
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 50.5
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 50.7
+    }
+   ]
+  },
+  {
+   "cc": "RU",
+   "name": "Russia",
+   "latest_pc": 45.3,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 5.9
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 8.6
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 11.0
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 11.4
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 11.8
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 14.1
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 16.1
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 19.6
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 8.6
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 16.0
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 15.5
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 18.3
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 16.3
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 19.0
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 14.8
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 15.4
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 15.7
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 19.0
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 20.9
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 14.2
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 17.9
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 18.1
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 18.7
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 19.6
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 18.6
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 26.7
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 30.2
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 33.6
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 39.1
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 48.0
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 54.7
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 47.5
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 43.5
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 72.2
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 47.0
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 36.0
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 48.0
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 26.2
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 33.6
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 40.7
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 51.4
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 53.1
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 53.5
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 53.0
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 61.8
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 44.1
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 46.7
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 45.3
+    }
+   ]
+  },
+  {
+   "cc": "US",
+   "name": "United States",
+   "latest_pc": 44.5,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 19.1
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 19.3
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 21.0
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 23.1
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 23.6
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 23.0
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 23.1
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 17.6
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 25.5
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 23.6
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 27.0
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 24.1
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 26.9
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 24.7
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 23.8
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 22.6
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 25.1
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 23.3
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 24.6
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 23.4
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 23.6
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 24.3
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 23.8
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 24.2
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 24.9
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 26.4
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 29.8
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 30.7
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 32.4
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 33.6
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 38.7
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 37.5
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 41.4
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 41.1
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 36.4
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 35.7
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 34.3
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 35.2
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 34.5
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 34.2
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 36.3
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 35.2
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 37.1
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 36.3
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 38.2
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 38.1
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 36.9
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 38.1
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 36.3
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 35.1
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 46.2
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 44.5
+    }
+   ]
+  },
+  {
+   "cc": "ID",
+   "name": "Indonesia",
+   "latest_pc": 37.9,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 24.8
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 24.3
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 25.0
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 20.4
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 16.3
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 17.7
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 11.8
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 6.3
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 2.4
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 2.1
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 3.9
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 4.0
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 3.8
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 3.7
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 1.8
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 1.8
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 1.0
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 0.8
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 1.0
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 3.1
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 2.2
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 9.2
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 10.7
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 9.8
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 9.2
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 10.4
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 10.9
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 9.9
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 6.2
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 8.3
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 10.0
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 9.9
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 10.6
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 10.4
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 11.6
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 11.8
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 15.5
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 15.7
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 15.8
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 16.2
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 19.0
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 19.7
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 19.0
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 20.3
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 21.9
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 22.2
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 22.4
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 25.3
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 39.5
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 37.5
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 37.9
+    }
+   ]
+  },
+  {
+   "cc": "MX",
+   "name": "Mexico",
+   "latest_pc": 21.0,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 2.7
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 2.5
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 3.1
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 3.8
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 4.0
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 4.6
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 5.4
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 5.4
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 5.3
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 4.1
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 4.5
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 4.0
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 4.1
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 4.3
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 4.7
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 4.0
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 5.4
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 5.0
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 5.3
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 6.4
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 4.8
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 4.0
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 5.2
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 5.9
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 5.6
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 6.6
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 6.5
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 7.1
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 7.0
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 7.3
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 7.7
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 8.5
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 9.6
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 10.2
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 9.9
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 11.4
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 10.7
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 11.7
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 11.6
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 13.0
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 13.8
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 15.6
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 15.7
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 17.2
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 20.0
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 17.1
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 17.4
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 18.7
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 18.4
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 20.9
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 21.0
+    }
+   ]
+  },
+  {
+   "cc": "JP",
+   "name": "Japan",
+   "latest_pc": 14.5,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 4.3
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 4.8
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 6.3
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 6.9
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 7.4
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 8.0
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 6.4
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 6.2
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 7.1
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 3.8
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 7.0
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 5.0
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 8.5
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 8.8
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 15.4
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 9.5
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 7.6
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 7.1
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 8.7
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 7.8
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 9.9
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 8.9
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 9.2
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 8.8
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 9.0
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 10.7
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 11.8
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 13.6
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 14.8
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 14.9
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 17.2
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 17.2
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 20.9
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 22.1
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 25.3
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 18.8
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 15.2
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 15.6
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 13.1
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 13.5
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 12.9
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 13.8
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 14.2
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 13.5
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 14.2
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 14.5
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 14.5
+    }
+   ]
+  },
+  {
+   "cc": "CN",
+   "name": "China",
+   "latest_pc": 0.1,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 2.4
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 3.4
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 5.4
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 4.0
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 3.1
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 3.3
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 3.8
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 2.3
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 1.9
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 1.6
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 2.5
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 1.5
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 1.8
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 1.7
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 1.5
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 1.4
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 1.0
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 1.1
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 0.7
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 1.1
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 1.4
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 0.9
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 1.6
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 1.0
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 1.0
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 1.3
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 1.1
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 1.5
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 1.1
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 1.2
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 1.5
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 1.8
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 0.9
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 1.1
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 0.8
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 0.9
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 0.7
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 0.3
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 0.0
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 0.0
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 0.0
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 0.0
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 0.0
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 0.0
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 0.1
+    },
+    {
+     "month": "2026-07",
+     "validating_pc": 0.1
+    }
+   ]
+  }
+ ],
+ "spread": {
+  "min_seen": 10000,
+  "n_economies": 203,
+  "buckets": [
+   {
+    "bucket": "<10%",
+    "n": 13
+   },
+   {
+    "bucket": "10-25%",
+    "n": 30
+   },
+   {
+    "bucket": "25-50%",
+    "n": 49
+   },
+   {
+    "bucket": "50-75%",
+    "n": 49
+   },
+   {
+    "bucket": "75%+",
+    "n": 62
+   }
+  ]
+ }
+}

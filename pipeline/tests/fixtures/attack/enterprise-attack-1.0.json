@@ -1,0 +1,63 @@
+{
+  "type": "bundle",
+  "id": "bundle--fixture-enterprise-1-0",
+  "objects": [
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t1",
+      "name": "Spearphishing",
+      "x_mitre_is_subtechnique": false
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t2",
+      "name": "Fading Technique (deprecated in 2.0)",
+      "x_mitre_is_subtechnique": false
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t3",
+      "name": "Doomed Technique (revoked in 2.0)",
+      "x_mitre_is_subtechnique": false
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t0",
+      "name": "Already Deprecated (must never re-count)",
+      "x_mitre_is_subtechnique": false,
+      "x_mitre_deprecated": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000s1",
+      "name": "Spearphishing: Attachment",
+      "x_mitre_is_subtechnique": true
+    },
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "name": "FIXTURE BEAR"
+    },
+    {
+      "type": "malware",
+      "id": "malware--00000000-0000-0000-0000-0000000000m1",
+      "name": "Fixtureware"
+    },
+    {
+      "type": "tool",
+      "id": "tool--00000000-0000-0000-0000-000000000tl1",
+      "name": "Revoked Tool (never active)",
+      "revoked": true
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r1",
+      "relationship_type": "uses"
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--00000000-0000-0000-0000-0000000000x1",
+      "name": "Out-of-scope object type"
+    }
+  ]
+}

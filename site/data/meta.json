@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-10T05:47:23Z",
+ "generated_at": "2026-07-10T06:39:51Z",
  "sample": false,
  "sources": {
   "cvelist": {
@@ -16,14 +16,33 @@
    "count": 1635
   },
   "nvd": {
-   "fetched_at": "2026-07-10T04:04:25Z",
+   "fetched_at": "2026-07-10T05:47:23Z",
    "stale": true
   },
   "market": {
-   "fetched_at": "2026-07-10T04:04:25Z",
+   "fetched_at": "2026-07-10T05:47:23Z",
    "stale": true,
    "term_count": 14,
    "backfill_remaining": 0
+  },
+  "hibp": {
+   "fetched_at": "2026-07-10T06:39:51Z",
+   "breach_count": 1015
+  },
+  "ransomwhere": {
+   "fetched_at": "2026-07-10T06:39:51Z",
+   "address_count": 11186,
+   "tx_count": 21802
+  },
+  "attack": {
+   "fetched_at": "2026-07-10T06:39:51Z",
+   "latest_version": "19.1",
+   "version_count": 40
+  },
+  "apnic": {
+   "fetched_at": "2026-07-10T06:39:51Z",
+   "economy_count": 10,
+   "spread_economy_count": 203
   }
  }
 }

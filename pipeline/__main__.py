@@ -26,12 +26,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (concentration_metrics, contracts, history, kev_metrics,
-               market_metrics, metrics, quality_metrics)
+from . import (attack_metrics, breach_metrics, concentration_metrics,
+               contracts, extortion_metrics, history, hygiene_metrics,
+               kev_metrics, market_metrics, metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
+from .fetch_hibp import HibpData, fetch_hibp, load_hibp_file
 from .fetch_kev import KevData, fetch_kev, load_kev_file
+from .fetch_ransomwhere import fetch_ransomwhere, load_ransomwhere_file
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 DEFAULT_MIN_CVES = 100
@@ -58,6 +61,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--market-backfill-batch", type=int, default=8,
                         help="max HN backfill requests per run (default: 8; "
                              "raise for a one-off accelerated backfill)")
+    parser.add_argument("--skip-attack", action="store_true",
+                        help="skip the ATT&CK index fetch; carry the previous "
+                             "attack_churn.json forward (marked stale)")
     parser.add_argument("--window-years", type=int, default=3,
                         help="CNA leaderboard window (default: 3)")
     parser.add_argument("--min-cves", type=int, default=None,
@@ -178,6 +184,8 @@ def run(args: argparse.Namespace) -> int:
     if args.offline_fixtures:
         epss = load_epss_file(FIXTURES_DIR / "epss_scores.csv")
         kev = load_kev_file(FIXTURES_DIR / "kev.json")
+        hibp = load_hibp_file(FIXTURES_DIR / "hibp_breaches.json")
+        ransomwhere = load_ransomwhere_file(FIXTURES_DIR / "ransomwhere.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -186,6 +194,13 @@ def run(args: argparse.Namespace) -> int:
         print("fetching CISA KEV catalog ...")
         kev = fetch_kev()
         print(f"  KEV {kev.catalog_version}: {kev.count} entries")
+        print("fetching HIBP breach catalog ...")
+        hibp = fetch_hibp()
+        print(f"  HIBP: {hibp.breach_count} breaches")
+        print("fetching Ransomwhere export ...")
+        ransomwhere = fetch_ransomwhere()
+        print(f"  Ransomwhere: {ransomwhere.address_count} addresses, "
+              f"{ransomwhere.tx_count} transactions")
     nvd_statuses = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
@@ -242,6 +257,14 @@ def run(args: argparse.Namespace) -> int:
             kev_metrics.build_kev_ransomware(
                 kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
+        "breach_ledger.json":
+            breach_metrics.build_breach_ledger(
+                hibp.breaches, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
+        "extortion_ledger.json":
+            extortion_metrics.build_extortion_ledger(
+                ransomwhere, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)
@@ -253,6 +276,16 @@ def run(args: argparse.Namespace) -> int:
         backfill_batch=args.market_backfill_batch)
     if market_hype is not None:
         outputs["market_hype.json"] = market_hype
+    attack_churn, attack_source = attack_metrics.run_stage(
+        args.out, args.cache_dir, generated_at,
+        skip=args.skip_attack, offline_fixtures=args.offline_fixtures)
+    if attack_churn is not None:
+        outputs["attack_churn.json"] = attack_churn
+    # No skip flag and no carried-forward staleness: upstream publishes
+    # its full history, so this stage is a cheap stateless refetch.
+    dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
+        generated_at, offline_fixtures=args.offline_fixtures)
+    outputs["dnssec_adoption.json"] = dnssec_adoption
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -262,6 +295,16 @@ def run(args: argparse.Namespace) -> int:
         nvd_source=nvd_source)
     if market_source is not None:
         outputs["meta.json"]["sources"]["market"] = market_source
+    outputs["meta.json"]["sources"]["hibp"] = {
+        "fetched_at": generated_at, "breach_count": hibp.breach_count}
+    outputs["meta.json"]["sources"]["ransomwhere"] = {
+        "fetched_at": generated_at,
+        "address_count": ransomwhere.address_count,
+        "tx_count": ransomwhere.tx_count,
+    }
+    if attack_source is not None:
+        outputs["meta.json"]["sources"]["attack"] = attack_source
+    outputs["meta.json"]["sources"]["apnic"] = apnic_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

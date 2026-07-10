@@ -14,7 +14,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
-             "kev_ransomware.json"]
+             "kev_ransomware.json", "breach_ledger.json",
+             "extortion_ledger.json", "dnssec_adoption.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -33,6 +34,9 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sources"]["cvelist"] == {"release": "fixtures", "cve_count": 11}
     assert meta["sources"]["epss"]["row_count"] == 7
     assert meta["sources"]["kev"]["count"] == 3
+    assert meta["sources"]["hibp"]["breach_count"] == 9
+    assert meta["sources"]["ransomwhere"]["address_count"] == 6
+    assert meta["sources"]["ransomwhere"]["tx_count"] == 8
 
     decay = _load(tmp_path, "nvd_decay.json")
     assert decay["current"]["backlog_total"] == 31102  # 290 + 30412 + 400
@@ -67,11 +71,27 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert board["cnas"][0] == {"cna": "mitre", "total": 2, "rejected": 1,
                                 "rejected_rate_pct": 50.0}
 
-    # The fixture corpus carries no current-year records, so none of the
-    # three flow charts may emit a pace projection (contracts allow absence).
+    # The fixtures carry no current-year records, so none of the four flow
+    # charts may emit a pace projection (contracts allow absence).
     for name in ("volume_curve.json", "nine_eight_flood.json",
-                 "cna_concentration.json"):
+                 "cna_concentration.json", "breach_ledger.json"):
         assert "projection" not in _load(tmp_path, name), name
+
+    # Breach ledger: 4 of the 9 fixture entries are excluded (one per
+    # reason; SpamHaul carries both spam and malware flags and counts once,
+    # under spam_list); the 2013 launch import stays out of the lag trend.
+    ledger = _load(tmp_path, "breach_ledger.json")
+    assert ledger["catalog"] == {
+        "total": 9, "cohort": 5,
+        "excluded": {"fabricated": 1, "spam_list": 1, "malware": 1,
+                     "stealer_log": 1}}
+    assert ledger["import_era"] == {"added_before": "2014-01-01", "n": 1,
+                                    "median_days": 522.0}
+    assert [(y["year"], y["n"], y["median_days"])
+            for y in ledger["lag_by_year"]] == [(2024, 2, 213.0),
+                                                (2025, 2, -8.0)]
+    assert [y["year"] for y in ledger["volume_by_year"]] == [2013, 2024, 2025]
+    assert ledger["class_shares"]["classes"][0] == "Email addresses"
 
     # Advisory quality: fixture-mode min_n=1, so every publication year
     # charts; 2024's REJECTED record is excluded from the denominator.
@@ -96,6 +116,14 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     shares_2023 = next(y for y in cwe["years"] if y["year"] == 2023)["shares"]
     assert shares_2023["CWE-79"] == 66.7 and shares_2023["other"] == 0.0
 
+    # DNSSEC adoption: fixture set = XA world + US/CN economy series;
+    # the TT snapshot row (512 samples) falls under the min_seen floor.
+    dnssec = _load(tmp_path, "dnssec_adoption.json")
+    assert dnssec["world"]["latest"]["validating_pc"] == 38.5
+    assert [e["cc"] for e in dnssec["economies"]] == ["US", "CN"]
+    assert dnssec["spread"]["n_economies"] == 9
+    assert meta["sources"]["apnic"]["economy_count"] == 2
+
     # KEV ransomware: all three entries dated; only the 2023 one is Known
     # (the 2024 entry has no knownRansomwareCampaignUse field at all).
     ransomware = _load(tmp_path, "kev_ransomware.json")
@@ -104,6 +132,20 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
                                               (2024, 1, 0)]
     assert ransomware["catalog"] == {"total": 3, "known": 1,
                                      "pct_known": 33.3}
+
+    # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
+    # transaction pays two DemoLocker addresses); the Unlabeled address is
+    # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
+    ledger = _load(tmp_path, "extortion_ledger.json")
+    assert ledger["catalog"] == {"addresses": 6, "families": 2,
+                                 "transactions": 8, "payments": 7,
+                                 "total_usd": 121000}
+    assert len(ledger["revenue_by_quarter"]) == 17  # gap-filled quarters
+    assert [f["family"] for f in ledger["families"]["top"]] == \
+        ["DemoLocker", "PetitEncrypt"]
+    assert ledger["families"]["unattributed"] == {"usd": 50000, "payments": 1}
+    assert ledger["headline"]["peak_quarter"] == {"year": 2022, "quarter": 3,
+                                                  "usd": 50000}
 
 
 def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):

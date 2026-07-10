@@ -159,6 +159,27 @@ def _validate_meta(obj: Any) -> None:
         _check_str(_get(src["nvd"], "fetched_at", "meta.sources.nvd"),
                    "meta.sources.nvd.fetched_at", ISO_UTC_RE)
 
+    # Optional for the same reason (--skip-attack with no prior data).
+    if "attack" in src:
+        _check_str(_get(src["attack"], "fetched_at", "meta.sources.attack"),
+                   "meta.sources.attack.fetched_at", ISO_UTC_RE)
+        _check_str(_get(src["attack"], "latest_version",
+                        "meta.sources.attack"),
+                   "meta.sources.attack.latest_version")
+        _check_int(_get(src["attack"], "version_count",
+                        "meta.sources.attack"),
+                   "meta.sources.attack.version_count", minimum=1)
+    # Optional additively (older committed meta files predate the module);
+    # the hygiene stage itself always emits it.
+    if "apnic" in src:
+        _check_str(_get(src["apnic"], "fetched_at", "meta.sources.apnic"),
+                   "meta.sources.apnic.fetched_at", ISO_UTC_RE)
+        _check_int(_get(src["apnic"], "economy_count", "meta.sources.apnic"),
+                   "meta.sources.apnic.economy_count")
+        _check_int(_get(src["apnic"], "spread_economy_count",
+                        "meta.sources.apnic"),
+                   "meta.sources.apnic.spread_economy_count")
+
     # Optional for the same reason (--skip-market with no prior data).
     if "market" in src:
         _check_str(_get(src["market"], "fetched_at", "meta.sources.market"),
@@ -168,6 +189,24 @@ def _validate_meta(obj: Any) -> None:
         _check_int(_get(src["market"], "backfill_remaining",
                         "meta.sources.market"),
                    "meta.sources.market.backfill_remaining")
+
+    # Optional so older meta files stay valid; the pipeline always emits it
+    # (the HIBP stage has no skip flag — it fails loud instead).
+    if "hibp" in src:
+        _check_str(_get(src["hibp"], "fetched_at", "meta.sources.hibp"),
+                   "meta.sources.hibp.fetched_at", ISO_UTC_RE)
+        _check_int(_get(src["hibp"], "breach_count", "meta.sources.hibp"),
+                   "meta.sources.hibp.breach_count")
+    # Optional (additive extension, market precedent): the Ransomwhere
+    # export behind the Extortion Ledger module. Checked when present.
+    if "ransomwhere" in src:
+        rw = src["ransomwhere"]
+        _check_str(_get(rw, "fetched_at", "meta.sources.ransomwhere"),
+                   "meta.sources.ransomwhere.fetched_at", ISO_UTC_RE)
+        _check_int(_get(rw, "address_count", "meta.sources.ransomwhere"),
+                   "meta.sources.ransomwhere.address_count", minimum=1)
+        _check_int(_get(rw, "tx_count", "meta.sources.ransomwhere"),
+                   "meta.sources.ransomwhere.tx_count", minimum=1)
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -388,3 +427,16 @@ VALIDATORS.update(tier1_contracts.VALIDATORS)
 from . import tier2_contracts  # noqa: E402
 
 VALIDATORS.update(tier2_contracts.VALIDATORS)
+
+from . import breach_contracts  # noqa: E402
+
+VALIDATORS.update(breach_contracts.VALIDATORS)
+from . import extortion_contracts  # noqa: E402
+
+VALIDATORS.update(extortion_contracts.VALIDATORS)
+from . import attack_contracts  # noqa: E402
+
+VALIDATORS.update(attack_contracts.VALIDATORS)
+from . import hygiene_contracts  # noqa: E402
+
+VALIDATORS.update(hygiene_contracts.VALIDATORS)

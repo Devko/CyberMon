@@ -27,6 +27,10 @@ export const editorial = {
     { id: "market", href: "market.html", label: "Security Market" },
     { id: "kev", href: "kev.html", label: "KEV Latency" },
     { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
+    { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
+    { id: "extortion", href: "extortion.html", label: "Extortion" },
+    { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
+    { id: "hygiene", href: "hygiene.html", label: "Hygiene" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -89,6 +93,55 @@ export const editorial = {
           "CNA count, top-5/10 volume share, a formal concentration index, and who rejects " +
           "more of their own reservations than they publish — rebuilt nightly from the same " +
           "corpus as CVE Ecosystem.",
+        live: true,
+      },
+      {
+        id: "breaches",
+        href: "breaches.html",
+        num: "05",
+        label: "Breach Ledger",
+        headline: "Dwell time is a marketing number. Breach disclosure is a public record.",
+        blurb:
+          "Every breach in Have I Been Pwned, read as a ledger: how long breaches take to " +
+          "reach the public record, how many accounts spill per year, and which data " +
+          "classes leak most — with the catalog's launch import kept out of the trend.",
+        live: true,
+      },
+      {
+        id: "extortion",
+        href: "extortion.html",
+        num: "06",
+        label: "Extortion Ledger",
+        headline: "Ransom revenue is the one security statistic nobody can spin — it settles on a public ledger.",
+        blurb:
+          "Confirmed ransomware payments from the crowdsourced, on-chain-verified " +
+          "Ransomwhere dataset: revenue per quarter in day-of-transfer dollars, payment " +
+          "counts and median sizes, and which families collect. Every figure is a lower " +
+          "bound by construction, rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "attack",
+        href: "attack.html",
+        num: "07",
+        label: "ATT&CK Churn",
+        headline: "The map of attacker behavior grows every release.",
+        blurb:
+          "Active techniques and sub-techniques per MITRE ATT&CK enterprise release, what " +
+          "each version added, deprecated, or revoked, and the group-and-software catalog " +
+          "underneath — parsed nightly from MITRE's own STIX bundles.",
+        live: true,
+      },
+      {
+        id: "hygiene",
+        href: "hygiene.html",
+        num: "08",
+        label: "Hygiene Index",
+        headline: "The fix is twenty years old, free, and still not deployed.",
+        blurb:
+          "DNSSEC validation as measured by APNIC Labs — the world adoption line since " +
+          "2013, the ten biggest online populations compared, and how many economies " +
+          "actually check their DNS answers. Rebuilt nightly.",
         live: true,
       },
     ],
@@ -656,6 +709,403 @@ export const editorial = {
         "then withdrawn, not what was quietly never used. Default sort: rejection rate, " +
         "descending. Click any column header to re-sort.",
     },
+    // ------------------------------------------------ breaches.html · 1 · hero
+    disclosure: {
+      num: "01",
+      kicker: "Disclosure lag",
+      headline: "The breach is old news before it makes the news.",
+      caption:
+        "For every breach in the public catalog, the gap between the date the breach " +
+        "happened and the day Have I Been Pwned catalogued it — median and interquartile " +
+        "range, grouped by the year of cataloguing. The launch-month import stays in the " +
+        "callout below, out of the trend. What the live-era record shows: the typical gap " +
+        "is measured in months, and roughly a third of entries take more than a year to " +
+        "surface. Vendors sell dwell-time figures measured on their own customers; this " +
+        "chart is what the open record shows.",
+      statLabel: "Median days from breach to public catalog",
+      statWhole: "since {trend_start}",
+      statLatest: "{latest_year}",
+      importNote:
+        "{n} breaches entered the catalog in its launch month — December 2013, before " +
+        "{added_before} — with a median nominal lag of {median_days} days. That figure " +
+        "measures the opening import of already-public breaches, not disclosure speed, " +
+        "and it stays out of the trend above.",
+      methodology:
+        "Lag is the breach's AddedDate minus its BreachDate, in days, for every cohort " +
+        "breach in the Have I Been Pwned catalog (the volume chart's methodology has the " +
+        "cohort arithmetic). BreachDate is self-reported and usually rounded to the first " +
+        "of a month, so individual lags carry day-level noise; medians absorb it. The line " +
+        "is the median lag of breaches catalogued each year; the shaded band spans the " +
+        "25th–75th percentile. The trend starts in 2014, and the cutoff comes from the " +
+        "data: HIBP launched on 2013-12-04 by importing breaches that were already " +
+        "public — six of its seven December 2013 entries predate the service itself, with " +
+        "a median nominal lag of 511 days — while from the first full calendar year the " +
+        "catalog ran live (the 2014 median collapses to 5 days). Old breaches keep " +
+        "entering the catalog in every later year, and those stay in the trend on " +
+        "purpose: a breach surfacing years late is exactly the phenomenon this chart " +
+        "measures, and only the opening import is an artifact of the catalog's own " +
+        "birthday. A lag can be negative — a breach catalogued before its stated breach " +
+        "date — and is kept as negative rather than floored at zero (the KEV latency " +
+        "chart applies the same rule): it flags date quality in the source record, and " +
+        "flooring it would quietly hide that. A year plots only with at least 10 cohort " +
+        "breaches. The current year (marked *) is partial and refills nightly.",
+    },
+
+    // ------------------------------------------------ breaches.html · 2
+    exposure: {
+      num: "02",
+      kicker: "Volume",
+      headline: "The breach business has no slow years.",
+      caption:
+        "Breaches catalogued per year, and the accounts exposed inside them — bars count " +
+        "incidents, the line counts accounts, on a log axis because a single mega-dump " +
+        "can outweigh a whole ordinary year. Read the line's floor: even the quietest " +
+        "year of the live era spilled tens of millions of accounts. And read the whole " +
+        "chart as a floor on reality — the catalog holds what surfaced publicly and got " +
+        "loaded, nothing more. The current year is partial and refills nightly.",
+      catalogNote:
+        "Cohort: {cohort} of {total} catalogued breaches. Excluded: {fabricated} " +
+        "fabricated, {spam_list} spam lists, {malware} malware corpora, {stealer_log} " +
+        "stealer-log batches — real data in the last two cases, but a breached " +
+        "organization is the unit this ledger counts.",
+      legendBreaches: "Breaches catalogued",
+      legendRecords: "Accounts exposed",
+      methodology:
+        "Counts come from the full Have I Been Pwned breach catalog, grouped by the " +
+        "calendar year of AddedDate. The cohort excludes, in precedence order: fabricated " +
+        "entries (IsFabricated — the incident never happened), spam lists (IsSpamList — " +
+        "address collections with no breached organization), malware corpora (IsMalware) " +
+        "and stealer logs (IsStealerLog). The last two are real credential theft, but " +
+        "harvested device-by-device from malware victims: there is no single breached " +
+        "organization, and their nominal breach date describes the compilation of the " +
+        "corpus rather than an incident, which would poison the lag chart above. Each " +
+        "excluded entry counts under its first matching reason, so the exclusions plus " +
+        "the cohort always sum to the catalog total — the note under the chart is the " +
+        "audit trail. Accounts per year is the sum of PwnCount, HIBP's count of " +
+        "compromised accounts per breach; the same person appears once per breach " +
+        "they're in, so the sum counts exposures rather than people. The import-era " +
+        "additions of December 2013 chart here like any other year — a catalogued breach " +
+        "is a catalogued breach; only the lag chart quarantines the import. In the bars, " +
+        "a dashed hollow extension paces the partial current year's breach count to " +
+        "twelve months: the count so far divided by the fraction of the UTC calendar " +
+        "year elapsed at generation time, shown only once 12.5% of the year has elapsed " +
+        "(roughly mid-February), under the strong assumption that cataloguing runs " +
+        "uniformly through the year. The accounts line is deliberately never projected: " +
+        "one mega-dump can carry more accounts than the rest of the year combined, so a " +
+        "records pace would dress one upload up as a forecast.",
+    },
+
+    // ------------------------------------------------ breaches.html · 3
+    leaks: {
+      num: "03",
+      kicker: "What leaks",
+      headline: "Email is in nearly every bag. The rest of the take varies.",
+      caption:
+        "The six data classes that appear most often across the whole catalog, each " +
+        "tracked as the share of that year's breaches containing it. A breach lists " +
+        "every class it spilled, so the lines are independent — they will never sum to " +
+        "anything. Email addresses are the constant; every other class, passwords " +
+        "included, swings by tens of points from year to year.",
+      methodology:
+        "The class list is derived from the data every night: all data classes across " +
+        "the cohort are ranked by the number of breaches listing them, and the top six " +
+        "chart (the catalog distinguishes well over a hundred classes; the tail is " +
+        "sparse). Each line is the share of that year's cohort breaches — grouped by " +
+        "AddedDate year, import era included — whose DataClasses field lists that class, " +
+        "counted at most once per breach. Because a breach can list many classes, shares " +
+        "are per-class and independent: there is no “other” bucket and no 100% stack. " +
+        "The ranking can shift as the catalog grows, and a rank change reshapes which " +
+        "lines chart — intended, because what leaks most is itself part of the data. A " +
+        "year plots only with at least 10 cohort breaches. The current year (marked *) " +
+        "is partial and refills nightly.",
+    },
+
+    // --------------------------------------- extortion.html · 1 · hero
+    revenue: {
+      num: "01",
+      kicker: "Confirmed revenue",
+      headline: "Over a billion dollars, settled in public view.",
+      caption:
+        "Ransom payments verified on the Bitcoin blockchain, summed by the quarter the " +
+        "money moved and valued at that day's exchange rate. The dataset behind this chart " +
+        "is Ransomwhere: crowdsourced reports of extortion addresses, each verified before " +
+        "it counts. That design makes every bar a floor, not a market estimate — a payment " +
+        "appears here only after somebody reported the wallet, so the true total sits above " +
+        "every number on this page. Read the thin right edge accordingly: volunteer " +
+        "reporting has slowed, and the chart cannot separate that from the extortion " +
+        "economy itself cooling off.",
+      statLabel: "Confirmed ransom revenue on the public ledger, all-time",
+      statNote: "at least — {payments} verified payments to {addresses} tracked addresses",
+      methodology:
+        "Ransomwhere's CC0 export lists tracked extortion addresses, each with its " +
+        "verified inbound transactions. The pipeline sums each transaction's amountUSD " +
+        "into the UTC calendar quarter of its on-chain timestamp. amountUSD is upstream's " +
+        "conversion at the historical BTC/USD rate of the transaction date — the implied " +
+        "rate per transaction year tracks the price history, so a 2016 payment stays in " +
+        "2016 dollars rather than being revalued at today's price. The export lists a " +
+        "transaction once per receiving tracked address, so a transfer that fans out " +
+        "across several tracked wallets contributes each received output; exact repeated " +
+        "entries (about one percent of total USD) are summed as published rather than " +
+        "second-guessed without chain data. Quarters between the first and last observed " +
+        "payment always chart, at zero when empty. No full-year pace is projected for the " +
+        "partial current year: crowdsourced reports arrive with a lag, which breaks the " +
+        "uniform-flow assumption the projection math needs. Crowdsourced and verified " +
+        "means lower bound — every claim on this page reads “at least this much.”",
+    },
+
+    // --------------------------------------- extortion.html · 2
+    payments: {
+      num: "02",
+      kicker: "Payments",
+      headline: "Fewer payments, bigger ransoms.",
+      caption:
+        "Bars count verified payments per year; the line follows the median payment in " +
+        "day-of-transfer dollars, on a log scale because it climbs four orders of " +
+        "magnitude. The shape is the extortion economy's story so far: mass campaigns " +
+        "squeezed hundreds of dollars out of thousands of victims, then operators moved " +
+        "to organizations and the typical confirmed payment reached six figures while " +
+        "the count collapsed. Read the recent bars with care — thinner crowdsourced " +
+        "coverage and a changed business model both shrink them, and this dataset " +
+        "cannot split the two effects.",
+      legendPayments: "Verified payments",
+      legendMedian: "Median payment (USD, log)",
+      methodology:
+        "A payment is one distinct on-chain transaction: the export lists a transaction " +
+        "once per receiving tracked address, so transfers that fan out across several " +
+        "tracked wallets are collapsed by transaction hash and their outputs summed " +
+        "before anything is counted — on live data, roughly 22,000 ledger entries " +
+        "collapse to about 19,000 payments. Yearly buckets use the transaction's " +
+        "on-chain UTC timestamp; the median is over per-payment USD at the historical, " +
+        "day-of-transfer rate. A year's median plots only with at least 10 payments — a " +
+        "median of three payments is an anecdote — while the payment count always " +
+        "plots. The current year (marked *) is partial and refills nightly; no pace " +
+        "projection is drawn, for the reporting-lag reason in the revenue methodology.",
+    },
+
+    // --------------------------------------- extortion.html · 3
+    families: {
+      num: "03",
+      kicker: "Family concentration",
+      headline: "The biggest bucket on the ledger has no name on it.",
+      caption:
+        "The families with the most confirmed revenue, ranked, with payment counts and " +
+        "the years each was seen collecting. Two disclosures belong next to this board. " +
+        "The single largest slice of verified revenue — about two thirds — carries no " +
+        "family label at all: payments somebody proved, campaigns nobody attributed. " +
+        "And a family's rank tracks how well its wallets were reported — coverage runs " +
+        "deep for some campaigns and stops at a single wallet for others. That is why " +
+        "this is a ranked board rather than a share-per-year chart: family coverage is " +
+        "episodic, so yearly shares would mostly chart when volunteers filed their " +
+        "reports.",
+      note:
+        "{unattributed_usd} — {unattributed_pct} of all confirmed revenue — is verified " +
+        "but attributed to no family. It is disclosed here and never ranked on the board.",
+      colFamily: "Family",
+      colUsd: "confirmed USD",
+      colPayments: "payments",
+      colFirst: "first seen",
+      colLast: "last seen",
+      otherTemplate:
+        "+ {families} more labeled families below the cut · {usd} confirmed · {payments} payments",
+      methodology:
+        "Family names are Ransomwhere's own labels, used as neutral identifiers. Per " +
+        "family: confirmed revenue is the sum of transaction amountUSD across its " +
+        "addresses, at historical day-of-transfer rates; payments are distinct " +
+        "transaction hashes among those addresses; first and last seen are the years of " +
+        "its earliest and latest verified transactions. The board ranks the top eight " +
+        "labeled families by all-time confirmed USD; every labeled family below the cut " +
+        "pools into the footer line. The export's “Unlabeled” bucket — verified payments " +
+        "without an attribution — is excluded from the ranking and disclosed in the " +
+        "panel note instead, because ranking it would present a reporting gap as the " +
+        "leading brand. A share-per-year view was considered and rejected: wallets are " +
+        "often reported long after a campaign ran, so yearly family shares would chart " +
+        "reporting dates as much as anything the families did.",
+    },
+
+    // --------------------------------------------- attack.html · 1 · hero
+    map: {
+      num: "01",
+      kicker: "The growing map",
+      headline: "Detections are graded against a moving target.",
+      caption:
+        "Active techniques and sub-techniques on the MITRE ATT&CK enterprise matrix, one " +
+        "point per release, placed on real release dates. Any program that scores its " +
+        "detection coverage against ATT&CK inherits this drift: a percentage earned against " +
+        "last year's matrix quietly shrinks as the matrix grows. Watch the red line — " +
+        "sub-techniques now outnumber the techniques they refine, so most of the growth " +
+        "happens below the headline technique count.",
+      statLabel: "Active techniques + sub-techniques, enterprise matrix",
+      statLatest: "v{version} ({year})",
+      statAgo: "v{version} ({year})",
+      legendTechniques: "Techniques",
+      legendSubtechniques: "Sub-techniques",
+      methodology:
+        "Each point is one release of the MITRE ATT&CK enterprise matrix, read from its " +
+        "immutable STIX 2.1 bundle in the mitre-attack/attack-stix-data repository; its " +
+        "x-position is the release date carried by that repository's index.json, so gaps " +
+        "between points are real calendar gaps (releases land roughly twice a year). A " +
+        "technique is a STIX attack-pattern object whose x_mitre_is_subtechnique flag is " +
+        "false or absent; a sub-technique is the same object type with the flag true. Both " +
+        "lines count active objects only: anything carrying revoked: true or " +
+        "x_mitre_deprecated: true is excluded here and charted as churn below. Released " +
+        "bundles never change, so each version's counts are computed once and cached; a " +
+        "normal nightly run re-reads only the index. Lines step because a release's counts " +
+        "hold until the next release.",
+    },
+
+    // --------------------------------------------- attack.html · 2
+    churn: {
+      num: "02",
+      kicker: "Churn per release",
+      headline: "Each release redraws the edges of the map.",
+      caption:
+        "What every ATT&CK release did to the technique set — how many techniques and " +
+        "sub-techniques it added, and how many it deprecated or revoked, diffed by STIX " +
+        "object id against the release before it. Forty-odd releases in, this is the " +
+        "changelog nobody reads, and it is the part detection engineering feels most: a " +
+        "rule mapped to a retired technique doesn't break, it just quietly stops meaning " +
+        "anything.",
+      legendAdded: "Added",
+      legendRetired: "Deprecated + revoked",
+      methodology:
+        "Consecutive enterprise releases are diffed by STIX object id across all " +
+        "attack-pattern objects, techniques and sub-techniques together. “Added” counts " +
+        "ids present in a release and absent from its predecessor. “Deprecated” counts ids " +
+        "present in both releases whose x_mitre_deprecated flag flipped from false to " +
+        "true; “revoked” counts the same flip on the STIX revoked flag. An object that " +
+        "arrives already deprecated counts once, as an addition; an object retired in an " +
+        "earlier release is never re-counted. The earliest indexed release (v1.0) has no " +
+        "predecessor and shows no bars. The axis is a category axis of releases: the unit " +
+        "of churn is a release, and gaps between releases vary from a couple of months to " +
+        "nearly a year, so the equal spacing here is deliberate — the two time-axis charts " +
+        "on this page carry the calendar.",
+    },
+
+    // --------------------------------------------- attack.html · 3
+    catalog: {
+      num: "03",
+      kicker: "The catalog behind it",
+      headline: "Behind the matrix, the roster keeps filling in.",
+      caption:
+        "Active adversary groups (intrusion sets) and software — malware and tools, " +
+        "counted together — per release, on the same release-date axis as the hero. This " +
+        "is the evidence base the technique map stands on: every technique cites the " +
+        "groups observed using it and the software that implements it, so the two catalogs " +
+        "grow as attribution work accumulates, and entries leave only by deprecation or " +
+        "revocation.",
+      legendGroups: "Groups (intrusion sets)",
+      legendSoftware: "Software (malware + tools)",
+      methodology:
+        "Groups are STIX intrusion-set objects; software is the union of malware and tool " +
+        "objects, counted together. The same activity rule as the hero applies: objects " +
+        "carrying revoked: true or x_mitre_deprecated: true are excluded. Campaigns, " +
+        "tactics, mitigations, data sources, detection strategies, and relationship " +
+        "records in the bundle are deliberately out of scope — this chart counts the named " +
+        "adversaries and their tooling, the two catalogs a technique entry cites. Points " +
+        "sit at index.json release dates and step between releases, like the hero; the " +
+        "counts come from the same once-per-version cached stats.",
+    },
+
+    // --------------------------------------------- hygiene.html · 1 · hero
+    validation: {
+      num: "01",
+      kicker: "The world line",
+      headline: "Most of the internet still doesn't check its answers.",
+      caption:
+        "DNSSEC has been a finished standard since 2005: it lets a resolver verify that " +
+        "the DNS answer it hands you is the one the domain owner signed, and switching " +
+        "validation on is a resolver configuration choice, free of charge. The line is " +
+        "APNIC's measured share of internet users whose resolvers actually perform that " +
+        "check — climbing from under a tenth when the record starts in 2013 to just under " +
+        "four in ten today. At the pace of the last decade, universal validation is still " +
+        "decades away.",
+      statLabel: "Share of internet users behind validating resolvers",
+      statLatest: "{latest_month}",
+      statAgo: "{ago_month}",
+      everyoneLabel: "everyone validates",
+      methodology:
+        "APNIC Labs measures DNSSEC validation by embedding test fetches in online " +
+        "advertisements: each sampled user's resolver is asked for DNSSEC-signed names, " +
+        "one of which carries a deliberately broken signature. A resolver that rejects " +
+        "the broken name while fetching the valid one counts as validating; a user whose " +
+        "queries land on a mix of validating and non-validating resolvers counts as " +
+        "partially validating — shipped in the data file, deliberately kept out of the " +
+        "headline line. The chart plots APNIC's world aggregate (code XA), 30-day " +
+        "smoothed window, sampled by CyberMon to the last published day of each calendar " +
+        "month; the full daily series is refetched from stats.labs.apnic.net every " +
+        "night, so upstream corrections propagate. The stat compares the newest month " +
+        "against the month ten years earlier (or the record's first month until the " +
+        "record is ten years deep). The measurement caveat is APNIC's own: samples " +
+        "arrive where the ad network delivers, so coverage is shaped by ad reach, and " +
+        "APNIC weights per-economy sampling toward each economy's estimated internet " +
+        "population. These are measured estimates over hundreds of millions of samples " +
+        "a month — strong on trend, softer at the second decimal.",
+    },
+
+    // --------------------------------------------- hygiene.html · 2
+    economies: {
+      num: "02",
+      kicker: "The giants compared",
+      headline: "Where you live decides whether your DNS gets checked.",
+      caption:
+        "The same measured rate for a fixed set of ten: the economies with the most " +
+        "internet users, by APNIC's own weighting. The gap is enormous — the top of this " +
+        "list validates for roughly nine of every ten users, the bottom for almost " +
+        "none, and some of the internet's oldest, richest infrastructures sit far below " +
+        "half. The world line rides along for reference: it is user-weighted, so these " +
+        "ten mostly decide where it goes.",
+      worldLine: "World average",
+      note:
+        "Lines are quarterly samples of APNIC's 30-day windows, ranked by current rate " +
+        "in the legend; the dashed line is the user-weighted world average.",
+      methodology:
+        "The set is fixed: the ten largest economies by APNIC's weighted sample count — " +
+        "its estimate of each economy's internet-user population — as measured when this " +
+        "module launched in July 2026: China, India, the United States, Brazil, " +
+        "Indonesia, Japan, Mexico, Russia, the Philippines and Nigeria. Freezing " +
+        "membership is deliberate; re-picking the list nightly would let membership " +
+        "churn masquerade as adoption change. For each economy the pipeline pulls " +
+        "APNIC's full daily series and samples the last published day of each " +
+        "quarter-end month (30-day smoothed window), plus the newest available day; " +
+        "legend order is current rate, descending. Per-economy caveat, per APNIC: " +
+        "samples arrive where the measurement ads are delivered, and delivery volume " +
+        "varies by economy — where it runs thin (Russia currently yields a small " +
+        "fraction of the samples of comparable economies) the measured rate carries " +
+        "more noise.",
+    },
+
+    // --------------------------------------------- hygiene.html · 3
+    spread: {
+      num: "03",
+      kicker: "The spread",
+      headline: "Count economies, not users, and the picture flips.",
+      caption:
+        "Every economy APNIC measures with a meaningful sample, bucketed by its current " +
+        "validation rate. Weighted this way — one economy, one vote — DNSSEC looks far " +
+        "less bleak: the stat counts how many economies validate for at least half " +
+        "their users. Hold it against the user-weighted hero line and the diagnosis " +
+        "sharpens: the shortfall lives in a handful of enormous economies whose " +
+        "incumbent resolver fleets never switched validation on.",
+      statBig: "{n} of {total}",
+      statLead: "measured economies validate for at least half their users",
+      statNote: "economies with at least {min_seen} samples in the current 30-day window",
+      tooltipBucket: "Validation rate {bucket}",
+      tooltipUnit: "economies",
+      yAxisLabel: "economies",
+      methodology:
+        "The distribution covers every economy on APNIC's DNSSEC world map with at " +
+        "least 10,000 measurements in the current 30-day window — below that floor a " +
+        "rate is an anecdote — bucketed by the share of sampled users behind validating " +
+        "resolvers: under 10%, 10–25%, 25–50%, 50–75%, and 75% or higher (lower edges " +
+        "inclusive). Each economy counts once regardless of size; that equal weighting " +
+        "is the point, and the reason this chart can look healthier than the " +
+        "user-weighted world line above. Values are parsed nightly from the world-map " +
+        "table APNIC publishes (per-economy JSON exists, but pulling two hundred forty " +
+        "series every night to rebuild one histogram would abuse the source; the table " +
+        "is a single request). Same caveat as the rest of the page: rates are estimated " +
+        "from ad-delivered samples, and thinly sampled economies are exactly the ones " +
+        "the floor exists to keep out.",
+    },
   },
 
   footer: {
@@ -663,12 +1113,18 @@ export const editorial = {
     sourcesTemplate:
       "Sources — cvelistV5 release {cvelist_release} ({cve_count} CVEs) · " +
       "EPSS {epss_version} scores of {epss_date} · CISA KEV {kev_version} ({kev_count} entries) · " +
-      "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched}",
+      "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched} · " +
+      "HIBP breach catalog fetched {hibp_fetched} ({hibp_count} breaches) · " +
+      "Ransomwhere {ransomwhere_addresses} addresses / {ransomwhere_txs} transactions " +
+      "fetched {ransomwhere_fetched} · " +
+      "ATT&CK enterprise v{attack_version} ({attack_versions} releases) · " +
+      "APNIC DNSSEC series fetched {apnic_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, or arXiv. Charts aggregate " +
-      "public data; no individual CVE is news here.",
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
+      "Ransomwhere, or APNIC. Charts aggregate public data; no individual CVE is news here, " +
+      "and no victim is identified or identifiable anywhere on this site.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -677,7 +1133,15 @@ export const editorial = {
     dataNote:
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
-      "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability).",
+      "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
+      "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com), " +
+      "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0), " +
+      // The quoted sentence is MITRE's required copyright designation, verbatim
+      // (attack.mitre.org → Resources → Terms of Use). Do not paraphrase it.
+      "MITRE ATT&CK® (© 2026 The MITRE Corporation. This work is reproduced and distributed " +
+      "with the permission of The MITRE Corporation.), " +
+      "and DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
+      "re-use with attribution permitted).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
   },
 };

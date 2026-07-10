@@ -69,6 +69,47 @@ signal they are.
 scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
 concentration index, newcomer counts, and a rejection-rate leaderboard.
 
+### 05 · Breach Ledger — [breaches.html](https://devko.github.io/CyberMon/breaches.html) (live)
+
+*Dwell time is a marketing number. Breach disclosure is a public record.*
+Three charts over the Have I Been Pwned breach catalog: days from breach
+to public cataloguing (median/IQR per catalog year, with the December
+2013 launch import quarantined from the trend), breaches and accounts
+exposed per year (with a pace projection for the partial year), and the
+share of each year's breaches spilling the top data classes. Fabricated
+entries, spam lists, malware corpora and stealer logs are excluded, and
+the exclusion arithmetic ships in the data file.
+### 06 · Extortion Ledger — [extortion.html](https://devko.github.io/CyberMon/extortion.html) (live)
+
+*Ransom revenue is the one security statistic nobody can spin — it
+settles on a public ledger.* Three views of the crowdsourced,
+on-chain-verified Ransomwhere dataset: confirmed ransom revenue per
+quarter (in day-of-transfer dollars), payment counts and median payment
+size per year, and a family concentration board with the unattributed
+majority disclosed rather than ranked. Every figure is a lower bound by
+construction — a payment counts only after someone reported the address
+and the transfers were verified.
+### 07 · ATT&CK Churn — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
+
+*The map of attacker behavior grows every release; detections are graded
+against a moving target.* Three charts from MITRE's versioned enterprise
+STIX bundles: active techniques and sub-techniques per ATT&CK release over
+real release dates, what each release added vs. deprecated or revoked
+(diffed by STIX id), and the group/software catalog behind the matrix.
+Released bundles are immutable, so per-version stats are computed once and
+cached (`.cache/attack_state.json`); a lost cache is reconstructed from the
+previously published `attack_churn.json`, and a normal night costs one
+`index.json` fetch.
+### 08 · Hygiene Index — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
+
+*The fix is twenty years old, free, and still not deployed.* Three charts
+on measured DNSSEC validation (APNIC Labs): the world adoption line since
+2013, a fixed set of the ten largest online populations compared (frozen
+by APNIC's own internet-user weighting at module creation), and the
+one-economy-one-vote distribution across every measured economy. APNIC
+publishes its full daily history, so this stage refetches statelessly
+every night — no accumulated state, no committed history file.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
@@ -87,8 +128,12 @@ reads a few-KB JSON file; there are no runtime queries.
       │              ├─ cvelistV5 release zip │  commit back to main
       │              ├─ EPSS daily CSV        │  (cybermon-bot, [skip ci])
       │              ├─ CISA KEV JSON         ▼
-      │              └─ NVD API (status)   site/  ──▶ GitHub Pages
-      │                                              https://devko.github.io/CyberMon/
+      │              ├─ HIBP breaches JSON   site/  ──▶ GitHub Pages
+      │              ├─ Ransomwhere export
+      │              ├─ ATT&CK STIX index      https://devko.github.io/CyberMon/
+      │              ├─ APNIC DNSSEC series
+      │              ├─ GDELT · HN · arXiv
+      │              └─ NVD API (status)
       └─ on failure: workflow fails, nothing is deployed
 ```
 
@@ -103,6 +148,10 @@ reads a few-KB JSON file; there are no runtime queries.
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
+| [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
+| [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
+| [APNIC Labs DNSSEC measurement](https://stats.labs.apnic.net/dnssec) | Measured DNSSEC validation rates: per-code daily time series (`cgi-bin/json-table.pl?x=<code>`) + the world-map snapshot table | © APNIC Pty Ltd; "re-use with attribution permitted" (stated in every JSON response), provided on a hold-harmless basis with attribution |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and

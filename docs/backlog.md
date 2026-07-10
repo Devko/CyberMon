@@ -42,14 +42,14 @@ and field lists are from the live responses, not documentation.
 - **Feasibility:** medium — STIX parsing and a version-state cache, but no
   rate-limit or licensing pain (ATT&CK terms permit use with attribution).
 
-### The boring-hygiene index (APNIC DNSSEC validation)
-- **Thesis:** "The fix is twenty years old, free, and still not deployed."
-- **Signals:** measured world DNSSEC validation rate over time; major
-  economies compared.
-- **Source:** `https://stats.labs.apnic.net/dnssec/XA` (JSON via `?hf=j`
-  family of params) — tested: responds, ~460KB. Attribution: APNIC Labs.
-- **Feasibility:** easy-medium — one aggregate endpoint; thinnest data of
-  the four, strongest editorial bite per byte.
+### The boring-hygiene index (APNIC DNSSEC validation) — SHIPPED
+Live as **08 · Hygiene Index** ([hygiene.html](../site/hygiene.html)).
+Source exploration found richer endpoints than the candidate note
+assumed: `cgi-bin/json-table.pl?x=<code>` serves the FULL daily history
+per economy (2013-10-07 onward, ~3.9 MB), so the stage is stateless; the
+all-economies snapshot comes from the world-map page's inline table
+(no JSON equivalent exists — parsed with a loud-failure floor). See
+`pipeline/fetch_dnssec.py` and data-contracts.md.
 
 **Verified spare data sources for Security Market v1.1** (live-tested
 2026-07-09): SEC EDGAR full-text search (free JSON API, mandatory

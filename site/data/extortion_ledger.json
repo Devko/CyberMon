@@ -1,0 +1,426 @@
+{
+ "generated_at": "2026-07-10T06:39:51Z",
+ "min_n": 10,
+ "revenue_by_quarter": [
+  {
+   "year": 2012,
+   "quarter": 1,
+   "usd": 0
+  },
+  {
+   "year": 2012,
+   "quarter": 2,
+   "usd": 0
+  },
+  {
+   "year": 2012,
+   "quarter": 3,
+   "usd": 0
+  },
+  {
+   "year": 2012,
+   "quarter": 4,
+   "usd": 0
+  },
+  {
+   "year": 2013,
+   "quarter": 1,
+   "usd": 0
+  },
+  {
+   "year": 2013,
+   "quarter": 2,
+   "usd": 0
+  },
+  {
+   "year": 2013,
+   "quarter": 3,
+   "usd": 7231
+  },
+  {
+   "year": 2013,
+   "quarter": 4,
+   "usd": 3456910
+  },
+  {
+   "year": 2014,
+   "quarter": 1,
+   "usd": 7
+  },
+  {
+   "year": 2014,
+   "quarter": 2,
+   "usd": 143
+  },
+  {
+   "year": 2014,
+   "quarter": 3,
+   "usd": 618
+  },
+  {
+   "year": 2014,
+   "quarter": 4,
+   "usd": 2428
+  },
+  {
+   "year": 2015,
+   "quarter": 1,
+   "usd": 3269
+  },
+  {
+   "year": 2015,
+   "quarter": 2,
+   "usd": 42706
+  },
+  {
+   "year": 2015,
+   "quarter": 3,
+   "usd": 72677
+  },
+  {
+   "year": 2015,
+   "quarter": 4,
+   "usd": 13535
+  },
+  {
+   "year": 2016,
+   "quarter": 1,
+   "usd": 8710342
+  },
+  {
+   "year": 2016,
+   "quarter": 2,
+   "usd": 2282658
+  },
+  {
+   "year": 2016,
+   "quarter": 3,
+   "usd": 3121445
+  },
+  {
+   "year": 2016,
+   "quarter": 4,
+   "usd": 1263408
+  },
+  {
+   "year": 2017,
+   "quarter": 1,
+   "usd": 1386517
+  },
+  {
+   "year": 2017,
+   "quarter": 2,
+   "usd": 672869
+  },
+  {
+   "year": 2017,
+   "quarter": 3,
+   "usd": 288028
+  },
+  {
+   "year": 2017,
+   "quarter": 4,
+   "usd": 534101
+  },
+  {
+   "year": 2018,
+   "quarter": 1,
+   "usd": 69853
+  },
+  {
+   "year": 2018,
+   "quarter": 2,
+   "usd": 43663
+  },
+  {
+   "year": 2018,
+   "quarter": 3,
+   "usd": 945142
+  },
+  {
+   "year": 2018,
+   "quarter": 4,
+   "usd": 5036650
+  },
+  {
+   "year": 2019,
+   "quarter": 1,
+   "usd": 5806710
+  },
+  {
+   "year": 2019,
+   "quarter": 2,
+   "usd": 7415193
+  },
+  {
+   "year": 2019,
+   "quarter": 3,
+   "usd": 18729715
+  },
+  {
+   "year": 2019,
+   "quarter": 4,
+   "usd": 61178060
+  },
+  {
+   "year": 2020,
+   "quarter": 1,
+   "usd": 54825376
+  },
+  {
+   "year": 2020,
+   "quarter": 2,
+   "usd": 81793004
+  },
+  {
+   "year": 2020,
+   "quarter": 3,
+   "usd": 139502184
+  },
+  {
+   "year": 2020,
+   "quarter": 4,
+   "usd": 103790419
+  },
+  {
+   "year": 2021,
+   "quarter": 1,
+   "usd": 109294035
+  },
+  {
+   "year": 2021,
+   "quarter": 2,
+   "usd": 111199316
+  },
+  {
+   "year": 2021,
+   "quarter": 3,
+   "usd": 32031798
+  },
+  {
+   "year": 2021,
+   "quarter": 4,
+   "usd": 48323849
+  },
+  {
+   "year": 2022,
+   "quarter": 1,
+   "usd": 25585841
+  },
+  {
+   "year": 2022,
+   "quarter": 2,
+   "usd": 81150773
+  },
+  {
+   "year": 2022,
+   "quarter": 3,
+   "usd": 23615336
+  },
+  {
+   "year": 2022,
+   "quarter": 4,
+   "usd": 23866798
+  },
+  {
+   "year": 2023,
+   "quarter": 1,
+   "usd": 4360717
+  },
+  {
+   "year": 2023,
+   "quarter": 2,
+   "usd": 1013784
+  },
+  {
+   "year": 2023,
+   "quarter": 3,
+   "usd": 2945063
+  },
+  {
+   "year": 2023,
+   "quarter": 4,
+   "usd": 5194655
+  },
+  {
+   "year": 2024,
+   "quarter": 1,
+   "usd": 23304131
+  },
+  {
+   "year": 2024,
+   "quarter": 2,
+   "usd": 25238562
+  },
+  {
+   "year": 2024,
+   "quarter": 3,
+   "usd": 454405
+  }
+ ],
+ "payments_by_year": [
+  {
+   "year": 2012,
+   "payments": 4,
+   "usd": 0
+  },
+  {
+   "year": 2013,
+   "payments": 519,
+   "usd": 3464141,
+   "median_usd": 0.03
+  },
+  {
+   "year": 2014,
+   "payments": 324,
+   "usd": 3195,
+   "median_usd": 1.21
+  },
+  {
+   "year": 2015,
+   "payments": 360,
+   "usd": 132186,
+   "median_usd": 2.18
+  },
+  {
+   "year": 2016,
+   "payments": 9324,
+   "usd": 15377852,
+   "median_usd": 575.54
+  },
+  {
+   "year": 2017,
+   "payments": 1583,
+   "usd": 2881515,
+   "median_usd": 202.3
+  },
+  {
+   "year": 2018,
+   "payments": 735,
+   "usd": 6095307,
+   "median_usd": 92.0
+  },
+  {
+   "year": 2019,
+   "payments": 2868,
+   "usd": 93129678,
+   "median_usd": 788.54
+  },
+  {
+   "year": 2020,
+   "payments": 1236,
+   "usd": 379910983,
+   "median_usd": 3451.37
+  },
+  {
+   "year": 2021,
+   "payments": 1765,
+   "usd": 300848998,
+   "median_usd": 540.22
+  },
+  {
+   "year": 2022,
+   "payments": 146,
+   "usd": 154218749,
+   "median_usd": 147038.94
+  },
+  {
+   "year": 2023,
+   "payments": 19,
+   "usd": 13514219,
+   "median_usd": 99389.21
+  },
+  {
+   "year": 2024,
+   "payments": 19,
+   "usd": 48997098,
+   "median_usd": 139533.73
+  }
+ ],
+ "families": {
+  "top": [
+   {
+    "family": "Conti",
+    "usd": 101561482,
+    "payments": 133,
+    "first_year": 2017,
+    "last_year": 2022
+   },
+   {
+    "family": "Cuba",
+    "usd": 60150632,
+    "payments": 18,
+    "first_year": 2020,
+    "last_year": 2022
+   },
+   {
+    "family": "Netwalker (Mailto)",
+    "usd": 27477621,
+    "payments": 234,
+    "first_year": 2019,
+    "last_year": 2021
+   },
+   {
+    "family": "BlackSuit",
+    "usd": 25009167,
+    "payments": 3,
+    "first_year": 2024,
+    "last_year": 2024
+   },
+   {
+    "family": "BlackCat",
+    "usd": 21867502,
+    "payments": 1,
+    "first_year": 2024,
+    "last_year": 2024
+   },
+   {
+    "family": "Locky",
+    "usd": 14024716,
+    "payments": 7874,
+    "first_year": 2016,
+    "last_year": 2017
+   },
+   {
+    "family": "REvil / Sodinokibi",
+    "usd": 12135785,
+    "payments": 9,
+    "first_year": 2020,
+    "last_year": 2021
+   },
+   {
+    "family": "RagnarLocker",
+    "usd": 10879015,
+    "payments": 9,
+    "first_year": 2020,
+    "last_year": 2021
+   }
+  ],
+  "other": {
+   "families": 98,
+   "usd": 63318733,
+   "payments": 9783
+  },
+  "unattributed": {
+   "usd": 682149269,
+   "payments": 839
+  }
+ },
+ "catalog": {
+  "addresses": 11186,
+  "families": 106,
+  "transactions": 21802,
+  "payments": 18902,
+  "total_usd": 1018573922
+ },
+ "headline": {
+  "total_usd": 1018573922,
+  "peak_quarter": {
+   "year": 2020,
+   "quarter": 3,
+   "usd": 139502184
+  },
+  "first_year": 2012,
+  "last_year": 2024
+ }
+}

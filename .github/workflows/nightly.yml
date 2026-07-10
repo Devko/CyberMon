@@ -66,6 +66,19 @@ jobs:
           restore-keys: |
             market-state-
 
+      # ATT&CK per-release stats state (immutable derived stats per
+      # enterprise release). Same self-healing semantics as the NVD state
+      # above — and doubly so: a miss here is first reconstructed from the
+      # published site/data/attack_churn.json, so it never re-triggers the
+      # full ~40-bundle backfill.
+      - name: Restore ATT&CK sync state
+        uses: actions/cache@v4
+        with:
+          path: .cache/attack_state.json
+          key: attack-state-${{ github.run_id }}
+          restore-keys: |
+            attack-state-
+
       # If this step fails, the job fails and the deploy job below is
       # skipped — stale/broken data is never deployed. Do NOT add
       # continue-on-error here.

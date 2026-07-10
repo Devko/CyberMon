@@ -14,8 +14,9 @@ General rules:
   writing (see `pipeline/contracts.py` — single source of truth as JSON
   Schema; site does not validate).
 
-Pace projections (optional `"projection"` key): exactly three files —
-`volume_curve.json`, `nine_eight_flood.json`, `cna_concentration.json` —
+Pace projections (optional `"projection"` key): exactly four files —
+`volume_curve.json`, `nine_eight_flood.json`, `cna_concentration.json`,
+`breach_ledger.json` —
 may carry a full-year pace projection for the partial current year:
 `projected = round(count / elapsed)`, where `elapsed` = day-of-year ÷
 days-in-year (UTC, leap-year aware) at `generated_at`. `elapsed` ships in
@@ -43,10 +44,29 @@ visually distinct (dashed/hollow) and labeled.
     "cvelist": {"release": "cve_2026-07-08_at_end_of_day", "cve_count": 251342},
     "epss": {"model_version": "v4", "score_date": "2026-07-08", "row_count": 248101},
     "kev": {"catalog_version": "2026.07.08", "count": 1402},
-    "nvd": {"fetched_at": "2026-07-09T01:50:00Z"}
+    "nvd": {"fetched_at": "2026-07-09T01:50:00Z"},
+    "hibp": {"fetched_at": "2026-07-09T02:05:00Z", "breach_count": 1015}
+    "attack": {"fetched_at": "2026-07-09T01:52:00Z",
+               "latest_version": "19.1", "version_count": 40}
+    "apnic": {"fetched_at": "2026-07-09T02:05:00Z", "economy_count": 10,
+              "spread_economy_count": 203}
   }
 }
 ```
+
+`sources.hibp` is optional in the validator so older meta files stay
+valid, but the pipeline always emits it — the HIBP stage has no skip flag
+and no carry-forward: if the fetch fails, the run fails.
+`sources.attack` is optional for the same reason as `nvd`/`market`
+(`--skip-attack` with no prior data omits it); when present it carries
+`fetched_at` (ISO-8601 UTC), the newest enterprise release's
+`latest_version`, and `version_count` ≥ 1 (releases in the index), plus
+`"stale": true` on carry-forward runs.
+`sources.apnic` (Hygiene Index module) is validated additively — optional
+because older committed meta files predate the module, but the hygiene
+stage itself always emits it: `economy_count` = fixed-set economies with a
+fetched series, `spread_economy_count` = economies that survived the
+spread's sample floor.
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -400,6 +420,67 @@ edge inclusive). `headline.latest_year` is the last complete year that
 survived filters; `baseline_year` = latest − 3 when present, else the
 earliest surviving year — payload-authoritative, never derived.
 
+## site/data/dnssec_adoption.json  (Hygiene Index module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "window": "30_day",
+  "world": {
+    "cc": "XA",
+    "series": [{"month": "2013-10", "validating_pc": 8.6}],
+    "latest": {"date": "2026-07-07", "validating_pc": 38.5,
+               "partial_pc": 8.8, "seen": 493075676},
+    "baseline": {"month": "2016-07", "validating_pc": 14.6}
+  },
+  "economies": [
+    {"cc": "PH", "name": "Philippines", "latest_pc": 93.5,
+     "series": [{"month": "2014-03", "validating_pc": 41.2}]}
+  ],
+  "spread": {
+    "min_seen": 10000,
+    "n_economies": 203,
+    "buckets": [{"bucket": "<10%", "n": 13}]
+  }
+}
+```
+
+Source: APNIC Labs' measured DNSSEC validation
+(`stats.labs.apnic.net/cgi-bin/json-table.pl?x=<code>` for time series;
+the `/dnssec` world-map page's inline table for the snapshot). Everything
+reads APNIC's **30-day smoothed window** (`window` is pinned to
+`"30_day"`); `validating_pc` = share of sampled users behind validating
+resolvers, `partial_pc` = APNIC's "partially validating" share (mixed
+resolver sets). Upstream publishes its full daily history, so the stage
+is stateless — refetched in full nightly, no committed history file.
+
+`world.series` = one point per calendar month (the month's last published
+day), sorted ascending, unique, non-empty; `world.latest` is the exact
+newest day and must fall inside the newest series month.
+`world.baseline` is payload-authoritative (consumers never derive it):
+the point 120 months before the newest month, else the series' first
+month — its `month` must be one of the charted months.
+
+`economies` = the FIXED ten-economy set (`pipeline/fetch_dnssec.py
+ECONOMIES` — the ten largest by APNIC's weighted sample count, i.e. its
+internet-user estimate, frozen at module creation 2026-07-10: CN IN US BR
+ID JP MX RU PH NG), each with quarter-end-month sampling (Mar/Jun/Sep/Dec
+last published day, plus the newest available month). Sorted by
+`latest_pc` descending; at most 10 entries; unique codes. Fixture runs
+may carry a subset (only the series with fixture files).
+
+`spread` = one-economy-one-vote distribution from the world-map snapshot:
+economies with `seen >= min_seen` (production 10,000) in the current
+30-day window, bucketed by `validating_pc` into exactly
+`["<10%", "10-25%", "25-50%", "50-75%", "75%+"]` (that order; lower edges
+inclusive); bucket counts must sum to `n_economies`. APNIC's region
+pseudo-codes (XA–XW, QM–QS) are excluded — QA (Qatar) is a real economy
+and stays. Measurement caveat (stated in the site methodology): APNIC
+measures via ad-delivered test fetches, so rates are sampled estimates
+weighted to each economy's estimated internet population.
+Validator: `pipeline/hygiene_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
 ## site/data/cna_concentration.json  (CNA Concentration module, all 3 charts)
 
 ```json
@@ -445,3 +526,227 @@ appearances are events — a flow — so a pace applies, on the strong
 assumption that newcomers arrive uniformly through the year. `cna_count`
 is a roster headcount and is never projected; nor are the shares or the
 HHI. Validator: `pipeline/tier1_contracts.py`.
+
+## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
+## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
+## site/data/attack_churn.json  (ATT&CK Churn module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "catalog": {
+    "total": 1015, "cohort": 982,
+    "excluded": {"fabricated": 3, "spam_list": 16, "malware": 8,
+                 "stealer_log": 6}
+  },
+  "import_era": {"added_before": "2014-01-01", "n": 7, "median_days": 511.0},
+  "lag_by_year": [
+    {"year": 2014, "n": 27, "median_days": 5.0, "p25_days": 1.0,
+     "p75_days": 222.0, "pct_negative": 0.0, "pct_over_365d": 25.9}
+  ],
+  "volume_by_year": [
+    {"year": 2013, "breaches": 7, "records": 155137175}
+  ],
+  "class_shares": {
+    "classes": ["Email addresses", "Passwords", "Names", "Usernames",
+                "IP addresses", "Phone numbers"],
+    "years": [
+      {"year": 2016, "n": 109,
+       "shares": {"Email addresses": 100.0, "Passwords": 74.3,
+                  "Names": 45.0, "Usernames": 39.4,
+                  "IP addresses": 33.9, "Phone numbers": 22.9}}
+    ]
+  },
+  "headline": {"trend_n": 975, "median_days": 144.0, "pct_over_365d": 35.5,
+               "latest_year": 2025, "median_days_latest": 194.0},
+  "projection": {"year": 2026, "breaches": 149, "elapsed": 0.523}
+}
+```
+
+Source: the Have I Been Pwned public breaches feed (one JSON GET, no key;
+attribution carried in the site footer). Cohort rule, applied everywhere:
+`IsFabricated` (never happened) and `IsSpamList` (address collections, no
+breached organization) are excluded; `IsMalware` and `IsStealerLog` are
+excluded for the same reason as spam lists — real credential theft, but
+harvested device-by-device with no single breached organization, and a
+nominal `BreachDate` that describes the compilation of the corpus, which
+would poison the lag stats. Each excluded entry counts under its FIRST
+matching reason, in that order, so `cohort + sum(excluded) == total`
+always holds — `catalog` is the audit trail. `excluded` carries exactly
+those four keys.
+
+All per-year series group by the `AddedDate` calendar year (years ≥ 2013,
+sorted, unique). Entries with an unparseable `AddedDate` join no year but
+still count in `catalog`; lag stats additionally require a parseable
+`BreachDate`.
+
+`lag_by_year` (hero): `lag = AddedDate − BreachDate` in days, per catalog
+year, median + p25/p75. Negative lags (a breach catalogued before its
+self-reported, usually month-rounded, breach date) are KEPT, never
+floored — same rule as `kev_latency`, they flag source date quality.
+Entries with `AddedDate` before `import_era.added_before` (fixed at
+`2014-01-01`) are the catalog's opening import — HIBP launched 2013-12-04
+by loading breaches that were already public (empirically: six of its
+seven December 2013 entries predate the service itself, median nominal
+lag 511 days, vs a 5-day median for 2014 additions) — and are excluded
+from `lag_by_year` and `headline`, reported once as `import_era`
+(`median_days` null iff `n` = 0). Pre-2014 *breaches* surfacing later
+stay in the trend: surfacing late is the measured phenomenon; only the
+opening import is an artifact of the catalog's birthday. Years with fewer
+than `min_n` cohort breaches are omitted (production 10; fixture mode 1).
+
+`volume_by_year`: cohort breaches catalogued per year (`breaches` ≥ 1 —
+a year exists only because something was catalogued) and `records` = the
+year's `PwnCount` sum (compromised accounts per breach; a person appears
+once per breach they are in, so the sum counts exposures, not people).
+No `min_n` filter and no import-era exclusion — counts are counts.
+
+`class_shares`: `classes` = up to 6 data classes ranked by the number of
+cohort breaches listing them, all-time, ties broken alphabetically —
+derived from the data nightly, never hardcoded, so the list may reshape
+as the catalog grows. `years[].shares` carries exactly those classes;
+each value is the share of that year's cohort breaches listing the class
+(counted at most once per breach). Multi-label: shares are independent
+per class — there is deliberately no "other" key and no 100% sum. Years
+under `min_n` are omitted.
+
+`headline`: `trend_n`/`median_days`/`pct_over_365d` pool every trend-era
+lag (import era excluded, all years, unfiltered by `min_n`);
+`latest_year`/`median_days_latest` echo the last complete plotted year,
+falling back to the partial current year only when nothing else survived
+(`kev_latency` rule). An empty trend is `trend_n` 0, zeros elsewhere and
+`latest_year` 0 — consumers must treat `latest_year` 0 as "no data",
+never as a year.
+
+`projection` (optional; see "Pace projections" above): the current year's
+catalogued-breach count paced to a full year (`breaches` ≥ 1). Breaches
+catalogued are a flow, so a pace applies; `records` is deliberately never
+projected — one mega-dump can outweigh the rest of the year, so a records
+pace would dress one upload up as a forecast. Validator:
+`pipeline/breach_contracts.py` (registered into `pipeline/contracts.py`'s
+dispatch).
+  "revenue_by_quarter": [
+    {"year": 2020, "quarter": 3, "usd": 139502184}
+  ],
+  "payments_by_year": [
+    {"year": 2016, "payments": 9324, "usd": 68400000, "median_usd": 575.5}
+  ],
+  "families": {
+    "top": [
+      {"family": "Conti", "usd": 101561482, "payments": 128,
+       "first_year": 2017, "last_year": 2022}
+    ],
+    "other": {"families": 96, "usd": 12345678, "payments": 990},
+    "unattributed": {"usd": 682149269, "payments": 850}
+  },
+  "catalog": {"addresses": 11186, "families": 106, "transactions": 21802,
+              "payments": 18902, "total_usd": 1018573922},
+  "headline": {"total_usd": 1018573922,
+               "peak_quarter": {"year": 2020, "quarter": 3, "usd": 139502184},
+               "first_year": 2012, "last_year": 2024}
+}
+```
+
+Source: the Ransomwhere export (`api.ransomwhe.re/export`, CC0) —
+crowdsourced, verified ransomware payment addresses with their on-chain
+transactions. Everything in this file is a FLOOR: a payment enters the
+dataset only after someone reported the address and the transfers were
+verified, so site copy must always claim "at least this much", never
+"the market is this big".
+
+All `usd` values are **integers (whole dollars)** at the HISTORICAL
+BTC/USD rate of each transaction's date (upstream's `amountUSD`; the
+implied rate per transaction year tracks the price history) — a 2016
+payment stays in 2016 dollars. `median_usd` is the one float, rounded to
+**2** decimals — a documented exception to the 1-decimal rule: early
+mass-campaign years have sub-dollar medians ($0.03 in 2013), which
+1-decimal rounding would crush to a false zero. Years are bounded below
+by 2008 (pre-Bitcoin "payments" are parser breakage); any single USD
+value above 10^10 fails validation as a unit error (satoshi summed as
+dollars).
+
+`revenue_by_quarter`: transaction `amountUSD` summed by the UTC calendar
+quarter of the on-chain timestamp, over ALL ledger entries as published
+(the export lists a transaction once per receiving tracked address;
+exact repeated entries carry ~1% of total USD and are trusted rather
+than second-guessed without chain data). Quarters are **contiguous** from
+first to last observed payment — gaps chart as zero, the axis never
+silently skips time.
+
+`payments_by_year`: a payment is one distinct on-chain transaction
+(unique `hash`, outputs to tracked addresses summed — multi-wallet
+transfers collapse). `payments` ≥ 1 per row; `median_usd` is present
+only when the year has at least `min_n` payments (production 10; fixture
+mode 1) — absence means "not charted", never zero. `catalog.payments` ≤
+`catalog.transactions` always.
+
+`families`: Ransomwhere's own labels, neutral identifiers. `top` = up to
+8 labeled families ranked descending by all-time confirmed USD; the
+literal `"Unlabeled"` bucket (verified but unattributed — the largest
+single slice) must NEVER appear in `top`: it ships as
+`families.unattributed` and the site discloses it beside the board.
+Remaining labeled families pool into `families.other`.
+`catalog.families` counts labeled families only. A ranked board is
+shipped instead of a per-year share series on purpose: wallets are often
+reported long after a campaign ran, so yearly family shares would chart
+reporting dates, not activity.
+
+NO `projection` key, ever, although yearly payment counts are a flow:
+crowdsourced reports arrive with a lag, so the partial current year
+structurally undercounts and the uniform-flow assumption behind "Pace
+projections" (above) does not hold. `headline.total_usd` must equal
+`catalog.total_usd`; `headline.peak_quarter.usd` must equal the series
+maximum. `meta.json` gains an optional `sources.ransomwhere`
+`{fetched_at, address_count, tx_count}` block (validated when present).
+Validator: `pipeline/extortion_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+  "versions": [
+    {"version": "1.0", "released": "2018-01-17",
+     "techniques": 187, "subtechniques": 0, "groups": 68, "software": 328,
+     "churn": null},
+    {"version": "19.1", "released": "2026-05-12",
+     "techniques": 222, "subtechniques": 475, "groups": 174, "software": 821,
+     "churn": {"added": 9, "deprecated": 2, "revoked": 1}}
+  ],
+  "headline": {
+    "latest_version": "19.1", "released_latest": "2026-05-12",
+    "techniques_latest": 222, "subtechniques_latest": 475,
+    "first_version": "1.0", "released_first": "2018-01-17",
+    "techniques_first": 187, "subtechniques_first": 0
+  }
+}
+```
+
+One entry per release of the MITRE ATT&CK **enterprise** collection
+(`mitre-attack/attack-stix-data`), sorted ascending by numeric
+`major.minor` version, unique versions, `released` (the date part of the
+version's `modified` timestamp in the repo's `index.json`) never
+decreasing. Counting rules, applied to the release's STIX 2.1 bundle:
+`techniques` = `attack-pattern` objects with `x_mitre_is_subtechnique`
+false or absent; `subtechniques` = the flag true; `groups` =
+`intrusion-set`; `software` = `malware` + `tool`. All four count **active**
+objects only — an object carrying `revoked: true` or
+`x_mitre_deprecated: true` is excluded. `churn` diffs the release against
+its predecessor by STIX object id over all `attack-pattern` objects
+(techniques and sub-techniques together, active or not): `added` = ids new
+to the release; `deprecated`/`revoked` = ids present in both whose flag
+flipped false→true (an object arriving already deprecated counts once, as
+an addition; nothing is ever re-counted). `churn` is `null` when the
+release has no predecessor in the index (normally only v1.0). `headline`
+restates the first and latest entries (payload-authoritative; consumers
+never derive it) and is `null` iff `versions` is empty. `"stale": true`
+appears only on `--skip-attack` carry-forwards.
+
+**Reconstruct-losslessly guarantee:** the per-version objects in
+`versions[]` are byte-for-byte the pipeline's sync-state entries
+(`.cache/attack_state.json`) plus the version string — nothing in the
+state is omitted from the output and nothing in the output is derived
+beyond `headline`. `pipeline/fetch_attack.reconstruct_state` rebuilds the
+full state from this file, so a lost CI cache costs one JSON read instead
+of re-downloading ~40 immutable bundles (tens of MB each); only versions
+absent from both the cache and this file are ever fetched. Changing this
+file's per-version shape therefore REQUIRES updating `reconstruct_state`
+and its round-trip test in the same commit. Validator:
+`pipeline/attack_contracts.py` (registered into `pipeline/contracts.py`'s
+dispatch).
