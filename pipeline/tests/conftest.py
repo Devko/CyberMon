@@ -6,11 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import (breach_metrics, concentration_metrics,
-                      extortion_metrics, guards_metrics, kev_metrics,
-                      epss_report_metrics, extortion_metrics, kev_metrics,
 from pipeline import (breach_metrics, calendar_metrics,
-                      concentration_metrics, extortion_metrics, kev_metrics,
+                      concentration_metrics, epss_report_metrics,
+                      extortion_metrics, guards_metrics, kev_metrics,
                       metrics, quality_metrics)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file

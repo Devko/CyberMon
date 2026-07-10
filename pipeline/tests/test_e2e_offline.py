@@ -15,13 +15,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
-             "extortion_ledger.json", "dnssec_adoption.json"]
-             "kev_ransomware.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json",
-             "epss_report.json"]
-             "kev_ransomware.json", "breach_ledger.json",
-             "extortion_ledger.json", "dnssec_adoption.json",
-             "cve_calendar.json"]
+             "epss_report.json", "cve_calendar.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -176,8 +171,11 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     # miss; nothing is pending because the fixture envelopes cover every
     # KEV date.
     epss_report = _load(tmp_path, "epss_report.json")
+    # 7 KEV fixture entries (the guards module added four): six grade with
+    # a day-before score, the 2021-12-01 entry is listed before its CVE
+    # published and can have no prior score.
     assert epss_report["catalog"] == {
-        "total": 3, "graded": 2,
+        "total": 7, "graded": 6,
         "ungradeable": {"pre_epss": 0, "listed_before_publication": 1,
                         "no_prior_score": 0},
         "pending_backfill": 0}

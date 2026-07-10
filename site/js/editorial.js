@@ -158,6 +158,9 @@ export const editorial = {
           "vendors and products: the guard share of the catalog year by year, the vendors " +
           "that keep coming back, and how hard the ransomware flag leans on exploited " +
           "security products. Rebuilt nightly.",
+        live: true,
+      },
+      {
         id: "epss",
         href: "epss.html",
         num: "10",
@@ -168,6 +171,9 @@ export const editorial = {
           "the day before the KEV listing — the forecast's last chance to sound the " +
           "alarm. Grade bands per catalog year, the day-before distribution split by " +
           "model version, and where the model ranked the confirmed-exploited cohort.",
+        live: true,
+      },
+      {
         id: "calendar",
         href: "calendar.html",
         num: "11",
@@ -1284,6 +1290,7 @@ export const editorial = {
         "narrow question — is the flag overrepresented on security products? It says " +
         "nothing about which campaigns, when, or how many victims: the flag is CISA's " +
         "current per-entry assessment, with no dates attached.",
+    },
 
     // --------------------------------------------- epss.html · 1 · hero
     grade: {
@@ -1399,6 +1406,7 @@ export const editorial = {
         "EPSS era published scores without percentiles for a stretch; such entries " +
         "grade in the probability charts but not here, and the counts ship in the " +
         "data file). The stat's median is the cohort's median day-before percentile.",
+    },
 
     // --------------------------------------------- calendar.html · 1 · hero
     reservation: {

@@ -26,13 +26,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (attack_metrics, breach_metrics, concentration_metrics,
-               contracts, extortion_metrics, guards_metrics, history,
-               contracts, epss_report_metrics, extortion_metrics, history,
 from . import (attack_metrics, breach_metrics, calendar_metrics,
-               concentration_metrics, contracts, extortion_metrics, history,
-               hygiene_metrics, kev_metrics, market_metrics, metrics,
-               quality_metrics)
+               concentration_metrics, contracts, epss_report_metrics,
+               extortion_metrics, guards_metrics, history, hygiene_metrics,
+               kev_metrics, market_metrics, metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file

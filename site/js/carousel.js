@@ -137,12 +137,16 @@ const MODULES = {
       { id: "guards", render: renderGuardShare },
       { id: "recidivism", render: renderRecidivism, table: true },
       { id: "overlap", render: renderOverlap },
+    ],
+  },
   epss: {
     file: "data/epss_report.json",
     sections: [
       { id: "grade", render: renderGrade },
       { id: "distribution", render: renderEpssDistribution },
       { id: "percentile", render: renderEpssPercentile },
+    ],
+  },
   calendar: {
     file: "data/cve_calendar.json",
     sections: [
