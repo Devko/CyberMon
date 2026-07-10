@@ -16,6 +16,9 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json"]
+             "kev_ransomware.json", "breach_ledger.json",
+             "extortion_ledger.json", "dnssec_adoption.json",
+             "epss_report.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -164,6 +167,31 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert guards["catalog"]["security"] == 3
     assert guards["catalog"]["classifier_version"] >= 1
 
+    # EPSS Report Card: the two dated-and-published fixture entries grade
+    # (v1-era above 10%, v2-era below 1%); the negative-latency 2024 entry
+    # (listed two days before its CVE published) is ungradeable, never a
+    # miss; nothing is pending because the fixture envelopes cover every
+    # KEV date.
+    epss_report = _load(tmp_path, "epss_report.json")
+    assert epss_report["catalog"] == {
+        "total": 3, "graded": 2,
+        "ungradeable": {"pre_epss": 0, "listed_before_publication": 1,
+                        "no_prior_score": 0},
+        "pending_backfill": 0}
+    assert [(y["year"], y["graded"], y["pct_below_1pct"])
+            for y in epss_report["grade_by_year"]] == [(2021, 1, 0.0),
+                                                       (2023, 1, 100.0)]
+    assert [(m["model"], m["n"])
+            for m in epss_report["distribution"]["by_model"]] == \
+        [("v1", 1), ("v2", 1)]
+    assert epss_report["percentiles"]["bottom_half"] == {"n": 1,
+                                                         "pct": 50.0}
+    assert [e["cve"] for e in epss_report["entries"]] == \
+        ["CVE-2023-0003", "CVE-2023-0001", "CVE-2024-0002"]
+    assert meta["sources"]["epss_history"] == {
+        "fetched_at": epss_report["generated_at"], "graded": 2,
+        "pending_backfill": 0}
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -215,6 +243,33 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     assert not (tmp_path / "history" / "nvd_backlog.csv").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
+
+
+def test_skip_epss_report_carries_previous_run_forward(tmp_path, capsys):
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    first = _load(tmp_path, "epss_report.json")
+
+    assert main(["--offline-fixtures", "--skip-epss-report", "--out",
+                 str(tmp_path)]) == 0
+    carried = _load(tmp_path, "epss_report.json")
+    contracts.validate("epss_report.json", carried)
+    assert carried["stale"] is True
+    assert carried["entries"] == first["entries"]
+    assert carried["catalog"] == first["catalog"]
+
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["epss_history"]["stale"] is True
+    assert meta["sources"]["epss_history"]["fetched_at"] == \
+        first["generated_at"]
+
+
+def test_skip_epss_report_without_prior_data_omits_outputs(tmp_path, capsys):
+    assert main(["--offline-fixtures", "--skip-epss-report", "--out",
+                 str(tmp_path)]) == 0
+    assert not (tmp_path / "epss_report.json").exists()
+    meta = _load(tmp_path, "meta.json")
+    contracts.validate("meta.json", meta)
+    assert "epss_history" not in meta["sources"]
 
 
 def test_skip_nvd_without_prior_data_omits_nvd_outputs(tmp_path, capsys):

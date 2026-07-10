@@ -48,6 +48,9 @@ import { render as renderSpread } from "./charts/hygiene_spread.js";
 import { render as renderGuardShare } from "./charts/guards_share.js";
 import { render as renderRecidivism } from "./charts/guards_recidivism.js";
 import { render as renderOverlap } from "./charts/guards_overlap.js";
+import { render as renderGrade } from "./charts/epss_grade.js";
+import { render as renderEpssDistribution } from "./charts/epss_distribution.js";
+import { render as renderEpssPercentile } from "./charts/epss_percentile.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -131,6 +134,12 @@ const MODULES = {
       { id: "guards", render: renderGuardShare },
       { id: "recidivism", render: renderRecidivism, table: true },
       { id: "overlap", render: renderOverlap },
+  epss: {
+    file: "data/epss_report.json",
+    sections: [
+      { id: "grade", render: renderGrade },
+      { id: "distribution", render: renderEpssDistribution },
+      { id: "percentile", render: renderEpssPercentile },
     ],
   },
 };

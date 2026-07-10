@@ -79,6 +79,20 @@ jobs:
           restore-keys: |
             attack-state-
 
+      # EPSS report-card sync state (day-before score per KEV entry —
+      # historical scores are immutable, each pair is looked up once).
+      # Same self-healing semantics as the ATT&CK state above, and doubly
+      # so: a miss here is first reconstructed from the published
+      # site/data/epss_report.json, so it never re-triggers the historical
+      # backfill (which is batch-capped anyway: --epss-backfill-batch).
+      - name: Restore EPSS report-card sync state
+        uses: actions/cache@v4
+        with:
+          path: .cache/epss_report_state.json
+          key: epss-report-state-${{ github.run_id }}
+          restore-keys: |
+            epss-report-state-
+
       # If this step fails, the job fails and the deploy job below is
       # skipped — stale/broken data is never deployed. Do NOT add
       # continue-on-error here.

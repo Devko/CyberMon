@@ -28,6 +28,7 @@ from typing import Iterator
 
 from . import (attack_metrics, breach_metrics, concentration_metrics,
                contracts, extortion_metrics, guards_metrics, history,
+               contracts, epss_report_metrics, extortion_metrics, history,
                hygiene_metrics, kev_metrics, market_metrics, metrics,
                quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -65,6 +66,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--skip-attack", action="store_true",
                         help="skip the ATT&CK index fetch; carry the previous "
                              "attack_churn.json forward (marked stale)")
+    parser.add_argument("--skip-epss-report", action="store_true",
+                        help="skip the EPSS day-before lookups; carry the "
+                             "previous epss_report.json forward (marked "
+                             "stale)")
+    parser.add_argument("--epss-backfill-batch", type=int, default=30,
+                        help="max EPSS day-before lookups per run (default: "
+                             "30 — a nightly needs a handful; the one-time "
+                             "historical backfill is run manually with a "
+                             "large value, e.g. 2000)")
     parser.add_argument("--window-years", type=int, default=3,
                         help="CNA leaderboard window (default: 3)")
     parser.add_argument("--min-cves", type=int, default=None,
@@ -287,6 +297,16 @@ def run(args: argparse.Namespace) -> int:
         skip=args.skip_attack, offline_fixtures=args.offline_fixtures)
     if attack_churn is not None:
         outputs["attack_churn.json"] = attack_churn
+    epss_report, epss_history_source = epss_report_metrics.run_stage(
+        args.out, args.cache_dir, generated_at,
+        kev_entries=kev.entries,
+        published_dates=agg.kev_published_dates,
+        current_model_version=epss.model_version,
+        skip=args.skip_epss_report,
+        offline_fixtures=args.offline_fixtures,
+        backfill_batch=args.epss_backfill_batch)
+    if epss_report is not None:
+        outputs["epss_report.json"] = epss_report
     # No skip flag and no carried-forward staleness: upstream publishes
     # its full history, so this stage is a cheap stateless refetch.
     dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
@@ -310,6 +330,9 @@ def run(args: argparse.Namespace) -> int:
     }
     if attack_source is not None:
         outputs["meta.json"]["sources"]["attack"] = attack_source
+    if epss_history_source is not None:
+        outputs["meta.json"]["sources"]["epss_history"] = \
+            epss_history_source
     outputs["meta.json"]["sources"]["apnic"] = apnic_source
 
     # ---- validate everything, then write ----------------------------------
