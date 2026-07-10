@@ -113,6 +113,22 @@ one-economy-one-vote distribution across every measured economy. APNIC
 publishes its full daily history, so this stage refetches statelessly
 every night — no accumulated state, no committed history file.
 
+### 11 · CVE Calendar — [calendar.html](https://devko.github.io/CyberMon/calendar.html) (live)
+
+*The CVE stream keeps vendor time.* Three charts on publication timing,
+from the same cvelistV5 corpus (all date judgments UTC):
+
+1. **Reservation aging (hero)** — per publication year, the share of
+   records whose CVE ID was minted that same year, one year earlier, or
+   two-plus years earlier: the ID's vintage is reservation paperwork,
+   and about one in five "new" CVEs arrives on an earlier-year ID.
+2. **The weekly beat** — the weekday distribution of publication, the
+   latest complete year against a decade before; the Tuesday spike
+   belongs to release calendars.
+3. **Patch Tuesday** — the share of each year's records published on the
+   twelve second Tuesdays, against the 3.3% those days would hold under
+   a calendar-blind uniform flow.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —

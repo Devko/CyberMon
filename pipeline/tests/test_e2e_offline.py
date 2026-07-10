@@ -15,7 +15,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "breach_ledger.json",
-             "extortion_ledger.json", "dnssec_adoption.json"]
+             "extortion_ledger.json", "dnssec_adoption.json",
+             "cve_calendar.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -132,6 +133,22 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
                                               (2024, 1, 0)]
     assert ransomware["catalog"] == {"total": 3, "known": 1,
                                      "pct_known": 33.3}
+
+    # CVE Calendar: the two old-ID fixture records land in the age buckets;
+    # CVE-2024-0001 (2024-02-13) is the corpus's one patch-Tuesday hit; the
+    # datePublished-less CVE-2025-0001 joins id_age but not the day tally.
+    cal = _load(tmp_path, "cve_calendar.json")
+    ages = {y["year"]: y for y in cal["id_age"]["years"]}
+    assert ages[2014]["two_plus"] == 1   # CVE-2012-0002, published 2014
+    assert ages[2025]["one_year"] == 1   # CVE-2024-0005, published 2025
+    assert ages[2025]["n"] == 2 and ages[2025]["pct_prior_year"] == 50.0
+    assert cal["id_age"]["clamped_negative"] == 0
+    wk = {y["year"]: y for y in cal["weekday"]["years"]}
+    assert wk[2025]["n"] == 1                       # undated record excluded
+    assert wk[2024]["counts"] == [1, 1, 0, 1, 0, 0, 0]  # Mon/Tue/Thu
+    pt = {y["year"]: y for y in cal["patch_tuesday"]["years"]}
+    assert pt[2024]["on_pt"] == 1 and pt[2023]["on_pt"] == 0
+    assert cal["patch_tuesday"]["calendar_pct"] == 3.3
 
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is

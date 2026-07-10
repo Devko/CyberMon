@@ -527,6 +527,85 @@ assumption that newcomers arrive uniformly through the year. `cna_count`
 is a roster headcount and is never projected; nor are the shares or the
 HHI. Validator: `pipeline/tier1_contracts.py`.
 
+## site/data/cve_calendar.json  (CVE Calendar module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 500,
+  "id_age": {
+    "years": [
+      {"year": 2025, "n": 48168, "same_year": 38337, "one_year": 5495,
+       "two_plus": 4336, "pct_same_year": 79.6, "pct_one_year": 11.4,
+       "pct_two_plus": 9.0, "pct_prior_year": 20.4}
+    ],
+    "clamped_negative": 0,
+    "headline": {"latest_year": 2025, "pct_prior_year_latest": 20.4,
+                 "baseline_year": 2015, "pct_prior_year_baseline": 14.3}
+  },
+  "weekday": {
+    "years": [
+      {"year": 2025, "n": 48168,
+       "counts": [7447, 11783, 9375, 8961, 7009, 2104, 1489],
+       "pct": [15.5, 24.5, 19.5, 18.6, 14.6, 4.4, 3.1]}
+    ],
+    "comparison": {"latest_year": 2025, "baseline_year": 2015}
+  },
+  "patch_tuesday": {
+    "calendar_pct": 3.3,
+    "years": [
+      {"year": 2025, "n": 48168, "on_pt": 4737, "pct": 9.8,
+       "top_day": {"date": "2025-02-26", "n": 790}}
+    ],
+    "headline": {"latest_year": 2025, "pct_latest": 9.8}
+  }
+}
+```
+
+Everything covers PUBLISHED records only, grouped by publication year, and
+every date judgment is **UTC** (the date the record carries; a Tuesday
+evening in California is a Wednesday UTC, so any timezone skew pushes
+counts toward the *next* day — the direction is documented, never hidden).
+
+`id_age`: how old the CVE ID's year prefix was at publication —
+`same_year` / `one_year` / `two_plus` (the three always sum to `n`).
+The ID year is reservation paperwork, not a discovery date; that is the
+chart's point. An ID year *after* the publication year (late-December
+reservations published under January's clock) clamps to `same_year` and
+increments `clamped_negative` (whole-corpus count; 0 in the real corpus
+today — the rule exists so a future occurrence is visible, not silent).
+Records with no `datePublished` take their publication year from the ID
+and are `same_year` by construction; records whose ID year doesn't parse
+are skipped. `pct_prior_year` = `100 * (n - same_year) / n`, computed on
+counts (never by summing rounded percentages). `headline` compares the
+latest complete charted year against `latest_year - 10` when charted,
+else the earliest charted year — payload-authoritative, consumers never
+derive either year. `headline` is null iff no year is charted.
+
+`weekday`: `counts`/`pct` are exactly 7 entries, **Monday-first**
+(`datetime.weekday()` order), over records with a day-precision
+`datePublished`; `counts` sums to `n`, so `n` here can sit below the
+hero's (the undated join no day tally). `comparison` names the two years
+the site contrasts (same latest/baseline rule as the hero headline; null
+iff no year is charted).
+
+`patch_tuesday`: `on_pt` counts records published on the month's second
+Tuesday — defined precisely as the Tuesday whose day-of-month is 8–14,
+UTC; there are exactly 12 such days every year. `calendar_pct` is pinned
+to 3.3 (= 12/365 rounded to 1 decimal; 12/366 rounds to the same 3.3) —
+the uniform-calendar baseline the site draws, so every chart states the
+comparison it is making: these are days holding N× their calendar share.
+`top_day` (tooltip only, never copy) is the year's single busiest
+publication day, ties broken by earliest date. This section charts
+exactly the `weekday` years — both derive from one day tally. Years with
+fewer than `min_n` records (per section, on that section's own
+denominator) are omitted (production 500; fixture mode 1). The partial
+current year charts when it clears `min_n` — the site labels it — but
+never feeds a headline or comparison. No pace projection: every series
+here is a share, already normalized to its year. Validator:
+`pipeline/calendar_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
 ## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
 ## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
 ## site/data/attack_churn.json  (ATT&CK Churn module, all 3 charts)

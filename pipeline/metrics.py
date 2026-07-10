@@ -162,6 +162,20 @@ class CveFacts:
         return None
 
 
+def cve_id_year(cve_id: str) -> int | None:
+    """The year embedded in a CVE ID ("CVE-2024-12345" -> 2024), or None.
+
+    This is the ID's *reservation vintage* — when the identifier was minted,
+    not when anything was discovered or published. Also the publication-year
+    fallback for records with no datePublished (REJECTED records dated this
+    way included).
+    """
+    try:
+        return int(cve_id.split("-")[1])
+    except (IndexError, ValueError):
+        return None
+
+
 def _family(metric_key: str) -> str | None:
     if metric_key.startswith("cvssV2"):
         return "v2"
@@ -257,9 +271,8 @@ def extract_facts(record: dict) -> CveFacts | None:
         except ValueError:
             year = None
     if year is None:  # fall back to the year embedded in the CVE ID
-        try:
-            year = int(cve_id.split("-")[1])
-        except (IndexError, ValueError):
+        year = cve_id_year(cve_id)
+        if year is None:
             return None
 
     containers = record.get("containers") or {}
@@ -325,6 +338,18 @@ class Aggregator:
         # chart 8 (bug-class inertia): year -> Counter of first-listed CWE
         # per CWE-tagged published record
         self.cwe_year_counts: dict[int, Counter[str]] = defaultdict(Counter)
+        # CVE Calendar module (calendar_metrics.py), published records only:
+        # publication year -> Counter of ID ages in years (publication year
+        # minus the CVE ID's year prefix, negatives clamped to 0), plus the
+        # per-year tally of how many were clamped. Records whose ID year
+        # doesn't parse are skipped from the age tally.
+        self.calendar_id_age: dict[int, Counter[int]] = defaultdict(Counter)
+        self.calendar_negative_ages: Counter[int] = Counter()
+        # publication year -> Counter of day-precision datePublished (UTC
+        # "YYYY-MM-DD"). Weekday and patch-Tuesday tallies both derive from
+        # this in calendar_metrics — same single streaming pass, records
+        # without a datePublished simply don't join the day tally.
+        self.calendar_days: dict[int, Counter[str]] = defaultdict(Counter)
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
@@ -338,6 +363,19 @@ class Aggregator:
             return
         self.published_by_year[facts.year] += 1
         self.cna_year_published[facts.year][facts.cna] += 1
+
+        # CVE Calendar: ID age (a record with no datePublished takes its
+        # year FROM the ID, so its age is 0 by construction — documented in
+        # the module's methodology) and the day-of-publication tally.
+        id_year = cve_id_year(facts.cve_id)
+        if id_year is not None:
+            age = facts.year - id_year
+            if age < 0:  # December reservation published under last year's
+                self.calendar_negative_ages[facts.year] += 1  # clock — rare
+                age = 0
+            self.calendar_id_age[facts.year][age] += 1
+        if facts.date_published is not None:
+            self.calendar_days[facts.year][facts.date_published] += 1
 
         for family, score in facts.cna_scores.items():
             self.version_scores[family][facts.year].append(score)

@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import (breach_metrics, concentration_metrics,
-                      extortion_metrics, kev_metrics, metrics,
-                      quality_metrics)
+from pipeline import (breach_metrics, calendar_metrics,
+                      concentration_metrics, extortion_metrics, kev_metrics,
+                      metrics, quality_metrics)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_hibp import load_hibp_file
@@ -88,6 +88,8 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
         "extortion_ledger.json":
             extortion_metrics.build_extortion_ledger(ransomwhere,
                                                      GENERATED_AT, min_n=1),
+        "cve_calendar.json":
+            calendar_metrics.build_cve_calendar(agg, GENERATED_AT, min_n=1),
         "meta.json": metrics.build_meta(
             GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
             epss_model_version=epss.model_version,

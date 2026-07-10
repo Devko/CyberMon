@@ -45,6 +45,9 @@ import { render as renderCatalog } from "./charts/attack_catalog.js";
 import { render as renderWorld } from "./charts/hygiene_world.js";
 import { render as renderEconomies } from "./charts/hygiene_economies.js";
 import { render as renderSpread } from "./charts/hygiene_spread.js";
+import { render as renderIdAge } from "./charts/calendar_idage.js";
+import { render as renderWeekday } from "./charts/calendar_weekday.js";
+import { render as renderPatch } from "./charts/calendar_patch.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -120,6 +123,14 @@ const MODULES = {
       { id: "validation", render: renderWorld },
       { id: "economies", render: renderEconomies },
       { id: "spread", render: renderSpread },
+    ],
+  },
+  calendar: {
+    file: "data/cve_calendar.json",
+    sections: [
+      { id: "reservation", render: renderIdAge },
+      { id: "weekbeat", render: renderWeekday },
+      { id: "patchtuesday", render: renderPatch },
     ],
   },
 };
