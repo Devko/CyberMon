@@ -1,0 +1,531 @@
+{
+ "generated_at": "2026-07-10T06:39:51Z",
+ "versions": [
+  {
+   "version": "1.0",
+   "released": "2018-01-17",
+   "techniques": 188,
+   "subtechniques": 0,
+   "groups": 60,
+   "software": 189,
+   "churn": null
+  },
+  {
+   "version": "2.0",
+   "released": "2018-04-18",
+   "techniques": 219,
+   "subtechniques": 0,
+   "groups": 68,
+   "software": 233,
+   "churn": {
+    "added": 31,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "3.0",
+   "released": "2018-10-23",
+   "techniques": 223,
+   "subtechniques": 0,
+   "groups": 78,
+   "software": 283,
+   "churn": {
+    "added": 4,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "4.0",
+   "released": "2019-04-30",
+   "techniques": 244,
+   "subtechniques": 0,
+   "groups": 86,
+   "software": 333,
+   "churn": {
+    "added": 21,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "5.0",
+   "released": "2019-07-19",
+   "techniques": 244,
+   "subtechniques": 0,
+   "groups": 91,
+   "software": 352,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "5.1",
+   "released": "2019-07-27",
+   "techniques": 244,
+   "subtechniques": 0,
+   "groups": 91,
+   "software": 352,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "5.2",
+   "released": "2019-07-27",
+   "techniques": 244,
+   "subtechniques": 0,
+   "groups": 91,
+   "software": 352,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "6.0",
+   "released": "2019-10-23",
+   "techniques": 266,
+   "subtechniques": 0,
+   "groups": 94,
+   "software": 364,
+   "churn": {
+    "added": 22,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "6.1",
+   "released": "2019-11-21",
+   "techniques": 266,
+   "subtechniques": 0,
+   "groups": 94,
+   "software": 364,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "6.2",
+   "released": "2019-12-02",
+   "techniques": 266,
+   "subtechniques": 0,
+   "groups": 94,
+   "software": 364,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "6.3",
+   "released": "2020-03-09",
+   "techniques": 266,
+   "subtechniques": 0,
+   "groups": 94,
+   "software": 364,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "7.0",
+   "released": "2020-03-31",
+   "techniques": 156,
+   "subtechniques": 272,
+   "groups": 107,
+   "software": 411,
+   "churn": {
+    "added": 302,
+    "deprecated": 11,
+    "revoked": 129
+   }
+  },
+  {
+   "version": "7.1",
+   "released": "2020-07-13",
+   "techniques": 156,
+   "subtechniques": 272,
+   "groups": 107,
+   "software": 411,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "7.2",
+   "released": "2020-07-15",
+   "techniques": 156,
+   "subtechniques": 272,
+   "groups": 107,
+   "software": 411,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "8.0",
+   "released": "2020-10-27",
+   "techniques": 177,
+   "subtechniques": 348,
+   "groups": 109,
+   "software": 438,
+   "churn": {
+    "added": 97,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "8.1",
+   "released": "2020-11-12",
+   "techniques": 177,
+   "subtechniques": 348,
+   "groups": 109,
+   "software": 438,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "8.2",
+   "released": "2021-01-27",
+   "techniques": 178,
+   "subtechniques": 352,
+   "groups": 110,
+   "software": 444,
+   "churn": {
+    "added": 5,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "9.0",
+   "released": "2021-04-29",
+   "techniques": 185,
+   "subtechniques": 367,
+   "groups": 122,
+   "software": 494,
+   "churn": {
+    "added": 22,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "10.0",
+   "released": "2021-10-21",
+   "techniques": 188,
+   "subtechniques": 378,
+   "groups": 129,
+   "software": 546,
+   "churn": {
+    "added": 15,
+    "deprecated": 1,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "10.1",
+   "released": "2021-11-10",
+   "techniques": 188,
+   "subtechniques": 378,
+   "groups": 129,
+   "software": 545,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "11.0",
+   "released": "2022-04-25",
+   "techniques": 191,
+   "subtechniques": 385,
+   "groups": 132,
+   "software": 584,
+   "churn": {
+    "added": 12,
+    "deprecated": 0,
+    "revoked": 2
+   }
+  },
+  {
+   "version": "11.1",
+   "released": "2022-05-11",
+   "techniques": 191,
+   "subtechniques": 385,
+   "groups": 131,
+   "software": 584,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "11.2",
+   "released": "2022-05-24",
+   "techniques": 191,
+   "subtechniques": 385,
+   "groups": 131,
+   "software": 584,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "11.3",
+   "released": "2022-07-07",
+   "techniques": 191,
+   "subtechniques": 385,
+   "groups": 131,
+   "software": 584,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "12.0",
+   "released": "2022-10-25",
+   "techniques": 193,
+   "subtechniques": 401,
+   "groups": 134,
+   "software": 621,
+   "churn": {
+    "added": 18,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "12.1",
+   "released": "2022-11-08",
+   "techniques": 193,
+   "subtechniques": 401,
+   "groups": 134,
+   "software": 621,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "13.0",
+   "released": "2023-04-25",
+   "techniques": 196,
+   "subtechniques": 411,
+   "groups": 137,
+   "software": 636,
+   "churn": {
+    "added": 13,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "13.1",
+   "released": "2023-05-09",
+   "techniques": 196,
+   "subtechniques": 411,
+   "groups": 137,
+   "software": 636,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "14.0",
+   "released": "2023-10-31",
+   "techniques": 201,
+   "subtechniques": 424,
+   "groups": 142,
+   "software": 649,
+   "churn": {
+    "added": 18,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "14.1",
+   "released": "2023-11-14",
+   "techniques": 201,
+   "subtechniques": 424,
+   "groups": 142,
+   "software": 649,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "15.0",
+   "released": "2024-04-23",
+   "techniques": 202,
+   "subtechniques": 435,
+   "groups": 149,
+   "software": 678,
+   "churn": {
+    "added": 12,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "15.1",
+   "released": "2024-05-02",
+   "techniques": 202,
+   "subtechniques": 435,
+   "groups": 149,
+   "software": 678,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "16.0",
+   "released": "2024-10-31",
+   "techniques": 203,
+   "subtechniques": 453,
+   "groups": 160,
+   "software": 711,
+   "churn": {
+    "added": 19,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "16.1",
+   "released": "2024-11-12",
+   "techniques": 203,
+   "subtechniques": 453,
+   "groups": 160,
+   "software": 711,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "17.0",
+   "released": "2025-04-22",
+   "techniques": 211,
+   "subtechniques": 468,
+   "groups": 167,
+   "software": 756,
+   "churn": {
+    "added": 24,
+    "deprecated": 0,
+    "revoked": 1
+   }
+  },
+  {
+   "version": "17.1",
+   "released": "2025-05-06",
+   "techniques": 211,
+   "subtechniques": 468,
+   "groups": 166,
+   "software": 755,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "18.0",
+   "released": "2025-10-28",
+   "techniques": 216,
+   "subtechniques": 475,
+   "groups": 172,
+   "software": 784,
+   "churn": {
+    "added": 12,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "18.1",
+   "released": "2025-11-13",
+   "techniques": 216,
+   "subtechniques": 475,
+   "groups": 172,
+   "software": 784,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  },
+  {
+   "version": "19.0",
+   "released": "2026-04-28",
+   "techniques": 222,
+   "subtechniques": 475,
+   "groups": 174,
+   "software": 821,
+   "churn": {
+    "added": 23,
+    "deprecated": 0,
+    "revoked": 17
+   }
+  },
+  {
+   "version": "19.1",
+   "released": "2026-05-12",
+   "techniques": 222,
+   "subtechniques": 475,
+   "groups": 174,
+   "software": 821,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
+  }
+ ],
+ "headline": {
+  "latest_version": "19.1",
+  "released_latest": "2026-05-12",
+  "techniques_latest": 222,
+  "subtechniques_latest": 475,
+  "first_version": "1.0",
+  "released_first": "2018-01-17",
+  "techniques_first": 188,
+  "subtechniques_first": 0
+ }
+}
