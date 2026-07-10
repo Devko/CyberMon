@@ -62,7 +62,7 @@ function renderMasthead() {
   document.getElementById("masthead-sub").textContent = editorial.masthead.sub;
 }
 
-function renderFooterText() {
+function renderFooterText(activeTabId) {
   const ft = clear(document.getElementById("footer-text"));
   const repo = el("p", "footer-repo");
   repo.append(link(editorial.repoUrl, editorial.footer.repoLabel, "mono"));
@@ -72,6 +72,18 @@ function renderFooterText() {
     el("p", "muted", editorial.footer.reuseNote),
     repo
   );
+  // Module pages only — the Overview aggregates every module and has no
+  // single carousel. The PDF is generated at deploy time
+  // (tools/make_carousels.py) and shipped only inside the Pages artifact,
+  // so on a local checkout this link 404s until the generator has run —
+  // acceptable for a deploy-time build product.
+  if (activeTabId && activeTabId !== "home") {
+    const dl = el("p", "footer-carousel");
+    const a = el("a", "mono", tpl(editorial.footer.carouselTemplate, { id: activeTabId }));
+    a.href = `carousels/${activeTabId}.pdf`; // relative — works under GitHub Pages subpaths
+    dl.append(a);
+    ft.append(dl);
+  }
 }
 
 function renderMeta(meta) {
@@ -128,7 +140,7 @@ function renderMeta(meta) {
 export function initChrome(activeTabId) {
   renderMasthead();
   renderNav(activeTabId);
-  renderFooterText();
+  renderFooterText(activeTabId);
   return fetchJSON("data/meta.json")
     .then(renderMeta)
     .catch((err) => {
