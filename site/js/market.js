@@ -45,6 +45,13 @@ function buildSection(cfg) {
   const extra = el("div", "panel-extra");
   panel.append(controls, chart, extra);
 
+  if (ed.source) {
+    const src = el("p", "chart-source");
+    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
+    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
+    panel.append(src);
+  }
+
   const details = el("details", "method");
   const summary = el("summary", null, editorial.methodologyLabel);
   const methodBody = el("div", "method-body");

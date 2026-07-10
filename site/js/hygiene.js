@@ -49,6 +49,13 @@ function buildSection(cfg) {
   // notes carry no placeholders, so they need no renderer fill).
   if (ed.note) panel.append(el("p", "panel-note", ed.note));
 
+  if (ed.source) {
+    const src = el("p", "chart-source");
+    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
+    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
+    panel.append(src);
+  }
+
   const details = el("details", "method");
   const summary = el("summary", null, editorial.methodologyLabel);
   const methodBody = el("div", "method-body");

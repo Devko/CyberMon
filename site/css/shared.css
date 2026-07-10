@@ -666,3 +666,14 @@ code {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* Per-chart source line: sits at the bottom of every chart panel, naming the
+   upstream data and anchoring to the footer's full source/license list. */
+.chart-source {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+.chart-source a { color: var(--muted); text-decoration: underline dotted; }
+.chart-source a:hover { color: var(--ink); }
