@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-09T20:03:30Z",
+ "generated_at": "2026-07-10T04:04:25Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -310,8 +310,8 @@
      },
      {
       "month": "2026-07",
-      "n": 56,
-      "index": 4.7
+      "n": 62,
+      "index": 5.2
      }
     ],
     "hn": [
@@ -612,8 +612,8 @@
      },
      {
       "month": "2026-07",
-      "n": 15,
-      "index": 16.3
+      "n": 17,
+      "index": 18.5
      }
     ],
     "arxiv": [
@@ -877,14 +877,14 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 17.8,
-     "n_latest_12m": 4797,
+     "pct_change": 17.9,
+     "n_latest_12m": 4803,
      "n_prior_12m": 4073
     },
     "hn": {
      "latest_month": "2026-07",
-     "pct_change": 24.0,
-     "n_latest_12m": 599,
+     "pct_change": 24.4,
+     "n_latest_12m": 601,
      "n_prior_12m": 483
     },
     "arxiv": {
@@ -895,9 +895,9 @@
     }
    },
    "divergence": {
-    "gdelt_index_avg3m": 23.3,
+    "gdelt_index_avg3m": 23.5,
     "arxiv_index_avg3m": 51.9,
-    "research_vs_media_index": 28.6,
+    "research_vs_media_index": 28.4,
     "direction": "research_leads"
    }
   },
@@ -1650,8 +1650,8 @@
      },
      {
       "month": "2026-07",
-      "n": 52,
-      "index": 14.0
+      "n": 53,
+      "index": 14.2
      }
     ],
     "hn": [
@@ -1952,8 +1952,8 @@
      },
      {
       "month": "2026-07",
-      "n": 28,
-      "index": 25.2
+      "n": 29,
+      "index": 26.1
      }
     ],
     "arxiv": [
@@ -2249,8 +2249,8 @@
      },
      {
       "month": "2026-07",
-      "n": 3,
-      "index": 10.7
+      "n": 4,
+      "index": 14.3
      }
     ]
    },
@@ -2258,26 +2258,26 @@
     "gdelt": {
      "latest_month": "2026-07",
      "pct_change": 54.8,
-     "n_latest_12m": 2515,
+     "n_latest_12m": 2516,
      "n_prior_12m": 1625
     },
     "hn": {
      "latest_month": "2026-07",
-     "pct_change": 69.9,
-     "n_latest_12m": 554,
+     "pct_change": 70.2,
+     "n_latest_12m": 555,
      "n_prior_12m": 326
     },
     "arxiv": {
      "latest_month": "2026-07",
-     "pct_change": 59.7,
-     "n_latest_12m": 238,
+     "pct_change": 60.4,
+     "n_latest_12m": 239,
      "n_prior_12m": 149
     }
    },
    "divergence": {
-    "gdelt_index_avg3m": 59.3,
-    "arxiv_index_avg3m": 58.3,
-    "research_vs_media_index": -1.0,
+    "gdelt_index_avg3m": 59.4,
+    "arxiv_index_avg3m": 59.5,
+    "research_vs_media_index": 0.1,
     "direction": "aligned"
    }
   },
@@ -3879,8 +3879,8 @@
      },
      {
       "month": "2026-07",
-      "n": 175,
-      "index": 15.2
+      "n": 184,
+      "index": 16.0
      }
     ],
     "hn": [
@@ -4406,8 +4406,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 83.9,
-     "n_latest_12m": 8368,
+     "pct_change": 84.1,
+     "n_latest_12m": 8377,
      "n_prior_12m": 4551
     },
     "hn": {
@@ -4424,9 +4424,9 @@
     }
    },
    "divergence": {
-    "gdelt_index_avg3m": 65.6,
+    "gdelt_index_avg3m": 65.8,
     "arxiv_index_avg3m": 66.7,
-    "research_vs_media_index": 1.1,
+    "research_vs_media_index": 0.9,
     "direction": "aligned"
    }
   },
@@ -4732,8 +4732,8 @@
      },
      {
       "month": "2026-07",
-      "n": 380,
-      "index": 11.6
+      "n": 426,
+      "index": 13.1
      }
     ],
     "hn": [
@@ -5134,8 +5134,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 297.0,
-     "n_latest_12m": 25426,
+     "pct_change": 297.7,
+     "n_latest_12m": 25472,
      "n_prior_12m": 6405
     },
     "hn": {
@@ -5147,9 +5147,9 @@
     "arxiv": null
    },
    "divergence": {
-    "gdelt_index_avg3m": 68.8,
+    "gdelt_index_avg3m": 69.3,
     "arxiv_index_avg3m": 71.7,
-    "research_vs_media_index": 2.9,
+    "research_vs_media_index": 2.4,
     "direction": "aligned"
    }
   },
@@ -7166,8 +7166,8 @@
      },
      {
       "month": "2026-07",
-      "n": 5,
-      "index": 2.1
+      "n": 6,
+      "index": 2.5
      }
     ],
     "hn": [
@@ -7563,8 +7563,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": -19.0,
-     "n_latest_12m": 517,
+     "pct_change": -18.8,
+     "n_latest_12m": 518,
      "n_prior_12m": 638
     },
     "hn": {
@@ -7576,9 +7576,9 @@
     "arxiv": null
    },
    "divergence": {
-    "gdelt_index_avg3m": 10.7,
+    "gdelt_index_avg3m": 10.8,
     "arxiv_index_avg3m": 66.7,
-    "research_vs_media_index": 56.0,
+    "research_vs_media_index": 55.9,
     "direction": "research_leads"
    }
   },
@@ -7884,8 +7884,8 @@
      },
      {
       "month": "2026-07",
-      "n": 70,
-      "index": 3.1
+      "n": 86,
+      "index": 3.7
      }
     ],
     "hn": [
@@ -8186,8 +8186,8 @@
      },
      {
       "month": "2026-07",
-      "n": 6,
-      "index": 7.0
+      "n": 7,
+      "index": 8.1
      }
     ],
     "arxiv": [
@@ -8476,14 +8476,14 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 27.4,
-     "n_latest_12m": 12680,
+     "pct_change": 27.6,
+     "n_latest_12m": 12696,
      "n_prior_12m": 9949
     },
     "hn": {
      "latest_month": "2026-07",
-     "pct_change": -7.8,
-     "n_latest_12m": 307,
+     "pct_change": -7.5,
+     "n_latest_12m": 308,
      "n_prior_12m": 333
     },
     "arxiv": {
@@ -8494,9 +8494,9 @@
     }
    },
    "divergence": {
-    "gdelt_index_avg3m": 32.9,
+    "gdelt_index_avg3m": 33.1,
     "arxiv_index_avg3m": 73.3,
-    "research_vs_media_index": 40.4,
+    "research_vs_media_index": 40.2,
     "direction": "research_leads"
    }
   },
@@ -9665,8 +9665,8 @@
      },
      {
       "month": "2026-07",
-      "n": 5,
-      "index": 3.1
+      "n": 6,
+      "index": 3.7
      }
     ],
     "hn": [
@@ -9976,8 +9976,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": -8.9,
-     "n_latest_12m": 633,
+     "pct_change": -8.8,
+     "n_latest_12m": 634,
      "n_prior_12m": 695
     },
     "hn": null,
@@ -9991,7 +9991,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "source": "gdelt",
-   "pct_change": 297.0
+   "pct_change": 297.7
   },
   "top_faller": {
    "term_id": "cnapp",
@@ -10002,9 +10002,8 @@
   "top_divergence": {
    "term_id": "passwordless",
    "label": "Passwordless",
-   "research_vs_media_index": 56.0,
+   "research_vs_media_index": 55.9,
    "direction": "research_leads"
   }
- },
- "stale": true
+ }
 }
