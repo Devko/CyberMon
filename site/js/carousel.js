@@ -45,6 +45,9 @@ import { render as renderCatalog } from "./charts/attack_catalog.js";
 import { render as renderWorld } from "./charts/hygiene_world.js";
 import { render as renderEconomies } from "./charts/hygiene_economies.js";
 import { render as renderSpread } from "./charts/hygiene_spread.js";
+import { render as renderGrade } from "./charts/epss_grade.js";
+import { render as renderEpssDistribution } from "./charts/epss_distribution.js";
+import { render as renderEpssPercentile } from "./charts/epss_percentile.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -120,6 +123,14 @@ const MODULES = {
       { id: "validation", render: renderWorld },
       { id: "economies", render: renderEconomies },
       { id: "spread", render: renderSpread },
+    ],
+  },
+  epss: {
+    file: "data/epss_report.json",
+    sections: [
+      { id: "grade", render: renderGrade },
+      { id: "distribution", render: renderEpssDistribution },
+      { id: "percentile", render: renderEpssPercentile },
     ],
   },
 };

@@ -31,6 +31,7 @@ export const editorial = {
     { id: "extortion", href: "extortion.html", label: "Extortion" },
     { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
     { id: "hygiene", href: "hygiene.html", label: "Hygiene" },
+    { id: "epss", href: "epss.html", label: "EPSS Report Card" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -142,6 +143,19 @@ export const editorial = {
           "DNSSEC validation as measured by APNIC Labs — the world adoption line since " +
           "2013, the ten biggest online populations compared, and how many economies " +
           "actually check their DNS answers. Rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "epss",
+        href: "epss.html",
+        num: "10",
+        label: "EPSS Report Card",
+        headline: "The industry's exploit forecast is never graded. CyberMon grades it.",
+        blurb:
+          "For every CVE that CISA later confirmed exploited, the EPSS score published " +
+          "the day before the KEV listing — the forecast's last chance to sound the " +
+          "alarm. Grade bands per catalog year, the day-before distribution split by " +
+          "model version, and where the model ranked the confirmed-exploited cohort.",
         live: true,
       },
     ],
@@ -1142,6 +1156,122 @@ export const editorial = {
         "from ad-delivered samples, and thinly sampled economies are exactly the ones " +
         "the floor exists to keep out.",
     },
+
+    // --------------------------------------------- epss.html · 1 · hero
+    grade: {
+      num: "01",
+      kicker: "The grade",
+      source: "EPSS (FIRST.org) · CISA KEV",
+      headline: "The day before confirmation, the forecast was calm.",
+      caption:
+        "EPSS is the industry's only public exploitation forecast, and this site already " +
+        "calls it the best model available — which is exactly why somebody should grade " +
+        "it. For every vulnerability CISA added to its Known Exploited catalog, this " +
+        "chart reads the EPSS score published the day before the listing — the model's " +
+        "last daily forecast while the listing was still in the future — banded into " +
+        "under 1%, 1–10%, and 10% or higher. EPSS predicts exploitation within 30 days, " +
+        "and a KEV listing means exploitation was already observed, so on listing eve " +
+        "the model should be at its most alarmed. Instead, in its recent years most " +
+        "arrive having been scored below one percent the day before. Listings that " +
+        "could not have a prior score are counted separately, never as misses.",
+      statLabel: "KEV additions scored under 1% on listing eve",
+      statLatest: "{latest_year}",
+      statAgo: "whole catalog",
+      legendBelow: "under 1% the day before",
+      legendMid: "1–10%",
+      legendAbove: "10% or higher",
+      // Filled by the renderer from catalog counts; the pending sentence is
+      // appended only while the historical backfill is still incomplete.
+      note:
+        "{ungradeable} of {total} catalog entries had no possible day-before score — " +
+        "{before_pub} were listed before (or the day) their CVE record published — and " +
+        "are counted separately, never as misses.",
+      pendingNote:
+        "{pending} entries are still awaiting their historical day-before lookup; " +
+        "every number on this page covers only what has been fetched so far.",
+      methodology:
+        "For every entry in CISA's Known Exploited Vulnerabilities catalog, the " +
+        "pipeline asks FIRST's historical EPSS API for the entry's score on the day " +
+        "before its KEV dateAdded, and each answer is fetched exactly once — " +
+        "historical scores are immutable, and the published data file doubles as the " +
+        "archive. Grading the day-before score is deliberately generous to the model: " +
+        "EPSS estimates the probability of exploitation within the next 30 days, and a " +
+        "KEV listing certifies exploitation was already observed (the median gap from " +
+        "CVE publication to KEV listing is measured in weeks on this site's own KEV " +
+        "Latency page), so listing eve is the moment the model has had every chance to " +
+        "be alarmed — a sub-1% score there is the strongest possible form of miss, not " +
+        "a timing technicality. Bands are shares of graded entries only. An entry " +
+        "listed before, or the same day, its CVE record published cannot have a " +
+        "day-before score and is reported separately; so are entries whose lookup is " +
+        "still pending — partial coverage is disclosed, never blended. One fairness " +
+        "caveat runs the other way: in the catalog's 2021–22 seeding era (the launch " +
+        "batch plus back-catalog imports of years-old CVEs), the exploitation behind a " +
+        "listing may predate it by years, so those bars answer “was the model alarmed " +
+        "about old known-exploited CVEs” rather than “did it see a fresh one coming” — " +
+        "and the seeding years actually grade better than the live era. The per-year " +
+        "split exists so the eras never blend. A year plots only with at least 10 " +
+        "graded entries. The current year (marked *) is partial and refills nightly.",
+    },
+
+    // --------------------------------------------- epss.html · 2
+    distribution: {
+      num: "02",
+      kicker: "The distribution",
+      source: "EPSS (FIRST.org) · CISA KEV",
+      headline: "A histogram of hindsight.",
+      caption:
+        "The same graded cohort, spread across the log-ish probability buckets the " +
+        "Score-vs-reality grid uses, and split by EPSS model version. The split is " +
+        "load-bearing, not decoration: v1 through v5 are different models with " +
+        "materially different score distributions, and pooling them into one histogram " +
+        "would be the same landmine as mixing CVSS v2 with v3 scores. Read each model " +
+        "on its own terms; what they share is the shape — across every era, much of " +
+        "the confirmed-exploited cohort sits in the buckets the model reserves for " +
+        "“unlikely.”",
+      methodology:
+        "Each graded entry contributes its day-before probability to one bucket: " +
+        "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive — the " +
+        "same arithmetic as the Score-vs-reality grid on the CVE Ecosystem page). The " +
+        "historical API does not return the model version, so it is derived from the " +
+        "score date using the era table shipped in the data file — verified against " +
+        "the version headers of FIRST's own daily CSV files: v1 through 2022-02-03, " +
+        "v2 (v2022.01.01) through 2023-03-06, v3 (v2023.03.01) through 2025-03-16, " +
+        "v4 (v2025.03.14) through 2026-06-14, v5 (v2026.06.15) since. Day-before " +
+        "probabilities are stored at five decimals — this module's documented " +
+        "exception to CyberMon's one-decimal rounding, because the difference between " +
+        "0.04% and 0.4% is precisely what is being charted.",
+    },
+
+    // --------------------------------------------- epss.html · 3
+    percentile: {
+      num: "03",
+      kicker: "The ranking view",
+      source: "EPSS (FIRST.org) · CISA KEV",
+      headline: "Where the exploited stood in line.",
+      caption:
+        "Raw probabilities are not comparable across model versions — each model " +
+        "calibrates differently — but a percentile is: it says where a CVE ranked " +
+        "among everything the model scored that same day. This view re-grades the " +
+        "same cohort on that scale, and it is the fairest scale available to the " +
+        "model. Even here, roughly a third of the graded cohort sat in the bottom " +
+        "half of that day's ranking — confirmed-exploited vulnerabilities the model " +
+        "placed behind roughly a hundred thousand others on listing eve.",
+      statBig: "{n} of {total}",
+      statLead: "graded entries ranked in the model's bottom half on listing eve",
+      statNote: "median day-before percentile: {median}",
+      yAxisLabel: "share of graded entries",
+      methodology:
+        "Each graded entry contributes the percentile EPSS published alongside its " +
+        "day-before score: the share of all CVEs scored that day with a lower score. " +
+        "FIRST recomputes percentiles daily against that day's whole corpus, which " +
+        "makes them comparable across model versions in a way raw probabilities are " +
+        "not — a v2 probability and a v4 probability mean different things, but " +
+        "“bottom half of that day's ranking” means the same thing in every era. " +
+        "Buckets are shares of graded entries that carry a percentile (the earliest " +
+        "EPSS era published scores without percentiles for a stretch; such entries " +
+        "grade in the probability charts but not here, and the counts ship in the " +
+        "data file). The stat's median is the cohort's median day-before percentile.",
+    },
   },
 
   footer: {
@@ -1204,6 +1334,7 @@ export const editorial = {
       extortion: "Ransomwhere (CC0)",
       attack: "MITRE ATT&CK®",
       hygiene: "APNIC Labs (stats.labs.apnic.net)",
+      epss: "EPSS (FIRST.org) · CISA KEV",
     },
   },
 };

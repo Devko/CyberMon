@@ -67,6 +67,11 @@ because older committed meta files predate the module, but the hygiene
 stage itself always emits it: `economy_count` = fixed-set economies with a
 fetched series, `spread_economy_count` = economies that survived the
 spread's sample floor.
+`sources.epss_history` (EPSS Report Card module) is optional for the same
+reason as `attack` (`--skip-epss-report` with no prior data omits it);
+when present it carries `fetched_at` (ISO-8601 UTC), `graded` (KEV entries
+with a day-before score) and `pending_backfill` (pairs not yet looked up),
+plus `"stale": true` on carry-forward runs.
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -750,3 +755,111 @@ file's per-version shape therefore REQUIRES updating `reconstruct_state`
 and its round-trip test in the same commit. Validator:
 `pipeline/attack_contracts.py` (registered into `pipeline/contracts.py`'s
 dispatch).
+
+## site/data/epss_report.json  (EPSS Report Card module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "model_eras": [
+    {"label": "v1", "model_version": "v1 (pre-header daily CSVs)",
+     "from": "2021-04-14", "to": "2022-02-03"},
+    {"label": "v5", "model_version": "v2026.06.15",
+     "from": "2026-06-15", "to": null}
+  ],
+  "grade_by_year": [
+    {"year": 2023, "graded": 160,
+     "n_below_1pct": 90, "n_1_to_10pct": 40, "n_above_10pct": 30,
+     "pct_below_1pct": 56.3, "pct_1_to_10pct": 25.0,
+     "pct_above_10pct": 18.8, "ungradeable": 21, "pending": 6}
+  ],
+  "distribution": {
+    "buckets": ["<0.1%", "0.1-1%", "1-10%", ">10%"],
+    "by_model": [
+      {"model": "v3", "n": 340,
+       "counts": {"<0.1%": 88, "0.1-1%": 112, "1-10%": 84, ">10%": 56}}
+    ]
+  },
+  "percentiles": {
+    "buckets": [{"bucket": "0-25", "n": 120, "pct": 8.6}],
+    "n": 1390, "bottom_half": {"n": 480, "pct": 34.5},
+    "median_percentile": 68.4
+  },
+  "catalog": {
+    "total": 1635, "graded": 1400,
+    "ungradeable": {"pre_epss": 0, "listed_before_publication": 150,
+                    "no_prior_score": 55},
+    "pending_backfill": 30
+  },
+  "headline": {"graded": 1400, "pct_below_1pct": 43.1,
+               "latest_year": 2025, "graded_latest": 180,
+               "pct_below_1pct_latest": 61.1},
+  "entries": [
+    {"cve": "CVE-2021-40438", "date_added": "2021-11-03",
+     "score_date": "2021-11-02", "epss": 0.35064, "percentile": 0.98923,
+     "model": "v1", "reason": null},
+    {"cve": "CVE-2021-44228", "date_added": "2021-12-10",
+     "score_date": "2021-12-09", "epss": null, "percentile": null,
+     "model": null, "reason": "no_score_for_date"}
+  ]
+}
+```
+
+The grade: for every KEV catalog entry, the EPSS score of the **day
+before** its `dateAdded` (`score_date = dateAdded − 1 day`), fetched from
+FIRST's historical API (`api.first.org/data/v1/epss?cve=…&date=…`) exactly
+once per `(cve, date_added)` pair — historical scores are immutable. The
+API returns no model version; `model` is derived from `score_date` via
+`model_eras` (encoded in `pipeline/fetch_epss_history.py`, verified
+against the version headers of the daily CSVs; the newest era is
+open-ended, `to` null, and the nightly warns loudly when the current
+feed's `model_version` is one the table does not know).
+
+`entries[]` carries the raw per-pair facts, sorted by
+`(date_added, cve)`, unique: either a scored fact (`epss`/`percentile`
+raw 0–1 floats at up to **5 decimals** — a documented exception to the
+1-decimal rule, since sub-10% probabilities are the whole point;
+`percentile` may be null on early-era rows) or an explicit
+null-score fact (`epss`/`percentile`/`model` all null, `reason` ∈
+`pre_epss` / `no_score_for_date` — what was known at fetch time).
+`score_date` must equal `date_added − 1 day` on every entry.
+
+`grade_by_year` groups by `dateAdded` year (ascending, unique): band
+counts over **graded** entries (`epss < 0.01` / `< 0.10` / `>= 0.10`,
+lower edges inclusive; counts sum to `graded`), plus that year's
+`ungradeable` and `pending` counts for coverage honesty. Years with fewer
+than `min_n` graded entries are omitted (production 10; fixture mode 1).
+`distribution` reuses score_vs_reality's EPSS buckets, split by model era
+(eras in release order, only eras with graded entries, per-era counts sum
+to `n`, per-era `n` sums to `catalog.graded`) — v1..v5 are different
+models and are never pooled silently. `percentiles` pools eras
+deliberately (percentiles rank each day's whole scored corpus, so they ARE
+comparable across models): fixed buckets `0-25, 25-50, 50-75, 75-90,
+90-99, 99-100` over graded entries carrying a percentile;
+`median_percentile` null iff `n` 0.
+
+`catalog` is the audit trail: `graded + Σungradeable + pending_backfill ==
+total` always. `ungradeable` carries exactly three keys: an entry listed
+before (or the day) its CVE record published can have no prior score and
+is NEVER a miss (`listed_before_publication`, classified via the corpus's
+datePublished join); `no_prior_score` is everything else the API had no
+row for (unmatched CVEs included); `pre_epss` is a score date before
+2021-04-14 (impossible for real KEV dates, kept for honesty).
+`pending_backfill` = pairs not yet looked up — the one-time historical
+backfill is batch-capped (`--epss-backfill-batch`, default 30/run), and
+the site renders pending counts rather than pretending coverage.
+`headline` is payload-authoritative (latest complete `grade_by_year` year,
+falling back to the newest charted year; null iff `graded` 0). `"stale":
+true` appears only on `--skip-epss-report` carry-forwards.
+
+**Reconstruct-losslessly guarantee** (attack-module pattern): the
+per-entry objects in `entries[]` are exactly the pipeline's sync-state
+records (`.cache/epss_report_state.json`) plus the key fields — nothing in
+the state is omitted and nothing in the output's `entries[]` is derived.
+`pipeline/fetch_epss_history.reconstruct_state` rebuilds the full state
+from this file, so a lost CI cache costs one JSON read instead of ~450 API
+requests. Changing the per-entry shape therefore REQUIRES updating
+`reconstruct_state` and its round-trip test in the same commit. Validator:
+`pipeline/epss_report_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).

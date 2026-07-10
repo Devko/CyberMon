@@ -197,6 +197,18 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.hibp.fetched_at", ISO_UTC_RE)
         _check_int(_get(src["hibp"], "breach_count", "meta.sources.hibp"),
                    "meta.sources.hibp.breach_count")
+    # Optional for the same reason (--skip-epss-report with no prior data):
+    # the historical day-before EPSS lookups behind the EPSS Report Card.
+    if "epss_history" in src:
+        eh = src["epss_history"]
+        _check_str(_get(eh, "fetched_at", "meta.sources.epss_history"),
+                   "meta.sources.epss_history.fetched_at", ISO_UTC_RE)
+        _check_int(_get(eh, "graded", "meta.sources.epss_history"),
+                   "meta.sources.epss_history.graded")
+        _check_int(_get(eh, "pending_backfill",
+                        "meta.sources.epss_history"),
+                   "meta.sources.epss_history.pending_backfill")
+
     # Optional (additive extension, market precedent): the Ransomwhere
     # export behind the Extortion Ledger module. Checked when present.
     if "ransomwhere" in src:
@@ -440,3 +452,6 @@ VALIDATORS.update(attack_contracts.VALIDATORS)
 from . import hygiene_contracts  # noqa: E402
 
 VALIDATORS.update(hygiene_contracts.VALIDATORS)
+from . import epss_report_contracts  # noqa: E402
+
+VALIDATORS.update(epss_report_contracts.VALIDATORS)
