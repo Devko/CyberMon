@@ -98,7 +98,8 @@ consumers must never derive either year themselves.
   "years": [
     {"year": 2010, "critical": 312, "high": 1204, "medium": 2417, "low": 502, "unscored": 89}
   ],
-  "projection": {"year": 2026, "total": 48210, "elapsed": 0.521}
+  "projection": {"year": 2026, "total": 48210, "elapsed": 0.521},
+  "record_era": {"year": 2018, "min_share": 0.1}
 }
 ```
 
@@ -110,6 +111,15 @@ rejected records never counted — paced to a full year (`total` ≥ 1).
 There is deliberately no per-bucket projection: bucket *shares* shift
 within a year, and pacing each bucket separately would present the
 current mix as a full-year claim.
+
+`record_era` (optional): the first charted year in which at least
+`min_share` (fixed at `RECORD_ERA_MIN_SHARE` = 0.10) of that year's
+published records carry a base score in the record itself. The site draws
+a vertical marker here: to its left, severity mostly lived downstream in
+NVD's database (which this chart deliberately does not ingest), so the
+near-empty severity bands are a record-format fact, not an ecosystem one.
+Absent when no charted year clears the threshold (tiny fixture corpora);
+`year` must be one of the charted years, `min_share` a float in (0, 1).
 
 ## site/data/score_vs_reality.json  (chart 3)
 

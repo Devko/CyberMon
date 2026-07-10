@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-10T04:04:25Z",
+ "generated_at": "2026-07-10T05:47:23Z",
  "current": {
   "statuses": [
    {
@@ -44,5 +44,6 @@
    "backlog_total": 2159,
    "awaiting_analysis": 1520
   }
- ]
+ ],
+ "stale": true
 }

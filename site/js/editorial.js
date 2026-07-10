@@ -260,18 +260,23 @@ export const editorial = {
       kicker: "The 9.8 flood",
       headline: "“Critical” was an exception. Now it's a product line.",
       caption:
-        "Published CVEs per year, bucketed by base score. Watch the red band: a rating that " +
-        "was measured in dozens a decade ago is now a four-thousand-a-year product line. And " +
-        "unlike the early corpus — where most records shipped unscored — nearly everything " +
-        "now arrives pre-labeled, so the label does all the triage. The current year is " +
-        "partial; its bars are still filling in.",
+        "Published CVEs per year, bucketed by the base score embedded in the CVE record. " +
+        "Watch the red band: four-thousand-plus records a year now ship stamped Critical, " +
+        "and nearly everything arrives pre-labeled, so the label does all the triage. Read " +
+        "the years left of the vertical marker through it: severity existed there too, but " +
+        "it lived downstream in NVD's database, which this chart deliberately does not " +
+        "read — the wide gray band is a fact about the record format, not about the era's " +
+        "vulnerabilities. The current year is partial; its bars are still filling in.",
+      eraMarker: "← scored in NVD, not in the record",
       toggleAbsolute: "Absolute",
       toggleShare: "Share of year",
       methodology:
         "CVEs are bucketed by their base score (highest CVSS version available per record): " +
-        "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.1–3.9. “Unscored” counts CVEs " +
-        "published that year with no base score anywhere in the CVE record itself — CNA or " +
-        "CISA-ADP container. Read the early years carefully: before ~2018 scoring wasn't " +
+        "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.1–3.9. “No score in record” " +
+        "counts CVEs published that year with no base score anywhere in the CVE record " +
+        "itself — CNA or CISA-ADP container. The vertical marker is computed, not " +
+        "decorative: it sits at the first year in which at least 10% of published records " +
+        "carry an in-record score. Read the early years carefully: before ~2018 scoring wasn't " +
         "done in the record at all — CNAs filed bare entries and NVD assigned CVSS " +
         "downstream, in its own database (which this chart deliberately does not ingest). " +
         "The unscored band's collapse since is the scoring duty migrating to the source: " +

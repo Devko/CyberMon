@@ -1,7 +1,55 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the two that exist today
-(01 · CVE Ecosystem — live; 02 · Security Market — live).
+Candidate monitoring modules, beyond the four that exist today
+(01 · CVE Ecosystem, 02 · Security Market, 03 · KEV Latency,
+04 · CNA Concentration — all live).
+
+## Tier 0 — non-CVE sources, live-tested 2026-07-09
+
+Every endpoint below was fetched and inspected on that date; record counts
+and field lists are from the live responses, not documentation.
+
+### Breach disclosure ledger (HIBP)
+- **Thesis:** "Dwell time is a marketing number. The public record of
+  breach disclosure is measurable, and it is right here."
+- **Signals:** breach→cataloguing lag (`BreachDate` → `AddedDate`) per
+  year; breaches and records exposed per year; leaked data classes over
+  time.
+- **Source:** `https://haveibeenpwned.com/api/v3/breaches` — tested: 1,015
+  breaches, no API key, fields incl. BreachDate/AddedDate/PwnCount/
+  DataClasses/IsFabricated. Attribution required (HIBP).
+- **Feasibility:** easy — one JSON fetch, KEV-latency storytelling pattern.
+
+### Extortion economy, on-chain (Ransomwhere)
+- **Thesis:** "Ransom revenue is the one security statistic nobody can
+  spin — it settles on a public ledger."
+- **Signals:** confirmed payments and USD revenue per quarter; median
+  payment drift; family concentration and churn.
+- **Source:** `https://api.ransomwhe.re/export` — tested: 11,186 payment
+  records, CC0, fields incl. family/balanceUSD/transactions.
+- **Feasibility:** easy — single export, CC0 licensing. Honest caveat to
+  carry: crowdsourced and verified means a *floor*, not the market.
+
+### Taxonomy churn (MITRE ATT&CK)
+- **Thesis:** "The map of attacker behavior grows every release;
+  detections are graded against a moving target."
+- **Signals:** technique/sub-technique counts per version; added,
+  deprecated, revoked per release; group/software catalog growth.
+- **Source:** `github.com/mitre-attack/attack-stix-data` — tested: all 41
+  enterprise versions present as STIX bundles. Whole history backfillable
+  on day one; versions are immutable, so per-version stats cache cleanly
+  (market-state reconstruction pattern).
+- **Feasibility:** medium — STIX parsing and a version-state cache, but no
+  rate-limit or licensing pain (ATT&CK terms permit use with attribution).
+
+### The boring-hygiene index (APNIC DNSSEC validation)
+- **Thesis:** "The fix is twenty years old, free, and still not deployed."
+- **Signals:** measured world DNSSEC validation rate over time; major
+  economies compared.
+- **Source:** `https://stats.labs.apnic.net/dnssec/XA` (JSON via `?hf=j`
+  family of params) — tested: responds, ~460KB. Attribution: APNIC Labs.
+- **Feasibility:** easy-medium — one aggregate endpoint; thinnest data of
+  the four, strongest editorial bite per byte.
 
 **Verified spare data sources for Security Market v1.1** (live-tested
 2026-07-09): SEC EDGAR full-text search (free JSON API, mandatory

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-10T04:04:25Z",
+ "generated_at": "2026-07-10T05:47:23Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -10005,5 +10005,6 @@
    "research_vs_media_index": 55.9,
    "direction": "research_leads"
   }
- }
+ },
+ "stale": true
 }

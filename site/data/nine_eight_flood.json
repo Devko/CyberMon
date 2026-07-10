@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-10T04:04:25Z",
+ "generated_at": "2026-07-10T05:47:23Z",
  "years": [
   {
    "year": 1999,
@@ -226,6 +226,10 @@
    "unscored": 1783
   }
  ],
+ "record_era": {
+  "year": 2018,
+  "min_share": 0.1
+ },
  "projection": {
   "year": 2026,
   "total": 72318,

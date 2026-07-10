@@ -6,7 +6,9 @@ import { mkToggle } from "../ui.js";
 
 const BUCKETS = [
   // stacking order: bottom -> top; Critical crowns the stack in accent red.
-  { key: "unscored", label: "Unscored" },
+  // "No score in record", not "Unscored": pre-2018 CVEs were mostly scored
+  // by NVD in its own database, which this chart deliberately doesn't read.
+  { key: "unscored", label: "No score in record" },
   { key: "low", label: "Low" },
   { key: "medium", label: "Medium" },
   { key: "high", label: "High" },
@@ -28,8 +30,24 @@ export function render(slots, data) {
   const projIdx = proj ? data.years.findIndex((d) => d.year === proj.year) : -1;
   const hasProj = projIdx > 0;
 
+  // Era marker: everything left of this line was scored (if at all) in
+  // NVD's database, not in the CVE record — the near-empty severity bands
+  // there are a fact about the record format, not about the vulnerabilities.
+  const eraMarkLine = data.record_era
+    ? {
+        silent: true, symbol: "none",
+        lineStyle: { color: C.faint, type: [3, 4], width: 1 },
+        label: {
+          color: C.muted, fontFamily: MONO, fontSize: 10,
+          formatter: () => ed.eraMarker,
+          position: "insideEndTop", distance: 6,
+        },
+        data: [{ xAxis: String(data.record_era.year) }],
+      }
+    : undefined;
+
   const mkSeries = (normalized) =>
-    BUCKETS.map(({ key, label }) => ({
+    BUCKETS.map(({ key, label }, i) => ({
       name: label,
       type: "line",
       stack: "sev",
@@ -38,6 +56,7 @@ export function render(slots, data) {
       color: C.sev[key],
       symbol: "none",
       emphasis: { focus: "series" },
+      ...(i === 0 && eraMarkLine ? { markLine: eraMarkLine } : {}),
       data: data.years.map((row) => {
         if (!normalized) return row[key];
         const total = BUCKETS.reduce((s, b) => s + row[b.key], 0);
