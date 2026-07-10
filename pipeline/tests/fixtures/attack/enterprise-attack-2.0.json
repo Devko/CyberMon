@@ -1,0 +1,88 @@
+{
+  "type": "bundle",
+  "id": "bundle--fixture-enterprise-2-0",
+  "objects": [
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t1",
+      "name": "Spearphishing",
+      "x_mitre_is_subtechnique": false
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t2",
+      "name": "Fading Technique (deprecated in 2.0)",
+      "x_mitre_is_subtechnique": false,
+      "x_mitre_deprecated": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t3",
+      "name": "Doomed Technique (revoked in 2.0)",
+      "x_mitre_is_subtechnique": false,
+      "revoked": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t0",
+      "name": "Already Deprecated (must never re-count)",
+      "x_mitre_is_subtechnique": false,
+      "x_mitre_deprecated": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000s1",
+      "name": "Spearphishing: Attachment",
+      "x_mitre_is_subtechnique": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000s2",
+      "name": "Spearphishing: Link (added in 2.0)",
+      "x_mitre_is_subtechnique": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t4",
+      "name": "Stillborn Technique (arrives already deprecated: added only)",
+      "x_mitre_is_subtechnique": false,
+      "x_mitre_deprecated": true
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--00000000-0000-0000-0000-0000000000t5",
+      "name": "New Technique (no x_mitre_is_subtechnique flag: a technique)"
+    },
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "name": "FIXTURE BEAR"
+    },
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
+      "name": "FIXTURE SPIDER (added in 2.0)"
+    },
+    {
+      "type": "malware",
+      "id": "malware--00000000-0000-0000-0000-0000000000m1",
+      "name": "Fixtureware"
+    },
+    {
+      "type": "tool",
+      "id": "tool--00000000-0000-0000-0000-000000000tl1",
+      "name": "Revoked Tool (never active)",
+      "revoked": true
+    },
+    {
+      "type": "tool",
+      "id": "tool--00000000-0000-0000-0000-000000000tl2",
+      "name": "Fresh Tool (added in 2.0)"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r1",
+      "relationship_type": "uses"
+    }
+  ]
+}

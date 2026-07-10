@@ -42,6 +42,7 @@ PAGES = [
     "market.html",
     "kev.html",
     "concentration.html",
+    "attack.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

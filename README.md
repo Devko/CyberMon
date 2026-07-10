@@ -69,6 +69,18 @@ signal they are.
 scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
 concentration index, newcomer counts, and a rejection-rate leaderboard.
 
+### 07 · ATT&CK Churn — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
+
+*The map of attacker behavior grows every release; detections are graded
+against a moving target.* Three charts from MITRE's versioned enterprise
+STIX bundles: active techniques and sub-techniques per ATT&CK release over
+real release dates, what each release added vs. deprecated or revoked
+(diffed by STIX id), and the group/software catalog behind the matrix.
+Released bundles are immutable, so per-version stats are computed once and
+cached (`.cache/attack_state.json`); a lost cache is reconstructed from the
+previously published `attack_churn.json`, and a normal night costs one
+`index.json` fetch.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
@@ -103,6 +115,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
+| [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and

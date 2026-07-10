@@ -110,6 +110,8 @@ function renderMeta(meta) {
       kev_count: (s.kev?.count ?? 0).toLocaleString("en-US"),
       nvd_fetched: (s.nvd?.fetched_at ?? "?") + (s.nvd?.stale ? " (carried forward)" : ""),
       market_fetched: (s.market?.fetched_at ?? "?") + (s.market?.stale ? " (carried forward)" : ""),
+      attack_version: (s.attack?.latest_version ?? "?") + (s.attack?.stale ? " (carried forward)" : ""),
+      attack_versions: (s.attack?.version_count ?? 0).toLocaleString("en-US"),
     }))
   );
 }
