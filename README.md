@@ -89,6 +89,17 @@ size per year, and a family concentration board with the unattributed
 majority disclosed rather than ranked. Every figure is a lower bound by
 construction — a payment counts only after someone reported the address
 and the transfers were verified.
+### 07 · ATT&CK Churn — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
+
+*The map of attacker behavior grows every release; detections are graded
+against a moving target.* Three charts from MITRE's versioned enterprise
+STIX bundles: active techniques and sub-techniques per ATT&CK release over
+real release dates, what each release added vs. deprecated or revoked
+(diffed by STIX id), and the group/software catalog behind the matrix.
+Released bundles are immutable, so per-version stats are computed once and
+cached (`.cache/attack_state.json`); a lost cache is reconstructed from the
+previously published `attack_churn.json`, and a normal night costs one
+`index.json` fetch.
 
 ### Next
 
@@ -127,6 +138,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and

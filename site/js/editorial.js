@@ -29,6 +29,7 @@ export const editorial = {
     { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
     { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
     { id: "extortion", href: "extortion.html", label: "Extortion" },
+    { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -116,6 +117,18 @@ export const editorial = {
           "Ransomwhere dataset: revenue per quarter in day-of-transfer dollars, payment " +
           "counts and median sizes, and which families collect. Every figure is a lower " +
           "bound by construction, rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "attack",
+        href: "attack.html",
+        num: "07",
+        label: "ATT&CK Churn",
+        headline: "The map of attacker behavior grows every release.",
+        blurb:
+          "Active techniques and sub-techniques per MITRE ATT&CK enterprise release, what " +
+          "each version added, deprecated, or revoked, and the group-and-software catalog " +
+          "underneath — parsed nightly from MITRE's own STIX bundles.",
         live: true,
       },
     ],
@@ -895,6 +908,90 @@ export const editorial = {
         "often reported long after a campaign ran, so yearly family shares would chart " +
         "reporting dates as much as anything the families did.",
     },
+
+    // --------------------------------------------- attack.html · 1 · hero
+    map: {
+      num: "01",
+      kicker: "The growing map",
+      headline: "Detections are graded against a moving target.",
+      caption:
+        "Active techniques and sub-techniques on the MITRE ATT&CK enterprise matrix, one " +
+        "point per release, placed on real release dates. Any program that scores its " +
+        "detection coverage against ATT&CK inherits this drift: a percentage earned against " +
+        "last year's matrix quietly shrinks as the matrix grows. Watch the red line — " +
+        "sub-techniques now outnumber the techniques they refine, so most of the growth " +
+        "happens below the headline technique count.",
+      statLabel: "Active techniques + sub-techniques, enterprise matrix",
+      statLatest: "v{version} ({year})",
+      statAgo: "v{version} ({year})",
+      legendTechniques: "Techniques",
+      legendSubtechniques: "Sub-techniques",
+      methodology:
+        "Each point is one release of the MITRE ATT&CK enterprise matrix, read from its " +
+        "immutable STIX 2.1 bundle in the mitre-attack/attack-stix-data repository; its " +
+        "x-position is the release date carried by that repository's index.json, so gaps " +
+        "between points are real calendar gaps (releases land roughly twice a year). A " +
+        "technique is a STIX attack-pattern object whose x_mitre_is_subtechnique flag is " +
+        "false or absent; a sub-technique is the same object type with the flag true. Both " +
+        "lines count active objects only: anything carrying revoked: true or " +
+        "x_mitre_deprecated: true is excluded here and charted as churn below. Released " +
+        "bundles never change, so each version's counts are computed once and cached; a " +
+        "normal nightly run re-reads only the index. Lines step because a release's counts " +
+        "hold until the next release.",
+    },
+
+    // --------------------------------------------- attack.html · 2
+    churn: {
+      num: "02",
+      kicker: "Churn per release",
+      headline: "Each release redraws the edges of the map.",
+      caption:
+        "What every ATT&CK release did to the technique set — how many techniques and " +
+        "sub-techniques it added, and how many it deprecated or revoked, diffed by STIX " +
+        "object id against the release before it. Forty-odd releases in, this is the " +
+        "changelog nobody reads, and it is the part detection engineering feels most: a " +
+        "rule mapped to a retired technique doesn't break, it just quietly stops meaning " +
+        "anything.",
+      legendAdded: "Added",
+      legendRetired: "Deprecated + revoked",
+      methodology:
+        "Consecutive enterprise releases are diffed by STIX object id across all " +
+        "attack-pattern objects, techniques and sub-techniques together. “Added” counts " +
+        "ids present in a release and absent from its predecessor. “Deprecated” counts ids " +
+        "present in both releases whose x_mitre_deprecated flag flipped from false to " +
+        "true; “revoked” counts the same flip on the STIX revoked flag. An object that " +
+        "arrives already deprecated counts once, as an addition; an object retired in an " +
+        "earlier release is never re-counted. The earliest indexed release (v1.0) has no " +
+        "predecessor and shows no bars. The axis is a category axis of releases: the unit " +
+        "of churn is a release, and gaps between releases vary from a couple of months to " +
+        "nearly a year, so the equal spacing here is deliberate — the two time-axis charts " +
+        "on this page carry the calendar.",
+    },
+
+    // --------------------------------------------- attack.html · 3
+    catalog: {
+      num: "03",
+      kicker: "The catalog behind it",
+      headline: "Behind the matrix, the roster keeps filling in.",
+      caption:
+        "Active adversary groups (intrusion sets) and software — malware and tools, " +
+        "counted together — per release, on the same release-date axis as the hero. This " +
+        "is the evidence base the technique map stands on: every technique cites the " +
+        "groups observed using it and the software that implements it, so the two catalogs " +
+        "grow as attribution work accumulates, and entries leave only by deprecation or " +
+        "revocation.",
+      legendGroups: "Groups (intrusion sets)",
+      legendSoftware: "Software (malware + tools)",
+      methodology:
+        "Groups are STIX intrusion-set objects; software is the union of malware and tool " +
+        "objects, counted together. The same activity rule as the hero applies: objects " +
+        "carrying revoked: true or x_mitre_deprecated: true are excluded. Campaigns, " +
+        "tactics, mitigations, data sources, detection strategies, and relationship " +
+        "records in the bundle are deliberately out of scope — this chart counts the named " +
+        "adversaries and their tooling, the two catalogs a technique entry cites. Points " +
+        "sit at index.json release dates and step between releases, like the hero; the " +
+        "counts come from the same once-per-version cached stats.",
+    },
   },
 
   footer: {
@@ -905,7 +1002,8 @@ export const editorial = {
       "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched} · " +
       "HIBP breach catalog fetched {hibp_fetched} ({hibp_count} breaches) · " +
       "Ransomwhere {ransomwhere_addresses} addresses / {ransomwhere_txs} transactions " +
-      "fetched {ransomwhere_fetched}",
+      "fetched {ransomwhere_fetched} · " +
+      "ATT&CK enterprise v{attack_version} ({attack_versions} releases)",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
@@ -922,7 +1020,11 @@ export const editorial = {
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
       "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
       "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com), " +
-      "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0).",
+      "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0), " +
+      // The quoted sentence is MITRE's required copyright designation, verbatim
+      // (attack.mitre.org → Resources → Terms of Use). Do not paraphrase it.
+      "MITRE ATT&CK® (© 2026 The MITRE Corporation. This work is reproduced and distributed " +
+      "with the permission of The MITRE Corporation.).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
   },
 };

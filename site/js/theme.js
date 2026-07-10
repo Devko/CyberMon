@@ -65,6 +65,20 @@ export function catAxis(data, extra = {}) {
   };
 }
 
+// Real calendar x-axis for series with irregular spacing (e.g. ATT&CK
+// releases, ~2/year at uneven gaps — a category axis would flatten the
+// calendar). Series data must be [dateString, value] pairs.
+export function timeAxis(extra = {}) {
+  return {
+    type: "time",
+    axisLine: { lineStyle: { color: C.rule } },
+    axisTick: { show: false },
+    axisLabel: { ...baseText, formatter: "{yyyy}" },
+    splitLine: { show: false },
+    ...extra,
+  };
+}
+
 export function valAxis(extra = {}) {
   return {
     type: "value",

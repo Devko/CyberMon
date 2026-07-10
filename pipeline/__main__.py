@@ -26,9 +26,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (breach_metrics, concentration_metrics, contracts,
-               extortion_metrics, history, kev_metrics, market_metrics,
-               metrics, quality_metrics)
+from . import (attack_metrics, breach_metrics, concentration_metrics,
+               contracts, extortion_metrics, history, kev_metrics,
+               market_metrics, metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -61,6 +61,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--market-backfill-batch", type=int, default=8,
                         help="max HN backfill requests per run (default: 8; "
                              "raise for a one-off accelerated backfill)")
+    parser.add_argument("--skip-attack", action="store_true",
+                        help="skip the ATT&CK index fetch; carry the previous "
+                             "attack_churn.json forward (marked stale)")
     parser.add_argument("--window-years", type=int, default=3,
                         help="CNA leaderboard window (default: 3)")
     parser.add_argument("--min-cves", type=int, default=None,
@@ -273,6 +276,11 @@ def run(args: argparse.Namespace) -> int:
         backfill_batch=args.market_backfill_batch)
     if market_hype is not None:
         outputs["market_hype.json"] = market_hype
+    attack_churn, attack_source = attack_metrics.run_stage(
+        args.out, args.cache_dir, generated_at,
+        skip=args.skip_attack, offline_fixtures=args.offline_fixtures)
+    if attack_churn is not None:
+        outputs["attack_churn.json"] = attack_churn
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -289,6 +297,8 @@ def run(args: argparse.Namespace) -> int:
         "address_count": ransomwhere.address_count,
         "tx_count": ransomwhere.tx_count,
     }
+    if attack_source is not None:
+        outputs["meta.json"]["sources"]["attack"] = attack_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

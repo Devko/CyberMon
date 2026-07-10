@@ -159,6 +159,17 @@ def _validate_meta(obj: Any) -> None:
         _check_str(_get(src["nvd"], "fetched_at", "meta.sources.nvd"),
                    "meta.sources.nvd.fetched_at", ISO_UTC_RE)
 
+    # Optional for the same reason (--skip-attack with no prior data).
+    if "attack" in src:
+        _check_str(_get(src["attack"], "fetched_at", "meta.sources.attack"),
+                   "meta.sources.attack.fetched_at", ISO_UTC_RE)
+        _check_str(_get(src["attack"], "latest_version",
+                        "meta.sources.attack"),
+                   "meta.sources.attack.latest_version")
+        _check_int(_get(src["attack"], "version_count",
+                        "meta.sources.attack"),
+                   "meta.sources.attack.version_count", minimum=1)
+
     # Optional for the same reason (--skip-market with no prior data).
     if "market" in src:
         _check_str(_get(src["market"], "fetched_at", "meta.sources.market"),
@@ -413,3 +424,6 @@ VALIDATORS.update(breach_contracts.VALIDATORS)
 from . import extortion_contracts  # noqa: E402
 
 VALIDATORS.update(extortion_contracts.VALIDATORS)
+from . import attack_contracts  # noqa: E402
+
+VALIDATORS.update(attack_contracts.VALIDATORS)

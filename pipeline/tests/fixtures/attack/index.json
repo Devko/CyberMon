@@ -1,0 +1,40 @@
+{
+  "id": "10296991-439b-4202-90a3-e38812613ad4",
+  "name": "MITRE ATT&CK",
+  "description": "Fixture mirror of attack-stix-data index.json: collections newest-first, enterprise NOT listed first (selection is by name).",
+  "created": "2018-01-17T12:56:55.080Z",
+  "modified": "2018-10-17T00:00:00.188Z",
+  "collections": [
+    {
+      "id": "x-mitre-collection--fixture-mobile",
+      "name": "Mobile ATT&CK",
+      "description": "Decoy collection — must never be picked.",
+      "created": "2018-01-17T12:56:55.080Z",
+      "versions": [
+        {
+          "version": "2.0",
+          "url": "https://fixtures.invalid/mobile-attack-2.0.json",
+          "modified": "2018-10-17T00:00:00.188Z"
+        }
+      ]
+    },
+    {
+      "id": "x-mitre-collection--fixture-enterprise",
+      "name": "Enterprise ATT&CK",
+      "description": "Two tiny releases covering add/deprecate/revoke/sub-technique cases.",
+      "created": "2018-01-17T12:56:55.080Z",
+      "versions": [
+        {
+          "version": "2.0",
+          "url": "https://fixtures.invalid/enterprise-attack-2.0.json",
+          "modified": "2018-10-17T00:00:00.188Z"
+        },
+        {
+          "version": "1.0",
+          "url": "https://fixtures.invalid/enterprise-attack-1.0.json",
+          "modified": "2018-01-17T12:56:55.080Z"
+        }
+      ]
+    }
+  ]
+}

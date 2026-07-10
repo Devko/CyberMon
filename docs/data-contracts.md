@@ -46,6 +46,8 @@ visually distinct (dashed/hollow) and labeled.
     "kev": {"catalog_version": "2026.07.08", "count": 1402},
     "nvd": {"fetched_at": "2026-07-09T01:50:00Z"},
     "hibp": {"fetched_at": "2026-07-09T02:05:00Z", "breach_count": 1015}
+    "attack": {"fetched_at": "2026-07-09T01:52:00Z",
+               "latest_version": "19.1", "version_count": 40}
   }
 }
 ```
@@ -53,6 +55,11 @@ visually distinct (dashed/hollow) and labeled.
 `sources.hibp` is optional in the validator so older meta files stay
 valid, but the pipeline always emits it — the HIBP stage has no skip flag
 and no carry-forward: if the fetch fails, the run fails.
+`sources.attack` is optional for the same reason as `nvd`/`market`
+(`--skip-attack` with no prior data omits it); when present it carries
+`fetched_at` (ISO-8601 UTC), the newest enterprise release's
+`latest_version`, and `version_count` ≥ 1 (releases in the index), plus
+`"stale": true` on carry-forward runs.
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -454,6 +461,7 @@ HHI. Validator: `pipeline/tier1_contracts.py`.
 
 ## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
 ## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
+## site/data/attack_churn.json  (ATT&CK Churn module, all 3 charts)
 
 ```json
 {
@@ -625,3 +633,52 @@ maximum. `meta.json` gains an optional `sources.ransomwhere`
 `{fetched_at, address_count, tx_count}` block (validated when present).
 Validator: `pipeline/extortion_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
+  "versions": [
+    {"version": "1.0", "released": "2018-01-17",
+     "techniques": 187, "subtechniques": 0, "groups": 68, "software": 328,
+     "churn": null},
+    {"version": "19.1", "released": "2026-05-12",
+     "techniques": 222, "subtechniques": 475, "groups": 174, "software": 821,
+     "churn": {"added": 9, "deprecated": 2, "revoked": 1}}
+  ],
+  "headline": {
+    "latest_version": "19.1", "released_latest": "2026-05-12",
+    "techniques_latest": 222, "subtechniques_latest": 475,
+    "first_version": "1.0", "released_first": "2018-01-17",
+    "techniques_first": 187, "subtechniques_first": 0
+  }
+}
+```
+
+One entry per release of the MITRE ATT&CK **enterprise** collection
+(`mitre-attack/attack-stix-data`), sorted ascending by numeric
+`major.minor` version, unique versions, `released` (the date part of the
+version's `modified` timestamp in the repo's `index.json`) never
+decreasing. Counting rules, applied to the release's STIX 2.1 bundle:
+`techniques` = `attack-pattern` objects with `x_mitre_is_subtechnique`
+false or absent; `subtechniques` = the flag true; `groups` =
+`intrusion-set`; `software` = `malware` + `tool`. All four count **active**
+objects only — an object carrying `revoked: true` or
+`x_mitre_deprecated: true` is excluded. `churn` diffs the release against
+its predecessor by STIX object id over all `attack-pattern` objects
+(techniques and sub-techniques together, active or not): `added` = ids new
+to the release; `deprecated`/`revoked` = ids present in both whose flag
+flipped false→true (an object arriving already deprecated counts once, as
+an addition; nothing is ever re-counted). `churn` is `null` when the
+release has no predecessor in the index (normally only v1.0). `headline`
+restates the first and latest entries (payload-authoritative; consumers
+never derive it) and is `null` iff `versions` is empty. `"stale": true`
+appears only on `--skip-attack` carry-forwards.
+
+**Reconstruct-losslessly guarantee:** the per-version objects in
+`versions[]` are byte-for-byte the pipeline's sync-state entries
+(`.cache/attack_state.json`) plus the version string — nothing in the
+state is omitted from the output and nothing in the output is derived
+beyond `headline`. `pipeline/fetch_attack.reconstruct_state` rebuilds the
+full state from this file, so a lost CI cache costs one JSON read instead
+of re-downloading ~40 immutable bundles (tens of MB each); only versions
+absent from both the cache and this file are ever fetched. Changing this
+file's per-version shape therefore REQUIRES updating `reconstruct_state`
+and its round-trip test in the same commit. Validator:
+`pipeline/attack_contracts.py` (registered into `pipeline/contracts.py`'s
+dispatch).
