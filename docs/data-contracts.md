@@ -43,10 +43,18 @@ visually distinct (dashed/hollow) and labeled.
     "cvelist": {"release": "cve_2026-07-08_at_end_of_day", "cve_count": 251342},
     "epss": {"model_version": "v4", "score_date": "2026-07-08", "row_count": 248101},
     "kev": {"catalog_version": "2026.07.08", "count": 1402},
-    "nvd": {"fetched_at": "2026-07-09T01:50:00Z"}
+    "nvd": {"fetched_at": "2026-07-09T01:50:00Z"},
+    "apnic": {"fetched_at": "2026-07-09T02:05:00Z", "economy_count": 10,
+              "spread_economy_count": 203}
   }
 }
 ```
+
+`sources.apnic` (Hygiene Index module) is validated additively — optional
+because older committed meta files predate the module, but the hygiene
+stage itself always emits it: `economy_count` = fixed-set economies with a
+fetched series, `spread_economy_count` = economies that survived the
+spread's sample floor.
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -399,6 +407,67 @@ order: before_publish, 0-7d, 8-30d, 31-90d, 91-365d, 1-3y, 3y+ (lower
 edge inclusive). `headline.latest_year` is the last complete year that
 survived filters; `baseline_year` = latest − 3 when present, else the
 earliest surviving year — payload-authoritative, never derived.
+
+## site/data/dnssec_adoption.json  (Hygiene Index module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "window": "30_day",
+  "world": {
+    "cc": "XA",
+    "series": [{"month": "2013-10", "validating_pc": 8.6}],
+    "latest": {"date": "2026-07-07", "validating_pc": 38.5,
+               "partial_pc": 8.8, "seen": 493075676},
+    "baseline": {"month": "2016-07", "validating_pc": 14.6}
+  },
+  "economies": [
+    {"cc": "PH", "name": "Philippines", "latest_pc": 93.5,
+     "series": [{"month": "2014-03", "validating_pc": 41.2}]}
+  ],
+  "spread": {
+    "min_seen": 10000,
+    "n_economies": 203,
+    "buckets": [{"bucket": "<10%", "n": 13}]
+  }
+}
+```
+
+Source: APNIC Labs' measured DNSSEC validation
+(`stats.labs.apnic.net/cgi-bin/json-table.pl?x=<code>` for time series;
+the `/dnssec` world-map page's inline table for the snapshot). Everything
+reads APNIC's **30-day smoothed window** (`window` is pinned to
+`"30_day"`); `validating_pc` = share of sampled users behind validating
+resolvers, `partial_pc` = APNIC's "partially validating" share (mixed
+resolver sets). Upstream publishes its full daily history, so the stage
+is stateless — refetched in full nightly, no committed history file.
+
+`world.series` = one point per calendar month (the month's last published
+day), sorted ascending, unique, non-empty; `world.latest` is the exact
+newest day and must fall inside the newest series month.
+`world.baseline` is payload-authoritative (consumers never derive it):
+the point 120 months before the newest month, else the series' first
+month — its `month` must be one of the charted months.
+
+`economies` = the FIXED ten-economy set (`pipeline/fetch_dnssec.py
+ECONOMIES` — the ten largest by APNIC's weighted sample count, i.e. its
+internet-user estimate, frozen at module creation 2026-07-10: CN IN US BR
+ID JP MX RU PH NG), each with quarter-end-month sampling (Mar/Jun/Sep/Dec
+last published day, plus the newest available month). Sorted by
+`latest_pc` descending; at most 10 entries; unique codes. Fixture runs
+may carry a subset (only the series with fixture files).
+
+`spread` = one-economy-one-vote distribution from the world-map snapshot:
+economies with `seen >= min_seen` (production 10,000) in the current
+30-day window, bucketed by `validating_pc` into exactly
+`["<10%", "10-25%", "25-50%", "50-75%", "75%+"]` (that order; lower edges
+inclusive); bucket counts must sum to `n_economies`. APNIC's region
+pseudo-codes (XA–XW, QM–QS) are excluded — QA (Qatar) is a real economy
+and stays. Measurement caveat (stated in the site methodology): APNIC
+measures via ad-delivered test fetches, so rates are sampled estimates
+weighted to each economy's estimated internet population.
+Validator: `pipeline/hygiene_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
 
 ## site/data/cna_concentration.json  (CNA Concentration module, all 3 charts)
 

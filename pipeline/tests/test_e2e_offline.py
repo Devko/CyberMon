@@ -14,7 +14,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
-             "kev_ransomware.json"]
+             "kev_ransomware.json", "dnssec_adoption.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -95,6 +95,14 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert cwe["top_cwes"][-1]["name"] == "CWE-1321"
     shares_2023 = next(y for y in cwe["years"] if y["year"] == 2023)["shares"]
     assert shares_2023["CWE-79"] == 66.7 and shares_2023["other"] == 0.0
+
+    # DNSSEC adoption: fixture set = XA world + US/CN economy series;
+    # the TT snapshot row (512 samples) falls under the min_seen floor.
+    dnssec = _load(tmp_path, "dnssec_adoption.json")
+    assert dnssec["world"]["latest"]["validating_pc"] == 38.5
+    assert [e["cc"] for e in dnssec["economies"]] == ["US", "CN"]
+    assert dnssec["spread"]["n_economies"] == 9
+    assert meta["sources"]["apnic"]["economy_count"] == 2
 
     # KEV ransomware: all three entries dated; only the 2023 one is Known
     # (the 2024 entry has no knownRansomwareCampaignUse field at all).

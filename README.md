@@ -69,6 +69,16 @@ signal they are.
 scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
 concentration index, newcomer counts, and a rejection-rate leaderboard.
 
+### 08 · Hygiene Index — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
+
+*The fix is twenty years old, free, and still not deployed.* Three charts
+on measured DNSSEC validation (APNIC Labs): the world adoption line since
+2013, a fixed set of the ten largest online populations compared (frozen
+by APNIC's own internet-user weighting at module creation), and the
+one-economy-one-vote distribution across every measured economy. APNIC
+publishes its full daily history, so this stage refetches statelessly
+every night — no accumulated state, no committed history file.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
@@ -103,6 +113,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
+| [APNIC Labs DNSSEC measurement](https://stats.labs.apnic.net/dnssec) | Measured DNSSEC validation rates: per-code daily time series (`cgi-bin/json-table.pl?x=<code>`) + the world-map snapshot table | © APNIC Pty Ltd; "re-use with attribution permitted" (stated in every JSON response), provided on a hold-harmless basis with attribution |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
