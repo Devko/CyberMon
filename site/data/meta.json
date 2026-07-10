@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-10T05:43:12Z",
+ "generated_at": "2026-07-10T05:47:23Z",
  "sample": false,
  "sources": {
   "cvelist": {
@@ -16,11 +16,11 @@
    "count": 1635
   },
   "nvd": {
-   "fetched_at": "2026-07-09T20:03:30Z",
+   "fetched_at": "2026-07-10T04:04:25Z",
    "stale": true
   },
   "market": {
-   "fetched_at": "2026-07-09T20:03:30Z",
+   "fetched_at": "2026-07-10T04:04:25Z",
    "stale": true,
    "term_count": 14,
    "backfill_remaining": 0
