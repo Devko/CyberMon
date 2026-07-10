@@ -17,7 +17,8 @@ to protect, gate, or monitor other systems. Categories counted:
   Email Security) — mail *servers* are not email *security*;
 * identity / access management / PAM (Cisco ISE and ACS, BeyondTrust,
   ForgeRock AM, Micro Focus Access Manager);
-* mobile device management (Ivanti EPMM/MobileIron, Sentry, Citrix
+* mobile device management (Omnissa Workspace ONE UEM,
+  Ivanti EPMM/MobileIron, Sentry, Citrix
   XenMobile) — MDM ships as device-trust enforcement;
 * security operations tooling (Netwrix Auditor, Wazuh, Aqua Security
   Trivy, Fortra Cobalt Strike);
@@ -59,6 +60,15 @@ issue or PR):
   honestly, so it is left unclassified rather than guessed.
 * **Backup/recovery** (Veeam, Commvault, Acronis, Arcserve, Veritas)
   is resilience, not enforcement — excluded.
+* **Known coarse-label misses** (the classifier reads only
+  vendor/product, never descriptions): Zyxel "Multiple Products"
+  (CVE-2020-29583) is really the ZyWALL/USG firewall bug but stays
+  unclassified. **Splunk Enterprise** (SIEM-adjacent, sold as a data
+  platform) and **Twilio Authy** (consumer MFA) are deliberately
+  excluded; **Palo Alto Expedition** (a config-migration tool) and
+  **BeyondTrust Remote Support** (bundled with PRA/PAM) ride in on
+  their wholesale vendors — the wholesale rule trades these edge cases
+  for auditability.
 
 Mechanics: :data:`SECURITY_VENDORS` lists vendors whose entire KEV
 footprint is security products (matched on the trimmed, casefolded
@@ -73,7 +83,7 @@ from __future__ import annotations
 # Bump on ANY change to SECURITY_VENDORS or PRODUCT_RULES (the emitted
 # kev_guards.json carries it, so a published number is traceable to the
 # classifier revision that produced it).
-CLASSIFIER_VERSION = 1
+CLASSIFIER_VERSION = 2
 
 # Vendors whose entire KEV footprint is security products. Keys are
 # trimmed + casefolded vendorProject values.
@@ -92,6 +102,8 @@ SECURITY_VENDORS = frozenset({
     # endpoint protection
     "trend micro",
     "mcafee",
+    # ThreatSonar Anti-Ransomware (EDR) is TeamT5's only KEV footprint
+    "teamt5",
     "symantec",
     # email security gateways
     "barracuda",
@@ -102,6 +114,8 @@ SECURITY_VENDORS = frozenset({
     "forgerock",
     # mobile device management
     "mobileiron",
+    # Workspace ONE UEM (AirWatch lineage) is Omnissa's only KEV footprint
+    "omnissa",
     # security operations tooling (Fortra: GoAnywhere MFT + Cobalt Strike)
     "netwrix",
     "wazuh",
@@ -150,7 +164,11 @@ PRODUCT_RULES: dict[str, tuple[str, ...]] = {
     # the NetScreen firewall line — not Junos routers/switches
     "juniper": ("screenos",),
     # Defender + Forefront TMG — not Exchange/Windows/Office
-    "microsoft": ("defender", "forefront"),
+    # "Malware Protection Engine" is Defender's scan engine (mpengine.dll)
+    # even though the KEV label never says "Defender".
+    "microsoft": ("defender", "forefront", "malware protection engine"),
+    # IAM/SSO only — not vCenter/ESXi/Spring et al.
+    "vmware": ("workspace one access", "identity manager"),
     # security appliances — not CPE routers/NAS
     "zyxel": ("firewall",),
     # Access Manager — not Operations Bridge Reporter

@@ -12,8 +12,8 @@
   {
    "year": 2022,
    "total": 555,
-   "security": 35,
-   "pct_security": 6.3
+   "security": 37,
+   "pct_security": 6.7
   },
   {
    "year": 2023,
@@ -36,16 +36,16 @@
   {
    "year": 2026,
    "total": 151,
-   "security": 20,
-   "pct_security": 13.2
+   "security": 22,
+   "pct_security": 14.6
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
    "entries": 378,
-   "security_entries": 6,
-   "pct_security": 1.6,
+   "security_entries": 7,
+   "pct_security": 1.9,
    "first_added": "2021-11-03",
    "last_added": "2026-07-01",
    "median_gap_days": 0.0
@@ -143,8 +143,8 @@
   {
    "vendor": "VMware",
    "entries": 26,
-   "security_entries": 0,
-   "pct_security": 0.0,
+   "security_entries": 1,
+   "pct_security": 3.8,
    "first_added": "2021-11-03",
    "last_added": "2025-03-04",
    "median_gap_days": 8.0
@@ -440,21 +440,21 @@
  ],
  "ransomware": {
   "security": {
-   "total": 188,
-   "known": 70,
-   "pct_known": 37.2
+   "total": 192,
+   "known": 71,
+   "pct_known": 37.0
   },
   "other": {
-   "total": 1447,
-   "known": 259,
+   "total": 1443,
+   "known": 258,
    "pct_known": 17.9
   }
  },
  "catalog": {
   "total": 1635,
-  "security": 188,
-  "pct_security": 11.5,
-  "classifier_version": 1,
-  "classifier_rules": 32
+  "security": 192,
+  "pct_security": 11.7,
+  "classifier_version": 2,
+  "classifier_rules": 35
  }
 }

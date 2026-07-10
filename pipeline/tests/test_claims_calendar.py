@@ -6,7 +6,7 @@ true. Ranges are deliberately tolerant — nightly drift must not trip them;
 only a claim becoming untrue should. Never silence a failure here: fix the
 copy (and this test's quoted claim + range, in the same commit) or fix the
 pipeline. Reference values from the real corpus, 2026-07-10 (release
-cve_2026-07-10_0500Z, 364,398 records): 2025 prior-year-ID share 20.4%
+cve_2026-07-10_0700Z, 364,398 records): 2025 prior-year-ID share 20.4%
 (11.4% one-year + 9.0% two-plus); 2025 Tuesday share 24.5% (the week's
 top day; weekend 7.5% combined); 2025 patch-Tuesday share 9.8% of volume
 on 3.3% of the calendar (~3.0x), 8.1-9.8% across 2022-2025.
@@ -75,6 +75,29 @@ def check_tuesday_peak(d: dict) -> None:
     )
 
 
+def check_wednesday_baseline_and_clamps(d: dict) -> None:
+    # editorial.js (calendar.html weekly beat caption): "ten years ago the
+    # peak sat a day later, on Wednesday" — true for the 2015 baseline,
+    # but the baseline rolls forward each year (2016's peak is Thursday),
+    # so the sentence needs a guard, not faith.
+    comp = d["weekday"]["comparison"]
+    assert comp is not None, "no charted years — nothing carries the claim"
+    row = next(y for y in d["weekday"]["years"]
+               if y["year"] == comp["baseline_year"])
+    wed = row["pct"][2]
+    assert wed == max(row["pct"]), (
+        f"'ten years ago the peak sat … on Wednesday' — "
+        f"{comp['baseline_year']}'s top weekday share is "
+        f"{max(row['pct'])}%, Wednesday only {wed}%; update the caption"
+    )
+    # reservation methodology: "the real corpus currently contains none"
+    # (clamped negative ID ages)
+    assert d["id_age"]["clamped_negative"] == 0, (
+        f"'the real corpus currently contains none' — clamped_negative is "
+        f"{d['id_age']['clamped_negative']}; update the methodology"
+    )
+
+
 def check_patch_tuesday_multiple(d: dict) -> None:
     # editorial.js (calendar.html patch tuesday): "twelve days carrying
     # roughly triple their calendar share of the year's records"
@@ -99,6 +122,11 @@ def check_patch_tuesday_multiple(d: dict) -> None:
 
 
 CLAIMS = [
+    (
+        "ten years ago the peak sat a day later, on Wednesday",
+        "cve_calendar.json",
+        check_wednesday_baseline_and_clamps,
+    ),
     (
         "one in five of the latest complete year's records carried an ID "
         "minted in an earlier year",

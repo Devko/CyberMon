@@ -8,7 +8,7 @@ import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 // Days, not percent: "144d". Negative medians keep their sign — a breach
-// catalogued before its own stated breach date is a date-quality signal.
+// cataloged before its own stated breach date is a date-quality signal.
 const fmtDays = (v) => `${fmtInt(Math.round(v))}d`;
 
 export function render(slots, data) {
