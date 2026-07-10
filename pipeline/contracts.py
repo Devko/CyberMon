@@ -440,3 +440,6 @@ VALIDATORS.update(attack_contracts.VALIDATORS)
 from . import hygiene_contracts  # noqa: E402
 
 VALIDATORS.update(hygiene_contracts.VALIDATORS)
+from . import guards_contracts  # noqa: E402
+
+VALIDATORS.update(guards_contracts.VALIDATORS)

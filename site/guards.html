@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CyberMon — Security Products: the network's guards on the exploited list.</title>
+  <meta name="description" content="Security Products — the share of CISA's Known Exploited Vulnerabilities catalog that is security products (VPN appliances, firewalls, endpoint protection, secure gateways), the vendors that keep returning, and the ransomware overlap, classified by a curated, versioned list. Rebuilt nightly from open data.">
+  <meta property="og:title" content="CyberMon — Security Products: the network's guards on the exploited list.">
+  <meta property="og:description" content="Security Products — the share of CISA's Known Exploited Vulnerabilities catalog that is security products (VPN appliances, firewalls, endpoint protection, secure gateways), the vendors that keep returning, and the ransomware overlap, classified by a curated, versioned list. Rebuilt nightly from open data.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CyberMon">
+  <meta property="og:url" content="https://devko.github.io/CyberMon/guards.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#0e0f11">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/market.css">
+</head>
+<body>
+
+  <div id="sample-banner" class="sample-banner" hidden></div>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <p class="masthead-kicker" id="masthead-kicker"></p>
+      <h1 class="masthead-title">CYBER<span class="accent">MON</span></h1>
+      <p class="masthead-thesis" id="masthead-thesis"></p>
+      <p class="masthead-sub" id="masthead-sub"></p>
+      <nav class="site-nav" id="site-nav" aria-label="CyberMon modules"></nav>
+    </div>
+  </header>
+
+  <main id="sections" class="sections"></main>
+
+  <footer class="footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-meta" id="footer-meta"><span class="mono muted">loading edition metadata…</span></div>
+      <div class="footer-text" id="footer-text"></div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script type="module" src="js/guards.js"></script>
+  <noscript>
+    <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
+      CyberMon is a static, client-rendered dashboard. Enable JavaScript to see the charts —
+      or read the raw JSON in <code>data/</code>; every number on this page comes from those files.
+    </p>
+  </noscript>
+</body>
+</html>

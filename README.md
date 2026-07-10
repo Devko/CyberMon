@@ -113,6 +113,21 @@ one-economy-one-vote distribution across every measured economy. APNIC
 publishes its full daily history, so this stage refetches statelessly
 every night — no accumulated state, no committed history file.
 
+### 09 · Security Products — [guards.html](https://devko.github.io/CyberMon/guards.html) (live)
+
+*The products guarding the network keep landing on the exploited list.*
+Three views over the CISA KEV catalog, with every entry classified by a
+curated, versioned security-product table
+([pipeline/security_products.py](pipeline/security_products.py) — the
+decision rule and every judgment call are documented in the module, and
+the emitted data carries the classifier version): the share of each
+year's new listings that are security products (seeding era included —
+the classification rides on the entry itself), a vendor recidivism
+board with first/last listing dates and the median gap between
+consecutive listings, and the ransomware-flag split between exploited
+security products and the rest of the catalog. No new upstream source:
+everything derives from the KEV feed the pipeline already fetches.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —

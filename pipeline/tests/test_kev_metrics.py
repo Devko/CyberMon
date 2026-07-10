@@ -75,8 +75,11 @@ def test_extract_facts_slices_date_published_to_day_precision():
 
 def test_fixture_build_matched_and_cohorts(agg, kev):
     obj = build_kev_latency(agg, kev.entries, GENERATED_AT, min_n=1)
-    assert obj["matched"] == {"total_kev": 3, "matched_cve": 3,
-                              "unmatched_cve": 0}
+    # the 4 guards-module fixture entries (Fortinet/Cisco) have no CVE
+    # records in the fixture corpus on purpose: they count as unmatched
+    # and stay out of every latency stat below
+    assert obj["matched"] == {"total_kev": 7, "matched_cve": 3,
+                              "unmatched_cve": 4}
     # CVE-2023-0003 (dateAdded 2021-12-01) is launch backfill: reported
     # separately, absent from every trend stat.
     assert obj["launch_backfill"] == {"date_added_before": LAUNCH_CUTOFF,
@@ -218,10 +221,11 @@ def test_fixture_ransomware_share_includes_seeding_era(kev):
     # Every dateAdded year charts — the 2021 seeding-era entry included.
     assert obj["years"] == [
         {"year": 2021, "total": 1, "known": 0, "pct_known": 0.0},
-        {"year": 2023, "total": 1, "known": 1, "pct_known": 100.0},
-        {"year": 2024, "total": 1, "known": 0, "pct_known": 0.0},
+        {"year": 2022, "total": 1, "known": 0, "pct_known": 0.0},
+        {"year": 2023, "total": 3, "known": 2, "pct_known": 66.7},
+        {"year": 2024, "total": 2, "known": 0, "pct_known": 0.0},
     ]
-    assert obj["catalog"] == {"total": 3, "known": 1, "pct_known": 33.3}
+    assert obj["catalog"] == {"total": 7, "known": 2, "pct_known": 28.6}
 
 
 def test_ransomware_missing_field_counts_as_unknown():

@@ -31,6 +31,7 @@ export const editorial = {
     { id: "extortion", href: "extortion.html", label: "Extortion" },
     { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
     { id: "hygiene", href: "hygiene.html", label: "Hygiene" },
+    { id: "guards", href: "guards.html", label: "Security Products" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -142,6 +143,19 @@ export const editorial = {
           "DNSSEC validation as measured by APNIC Labs — the world adoption line since " +
           "2013, the ten biggest online populations compared, and how many economies " +
           "actually check their DNS answers. Rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "guards",
+        href: "guards.html",
+        num: "09",
+        label: "Security Products",
+        headline: "The products guarding the network keep landing on the exploited list.",
+        blurb:
+          "Every CISA KEV entry classified with a curated, versioned list of security " +
+          "vendors and products: the guard share of the catalog year by year, the vendors " +
+          "that keep coming back, and how hard the ransomware flag leans on exploited " +
+          "security products. Rebuilt nightly.",
         live: true,
       },
     ],
@@ -1142,6 +1156,113 @@ export const editorial = {
         "from ad-delivered samples, and thinly sampled economies are exactly the ones " +
         "the floor exists to keep out.",
     },
+    // --------------------------------------------- guards.html · 1 · hero
+    guards: {
+      num: "01",
+      kicker: "The guard share",
+      source: "CISA KEV",
+      headline: "The guards keep showing up on the exploited list.",
+      caption:
+        "Every entry in CISA's Known Exploited Vulnerabilities catalog, classified by " +
+        "what the product is for. Bars show the share of each year's new listings that " +
+        "are security products — VPN appliances, firewalls, endpoint protection, secure " +
+        "gateways: the things bought to keep attackers out. About one in nine entries " +
+        "in the whole catalog is a product sold to enforce security. The 2021–22 " +
+        "seeding years chart like any other year: the classification rides on the entry " +
+        "itself, so a back-catalog import answers the question as well as a fresh " +
+        "listing does.",
+      statLabel: "Security products' share of the whole exploited catalog",
+      statNote: "{security} of {total} KEV entries · classifier v{version}, {rules} rules — the list is data, reviewable in the repo",
+      methodology:
+        "“Security product” here means: a product whose primary function is security " +
+        "enforcement or secure access — firewalls and UTMs, VPN and secure-access " +
+        "appliances, endpoint protection, email security gateways, identity and " +
+        "privileged-access management, mobile device management, security operations " +
+        "tooling, and dedicated secure file-transfer appliances from security vendors. " +
+        "That line is a judgment, and drawing it is the methodological risk of this " +
+        "whole page — so it is drawn once, in writing, as a curated and versioned " +
+        "table (pipeline/security_products.py), never by string-matching product names " +
+        "for the word “secure”. Mixed vendors get explicit product rules: Cisco counts " +
+        "only its security estate (ASA, Firepower/FTD, AnyConnect, ISE — never IOS or " +
+        "routers), Microsoft only Defender and Forefront TMG (never Exchange), Zyxel " +
+        "only its firewalls, Juniper only ScreenOS. The harder calls are documented in " +
+        "the module and applied consistently: MOVEit is file transfer, not security; " +
+        "ADCs count only where the exploited deployment is a secure-access gateway (F5 " +
+        "BIG-IP, Citrix NetScaler); desktop management, RMM and remote-support tools " +
+        "are IT operations; mail servers are not counted just because email security " +
+        "gateways are; backup is resilience; Zoho ManageEngine stays unclassified " +
+        "because the catalog's product labels are too coarse to split honestly. Every " +
+        "published number carries the classifier version that produced it, and the " +
+        "table is reviewable data in this repo — if a call looks wrong, open an issue: " +
+        "a one-line change reclassifies the whole history on the next nightly run. " +
+        "Years with fewer than 10 entries never plot. The current year (marked *) is " +
+        "partial and refills nightly.",
+    },
+
+    // --------------------------------------------- guards.html · 2
+    recidivism: {
+      num: "02",
+      kicker: "Recidivism board",
+      source: "CISA KEV",
+      headline: "The same names keep coming back.",
+      caption:
+        "Every vendor with at least five entries in the catalog, ranked by how many " +
+        "confirmed-exploited vulnerabilities CISA has listed across its products — with " +
+        "first and last listing dates and the median gap between consecutive listings. " +
+        "Rows where security products make up at least half the vendor's entries are " +
+        "flagged. Read the gap column on the flagged rows: for the most-listed security " +
+        "vendors, the pause between confirmed-exploited listings is measured in days " +
+        "and weeks.",
+      colVendor: "Vendor",
+      colEntries: "KEV entries",
+      colSecurity: "security",
+      colFirst: "first listed",
+      colLast: "last listed",
+      colGap: "median gap",
+      securityFlagLabel: "security products",
+      windowTemplate:
+        "whole catalog · min {min_vendor_entries} entries · flagged rows: at least " +
+        "half the vendor's entries classify as security products",
+      methodology:
+        "For every vendor label in the catalog (whitespace-normalized but never " +
+        "merged — Pulse Secure predates Ivanti's acquisition and keeps its own row, " +
+        "because the catalog's attribution is the record), the board counts total " +
+        "entries, security-classified entries (per the classifier described in the " +
+        "hero's footnote), first and last dateAdded, and the median gap in days " +
+        "between consecutive listings. A gap of 0 means CISA added several of the " +
+        "vendor's CVEs on the same day, which bulk advisories regularly do. Vendors " +
+        "with fewer than five entries stay off the board: one listing is an incident; " +
+        "a cadence needs a history. The security flag marks rows where at least half " +
+        "the entries classify as security products. Default sort: total entries, " +
+        "descending. Click any column header to re-sort.",
+    },
+
+    // --------------------------------------------- guards.html · 3
+    overlap: {
+      num: "03",
+      kicker: "Ransomware overlap",
+      source: "CISA KEV",
+      headline: "The ransomware flag clusters on the guards.",
+      caption:
+        "CISA marks each KEV entry known to have been used in ransomware campaigns. " +
+        "Split the catalog with the same classifier as the rest of this page and the " +
+        "flag is anything but evenly spread: entries on exploited security products " +
+        "carry that flag roughly twice as often as the rest of the catalog. An edge " +
+        "appliance that gates the network is one working exploit away from being the " +
+        "whole intrusion — exactly the kind of foothold extortion operations shop for.",
+      barSecurity: "Security products",
+      barOther: "Rest of the catalog",
+      methodology:
+        "Both bars use the catalog's own knownRansomwareCampaignUse field (“Known” " +
+        "versus anything else; a missing field never counts as Known — the KEV Latency " +
+        "module applies the same rule) over the full catalog snapshot, seeding era " +
+        "included. The split is the page's classifier: security products on one side, " +
+        "every other entry on the other, so the two bars always cover the whole " +
+        "catalog; each bar's entry counts ride in its tooltip. The chart answers one " +
+        "narrow question — is the flag overrepresented on security products? It says " +
+        "nothing about which campaigns, when, or how many victims: the flag is CISA's " +
+        "current per-entry assessment, with no dates attached.",
+    },
   },
 
   footer: {
@@ -1204,6 +1325,7 @@ export const editorial = {
       extortion: "Ransomwhere (CC0)",
       attack: "MITRE ATT&CK®",
       hygiene: "APNIC Labs (stats.labs.apnic.net)",
+      guards: "CISA KEV catalog",
     },
   },
 };

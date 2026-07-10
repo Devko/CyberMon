@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 from pipeline import (breach_metrics, concentration_metrics,
-                      extortion_metrics, kev_metrics, metrics,
-                      quality_metrics)
+                      extortion_metrics, guards_metrics, kev_metrics,
+                      metrics, quality_metrics)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_hibp import load_hibp_file
@@ -82,6 +82,9 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
         "kev_ransomware.json":
             kev_metrics.build_kev_ransomware(kev.entries, GENERATED_AT,
                                              min_n=1),
+        "kev_guards.json":
+            guards_metrics.build_kev_guards(kev.entries, GENERATED_AT,
+                                            min_n=1, min_vendor_entries=1),
         "breach_ledger.json":
             breach_metrics.build_breach_ledger(hibp.breaches, GENERATED_AT,
                                                min_n=1),

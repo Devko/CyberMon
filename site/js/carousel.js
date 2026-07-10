@@ -45,6 +45,9 @@ import { render as renderCatalog } from "./charts/attack_catalog.js";
 import { render as renderWorld } from "./charts/hygiene_world.js";
 import { render as renderEconomies } from "./charts/hygiene_economies.js";
 import { render as renderSpread } from "./charts/hygiene_spread.js";
+import { render as renderGuardShare } from "./charts/guards_share.js";
+import { render as renderRecidivism } from "./charts/guards_recidivism.js";
+import { render as renderOverlap } from "./charts/guards_overlap.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -120,6 +123,14 @@ const MODULES = {
       { id: "validation", render: renderWorld },
       { id: "economies", render: renderEconomies },
       { id: "spread", render: renderSpread },
+    ],
+  },
+  guards: {
+    file: "data/kev_guards.json",
+    sections: [
+      { id: "guards", render: renderGuardShare },
+      { id: "recidivism", render: renderRecidivism, table: true },
+      { id: "overlap", render: renderOverlap },
     ],
   },
 };

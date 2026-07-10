@@ -14,7 +14,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
-             "kev_ransomware.json", "breach_ledger.json",
+             "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json"]
 
 
@@ -33,7 +33,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sample"] is False  # fixture runs are real pipeline runs
     assert meta["sources"]["cvelist"] == {"release": "fixtures", "cve_count": 11}
     assert meta["sources"]["epss"]["row_count"] == 7
-    assert meta["sources"]["kev"]["count"] == 3
+    assert meta["sources"]["kev"]["count"] == 7
     assert meta["sources"]["hibp"]["breach_count"] == 9
     assert meta["sources"]["ransomwhere"]["address_count"] == 6
     assert meta["sources"]["ransomwhere"]["tx_count"] == 8
@@ -43,11 +43,14 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert len(decay["history"]) == 1
     assert (tmp_path / "history" / "nvd_backlog.csv").exists()
 
-    # KEV latency: all 3 fixture entries join; the 2021-12-01 entry lands
-    # in the launch-backfill cohort, the other two in the trend stats.
+    # KEV latency: the 3 original fixture entries join the corpus; the 4
+    # guards-module entries (Fortinet/Cisco) deliberately have no fixture
+    # CVE records, so they count as unmatched and stay out of every
+    # latency stat. The 2021-12-01 entry lands in the launch-backfill
+    # cohort, the other two matched ones in the trend stats.
     latency = _load(tmp_path, "kev_latency.json")
-    assert latency["matched"] == {"total_kev": 3, "matched_cve": 3,
-                                  "unmatched_cve": 0}
+    assert latency["matched"] == {"total_kev": 7, "matched_cve": 3,
+                                  "unmatched_cve": 4}
     assert latency["launch_backfill"]["n"] == 1
     assert latency["launch_backfill"]["median_days"] == -612.0
     assert [(y["year"], y["n"], y["median_days"])
@@ -124,14 +127,42 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert dnssec["spread"]["n_economies"] == 9
     assert meta["sources"]["apnic"]["economy_count"] == 2
 
-    # KEV ransomware: all three entries dated; only the 2023 one is Known
-    # (the 2024 entry has no knownRansomwareCampaignUse field at all).
+    # KEV ransomware: all seven entries dated; the VendorX and FortiOS
+    # entries are Known (the 2024-03-30 entry has no
+    # knownRansomwareCampaignUse field at all — never counted as Known).
     ransomware = _load(tmp_path, "kev_ransomware.json")
     assert [(y["year"], y["total"], y["known"])
-            for y in ransomware["years"]] == [(2021, 1, 0), (2023, 1, 1),
-                                              (2024, 1, 0)]
-    assert ransomware["catalog"] == {"total": 3, "known": 1,
-                                     "pct_known": 33.3}
+            for y in ransomware["years"]] == [(2021, 1, 0), (2022, 1, 0),
+                                              (2023, 3, 2), (2024, 2, 0)]
+    assert ransomware["catalog"] == {"total": 7, "known": 2,
+                                     "pct_known": 28.6}
+
+    # KEV guards: FortiOS/FortiProxy classify via the wholesale vendor
+    # list, Cisco ASA via a product keyword, Cisco IOS XE misses on
+    # purpose; the seeding-era 2022 entry charts like any other year.
+    guards = _load(tmp_path, "kev_guards.json")
+    assert [(y["year"], y["total"], y["security"], y["pct_security"])
+            for y in guards["years"]] == [(2021, 1, 0, 0.0),
+                                          (2022, 1, 0, 0.0),
+                                          (2023, 3, 2, 66.7),
+                                          (2024, 2, 1, 50.0)]
+    by_vendor = {v["vendor"]: v for v in guards["vendors"]}
+    # ties on entries break by casefolded vendor name
+    assert [v["vendor"] for v in guards["vendors"]] == \
+        ["Cisco", "Fortinet", "GitHub_M", "mitre", "VendorX"]
+    assert by_vendor["Fortinet"] == {
+        "vendor": "Fortinet", "entries": 2, "security_entries": 2,
+        "pct_security": 100.0, "first_added": "2023-06-14",
+        "last_added": "2024-05-15", "median_gap_days": 336.0}
+    assert by_vendor["Cisco"]["security_entries"] == 1  # ASA yes, IOS XE no
+    assert by_vendor["Cisco"]["median_gap_days"] == 549.0
+    assert by_vendor["VendorX"]["median_gap_days"] is None  # single entry
+    assert guards["ransomware"] == {
+        "security": {"total": 3, "known": 1, "pct_known": 33.3},
+        "other": {"total": 4, "known": 1, "pct_known": 25.0}}
+    assert guards["catalog"]["total"] == 7
+    assert guards["catalog"]["security"] == 3
+    assert guards["catalog"]["classifier_version"] >= 1
 
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is

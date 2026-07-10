@@ -27,8 +27,9 @@ from pathlib import Path
 from typing import Iterator
 
 from . import (attack_metrics, breach_metrics, concentration_metrics,
-               contracts, extortion_metrics, history, hygiene_metrics,
-               kev_metrics, market_metrics, metrics, quality_metrics)
+               contracts, extortion_metrics, guards_metrics, history,
+               hygiene_metrics, kev_metrics, market_metrics, metrics,
+               quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -257,6 +258,11 @@ def run(args: argparse.Namespace) -> int:
             kev_metrics.build_kev_ransomware(
                 kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
+        "kev_guards.json":
+            guards_metrics.build_kev_guards(
+                kev.entries, generated_at,
+                **({"min_n": 1, "min_vendor_entries": 1}
+                   if args.offline_fixtures else {})),
         "breach_ledger.json":
             breach_metrics.build_breach_ledger(
                 hibp.breaches, generated_at,
