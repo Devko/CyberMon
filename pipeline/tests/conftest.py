@@ -6,10 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import concentration_metrics, kev_metrics, metrics, quality_metrics
+from pipeline import (concentration_metrics, extortion_metrics, kev_metrics,
+                      metrics, quality_metrics)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_kev import load_kev_file
+from pipeline.fetch_ransomwhere import load_ransomwhere_file
 
 FIXTURES = Path(__file__).parent / "fixtures"
 GENERATED_AT = "2026-07-09T00:00:00Z"
@@ -33,7 +35,12 @@ def kev():
 
 
 @pytest.fixture()
-def outputs(agg, epss, kev) -> dict[str, dict]:
+def ransomwhere():
+    return load_ransomwhere_file(FIXTURES / "ransomwhere.json")
+
+
+@pytest.fixture()
+def outputs(agg, epss, kev, ransomwhere) -> dict[str, dict]:
     """Every contracted output file, built from fixtures (min_cves=1)."""
     import json
 
@@ -68,6 +75,9 @@ def outputs(agg, epss, kev) -> dict[str, dict]:
         "kev_ransomware.json":
             kev_metrics.build_kev_ransomware(kev.entries, GENERATED_AT,
                                              min_n=1),
+        "extortion_ledger.json":
+            extortion_metrics.build_extortion_ledger(ransomwhere,
+                                                     GENERATED_AT, min_n=1),
         "meta.json": metrics.build_meta(
             GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
             epss_model_version=epss.model_version,

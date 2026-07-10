@@ -169,6 +169,17 @@ def _validate_meta(obj: Any) -> None:
                         "meta.sources.market"),
                    "meta.sources.market.backfill_remaining")
 
+    # Optional (additive extension, market precedent): the Ransomwhere
+    # export behind the Extortion Ledger module. Checked when present.
+    if "ransomwhere" in src:
+        rw = src["ransomwhere"]
+        _check_str(_get(rw, "fetched_at", "meta.sources.ransomwhere"),
+                   "meta.sources.ransomwhere.fetched_at", ISO_UTC_RE)
+        _check_int(_get(rw, "address_count", "meta.sources.ransomwhere"),
+                   "meta.sources.ransomwhere.address_count", minimum=1)
+        _check_int(_get(rw, "tx_count", "meta.sources.ransomwhere"),
+                   "meta.sources.ransomwhere.tx_count", minimum=1)
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -388,3 +399,7 @@ VALIDATORS.update(tier1_contracts.VALIDATORS)
 from . import tier2_contracts  # noqa: E402
 
 VALIDATORS.update(tier2_contracts.VALIDATORS)
+
+from . import extortion_contracts  # noqa: E402
+
+VALIDATORS.update(extortion_contracts.VALIDATORS)

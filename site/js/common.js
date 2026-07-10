@@ -110,6 +110,9 @@ function renderMeta(meta) {
       kev_count: (s.kev?.count ?? 0).toLocaleString("en-US"),
       nvd_fetched: (s.nvd?.fetched_at ?? "?") + (s.nvd?.stale ? " (carried forward)" : ""),
       market_fetched: (s.market?.fetched_at ?? "?") + (s.market?.stale ? " (carried forward)" : ""),
+      ransomwhere_addresses: (s.ransomwhere?.address_count ?? 0).toLocaleString("en-US"),
+      ransomwhere_txs: (s.ransomwhere?.tx_count ?? 0).toLocaleString("en-US"),
+      ransomwhere_fetched: s.ransomwhere?.fetched_at ?? "?",
     }))
   );
 }

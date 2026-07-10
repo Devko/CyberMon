@@ -1,0 +1,77 @@
+{
+ "result": [
+  {
+   "address": "1DemoLockerHeroAddrAAAAAAAAAAAAAAA",
+   "balance": 50000000,
+   "balanceUSD": 31200.0,
+   "blockchain": "bitcoin",
+   "family": "DemoLocker",
+   "createdAt": "2023-04-01T00:00:00.000Z",
+   "updatedAt": "2024-06-01T00:00:00.000Z",
+   "transactions": [
+    {"hash": "h1-demolocker-2023q1", "time": 1678881600, "amount": 5000000, "amountUSD": 1200.0},
+    {"hash": "h2-demolocker-2024q2", "time": 1716192000, "amount": 45000000, "amountUSD": 30000.0}
+   ]
+  },
+  {
+   "address": "1DemoLockerSecondAddrBBBBBBBBBBBBB",
+   "balance": 27200000,
+   "balanceUSD": 25000.0,
+   "blockchain": "bitcoin",
+   "family": "DemoLocker",
+   "createdAt": "2024-12-01T00:00:00.000Z",
+   "updatedAt": "2026-02-06T00:00:00.000Z",
+   "transactions": [
+    {"hash": "h3-demolocker-2024q4", "time": 1732121100, "amount": 22000000, "amountUSD": 20000.0},
+    {"hash": "h4-demolocker-2026q1-multiout", "time": 1770301200, "amount": 5200000, "amountUSD": 5000.0}
+   ]
+  },
+  {
+   "address": "bc1demolockerthirdaddrcccccccccccc",
+   "balance": 2080000,
+   "balanceUSD": 2000.0,
+   "blockchain": "bitcoin",
+   "family": "DemoLocker",
+   "createdAt": "2026-02-06T00:00:00.000Z",
+   "updatedAt": "2026-02-06T00:00:00.000Z",
+   "transactions": [
+    {"hash": "h4-demolocker-2026q1-multiout", "time": 1770301200, "amount": 2080000, "amountUSD": 2000.0}
+   ]
+  },
+  {
+   "address": "1PetitEncryptAddrDDDDDDDDDDDDDDDDD",
+   "balance": 15900000,
+   "balanceUSD": 12800.0,
+   "blockchain": "bitcoin",
+   "family": "PetitEncrypt",
+   "createdAt": "2022-02-01T00:00:00.000Z",
+   "updatedAt": "2025-04-11T00:00:00.000Z",
+   "transactions": [
+    {"hash": "h5-petitencrypt-2025q2", "time": 1744282800, "amount": 14000000, "amountUSD": 12000.0},
+    {"hash": "h6-petitencrypt-2022q1", "time": 1642240800, "amount": 1900000, "amountUSD": 800.0}
+   ]
+  },
+  {
+   "address": "1PetitEncryptEmptyAddrEEEEEEEEEEEE",
+   "balance": 0,
+   "balanceUSD": 0.0,
+   "blockchain": "bitcoin",
+   "family": "PetitEncrypt",
+   "createdAt": "2022-02-01T00:00:00.000Z",
+   "updatedAt": "2022-02-01T00:00:00.000Z",
+   "transactions": []
+  },
+  {
+   "address": "1UnlabeledReportedAddrFFFFFFFFFFFF",
+   "balance": 210000000,
+   "balanceUSD": 50000.0,
+   "blockchain": "bitcoin",
+   "family": "Unlabeled",
+   "createdAt": "2022-09-01T00:00:00.000Z",
+   "updatedAt": "2022-09-01T00:00:00.000Z",
+   "transactions": [
+    {"hash": "h7-unlabeled-2022q3", "time": 1660123800, "amount": 210000000, "amountUSD": 50000.0}
+   ]
+  }
+ ]
+}
