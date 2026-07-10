@@ -144,6 +144,21 @@ is fetched from FIRST's API exactly once and cached
 from the published `epss_report.json`, and a normal night costs 1–2 API
 requests. The one-time historical backfill is batch-capped
 (`--epss-backfill-batch`) so CI can never accidentally run it.
+### 11 · CVE Calendar — [calendar.html](https://devko.github.io/CyberMon/calendar.html) (live)
+
+*The CVE stream keeps vendor time.* Three charts on publication timing,
+from the same cvelistV5 corpus (all date judgments UTC):
+
+1. **Reservation aging (hero)** — per publication year, the share of
+   records whose CVE ID was minted that same year, one year earlier, or
+   two-plus years earlier: the ID's vintage is reservation paperwork,
+   and about one in five "new" CVEs arrives on an earlier-year ID.
+2. **The weekly beat** — the weekday distribution of publication, the
+   latest complete year against a decade before; the Tuesday spike
+   belongs to release calendars.
+3. **Patch Tuesday** — the share of each year's records published on the
+   twelve second Tuesdays, against the 3.3% those days would hold under
+   a calendar-blind uniform flow.
 
 ### Next
 

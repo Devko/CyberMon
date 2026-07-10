@@ -29,6 +29,8 @@ from typing import Iterator
 from . import (attack_metrics, breach_metrics, concentration_metrics,
                contracts, extortion_metrics, guards_metrics, history,
                contracts, epss_report_metrics, extortion_metrics, history,
+from . import (attack_metrics, breach_metrics, calendar_metrics,
+               concentration_metrics, contracts, extortion_metrics, history,
                hygiene_metrics, kev_metrics, market_metrics, metrics,
                quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -280,6 +282,10 @@ def run(args: argparse.Namespace) -> int:
         "extortion_ledger.json":
             extortion_metrics.build_extortion_ledger(
                 ransomwhere, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
+        "cve_calendar.json":
+            calendar_metrics.build_cve_calendar(
+                agg, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(

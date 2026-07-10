@@ -458,3 +458,6 @@ VALIDATORS.update(guards_contracts.VALIDATORS)
 from . import epss_report_contracts  # noqa: E402
 
 VALIDATORS.update(epss_report_contracts.VALIDATORS)
+from . import calendar_contracts  # noqa: E402
+
+VALIDATORS.update(calendar_contracts.VALIDATORS)
