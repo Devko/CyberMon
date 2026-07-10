@@ -181,16 +181,19 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
         "pending_backfill": 0}
     assert [(y["year"], y["graded"], y["pct_below_1pct"])
             for y in epss_report["grade_by_year"]] == [(2021, 1, 0.0),
-                                                       (2023, 1, 100.0)]
+                                                       (2022, 1, 100.0),
+                                                       (2023, 3, 33.3),
+                                                       (2024, 1, 100.0)]
     assert [(m["model"], m["n"])
             for m in epss_report["distribution"]["by_model"]] == \
-        [("v1", 1), ("v2", 1)]
-    assert epss_report["percentiles"]["bottom_half"] == {"n": 1,
-                                                         "pct": 50.0}
+        [("v1", 1), ("v2", 2), ("v3", 3)]
+    assert epss_report["percentiles"]["bottom_half"] == {"n": 2,
+                                                         "pct": 33.3}
     assert [e["cve"] for e in epss_report["entries"]] == \
-        ["CVE-2023-0003", "CVE-2023-0001", "CVE-2024-0002"]
+        ["CVE-2023-0003", "CVE-2022-9004", "CVE-2023-0001", "CVE-2023-9001",
+         "CVE-2023-9003", "CVE-2024-0002", "CVE-2024-9002"]
     assert meta["sources"]["epss_history"] == {
-        "fetched_at": epss_report["generated_at"], "graded": 2,
+        "fetched_at": epss_report["generated_at"], "graded": 6,
         "pending_backfill": 0}
 
     # CVE Calendar: the two old-ID fixture records land in the age buckets;
