@@ -126,6 +126,21 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      # LinkedIn-carousel PDFs (one per module page), rendered from the
+      # freshly committed data. Built here, after the data commit and right
+      # before the artifact upload, so the PDFs ship inside the Pages
+      # artifact without ever touching git history — binary PDFs regenerated
+      # every night would bloat the repo (site/carousels/ is gitignored).
+      - name: Install Playwright
+        run: pip install -r pipeline/requirements-dev.txt
+
+      # --with-deps also apt-installs the browser's system libraries.
+      - name: Install headless Chromium
+        run: playwright install --with-deps chromium
+
+      - name: Build carousel PDFs
+        run: python3 tools/make_carousels.py --out site/carousels
+
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:

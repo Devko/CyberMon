@@ -1,0 +1,251 @@
+/* ============================================================================
+   CyberMon — carousel.html-only styles (LinkedIn carousel print template).
+   Every slide is exactly 1080×1350 CSS px (LinkedIn document-post portrait);
+   @page + break-after make Playwright's pdf() emit one slide per PDF page.
+   No new colors — every value comes from the shared.css custom properties.
+
+   Chart slides render the site's own section markup at HALF logical size
+   inside .slide-scale and blow it up 2× with a CSS transform: ECharts keeps
+   its 10–12px mono labels, the transform doubles them, and the slide stays
+   readable on a phone without touching any chart renderer. Board (table)
+   sections skip the transform and get enlarged type directly instead —
+   scaled tables would overflow their half-width layout box.
+   ========================================================================== */
+
+@page { size: 1080px 1350px; margin: 0; }
+
+body.carousel {
+  /* flat ink on flat ground — the body gradients would band across pages */
+  background: var(--bg);
+}
+
+.slide {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 64px 64px 48px;
+  background: var(--bg);
+  break-after: page;
+}
+
+/* ------------------------------------------------------------- wordmark -- */
+
+.slide-wordmark {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------- cover slide -- */
+
+.slide-cover { text-align: center; align-items: center; }
+
+.slide-cover .slide-wordmark { font-size: 56px; }
+
+.cover-module {
+  font-family: var(--mono);
+  font-size: 24px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 26px 0 0;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+}
+
+.cover-mid { margin: auto 0; }
+
+.cover-headline {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 76px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  max-width: 20ch;
+  margin: 0 auto 42px;
+}
+
+.cover-thesis {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.3;
+  color: var(--muted);
+  max-width: 30ch;
+  margin: 0 auto;
+}
+
+.cover-edition {
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--muted);
+  margin: 0;
+  padding-top: 24px;
+  border-top: 3px double var(--rule-strong);
+  width: 100%;
+}
+
+/* ---------------------------------------------------------- chart slides -- */
+
+.slide-kicker {
+  font-family: var(--mono);
+  font-size: 21px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 18px;
+}
+
+.slide-headline {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  max-width: 26ch;
+  margin: 0;
+}
+
+/* footer strip */
+.slide-foot {
+  font-family: var(--mono);
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule-strong);
+}
+
+/* ---- 2×-scaled section body (ECharts sections) ---- */
+
+/* The box is the visual budget between headline and footer; the inner div
+   lays out at half width and is doubled. Its height is content-driven, so
+   js/carousel.js measures the overflow and shrinks the chart hosts to fit. */
+.slide-scalebox {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  margin: 24px 0 20px;
+}
+
+.slide-scale {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  transform: scale(2);
+  transform-origin: top left;
+}
+
+/* split panels (NVD decay) stack vertically, as on the site's own mobile
+   layout — side by side at half logical width, the status labels clip */
+.slide-scale .split { flex-direction: column; gap: 8px; }
+.slide-scale .split-col-narrow { flex: 1 1 auto; }
+
+/* one flat chart height inside slides; the fit pass in js/carousel.js
+   shrinks from here when a section carries stats or extras */
+.slide-scale .chart { height: 400px; }
+.slide-scale .chart-tall { height: 400px; }
+.slide-scale .chart-half { height: 320px; }
+.slide-scale .chart-kev { height: 120px; }
+
+/* interactive controls render their DEFAULT view; the controls themselves
+   are meaningless on paper */
+.slide .panel-controls { display: none; }
+
+/* hype hero: the sparkline strip is a selector, not a chart — the selected
+   term's three-source line chart is the slide */
+.slide .sparkline-strip,
+.slide .strip-note { display: none; }
+
+/* hero stats: the vw-clamped site sizes are tuned for a browser column,
+   not a doubled 1080px sheet */
+.slide-scale .hero-stat { padding: 12px 0 14px; }
+.slide-scale .hero-num { font-size: 40px; }
+.slide-scale .hero-when { font-size: 15px; }
+.slide-scale .hero-vs { font-size: 20px; }
+.slide-scale .hero-stat-label { font-size: 10px; margin-bottom: 6px; }
+.slide-scale .section-stat { margin-bottom: 12px; }
+
+/* stat cards (score vs. reality, risers, spread): two-up and compact */
+.slide-scale .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+.slide-scale .stat-card { padding: 10px 12px 8px; }
+.slide-scale .stat-big { font-size: 24px; margin-bottom: 6px; }
+.slide-scale .stat-lead { font-size: 12px; max-width: none; }
+.slide-scale .stat-note { font-size: 9px; margin-top: 5px; }
+
+/* ---- board (table) sections: full-size layout, enlarged type ---- */
+
+.slide-tablebox {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  margin: 24px 0 20px;
+}
+
+.slide-tablebox .section-stat { margin-bottom: 16px; }
+.slide-tablebox .table-context { font-size: 17px; margin-bottom: 14px; }
+.slide-tablebox .panel { padding: 20px 22px 16px; }
+
+.slide-tablebox .cna-table { min-width: 0; font-size: 19px; }
+.slide-tablebox .cna-table th { font-size: 14px; padding: 10px 16px 10px 0; }
+.slide-tablebox .cna-table td { padding: 13px 16px 13px 0; }
+.slide-tablebox .cna-short { font-size: 19px; }
+.slide-tablebox .cna-org { font-size: 13px; }
+.slide-tablebox .cellbar { width: 150px; height: 26px; }
+.slide-tablebox .cellbar-diverging { width: 150px; }
+.slide-tablebox .cellbar-val { font-size: 16px; }
+.slide-tablebox .market-table .term-source { font-size: 15px; }
+.slide-tablebox .panel-note { font-size: 16px; }
+.slide-tablebox .table-context.slide-table-more { margin: 12px 0 0; }
+
+/* sorting affordances are meaningless on paper */
+.slide-tablebox .cna-table th { cursor: default; }
+.slide-tablebox .cna-table th.is-sorted::after,
+.slide-tablebox .cna-table th.is-sorted[aria-sort="ascending"]::after { content: ""; }
+
+/* stat cards outside the scale region (risers board) */
+.slide-tablebox .stat-grid { grid-template-columns: 1fr 1fr; }
+
+/* -------------------------------------------------------- closing slide -- */
+
+.slide-closing { text-align: center; align-items: center; }
+
+.closing-mid { margin: auto 0; }
+
+.closing-url {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 58px;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin: 0 0 48px;
+}
+
+.closing-reuse {
+  font-family: var(--serif);
+  font-size: 27px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 44ch;
+  margin: 0 auto;
+}
+
+.closing-sources {
+  font-family: var(--mono);
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+  padding-top: 24px;
+  border-top: 3px double var(--rule-strong);
+  width: 100%;
+}

@@ -17,6 +17,10 @@ htmlcov/
 # Pipeline download cache
 .cache/
 
+# Deploy-time build products (built into the Pages artifact by
+# tools/make_carousels.py; never committed)
+site/carousels/
+
 # OS junk
 .DS_Store
 Thumbs.db
