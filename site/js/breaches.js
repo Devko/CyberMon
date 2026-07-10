@@ -50,6 +50,13 @@ function buildSection(cfg) {
   const noteTpl = ed.importNote ?? ed.catalogNote;
   if (noteTpl) panel.append(el("p", "panel-note", noteTpl));
 
+  if (ed.source) {
+    const src = el("p", "chart-source");
+    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
+    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
+    panel.append(src);
+  }
+
   const details = el("details", "method");
   const summary = el("summary", null, editorial.methodologyLabel);
   const methodBody = el("div", "method-body");

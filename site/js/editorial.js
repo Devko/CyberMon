@@ -162,6 +162,8 @@ export const editorial = {
   },
 
   methodologyLabel: "How this is computed",
+  chartSourcePrefix: "Data: ",
+  chartSourceLinkText: "all sources & licenses ↓",
   methodologySourcePrefix: "Source of truth: ",
   methodologySourceLinkText: "pipeline/metrics.py",
 
@@ -184,6 +186,7 @@ export const editorial = {
     hype: {
       num: "01",
       kicker: "Hype curves",
+      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR",
       headline: "Every term is graded against its own best month.",
       caption:
         "Media mentions (GDELT news coverage), practitioner chatter (Hacker News), and " +
@@ -214,6 +217,7 @@ export const editorial = {
     risers: {
       num: "02",
       kicker: "Risers & fallers",
+      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR",
       headline: "Same twelve months, opposite direction.",
       caption:
         "Year-over-year change in mention volume, term by term and source by source — the " +
@@ -244,6 +248,7 @@ export const editorial = {
     divergence: {
       num: "03",
       kicker: "Research vs. media divergence",
+      source: "GDELT 2.0 · arXiv cs.CR",
       headline: "Some terms are ahead of the papers. Others are ahead of the proof.",
       caption:
         "Each term placed by how close it currently sits to its own research peak (arXiv, " +
@@ -278,6 +283,7 @@ export const editorial = {
     inflation: {
       num: "01",
       kicker: "Severity inflation",
+      source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "Four of every ten CVEs ship as “High” or worse.",
       caption:
         "Median CVSS base score of newly published CVEs, year by year, split by scoring " +
@@ -311,6 +317,7 @@ export const editorial = {
     flood: {
       num: "02",
       kicker: "The 9.8 flood",
+      source: "cvelistV5 (MITRE)",
       headline: "“Critical” was an exception. Now it's a product line.",
       caption:
         "Published CVEs per year, bucketed by the base score embedded in the CVE record. " +
@@ -351,6 +358,7 @@ export const editorial = {
     reality: {
       num: "03",
       kicker: "Score vs. reality",
+      source: "cvelistV5 (MITRE) · EPSS (FIRST.org) · CISA KEV",
       headline: "Severity is not risk. The two barely correlate.",
       caption:
         "Every scored CVE with a current EPSS estimate, placed on a grid: CVSS severity on one " +
@@ -377,6 +385,7 @@ export const editorial = {
     decay: {
       num: "04",
       kicker: "NVD decay",
+      source: "NVD API 2.0 (NIST) · CyberMon's own nightly snapshots",
       headline: "The scorekeeper stopped keeping score.",
       caption:
         "NVD's job is to enrich CVEs — analyze, score, tag. The bars show every CVE by NVD's " +
@@ -405,6 +414,7 @@ export const editorial = {
     cna: {
       num: "05",
       kicker: "CNA rubber-stamp board",
+      source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "Who grades their own homework hardest?",
       caption:
         "CVE Numbering Authorities score the vulnerabilities they publish. These are their own " +
@@ -431,6 +441,7 @@ export const editorial = {
     volume: {
       num: "06",
       kicker: "Volume curve",
+      source: "cvelistV5 (MITRE)",
       headline: "More CVEs than anyone can read.",
       caption:
         "CVE records published per year, with rejections alongside. The curve explains the rest " +
@@ -457,6 +468,7 @@ export const editorial = {
     quality: {
       num: "07",
       kicker: "Advisory quality",
+      source: "cvelistV5 (MITRE)",
       headline: "A CVE record is still allowed to say almost nothing.",
       caption:
         "For each year's published CVE records, the share missing each of three " +
@@ -490,6 +502,7 @@ export const editorial = {
     cwe: {
       num: "08",
       kicker: "Bug-class inertia",
+      source: "cvelistV5 (MITRE)",
       headline: "The bug classes outlast the news cycle.",
       caption:
         "The eight most common weakness classes of the last ten complete years, each " +
@@ -519,6 +532,7 @@ export const editorial = {
     latency: {
       num: "01",
       kicker: "Listing latency",
+      source: "CISA KEV · cvelistV5 (MITRE)",
       headline: "By the time CISA confirms it, the exploit had a head start.",
       caption:
         "For every CVE the government lists as Known Exploited, the gap from the CVE's own " +
@@ -557,6 +571,7 @@ export const editorial = {
     buckets: {
       num: "02",
       kicker: "Latency distribution",
+      source: "CISA KEV · cvelistV5 (MITRE)",
       headline: "Nearly four in ten KEV listings land inside a week. One in seven lands three years late.",
       caption:
         "The same matched cohort as the trend above, folded into buckets: how many listings " +
@@ -578,6 +593,7 @@ export const editorial = {
     remediation: {
       num: "03",
       kicker: "Remediation deadlines",
+      source: "CISA KEV",
       headline: "The deadline shrank as the list grew.",
       caption:
         "How long federal agencies get to fix each KEV entry: the gap from the day CISA " +
@@ -603,6 +619,7 @@ export const editorial = {
     ransomware: {
       num: "04",
       kicker: "Ransomware share",
+      source: "CISA KEV",
       headline: "The exploited list has a ransomware column.",
       caption:
         "CISA marks every KEV entry with whether the vulnerability is known to have been " +
@@ -628,6 +645,7 @@ export const editorial = {
     concentration: {
       num: "01",
       kicker: "Volume concentration",
+      source: "cvelistV5 (MITRE)",
       headline: "More assignors than ever. The volume still belongs to a handful.",
       caption:
         "Three lines from one corpus: how many CVE Numbering Authorities published at least " +
@@ -658,6 +676,7 @@ export const editorial = {
     entrants: {
       num: "02",
       kicker: "New entrants",
+      source: "cvelistV5 (MITRE)",
       headline: "New CNAs keep arriving. Most of them don't move the needle.",
       caption:
         "Bars count CNAs publishing their first-ever CVE record that year; the line is the " +
@@ -685,6 +704,7 @@ export const editorial = {
     rejection: {
       num: "03",
       kicker: "Rejection board",
+      source: "cvelistV5 (MITRE)",
       headline: "Who rejects more than they publish?",
       caption:
         "Over the last {window_years} years, each CNA's published records against its " +
@@ -713,6 +733,7 @@ export const editorial = {
     disclosure: {
       num: "01",
       kicker: "Disclosure lag",
+      source: "Have I Been Pwned breach catalog",
       headline: "The breach is old news before it makes the news.",
       caption:
         "For every breach in the public catalog, the gap between the date the breach " +
@@ -755,6 +776,7 @@ export const editorial = {
     exposure: {
       num: "02",
       kicker: "Volume",
+      source: "Have I Been Pwned breach catalog",
       headline: "The breach business has no slow years.",
       caption:
         "Breaches catalogued per year, and the accounts exposed inside them — bars count " +
@@ -799,6 +821,7 @@ export const editorial = {
     leaks: {
       num: "03",
       kicker: "What leaks",
+      source: "Have I Been Pwned breach catalog",
       headline: "Email is in nearly every bag. The rest of the take varies.",
       caption:
         "The six data classes that appear most often across the whole catalog, each " +
@@ -824,6 +847,7 @@ export const editorial = {
     revenue: {
       num: "01",
       kicker: "Confirmed revenue",
+      source: "Ransomwhere (CC0)",
       headline: "Over a billion dollars, settled in public view.",
       caption:
         "Ransom payments verified on the Bitcoin blockchain, summed by the quarter the " +
@@ -857,6 +881,7 @@ export const editorial = {
     payments: {
       num: "02",
       kicker: "Payments",
+      source: "Ransomwhere (CC0)",
       headline: "Fewer payments, bigger ransoms.",
       caption:
         "Bars count verified payments per year; the line follows the median payment in " +
@@ -886,6 +911,7 @@ export const editorial = {
     families: {
       num: "03",
       kicker: "Family concentration",
+      source: "Ransomwhere (CC0)",
       headline: "The biggest bucket on the ledger has no name on it.",
       caption:
         "The families with the most confirmed revenue, ranked, with payment counts and " +
@@ -926,6 +952,7 @@ export const editorial = {
     map: {
       num: "01",
       kicker: "The growing map",
+      source: "MITRE ATT&CK® STIX bundles",
       headline: "Detections are graded against a moving target.",
       caption:
         "Active techniques and sub-techniques on the MITRE ATT&CK enterprise matrix, one " +
@@ -957,6 +984,7 @@ export const editorial = {
     churn: {
       num: "02",
       kicker: "Churn per release",
+      source: "MITRE ATT&CK® STIX bundles",
       headline: "Each release redraws the edges of the map.",
       caption:
         "What every ATT&CK release did to the technique set — how many techniques and " +
@@ -985,6 +1013,7 @@ export const editorial = {
     catalog: {
       num: "03",
       kicker: "The catalog behind it",
+      source: "MITRE ATT&CK® STIX bundles",
       headline: "Behind the matrix, the roster keeps filling in.",
       caption:
         "Active adversary groups (intrusion sets) and software — malware and tools, " +
@@ -1010,6 +1039,7 @@ export const editorial = {
     validation: {
       num: "01",
       kicker: "The world line",
+      source: "APNIC Labs DNSSEC measurement",
       headline: "Most of the internet still doesn't check its answers.",
       caption:
         "DNSSEC has been a finished standard since 2005: it lets a resolver verify that " +
@@ -1046,6 +1076,7 @@ export const editorial = {
     economies: {
       num: "02",
       kicker: "The giants compared",
+      source: "APNIC Labs DNSSEC measurement",
       headline: "Where you live decides whether your DNS gets checked.",
       caption:
         "The same measured rate for a fixed set of ten: the economies with the most " +
@@ -1078,6 +1109,7 @@ export const editorial = {
     spread: {
       num: "03",
       kicker: "The spread",
+      source: "APNIC Labs DNSSEC measurement",
       headline: "Count economies, not users, and the picture flips.",
       caption:
         "Every economy APNIC measures with a meaningful sample, bucketed by its current " +

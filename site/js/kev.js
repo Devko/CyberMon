@@ -53,6 +53,13 @@ function buildSection(cfg) {
   // by the renderer once the payload is here (decay.js panel-note pattern).
   if (ed.backfillNote) panel.append(el("p", "panel-note", ed.backfillNote));
 
+  if (ed.source) {
+    const src = el("p", "chart-source");
+    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
+    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
+    panel.append(src);
+  }
+
   const details = el("details", "method");
   const summary = el("summary", null, editorial.methodologyLabel);
   const methodBody = el("div", "method-body");
