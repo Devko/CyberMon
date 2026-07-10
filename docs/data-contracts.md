@@ -14,8 +14,9 @@ General rules:
   writing (see `pipeline/contracts.py` — single source of truth as JSON
   Schema; site does not validate).
 
-Pace projections (optional `"projection"` key): exactly three files —
-`volume_curve.json`, `nine_eight_flood.json`, `cna_concentration.json` —
+Pace projections (optional `"projection"` key): exactly four files —
+`volume_curve.json`, `nine_eight_flood.json`, `cna_concentration.json`,
+`breach_ledger.json` —
 may carry a full-year pace projection for the partial current year:
 `projected = round(count / elapsed)`, where `elapsed` = day-of-year ÷
 days-in-year (UTC, leap-year aware) at `generated_at`. `elapsed` ships in
@@ -43,10 +44,15 @@ visually distinct (dashed/hollow) and labeled.
     "cvelist": {"release": "cve_2026-07-08_at_end_of_day", "cve_count": 251342},
     "epss": {"model_version": "v4", "score_date": "2026-07-08", "row_count": 248101},
     "kev": {"catalog_version": "2026.07.08", "count": 1402},
-    "nvd": {"fetched_at": "2026-07-09T01:50:00Z"}
+    "nvd": {"fetched_at": "2026-07-09T01:50:00Z"},
+    "hibp": {"fetched_at": "2026-07-09T02:05:00Z", "breach_count": 1015}
   }
 }
 ```
+
+`sources.hibp` is optional in the validator so older meta files stay
+valid, but the pipeline always emits it — the HIBP stage has no skip flag
+and no carry-forward: if the fetch fails, the run fails.
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -445,3 +451,101 @@ appearances are events — a flow — so a pace applies, on the strong
 assumption that newcomers arrive uniformly through the year. `cna_count`
 is a roster headcount and is never projected; nor are the shares or the
 HHI. Validator: `pipeline/tier1_contracts.py`.
+
+## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "catalog": {
+    "total": 1015, "cohort": 982,
+    "excluded": {"fabricated": 3, "spam_list": 16, "malware": 8,
+                 "stealer_log": 6}
+  },
+  "import_era": {"added_before": "2014-01-01", "n": 7, "median_days": 511.0},
+  "lag_by_year": [
+    {"year": 2014, "n": 27, "median_days": 5.0, "p25_days": 1.0,
+     "p75_days": 222.0, "pct_negative": 0.0, "pct_over_365d": 25.9}
+  ],
+  "volume_by_year": [
+    {"year": 2013, "breaches": 7, "records": 155137175}
+  ],
+  "class_shares": {
+    "classes": ["Email addresses", "Passwords", "Names", "Usernames",
+                "IP addresses", "Phone numbers"],
+    "years": [
+      {"year": 2016, "n": 109,
+       "shares": {"Email addresses": 100.0, "Passwords": 74.3,
+                  "Names": 45.0, "Usernames": 39.4,
+                  "IP addresses": 33.9, "Phone numbers": 22.9}}
+    ]
+  },
+  "headline": {"trend_n": 975, "median_days": 144.0, "pct_over_365d": 35.5,
+               "latest_year": 2025, "median_days_latest": 194.0},
+  "projection": {"year": 2026, "breaches": 149, "elapsed": 0.523}
+}
+```
+
+Source: the Have I Been Pwned public breaches feed (one JSON GET, no key;
+attribution carried in the site footer). Cohort rule, applied everywhere:
+`IsFabricated` (never happened) and `IsSpamList` (address collections, no
+breached organization) are excluded; `IsMalware` and `IsStealerLog` are
+excluded for the same reason as spam lists — real credential theft, but
+harvested device-by-device with no single breached organization, and a
+nominal `BreachDate` that describes the compilation of the corpus, which
+would poison the lag stats. Each excluded entry counts under its FIRST
+matching reason, in that order, so `cohort + sum(excluded) == total`
+always holds — `catalog` is the audit trail. `excluded` carries exactly
+those four keys.
+
+All per-year series group by the `AddedDate` calendar year (years ≥ 2013,
+sorted, unique). Entries with an unparseable `AddedDate` join no year but
+still count in `catalog`; lag stats additionally require a parseable
+`BreachDate`.
+
+`lag_by_year` (hero): `lag = AddedDate − BreachDate` in days, per catalog
+year, median + p25/p75. Negative lags (a breach catalogued before its
+self-reported, usually month-rounded, breach date) are KEPT, never
+floored — same rule as `kev_latency`, they flag source date quality.
+Entries with `AddedDate` before `import_era.added_before` (fixed at
+`2014-01-01`) are the catalog's opening import — HIBP launched 2013-12-04
+by loading breaches that were already public (empirically: six of its
+seven December 2013 entries predate the service itself, median nominal
+lag 511 days, vs a 5-day median for 2014 additions) — and are excluded
+from `lag_by_year` and `headline`, reported once as `import_era`
+(`median_days` null iff `n` = 0). Pre-2014 *breaches* surfacing later
+stay in the trend: surfacing late is the measured phenomenon; only the
+opening import is an artifact of the catalog's birthday. Years with fewer
+than `min_n` cohort breaches are omitted (production 10; fixture mode 1).
+
+`volume_by_year`: cohort breaches catalogued per year (`breaches` ≥ 1 —
+a year exists only because something was catalogued) and `records` = the
+year's `PwnCount` sum (compromised accounts per breach; a person appears
+once per breach they are in, so the sum counts exposures, not people).
+No `min_n` filter and no import-era exclusion — counts are counts.
+
+`class_shares`: `classes` = up to 6 data classes ranked by the number of
+cohort breaches listing them, all-time, ties broken alphabetically —
+derived from the data nightly, never hardcoded, so the list may reshape
+as the catalog grows. `years[].shares` carries exactly those classes;
+each value is the share of that year's cohort breaches listing the class
+(counted at most once per breach). Multi-label: shares are independent
+per class — there is deliberately no "other" key and no 100% sum. Years
+under `min_n` are omitted.
+
+`headline`: `trend_n`/`median_days`/`pct_over_365d` pool every trend-era
+lag (import era excluded, all years, unfiltered by `min_n`);
+`latest_year`/`median_days_latest` echo the last complete plotted year,
+falling back to the partial current year only when nothing else survived
+(`kev_latency` rule). An empty trend is `trend_n` 0, zeros elsewhere and
+`latest_year` 0 — consumers must treat `latest_year` 0 as "no data",
+never as a year.
+
+`projection` (optional; see "Pace projections" above): the current year's
+catalogued-breach count paced to a full year (`breaches` ≥ 1). Breaches
+catalogued are a flow, so a pace applies; `records` is deliberately never
+projected — one mega-dump can outweigh the rest of the year, so a records
+pace would dress one upload up as a forecast. Validator:
+`pipeline/breach_contracts.py` (registered into `pipeline/contracts.py`'s
+dispatch).

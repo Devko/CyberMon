@@ -169,6 +169,14 @@ def _validate_meta(obj: Any) -> None:
                         "meta.sources.market"),
                    "meta.sources.market.backfill_remaining")
 
+    # Optional so older meta files stay valid; the pipeline always emits it
+    # (the HIBP stage has no skip flag — it fails loud instead).
+    if "hibp" in src:
+        _check_str(_get(src["hibp"], "fetched_at", "meta.sources.hibp"),
+                   "meta.sources.hibp.fetched_at", ISO_UTC_RE)
+        _check_int(_get(src["hibp"], "breach_count", "meta.sources.hibp"),
+                   "meta.sources.hibp.breach_count")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -388,3 +396,7 @@ VALIDATORS.update(tier1_contracts.VALIDATORS)
 from . import tier2_contracts  # noqa: E402
 
 VALIDATORS.update(tier2_contracts.VALIDATORS)
+
+from . import breach_contracts  # noqa: E402
+
+VALIDATORS.update(breach_contracts.VALIDATORS)

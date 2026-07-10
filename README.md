@@ -69,6 +69,17 @@ signal they are.
 scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
 concentration index, newcomer counts, and a rejection-rate leaderboard.
 
+### 05 · Breach Ledger — [breaches.html](https://devko.github.io/CyberMon/breaches.html) (live)
+
+*Dwell time is a marketing number. Breach disclosure is a public record.*
+Three charts over the Have I Been Pwned breach catalog: days from breach
+to public cataloguing (median/IQR per catalog year, with the December
+2013 launch import quarantined from the trend), breaches and accounts
+exposed per year (with a pace projection for the partial year), and the
+share of each year's breaches spilling the top data classes. Fabricated
+entries, spam lists, malware corpora and stealer logs are excluded, and
+the exclusion arithmetic ships in the data file.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
@@ -87,7 +98,8 @@ reads a few-KB JSON file; there are no runtime queries.
       │              ├─ cvelistV5 release zip │  commit back to main
       │              ├─ EPSS daily CSV        │  (cybermon-bot, [skip ci])
       │              ├─ CISA KEV JSON         ▼
-      │              └─ NVD API (status)   site/  ──▶ GitHub Pages
+      │              ├─ HIBP breaches JSON site/  ──▶ GitHub Pages
+      │              └─ NVD API (status)
       │                                              https://devko.github.io/CyberMon/
       └─ on failure: workflow fails, nothing is deployed
 ```
@@ -103,6 +115,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
+| [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and

@@ -111,6 +111,8 @@ function renderMeta(meta) {
       kev_count: (s.kev?.count ?? 0).toLocaleString("en-US"),
       nvd_fetched: (s.nvd?.fetched_at ?? "?") + (s.nvd?.stale ? " (carried forward)" : ""),
       market_fetched: (s.market?.fetched_at ?? "?") + (s.market?.stale ? " (carried forward)" : ""),
+      hibp_fetched: s.hibp?.fetched_at ?? "?",
+      hibp_count: (s.hibp?.breach_count ?? 0).toLocaleString("en-US"),
     }))
   );
 }

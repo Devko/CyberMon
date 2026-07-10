@@ -27,6 +27,7 @@ export const editorial = {
     { id: "market", href: "market.html", label: "Security Market" },
     { id: "kev", href: "kev.html", label: "KEV Latency" },
     { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
+    { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -89,6 +90,18 @@ export const editorial = {
           "CNA count, top-5/10 volume share, a formal concentration index, and who rejects " +
           "more of their own reservations than they publish — rebuilt nightly from the same " +
           "corpus as CVE Ecosystem.",
+        live: true,
+      },
+      {
+        id: "breaches",
+        href: "breaches.html",
+        num: "05",
+        label: "Breach Ledger",
+        headline: "Dwell time is a marketing number. Breach disclosure is a public record.",
+        blurb:
+          "Every breach in Have I Been Pwned, read as a ledger: how long breaches take to " +
+          "reach the public record, how many accounts spill per year, and which data " +
+          "classes leak most — with the catalog's launch import kept out of the trend.",
         live: true,
       },
     ],
@@ -656,6 +669,116 @@ export const editorial = {
         "then withdrawn, not what was quietly never used. Default sort: rejection rate, " +
         "descending. Click any column header to re-sort.",
     },
+    // ------------------------------------------------ breaches.html · 1 · hero
+    disclosure: {
+      num: "01",
+      kicker: "Disclosure lag",
+      headline: "The breach is old news before it makes the news.",
+      caption:
+        "For every breach in the public catalog, the gap between the date the breach " +
+        "happened and the day Have I Been Pwned catalogued it — median and interquartile " +
+        "range, grouped by the year of cataloguing. The launch-month import stays in the " +
+        "callout below, out of the trend. What the live-era record shows: the typical gap " +
+        "is measured in months, and roughly a third of entries take more than a year to " +
+        "surface. Vendors sell dwell-time figures measured on their own customers; this " +
+        "chart is what the open record shows.",
+      statLabel: "Median days from breach to public catalog",
+      statWhole: "since {trend_start}",
+      statLatest: "{latest_year}",
+      importNote:
+        "{n} breaches entered the catalog in its launch month — December 2013, before " +
+        "{added_before} — with a median nominal lag of {median_days} days. That figure " +
+        "measures the opening import of already-public breaches, not disclosure speed, " +
+        "and it stays out of the trend above.",
+      methodology:
+        "Lag is the breach's AddedDate minus its BreachDate, in days, for every cohort " +
+        "breach in the Have I Been Pwned catalog (the volume chart's methodology has the " +
+        "cohort arithmetic). BreachDate is self-reported and usually rounded to the first " +
+        "of a month, so individual lags carry day-level noise; medians absorb it. The line " +
+        "is the median lag of breaches catalogued each year; the shaded band spans the " +
+        "25th–75th percentile. The trend starts in 2014, and the cutoff comes from the " +
+        "data: HIBP launched on 2013-12-04 by importing breaches that were already " +
+        "public — six of its seven December 2013 entries predate the service itself, with " +
+        "a median nominal lag of 511 days — while from the first full calendar year the " +
+        "catalog ran live (the 2014 median collapses to 5 days). Old breaches keep " +
+        "entering the catalog in every later year, and those stay in the trend on " +
+        "purpose: a breach surfacing years late is exactly the phenomenon this chart " +
+        "measures, and only the opening import is an artifact of the catalog's own " +
+        "birthday. A lag can be negative — a breach catalogued before its stated breach " +
+        "date — and is kept as negative rather than floored at zero (the KEV latency " +
+        "chart applies the same rule): it flags date quality in the source record, and " +
+        "flooring it would quietly hide that. A year plots only with at least 10 cohort " +
+        "breaches. The current year (marked *) is partial and refills nightly.",
+    },
+
+    // ------------------------------------------------ breaches.html · 2
+    exposure: {
+      num: "02",
+      kicker: "Volume",
+      headline: "The breach business has no slow years.",
+      caption:
+        "Breaches catalogued per year, and the accounts exposed inside them — bars count " +
+        "incidents, the line counts accounts, on a log axis because a single mega-dump " +
+        "can outweigh a whole ordinary year. Read the line's floor: even the quietest " +
+        "year of the live era spilled tens of millions of accounts. And read the whole " +
+        "chart as a floor on reality — the catalog holds what surfaced publicly and got " +
+        "loaded, nothing more. The current year is partial and refills nightly.",
+      catalogNote:
+        "Cohort: {cohort} of {total} catalogued breaches. Excluded: {fabricated} " +
+        "fabricated, {spam_list} spam lists, {malware} malware corpora, {stealer_log} " +
+        "stealer-log batches — real data in the last two cases, but a breached " +
+        "organization is the unit this ledger counts.",
+      legendBreaches: "Breaches catalogued",
+      legendRecords: "Accounts exposed",
+      methodology:
+        "Counts come from the full Have I Been Pwned breach catalog, grouped by the " +
+        "calendar year of AddedDate. The cohort excludes, in precedence order: fabricated " +
+        "entries (IsFabricated — the incident never happened), spam lists (IsSpamList — " +
+        "address collections with no breached organization), malware corpora (IsMalware) " +
+        "and stealer logs (IsStealerLog). The last two are real credential theft, but " +
+        "harvested device-by-device from malware victims: there is no single breached " +
+        "organization, and their nominal breach date describes the compilation of the " +
+        "corpus rather than an incident, which would poison the lag chart above. Each " +
+        "excluded entry counts under its first matching reason, so the exclusions plus " +
+        "the cohort always sum to the catalog total — the note under the chart is the " +
+        "audit trail. Accounts per year is the sum of PwnCount, HIBP's count of " +
+        "compromised accounts per breach; the same person appears once per breach " +
+        "they're in, so the sum counts exposures rather than people. The import-era " +
+        "additions of December 2013 chart here like any other year — a catalogued breach " +
+        "is a catalogued breach; only the lag chart quarantines the import. In the bars, " +
+        "a dashed hollow extension paces the partial current year's breach count to " +
+        "twelve months: the count so far divided by the fraction of the UTC calendar " +
+        "year elapsed at generation time, shown only once 12.5% of the year has elapsed " +
+        "(roughly mid-February), under the strong assumption that cataloguing runs " +
+        "uniformly through the year. The accounts line is deliberately never projected: " +
+        "one mega-dump can carry more accounts than the rest of the year combined, so a " +
+        "records pace would dress one upload up as a forecast.",
+    },
+
+    // ------------------------------------------------ breaches.html · 3
+    leaks: {
+      num: "03",
+      kicker: "What leaks",
+      headline: "Email is in nearly every bag. The rest of the take varies.",
+      caption:
+        "The six data classes that appear most often across the whole catalog, each " +
+        "tracked as the share of that year's breaches containing it. A breach lists " +
+        "every class it spilled, so the lines are independent — they will never sum to " +
+        "anything. Email addresses are the constant; every other class, passwords " +
+        "included, swings by tens of points from year to year.",
+      methodology:
+        "The class list is derived from the data every night: all data classes across " +
+        "the cohort are ranked by the number of breaches listing them, and the top six " +
+        "chart (the catalog distinguishes well over a hundred classes; the tail is " +
+        "sparse). Each line is the share of that year's cohort breaches — grouped by " +
+        "AddedDate year, import era included — whose DataClasses field lists that class, " +
+        "counted at most once per breach. Because a breach can list many classes, shares " +
+        "are per-class and independent: there is no “other” bucket and no 100% stack. " +
+        "The ranking can shift as the catalog grows, and a rank change reshapes which " +
+        "lines chart — intended, because what leaks most is itself part of the data. A " +
+        "year plots only with at least 10 cohort breaches. The current year (marked *) " +
+        "is partial and refills nightly.",
+    },
   },
 
   footer: {
@@ -663,12 +786,13 @@ export const editorial = {
     sourcesTemplate:
       "Sources — cvelistV5 release {cvelist_release} ({cve_count} CVEs) · " +
       "EPSS {epss_version} scores of {epss_date} · CISA KEV {kev_version} ({kev_count} entries) · " +
-      "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched}",
+      "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched} · " +
+      "HIBP breach catalog fetched {hibp_fetched} ({hibp_count} breaches)",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, or arXiv. Charts aggregate " +
-      "public data; no individual CVE is news here.",
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, or Have I Been Pwned. " +
+      "Charts aggregate public data; no individual CVE is news here.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -677,7 +801,8 @@ export const editorial = {
     dataNote:
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
-      "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability).",
+      "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
+      "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
   },
 };

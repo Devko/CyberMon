@@ -26,11 +26,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (concentration_metrics, contracts, history, kev_metrics,
-               market_metrics, metrics, quality_metrics)
+from . import (breach_metrics, concentration_metrics, contracts, history,
+               kev_metrics, market_metrics, metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
+from .fetch_hibp import HibpData, fetch_hibp, load_hibp_file
 from .fetch_kev import KevData, fetch_kev, load_kev_file
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
@@ -178,6 +179,7 @@ def run(args: argparse.Namespace) -> int:
     if args.offline_fixtures:
         epss = load_epss_file(FIXTURES_DIR / "epss_scores.csv")
         kev = load_kev_file(FIXTURES_DIR / "kev.json")
+        hibp = load_hibp_file(FIXTURES_DIR / "hibp_breaches.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -186,6 +188,9 @@ def run(args: argparse.Namespace) -> int:
         print("fetching CISA KEV catalog ...")
         kev = fetch_kev()
         print(f"  KEV {kev.catalog_version}: {kev.count} entries")
+        print("fetching HIBP breach catalog ...")
+        hibp = fetch_hibp()
+        print(f"  HIBP: {hibp.breach_count} breaches")
     nvd_statuses = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
@@ -242,6 +247,10 @@ def run(args: argparse.Namespace) -> int:
             kev_metrics.build_kev_ransomware(
                 kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
+        "breach_ledger.json":
+            breach_metrics.build_breach_ledger(
+                hibp.breaches, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)
@@ -262,6 +271,8 @@ def run(args: argparse.Namespace) -> int:
         nvd_source=nvd_source)
     if market_source is not None:
         outputs["meta.json"]["sources"]["market"] = market_source
+    outputs["meta.json"]["sources"]["hibp"] = {
+        "fetched_at": generated_at, "breach_count": hibp.breach_count}
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
