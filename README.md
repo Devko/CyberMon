@@ -113,6 +113,53 @@ one-economy-one-vote distribution across every measured economy. APNIC
 publishes its full daily history, so this stage refetches statelessly
 every night — no accumulated state, no committed history file.
 
+### 09 · Security Products — [guards.html](https://devko.github.io/CyberMon/guards.html) (live)
+
+*The products guarding the network keep landing on the exploited list.*
+Three views over the CISA KEV catalog, with every entry classified by a
+curated, versioned security-product table
+([pipeline/security_products.py](pipeline/security_products.py) — the
+decision rule and every judgment call are documented in the module, and
+the emitted data carries the classifier version): the share of each
+year's new listings that are security products (seeding era included —
+the classification rides on the entry itself), a vendor recidivism
+board with first/last listing dates and the median gap between
+consecutive listings, and the ransomware-flag split between exploited
+security products and the rest of the catalog. No new upstream source:
+everything derives from the KEV feed the pipeline already fetches.
+### 10 · EPSS Report Card — [epss.html](https://devko.github.io/CyberMon/epss.html) (live)
+
+*The industry's exploit forecast is never graded. CyberMon grades it.*
+Three charts grading EPSS — the site's own yardstick for CVSS — against
+the outcome it exists to predict: for every CVE that CISA later confirmed
+exploited (KEV), the EPSS score published **the day before** the listing.
+Grade bands (under 1% / 1–10% / 10%+) per catalog year, the day-before
+score distribution split by EPSS model version (v1–v5 are different
+models and are never pooled silently), and the percentile view — the one
+scale comparable across model eras. Entries listed before their CVE even
+published can have no prior score and are counted separately, never as
+misses. Historical scores are immutable, so each (CVE, listing-date) pair
+is fetched from FIRST's API exactly once and cached
+(`.cache/epss_report_state.json`); a lost cache reconstructs losslessly
+from the published `epss_report.json`, and a normal night costs 1–2 API
+requests. The one-time historical backfill is batch-capped
+(`--epss-backfill-batch`) so CI can never accidentally run it.
+### 11 · CVE Calendar — [calendar.html](https://devko.github.io/CyberMon/calendar.html) (live)
+
+*The CVE stream keeps vendor time.* Three charts on publication timing,
+from the same cvelistV5 corpus (all date judgments UTC):
+
+1. **Reservation aging (hero)** — per publication year, the share of
+   records whose CVE ID was minted that same year, one year earlier, or
+   two-plus years earlier: the ID's vintage is reservation paperwork,
+   and about one in five "new" CVEs arrives on an earlier-year ID.
+2. **The weekly beat** — the weekday distribution of publication, the
+   latest complete year against a decade before; the Tuesday spike
+   belongs to release calendars.
+3. **Patch Tuesday** — the share of each year's records published on the
+   twelve second Tuesdays, against the 3.3% those days would hold under
+   a calendar-blind uniform flow.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
@@ -145,7 +192,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | Source | What we use | License / terms |
 |---|---|---|
 | [cvelistV5](https://github.com/CVEProject/cvelistv5) (CVE Program) | Authoritative CVE corpus incl. CNA-assigned CVSS scores | [CVE terms of use](https://www.cve.org/Legal/TermsOfUse); CVE is a registered trademark of The MITRE Corporation |
-| [EPSS](https://www.first.org/epss/) (FIRST) | Daily exploitation-probability scores | Free with attribution per [EPSS usage guidance](https://www.first.org/epss/user-guide) |
+| [EPSS](https://www.first.org/epss/) (FIRST) | Daily exploitation-probability scores (current CSV feed), plus historical day-before scores fetched per-date from the [FIRST API](https://api.first.org/) (`/data/v1/epss?cve=…&date=…`) for the EPSS Report Card — each (CVE, date) looked up once, ever | Free with attribution per [EPSS usage guidance](https://www.first.org/epss/user-guide) |
 | [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Known Exploited Vulnerabilities catalog | US Government work; [CC0-style license](https://www.cisa.gov/sites/default/files/licenses/kev/license.txt) |
 | [NVD API 2.0](https://nvd.nist.gov/developers/vulnerabilities) (NIST) | Enrichment status (`vulnStatus`) only | Public domain (US Government); [NVD terms](https://nvd.nist.gov/general/faq) request attribution and prohibit implying endorsement |
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |

@@ -11,8 +11,8 @@ KEV_URL = ("https://www.cisa.gov/sites/default/files/feeds/"
 
 @dataclass
 class KevEntry:
-    """One KEV catalog entry: the CVE id plus the catalog's own dates and
-    ransomware flag."""
+    """One KEV catalog entry: the CVE id plus the catalog's own dates,
+    ransomware flag, and vendor/product labels."""
 
     cve_id: str
     date_added: str
@@ -20,6 +20,10 @@ class KevEntry:
     # knownRansomwareCampaignUse ("Known"/"Unknown"); None when the feed
     # omits the field — treated as "Unknown" downstream, never as "Known".
     ransomware_use: str | None = None
+    # vendorProject / product as the catalog spells them (may carry stray
+    # whitespace — security_products.normalize_vendor handles grouping).
+    vendor_project: str = ""
+    product: str = ""
 
 
 @dataclass
@@ -45,7 +49,12 @@ def parse_kev(obj: dict) -> KevData:
                         ransomware_use=(v["knownRansomwareCampaignUse"]
                                         if isinstance(
                                             v.get("knownRansomwareCampaignUse"),
-                                            str) else None))
+                                            str) else None),
+                        vendor_project=(v["vendorProject"]
+                                        if isinstance(v.get("vendorProject"),
+                                                      str) else ""),
+                        product=(v["product"]
+                                 if isinstance(v.get("product"), str) else ""))
                for v in vulns]
     count = obj.get("count")
     if not isinstance(count, int) or isinstance(count, bool):

@@ -31,6 +31,9 @@ export const editorial = {
     { id: "extortion", href: "extortion.html", label: "Extortion" },
     { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
     { id: "hygiene", href: "hygiene.html", label: "Hygiene" },
+    { id: "guards", href: "guards.html", label: "Security Products" },
+    { id: "epss", href: "epss.html", label: "EPSS Report Card" },
+    { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -142,6 +145,45 @@ export const editorial = {
           "DNSSEC validation as measured by APNIC Labs — the world adoption line since " +
           "2013, the ten biggest online populations compared, and how many economies " +
           "actually check their DNS answers. Rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "guards",
+        href: "guards.html",
+        num: "09",
+        label: "Security Products",
+        headline: "The products guarding the network keep landing on the exploited list.",
+        blurb:
+          "Every CISA KEV entry classified with a curated, versioned list of security " +
+          "vendors and products: the guard share of the catalog year by year, the vendors " +
+          "that keep coming back, and how hard the ransomware flag leans on exploited " +
+          "security products. Rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "epss",
+        href: "epss.html",
+        num: "10",
+        label: "EPSS Report Card",
+        headline: "The industry's exploit forecast is never graded. CyberMon grades it.",
+        blurb:
+          "For every CVE that CISA later confirmed exploited, the EPSS score published " +
+          "the day before the KEV listing — the forecast's last chance to sound the " +
+          "alarm. Grade bands per catalog year, the day-before distribution split by " +
+          "model version, and where the model ranked the confirmed-exploited cohort.",
+        live: true,
+      },
+      {
+        id: "calendar",
+        href: "calendar.html",
+        num: "11",
+        label: "CVE Calendar",
+        headline: "The CVE stream keeps vendor time.",
+        blurb:
+          "How old a CVE's ID already is the day it publishes, which weekday the " +
+          "stream actually spikes, and how much of each year lands on the twelve " +
+          "patch Tuesdays — publication timing, read straight off the corpus every " +
+          "night.",
         live: true,
       },
     ],
@@ -1142,6 +1184,338 @@ export const editorial = {
         "from ad-delivered samples, and thinly sampled economies are exactly the ones " +
         "the floor exists to keep out.",
     },
+    // --------------------------------------------- guards.html · 1 · hero
+    guards: {
+      num: "01",
+      kicker: "The guard share",
+      source: "CISA KEV",
+      headline: "The guards keep showing up on the exploited list.",
+      caption:
+        "Every entry in CISA's Known Exploited Vulnerabilities catalog, classified by " +
+        "what the product is for. Bars show the share of each year's new listings that " +
+        "are security products — VPN appliances, firewalls, endpoint protection, secure " +
+        "gateways: the things bought to keep attackers out. About one in nine entries " +
+        "in the whole catalog is a product sold to enforce security. The 2021–22 " +
+        "seeding years chart like any other year: the classification rides on the entry " +
+        "itself, so a back-catalog import answers the question as well as a fresh " +
+        "listing does.",
+      statLabel: "Security products' share of the whole exploited catalog",
+      statNote: "{security} of {total} KEV entries · classifier v{version}, {rules} rules — the list is data, reviewable in the repo",
+      methodology:
+        "“Security product” here means: a product whose primary function is security " +
+        "enforcement or secure access — firewalls and UTMs, VPN and secure-access " +
+        "appliances, endpoint protection, email security gateways, identity and " +
+        "privileged-access management, mobile device management, security operations " +
+        "tooling, and dedicated secure file-transfer appliances from security vendors. " +
+        "That line is a judgment, and drawing it is the methodological risk of this " +
+        "whole page — so it is drawn once, in writing, as a curated and versioned " +
+        "table (pipeline/security_products.py), never by string-matching product names " +
+        "for the word “secure”. Mixed vendors get explicit product rules: Cisco counts " +
+        "only its security estate (ASA, Firepower/FTD, AnyConnect, ISE — never IOS or " +
+        "routers), Microsoft only Defender and Forefront TMG (never Exchange), Zyxel " +
+        "only its firewalls, Juniper only ScreenOS. The harder calls are documented in " +
+        "the module and applied consistently: MOVEit is file transfer, not security; " +
+        "ADCs count only where the exploited deployment is a secure-access gateway (F5 " +
+        "BIG-IP, Citrix NetScaler); desktop management, RMM and remote-support tools " +
+        "are IT operations; mail servers are not counted just because email security " +
+        "gateways are; backup is resilience; Zoho ManageEngine stays unclassified " +
+        "because the catalog's product labels are too coarse to split honestly. Every " +
+        "published number carries the classifier version that produced it, and the " +
+        "table is reviewable data in this repo — if a call looks wrong, open an issue: " +
+        "a one-line change reclassifies the whole history on the next nightly run. " +
+        "Years with fewer than 10 entries never plot. The current year (marked *) is " +
+        "partial and refills nightly.",
+    },
+
+    // --------------------------------------------- guards.html · 2
+    recidivism: {
+      num: "02",
+      kicker: "Recidivism board",
+      source: "CISA KEV",
+      headline: "The same names keep coming back.",
+      caption:
+        "Every vendor with at least five entries in the catalog, ranked by how many " +
+        "confirmed-exploited vulnerabilities CISA has listed across its products — with " +
+        "first and last listing dates and the median gap between consecutive listings. " +
+        "Rows where security products make up at least half the vendor's entries are " +
+        "flagged. Read the gap column on the flagged rows: for the most-listed security " +
+        "vendors, the pause between confirmed-exploited listings is measured in days " +
+        "and weeks.",
+      colVendor: "Vendor",
+      colEntries: "KEV entries",
+      colSecurity: "security",
+      colFirst: "first listed",
+      colLast: "last listed",
+      colGap: "median gap",
+      securityFlagLabel: "security products",
+      windowTemplate:
+        "whole catalog · min {min_vendor_entries} entries · flagged rows: at least " +
+        "half the vendor's entries classify as security products",
+      methodology:
+        "For every vendor label in the catalog (whitespace-normalized but never " +
+        "merged — Pulse Secure predates Ivanti's acquisition and keeps its own row, " +
+        "because the catalog's attribution is the record), the board counts total " +
+        "entries, security-classified entries (per the classifier described in the " +
+        "hero's footnote), first and last dateAdded, and the median gap in days " +
+        "between consecutive listings. A gap of 0 means CISA added several of the " +
+        "vendor's CVEs on the same day, which bulk advisories regularly do. Vendors " +
+        "with fewer than five entries stay off the board: one listing is an incident; " +
+        "a cadence needs a history. The security flag marks rows where at least half " +
+        "the entries classify as security products. Default sort: total entries, " +
+        "descending. Click any column header to re-sort.",
+    },
+
+    // --------------------------------------------- guards.html · 3
+    overlap: {
+      num: "03",
+      kicker: "Ransomware overlap",
+      source: "CISA KEV",
+      headline: "The ransomware flag clusters on the guards.",
+      caption:
+        "CISA marks each KEV entry known to have been used in ransomware campaigns. " +
+        "Split the catalog with the same classifier as the rest of this page and the " +
+        "flag is anything but evenly spread: entries on exploited security products " +
+        "carry that flag roughly twice as often as the rest of the catalog. An edge " +
+        "appliance that gates the network is one working exploit away from being the " +
+        "whole intrusion — exactly the kind of foothold extortion operations shop for.",
+      barSecurity: "Security products",
+      barOther: "Rest of the catalog",
+      methodology:
+        "Both bars use the catalog's own knownRansomwareCampaignUse field (“Known” " +
+        "versus anything else; a missing field never counts as Known — the KEV Latency " +
+        "module applies the same rule) over the full catalog snapshot, seeding era " +
+        "included. The split is the page's classifier: security products on one side, " +
+        "every other entry on the other, so the two bars always cover the whole " +
+        "catalog; each bar's entry counts ride in its tooltip. The chart answers one " +
+        "narrow question — is the flag overrepresented on security products? It says " +
+        "nothing about which campaigns, when, or how many victims: the flag is CISA's " +
+        "current per-entry assessment, with no dates attached.",
+    },
+
+    // --------------------------------------------- epss.html · 1 · hero
+    grade: {
+      num: "01",
+      kicker: "The grade",
+      source: "EPSS (FIRST.org) · CISA KEV",
+      headline: "The day before confirmation, the forecast was calm.",
+      caption:
+        "EPSS is the industry's only public exploitation forecast, and this site already " +
+        "calls it the best model available — which is exactly why somebody should grade " +
+        "it. For every vulnerability CISA added to its Known Exploited catalog, this " +
+        "chart reads the EPSS score published the day before the listing — the model's " +
+        "last daily forecast while the listing was still in the future — banded into " +
+        "under 1%, 1–10%, and 10% or higher. EPSS predicts exploitation within 30 days, " +
+        "and a KEV listing means exploitation was already observed, so on listing eve " +
+        "the model should be at its most alarmed. Instead, in its recent years most " +
+        "arrive having been scored below one percent the day before. Listings that " +
+        "could not have a prior score are counted separately, never as misses.",
+      statLabel: "KEV additions scored under 1% on listing eve",
+      statLatest: "{latest_year}",
+      statAgo: "whole catalog",
+      legendBelow: "under 1% the day before",
+      legendMid: "1–10%",
+      legendAbove: "10% or higher",
+      // Filled by the renderer from catalog counts; the pending sentence is
+      // appended only while the historical backfill is still incomplete.
+      note:
+        "{ungradeable} of {total} catalog entries had no possible day-before score — " +
+        "{before_pub} were listed before (or the day) their CVE record published — and " +
+        "are counted separately, never as misses.",
+      pendingNote:
+        "{pending} entries are still awaiting their historical day-before lookup; " +
+        "every number on this page covers only what has been fetched so far.",
+      methodology:
+        "For every entry in CISA's Known Exploited Vulnerabilities catalog, the " +
+        "pipeline asks FIRST's historical EPSS API for the entry's score on the day " +
+        "before its KEV dateAdded, and each answer is fetched exactly once — " +
+        "historical scores are immutable, and the published data file doubles as the " +
+        "archive. Grading the day-before score is deliberately generous to the model: " +
+        "EPSS estimates the probability of exploitation within the next 30 days, and a " +
+        "KEV listing certifies exploitation was already observed (the median gap from " +
+        "CVE publication to KEV listing is measured in weeks on this site's own KEV " +
+        "Latency page), so listing eve is the moment the model has had every chance to " +
+        "be alarmed — a sub-1% score there is the strongest possible form of miss, not " +
+        "a timing technicality. Bands are shares of graded entries only. An entry " +
+        "listed before, or the same day, its CVE record published cannot have a " +
+        "day-before score and is reported separately; so are entries whose lookup is " +
+        "still pending — partial coverage is disclosed, never blended. One fairness " +
+        "caveat runs the other way: in the catalog's 2021–22 seeding era (the launch " +
+        "batch plus back-catalog imports of years-old CVEs), the exploitation behind a " +
+        "listing may predate it by years, so those bars answer “was the model alarmed " +
+        "about old known-exploited CVEs” rather than “did it see a fresh one coming” — " +
+        "and the seeding years actually grade better than the live era. The per-year " +
+        "split exists so the eras never blend. A year plots only with at least 10 " +
+        "graded entries. The current year (marked *) is partial and refills nightly.",
+    },
+
+    // --------------------------------------------- epss.html · 2
+    distribution: {
+      num: "02",
+      kicker: "The distribution",
+      source: "EPSS (FIRST.org) · CISA KEV",
+      headline: "A histogram of hindsight.",
+      caption:
+        "The same graded cohort, spread across the log-ish probability buckets the " +
+        "Score-vs-reality grid uses, and split by EPSS model version. The split is " +
+        "load-bearing, not decoration: v1 through v5 are different models with " +
+        "materially different score distributions, and pooling them into one histogram " +
+        "would be the same landmine as mixing CVSS v2 with v3 scores. Read each model " +
+        "on its own terms; what they share is the shape — across every era, much of " +
+        "the confirmed-exploited cohort sits in the buckets the model reserves for " +
+        "“unlikely.”",
+      methodology:
+        "Each graded entry contributes its day-before probability to one bucket: " +
+        "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive — the " +
+        "same arithmetic as the Score-vs-reality grid on the CVE Ecosystem page). The " +
+        "historical API does not return the model version, so it is derived from the " +
+        "score date using the era table shipped in the data file — verified against " +
+        "the version headers of FIRST's own daily CSV files: v1 through 2022-02-03, " +
+        "v2 (v2022.01.01) through 2023-03-06, v3 (v2023.03.01) through 2025-03-16, " +
+        "v4 (v2025.03.14) through 2026-06-14, v5 (v2026.06.15) since. Day-before " +
+        "probabilities are stored at five decimals — this module's documented " +
+        "exception to CyberMon's one-decimal rounding, because the difference between " +
+        "0.04% and 0.4% is precisely what is being charted.",
+    },
+
+    // --------------------------------------------- epss.html · 3
+    percentile: {
+      num: "03",
+      kicker: "The ranking view",
+      source: "EPSS (FIRST.org) · CISA KEV",
+      headline: "Where the exploited stood in line.",
+      caption:
+        "Raw probabilities are not comparable across model versions — each model " +
+        "calibrates differently — but a percentile is: it says where a CVE ranked " +
+        "among everything the model scored that same day. This view re-grades the " +
+        "same cohort on that scale, and it is the fairest scale available to the " +
+        "model. Even here, roughly a third of the graded cohort sat in the bottom " +
+        "half of that day's ranking — confirmed-exploited vulnerabilities the model " +
+        "placed behind roughly a hundred thousand others on listing eve.",
+      statBig: "{n} of {total}",
+      statLead: "graded entries ranked in the model's bottom half on listing eve",
+      statNote: "median day-before percentile: {median}",
+      yAxisLabel: "share of graded entries",
+      methodology:
+        "Each graded entry contributes the percentile EPSS published alongside its " +
+        "day-before score: the share of all CVEs scored that day with a lower score. " +
+        "FIRST recomputes percentiles daily against that day's whole corpus, which " +
+        "makes them comparable across model versions in a way raw probabilities are " +
+        "not — a v2 probability and a v4 probability mean different things, but " +
+        "“bottom half of that day's ranking” means the same thing in every era. " +
+        "Buckets are shares of graded entries that carry a percentile (the earliest " +
+        "EPSS era published scores without percentiles for a stretch; such entries " +
+        "grade in the probability charts but not here, and the counts ship in the " +
+        "data file). The stat's median is the cohort's median day-before percentile.",
+    },
+
+    // --------------------------------------------- calendar.html · 1 · hero
+    reservation: {
+      num: "01",
+      kicker: "Reservation aging",
+      source: "cvelistV5 (MITRE)",
+      headline: "One in five new CVEs arrives on an old ID.",
+      caption:
+        "Every CVE ID wears a year on its face — CVE-2025-12345 — and that year names " +
+        "the moment the identifier was reserved, which can sit far ahead of anything " +
+        "being published. The bands split each year's newly published records by the " +
+        "age of their ID: minted the same year, the year before, or two-plus years " +
+        "back. In the latest complete year, one in five records shipped on an " +
+        "earlier-year ID — the vintage measures the age of the paperwork, not of the " +
+        "bug.",
+      statLabel: "Share of newly published CVEs carrying an earlier-year ID",
+      statLatest: "{latest_year}",
+      statAgo: "{ago_year}",
+      legendSameYear: "Same-year ID",
+      legendOneYear: "1-year-old ID",
+      legendTwoPlus: "2+ years old",
+      methodology:
+        "For every published record in the cvelistV5 corpus (rejected records " +
+        "excluded), the year prefix of its CVE ID is compared against its publication " +
+        "year — the UTC year of datePublished. Same-year, one-year-old, and " +
+        "two-plus-year-old IDs stack to 100%; the tooltip carries the counts. The ID " +
+        "year records when the identifier was reserved: CNAs request blocks of IDs " +
+        "and publish against them later, so an old ID typically means a reservation " +
+        "that sat in a queue, a long coordinated disclosure, or a batch conversion. " +
+        "The rare inverse — an ID minted after its publication year, a late-December " +
+        "reservation published under January's clock — clamps to age zero, and the " +
+        "clamp count ships in the data file (the real corpus currently contains " +
+        "none). Records with no datePublished date themselves from the ID and count " +
+        "as same-year by construction. A year plots only with at least 500 published " +
+        "records. The current year (marked *) is partial and refills nightly; the " +
+        "headline compares complete years only, and the baseline year ships in the " +
+        "data file rather than being derived.",
+    },
+
+    // --------------------------------------------- calendar.html · 2
+    weekbeat: {
+      num: "02",
+      kicker: "The weekly beat",
+      source: "cvelistV5 (MITRE)",
+      headline: "Disclosure has a favorite weekday.",
+      caption:
+        "How each year's records spread across the week: the latest complete year " +
+        "beside the year a decade before it. Tuesday leads the current week with " +
+        "roughly a quarter of all records, the weekend is close to silent, and ten " +
+        "years ago the peak sat a day later, on Wednesday. The spike is a property " +
+        "of publication workflows — advisories go out when release processes run, " +
+        "and the biggest release processes run on Tuesday.",
+      weekdayLabels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      seriesYearLabel: "{year}",
+      tooltipN: "{n} dated records in {year}",
+      methodology:
+        "Each published record with a day-precision datePublished contributes its " +
+        "weekday; bars are the share of that year's dated records on each day, for " +
+        "the latest complete year and the year a decade before it (both named in " +
+        "the data file — the site never picks them; until the record is ten years " +
+        "deep the earliest charted year stands in). Weekdays are judged in UTC, on " +
+        "the date the record itself carries: a late-evening publication in a US " +
+        "timezone lands on the next UTC day, so weekday mass can shift one day " +
+        "forward relative to local release time — a Tuesday release in California " +
+        "can read as Wednesday here. That skew direction is fixed and documented, " +
+        "and it is not corrected, because the record carries no reliable local " +
+        "timezone. Records without a publication timestamp are excluded from this " +
+        "chart. A year enters the comparison only with at least 500 dated records.",
+    },
+
+    // --------------------------------------------- calendar.html · 3
+    patchtuesday: {
+      num: "03",
+      kicker: "Patch Tuesday",
+      source: "cvelistV5 (MITRE)",
+      headline: "Twelve days carry triple their calendar share.",
+      caption:
+        "The second Tuesday of the month is Microsoft's release day, and a good part " +
+        "of the industry schedules disclosure around it. Bars show the share of each " +
+        "year's published records that land on those twelve days; the dashed line " +
+        "marks what twelve days out of 365 would hold if publication ignored the " +
+        "calendar — 3.3 percent. The latest complete year put roughly triple that " +
+        "share on them, and the bar has cleared the line in every complete year " +
+        "since 2014.",
+      note:
+        "The comparison, stated exactly: twelve specific UTC days per year against " +
+        "a uniform-calendar baseline of 3.3% — a bar at 9.9% means those days held " +
+        "three times their share of the calendar, and says nothing about how severe " +
+        "or exploited the records were.",
+      baselineLabel: "uniform calendar · {pct}",
+      tooltipShare: "{pct} of the year's dated records",
+      tooltipCount: "{on_pt} of {n} on patch Tuesdays",
+      tooltipTopDay: "busiest single day: {date} ({n} records)",
+      methodology:
+        "A record counts as a patch-Tuesday publication when its UTC datePublished " +
+        "falls on the second Tuesday of its month — defined precisely as the Tuesday " +
+        "with day-of-month 8 through 14; every year has exactly twelve such days. " +
+        "Bars are the share of each year's dated records on those days. The dashed " +
+        "baseline is 3.3%: 12 of 365 days (12 of 366 in a leap year rounds to the " +
+        "same figure), i.e. what those days would carry under a calendar-blind " +
+        "uniform flow. The chart claims exactly that multiple and nothing more — " +
+        "publication concentrating on release days says nothing about severity or " +
+        "exploitation. The tooltip also names the year's single busiest publication " +
+        "day for context; it is frequently a batch-conversion or mass-import day " +
+        "rather than a patch Tuesday, and it is never ranked or editorialized. UTC " +
+        "day boundaries as in the weekday chart. A year plots only with at least " +
+        "500 dated records. The current year (marked *) is partial and refills " +
+        "nightly.",
+    },
   },
 
   footer: {
@@ -1204,6 +1578,9 @@ export const editorial = {
       extortion: "Ransomwhere (CC0)",
       attack: "MITRE ATT&CK®",
       hygiene: "APNIC Labs (stats.labs.apnic.net)",
+      guards: "CISA KEV catalog",
+      epss: "EPSS (FIRST.org) · CISA KEV",
+      calendar: "CVE List V5 (MITRE)",
     },
   },
 };

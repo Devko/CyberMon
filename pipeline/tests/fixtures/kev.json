@@ -2,13 +2,13 @@
  "title": "CISA Catalog of Known Exploited Vulnerabilities (fixture)",
  "catalogVersion": "2026.07.08",
  "dateReleased": "2026-07-08T12:00:00.0000Z",
- "count": 3,
+ "count": 7,
  "vulnerabilities": [
   {
    "cveID": "CVE-2023-0001",
    "vendorProject": "VendorX",
    "product": "Widget",
-   "shortDescription": "Fixture KEV entry (critical); +30d latency vs datePublished 2023-01-15. Ransomware use: Known.",
+   "shortDescription": "Fixture KEV entry (critical); +30d latency vs datePublished 2023-01-15. Ransomware use: Known. Not a security product.",
    "dateAdded": "2023-02-14",
    "dueDate": "2023-03-07",
    "knownRansomwareCampaignUse": "Known"
@@ -17,7 +17,7 @@
    "cveID": "CVE-2023-0003",
    "vendorProject": "GitHub_M",
    "product": "Gadget",
-   "shortDescription": "Fixture KEV entry rated 6.9 (below High); launch-backfill cohort (dateAdded before 2022-01-01). Ransomware use: Unknown.",
+   "shortDescription": "Fixture KEV entry rated 6.9 (below High); launch-backfill cohort (dateAdded before 2022-01-01). Ransomware use: Unknown. Not a security product.",
    "dateAdded": "2021-12-01",
    "dueDate": "2021-12-15",
    "knownRansomwareCampaignUse": "Unknown"
@@ -26,9 +26,45 @@
    "cveID": "CVE-2024-0002",
    "vendorProject": "mitre",
    "product": "Thing",
-   "shortDescription": "Fixture KEV entry with no CVSS score; listed 2 days before datePublished 2024-04-01 (negative latency). Deliberately no knownRansomwareCampaignUse field.",
+   "shortDescription": "Fixture KEV entry with no CVSS score; listed 2 days before datePublished 2024-04-01 (negative latency). Deliberately no knownRansomwareCampaignUse field. Not a security product.",
    "dateAdded": "2024-03-30",
    "dueDate": "2024-04-20"
+  },
+  {
+   "cveID": "CVE-2023-9001",
+   "vendorProject": "Fortinet",
+   "product": "FortiOS",
+   "shortDescription": "Fixture KEV entry: security product via the wholesale vendor list (no matching CVE record in the fixture corpus). Ransomware use: Known.",
+   "dateAdded": "2023-06-14",
+   "dueDate": "2023-07-05",
+   "knownRansomwareCampaignUse": "Known"
+  },
+  {
+   "cveID": "CVE-2024-9002",
+   "vendorProject": "Fortinet",
+   "product": "FortiProxy",
+   "shortDescription": "Fixture KEV entry: second Fortinet listing so the recidivism board computes a real median gap (336 days after CVE-2023-9001). Ransomware use: Unknown.",
+   "dateAdded": "2024-05-15",
+   "dueDate": "2024-06-05",
+   "knownRansomwareCampaignUse": "Unknown"
+  },
+  {
+   "cveID": "CVE-2023-9003",
+   "vendorProject": "Cisco",
+   "product": "Adaptive Security Appliance (ASA)",
+   "shortDescription": "Fixture KEV entry: mixed vendor, product-keyword HIT (Cisco security estate). Ransomware use: Unknown.",
+   "dateAdded": "2023-09-01",
+   "dueDate": "2023-09-22",
+   "knownRansomwareCampaignUse": "Unknown"
+  },
+  {
+   "cveID": "CVE-2022-9004",
+   "vendorProject": "Cisco",
+   "product": "IOS XE Software",
+   "shortDescription": "Fixture KEV entry: mixed vendor, product-keyword MISS (routing OS, not a security product); seeding-era dateAdded (2022) so the guard-share chart exercises that cohort. Ransomware use: Unknown.",
+   "dateAdded": "2022-03-01",
+   "dueDate": "2022-03-22",
+   "knownRansomwareCampaignUse": "Unknown"
   }
  ]
 }

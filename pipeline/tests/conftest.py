@@ -6,9 +6,10 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import (breach_metrics, concentration_metrics,
-                      extortion_metrics, kev_metrics, metrics,
-                      quality_metrics)
+from pipeline import (breach_metrics, calendar_metrics,
+                      concentration_metrics, epss_report_metrics,
+                      extortion_metrics, guards_metrics, kev_metrics,
+                      metrics, quality_metrics)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_hibp import load_hibp_file
@@ -82,12 +83,17 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
         "kev_ransomware.json":
             kev_metrics.build_kev_ransomware(kev.entries, GENERATED_AT,
                                              min_n=1),
+        "kev_guards.json":
+            guards_metrics.build_kev_guards(kev.entries, GENERATED_AT,
+                                            min_n=1, min_vendor_entries=1),
         "breach_ledger.json":
             breach_metrics.build_breach_ledger(hibp.breaches, GENERATED_AT,
                                                min_n=1),
         "extortion_ledger.json":
             extortion_metrics.build_extortion_ledger(ransomwhere,
                                                      GENERATED_AT, min_n=1),
+        "cve_calendar.json":
+            calendar_metrics.build_cve_calendar(agg, GENERATED_AT, min_n=1),
         "meta.json": metrics.build_meta(
             GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
             epss_model_version=epss.model_version,
@@ -97,4 +103,12 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
     }
     out["meta.json"]["sources"]["hibp"] = {
         "fetched_at": GENERATED_AT, "breach_count": hibp.breach_count}
+    epss_report, epss_history_source = epss_report_metrics.run_stage(
+        Path("."), Path("."), GENERATED_AT, kev_entries=kev.entries,
+        published_dates=agg.kev_published_dates,
+        current_model_version=epss.model_version,
+        skip=False, offline_fixtures=True, min_n=1,
+        log=lambda _msg: None)
+    out["epss_report.json"] = epss_report
+    out["meta.json"]["sources"]["epss_history"] = epss_history_source
     return out

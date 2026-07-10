@@ -67,6 +67,11 @@ because older committed meta files predate the module, but the hygiene
 stage itself always emits it: `economy_count` = fixed-set economies with a
 fetched series, `spread_economy_count` = economies that survived the
 spread's sample floor.
+`sources.epss_history` (EPSS Report Card module) is optional for the same
+reason as `attack` (`--skip-epss-report` with no prior data omits it);
+when present it carries `fetched_at` (ISO-8601 UTC), `graded` (KEV entries
+with a day-before score) and `pending_backfill` (pairs not yet looked up),
+plus `"stale": true` on carry-forward runs.
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -527,6 +532,85 @@ assumption that newcomers arrive uniformly through the year. `cna_count`
 is a roster headcount and is never projected; nor are the shares or the
 HHI. Validator: `pipeline/tier1_contracts.py`.
 
+## site/data/cve_calendar.json  (CVE Calendar module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 500,
+  "id_age": {
+    "years": [
+      {"year": 2025, "n": 48168, "same_year": 38337, "one_year": 5495,
+       "two_plus": 4336, "pct_same_year": 79.6, "pct_one_year": 11.4,
+       "pct_two_plus": 9.0, "pct_prior_year": 20.4}
+    ],
+    "clamped_negative": 0,
+    "headline": {"latest_year": 2025, "pct_prior_year_latest": 20.4,
+                 "baseline_year": 2015, "pct_prior_year_baseline": 14.3}
+  },
+  "weekday": {
+    "years": [
+      {"year": 2025, "n": 48168,
+       "counts": [7447, 11783, 9375, 8961, 7009, 2104, 1489],
+       "pct": [15.5, 24.5, 19.5, 18.6, 14.6, 4.4, 3.1]}
+    ],
+    "comparison": {"latest_year": 2025, "baseline_year": 2015}
+  },
+  "patch_tuesday": {
+    "calendar_pct": 3.3,
+    "years": [
+      {"year": 2025, "n": 48168, "on_pt": 4737, "pct": 9.8,
+       "top_day": {"date": "2025-02-26", "n": 790}}
+    ],
+    "headline": {"latest_year": 2025, "pct_latest": 9.8}
+  }
+}
+```
+
+Everything covers PUBLISHED records only, grouped by publication year, and
+every date judgment is **UTC** (the date the record carries; a Tuesday
+evening in California is a Wednesday UTC, so any timezone skew pushes
+counts toward the *next* day — the direction is documented, never hidden).
+
+`id_age`: how old the CVE ID's year prefix was at publication —
+`same_year` / `one_year` / `two_plus` (the three always sum to `n`).
+The ID year is reservation paperwork, not a discovery date; that is the
+chart's point. An ID year *after* the publication year (late-December
+reservations published under January's clock) clamps to `same_year` and
+increments `clamped_negative` (whole-corpus count; 0 in the real corpus
+today — the rule exists so a future occurrence is visible, not silent).
+Records with no `datePublished` take their publication year from the ID
+and are `same_year` by construction; records whose ID year doesn't parse
+are skipped. `pct_prior_year` = `100 * (n - same_year) / n`, computed on
+counts (never by summing rounded percentages). `headline` compares the
+latest complete charted year against `latest_year - 10` when charted,
+else the earliest charted year — payload-authoritative, consumers never
+derive either year. `headline` is null iff no year is charted.
+
+`weekday`: `counts`/`pct` are exactly 7 entries, **Monday-first**
+(`datetime.weekday()` order), over records with a day-precision
+`datePublished`; `counts` sums to `n`, so `n` here can sit below the
+hero's (the undated join no day tally). `comparison` names the two years
+the site contrasts (same latest/baseline rule as the hero headline; null
+iff no year is charted).
+
+`patch_tuesday`: `on_pt` counts records published on the month's second
+Tuesday — defined precisely as the Tuesday whose day-of-month is 8–14,
+UTC; there are exactly 12 such days every year. `calendar_pct` is pinned
+to 3.3 (= 12/365 rounded to 1 decimal; 12/366 rounds to the same 3.3) —
+the uniform-calendar baseline the site draws, so every chart states the
+comparison it is making: these are days holding N× their calendar share.
+`top_day` (tooltip only, never copy) is the year's single busiest
+publication day, ties broken by earliest date. This section charts
+exactly the `weekday` years — both derive from one day tally. Years with
+fewer than `min_n` records (per section, on that section's own
+denominator) are omitted (production 500; fixture mode 1). The partial
+current year charts when it clears `min_n` — the site labels it — but
+never feeds a headline or comparison. No pace projection: every series
+here is a share, already normalized to its year. Validator:
+`pipeline/calendar_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
 ## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
 ## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
 ## site/data/attack_churn.json  (ATT&CK Churn module, all 3 charts)
@@ -750,3 +834,164 @@ file's per-version shape therefore REQUIRES updating `reconstruct_state`
 and its round-trip test in the same commit. Validator:
 `pipeline/attack_contracts.py` (registered into `pipeline/contracts.py`'s
 dispatch).
+
+## site/data/kev_guards.json  (Security Products module, all 3 charts)
+## site/data/epss_report.json  (EPSS Report Card module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "min_vendor_entries": 5,
+  "years": [
+    {"year": 2021, "total": 311, "security": 44, "pct_security": 14.1}
+  ],
+  "vendors": [
+    {"vendor": "Fortinet", "entries": 26, "security_entries": 26,
+     "pct_security": 100.0, "first_added": "2021-11-03",
+     "last_added": "2026-04-13", "median_gap_days": 42.0}
+  ],
+  "ransomware": {
+    "security": {"total": 188, "known": 70, "pct_known": 37.2},
+    "other": {"total": 1447, "known": 259, "pct_known": 17.9}
+  },
+  "catalog": {"total": 1635, "security": 188, "pct_security": 11.5,
+              "classifier_version": 1, "classifier_rules": 32}
+}
+```
+
+Every KEV entry is classified by `pipeline/security_products.py` — a
+curated, versioned table of security vendors plus product-keyword rules
+for mixed vendors (the decision rule and every judgment call live in
+that module's docstring; the table is data, reviewable in the repo).
+`catalog` is the audit block: whole-catalog totals plus the
+`classifier_version`/`classifier_rules` that produced them, so any
+published share is traceable to the classifier revision behind it.
+
+`years` (hero): per `dateAdded` calendar year, entries added (`total`),
+entries classified as security products (`security` ≤ `total`), and
+`pct_security`. ALL cohorts belong, the 2021–22 seeding era included —
+like `kev_ransomware`, the catalog is read as a snapshot and the
+classification rides on the entry itself. Years with fewer than `min_n`
+entries are omitted (production 10; fixture mode 1); sorted, unique.
+Entries with an unparseable `dateAdded` join no year but still count in
+`catalog` and `ransomware`.
+
+`vendors` (recidivism board): every vendor label with at least
+`min_vendor_entries` catalog entries (production 5; fixture mode 1).
+Labels are whitespace-normalized but NEVER merged (Pulse Secure stays
+distinct from Ivanti — the catalog's attribution is the record).
+`median_gap_days` is the median of day gaps between consecutive
+`dateAdded` values (0.0 = same-day bulk additions), `null` iff the
+vendor has a single dated entry. `first_added` ≤ `last_added`. Sorted by
+`entries` descending, ties by casefolded vendor name; vendor names
+unique. The site flags rows with `pct_security` ≥ 50 as security-vendor
+rows.
+
+`ransomware`: the `knownRansomwareCampaignUse` split ("Known" vs
+anything else, missing never counts — `kev_ransomware`'s rule) across
+the classifier's two halves; `security.total + other.total` must equal
+`catalog.total`, so nothing is dropped silently. No CVE-corpus join
+anywhere in this file. Validator: `pipeline/guards_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).
+  "model_eras": [
+    {"label": "v1", "model_version": "v1 (pre-header daily CSVs)",
+     "from": "2021-04-14", "to": "2022-02-03"},
+    {"label": "v5", "model_version": "v2026.06.15",
+     "from": "2026-06-15", "to": null}
+  ],
+  "grade_by_year": [
+    {"year": 2023, "graded": 160,
+     "n_below_1pct": 90, "n_1_to_10pct": 40, "n_above_10pct": 30,
+     "pct_below_1pct": 56.3, "pct_1_to_10pct": 25.0,
+     "pct_above_10pct": 18.8, "ungradeable": 21, "pending": 6}
+  ],
+  "distribution": {
+    "buckets": ["<0.1%", "0.1-1%", "1-10%", ">10%"],
+    "by_model": [
+      {"model": "v3", "n": 340,
+       "counts": {"<0.1%": 88, "0.1-1%": 112, "1-10%": 84, ">10%": 56}}
+    ]
+  },
+  "percentiles": {
+    "buckets": [{"bucket": "0-25", "n": 120, "pct": 8.6}],
+    "n": 1390, "bottom_half": {"n": 480, "pct": 34.5},
+    "median_percentile": 68.4
+  },
+  "catalog": {
+    "total": 1635, "graded": 1400,
+    "ungradeable": {"pre_epss": 0, "listed_before_publication": 150,
+                    "no_prior_score": 55},
+    "pending_backfill": 30
+  },
+  "headline": {"graded": 1400, "pct_below_1pct": 43.1,
+               "latest_year": 2025, "graded_latest": 180,
+               "pct_below_1pct_latest": 61.1},
+  "entries": [
+    {"cve": "CVE-2021-40438", "date_added": "2021-11-03",
+     "score_date": "2021-11-02", "epss": 0.35064, "percentile": 0.98923,
+     "model": "v1", "reason": null},
+    {"cve": "CVE-2021-44228", "date_added": "2021-12-10",
+     "score_date": "2021-12-09", "epss": null, "percentile": null,
+     "model": null, "reason": "no_score_for_date"}
+  ]
+}
+```
+
+The grade: for every KEV catalog entry, the EPSS score of the **day
+before** its `dateAdded` (`score_date = dateAdded − 1 day`), fetched from
+FIRST's historical API (`api.first.org/data/v1/epss?cve=…&date=…`) exactly
+once per `(cve, date_added)` pair — historical scores are immutable. The
+API returns no model version; `model` is derived from `score_date` via
+`model_eras` (encoded in `pipeline/fetch_epss_history.py`, verified
+against the version headers of the daily CSVs; the newest era is
+open-ended, `to` null, and the nightly warns loudly when the current
+feed's `model_version` is one the table does not know).
+
+`entries[]` carries the raw per-pair facts, sorted by
+`(date_added, cve)`, unique: either a scored fact (`epss`/`percentile`
+raw 0–1 floats at up to **5 decimals** — a documented exception to the
+1-decimal rule, since sub-10% probabilities are the whole point;
+`percentile` may be null on early-era rows) or an explicit
+null-score fact (`epss`/`percentile`/`model` all null, `reason` ∈
+`pre_epss` / `no_score_for_date` — what was known at fetch time).
+`score_date` must equal `date_added − 1 day` on every entry.
+
+`grade_by_year` groups by `dateAdded` year (ascending, unique): band
+counts over **graded** entries (`epss < 0.01` / `< 0.10` / `>= 0.10`,
+lower edges inclusive; counts sum to `graded`), plus that year's
+`ungradeable` and `pending` counts for coverage honesty. Years with fewer
+than `min_n` graded entries are omitted (production 10; fixture mode 1).
+`distribution` reuses score_vs_reality's EPSS buckets, split by model era
+(eras in release order, only eras with graded entries, per-era counts sum
+to `n`, per-era `n` sums to `catalog.graded`) — v1..v5 are different
+models and are never pooled silently. `percentiles` pools eras
+deliberately (percentiles rank each day's whole scored corpus, so they ARE
+comparable across models): fixed buckets `0-25, 25-50, 50-75, 75-90,
+90-99, 99-100` over graded entries carrying a percentile;
+`median_percentile` null iff `n` 0.
+
+`catalog` is the audit trail: `graded + Σungradeable + pending_backfill ==
+total` always. `ungradeable` carries exactly three keys: an entry listed
+before (or the day) its CVE record published can have no prior score and
+is NEVER a miss (`listed_before_publication`, classified via the corpus's
+datePublished join); `no_prior_score` is everything else the API had no
+row for (unmatched CVEs included); `pre_epss` is a score date before
+2021-04-14 (impossible for real KEV dates, kept for honesty).
+`pending_backfill` = pairs not yet looked up — the one-time historical
+backfill is batch-capped (`--epss-backfill-batch`, default 30/run), and
+the site renders pending counts rather than pretending coverage.
+`headline` is payload-authoritative (latest complete `grade_by_year` year,
+falling back to the newest charted year; null iff `graded` 0). `"stale":
+true` appears only on `--skip-epss-report` carry-forwards.
+
+**Reconstruct-losslessly guarantee** (attack-module pattern): the
+per-entry objects in `entries[]` are exactly the pipeline's sync-state
+records (`.cache/epss_report_state.json`) plus the key fields — nothing in
+the state is omitted and nothing in the output's `entries[]` is derived.
+`pipeline/fetch_epss_history.reconstruct_state` rebuilds the full state
+from this file, so a lost CI cache costs one JSON read instead of ~450 API
+requests. Changing the per-entry shape therefore REQUIRES updating
+`reconstruct_state` and its round-trip test in the same commit. Validator:
+`pipeline/epss_report_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).

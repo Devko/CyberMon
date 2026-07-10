@@ -14,8 +14,9 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
-             "kev_ransomware.json", "breach_ledger.json",
-             "extortion_ledger.json", "dnssec_adoption.json"]
+             "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
+             "extortion_ledger.json", "dnssec_adoption.json",
+             "epss_report.json", "cve_calendar.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -33,7 +34,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sample"] is False  # fixture runs are real pipeline runs
     assert meta["sources"]["cvelist"] == {"release": "fixtures", "cve_count": 11}
     assert meta["sources"]["epss"]["row_count"] == 7
-    assert meta["sources"]["kev"]["count"] == 3
+    assert meta["sources"]["kev"]["count"] == 7
     assert meta["sources"]["hibp"]["breach_count"] == 9
     assert meta["sources"]["ransomwhere"]["address_count"] == 6
     assert meta["sources"]["ransomwhere"]["tx_count"] == 8
@@ -43,11 +44,14 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert len(decay["history"]) == 1
     assert (tmp_path / "history" / "nvd_backlog.csv").exists()
 
-    # KEV latency: all 3 fixture entries join; the 2021-12-01 entry lands
-    # in the launch-backfill cohort, the other two in the trend stats.
+    # KEV latency: the 3 original fixture entries join the corpus; the 4
+    # guards-module entries (Fortinet/Cisco) deliberately have no fixture
+    # CVE records, so they count as unmatched and stay out of every
+    # latency stat. The 2021-12-01 entry lands in the launch-backfill
+    # cohort, the other two matched ones in the trend stats.
     latency = _load(tmp_path, "kev_latency.json")
-    assert latency["matched"] == {"total_kev": 3, "matched_cve": 3,
-                                  "unmatched_cve": 0}
+    assert latency["matched"] == {"total_kev": 7, "matched_cve": 3,
+                                  "unmatched_cve": 4}
     assert latency["launch_backfill"]["n"] == 1
     assert latency["launch_backfill"]["median_days"] == -612.0
     assert [(y["year"], y["n"], y["median_days"])
@@ -124,14 +128,89 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert dnssec["spread"]["n_economies"] == 9
     assert meta["sources"]["apnic"]["economy_count"] == 2
 
-    # KEV ransomware: all three entries dated; only the 2023 one is Known
-    # (the 2024 entry has no knownRansomwareCampaignUse field at all).
+    # KEV ransomware: all seven entries dated; the VendorX and FortiOS
+    # entries are Known (the 2024-03-30 entry has no
+    # knownRansomwareCampaignUse field at all — never counted as Known).
     ransomware = _load(tmp_path, "kev_ransomware.json")
     assert [(y["year"], y["total"], y["known"])
-            for y in ransomware["years"]] == [(2021, 1, 0), (2023, 1, 1),
-                                              (2024, 1, 0)]
-    assert ransomware["catalog"] == {"total": 3, "known": 1,
-                                     "pct_known": 33.3}
+            for y in ransomware["years"]] == [(2021, 1, 0), (2022, 1, 0),
+                                              (2023, 3, 2), (2024, 2, 0)]
+    assert ransomware["catalog"] == {"total": 7, "known": 2,
+                                     "pct_known": 28.6}
+
+    # KEV guards: FortiOS/FortiProxy classify via the wholesale vendor
+    # list, Cisco ASA via a product keyword, Cisco IOS XE misses on
+    # purpose; the seeding-era 2022 entry charts like any other year.
+    guards = _load(tmp_path, "kev_guards.json")
+    assert [(y["year"], y["total"], y["security"], y["pct_security"])
+            for y in guards["years"]] == [(2021, 1, 0, 0.0),
+                                          (2022, 1, 0, 0.0),
+                                          (2023, 3, 2, 66.7),
+                                          (2024, 2, 1, 50.0)]
+    by_vendor = {v["vendor"]: v for v in guards["vendors"]}
+    # ties on entries break by casefolded vendor name
+    assert [v["vendor"] for v in guards["vendors"]] == \
+        ["Cisco", "Fortinet", "GitHub_M", "mitre", "VendorX"]
+    assert by_vendor["Fortinet"] == {
+        "vendor": "Fortinet", "entries": 2, "security_entries": 2,
+        "pct_security": 100.0, "first_added": "2023-06-14",
+        "last_added": "2024-05-15", "median_gap_days": 336.0}
+    assert by_vendor["Cisco"]["security_entries"] == 1  # ASA yes, IOS XE no
+    assert by_vendor["Cisco"]["median_gap_days"] == 549.0
+    assert by_vendor["VendorX"]["median_gap_days"] is None  # single entry
+    assert guards["ransomware"] == {
+        "security": {"total": 3, "known": 1, "pct_known": 33.3},
+        "other": {"total": 4, "known": 1, "pct_known": 25.0}}
+    assert guards["catalog"]["total"] == 7
+    assert guards["catalog"]["security"] == 3
+    assert guards["catalog"]["classifier_version"] >= 1
+
+    # EPSS Report Card: the two dated-and-published fixture entries grade
+    # (v1-era above 10%, v2-era below 1%); the negative-latency 2024 entry
+    # (listed two days before its CVE published) is ungradeable, never a
+    # miss; nothing is pending because the fixture envelopes cover every
+    # KEV date.
+    epss_report = _load(tmp_path, "epss_report.json")
+    # 7 KEV fixture entries (the guards module added four): six grade with
+    # a day-before score, the 2021-12-01 entry is listed before its CVE
+    # published and can have no prior score.
+    assert epss_report["catalog"] == {
+        "total": 7, "graded": 6,
+        "ungradeable": {"pre_epss": 0, "listed_before_publication": 1,
+                        "no_prior_score": 0},
+        "pending_backfill": 0}
+    assert [(y["year"], y["graded"], y["pct_below_1pct"])
+            for y in epss_report["grade_by_year"]] == [(2021, 1, 0.0),
+                                                       (2022, 1, 100.0),
+                                                       (2023, 3, 33.3),
+                                                       (2024, 1, 100.0)]
+    assert [(m["model"], m["n"])
+            for m in epss_report["distribution"]["by_model"]] == \
+        [("v1", 1), ("v2", 2), ("v3", 3)]
+    assert epss_report["percentiles"]["bottom_half"] == {"n": 2,
+                                                         "pct": 33.3}
+    assert [e["cve"] for e in epss_report["entries"]] == \
+        ["CVE-2023-0003", "CVE-2022-9004", "CVE-2023-0001", "CVE-2023-9001",
+         "CVE-2023-9003", "CVE-2024-0002", "CVE-2024-9002"]
+    assert meta["sources"]["epss_history"] == {
+        "fetched_at": epss_report["generated_at"], "graded": 6,
+        "pending_backfill": 0}
+
+    # CVE Calendar: the two old-ID fixture records land in the age buckets;
+    # CVE-2024-0001 (2024-02-13) is the corpus's one patch-Tuesday hit; the
+    # datePublished-less CVE-2025-0001 joins id_age but not the day tally.
+    cal = _load(tmp_path, "cve_calendar.json")
+    ages = {y["year"]: y for y in cal["id_age"]["years"]}
+    assert ages[2014]["two_plus"] == 1   # CVE-2012-0002, published 2014
+    assert ages[2025]["one_year"] == 1   # CVE-2024-0005, published 2025
+    assert ages[2025]["n"] == 2 and ages[2025]["pct_prior_year"] == 50.0
+    assert cal["id_age"]["clamped_negative"] == 0
+    wk = {y["year"]: y for y in cal["weekday"]["years"]}
+    assert wk[2025]["n"] == 1                       # undated record excluded
+    assert wk[2024]["counts"] == [1, 1, 0, 1, 0, 0, 0]  # Mon/Tue/Thu
+    pt = {y["year"]: y for y in cal["patch_tuesday"]["years"]}
+    assert pt[2024]["on_pt"] == 1 and pt[2023]["on_pt"] == 0
+    assert cal["patch_tuesday"]["calendar_pct"] == 3.3
 
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
@@ -184,6 +263,33 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     assert not (tmp_path / "history" / "nvd_backlog.csv").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
+
+
+def test_skip_epss_report_carries_previous_run_forward(tmp_path, capsys):
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    first = _load(tmp_path, "epss_report.json")
+
+    assert main(["--offline-fixtures", "--skip-epss-report", "--out",
+                 str(tmp_path)]) == 0
+    carried = _load(tmp_path, "epss_report.json")
+    contracts.validate("epss_report.json", carried)
+    assert carried["stale"] is True
+    assert carried["entries"] == first["entries"]
+    assert carried["catalog"] == first["catalog"]
+
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["epss_history"]["stale"] is True
+    assert meta["sources"]["epss_history"]["fetched_at"] == \
+        first["generated_at"]
+
+
+def test_skip_epss_report_without_prior_data_omits_outputs(tmp_path, capsys):
+    assert main(["--offline-fixtures", "--skip-epss-report", "--out",
+                 str(tmp_path)]) == 0
+    assert not (tmp_path / "epss_report.json").exists()
+    meta = _load(tmp_path, "meta.json")
+    contracts.validate("meta.json", meta)
+    assert "epss_history" not in meta["sources"]
 
 
 def test_skip_nvd_without_prior_data_omits_nvd_outputs(tmp_path, capsys):
