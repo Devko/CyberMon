@@ -30,6 +30,7 @@ export const editorial = {
     { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
     { id: "extortion", href: "extortion.html", label: "Extortion" },
     { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
+    { id: "hygiene", href: "hygiene.html", label: "Hygiene" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -129,6 +130,18 @@ export const editorial = {
           "Active techniques and sub-techniques per MITRE ATT&CK enterprise release, what " +
           "each version added, deprecated, or revoked, and the group-and-software catalog " +
           "underneath — parsed nightly from MITRE's own STIX bundles.",
+        live: true,
+      },
+      {
+        id: "hygiene",
+        href: "hygiene.html",
+        num: "08",
+        label: "Hygiene Index",
+        headline: "The fix is twenty years old, free, and still not deployed.",
+        blurb:
+          "DNSSEC validation as measured by APNIC Labs — the world adoption line since " +
+          "2013, the ten biggest online populations compared, and how many economies " +
+          "actually check their DNS answers. Rebuilt nightly.",
         live: true,
       },
     ],
@@ -992,6 +1005,107 @@ export const editorial = {
         "sit at index.json release dates and step between releases, like the hero; the " +
         "counts come from the same once-per-version cached stats.",
     },
+
+    // --------------------------------------------- hygiene.html · 1 · hero
+    validation: {
+      num: "01",
+      kicker: "The world line",
+      headline: "Most of the internet still doesn't check its answers.",
+      caption:
+        "DNSSEC has been a finished standard since 2005: it lets a resolver verify that " +
+        "the DNS answer it hands you is the one the domain owner signed, and switching " +
+        "validation on is a resolver configuration choice, free of charge. The line is " +
+        "APNIC's measured share of internet users whose resolvers actually perform that " +
+        "check — climbing from under a tenth when the record starts in 2013 to just under " +
+        "four in ten today. At the pace of the last decade, universal validation is still " +
+        "decades away.",
+      statLabel: "Share of internet users behind validating resolvers",
+      statLatest: "{latest_month}",
+      statAgo: "{ago_month}",
+      everyoneLabel: "everyone validates",
+      methodology:
+        "APNIC Labs measures DNSSEC validation by embedding test fetches in online " +
+        "advertisements: each sampled user's resolver is asked for DNSSEC-signed names, " +
+        "one of which carries a deliberately broken signature. A resolver that rejects " +
+        "the broken name while fetching the valid one counts as validating; a user whose " +
+        "queries land on a mix of validating and non-validating resolvers counts as " +
+        "partially validating — shipped in the data file, deliberately kept out of the " +
+        "headline line. The chart plots APNIC's world aggregate (code XA), 30-day " +
+        "smoothed window, sampled by CyberMon to the last published day of each calendar " +
+        "month; the full daily series is refetched from stats.labs.apnic.net every " +
+        "night, so upstream corrections propagate. The stat compares the newest month " +
+        "against the month ten years earlier (or the record's first month until the " +
+        "record is ten years deep). The measurement caveat is APNIC's own: samples " +
+        "arrive where the ad network delivers, so coverage is shaped by ad reach, and " +
+        "APNIC weights per-economy sampling toward each economy's estimated internet " +
+        "population. These are measured estimates over hundreds of millions of samples " +
+        "a month — strong on trend, softer at the second decimal.",
+    },
+
+    // --------------------------------------------- hygiene.html · 2
+    economies: {
+      num: "02",
+      kicker: "The giants compared",
+      headline: "Where you live decides whether your DNS gets checked.",
+      caption:
+        "The same measured rate for a fixed set of ten: the economies with the most " +
+        "internet users, by APNIC's own weighting. The gap is enormous — the top of this " +
+        "list validates for roughly nine of every ten users, the bottom for almost " +
+        "none, and some of the internet's oldest, richest infrastructures sit far below " +
+        "half. The world line rides along for reference: it is user-weighted, so these " +
+        "ten mostly decide where it goes.",
+      worldLine: "World average",
+      note:
+        "Lines are quarterly samples of APNIC's 30-day windows, ranked by current rate " +
+        "in the legend; the dashed line is the user-weighted world average.",
+      methodology:
+        "The set is fixed: the ten largest economies by APNIC's weighted sample count — " +
+        "its estimate of each economy's internet-user population — as measured when this " +
+        "module launched in July 2026: China, India, the United States, Brazil, " +
+        "Indonesia, Japan, Mexico, Russia, the Philippines and Nigeria. Freezing " +
+        "membership is deliberate; re-picking the list nightly would let membership " +
+        "churn masquerade as adoption change. For each economy the pipeline pulls " +
+        "APNIC's full daily series and samples the last published day of each " +
+        "quarter-end month (30-day smoothed window), plus the newest available day; " +
+        "legend order is current rate, descending. Per-economy caveat, per APNIC: " +
+        "samples arrive where the measurement ads are delivered, and delivery volume " +
+        "varies by economy — where it runs thin (Russia currently yields a small " +
+        "fraction of the samples of comparable economies) the measured rate carries " +
+        "more noise.",
+    },
+
+    // --------------------------------------------- hygiene.html · 3
+    spread: {
+      num: "03",
+      kicker: "The spread",
+      headline: "Count economies, not users, and the picture flips.",
+      caption:
+        "Every economy APNIC measures with a meaningful sample, bucketed by its current " +
+        "validation rate. Weighted this way — one economy, one vote — DNSSEC looks far " +
+        "less bleak: the stat counts how many economies validate for at least half " +
+        "their users. Hold it against the user-weighted hero line and the diagnosis " +
+        "sharpens: the shortfall lives in a handful of enormous economies whose " +
+        "incumbent resolver fleets never switched validation on.",
+      statBig: "{n} of {total}",
+      statLead: "measured economies validate for at least half their users",
+      statNote: "economies with at least {min_seen} samples in the current 30-day window",
+      tooltipBucket: "Validation rate {bucket}",
+      tooltipUnit: "economies",
+      yAxisLabel: "economies",
+      methodology:
+        "The distribution covers every economy on APNIC's DNSSEC world map with at " +
+        "least 10,000 measurements in the current 30-day window — below that floor a " +
+        "rate is an anecdote — bucketed by the share of sampled users behind validating " +
+        "resolvers: under 10%, 10–25%, 25–50%, 50–75%, and 75% or higher (lower edges " +
+        "inclusive). Each economy counts once regardless of size; that equal weighting " +
+        "is the point, and the reason this chart can look healthier than the " +
+        "user-weighted world line above. Values are parsed nightly from the world-map " +
+        "table APNIC publishes (per-economy JSON exists, but pulling two hundred forty " +
+        "series every night to rebuild one histogram would abuse the source; the table " +
+        "is a single request). Same caveat as the rest of the page: rates are estimated " +
+        "from ad-delivered samples, and thinly sampled economies are exactly the ones " +
+        "the floor exists to keep out.",
+    },
   },
 
   footer: {
@@ -1003,13 +1117,14 @@ export const editorial = {
       "HIBP breach catalog fetched {hibp_fetched} ({hibp_count} breaches) · " +
       "Ransomwhere {ransomwhere_addresses} addresses / {ransomwhere_txs} transactions " +
       "fetched {ransomwhere_fetched} · " +
-      "ATT&CK enterprise v{attack_version} ({attack_versions} releases)",
+      "ATT&CK enterprise v{attack_version} ({attack_versions} releases) · " +
+      "APNIC DNSSEC series fetched {apnic_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
-      "or Ransomwhere. Charts aggregate public data; no individual CVE is news here, and no " +
-      "victim is identified or identifiable anywhere on this site.",
+      "Ransomwhere, or APNIC. Charts aggregate public data; no individual CVE is news here, " +
+      "and no victim is identified or identifiable anywhere on this site.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -1024,7 +1139,9 @@ export const editorial = {
       // The quoted sentence is MITRE's required copyright designation, verbatim
       // (attack.mitre.org → Resources → Terms of Use). Do not paraphrase it.
       "MITRE ATT&CK® (© 2026 The MITRE Corporation. This work is reproduced and distributed " +
-      "with the permission of The MITRE Corporation.).",
+      "with the permission of The MITRE Corporation.), " +
+      "and DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
+      "re-use with attribution permitted).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
   },
 };

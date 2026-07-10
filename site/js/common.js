@@ -118,6 +118,7 @@ function renderMeta(meta) {
       ransomwhere_fetched: s.ransomwhere?.fetched_at ?? "?",
       attack_version: (s.attack?.latest_version ?? "?") + (s.attack?.stale ? " (carried forward)" : ""),
       attack_versions: (s.attack?.version_count ?? 0).toLocaleString("en-US"),
+      apnic_fetched: s.apnic?.fetched_at ?? "?",
     }))
   );
 }

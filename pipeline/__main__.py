@@ -27,8 +27,8 @@ from pathlib import Path
 from typing import Iterator
 
 from . import (attack_metrics, breach_metrics, concentration_metrics,
-               contracts, extortion_metrics, history, kev_metrics,
-               market_metrics, metrics, quality_metrics)
+               contracts, extortion_metrics, history, hygiene_metrics,
+               kev_metrics, market_metrics, metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -281,6 +281,11 @@ def run(args: argparse.Namespace) -> int:
         skip=args.skip_attack, offline_fixtures=args.offline_fixtures)
     if attack_churn is not None:
         outputs["attack_churn.json"] = attack_churn
+    # No skip flag and no carried-forward staleness: upstream publishes
+    # its full history, so this stage is a cheap stateless refetch.
+    dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
+        generated_at, offline_fixtures=args.offline_fixtures)
+    outputs["dnssec_adoption.json"] = dnssec_adoption
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -299,6 +304,7 @@ def run(args: argparse.Namespace) -> int:
     }
     if attack_source is not None:
         outputs["meta.json"]["sources"]["attack"] = attack_source
+    outputs["meta.json"]["sources"]["apnic"] = apnic_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

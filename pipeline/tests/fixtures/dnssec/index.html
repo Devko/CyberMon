@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><title>DNSSEC World Map</title></head>
+<body>
+<!-- Hand-written fixture of stats.labs.apnic.net/dnssec: the inline
+     Google-Charts table rows in the exact upstream format. Includes the
+     region pseudo-code rows (XA, XE, QR) that parse_index must exclude,
+     QA (Qatar — a REAL economy despite the Q, must be kept), and TT with
+     a tiny sample count (kept by the parser; dropped later by the
+     metrics' min_seen floor). -->
+<script type='text/javascript'>
+    var myTableData = new google.visualization.DataTable([]);
+      function drawMapAndTable() {
+      var myTableView = new google.visualization.arrayToDataTable([
+["Code","Name",{label: "% Validating", type: "number"},{label: "% Partially Validating", type: "number"},{label: "Combined", type: "number"},{label: "Samples", type: "number"},{label: "Weight", type: "number"},{label: "Weighted Samples", type: "number"}],
+["<a href=\"/dnssec/XA\">XA</a>","<a href=\"/dnssec/XA\">World</a>",{v: 38.45, f:'38.45%'}, {v: 8.84, f: '8.84%'}, {v: 47.29, f: '47.29%'},493075676,1.00,493075676]        ,
+["<a href=\"/dnssec/XE\">XE</a>","<a href=\"/dnssec/XE\">Europe</a>",{v: 44.32, f:'44.32%'}, {v: 15.60, f: '15.60%'}, {v: 59.92, f: '59.92%'},56560606,1.24,70152963],
+["<a href=\"/dnssec/QR\">QR</a>","<a href=\"/dnssec/QR\">Micronesia</a>, <a href=\"/dnssec/XF\">Oceania</a>",{v: 87.33, f:'87.33%'}, {v: 4.05, f: '4.05%'}, {v: 91.38, f: '91.38%'},67767,0.49,33165],
+["<a href=\"/dnssec/PH\">PH</a>","<a href=\"/dnssec/PH\">Philippines</a>, <a href=\"/dnssec/XU\">South-Eastern Asia</a>, <a href=\"/dnssec/XD\">Asia</a>",{v: 93.47, f:'93.47%'}, {v: 2.11, f: '2.11%'}, {v: 95.58, f: '95.58%'},7455541,1.24,9264338],
+["<a href=\"/dnssec/DE\">DE</a>","<a href=\"/dnssec/DE\">Germany</a>, <a href=\"/dnssec/QO\">Western Europe</a>, <a href=\"/dnssec/XE\">Europe</a>",{v: 80.96, f:'80.96%'}, {v: 3.18, f: '3.18%'}, {v: 84.15, f: '84.15%'},5788219,1.41,8147757],
+["<a href=\"/dnssec/NL\">NL</a>","<a href=\"/dnssec/NL\">Netherlands (Kingdom of the)</a>, <a href=\"/dnssec/QO\">Western Europe</a>, <a href=\"/dnssec/XE\">Europe</a>",{v: 78.02, f:'78.02%'}, {v: 5.44, f: '5.44%'}, {v: 83.46, f: '83.46%'},1502238,1.10,1652461],
+["<a href=\"/dnssec/QA\">QA</a>","<a href=\"/dnssec/QA\">Qatar</a>, <a href=\"/dnssec/XV\">Western Asia</a>, <a href=\"/dnssec/XD\">Asia</a>",{v: 65.28, f:'65.28%'}, {v: 6.02, f: '6.02%'}, {v: 71.30, f: '71.30%'},310204,1.05,325714],
+["<a href=\"/dnssec/BR\">BR</a>","<a href=\"/dnssec/BR\">Brazil</a>, <a href=\"/dnssec/XP\">South America</a>, <a href=\"/dnssec/XC\">Americas</a>",{v: 50.66, f:'50.66%'}, {v: 9.02, f: '9.02%'}, {v: 59.68, f: '59.68%'},9147608,2.10,19219973],
+["<a href=\"/dnssec/US\">US</a>","<a href=\"/dnssec/US\">United States of America</a>, <a href=\"/dnssec/XQ\">Northern America</a>, <a href=\"/dnssec/XC\">Americas</a>",{v: 44.54, f:'44.54%'}, {v: 5.26, f: '5.26%'}, {v: 49.80, f: '49.80%'},57322031,0.53,30167141],
+["<a href=\"/dnssec/JP\">JP</a>","<a href=\"/dnssec/JP\">Japan</a>, <a href=\"/dnssec/XS\">Eastern Asia</a>, <a href=\"/dnssec/XD\">Asia</a>",{v: 14.46, f:'14.46%'}, {v: 5.50, f: '5.50%'}, {v: 19.96, f: '19.96%'},38724187,0.33,12661552],
+["<a href=\"/dnssec/GB\">GB</a>","<a href=\"/dnssec/GB\">United Kingdom of Great Britain and Northern Ireland</a>, <a href=\"/dnssec/QM\">Northern Europe</a>, <a href=\"/dnssec/XE\">Europe</a>",{v: 13.79, f:'13.79%'}, {v: 6.51, f: '6.51%'}, {v: 20.30, f: '20.30%'},5188070,1.46,7599288],
+["<a href=\"/dnssec/CN\">CN</a>","<a href=\"/dnssec/CN\">China</a>, <a href=\"/dnssec/XS\">Eastern Asia</a>, <a href=\"/dnssec/XD\">Asia</a>",{v: 0.09, f:'0.09%'}, {v: 0.75, f: '0.75%'}, {v: 0.84, f: '0.84%'},26333240,3.57,94034181],
+["<a href=\"/dnssec/TT\">TT</a>","<a href=\"/dnssec/TT\">Trinidad and Tobago</a>, <a href=\"/dnssec/XN\">Caribbean</a>, <a href=\"/dnssec/XC\">Americas</a>",{v: 91.02, f:'91.02%'}, {v: 2.20, f: '2.20%'}, {v: 93.22, f: '93.22%'},512,0.90,461]
+]);
+      }
+</script>
+<p><a href="https://stats.labs.apnic.net/cgi-bin/json-table.pl?x=XA">Download JSON Time Series Data for Code XA</a></p>
+</body>
+</html>
