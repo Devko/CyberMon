@@ -58,7 +58,8 @@ export function render(slots, data) {
   const hist = data.history;
   const line = mkChart(lineEl);
   line.setOption({
-    grid: { ...baseGrid, left: 56, top: 16, bottom: 24 },
+    // right padding keeps the newest date label from clipping at the edge
+    grid: { ...baseGrid, left: 56, right: 36, top: 16, bottom: 24 },
     tooltip: {
       ...baseTooltip, trigger: "axis",
       formatter: (params) => tooltipRows(params, fmtInt),

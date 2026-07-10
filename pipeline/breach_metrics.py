@@ -24,8 +24,8 @@ always holds — the emitted ``catalog`` block is the audit trail.
 Import era: HIBP launched 2013-12-04 with an opening catalog of
 already-public breaches — in the live feed, six of its seven December
 2013 entries predate the service itself (median nominal lag 511 days),
-while from the first full calendar year the catalog ran live (the 2014
-median collapses to 5 days). Entries added before
+while in 2014, the first full calendar year the catalog ran live, the
+median collapses to 5 days. Entries added before
 :data:`IMPORT_CUTOFF` therefore measure the import of the back
 catalog and are excluded from the lag trend and headline, reported
 once as ``import_era`` (mirrors kev_metrics' launch backfill).

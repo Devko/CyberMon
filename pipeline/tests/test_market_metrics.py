@@ -279,7 +279,9 @@ def test_run_stage_live_reconstructs_lost_state_from_published_output(
         tmp_path, monkeypatch):
     from pipeline import fetch_market
 
-    prior = build_market_hype(_state({"aaa": {"hn": {"2026-06": 5}}}),
+    # 2026-05 is a CLOSED month at the prior build date — the in-progress
+    # month never reaches the published file and cannot round-trip.
+    prior = build_market_hype(_state({"aaa": {"hn": {"2026-05": 5}}}),
                               [_term("aaa")], "2026-06-01T00:00:00Z")
     (tmp_path / "market_hype.json").write_text(json.dumps(prior),
                                                encoding="utf-8")
@@ -289,7 +291,7 @@ def test_run_stage_live_reconstructs_lost_state_from_published_output(
               skip=False, offline_fixtures=False,
               backfill_batch=5, log=logs.append)
     assert any("reconstructed sync state" in m for m in logs)
-    assert seen["state"]["series"]["aaa"]["hn"] == {"2026-06": 5}
+    assert seen["state"]["series"]["aaa"]["hn"] == {"2026-05": 5}
     assert seen["state"]["last_sync"] == "2026-06-01T00:00:00Z"
     # the reconstructed-then-synced state is persisted for the next night
     assert fetch_market.load_state(tmp_path / "cache") == seen["state"]

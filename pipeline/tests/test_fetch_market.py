@@ -379,11 +379,24 @@ def test_reconstruct_state_round_trips_published_counts(tmp_path):
     obj = _publish(tmp_path, state, [TERM_A])
     logs = []
     rebuilt = fetch_market.reconstruct_state(tmp_path, log=logs.append)
-    assert rebuilt == state  # a full hn history leaves nothing pending
+    # Closed months round-trip losslessly. The in-progress month (2026-07)
+    # is deliberately never published, so it cannot be reconstructed: it is
+    # re-queued and re-fetched — which the nightly HN pass does anyway.
+    expected = {**state, "series": {"alpha": {
+        "gdelt": {"2026-05": 40, "2026-06": 25},
+        "hn": {m: i for i, m in enumerate(window) if m != "2026-07"},
+        "arxiv": {"2026-06": 3},
+    }}, "pending": [["hn", "alpha", "2026-07"]]}
+    assert rebuilt == expected
     assert any("reconstructed sync state" in m for m in logs)
-    # ... and building again from the rebuilt state reproduces the file
-    assert build_market_hype(rebuilt, [TERM_A],
-                             "2026-07-09T06:00:00Z") == obj
+    # ... and building again from the rebuilt state reproduces every
+    # published number; only the backfill counter differs (the re-queued
+    # current month), which is metadata, not data.
+    rebuilt_obj = build_market_hype(rebuilt, [TERM_A],
+                                    "2026-07-09T06:00:00Z")
+    assert rebuilt_obj["terms"] == obj["terms"]
+    assert rebuilt_obj["headline"] == obj["headline"]
+    assert rebuilt_obj["backfill_remaining"] == 1
 
 
 def test_reconstruct_state_queues_window_months_missing_from_hn(tmp_path):
@@ -396,12 +409,18 @@ def test_reconstruct_state_queues_window_months_missing_from_hn(tmp_path):
              "pending": []}
     _publish(tmp_path, state, [TERM_A, TERM_B])
     rebuilt = fetch_market.reconstruct_state(tmp_path, log=lambda m: None)
-    assert rebuilt["series"] == state["series"]
+    # The published file omits the in-progress month, so the rebuilt series
+    # lacks alpha's current-month hn cell; everything closed is intact.
+    assert rebuilt["series"] == {
+        "alpha": {"hn": {m: 1 for m in window[2:] if m != window[-1]}},
+        "beta": {"gdelt": {"2026-06": 9}},
+    }
     # oldest months first (the order the nightly backfill drains), all
-    # terms per month: alpha's two missing months, beta's entire window
+    # terms per month: alpha's two missing leading months plus the
+    # unpublishable current month, beta's entire window
     expected = []
     for month in window:
-        if month in window[:2]:
+        if month in window[:2] or month == window[-1]:
             expected.append(["hn", "alpha", month])
         expected.append(["hn", "beta", month])
     assert rebuilt["pending"] == expected

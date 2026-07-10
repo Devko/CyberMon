@@ -195,8 +195,9 @@ def check_volume_belongs_to_a_handful(d: dict) -> None:
 
 
 def check_rejections_keep_shrinking(d: dict) -> None:
-    # editorial.js (volume curve): the rejection line "as a share of what
-    # ships, it keeps shrinking."
+    # editorial.js (volume curve): the rejection share "runs far below what
+    # it was five years ago" — "far below" is enforced as at most 80% of
+    # the five-years-ago share, not merely smaller.
     rows = complete_years(d["years"])
     latest = max(rows, key=lambda r: r["year"])
     earlier = next((r for r in rows if r["year"] == latest["year"] - 5), None)
@@ -208,10 +209,22 @@ def check_rejections_keep_shrinking(d: dict) -> None:
         total = r["published"] + r["rejected"]
         return 100.0 * r["rejected"] / total if total else 0.0
 
-    assert share(latest) < share(earlier), (
-        f"'as a share of what ships, it keeps shrinking' needs "
-        f"{latest['year']}'s rejection share ({share(latest):.2f}%) below "
+    assert share(latest) < 0.8 * share(earlier), (
+        f"'far below what it was five years ago' needs {latest['year']}'s "
+        f"rejection share ({share(latest):.2f}%) well under "
         f"{earlier['year']}'s ({share(earlier):.2f}%)"
+    )
+
+
+def check_flood_critical_volume(d: dict) -> None:
+    # editorial.js (9.8 flood caption): "nearly four thousand records a
+    # year now ship stamped Critical". Bounded both ways: under 3,000 the
+    # claim inflates, past ~4,400 "nearly four thousand" understates.
+    rows = complete_years(d["years"])
+    latest = max(rows, key=lambda r: r["year"])
+    assert 3000 <= latest["critical"] <= 4400, (
+        f"'nearly four thousand … Critical' vs {latest['critical']} "
+        f"in {latest['year']}"
     )
 
 
@@ -220,6 +233,11 @@ def check_rejections_keep_shrinking(d: dict) -> None:
 # sentence the site commits to. Keep the claim text greppable.
 # --------------------------------------------------------------------------
 CLAIMS = [
+    (
+        "nearly four thousand records a year now ship stamped Critical",
+        "nine_eight_flood.json",
+        check_flood_critical_volume,
+    ),
     (
         "Four of every ten CVEs ship as “High” or worse.",
         "severity_inflation.json",

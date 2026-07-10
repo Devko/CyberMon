@@ -1,8 +1,8 @@
 // Extortion 2 — payment counts and median payment size per year. Contract:
 // site/data/extortion_ledger.json (shared fetch, see extortion.js).
 // Bars: distinct on-chain payments per year (left axis). Line: median
-// payment USD (right axis, LOG scale — the median spans four orders of
-// magnitude, from hundreds of dollars in the mass-campaign years to six
+// payment USD (right axis, LOG scale — the median spans nearly seven
+// orders of magnitude, from pennies in the mass-campaign years to six
 // figures). Years below min_n carry no median in the payload; the line
 // simply skips them (absence is "not charted", never zero).
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml, MONO } from "../theme.js";
