@@ -14,7 +14,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
-             "kev_ransomware.json"]
+             "kev_ransomware.json", "breach_ledger.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -33,6 +33,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sources"]["cvelist"] == {"release": "fixtures", "cve_count": 11}
     assert meta["sources"]["epss"]["row_count"] == 7
     assert meta["sources"]["kev"]["count"] == 3
+    assert meta["sources"]["hibp"]["breach_count"] == 9
 
     decay = _load(tmp_path, "nvd_decay.json")
     assert decay["current"]["backlog_total"] == 31102  # 290 + 30412 + 400
@@ -67,11 +68,27 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert board["cnas"][0] == {"cna": "mitre", "total": 2, "rejected": 1,
                                 "rejected_rate_pct": 50.0}
 
-    # The fixture corpus carries no current-year records, so none of the
-    # three flow charts may emit a pace projection (contracts allow absence).
+    # The fixtures carry no current-year records, so none of the four flow
+    # charts may emit a pace projection (contracts allow absence).
     for name in ("volume_curve.json", "nine_eight_flood.json",
-                 "cna_concentration.json"):
+                 "cna_concentration.json", "breach_ledger.json"):
         assert "projection" not in _load(tmp_path, name), name
+
+    # Breach ledger: 4 of the 9 fixture entries are excluded (one per
+    # reason; SpamHaul carries both spam and malware flags and counts once,
+    # under spam_list); the 2013 launch import stays out of the lag trend.
+    ledger = _load(tmp_path, "breach_ledger.json")
+    assert ledger["catalog"] == {
+        "total": 9, "cohort": 5,
+        "excluded": {"fabricated": 1, "spam_list": 1, "malware": 1,
+                     "stealer_log": 1}}
+    assert ledger["import_era"] == {"added_before": "2014-01-01", "n": 1,
+                                    "median_days": 522.0}
+    assert [(y["year"], y["n"], y["median_days"])
+            for y in ledger["lag_by_year"]] == [(2024, 2, 213.0),
+                                                (2025, 2, -8.0)]
+    assert [y["year"] for y in ledger["volume_by_year"]] == [2013, 2024, 2025]
+    assert ledger["class_shares"]["classes"][0] == "Email addresses"
 
     # Advisory quality: fixture-mode min_n=1, so every publication year
     # charts; 2024's REJECTED record is excluded from the denominator.
