@@ -1143,6 +1143,32 @@ export const editorial = {
       "and DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
       "re-use with attribution permitted).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
+    // Module pages only (the Overview has no carousel). The PDF is built at
+    // deploy time by tools/make_carousels.py and ships only inside the Pages
+    // artifact, never in git.
+    carouselTemplate: "This page as a LinkedIn carousel (PDF) → carousels/{id}.pdf",
+  },
+
+  // ------------------------------------------- carousel.html (print template)
+  // Strings for the per-module slide decks (LinkedIn document-post PDFs).
+  // Rendered by js/carousel.js, printed by tools/make_carousels.py.
+  carousel: {
+    edition: "Edition {generated_at}",
+    slideFooter: "cybermon · devko.github.io/CyberMon · data: {sources}",
+    siteUrl: "devko.github.io/CyberMon",
+    closingSources: "Data: {sources}",
+    // Per-module primary upstreams, short enough for a slide footer. The
+    // full attribution (editorial.footer.dataNote) stays on the site.
+    sources: {
+      cve: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · NVD (NIST)",
+      market: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR",
+      kev: "CISA KEV catalog · CVE List V5 (MITRE)",
+      concentration: "CVE List V5 (MITRE)",
+      breaches: "Have I Been Pwned",
+      extortion: "Ransomwhere (CC0)",
+      attack: "MITRE ATT&CK®",
+      hygiene: "APNIC Labs (stats.labs.apnic.net)",
+    },
   },
 };
 
