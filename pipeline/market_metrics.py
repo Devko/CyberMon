@@ -151,11 +151,23 @@ def build_market_hype(state: dict, terms: list[TermDef],
                       generated_at: str) -> dict:
     """Assemble the full market_hype.json object from sync state, for the
     given terms (in the given order). A term/source absent from the state
-    simply yields an empty series and null stats."""
+    simply yields an empty series and null stats. The generation month is
+    excluded everywhere (series, YoY, divergence) until it completes."""
     all_series = state.get("series", {})
+    # The month in progress is collected (the sync must keep refreshing it)
+    # but never published: ten days of a month charted next to complete
+    # months reads as a cliff, sits inside every "latest twelve months" YoY
+    # window, and skews the divergence averages. It joins the charts only
+    # once it closes. Trimming here, at build time, keeps the sync state
+    # untouched.
+    current_month = generated_at[:7]
     term_objs = []
     for term in terms:
-        per_source = all_series.get(term.id, {})
+        per_source = {
+            src: {m: n for m, n in (all_series.get(term.id, {})
+                                    .get(src, {}) or {}).items()
+                  if m < current_month}
+            for src in SOURCES}
         series = {s: index_series(per_source.get(s, {})) for s in SOURCES}
         term_objs.append({
             "id": term.id,

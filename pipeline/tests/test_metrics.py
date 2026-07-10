@@ -225,9 +225,12 @@ def test_grid_cells_and_headline(agg, epss, kev):
 def test_kev_cut(agg, epss, kev):
     out = metrics.build_score_vs_reality(agg, epss.scores, kev.cve_ids,
                                          GENERATED_AT)
-    assert out["kev"]["total"] == 3
+    # total counts KEV entries WITH an in-record score (the share's real
+    # denominator): the fixture's unscored KEV entry is excluded, so the
+    # stat can never be silently diluted by scoreless entries.
+    assert out["kev"]["total"] == 2
     assert out["kev"]["below_high"] == 1  # CVE-2023-0003 at 6.9
-    assert out["kev"]["pct_below_high"] == 33.3
+    assert out["kev"]["pct_below_high"] == 50.0
     dist = {d["bucket"]: d["n"] for d in out["kev"]["cvss_distribution"]}
     # the unscored KEV entry is not in the distribution
     assert dist == {"0.1-3.9": 0, "4.0-6.9": 1, "7.0-8.9": 0, "9.0-10.0": 1}

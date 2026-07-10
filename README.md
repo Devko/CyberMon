@@ -54,8 +54,8 @@ research-vs-media divergence quadrant.
 
 ### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html) (live)
 
-*By the time the government confirms it's exploited, you've been exposed
-for months.* Four charts: days from CVE publication to CISA KEV listing
+*By the time the government confirms it's exploited, the exploit had a
+head start.* Four charts: days from CVE publication to CISA KEV listing
 (median/IQR by year, distribution buckets), remediation-deadline spans,
 and the share of each year's listings flagged for known ransomware
 campaign use — with the 2021 launch back-catalog quarantined from the
@@ -79,6 +79,7 @@ exposed per year (with a pace projection for the partial year), and the
 share of each year's breaches spilling the top data classes. Fabricated
 entries, spam lists, malware corpora and stealer logs are excluded, and
 the exclusion arithmetic ships in the data file.
+
 ### 06 · Extortion Ledger — [extortion.html](https://devko.github.io/CyberMon/extortion.html) (live)
 
 *Ransom revenue is the one security statistic nobody can spin — it
@@ -89,6 +90,7 @@ size per year, and a family concentration board with the unattributed
 majority disclosed rather than ranked. Every figure is a lower bound by
 construction — a payment counts only after someone reported the address
 and the transfers were verified.
+
 ### 07 · ATT&CK Churn — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
 
 *The map of attacker behavior grows every release; detections are graded
@@ -100,6 +102,7 @@ Released bundles are immutable, so per-version stats are computed once and
 cached (`.cache/attack_state.json`); a lost cache is reconstructed from the
 previously published `attack_churn.json`, and a normal night costs one
 `index.json` fetch.
+
 ### 08 · Hygiene Index — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
 
 *The fix is twenty years old, free, and still not deployed.* Three charts
@@ -232,7 +235,8 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 ## Disclaimer & license
 
 CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
-CVE Program, NIST/NVD, CISA, or FIRST**. All upstream data is © its
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+Pwned, Ransomwhere, or APNIC**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
 

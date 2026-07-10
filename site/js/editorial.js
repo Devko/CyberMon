@@ -173,7 +173,7 @@ export const editorial = {
   // docs/data-contracts.md, "Pace projections".
   projection: {
     note:
-      "Dashed and hollow marks: the partial year carried forward at its " +
+      "Dashed or hollow marks: the partial year carried forward at its " +
       "current pace — calendar arithmetic, not a forecast.",
     tooltipProjected: "{name} · projected full year ≈ {n}",
     tooltipElapsed: "{pct} of the year elapsed",
@@ -210,7 +210,9 @@ export const editorial = {
         "silently reshape every other term's history under that scheme. If a source's fetch " +
         "fails or is rate-limited (GDELT throttles aggressively), that stretch stays blank " +
         "until a nightly run heals it — a line that starts partway through the window is a " +
-        "gap in collection, not in the world.",
+        "gap in collection, not in the world. The month in progress is collected but never " +
+        "charted, ranked, or averaged until it closes: ten days of a month would read as a " +
+        "cliff at the end of every curve.",
     },
 
     // ------------------------------------------- market.html · 2
@@ -237,7 +239,7 @@ export const editorial = {
         "waiting out an upstream rate limit — are omitted until then.",
       methodology:
         "For each (term, source) pair, sum raw monthly counts for the most recent twelve " +
-        "populated months and the twelve months before that; YoY change is the percentage " +
+        "populated complete months (the month in progress never counts) and the twelve months before that; YoY change is the percentage " +
         "difference between the two sums. Pairs with fewer than twenty-four populated " +
         "months, a zero-count prior-year baseline, or fewer than thirty raw hits across " +
         "both windows are excluded — a percentage computed on a handful of hits means " +
@@ -270,7 +272,7 @@ export const editorial = {
         "plot; the rest join as collection fills in.",
       methodology:
         "Each axis is the term's own attention index (see Hype curves methodology), " +
-        "averaged over the three most recent populated months, for GDELT (x) and arXiv " +
+        "averaged over the three most recent populated complete months (the month in progress never counts), for GDELT (x) and arXiv " +
         "(y). A term's divergence score is the y-axis value minus the x-axis value, in " +
         "index points; scores beyond ±10 are labeled “research leads” or “media leads,” " +
         "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
@@ -302,13 +304,15 @@ export const editorial = {
         "shaded bands span the 25th–75th percentile (IQR). A record scored under several versions " +
         "appears in each version's series, but exactly once in the blended line, using its newest " +
         "version's score. “% High or Critical” is the share of scored CVEs that year with base " +
-        "score ≥ 7.0; unscored CVEs are excluded. Vertical markers are CVSS spec releases. " +
+        "score ≥ 7.0; unscored CVEs are excluded. Vertical markers are CVSS spec releases " +
+        "(those that fall inside the charted span). " +
         "Honesty filters: a point is plotted only if that year has at least 100 scored CVEs in " +
         "that series; per-version points cannot predate the version's spec release (CNAs " +
         "backfill scores onto old records); and the blended line additionally requires scores " +
         "on at least 20% of the CVEs published that year — years with 1% coverage chart which " +
         "records got backfilled, not what was published. The headline compares the latest " +
-        "COMPLETE year against the earliest year that clears these filters — the current year " +
+        "COMPLETE year against the year ten years before it (or the earliest year that clears "
+        + "these filters, until the record is that deep) — the current year " +
         "plots (labeled partial, refilled nightly) but never headlines: six months of data " +
         "would fake a trend.",
     },
@@ -332,7 +336,7 @@ export const editorial = {
       toggleShare: "Share of year",
       methodology:
         "CVEs are bucketed by their base score (highest CVSS version available per record): " +
-        "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.1–3.9. “No score in record” " +
+        "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.0–3.9. “No score in record” " +
         "counts CVEs published that year with no base score anywhere in the CVE record " +
         "itself — CNA or CISA-ADP container. The vertical marker is computed, not " +
         "decorative: it sits at the first year in which at least 10% of published records " +
@@ -340,7 +344,7 @@ export const editorial = {
         "done in the record at all — CNAs filed bare entries and NVD assigned CVSS " +
         "downstream, in its own database (which this chart deliberately does not ingest). " +
         "The unscored band's collapse since is the scoring duty migrating to the source: " +
-        "CNA self-scoring rose from ~1% of records (2017) to ~80% (now), and when NVD's " +
+        "CNA self-scoring rose from under 2% of records (2017) to ~80% (now), and when NVD's " +
         "enrichment stalled in 2024, CISA's Vulnrichment program (the ADP container) began " +
         "backstopping the rest — a quarter of all 2024 records carry only a CISA score. " +
         "The share view normalizes each year to 100%. The current year (marked *) is " +
@@ -369,7 +373,7 @@ export const editorial = {
       statCriticalTemplate: "{pct} of Critical-rated CVEs have <1% probability of exploitation",
       statCriticalNote: "per EPSS, across {n} Critical CVEs with a current score",
       statKevTemplate: "{pct} of actively exploited vulnerabilities are rated below High",
-      statKevNote: "{below_high} of {total} CISA KEV entries score under 7.0",
+      statKevNote: "{below_high} of {total} scored CISA KEV entries rate under 7.0",
       kevBarTitle: "KEV entries by CVSS bucket",
       methodology:
         "The grid covers scored CVEs that have a current EPSS score; each cell counts CVEs in " +
@@ -509,7 +513,7 @@ export const editorial = {
         "tracked as its slice of that year's CWE-tagged records, with everything else " +
         "pooled as “Other.” Memory-safety errors and the injection classics anchor the " +
         "list across the whole window — a decade of churn in tooling, funding, and " +
-        "research agendas shows up here as a few points of drift.",
+        "research agendas shows up here as swings of a few to a dozen points — never as a class leaving the board.",
       // rendered as a panel-note by cve.js (same slot the decay chart uses)
       note:
         "Shares are of CWE-tagged records only; each year's tooltip shows how much of " +
@@ -601,7 +605,7 @@ export const editorial = {
         "interquartile range per year of listing. Unlike the latency chart, the seeding era " +
         "belongs here — the deadline is set the day the entry lands, back-catalog included, " +
         "so this is a policy timeline, not a backlog artifact. The early catalog handed out " +
-        "months; the standing rule since has been three weeks.",
+        "months; the standing rule since has been three weeks, and the newest listings are tightening further.",
       methodology:
         "Remediation span is the KEV dueDate minus dateAdded, in days, for every catalog " +
         "entry carrying both fields — no CVE match is needed, so this covers the catalog " +
@@ -659,12 +663,12 @@ export const editorial = {
       statAgo: "{ago_year}",
       methodology:
         "Each CVE record's assigner (the CNA of record in cvelistV5) is counted by original " +
-        "publication year; a CNA is active in a year if it published at least one record. " +
+        "publication year; a CNA is active in a year if it published or rejected at least one record. " +
         "Top-5/top-10 share is the fraction of that year's volume from its five or ten " +
         "largest assignors, membership recomputed every year — the names in the top 5 " +
         "change, the concentration doesn't. The pipeline also computes a " +
         "Herfindahl–Hirschman Index per year (the sum of squared volume shares, on the " +
-        "0–10,000 scale antitrust regulators use; {hhi_latest} for the latest year) as a " +
+        "0–10,000 scale antitrust regulators use; {hhi_latest} for the latest complete year) as a " +
         "formal concentration measure that sees the whole distribution, not just the head. " +
         "HHI and top-N share can diverge — a fat head over a long tail moves them " +
         "differently — so this chart reports both rather than picking the more dramatic " +
@@ -684,7 +688,7 @@ export const editorial = {
         "than it ever has. Hold that against the chart above: the newcomers add count, " +
         "not share. The head of the table absorbs the growth.",
       methodology:
-        "A newcomer in year Y is a CNA whose earliest published record in the entire corpus " +
+        "A newcomer in year Y is a CNA whose earliest record in the entire corpus (published or rejected) " +
         "falls in Y — first appearance in the data, not accreditation date, which the corpus " +
         "doesn't carry. The active-roster line counts CNAs with at least one published " +
         "record that year, the same definition as the concentration chart. Because first " +
@@ -720,7 +724,7 @@ export const editorial = {
       windowTemplate:
         "CVE record states by assigner · last {window_years} years · min {min_total} records (published + rejected)",
       methodology:
-        "For each assigner in cvelistV5, count records first published in the last " +
+        "For each assigner in cvelistV5, count records dated in the last " +
         "{window_years} years by state: PUBLISHED versus REJECTED. Rejection rate is " +
         "rejected over (published + rejected). CNAs with fewer than {min_total} total " +
         "records in the window are excluded — a two-for-two rejection record is an " +
@@ -747,8 +751,8 @@ export const editorial = {
       statWhole: "since {trend_start}",
       statLatest: "{latest_year}",
       importNote:
-        "{n} breaches entered the catalog in its launch month — December 2013, before " +
-        "{added_before} — with a median nominal lag of {median_days} days. That figure " +
+        "{n} breaches entered the catalog around its December 2013 launch (added before " +
+        "{added_before}) — with a median nominal lag of {median_days} days. That figure " +
         "measures the opening import of already-public breaches, not disclosure speed, " +
         "and it stays out of the trend above.",
       methodology:
@@ -759,9 +763,9 @@ export const editorial = {
         "is the median lag of breaches catalogued each year; the shaded band spans the " +
         "25th–75th percentile. The trend starts in 2014, and the cutoff comes from the " +
         "data: HIBP launched on 2013-12-04 by importing breaches that were already " +
-        "public — six of its seven December 2013 entries predate the service itself, with " +
-        "a median nominal lag of 511 days — while from the first full calendar year the " +
-        "catalog ran live (the 2014 median collapses to 5 days). Old breaches keep " +
+        "public — six of its seven opening-import entries predate the service itself, with " +
+        "a median nominal lag of 511 days — while in 2014, the first full calendar year " +
+        "the catalog ran live, the median collapses to 5 days. Old breaches keep " +
         "entering the catalog in every later year, and those stay in the trend on " +
         "purpose: a breach surfacing years late is exactly the phenomenon this chart " +
         "measures, and only the opening import is an artifact of the catalog's own " +
@@ -885,8 +889,8 @@ export const editorial = {
       headline: "Fewer payments, bigger ransoms.",
       caption:
         "Bars count verified payments per year; the line follows the median payment in " +
-        "day-of-transfer dollars, on a log scale because it climbs four orders of " +
-        "magnitude. The shape is the extortion economy's story so far: mass campaigns " +
+        "day-of-transfer dollars, on a log scale climbing from pennies to six figures — " +
+        "nearly seven orders of magnitude. The shape is the extortion economy's story so far: mass campaigns " +
         "squeezed hundreds of dollars out of thousands of victims, then operators moved " +
         "to organizations and the typical confirmed payment reached six figures while " +
         "the count collapsed. Read the recent bars with care — thinner crowdsourced " +

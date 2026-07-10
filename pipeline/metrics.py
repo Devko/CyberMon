@@ -522,9 +522,12 @@ def build_score_vs_reality(agg: Aggregator, epss_scores: dict[str, float],
         "epss_buckets": list(EPSS_BUCKETS),
         "headline": {"pct_critical_epss_below_1pct": _pct(below_1pct, n_critical),
                      "n_critical_with_epss": n_critical},
-        "kev": {"total": len(kev_cve_ids),
+        # The share denominates KEV entries that carry an in-record score
+        # (today that is all of them; if one ever lacks a score, an
+        # all-entries denominator would silently understate the share).
+        "kev": {"total": len(kev_scores),
                 "below_high": below_high,
-                "pct_below_high": _pct(below_high, len(kev_cve_ids)),
+                "pct_below_high": _pct(below_high, len(kev_scores)),
                 "cvss_distribution": [{"bucket": b, "n": dist.get(b, 0)}
                                       for b in CVSS_BUCKETS]},
     }

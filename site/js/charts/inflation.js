@@ -31,7 +31,14 @@ export function render(slots, data) {
   slots.stat.append(stat);
 
   // ---- chart ----------------------------------------------------------------
-  const years = data.blended.map((d) => d.year);
+  // Axis years = union of every per-version series and the blended line:
+  // v3 clears the >=100 filter years before blended clears its 20%-coverage
+  // rule, and building the axis from blended alone would silently drop
+  // those points (and any annotation older than the blended span).
+  const years = [...new Set([
+    ...Object.values(data.series || {}).flat().map((d) => d.year),
+    ...data.blended.map((d) => d.year),
+  ])].sort((a, b) => a - b);
   // The generation year plots but is partial — mark it (the headline stat
   // above already excludes it by contract).
   const genYear = Number(data.generated_at.slice(0, 4));
@@ -70,9 +77,13 @@ export function render(slots, data) {
 
   const blendedName = "Blended median";
   legendData.push(blendedName);
+  // Year-aligned, NOT positional: the axis is the union of all series'
+  // years, so blended (which starts later than v3) must map by year or
+  // it renders shifted to the left edge.
+  const blendedByYear = byYear(data.blended);
   series.push({
     name: blendedName, type: "line",
-    data: data.blended.map((d) => d.median),
+    data: blendedByYear((r) => r.median),
     color: C.accent, symbol: "none",
     lineStyle: { width: 2, type: [6, 4] }, z: 6,
     markLine: {
