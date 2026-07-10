@@ -69,6 +69,7 @@ function renderFooterText() {
   ft.append(
     el("p", "muted", editorial.footer.dataNote),
     el("p", "muted", editorial.footer.disclaimer),
+    el("p", "muted", editorial.footer.reuseNote),
     repo
   );
 }

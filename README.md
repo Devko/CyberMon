@@ -186,3 +186,11 @@ CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
 CVE Program, NIST/NVD, CISA, or FIRST**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
+
+Charts and aggregate numbers may be reused freely — **link back to
+CyberMon** (the live site or this repo) as the source. CyberMon is a
+spare-time project maintained on a best-effort basis. Everything is
+provided **as-is, without warranty of any kind**: there is **no guarantee
+the data is correct, complete, or current** — an unattended nightly
+pipeline can and occasionally will break. Verify against the primary
+sources before relying on any number.

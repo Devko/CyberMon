@@ -669,6 +669,11 @@ export const editorial = {
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, or arXiv. Charts aggregate " +
       "public data; no individual CVE is news here.",
+    reuseNote:
+      "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
+      "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
+      "unattended pipeline and provided as-is, with no guarantee of correctness, completeness, " +
+      "or availability; check a number against its primary source before you rely on it.",
     dataNote:
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
