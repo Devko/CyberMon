@@ -453,6 +453,7 @@ is a roster headcount and is never projected; nor are the shares or the
 HHI. Validator: `pipeline/tier1_contracts.py`.
 
 ## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
+## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
 
 ```json
 {
@@ -549,3 +550,78 @@ projected — one mega-dump can outweigh the rest of the year, so a records
 pace would dress one upload up as a forecast. Validator:
 `pipeline/breach_contracts.py` (registered into `pipeline/contracts.py`'s
 dispatch).
+  "revenue_by_quarter": [
+    {"year": 2020, "quarter": 3, "usd": 139502184}
+  ],
+  "payments_by_year": [
+    {"year": 2016, "payments": 9324, "usd": 68400000, "median_usd": 575.5}
+  ],
+  "families": {
+    "top": [
+      {"family": "Conti", "usd": 101561482, "payments": 128,
+       "first_year": 2017, "last_year": 2022}
+    ],
+    "other": {"families": 96, "usd": 12345678, "payments": 990},
+    "unattributed": {"usd": 682149269, "payments": 850}
+  },
+  "catalog": {"addresses": 11186, "families": 106, "transactions": 21802,
+              "payments": 18902, "total_usd": 1018573922},
+  "headline": {"total_usd": 1018573922,
+               "peak_quarter": {"year": 2020, "quarter": 3, "usd": 139502184},
+               "first_year": 2012, "last_year": 2024}
+}
+```
+
+Source: the Ransomwhere export (`api.ransomwhe.re/export`, CC0) —
+crowdsourced, verified ransomware payment addresses with their on-chain
+transactions. Everything in this file is a FLOOR: a payment enters the
+dataset only after someone reported the address and the transfers were
+verified, so site copy must always claim "at least this much", never
+"the market is this big".
+
+All `usd` values are **integers (whole dollars)** at the HISTORICAL
+BTC/USD rate of each transaction's date (upstream's `amountUSD`; the
+implied rate per transaction year tracks the price history) — a 2016
+payment stays in 2016 dollars. `median_usd` is the one float, rounded to
+**2** decimals — a documented exception to the 1-decimal rule: early
+mass-campaign years have sub-dollar medians ($0.03 in 2013), which
+1-decimal rounding would crush to a false zero. Years are bounded below
+by 2008 (pre-Bitcoin "payments" are parser breakage); any single USD
+value above 10^10 fails validation as a unit error (satoshi summed as
+dollars).
+
+`revenue_by_quarter`: transaction `amountUSD` summed by the UTC calendar
+quarter of the on-chain timestamp, over ALL ledger entries as published
+(the export lists a transaction once per receiving tracked address;
+exact repeated entries carry ~1% of total USD and are trusted rather
+than second-guessed without chain data). Quarters are **contiguous** from
+first to last observed payment — gaps chart as zero, the axis never
+silently skips time.
+
+`payments_by_year`: a payment is one distinct on-chain transaction
+(unique `hash`, outputs to tracked addresses summed — multi-wallet
+transfers collapse). `payments` ≥ 1 per row; `median_usd` is present
+only when the year has at least `min_n` payments (production 10; fixture
+mode 1) — absence means "not charted", never zero. `catalog.payments` ≤
+`catalog.transactions` always.
+
+`families`: Ransomwhere's own labels, neutral identifiers. `top` = up to
+8 labeled families ranked descending by all-time confirmed USD; the
+literal `"Unlabeled"` bucket (verified but unattributed — the largest
+single slice) must NEVER appear in `top`: it ships as
+`families.unattributed` and the site discloses it beside the board.
+Remaining labeled families pool into `families.other`.
+`catalog.families` counts labeled families only. A ranked board is
+shipped instead of a per-year share series on purpose: wallets are often
+reported long after a campaign ran, so yearly family shares would chart
+reporting dates, not activity.
+
+NO `projection` key, ever, although yearly payment counts are a flow:
+crowdsourced reports arrive with a lag, so the partial current year
+structurally undercounts and the uniform-flow assumption behind "Pace
+projections" (above) does not hold. `headline.total_usd` must equal
+`catalog.total_usd`; `headline.peak_quarter.usd` must equal the series
+maximum. `meta.json` gains an optional `sources.ransomwhere`
+`{fetched_at, address_count, tx_count}` block (validated when present).
+Validator: `pipeline/extortion_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).

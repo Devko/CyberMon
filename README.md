@@ -79,6 +79,16 @@ exposed per year (with a pace projection for the partial year), and the
 share of each year's breaches spilling the top data classes. Fabricated
 entries, spam lists, malware corpora and stealer logs are excluded, and
 the exclusion arithmetic ships in the data file.
+### 06 · Extortion Ledger — [extortion.html](https://devko.github.io/CyberMon/extortion.html) (live)
+
+*Ransom revenue is the one security statistic nobody can spin — it
+settles on a public ledger.* Three views of the crowdsourced,
+on-chain-verified Ransomwhere dataset: confirmed ransom revenue per
+quarter (in day-of-transfer dollars), payment counts and median payment
+size per year, and a family concentration board with the unattributed
+majority disclosed rather than ranked. Every figure is a lower bound by
+construction — a payment counts only after someone reported the address
+and the transfers were verified.
 
 ### Next
 
@@ -116,6 +126,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
+| [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and

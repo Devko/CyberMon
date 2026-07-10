@@ -14,7 +14,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
-             "kev_ransomware.json", "breach_ledger.json"]
+             "kev_ransomware.json", "breach_ledger.json",
+             "extortion_ledger.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -34,6 +35,8 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sources"]["epss"]["row_count"] == 7
     assert meta["sources"]["kev"]["count"] == 3
     assert meta["sources"]["hibp"]["breach_count"] == 9
+    assert meta["sources"]["ransomwhere"]["address_count"] == 6
+    assert meta["sources"]["ransomwhere"]["tx_count"] == 8
 
     decay = _load(tmp_path, "nvd_decay.json")
     assert decay["current"]["backlog_total"] == 31102  # 290 + 30412 + 400
@@ -121,6 +124,20 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
                                               (2024, 1, 0)]
     assert ransomware["catalog"] == {"total": 3, "known": 1,
                                      "pct_known": 33.3}
+
+    # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
+    # transaction pays two DemoLocker addresses); the Unlabeled address is
+    # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
+    ledger = _load(tmp_path, "extortion_ledger.json")
+    assert ledger["catalog"] == {"addresses": 6, "families": 2,
+                                 "transactions": 8, "payments": 7,
+                                 "total_usd": 121000}
+    assert len(ledger["revenue_by_quarter"]) == 17  # gap-filled quarters
+    assert [f["family"] for f in ledger["families"]["top"]] == \
+        ["DemoLocker", "PetitEncrypt"]
+    assert ledger["families"]["unattributed"] == {"usd": 50000, "payments": 1}
+    assert ledger["headline"]["peak_quarter"] == {"year": 2022, "quarter": 3,
+                                                  "usd": 50000}
 
 
 def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):

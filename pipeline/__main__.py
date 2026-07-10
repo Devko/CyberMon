@@ -26,13 +26,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (breach_metrics, concentration_metrics, contracts, history,
-               kev_metrics, market_metrics, metrics, quality_metrics)
+from . import (breach_metrics, concentration_metrics, contracts,
+               extortion_metrics, history, kev_metrics, market_metrics,
+               metrics, quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
 from .fetch_hibp import HibpData, fetch_hibp, load_hibp_file
 from .fetch_kev import KevData, fetch_kev, load_kev_file
+from .fetch_ransomwhere import fetch_ransomwhere, load_ransomwhere_file
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 DEFAULT_MIN_CVES = 100
@@ -180,6 +182,7 @@ def run(args: argparse.Namespace) -> int:
         epss = load_epss_file(FIXTURES_DIR / "epss_scores.csv")
         kev = load_kev_file(FIXTURES_DIR / "kev.json")
         hibp = load_hibp_file(FIXTURES_DIR / "hibp_breaches.json")
+        ransomwhere = load_ransomwhere_file(FIXTURES_DIR / "ransomwhere.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -191,6 +194,10 @@ def run(args: argparse.Namespace) -> int:
         print("fetching HIBP breach catalog ...")
         hibp = fetch_hibp()
         print(f"  HIBP: {hibp.breach_count} breaches")
+        print("fetching Ransomwhere export ...")
+        ransomwhere = fetch_ransomwhere()
+        print(f"  Ransomwhere: {ransomwhere.address_count} addresses, "
+              f"{ransomwhere.tx_count} transactions")
     nvd_statuses = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
@@ -251,6 +258,10 @@ def run(args: argparse.Namespace) -> int:
             breach_metrics.build_breach_ledger(
                 hibp.breaches, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
+        "extortion_ledger.json":
+            extortion_metrics.build_extortion_ledger(
+                ransomwhere, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)
@@ -273,6 +284,11 @@ def run(args: argparse.Namespace) -> int:
         outputs["meta.json"]["sources"]["market"] = market_source
     outputs["meta.json"]["sources"]["hibp"] = {
         "fetched_at": generated_at, "breach_count": hibp.breach_count}
+    outputs["meta.json"]["sources"]["ransomwhere"] = {
+        "fetched_at": generated_at,
+        "address_count": ransomwhere.address_count,
+        "tx_count": ransomwhere.tx_count,
+    }
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

@@ -28,6 +28,7 @@ export const editorial = {
     { id: "kev", href: "kev.html", label: "KEV Latency" },
     { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
     { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
+    { id: "extortion", href: "extortion.html", label: "Extortion" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -102,6 +103,19 @@ export const editorial = {
           "Every breach in Have I Been Pwned, read as a ledger: how long breaches take to " +
           "reach the public record, how many accounts spill per year, and which data " +
           "classes leak most — with the catalog's launch import kept out of the trend.",
+        live: true,
+      },
+      {
+        id: "extortion",
+        href: "extortion.html",
+        num: "06",
+        label: "Extortion Ledger",
+        headline: "Ransom revenue is the one security statistic nobody can spin — it settles on a public ledger.",
+        blurb:
+          "Confirmed ransomware payments from the crowdsourced, on-chain-verified " +
+          "Ransomwhere dataset: revenue per quarter in day-of-transfer dollars, payment " +
+          "counts and median sizes, and which families collect. Every figure is a lower " +
+          "bound by construction, rebuilt nightly.",
         live: true,
       },
     ],
@@ -779,6 +793,108 @@ export const editorial = {
         "year plots only with at least 10 cohort breaches. The current year (marked *) " +
         "is partial and refills nightly.",
     },
+
+    // --------------------------------------- extortion.html · 1 · hero
+    revenue: {
+      num: "01",
+      kicker: "Confirmed revenue",
+      headline: "Over a billion dollars, settled in public view.",
+      caption:
+        "Ransom payments verified on the Bitcoin blockchain, summed by the quarter the " +
+        "money moved and valued at that day's exchange rate. The dataset behind this chart " +
+        "is Ransomwhere: crowdsourced reports of extortion addresses, each verified before " +
+        "it counts. That design makes every bar a floor, not a market estimate — a payment " +
+        "appears here only after somebody reported the wallet, so the true total sits above " +
+        "every number on this page. Read the thin right edge accordingly: volunteer " +
+        "reporting has slowed, and the chart cannot separate that from the extortion " +
+        "economy itself cooling off.",
+      statLabel: "Confirmed ransom revenue on the public ledger, all-time",
+      statNote: "at least — {payments} verified payments to {addresses} tracked addresses",
+      methodology:
+        "Ransomwhere's CC0 export lists tracked extortion addresses, each with its " +
+        "verified inbound transactions. The pipeline sums each transaction's amountUSD " +
+        "into the UTC calendar quarter of its on-chain timestamp. amountUSD is upstream's " +
+        "conversion at the historical BTC/USD rate of the transaction date — the implied " +
+        "rate per transaction year tracks the price history, so a 2016 payment stays in " +
+        "2016 dollars rather than being revalued at today's price. The export lists a " +
+        "transaction once per receiving tracked address, so a transfer that fans out " +
+        "across several tracked wallets contributes each received output; exact repeated " +
+        "entries (about one percent of total USD) are summed as published rather than " +
+        "second-guessed without chain data. Quarters between the first and last observed " +
+        "payment always chart, at zero when empty. No full-year pace is projected for the " +
+        "partial current year: crowdsourced reports arrive with a lag, which breaks the " +
+        "uniform-flow assumption the projection math needs. Crowdsourced and verified " +
+        "means lower bound — every claim on this page reads “at least this much.”",
+    },
+
+    // --------------------------------------- extortion.html · 2
+    payments: {
+      num: "02",
+      kicker: "Payments",
+      headline: "Fewer payments, bigger ransoms.",
+      caption:
+        "Bars count verified payments per year; the line follows the median payment in " +
+        "day-of-transfer dollars, on a log scale because it climbs four orders of " +
+        "magnitude. The shape is the extortion economy's story so far: mass campaigns " +
+        "squeezed hundreds of dollars out of thousands of victims, then operators moved " +
+        "to organizations and the typical confirmed payment reached six figures while " +
+        "the count collapsed. Read the recent bars with care — thinner crowdsourced " +
+        "coverage and a changed business model both shrink them, and this dataset " +
+        "cannot split the two effects.",
+      legendPayments: "Verified payments",
+      legendMedian: "Median payment (USD, log)",
+      methodology:
+        "A payment is one distinct on-chain transaction: the export lists a transaction " +
+        "once per receiving tracked address, so transfers that fan out across several " +
+        "tracked wallets are collapsed by transaction hash and their outputs summed " +
+        "before anything is counted — on live data, roughly 22,000 ledger entries " +
+        "collapse to about 19,000 payments. Yearly buckets use the transaction's " +
+        "on-chain UTC timestamp; the median is over per-payment USD at the historical, " +
+        "day-of-transfer rate. A year's median plots only with at least 10 payments — a " +
+        "median of three payments is an anecdote — while the payment count always " +
+        "plots. The current year (marked *) is partial and refills nightly; no pace " +
+        "projection is drawn, for the reporting-lag reason in the revenue methodology.",
+    },
+
+    // --------------------------------------- extortion.html · 3
+    families: {
+      num: "03",
+      kicker: "Family concentration",
+      headline: "The biggest bucket on the ledger has no name on it.",
+      caption:
+        "The families with the most confirmed revenue, ranked, with payment counts and " +
+        "the years each was seen collecting. Two disclosures belong next to this board. " +
+        "The single largest slice of verified revenue — about two thirds — carries no " +
+        "family label at all: payments somebody proved, campaigns nobody attributed. " +
+        "And a family's rank tracks how well its wallets were reported — coverage runs " +
+        "deep for some campaigns and stops at a single wallet for others. That is why " +
+        "this is a ranked board rather than a share-per-year chart: family coverage is " +
+        "episodic, so yearly shares would mostly chart when volunteers filed their " +
+        "reports.",
+      note:
+        "{unattributed_usd} — {unattributed_pct} of all confirmed revenue — is verified " +
+        "but attributed to no family. It is disclosed here and never ranked on the board.",
+      colFamily: "Family",
+      colUsd: "confirmed USD",
+      colPayments: "payments",
+      colFirst: "first seen",
+      colLast: "last seen",
+      otherTemplate:
+        "+ {families} more labeled families below the cut · {usd} confirmed · {payments} payments",
+      methodology:
+        "Family names are Ransomwhere's own labels, used as neutral identifiers. Per " +
+        "family: confirmed revenue is the sum of transaction amountUSD across its " +
+        "addresses, at historical day-of-transfer rates; payments are distinct " +
+        "transaction hashes among those addresses; first and last seen are the years of " +
+        "its earliest and latest verified transactions. The board ranks the top eight " +
+        "labeled families by all-time confirmed USD; every labeled family below the cut " +
+        "pools into the footer line. The export's “Unlabeled” bucket — verified payments " +
+        "without an attribution — is excluded from the ranking and disclosed in the " +
+        "panel note instead, because ranking it would present a reporting gap as the " +
+        "leading brand. A share-per-year view was considered and rejected: wallets are " +
+        "often reported long after a campaign ran, so yearly family shares would chart " +
+        "reporting dates as much as anything the families did.",
+    },
   },
 
   footer: {
@@ -787,12 +903,15 @@ export const editorial = {
       "Sources — cvelistV5 release {cvelist_release} ({cve_count} CVEs) · " +
       "EPSS {epss_version} scores of {epss_date} · CISA KEV {kev_version} ({kev_count} entries) · " +
       "NVD statuses fetched {nvd_fetched} · market terms fetched {market_fetched} · " +
-      "HIBP breach catalog fetched {hibp_fetched} ({hibp_count} breaches)",
+      "HIBP breach catalog fetched {hibp_fetched} ({hibp_count} breaches) · " +
+      "Ransomwhere {ransomwhere_addresses} addresses / {ransomwhere_txs} transactions " +
+      "fetched {ransomwhere_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, or Have I Been Pwned. " +
-      "Charts aggregate public data; no individual CVE is news here.",
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
+      "or Ransomwhere. Charts aggregate public data; no individual CVE is news here, and no " +
+      "victim is identified or identifiable anywhere on this site.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -802,7 +921,8 @@ export const editorial = {
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
       "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
-      "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com).",
+      "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com), " +
+      "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
   },
 };
