@@ -214,6 +214,17 @@ def _validate_meta(obj: Any) -> None:
                         "meta.sources.epss_history"),
                    "meta.sources.epss_history.pending_backfill")
 
+    # Optional (additive extension): the Silent Rescores diff stage.
+    # ``events_total`` = rows on the committed event log after tonight's
+    # append; ``state_release`` = the corpus release recorded in tonight's
+    # fingerprint state (the release-skew guard's reference point).
+    if "rescores" in src:
+        rs = src["rescores"]
+        _check_int(_get(rs, "events_total", "meta.sources.rescores"),
+                   "meta.sources.rescores.events_total")
+        _check_str(_get(rs, "state_release", "meta.sources.rescores"),
+                   "meta.sources.rescores.state_release")
+
     # Optional (additive extension, market precedent): the Ransomwhere
     # export behind the Extortion Ledger module. Checked when present.
     if "ransomwhere" in src:
@@ -504,3 +515,6 @@ VALIDATORS.update(epss_report_contracts.VALIDATORS)
 from . import calendar_contracts  # noqa: E402
 
 VALIDATORS.update(calendar_contracts.VALIDATORS)
+from . import rescore_contracts  # noqa: E402
+
+VALIDATORS.update(rescore_contracts.VALIDATORS)

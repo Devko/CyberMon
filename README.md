@@ -167,6 +167,27 @@ from the same cvelistV5 corpus (all date judgments UTC):
    twelve second Tuesdays, against the 3.3% those days would hold under
    a calendar-blind uniform flow.
 
+### 13 · Silent Rescores — [rescores.html](https://devko.github.io/CyberMon/rescores.html) (live)
+
+*Severity is not just assigned — it is edited after the fact, quietly, on
+live records.* Every night the pipeline fingerprints each published CVE's
+CNA-assigned base score (the exact extraction the severity-inflation
+chart uses, so the two can never disagree) and diffs it against the
+previous night's corpus (`.cache/rescore_state.json.gz`). Changes land on
+a committed, append-only event log
+(`site/data/history/rescore_log.csv`) as one of four types: `rescore`
+(same CVSS version, new score — the only type with an up/down direction),
+`version_shift` (moved to another CVSS version; never charted as a score
+change, because v2/v3/v4 are different scales), `first_score` (an old
+record backfilled with its first score) and `score_removed`. Three
+charts: edits per week (up vs. down, the other types as separate muted
+series), the rescore-delta distribution (behind a min-n gate until the
+record is deep enough), and a CNA board of who edits. **No upstream
+publishes this history — the record starts at first deploy and grows
+every night.** A lost diff state rebuilds from that night's corpus (zero
+events that night, at worst one night's diffs lost); a re-run on the same
+corpus release is detected and never double-counts.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
@@ -218,9 +239,13 @@ whenever the state is missing or unreadable) so drift can never outlive
 `FULL_RESYNC_DAYS`; full sweeps read NVD's static yearly JSON feeds
 (CDN-served flat files, minutes total) instead of paging the API.
 
-`site/data/history/` — the nightly NVD backlog snapshots — is an **original
-dataset accumulated by this project**; NVD publishes no such history. You are
-welcome to reuse it, CC-BY style: just credit "CyberMon
+`site/data/history/` holds **original datasets accumulated by this
+project**: the nightly NVD backlog snapshots (`nvd_backlog.csv` — NVD
+publishes no backlog history) and the silent-rescore event log
+(`rescore_log.csv` — no upstream publishes score-edit history). Both are
+append-only and cannot be regenerated from any source; the weekly
+`data-backup-*` tags are their rollback insurance. You are welcome to
+reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
 
 ## Local development

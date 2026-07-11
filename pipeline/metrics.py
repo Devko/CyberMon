@@ -144,12 +144,22 @@ class CveFacts:
     has_affected: bool = False  # any usable affected[] entry in the record
 
     @property
-    def newest_cna_score(self) -> float | None:
-        """CNA-assigned base score of the newest CVSS version, if any."""
+    def newest_cna_fingerprint(self) -> tuple[str, float] | None:
+        """(version family, score) of the newest CVSS version carrying a
+        CNA-assigned base score — the Silent Rescores fingerprint.
+        :attr:`newest_cna_score` is derived from this, so the inflation
+        chart and the rescore diff can never disagree on what "the CNA
+        score" of a record is."""
         for family in _FAMILY_ORDER:
             if family in self.cna_scores:
-                return self.cna_scores[family]
+                return family, self.cna_scores[family]
         return None
+
+    @property
+    def newest_cna_score(self) -> float | None:
+        """CNA-assigned base score of the newest CVSS version, if any."""
+        fingerprint = self.newest_cna_fingerprint
+        return None if fingerprint is None else fingerprint[1]
 
     @property
     def effective_score(self) -> float | None:
@@ -350,6 +360,15 @@ class Aggregator:
         # this in calendar_metrics — same single streaming pass, records
         # without a datePublished simply don't join the day tally.
         self.calendar_days: dict[int, Counter[str]] = defaultdict(Counter)
+        # Silent Rescores module (rescore_tracker.py), published records
+        # only: cve_id -> (cna, version family or None, CNA score or None).
+        # The fingerprint is CveFacts.newest_cna_fingerprint — the exact
+        # extraction the inflation chart's blended series uses — so the two
+        # modules can never disagree about a record's CNA score. Unscored
+        # published records are kept (fingerprint None): only then can a
+        # later first score be told apart from a brand-new record.
+        self.rescore_fingerprints: dict[
+            str, tuple[str, str | None, float | None]] = {}
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
@@ -380,7 +399,13 @@ class Aggregator:
         for family, score in facts.cna_scores.items():
             self.version_scores[family][facts.year].append(score)
 
-        newest = facts.newest_cna_score
+        fingerprint = facts.newest_cna_fingerprint
+        self.rescore_fingerprints[facts.cve_id] = (
+            facts.cna,
+            fingerprint[0] if fingerprint else None,
+            fingerprint[1] if fingerprint else None)
+
+        newest = None if fingerprint is None else fingerprint[1]
         if newest is not None:
             self.blended_scores[facts.year].append(newest)
             self.cna_year_scores[facts.cna][facts.year].append(newest)
