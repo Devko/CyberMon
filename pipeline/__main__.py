@@ -29,7 +29,8 @@ from typing import Iterator
 from . import (attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, epss_report_metrics,
                extortion_metrics, guards_metrics, history, hygiene_metrics,
-               kev_metrics, market_metrics, metrics, quality_metrics)
+               kev_metrics, market_metrics, metrics, quality_metrics,
+               rescore_tracker)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -315,6 +316,18 @@ def run(args: argparse.Namespace) -> int:
     dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
         generated_at, offline_fixtures=args.offline_fixtures)
     outputs["dnssec_adoption.json"] = dnssec_adoption
+    # Silent Rescores: diff tonight's per-CVE CNA score fingerprints (from
+    # the same streaming pass) against last night's cached state. The
+    # merged event rows and tonight's state come back UNWRITTEN — both are
+    # persisted below, only after every output validates, so a failed run
+    # never records tonight's release (the retry must still diff).
+    rescore_log, rescore_source, rescore_rows, rescore_state = \
+        rescore_tracker.run_stage(
+            args.out, args.cache_dir, agg.rescore_fingerprints, release,
+            generated_at, offline_fixtures=args.offline_fixtures,
+            **({"min_n": 1, "min_cna_events": 1}
+               if args.offline_fixtures else {}))
+    outputs["rescore_log.json"] = rescore_log
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -337,6 +350,7 @@ def run(args: argparse.Namespace) -> int:
         outputs["meta.json"]["sources"]["epss_history"] = \
             epss_history_source
     outputs["meta.json"]["sources"]["apnic"] = apnic_source
+    outputs["meta.json"]["sources"]["rescores"] = rescore_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
@@ -346,10 +360,17 @@ def run(args: argparse.Namespace) -> int:
         csv_path = args.out / "history" / "nvd_backlog.csv"
         history.write_rows(csv_path, history_rows)
         print(f"  history: {len(history_rows)} snapshot(s) in {csv_path}")
+    rescore_csv = args.out / "history" / "rescore_log.csv"
+    rescore_tracker.write_events(rescore_csv, rescore_rows)
+    print(f"  history: {len(rescore_rows)} rescore event(s) in {rescore_csv}")
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")
         print(f"wrote {path}")
+    # Persist the rescore fingerprint state LAST: only a run that emitted
+    # everything may record tonight's release as diffed (see run_stage).
+    if rescore_state is not None:
+        rescore_tracker.save_state(args.cache_dir, rescore_state)
     return 0
 
 

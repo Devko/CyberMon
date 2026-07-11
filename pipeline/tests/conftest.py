@@ -9,7 +9,7 @@ import pytest
 from pipeline import (breach_metrics, calendar_metrics,
                       concentration_metrics, epss_report_metrics,
                       extortion_metrics, guards_metrics, kev_metrics,
-                      metrics, quality_metrics)
+                      metrics, quality_metrics, rescore_tracker)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_hibp import load_hibp_file
@@ -94,6 +94,11 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
                                                      GENERATED_AT, min_n=1),
         "cve_calendar.json":
             calendar_metrics.build_cve_calendar(agg, GENERATED_AT, min_n=1),
+        "rescore_log.json":
+            rescore_tracker.build_rescore_log(
+                [], state_size=len(agg.rescore_fingerprints),
+                release="fixtures", generated_at=GENERATED_AT,
+                min_n=1, min_cna_events=1),
         "meta.json": metrics.build_meta(
             GENERATED_AT, cvelist_release="fixtures", cve_count=agg.cve_count,
             epss_model_version=epss.model_version,
@@ -111,4 +116,6 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
         log=lambda _msg: None)
     out["epss_report.json"] = epss_report
     out["meta.json"]["sources"]["epss_history"] = epss_history_source
+    out["meta.json"]["sources"]["rescores"] = {
+        "events_total": 0, "state_release": "fixtures"}
     return out

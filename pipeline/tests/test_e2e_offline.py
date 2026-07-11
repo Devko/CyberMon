@@ -16,7 +16,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json",
-             "epss_report.json", "cve_calendar.json"]
+             "epss_report.json", "cve_calendar.json", "rescore_log.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -211,6 +211,23 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     pt = {y["year"]: y for y in cal["patch_tuesday"]["years"]}
     assert pt[2024]["on_pt"] == 1 and pt[2023]["on_pt"] == 0
     assert cal["patch_tuesday"]["calendar_pct"] == 3.3
+
+    # Silent Rescores: offline runs are stateless baseline nights — a
+    # valid, honestly empty file (the record starts when the state does),
+    # plus the header-only committed-log CSV.
+    rescores = _load(tmp_path, "rescore_log.json")
+    assert rescores["catalog"] == {
+        "state_size": 10,  # the corpus's 10 published records; REJECTED out
+        "corpus_release": "fixtures",
+        "totals": {"rescore": 0, "version_shift": 0,
+                   "first_score": 0, "score_removed": 0},
+        "events_total": 0, "first_observed": None}
+    assert rescores["weeks"] == []
+    assert rescores["magnitude"]["buckets"] is None
+    assert rescores["cna_board"]["cnas"] == []
+    assert (tmp_path / "history" / "rescore_log.csv").exists()
+    assert meta["sources"]["rescores"] == {"events_total": 0,
+                                           "state_release": "fixtures"}
 
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is

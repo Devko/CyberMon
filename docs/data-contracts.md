@@ -72,6 +72,11 @@ reason as `attack` (`--skip-epss-report` with no prior data omits it);
 when present it carries `fetched_at` (ISO-8601 UTC), `graded` (KEV entries
 with a day-before score) and `pending_backfill` (pairs not yet looked up),
 plus `"stale": true` on carry-forward runs.
+`sources.rescores` (Silent Rescores module) is validated additively —
+optional because older committed meta files predate the module, but the
+stage always emits it: `events_total` = rows on the committed event log
+after tonight's append, `state_release` = the corpus release recorded in
+tonight's fingerprint state (the release-skew guard's reference point).
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -610,6 +615,95 @@ never feeds a headline or comparison. No pace projection: every series
 here is a share, already normalized to its year. Validator:
 `pipeline/calendar_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
+
+## site/data/rescore_log.json  (Silent Rescores module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "weeks": [
+    {"week": "2026-W29", "rescore_up": 12, "rescore_down": 7,
+     "first_score": 31, "version_shift": 4, "score_removed": 1}
+  ],
+  "magnitude": {
+    "min_n": 30, "n": 84, "up": 51, "down": 33,
+    "buckets": [{"bucket": "+0.1..+1.9", "n": 40}],
+    "median_delta": 0.6
+  },
+  "cna_board": {
+    "min_events": 3,
+    "cnas": [{"cna": "VendorX", "rescores": 21, "up": 14, "down": 7}]
+  },
+  "catalog": {
+    "state_size": 331204,
+    "corpus_release": "cve_2026-07-11_0700Z",
+    "totals": {"rescore": 84, "version_shift": 9,
+               "first_score": 112, "score_removed": 3},
+    "events_total": 208,
+    "first_observed": "2026-07-12"
+  }
+}
+```
+
+Source: CyberMon's own nightly diffs of the cvelistV5 corpus. Each night,
+the streaming pass collects a per-published-CVE **fingerprint** — the
+newest-version CNA-assigned base score as `(version family, score)`,
+extracted by the SAME property the severity-inflation chart's blended
+series reads (`CveFacts.newest_cna_fingerprint`), so the two modules can
+never disagree about a record's score — and diffs it against last night's
+fingerprints (`.cache/rescore_state.json.gz`, which also records the
+corpus release tag). Unscored published records are kept in the state
+with a null fingerprint: that is what makes a late first score
+distinguishable from a brand-new record.
+
+Event taxonomy — the boundaries are the module's honesty rules:
+`rescore` = same CVSS version, different score (the ONLY type with an
+up/down direction and the only population the magnitude section reads);
+`version_shift` = the record's newest scored CVSS version changed —
+score comparison across versions is NOT a rescore (different scales), so
+shifts are logged separately and never charted as up/down, even when the
+number moved; `first_score` = a record already on last night's log gained
+its first in-record CNA score — backfill-scoring, counted separately,
+never an edit; `score_removed` = the score disappeared from a
+still-published record. Brand-new records and records leaving the
+published corpus produce no event.
+
+Events append to **`site/data/history/rescore_log.csv`** (columns:
+`observed_date,cve,cna,change_type,version_old,score_old,version_new,
+score_new`; empty cells = not applicable, scores at 1 decimal, dates
+non-decreasing). Like `nvd_backlog.csv`, this file is an **original
+dataset accumulated by this project and CANNOT be regenerated** — no
+upstream publishes score-edit history; the weekly `data-backup-*` tags
+are its rollback insurance. `rescore_log.json` is rebuilt from the full
+CSV nightly; the CSV is written only after every output validates.
+
+Self-healing and re-run safety: a missing/unreadable state rebuilds from
+tonight's corpus and the night logs zero events (at worst one night's
+diffs are lost; the committed CSV is untouched). When tonight's corpus
+release equals the state's recorded release, the diff is skipped so
+re-runs never double-count; the state is persisted only after a fully
+validated run, so a failed run's retry still diffs.
+
+`weeks` = per-ISO-week (`YYYY-Www`, UTC observation dates) event counts,
+gap-filled between the first and last observed week, sorted, unique;
+`rescore_up`/`rescore_down` split rescores by direction, the other three
+types count whole (direction-free by design). Weekly counts must sum to
+`catalog.totals` per type. `magnitude` covers rescore events only
+(`n == catalog.totals.rescore`; `up + down == n`): signed deltas
+`score_new − score_old` (same version by construction) in the fixed
+buckets `<=-4.0, -3.9..-2.0, -1.9..-0.1, +0.1..+1.9, +2.0..+3.9, >=+4.0`
+(a delta of exactly 0 cannot occur). `buckets` and `median_delta` are
+null exactly while `n < min_n` (production 30; fixture mode 1) — the site
+renders the placeholder from `n`, never a fake distribution. `cna_board`
+= CNAs with at least `min_events` rescore events (production 3; fixture
+mode 1), `up + down == rescores` per row, sorted by `rescores`
+descending. `catalog` is the audit block: totals carry exactly the four
+change types and sum to `events_total`; `first_observed` is null exactly
+when the log is empty — the record starts at first deploy, and the data
+file says so rather than hiding it. No pace projection: the record is
+launch-thin and edit flow is nightly-batched, so a pace would be noise
+dressed as a forecast. Validator: `pipeline/rescore_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).
 
 ## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
 ## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
