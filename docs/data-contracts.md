@@ -1226,58 +1226,6 @@ anywhere in this file. Validator: `pipeline/guards_contracts.py`
 {
   "generated_at": "...",
   "min_n": 10,
-  "min_vendor_entries": 5,
-  "years": [
-    {"year": 2021, "total": 311, "security": 44, "pct_security": 14.1}
-  ],
-  "vendors": [
-    {"vendor": "Fortinet", "entries": 26, "security_entries": 26,
-     "pct_security": 100.0, "first_added": "2021-11-03",
-     "last_added": "2026-04-13", "median_gap_days": 42.0}
-  ],
-  "ransomware": {
-    "security": {"total": 188, "known": 70, "pct_known": 37.2},
-    "other": {"total": 1447, "known": 259, "pct_known": 17.9}
-  },
-  "catalog": {"total": 1635, "security": 188, "pct_security": 11.5,
-              "classifier_version": 1, "classifier_rules": 32}
-}
-```
-
-Every KEV entry is classified by `pipeline/security_products.py` — a
-curated, versioned table of security vendors plus product-keyword rules
-for mixed vendors (the decision rule and every judgment call live in
-that module's docstring; the table is data, reviewable in the repo).
-`catalog` is the audit block: whole-catalog totals plus the
-`classifier_version`/`classifier_rules` that produced them, so any
-published share is traceable to the classifier revision behind it.
-
-`years` (hero): per `dateAdded` calendar year, entries added (`total`),
-entries classified as security products (`security` ≤ `total`), and
-`pct_security`. ALL cohorts belong, the 2021–22 seeding era included —
-like `kev_ransomware`, the catalog is read as a snapshot and the
-classification rides on the entry itself. Years with fewer than `min_n`
-entries are omitted (production 10; fixture mode 1); sorted, unique.
-Entries with an unparseable `dateAdded` join no year but still count in
-`catalog` and `ransomware`.
-
-`vendors` (recidivism board): every vendor label with at least
-`min_vendor_entries` catalog entries (production 5; fixture mode 1).
-Labels are whitespace-normalized but NEVER merged (Pulse Secure stays
-distinct from Ivanti — the catalog's attribution is the record).
-`median_gap_days` is the median of day gaps between consecutive
-`dateAdded` values (0.0 = same-day bulk additions), `null` iff the
-vendor has a single dated entry. `first_added` ≤ `last_added`. Sorted by
-`entries` descending, ties by casefolded vendor name; vendor names
-unique. The site flags rows with `pct_security` ≥ 50 as security-vendor
-rows.
-
-`ransomware`: the `knownRansomwareCampaignUse` split ("Known" vs
-anything else, missing never counts — `kev_ransomware`'s rule) across
-the classifier's two halves; `security.total + other.total` must equal
-`catalog.total`, so nothing is dropped silently. No CVE-corpus join
-anywhere in this file. Validator: `pipeline/guards_contracts.py`
-(registered into `pipeline/contracts.py`'s dispatch).
   "model_eras": [
     {"label": "v1", "model_version": "v1 (pre-header daily CSVs)",
      "from": "2021-04-14", "to": "2022-02-03"},
