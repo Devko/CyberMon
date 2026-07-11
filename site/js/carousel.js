@@ -19,6 +19,7 @@ import { render as renderInflation } from "./charts/inflation.js";
 import { render as renderFlood } from "./charts/flood.js";
 import { render as renderReality } from "./charts/reality.js";
 import { render as renderDecay } from "./charts/decay.js";
+import { render as renderThroughput } from "./charts/throughput.js";
 import { render as renderCna } from "./charts/cna.js";
 import { render as renderVolume } from "./charts/volume.js";
 import { render as renderQuality } from "./charts/quality.js";
@@ -68,6 +69,7 @@ const MODULES = {
       { id: "flood", file: "data/nine_eight_flood.json", render: renderFlood },
       { id: "reality", file: "data/score_vs_reality.json", render: renderReality },
       { id: "decay", file: "data/nvd_decay.json", render: renderDecay },
+      { id: "throughput", file: "data/nvd_throughput.json", render: renderThroughput },
       { id: "cna", file: "data/cna_leaderboard.json", render: renderCna, table: true },
       { id: "volume", file: "data/volume_curve.json", render: renderVolume },
       { id: "quality", file: "data/advisory_quality.json", render: renderQuality },

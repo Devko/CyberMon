@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "last_full_sync": "2026-01-04T06:00:00Z",
+  "last_sync": "2026-01-06T06:00:00Z",
+  "statuses": {
+    "CVE-2024-0001": "Analyzed",
+    "CVE-2024-0002": "Deferred",
+    "CVE-2024-0003": "Modified",
+    "CVE-2024-0004": "Received",
+    "CVE-2024-0005": "Analyzed",
+    "CVE-2025-0100": "Received",
+    "CVE-2025-0101": "Awaiting Analysis"
+  }
+}

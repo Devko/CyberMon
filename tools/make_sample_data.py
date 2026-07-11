@@ -128,6 +128,54 @@ def main() -> None:
         "history": history,
     })
 
+    # --- nvd_throughput.json + history csv ---
+    # Shaped daily flow: analyzed ~ 90±, deferred a trickle, received ~ 140±;
+    # every 7th day is a full-resweep catch-up lump. The cumulative
+    # known-duration count crosses the median threshold (30) mid-record so
+    # both stat-card states are demonstrable against sample data.
+    tp_rows = []
+    n_known = 0
+    for d in range(1, 22):  # 2026-06-20 .. 2026-07-10
+        month, day = (6, d + 19) if d <= 11 else (7, d - 11)
+        resweep = 1 if d % 7 == 0 else 0
+        analyzed = 88 + (d * 5) % 23 + (40 if resweep else 0)
+        n_known += 4
+        tp_rows.append({
+            "date": f"2026-{month:02d}-{day:02d}",
+            "received_new": 132 + (d * 11) % 31,
+            "entered_awaiting": 117 + (d * 7) % 29,
+            "analyzed_from_awaiting": analyzed,
+            "deferred_from_awaiting": (d * 3) % 7,
+            "median_queue_days": 12.5 if n_known >= 30 else None,
+            "n_known_duration": n_known,
+            "resweep": resweep,
+        })
+    tp_csv = OUT / "history" / "nvd_throughput.csv"
+    with tp_csv.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["date", "received_new", "entered_awaiting",
+                    "analyzed_from_awaiting", "deferred_from_awaiting",
+                    "median_queue_days", "n_known_duration", "resweep"])
+        for r in tp_rows:
+            w.writerow([r["date"], r["received_new"], r["entered_awaiting"],
+                        r["analyzed_from_awaiting"],
+                        r["deferred_from_awaiting"],
+                        "" if r["median_queue_days"] is None
+                        else r["median_queue_days"],
+                        r["n_known_duration"], r["resweep"]])
+    print(f"wrote {tp_csv}")
+    write("nvd_throughput.json", {
+        "generated_at": GENERATED_AT,
+        "min_known_duration": 30,
+        "queue": {"median_days": tp_rows[-1]["median_queue_days"],
+                  "n_known_duration": tp_rows[-1]["n_known_duration"]},
+        "history": [{"date": r["date"], "received_new": r["received_new"],
+                     "entered_awaiting": r["entered_awaiting"],
+                     "analyzed_from_awaiting": r["analyzed_from_awaiting"],
+                     "deferred_from_awaiting": r["deferred_from_awaiting"],
+                     "resweep": bool(r["resweep"])} for r in tp_rows],
+    })
+
     # --- cna_leaderboard.json ---
     cnas = [("VendorX_S", "VendorX Security", 412, 8.9, 9.1, 48.2, 88.1),
             ("PatchCo", "PatchCo Ltd.", 233, 8.4, 8.8, 39.5, 81.0),

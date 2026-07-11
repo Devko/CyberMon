@@ -58,8 +58,8 @@ export const editorial = {
         headline: "CVE severity has become meaningless — here are the receipts.",
         blurb:
           "CVSS inflation, the 9.8 flood, scores vs. real-world exploitation, NVD backlog " +
-          "decay, CNA scoring habits, the volume curve, advisory quality, bug-class " +
-          "inertia. Eight charts, " +
+          "decay, NVD throughput, CNA scoring habits, the volume curve, advisory quality, " +
+          "bug-class inertia. Nine charts, " +
           "rebuilt every night.",
         live: true,
       },
@@ -458,8 +458,62 @@ export const editorial = {
     },
 
     // ------------------------------------------------------------------- 5
-    cna: {
+    throughput: {
       num: "05",
+      kicker: "NVD throughput",
+      source: "NVD API 2.0 (NIST) · CyberMon's own nightly snapshots",
+      headline: "NVD publishes the pile, never the pace.",
+      caption:
+        "The chart above counts the backlog; this one watches it move. Every night " +
+        "CyberMon diffs its snapshot of every CVE's NVD status against the previous " +
+        "night's, and the differences are the day's traffic: new CVEs arriving, records " +
+        "joining the analysis queue, records leaving it as Analyzed or as Deferred. Held " +
+        "long enough, the same diffs also clock the queue — how many days a CVE visibly " +
+        "waits before its analysis lands. All of it is measured from the outside; NVD " +
+        "itself reports only the totals.",
+      note:
+        "NVD publishes no transition history — CyberMon's record of these flows starts " +
+        "{first_date}. Waits are clocked between our own nightly snapshots, so every " +
+        "duration is a lower bound.",
+      lineTitle: "CVEs moved per day, one point per nightly diff",
+      seriesAnalyzed: "Analyzed (left the queue)",
+      seriesDeferred: "Deferred (waved off)",
+      seriesReceived: "Newly received",
+      statMedianLabel: "median observed wait in the analysis queue",
+      statMedianBig: "{days} days",
+      statMedianNote:
+        "across {n} timed queue exits — each one a lower bound; the clock starts at " +
+        "our first sighting of the CVE in the queue",
+      statCountLabel: "timed queue exits collected so far",
+      statCountNote:
+        "the median publishes at {min_known} timed exits — fewer would let one odd " +
+        "week pose as a trend",
+      resweepFlag: "full-resweep day — may include catch-up from healed sync gaps",
+      methodology:
+        "Each nightly run syncs NVD's per-CVE vulnStatus (incremental API pulls; a full " +
+        "resweep from NVD's yearly feeds at least weekly) and diffs the fresh snapshot " +
+        "against the previous one. A status change between snapshots is a transition; the " +
+        "chart counts them per day: CVEs entering “Received,” entering “Awaiting " +
+        "Analysis,” leaving the live queue for “Analyzed,” and leaving it for “Deferred.” " +
+        "Dates attach at observation: NVD publishes no status-change timestamps, so a " +
+        "CVE's status is stamped with the day CyberMon first saw it. A queue wait is " +
+        "therefore the span between our sighting of the entry and our sighting of the " +
+        "exit — lower-bounded by the nightly cadence, and blind to hops that happen " +
+        "between two snapshots. Statuses recorded before this tracker shipped carry no " +
+        "entry date; their transitions count in the flow but are never timed — an " +
+        "unknown date stays unknown rather than being backfilled. The median stat stays " +
+        "unpublished until {min_known} timed exits have accumulated — below that a median " +
+        "is noise wearing a unit. Weekly full resweeps can heal missed sync windows and " +
+        "land several days of catch-up transitions on one date; those rows are flagged in " +
+        "the record and in the tooltip. One row per run date is appended to a committed " +
+        "CSV (data/history/nvd_throughput.csv, last run per date wins) — like the backlog " +
+        "record above, it is append-only and irreplaceable: the history starts when we " +
+        "started keeping it.",
+    },
+
+    // ------------------------------------------------------------------- 6
+    cna: {
+      num: "06",
       kicker: "CNA rubber-stamp board",
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "Who grades their own homework hardest?",
@@ -484,9 +538,9 @@ export const editorial = {
         "descending. Click any column header to re-sort.",
     },
 
-    // ------------------------------------------------------------------- 6
+    // ------------------------------------------------------------------- 7
     volume: {
-      num: "06",
+      num: "07",
       kicker: "Volume curve",
       source: "cvelistV5 (MITRE)",
       headline: "More CVEs than anyone can read.",
@@ -511,9 +565,9 @@ export const editorial = {
         "solid line keeps showing the actual partial count.",
     },
 
-    // ------------------------------------------------------------------- 7
+    // ------------------------------------------------------------------- 8
     quality: {
-      num: "07",
+      num: "08",
       kicker: "Advisory quality",
       source: "cvelistV5 (MITRE)",
       headline: "A CVE record is still allowed to say almost nothing.",
@@ -545,9 +599,9 @@ export const editorial = {
         "refills nightly.",
     },
 
-    // ------------------------------------------------------------------- 8
+    // ------------------------------------------------------------------- 9
     cwe: {
-      num: "08",
+      num: "09",
       kicker: "Bug-class inertia",
       source: "cvelistV5 (MITRE)",
       headline: "The bug classes outlast the news cycle.",

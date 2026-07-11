@@ -189,7 +189,55 @@ History is read from `site/data/history/nvd_backlog.csv` (append-only,
 columns: `date,backlog_total,awaiting_analysis,undergoing_analysis,received`),
 one row per pipeline run date (last run per date wins).
 
-## site/data/cna_leaderboard.json  (chart 5)
+## site/data/nvd_throughput.json  (chart 5)
+
+```json
+{
+  "generated_at": "...",
+  "min_known_duration": 30,
+  "queue": {"median_days": null, "n_known_duration": 12},
+  "history": [
+    {"date": "2026-07-11", "received_new": 141, "entered_awaiting": 118,
+     "analyzed_from_awaiting": 96, "deferred_from_awaiting": 4,
+     "resweep": false}
+  ]
+}
+```
+
+Daily NVD status-transition counts, derived by diffing CyberMon's own
+nightly per-CVE status snapshots (`pipeline/nvd_throughput.py`) — NVD
+publishes totals only, never flow. **Every figure is observed-by-CyberMon,
+not an official NVD number**: a "transition" is a status difference
+between two of our snapshots (multiple hops between snapshots read as
+one), and a queue wait is the span between our first sighting of the
+entry status and our sighting of the exit — lower-bounded by the nightly
+cadence. Since-dates are never invented: statuses recorded before the
+tracker shipped have no entry date, so their transitions count in the
+flow but never contribute a duration.
+
+`queue.median_days`/`n_known_duration` are cumulative over the whole
+record; the median is null until `min_known_duration` timed exits have
+accumulated (a median of a handful of observations is noise), and the
+validator rejects a median published below the threshold. `history`
+dates are unique and ascending; `resweep: true` flags runs whose sync did
+a full feed resweep — drift healing can land catch-up transitions in one
+lump on those dates. An empty `history` is legal (the record starts at
+first deploy).
+
+History is read from `site/data/history/nvd_throughput.csv` (append-only,
+columns: `date,received_new,entered_awaiting,analyzed_from_awaiting,`
+`deferred_from_awaiting,median_queue_days,n_known_duration,resweep`), one
+row per pipeline run date (last run per date wins; `median_queue_days`
+empty until the threshold). Like `nvd_backlog.csv`, this CSV is the
+IRREPLACEABLE original record — no upstream source can regenerate it.
+
+`meta.sources.nvd` may additively carry `throughput_events` (int ≥ 0):
+the transitions counted by that run's diff; absent on carry-forward runs
+and on runs with no previous state to diff against. `--skip-nvd` carries
+`nvd_throughput.json` forward stale exactly like `nvd_decay.json` and
+appends no CSV row.
+
+## site/data/cna_leaderboard.json  (chart 6)
 
 ```json
 {
@@ -207,7 +255,7 @@ Sorted by `pct_geq_9` descending. Uses CNA-assigned scores only (that is the
 point of the chart). `cna` = short name from the record's assigner, `org` =
 full org name where resolvable, else same as `cna`.
 
-## site/data/volume_curve.json  (chart 6)
+## site/data/volume_curve.json  (chart 7)
 
 ```json
 {
@@ -224,7 +272,7 @@ published and rejected counts paced to a full year. Keyed off the
 published flow — it ships only when the current year has ≥ 1 published
 record (so `published` ≥ 1); `rejected` may legitimately pace to 0.
 
-## site/data/advisory_quality.json  (chart 7)
+## site/data/advisory_quality.json  (chart 8)
 
 ```json
 {
@@ -255,7 +303,7 @@ labels it. Pre-2018 caveat: CWE and CVSS then lived downstream in NVD's
 database, which this chart deliberately does not ingest — the early years
 chart where the data lived, not sloppiness by today's CNAs.
 
-## site/data/cwe_distribution.json  (chart 8)
+## site/data/cwe_distribution.json  (chart 9)
 
 ```json
 {
