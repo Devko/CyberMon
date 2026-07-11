@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-07-11T03:51:18Z",
+ "generated_at": "2026-07-11T08:32:09Z",
  "sample": false,
  "sources": {
   "cvelist": {
-   "release": "cve_2026-07-11_0300Z",
+   "release": "cve_2026-07-11_0700Z",
    "cve_count": 364749
   },
   "epss": {
@@ -16,36 +16,46 @@
    "count": 1637
   },
   "nvd": {
-   "fetched_at": "2026-07-11T03:51:18Z"
+   "fetched_at": "2026-07-11T08:32:09Z"
   },
   "market": {
    "fetched_at": "2026-07-11T03:51:18Z",
+   "stale": true,
    "term_count": 14,
    "backfill_remaining": 0
   },
   "hibp": {
-   "fetched_at": "2026-07-11T03:51:18Z",
+   "fetched_at": "2026-07-11T08:32:09Z",
    "breach_count": 1015
   },
   "ransomwhere": {
-   "fetched_at": "2026-07-11T03:51:18Z",
+   "fetched_at": "2026-07-11T08:32:09Z",
    "address_count": 11186,
    "tx_count": 21802
   },
   "attack": {
-   "fetched_at": "2026-07-11T03:51:18Z",
+   "fetched_at": "2026-07-11T08:32:09Z",
    "latest_version": "19.1",
    "version_count": 40
   },
   "epss_history": {
-   "fetched_at": "2026-07-11T03:51:18Z",
+   "fetched_at": "2026-07-11T08:32:09Z",
    "graded": 1352,
    "pending_backfill": 0
   },
   "apnic": {
-   "fetched_at": "2026-07-11T03:51:18Z",
+   "fetched_at": "2026-07-11T08:32:09Z",
    "economy_count": 10,
    "spread_economy_count": 203
+  },
+  "rescores": {
+   "events_total": 0,
+   "state_release": "cve_2026-07-11_0700Z"
+  },
+  "kev_changelog": {
+   "fetched_at": "2026-07-11T08:32:09Z",
+   "events_total": 4240,
+   "last_observed": "2026-07-11"
   }
  }
 }
