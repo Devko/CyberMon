@@ -54,6 +54,9 @@ import { render as renderEpssPercentile } from "./charts/epss_percentile.js";
 import { render as renderIdAge } from "./charts/calendar_idage.js";
 import { render as renderWeekday } from "./charts/calendar_weekday.js";
 import { render as renderPatch } from "./charts/calendar_patch.js";
+import { render as renderEdits } from "./charts/changelog_edits.js";
+import { render as renderChangelogFlips } from "./charts/changelog_flips.js";
+import { render as renderReceipts } from "./charts/changelog_receipts.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -153,6 +156,14 @@ const MODULES = {
       { id: "reservation", render: renderIdAge },
       { id: "weekbeat", render: renderWeekday },
       { id: "patchtuesday", render: renderPatch },
+    ],
+  },
+  changelog: {
+    file: "data/kev_changelog.json",
+    sections: [
+      { id: "edits", render: renderEdits },
+      { id: "flagflip", render: renderChangelogFlips },
+      { id: "receipts", render: renderReceipts, table: true },
     ],
   },
 };

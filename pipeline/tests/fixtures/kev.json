@@ -11,7 +11,8 @@
    "shortDescription": "Fixture KEV entry (critical); +30d latency vs datePublished 2023-01-15. Ransomware use: Known. Not a security product.",
    "dateAdded": "2023-02-14",
    "dueDate": "2023-03-07",
-   "knownRansomwareCampaignUse": "Known"
+   "knownRansomwareCampaignUse": "Known",
+   "notes": "https://example.com/advisory"
   },
   {
    "cveID": "CVE-2023-0003",
@@ -52,7 +53,9 @@
    "cveID": "CVE-2023-9003",
    "vendorProject": "Cisco",
    "product": "Adaptive Security Appliance (ASA)",
+   "vulnerabilityName": "Cisco Adaptive Security Appliance Web Services Interface Vulnerability",
    "shortDescription": "Fixture KEV entry: mixed vendor, product-keyword HIT (Cisco security estate). Ransomware use: Unknown.",
+   "requiredAction": "Apply updates per vendor instructions.",
    "dateAdded": "2023-09-01",
    "dueDate": "2023-09-22",
    "knownRansomwareCampaignUse": "Unknown"

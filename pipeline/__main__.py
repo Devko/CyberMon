@@ -29,7 +29,8 @@ from typing import Iterator
 from . import (attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, epss_report_metrics,
                extortion_metrics, guards_metrics, history, hygiene_metrics,
-               kev_metrics, market_metrics, metrics, quality_metrics)
+               kev_changelog, kev_metrics, market_metrics, metrics,
+               quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -69,6 +70,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="skip the EPSS day-before lookups; carry the "
                              "previous epss_report.json forward (marked "
                              "stale)")
+    parser.add_argument("--kev-changelog-backfill", type=int, default=0,
+                        help="max Wayback KEV-capture fetches this run "
+                             "(default: 0 — the archive is never contacted; "
+                             "the one-time historical backfill is run "
+                             "manually with a large value, e.g. 200, before "
+                             "the first live diff)")
     parser.add_argument("--epss-backfill-batch", type=int, default=30,
                         help="max EPSS day-before lookups per run (default: "
                              "30 — a nightly needs a handful; the one-time "
@@ -315,6 +322,16 @@ def run(args: argparse.Namespace) -> int:
     dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
         generated_at, offline_fixtures=args.offline_fixtures)
     outputs["dnssec_adoption.json"] = dnssec_adoption
+    # KEV changelog: diffs the fresh catalog against the committed state.
+    # No skip flag (the KEV fetch it rides on has none either); its
+    # history writes are deferred to after validation, like nvd_backlog.
+    changelog, changelog_source, changelog_pending = \
+        kev_changelog.run_stage(
+            args.out, args.cache_dir, generated_at,
+            kev_entries=kev.entries,
+            offline_fixtures=args.offline_fixtures,
+            backfill_batch=args.kev_changelog_backfill)
+    outputs["kev_changelog.json"] = changelog
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -337,6 +354,7 @@ def run(args: argparse.Namespace) -> int:
         outputs["meta.json"]["sources"]["epss_history"] = \
             epss_history_source
     outputs["meta.json"]["sources"]["apnic"] = apnic_source
+    outputs["meta.json"]["sources"]["kev_changelog"] = changelog_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
@@ -346,6 +364,10 @@ def run(args: argparse.Namespace) -> int:
         csv_path = args.out / "history" / "nvd_backlog.csv"
         history.write_rows(csv_path, history_rows)
         print(f"  history: {len(history_rows)} snapshot(s) in {csv_path}")
+    # KEV changelog history (event CSV + fingerprint state): written only
+    # here, after every output above validated — same discipline as the
+    # NVD history; both files are irreplaceable records.
+    kev_changelog.persist(args.out, changelog_pending)
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")

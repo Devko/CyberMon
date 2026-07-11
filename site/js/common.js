@@ -132,6 +132,7 @@ function renderMeta(meta) {
       attack_versions: (s.attack?.version_count ?? 0).toLocaleString("en-US"),
       apnic_fetched: s.apnic?.fetched_at ?? "?",
       epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US"),
+      kev_changelog_events: (s.kev_changelog?.events_total ?? 0).toLocaleString("en-US"),
     }))
   );
 }

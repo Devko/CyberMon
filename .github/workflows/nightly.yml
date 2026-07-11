@@ -1,7 +1,8 @@
 name: Nightly data refresh
 
 # Runs the full pipeline against live sources, commits the refreshed
-# site/data/ (including the append-only history/nvd_backlog.csv, which
+# site/data/ (including the append-only history files — nvd_backlog.csv
+# and the KEV changelog's kev_changelog.csv + kev_state.json — which
 # CANNOT be regenerated), then deploys the site to GitHub Pages.
 
 on:
@@ -118,9 +119,11 @@ jobs:
           fi
 
       # Once per ISO week, freeze an immutable snapshot tag on HEAD. The
-      # append-only site/data/history/nvd_backlog.csv CANNOT be regenerated
-      # (this repo is its only copy), so a weekly tag is a rollback point if
-      # the file is ever corrupted or truncated by a bad run. Insurance, not
+      # append-only history files (site/data/history/nvd_backlog.csv, and
+      # the KEV changelog's kev_changelog.csv + kev_state.json) CANNOT be
+      # regenerated (this repo is their only copy), so a weekly tag is a
+      # rollback point if a file is ever corrupted or truncated by a bad
+      # run. Insurance, not
       # the product: every failure mode here is swallowed so it can never
       # take down the refresh itself (the pipeline-run step above still must
       # NOT get continue-on-error — this leniency is for the backup only).

@@ -24,6 +24,12 @@ class KevEntry:
     # whitespace — security_products.normalize_vendor handles grouping).
     vendor_project: str = ""
     product: str = ""
+    # Free-text fields tracked by the KEV Changelog diff engine
+    # (kev_changelog.py); empty string when the feed omits them.
+    vulnerability_name: str = ""
+    short_description: str = ""
+    required_action: str = ""
+    notes: str = ""
 
 
 @dataclass
@@ -54,7 +60,21 @@ def parse_kev(obj: dict) -> KevData:
                                         if isinstance(v.get("vendorProject"),
                                                       str) else ""),
                         product=(v["product"]
-                                 if isinstance(v.get("product"), str) else ""))
+                                 if isinstance(v.get("product"), str) else ""),
+                        vulnerability_name=(v["vulnerabilityName"]
+                                            if isinstance(
+                                                v.get("vulnerabilityName"),
+                                                str) else ""),
+                        short_description=(v["shortDescription"]
+                                           if isinstance(
+                                               v.get("shortDescription"),
+                                               str) else ""),
+                        required_action=(v["requiredAction"]
+                                         if isinstance(
+                                             v.get("requiredAction"),
+                                             str) else ""),
+                        notes=(v["notes"]
+                               if isinstance(v.get("notes"), str) else ""))
                for v in vulns]
     count = obj.get("count")
     if not isinstance(count, int) or isinstance(count, bool):

@@ -16,7 +16,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json",
-             "epss_report.json", "cve_calendar.json"]
+             "epss_report.json", "cve_calendar.json", "kev_changelog.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -212,6 +212,29 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert pt[2024]["on_pt"] == 1 and pt[2023]["on_pt"] == 0
     assert cal["patch_tuesday"]["calendar_pct"] == 3.3
 
+    # KEV changelog: with no committed state, the offline run seeds its
+    # "prior night" from fixtures/kev_changelog_state.json, so the first
+    # diff produces the full event mix: 2 additions (excluded from edits),
+    # 1 due-date move, 1 ransomware flag flip, 2 text revisions
+    # (shortDescription hash + vulnerabilityName), 1 removal.
+    changelog = _load(tmp_path, "kev_changelog.json")
+    assert changelog["catalog"]["events_total"] == 7
+    assert changelog["catalog"]["edits_total"] == 5
+    assert changelog["catalog"]["additions_excluded"] == 2
+    assert changelog["catalog"]["entries"] == 7
+    assert changelog["catalog"]["first_observed"] == "2026-07-01"
+    assert len(changelog["months"]) == 1
+    assert changelog["months"][0]["due_date"] == 1
+    assert changelog["months"][0]["ransomware_flag"] == 1
+    assert changelog["months"][0]["text"] == 2
+    assert changelog["months"][0]["removed"] == 1
+    assert changelog["flips"]["total"] == 1
+    assert changelog["flips"]["lag"]["n"] == 1  # fixture min_n = 1
+    assert changelog["board"]["removals"][0]["cve"] == "CVE-2020-5555"
+    assert (tmp_path / "history" / "kev_state.json").exists()
+    assert (tmp_path / "history" / "kev_changelog.csv").exists()
+    assert meta["sources"]["kev_changelog"]["events_total"] == 7
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -232,6 +255,9 @@ def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):
     assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
     decay = _load(tmp_path, "nvd_decay.json")
     assert len(decay["history"]) == 1  # same date -> replaced, not duplicated
+    # the changelog re-diffs against its own committed state: no new events
+    changelog = _load(tmp_path, "kev_changelog.json")
+    assert changelog["catalog"]["events_total"] == 7  # idempotent re-run
 
 
 def test_skip_nvd_carries_previous_run_forward(tmp_path, capsys):
@@ -261,6 +287,8 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     with pytest.raises(contracts.ContractViolation):
         main(["--offline-fixtures", "--out", str(tmp_path)])
     assert not (tmp_path / "history" / "nvd_backlog.csv").exists()
+    assert not (tmp_path / "history" / "kev_changelog.csv").exists()
+    assert not (tmp_path / "history" / "kev_state.json").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
 
