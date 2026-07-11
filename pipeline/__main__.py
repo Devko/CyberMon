@@ -9,12 +9,13 @@ Nothing is written unless *all* outputs validate.
 the test fixtures in pipeline/tests/fixtures — the no-network CI smoke test.
 
 ``--skip-nvd`` behavior (documented choice): the NVD stage is the only slow
-one, so when skipped we carry the previous run's ``nvd_decay.json`` forward
-untouched (no new history row is appended — a duplicated snapshot would
-fake data the ecosystem never produced), mark it and ``meta.sources.nvd``
-with ``"stale": true``, and keep ``fetched_at`` at its old value. If no
-previous file exists, ``nvd_decay.json`` is omitted for this run and
-``meta.json`` omits ``sources.nvd`` (contracts.py allows that).
+one, so when skipped we carry the previous run's ``nvd_decay.json`` (and
+``nvd_throughput.json``) forward untouched (no new history row is appended
+to either CSV — a duplicated snapshot would fake data the ecosystem never
+produced), mark them and ``meta.sources.nvd`` with ``"stale": true``, and
+keep ``fetched_at`` at its old value. If no previous file exists, the file
+is omitted for this run and ``meta.json`` omits ``sources.nvd``
+(contracts.py allows that).
 """
 from __future__ import annotations
 
@@ -29,7 +30,8 @@ from typing import Iterator
 from . import (attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, epss_report_metrics,
                extortion_metrics, guards_metrics, history, hygiene_metrics,
-               kev_metrics, market_metrics, metrics, quality_metrics)
+               kev_metrics, market_metrics, metrics, nvd_throughput,
+               quality_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -138,20 +140,46 @@ def _save_nvd_state(cache_dir: Path, state: dict) -> None:
     tmp.replace(path)
 
 
-def _gather_nvd(args: argparse.Namespace) -> dict[str, int] | None:
-    """Fresh NVD status counts, or None when the stage is skipped."""
+def _gather_nvd(args: argparse.Namespace
+                ) -> tuple[dict[str, int] | None, dict | None,
+                           list[int]]:
+    """(fresh NVD status counts or None when skipped, today's throughput
+    transitions or None when there was no previous state to diff against,
+    accumulated known queue durations).
+
+    The throughput diff compares the state loaded from cache against the
+    freshly synced one (pipeline/nvd_throughput.py); the tracking keys it
+    yields are re-attached to the state before it is saved, because
+    ``sync_status_state`` returns a bare {statuses,...} dict.
+    """
     if args.skip_nvd:
-        return None
+        return None, None, []
+    today = _today()
     if args.offline_fixtures:
-        return json.loads((FIXTURES_DIR / "nvd_statuses.json")
-                          .read_text(encoding="utf-8"))
+        counts = json.loads((FIXTURES_DIR / "nvd_statuses.json")
+                            .read_text(encoding="utf-8"))
+        prev_state = json.loads((FIXTURES_DIR / "nvd_state_prev.json")
+                                .read_text(encoding="utf-8"))
+        new_state = json.loads((FIXTURES_DIR / "nvd_state_now.json")
+                               .read_text(encoding="utf-8"))
+        transitions = nvd_throughput.diff_transitions(prev_state, new_state,
+                                                      today)
+        durations = nvd_throughput.attach_tracking(new_state, prev_state,
+                                                   transitions)
+        return counts, transitions, durations
     from .fetch_nvd import status_counts, sync_status_state
 
     api_key = os.environ.get("NVD_API_KEY") or None
     print(f"syncing NVD status counts ({'keyed' if api_key else 'keyless'}) ...")
-    state = sync_status_state(_load_nvd_state(args.cache_dir), api_key=api_key)
+    prev_state = _load_nvd_state(args.cache_dir)
+    state = sync_status_state(prev_state, api_key=api_key)
+    transitions = nvd_throughput.diff_transitions(prev_state, state, today)
+    durations = nvd_throughput.attach_tracking(state, prev_state, transitions)
+    if transitions is None:
+        print("  NVD throughput: no previous state to diff against; "
+              "transition tracking starts next run")
     _save_nvd_state(args.cache_dir, state)
-    return status_counts(state)
+    return status_counts(state), transitions, durations
 
 
 def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
@@ -186,6 +214,49 @@ def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
     return carried, {"fetched_at": fetched_at, "stale": True}, None
 
 
+def _nvd_throughput_outputs(args: argparse.Namespace,
+                            statuses: dict[str, int] | None,
+                            transitions: dict | None,
+                            durations: list[int], generated_at: str
+                            ) -> tuple[dict | None, list[dict] | None]:
+    """(nvd_throughput.json object or None, merged throughput history rows
+    to persist or None). Same policy as _nvd_outputs:
+
+    Fresh statuses: merge today's transition row in memory (last run per
+    date wins) when there was a previous state to diff — the CSV write is
+    deferred to run() until every output validates. No previous state
+    (first run, wiped cache): no row is appended — a diff against nothing
+    would fake a corpus-sized spike — but the JSON still builds from the
+    committed history. Skipped: carry the previous file forward stale,
+    exactly like nvd_decay.json; append no CSV row.
+    """
+    if statuses is not None:
+        csv_path = args.out / "history" / "nvd_throughput.csv"
+        rows = nvd_throughput.read_rows(csv_path)
+        if transitions is None:
+            return nvd_throughput.build_nvd_throughput(rows, generated_at), \
+                None
+        row = nvd_throughput.throughput_row(
+            transitions["counts"], durations, _today(),
+            transitions["resweep"])
+        rows = nvd_throughput.merge_row(rows, row)
+        return nvd_throughput.build_nvd_throughput(rows, generated_at), rows
+
+    prior_path = args.out / "nvd_throughput.json"
+    if not prior_path.exists():
+        print("warning: --skip-nvd with no previous nvd_throughput.json; "
+              "omitting nvd_throughput.json this run")
+        return None, None
+    prior = json.loads(prior_path.read_text(encoding="utf-8"))
+    fetched_at = prior.get("generated_at", generated_at)
+    carried = dict(prior)
+    carried["generated_at"] = generated_at
+    carried["stale"] = True
+    print(f"  --skip-nvd: carrying forward nvd_throughput.json "
+          f"from {fetched_at}")
+    return carried, None
+
+
 def run(args: argparse.Namespace) -> int:
     generated_at = _now_iso()
 
@@ -211,7 +282,7 @@ def run(args: argparse.Namespace) -> int:
         ransomwhere = fetch_ransomwhere()
         print(f"  Ransomwhere: {ransomwhere.address_count} addresses, "
               f"{ransomwhere.tx_count} transactions")
-    nvd_statuses = _gather_nvd(args)
+    nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
@@ -289,6 +360,16 @@ def run(args: argparse.Namespace) -> int:
         args, nvd_statuses, generated_at)
     if nvd_decay is not None:
         outputs["nvd_decay.json"] = nvd_decay
+    nvd_throughput_obj, throughput_rows = _nvd_throughput_outputs(
+        args, nvd_statuses, nvd_transitions, nvd_durations, generated_at)
+    if nvd_throughput_obj is not None:
+        outputs["nvd_throughput.json"] = nvd_throughput_obj
+    if nvd_source is not None and nvd_transitions is not None:
+        counts = nvd_transitions["counts"]
+        nvd_source["throughput_events"] = (
+            counts["received_new"] + counts["entered_awaiting"]
+            + counts["analyzed_from_awaiting"]
+            + counts["deferred_from_awaiting"])
     market_hype, market_source = market_metrics.run_stage(
         args.out, args.cache_dir, generated_at,
         skip=args.skip_market, offline_fixtures=args.offline_fixtures,
@@ -346,6 +427,11 @@ def run(args: argparse.Namespace) -> int:
         csv_path = args.out / "history" / "nvd_backlog.csv"
         history.write_rows(csv_path, history_rows)
         print(f"  history: {len(history_rows)} snapshot(s) in {csv_path}")
+    if throughput_rows is not None:
+        csv_path = args.out / "history" / "nvd_throughput.csv"
+        nvd_throughput.write_rows(csv_path, throughput_rows)
+        print(f"  history: {len(throughput_rows)} transition day(s) "
+              f"in {csv_path}")
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")

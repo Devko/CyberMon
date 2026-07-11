@@ -30,6 +30,12 @@ API rate limits are respected: 5 requests / 30 s without an API key,
 Transient API failures (403/429/5xx — NVD uses 403 for rate limiting) are
 retried with exponential backoff. The CLI's ``--skip-nvd`` flag bypasses
 the stage entirely.
+
+The throughput tracker (``pipeline/nvd_throughput.py``) stores additive
+keys on this state (``status_since``, ``queue_durations``) — this module
+never reads them, and :func:`sync_status_state` returns a bare state
+without them; the pipeline re-attaches them after every sync. Old-format
+states (statuses only) therefore stay fully valid here.
 """
 from __future__ import annotations
 

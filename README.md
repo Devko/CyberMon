@@ -21,7 +21,7 @@ Each module is its own directly linkable page with its own pipeline stage and
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
-*CVE severity has become meaningless — here are the receipts.* Eight charts:
+*CVE severity has become meaningless — here are the receipts.* Nine charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't
@@ -34,13 +34,18 @@ Each module is its own directly linkable page with its own pipeline stage and
 4. **NVD decay** — NVD's current enrichment backlog by status, plus our own
    accumulated snapshot time series (NVD publishes no backlog history — we
    are the historical record).
-5. **CNA rubber-stamp board** — CNAs ranked by average assigned severity and
+5. **NVD throughput** — daily status transitions derived by diffing our own
+   nightly per-CVE snapshots: CVEs received, entering the analysis queue,
+   leaving it as Analyzed or Deferred, plus the observed queue wait (NVD
+   publishes totals only, never flow — again, we are the record; all
+   durations are observed-by-CyberMon lower bounds).
+6. **CNA rubber-stamp board** — CNAs ranked by average assigned severity and
    share of scores ≥ 9.0 (minimum 100 CVEs in a 3-year window).
-6. **Volume curve** — CVEs published and rejected per year.
-7. **Advisory quality** — share of each year's records missing a CWE, a
+7. **Volume curve** — CVEs published and rejected per year.
+8. **Advisory quality** — share of each year's records missing a CWE, a
    CVSS score, or usable affected-version data, checked against the record
    itself.
-8. **Bug-class inertia** — the top-8 weakness classes of the last decade
+9. **Bug-class inertia** — the top-8 weakness classes of the last decade
    and each one's share of the year's CWE-tagged records.
 
 ### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)

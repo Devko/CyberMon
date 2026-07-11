@@ -11,7 +11,8 @@ from pipeline import contracts
 from pipeline.__main__ import main
 
 ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
-             "score_vs_reality.json", "nvd_decay.json", "cna_leaderboard.json",
+             "score_vs_reality.json", "nvd_decay.json", "nvd_throughput.json",
+             "cna_leaderboard.json",
              "volume_curve.json", "kev_latency.json", "cna_concentration.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
@@ -43,6 +44,24 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert decay["current"]["backlog_total"] == 31102  # 290 + 30412 + 400
     assert len(decay["history"]) == 1
     assert (tmp_path / "history" / "nvd_backlog.csv").exists()
+
+    # NVD throughput: the fixture prior-state (nvd_state_prev.json) vs the
+    # synced fixture state (nvd_state_now.json) exercises one transition
+    # of each countable kind; only CVE-2024-0001 has a known since-date,
+    # so exactly one queue duration accumulates and (below the threshold)
+    # the median stays null.
+    throughput = _load(tmp_path, "nvd_throughput.json")
+    assert len(throughput["history"]) == 1
+    day = throughput["history"][0]
+    assert day["received_new"] == 1            # CVE-2025-0100 appeared
+    assert day["entered_awaiting"] == 1        # CVE-2025-0101 appeared
+    assert day["analyzed_from_awaiting"] == 2  # CVE-2024-0001 + -0005
+    assert day["deferred_from_awaiting"] == 1  # CVE-2024-0002
+    assert day["resweep"] is False             # last_full_sync unchanged
+    assert throughput["queue"]["median_days"] is None
+    assert throughput["queue"]["n_known_duration"] == 1
+    assert (tmp_path / "history" / "nvd_throughput.csv").exists()
+    assert meta["sources"]["nvd"]["throughput_events"] == 5
 
     # KEV latency: the 3 original fixture entries join the corpus; the 4
     # guards-module entries (Fortinet/Cisco) deliberately have no fixture
@@ -232,11 +251,16 @@ def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):
     assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
     decay = _load(tmp_path, "nvd_decay.json")
     assert len(decay["history"]) == 1  # same date -> replaced, not duplicated
+    throughput = _load(tmp_path, "nvd_throughput.json")
+    assert len(throughput["history"]) == 1  # last run per date wins here too
 
 
 def test_skip_nvd_carries_previous_run_forward(tmp_path, capsys):
     assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
     first = _load(tmp_path, "nvd_decay.json")
+
+    first_throughput = _load(tmp_path, "nvd_throughput.json")
+    csv_before = (tmp_path / "history" / "nvd_throughput.csv").read_text()
 
     assert main(["--offline-fixtures", "--skip-nvd", "--out",
                  str(tmp_path)]) == 0
@@ -246,9 +270,19 @@ def test_skip_nvd_carries_previous_run_forward(tmp_path, capsys):
     assert carried["current"] == first["current"]
     assert carried["history"] == first["history"]  # no fake extra snapshot
 
+    carried_tp = _load(tmp_path, "nvd_throughput.json")
+    contracts.validate("nvd_throughput.json", carried_tp)
+    assert carried_tp["stale"] is True
+    assert carried_tp["history"] == first_throughput["history"]
+    assert carried_tp["queue"] == first_throughput["queue"]
+    # the irreplaceable CSV gains no row on a skipped run
+    assert (tmp_path / "history" / "nvd_throughput.csv").read_text() \
+        == csv_before
+
     meta = _load(tmp_path, "meta.json")
     assert meta["sources"]["nvd"]["stale"] is True
     assert meta["sources"]["nvd"]["fetched_at"] == first["generated_at"]
+    assert "throughput_events" not in meta["sources"]["nvd"]
 
 
 def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
@@ -261,6 +295,7 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     with pytest.raises(contracts.ContractViolation):
         main(["--offline-fixtures", "--out", str(tmp_path)])
     assert not (tmp_path / "history" / "nvd_backlog.csv").exists()
+    assert not (tmp_path / "history" / "nvd_throughput.csv").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
 
@@ -296,10 +331,11 @@ def test_skip_nvd_without_prior_data_omits_nvd_outputs(tmp_path, capsys):
     assert main(["--offline-fixtures", "--skip-nvd", "--out",
                  str(tmp_path)]) == 0
     assert not (tmp_path / "nvd_decay.json").exists()
+    assert not (tmp_path / "nvd_throughput.json").exists()
     meta = _load(tmp_path, "meta.json")
     contracts.validate("meta.json", meta)
     assert "nvd" not in meta["sources"]
-    # the other six files are all present and valid
+    # every non-NVD file is present and valid
     for name in ALL_FILES:
-        if name != "nvd_decay.json":
+        if name not in ("nvd_decay.json", "nvd_throughput.json"):
             contracts.validate(name, _load(tmp_path, name))
