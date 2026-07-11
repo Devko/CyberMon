@@ -4,6 +4,47 @@ Candidate monitoring modules, beyond the four that exist today
 (01 · CVE Ecosystem, 02 · Security Market, 03 · KEV Latency,
 04 · CNA Concentration — all live).
 
+## Snapshot collectors — become the historical record (probed 2026-07-11)
+
+The NVD backlog history proved the pattern: when an upstream publishes
+only current state, a nightly snapshot makes CyberMon the only
+historical record in existence. Candidates below were endpoint-probed;
+each accumulated dataset is irreplaceable by construction (covered by
+the weekly data-backup tags). Shipping now as modules: the KEV
+changelog, the silent rescoring tracker, and NVD throughput.
+
+### CNA roster history
+- **Thesis:** the CVE federation's true growth and churn — accreditation
+  dates aren't published as history.
+- **Signals:** onboardings/departures per quarter, scope changes,
+  country and type mix over time.
+- **Source:** cve.org org API (`/api/?action=getOrgs` responded 200);
+  daily snapshot + diff.
+- **Feasibility:** easy — one small JSON, compact committed state.
+
+### Botnet weather (Feodo tracker)
+- **Thesis:** the C2 weather report — takedowns visible as cliffs.
+- **Signals:** active C2 count by malware family, daily; family
+  birth/death.
+- **Source:** `feodotracker.abuse.ch/downloads/ipblocklist.json`
+  (tested: live JSON, CC0, per-C2 family + first_seen). Count is small
+  (single digits on quiet days) — which is itself the story.
+- **Feasibility:** easy — tiny feed, append-only daily counts.
+
+### TLD DNSSEC signing (registry-side hygiene lane)
+- **Thesis:** pairs APNIC's resolver-side measurement with the
+  registry side: which TLDs sign at all.
+- **Source:** ICANN research pages respond but are HTML — needs a
+  parse-feasibility pass before committing.
+- **Feasibility:** medium — parsing risk; complements module 08.
+
+### Bounty attack surface (Chaos dataset)
+- **Thesis:** how much of the internet is formally in-scope for
+  bounties, over time.
+- **Source:** ProjectDiscovery Chaos public dataset; snapshot
+  program/domain counts.
+- **Feasibility:** easy-medium — weakest thesis of the four.
+
 ## Tier 0 — non-CVE sources, live-tested 2026-07-09
 
 Every endpoint below was fetched and inspected on that date; record counts
