@@ -77,6 +77,12 @@ optional because older committed meta files predate the module, but the
 stage always emits it: `events_total` = rows on the committed event log
 after tonight's append, `state_release` = the corpus release recorded in
 tonight's fingerprint state (the release-skew guard's reference point).
+`sources.kev_changelog` (KEV Changelog module) is validated additively —
+optional because older committed meta files predate the module, but the
+stage itself always emits it (no skip flag; it rides on the KEV fetch):
+`fetched_at` (ISO-8601 UTC), `events_total` (rows in the committed event
+log, additions included) and `last_observed` (date of the newest catalog
+observation; empty string only in the degenerate no-record-yet case).
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -1136,4 +1142,112 @@ from this file, so a lost CI cache costs one JSON read instead of ~450 API
 requests. Changing the per-entry shape therefore REQUIRES updating
 `reconstruct_state` and its round-trip test in the same commit. Validator:
 `pipeline/epss_report_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
+## site/data/kev_changelog.json  (KEV Changelog module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "months": [
+    {"month": "2023-12", "due_date": 0, "ransomware_flag": 206,
+     "text": 134, "removed": 6, "total": 346}
+  ],
+  "flips": {
+    "total": 285, "reversals": 0,
+    "by_month": [{"month": "2023-12", "flips": 206, "cumulative": 206}],
+    "lag": {"n": 285, "median_days": 626.0,
+            "p25_days": 400.0, "p75_days": 768.0}
+  },
+  "board": {
+    "most_edited": [
+      {"cve": "CVE-2019-11510", "vendor": "Ivanti",
+       "product": "Pulse Connect Secure", "edits": 12,
+       "last_change": "2025-12-22"}
+    ],
+    "removals": [
+      {"cve": "CVE-2022-31460", "vendor": "Owl Labs",
+       "product": "Meeting Owl Pro and Whiteboard Owl",
+       "listed": "2022-06-08", "removed": "2023-12-11"}
+    ]
+  },
+  "catalog": {
+    "entries": 1637, "removed_total": 9,
+    "events_total": 4240, "edits_total": 2905,
+    "additions_excluded": 1335,
+    "first_observed": "2021-12-23", "last_observed": "2026-07-11",
+    "backfill_captures": 53
+  },
+  "headline": {"edits_total": 2905, "edits_per_100_entries": 177.5,
+               "pct_flag_flips": 9.8}
+}
+```
+
+CISA edits the KEV catalog in place and publishes no changelog; this
+module keeps one. Every run fingerprints each catalog entry — `dueDate`,
+`knownRansomwareCampaignUse` (normalized Known/Unknown; a missing field
+never reads as Known), `vendorProject`, `product`, `vulnerabilityName`
+verbatim; `shortDescription`, `requiredAction`, `notes` as 12-hex-char
+sha256 hashes of the whitespace-normalized text — and diffs the fresh
+catalog against the committed state. Each difference is one event:
+`added`, `removed`, `field_changed` (old/new logged verbatim) or
+`text_changed` (hash-tracked; the event never carries the text).
+
+**Committed history files (both under `site/data/history/`):**
+
+* `kev_changelog.csv` — the append-only event log (columns:
+  `observed_date,cve,change_type,field,old,new,granularity`). Like
+  `nvd_backlog.csv`, this is an **original dataset accumulated by this
+  project and it CANNOT be regenerated**: CISA publishes only the current
+  snapshot. The Wayback-seeded prefix could be rebuilt from the Internet
+  Archive at capture granularity; everything observed live has this repo
+  as its only copy (the weekly `data-backup-*` tags cover it).
+* `kev_state.json` — the compact per-entry fingerprint state
+  (`version`, `baseline_date`, `last_observed`, `backfill`
+  `{captures, watermark, complete}`, `entries`, and a `removed` ledger
+  that remembers every entry observed leaving the catalog: removals are
+  logged AND retained, never silently dropped).
+
+Both are written by `__main__.run()` **only after every output validates**
+(the `nvd_backlog.csv` discipline), via `pipeline.kev_changelog.persist`.
+
+**Granularity semantics** (per event, last CSV column): `daily` events
+are dated to the nightly run that first observed them (missed nights pool
+changes on the next run's date); `capture` events come from the one-time
+Wayback backfill (`--kev-changelog-backfill N`, integrator-run once, CI
+never — default 0 contacts nothing) and are dated to the FIRST Internet
+Archive capture showing the change — the true date lies between that
+capture and the one before. The record's first observation is a baseline:
+state written, zero events. While a batch-capped backfill is incomplete,
+the live diff is skipped (diffing today's catalog against a
+half-backfilled state would date years of edits to one night); snapshot
+bodies are cached in `.cache/kev_wayback/` so a rerun never refetches.
+
+`months` (hero): edits per month by category — `due_date`,
+`ransomware_flag`, `text` (text-field hash changes plus
+vendor/product/name wording changes), `removed` — contiguous ascending
+labels (gap months at zero), per-month categories sum to `total`, month
+totals sum to `catalog.edits_total`. **Additions are logged but never
+charted as edits** (catalog growth is the system working; the exclusion
+is disclosed as `catalog.additions_excluded`, and
+`edits_total + additions_excluded == events_total` always).
+
+`flips`: Unknown→Known changes of the ransomware flag. `by_month` is the
+cumulative series (running sum ends at `total`); `lag` measures
+`observed_date − dateAdded` in days per flip — `median/p25/p75` are
+published only with `n >= min_n` flips (production 10; fixture mode 1),
+null below (thin data renders honestly). Known→Unknown changes are
+counted as `reversals`, disclosed, never netted. Note the structural
+step: CISA added the flag column in October 2023, so the first capture
+carrying it flips every already-flagged entry at once.
+
+`board`: `most_edited` — top entries by logged edit count (field changes
++ text revisions; additions/removals never inflate it), sorted
+descending, ties by CVE id, with `last_change`; `removals` — every entry
+in the state's removed ledger (`listed` may be an empty string when the
+removed entry's dateAdded was unusable), sorted by removal date, one row
+per CVE, `len == catalog.removed_total`. `headline` is null iff there
+are no entries or no edits. Validator:
+`pipeline/kev_changelog_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).

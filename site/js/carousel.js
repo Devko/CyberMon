@@ -58,6 +58,9 @@ import { render as renderPatch } from "./charts/calendar_patch.js";
 import { render as renderRescoreWeek } from "./charts/rescore_week.js";
 import { render as renderRescoreMagnitude } from "./charts/rescore_magnitude.js";
 import { render as renderRescoreEditors } from "./charts/rescore_editors.js";
+import { render as renderEdits } from "./charts/changelog_edits.js";
+import { render as renderChangelogFlips } from "./charts/changelog_flips.js";
+import { render as renderReceipts } from "./charts/changelog_receipts.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -166,6 +169,12 @@ const MODULES = {
       { id: "edits", render: renderRescoreWeek },
       { id: "magnitude", render: renderRescoreMagnitude },
       { id: "editors", render: renderRescoreEditors, table: true },
+  changelog: {
+    file: "data/kev_changelog.json",
+    sections: [
+      { id: "edits", render: renderEdits },
+      { id: "flagflip", render: renderChangelogFlips },
+      { id: "receipts", render: renderReceipts, table: true },
     ],
   },
 };

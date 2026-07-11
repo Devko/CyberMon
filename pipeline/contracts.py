@@ -224,6 +224,19 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.rescores.events_total")
         _check_str(_get(rs, "state_release", "meta.sources.rescores"),
                    "meta.sources.rescores.state_release")
+    # Optional additively (older committed meta files predate the module);
+    # the KEV Changelog stage itself always emits it. last_observed may be
+    # empty only in the degenerate no-record-yet case.
+    if "kev_changelog" in src:
+        kc = src["kev_changelog"]
+        _check_str(_get(kc, "fetched_at", "meta.sources.kev_changelog"),
+                   "meta.sources.kev_changelog.fetched_at", ISO_UTC_RE)
+        _check_int(_get(kc, "events_total", "meta.sources.kev_changelog"),
+                   "meta.sources.kev_changelog.events_total")
+        last = _get(kc, "last_observed", "meta.sources.kev_changelog")
+        if last != "":
+            _check_str(last, "meta.sources.kev_changelog.last_observed",
+                       DATE_RE)
 
     # Optional (additive extension, market precedent): the Ransomwhere
     # export behind the Extortion Ledger module. Checked when present.
@@ -518,3 +531,6 @@ VALIDATORS.update(calendar_contracts.VALIDATORS)
 from . import rescore_contracts  # noqa: E402
 
 VALIDATORS.update(rescore_contracts.VALIDATORS)
+from . import kev_changelog_contracts  # noqa: E402
+
+VALIDATORS.update(kev_changelog_contracts.VALIDATORS)

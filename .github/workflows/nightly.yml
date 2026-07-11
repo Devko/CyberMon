@@ -7,6 +7,9 @@ name: Nightly data refresh
 # site/data/ (including the append-only history/ CSVs — nvd_backlog.csv
 # and rescore_log.csv — which CANNOT be regenerated), then deploys the
 # site to GitHub Pages.
+# site/data/ (including the append-only history files — nvd_backlog.csv
+# and the KEV changelog's kev_changelog.csv + kev_state.json — which
+# CANNOT be regenerated), then deploys the site to GitHub Pages.
 
 on:
   schedule:
@@ -148,6 +151,11 @@ jobs:
       # rescore_log.csv) CANNOT be regenerated (this repo is their only
       # copy), so a weekly tag is a rollback point if a file is ever
       # corrupted or truncated by a bad run. Insurance, not
+      # append-only history files (site/data/history/nvd_backlog.csv, and
+      # the KEV changelog's kev_changelog.csv + kev_state.json) CANNOT be
+      # regenerated (this repo is their only copy), so a weekly tag is a
+      # rollback point if a file is ever corrupted or truncated by a bad
+      # run. Insurance, not
       # the product: every failure mode here is swallowed so it can never
       # take down the refresh itself (the pipeline-run step above still must
       # NOT get continue-on-error — this leniency is for the backup only).

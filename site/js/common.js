@@ -133,6 +133,7 @@ function renderMeta(meta) {
       apnic_fetched: s.apnic?.fetched_at ?? "?",
       epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US"),
       rescore_events: (s.rescores?.events_total ?? 0).toLocaleString("en-US"),
+      kev_changelog_events: (s.kev_changelog?.events_total ?? 0).toLocaleString("en-US"),
     }))
   );
 }

@@ -35,6 +35,7 @@ export const editorial = {
     { id: "epss", href: "epss.html", label: "EPSS Report Card" },
     { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
     { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
+    { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -200,6 +201,17 @@ export const editorial = {
           "lowered, scores backfilled years late, scores withdrawn. No upstream " +
           "keeps this history, so the record starts now — thin by design, deeper " +
           "every night.",
+        id: "changelog",
+        href: "changelog.html",
+        num: "12",
+        label: "KEV Changelog",
+        headline: "CISA edits the exploited list without a changelog. CyberMon keeps the diffs.",
+        blurb:
+          "Every night the Known Exploited Vulnerabilities catalog is diffed " +
+          "against the last observed one: due dates that moved, ransomware flags " +
+          "that flipped, descriptions that were rewritten, entries that quietly " +
+          "vanished — seeded backwards with Internet Archive captures of the " +
+          "feed, then extended one nightly diff at a time.",
         live: true,
       },
     ],
@@ -1719,6 +1731,138 @@ export const editorial = {
         "is young, and windowing it would empty it; when the log is deep enough for a " +
         "rolling window, this note will change. Default sort: rescore count, " +
         "descending. Click any column header to re-sort.",
+    // --------------------------------------------- changelog.html · 1 · hero
+    edits: {
+      num: "01",
+      kicker: "The edit stream",
+      source: "CISA KEV · CyberMon's own nightly diffs",
+      headline: "The exploited list gets edited after publication.",
+      caption:
+        "CISA's Known Exploited Vulnerabilities catalog is the closest thing " +
+        "the industry has to an official list of what attackers actually use — " +
+        "and it changes in place, with no published changelog. CyberMon diffs " +
+        "every fresh catalog against the last observed one and keeps the " +
+        "ledger. Bars count edits per month: remediation deadlines that moved, " +
+        "ransomware flags that flipped, wording that was rewritten, and " +
+        "entries that vanished outright. New listings are deliberately not " +
+        "counted — a growing catalog is the system working; this chart counts " +
+        "revisions to what was already published.",
+      statLabel: "Edits to already-published entries, whole record",
+      statNote: "edits across a catalog of {entries} entries · new listings excluded: {additions}",
+      legendDueDate: "Due date moved",
+      legendFlag: "Ransomware flag",
+      legendText: "Text revised",
+      legendRemoved: "Entry removed",
+      // Filled by the renderer from the catalog block; the capture sentence
+      // is appended only when the record carries Wayback-seeded events.
+      note: "CyberMon started keeping this record on {first_observed}.",
+      waybackNote:
+        "History before the nightly diffs is reconstructed from {captures} " +
+        "Internet Archive captures of the feed — a backfilled edit is dated " +
+        "to the first capture that shows it, and the true date lies " +
+        "somewhere between that capture and the one before.",
+      methodology:
+        "Every run fingerprints each catalog entry: dueDate, " +
+        "knownRansomwareCampaignUse, vendorProject, product, and " +
+        "vulnerabilityName are kept verbatim; shortDescription, " +
+        "requiredAction, and notes are kept as short stable hashes of the " +
+        "whitespace-normalized text, so the log can say a text changed " +
+        "without republishing it, and a pure whitespace reflow never counts. " +
+        "The fresh catalog is diffed against the stored fingerprints; each " +
+        "difference is one event in an append-only CSV " +
+        "(data/history/kev_changelog.csv — like the NVD backlog history, an " +
+        "original dataset this project accumulates, because CISA publishes " +
+        "only the current snapshot). A missing ransomware flag reads as " +
+        "“Unknown,” the same rule every KEV module on this site applies — so " +
+        "the day CISA added that column to the feed did not log a fake edit " +
+        "wave. Additions are logged but never charted as edits, and removals " +
+        "are charted here and listed by name in the receipts board. Events " +
+        "carry a granularity flag: “daily” events are dated to the nightly " +
+        "run that first saw them (if the pipeline misses nights, changes pool " +
+        "on the next run's date); “capture” events come from the one-time " +
+        "Internet Archive backfill and are dated to the first capture showing " +
+        "them — with weeks to months between captures, a capture-era month is " +
+        "a lower-resolution bucket, and single-capture spikes can be one bulk " +
+        "revision by CISA. The record's very first observation is a baseline: " +
+        "it writes the fingerprints and logs nothing, because there is " +
+        "nothing earlier to compare against.",
+    },
+
+    // --------------------------------------------- changelog.html · 2
+    flagflip: {
+      num: "02",
+      kicker: "The ransomware flag",
+      source: "CISA KEV · CyberMon's own nightly diffs",
+      headline: "The ransomware flag arrives late.",
+      caption:
+        "Each KEV entry carries CISA's assessment of whether the " +
+        "vulnerability is known to have been used in ransomware campaigns — " +
+        "and that flag gets flipped on entries that have sat in the catalog " +
+        "for months or years. Every KEV consumer who read the entry before " +
+        "the flip saw “Unknown” where the catalog now says “Known.” The line " +
+        "accumulates observed Unknown-to-Known flips; the stat is how long " +
+        "after listing the flip typically lands.",
+      statBig: "{n}",
+      statLead: "entries flipped to “Known” after they were already listed",
+      statNote: "median gap from listing to observed flip: {median} days",
+      statNoteThin:
+        "too few observed flips to state a typical gap yet — counts ship in " +
+        "the data file either way",
+      legendMonthly: "Flips observed that month",
+      legendCumulative: "Cumulative flips",
+      methodology:
+        "A flip is a logged change of knownRansomwareCampaignUse to “Known” " +
+        "on an entry already present in the previous observation. The gap is " +
+        "measured from the entry's own dateAdded to the date the flip was " +
+        "observed, so it is an upper bound at capture granularity: a flip " +
+        "CISA made between two Internet Archive captures is dated to the " +
+        "later one. One step in the curve is structural and worth naming: " +
+        "CISA only added the ransomware column to the feed in October 2023, " +
+        "so the first capture carrying it logs a flip for every entry that " +
+        "arrived already flagged — for those, the gap measures how long the " +
+        "entry sat in the catalog before the flag existed at all, and the " +
+        "curve shows them as the step where the record's flag history " +
+        "begins. The median is published only with at least 10 observed " +
+        "flips; below that the count ships and the statistic stays null. " +
+        "Flips back to “Unknown” are rarer, tracked, and disclosed in the " +
+        "data file as reversals rather than netted against the total.",
+    },
+
+    // --------------------------------------------- changelog.html · 3
+    receipts: {
+      num: "03",
+      kicker: "The receipts board",
+      source: "CISA KEV · CyberMon's own nightly diffs",
+      headline: "Some entries never stop changing.",
+      caption:
+        "The catalog entries with the most logged edits — every one a " +
+        "revision CISA made to an already-published listing — and, below " +
+        "them, every entry observed leaving the catalog. A removal is worth " +
+        "naming: the exploited list is a federal remediation mandate, and an " +
+        "entry that disappears from it takes its deadline along.",
+      colCve: "CVE",
+      colVendor: "Vendor",
+      colProduct: "Product",
+      colEdits: "edits",
+      colLast: "last change",
+      removalsTitle: "Removed from the catalog",
+      removalRow: "{cve} — {vendor} {product} · listed {listed} · removed {removed}",
+      removalRowUnlisted: "{cve} — {vendor} {product} · removed {removed}",
+      noRemovals:
+        "No removals observed in the record so far — when one happens, it " +
+        "will be listed here by name.",
+      methodology:
+        "An entry's edit count is its logged field changes plus text " +
+        "revisions across the whole record — additions and removals are not " +
+        "edits and never inflate the count. The board shows the top dozen by " +
+        "edit count (ties break by CVE id); “last change” is the date of the " +
+        "entry's most recent logged edit. Removals come from the state's own " +
+        "removal ledger: an entry present in one observation and absent from " +
+        "the next is logged as removed and remembered — it stays on this " +
+        "list even if it later returns (the return is logged as a new " +
+        "addition). Capture-era dates carry the same granularity caveat as " +
+        "the rest of the page: observed at the first capture that shows the " +
+        "change, not necessarily the day CISA made it.",
     },
   },
 
@@ -1735,6 +1879,7 @@ export const editorial = {
       "APNIC DNSSEC series fetched {apnic_fetched} · " +
       "EPSS history: {epss_graded} KEV entries graded · " +
       "rescore log: {rescore_events} events on record",
+      "KEV changelog: {kev_changelog_events} catalog events on record",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
@@ -1788,6 +1933,7 @@ export const editorial = {
       epss: "EPSS (FIRST.org) · CISA KEV",
       calendar: "CVE List V5 (MITRE)",
       rescores: "CVE List V5 (MITRE) · CyberMon nightly diffs",
+      changelog: "CISA KEV catalog · Internet Archive Wayback Machine",
     },
   },
 };

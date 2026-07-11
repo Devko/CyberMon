@@ -187,6 +187,24 @@ publishes this history — the record starts at first deploy and grows
 every night.** A lost diff state rebuilds from that night's corpus (zero
 events that night, at worst one night's diffs lost); a re-run on the same
 corpus release is detected and never double-counts.
+### 12 · KEV Changelog — [changelog.html](https://devko.github.io/CyberMon/changelog.html) (live)
+
+*CISA edits the exploited list without a changelog — CyberMon keeps the
+diffs.* Three views over the project's own diff record of the CISA KEV
+catalog: edits per month by kind (due-date moves, ransomware-flag flips,
+text revisions, removals — additions are excluded, because a growing
+catalog is the system working), the cumulative Unknown→Known ransomware
+flips with the median listing-to-flip gap, and a receipts board of the
+most-edited entries plus every entry observed leaving the catalog. Each
+nightly run fingerprints the fresh catalog (tracked fields verbatim,
+free-text fields as short hashes) and diffs it against the committed
+state (`site/data/history/kev_state.json`), appending events to the
+committed, append-only `site/data/history/kev_changelog.csv`. The record
+was seeded once from Internet Archive captures of the feed
+(`--kev-changelog-backfill`, batch-capped, cached in
+`.cache/kev_wayback/`; CI never runs it) — backfilled events carry
+`granularity: "capture"` and are dated to the first capture showing the
+change; nightly events carry `"daily"`.
 
 ### Next
 
@@ -230,6 +248,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
 | [APNIC Labs DNSSEC measurement](https://stats.labs.apnic.net/dnssec) | Measured DNSSEC validation rates: per-code daily time series (`cgi-bin/json-table.pl?x=<code>`) + the world-map snapshot table | © APNIC Pty Ltd; "re-use with attribution permitted" (stated in every JSON response), provided on a hold-harmless basis with attribution |
+| [Internet Archive Wayback Machine](https://web.archive.org/) | Historical captures of the CISA KEV JSON (CDX index + snapshot bodies), fetched once for the KEV Changelog backfill — paced ~1 req/s, cached in `.cache/kev_wayback/`, never touched by CI | Archived US Government (CC0-style) content, served by the Internet Archive; capture metadata via the [CDX API](https://archive.org/developers/wayback-cdx-server.html) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
@@ -247,6 +266,15 @@ append-only and cannot be regenerated from any source; the weekly
 `data-backup-*` tags are their rollback insurance. You are welcome to
 reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
+`site/data/history/` holds two **original datasets accumulated by this
+project**: the nightly NVD backlog snapshots (`nvd_backlog.csv` — NVD
+publishes no such history) and the KEV changelog
+(`kev_changelog.csv` + `kev_state.json` — CISA publishes only the current
+catalog snapshot, so the diff record of its edits, flag flips and
+removals exists nowhere else; the pre-launch prefix was reconstructed
+once from Internet Archive captures, everything since is observed live
+and cannot be regenerated). You are welcome to reuse them, CC-BY style:
+just credit "CyberMon (https://github.com/Devko/CyberMon)".
 
 ## Local development
 
