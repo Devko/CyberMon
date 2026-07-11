@@ -1,8 +1,10 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the four that exist today
-(01 · CVE Ecosystem, 02 · Security Market, 03 · KEV Latency,
-04 · CNA Concentration — all live).
+Candidate monitoring modules, beyond the thirteen that exist today
+(01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
+Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
+08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
+Calendar, 12 KEV Changelog, 13 Silent Rescores — all live).
 
 ## Snapshot collectors — become the historical record (probed 2026-07-11)
 
@@ -45,12 +47,46 @@ changelog, the silent rescoring tracker, and NVD throughput.
   program/domain counts.
 - **Feasibility:** easy-medium — weakest thesis of the four.
 
+## Probed 2026-07-10 — verified sources, not yet scheduled
+
+### Registry malware ledger (OSV)
+- **Thesis:** package registries are the new watering hole, and the
+  takedown log is public.
+- **Signals:** malicious-package advisories (MAL-*) per ecosystem per
+  month (npm, PyPI, crates); takedown volume trends.
+- **Source:** OSV bulk zips per ecosystem (tested: npm all.zip serves,
+  ~210 MB — ATT&CK-style cache-once pattern).
+- **Feasibility:** medium — bulk size needs the state-cache pattern.
+
+### CWE Top 25 vs reality
+- **Thesis:** the official Top 25 vs what actually gets exploited.
+- **Signals:** MITRE's annual Top 25 lists against CyberMon's measured
+  KEV/EPSS-weighted CWE distribution (data already ingested).
+- **Source:** cwe.mitre.org Top 25 archive pages (tested: reachable).
+- **Feasibility:** easy-medium — annual lists are small and stable;
+  could ship as a chart in CVE Ecosystem or beside bug-class inertia.
+
+### Support-window economics (endoflife.date)
+- **Thesis:** how much software the world is told to run goes
+  unsupported, and support windows keep shrinking.
+- **Source:** endoflife.date API (tested: 460 products, one JSON).
+- **Feasibility:** easy — thinnest thesis in this group.
+
+### CA concentration (Certificate Transparency)
+- **Thesis:** the web's trust layer is consolidating into a handful of
+  issuers — the CNA-concentration story, one layer down; plus the
+  47-day certificate-lifetime cliff.
+- **Source:** needs a feasibility pass — Cloudflare Radar API
+  (free-tier key, allowed) or another stable public aggregate; raw CT
+  volume is out of reach.
+- **Feasibility:** medium-hard, gated on the aggregate source.
+
 ## Tier 0 — non-CVE sources, live-tested 2026-07-09
 
 Every endpoint below was fetched and inspected on that date; record counts
 and field lists are from the live responses, not documentation.
 
-### Breach disclosure ledger (HIBP)
+### Breach disclosure ledger (HIBP) — SHIPPED as module 05
 - **Thesis:** "Dwell time is a marketing number. The public record of
   breach disclosure is measurable, and it is right here."
 - **Signals:** breach→cataloguing lag (`BreachDate` → `AddedDate`) per
@@ -61,7 +97,7 @@ and field lists are from the live responses, not documentation.
   DataClasses/IsFabricated. Attribution required (HIBP).
 - **Feasibility:** easy — one JSON fetch, KEV-latency storytelling pattern.
 
-### Extortion economy, on-chain (Ransomwhere)
+### Extortion economy, on-chain (Ransomwhere) — SHIPPED as module 06
 - **Thesis:** "Ransom revenue is the one security statistic nobody can
   spin — it settles on a public ledger."
 - **Signals:** confirmed payments and USD revenue per quarter; median
@@ -71,7 +107,7 @@ and field lists are from the live responses, not documentation.
 - **Feasibility:** easy — single export, CC0 licensing. Honest caveat to
   carry: crowdsourced and verified means a *floor*, not the market.
 
-### Taxonomy churn (MITRE ATT&CK)
+### Taxonomy churn (MITRE ATT&CK) — SHIPPED as module 07
 - **Thesis:** "The map of attacker behavior grows every release;
   detections are graded against a moving target."
 - **Signals:** technique/sub-technique counts per version; added,
@@ -83,7 +119,7 @@ and field lists are from the live responses, not documentation.
 - **Feasibility:** medium — STIX parsing and a version-state cache, but no
   rate-limit or licensing pain (ATT&CK terms permit use with attribution).
 
-### The boring-hygiene index (APNIC DNSSEC validation) — SHIPPED
+### The boring-hygiene index (APNIC DNSSEC validation) — SHIPPED as module 08
 Live as **08 · Hygiene Index** ([hygiene.html](../site/hygiene.html)).
 Source exploration found richer endpoints than the candidate note
 assumed: `cgi-bin/json-table.pl?x=<code>` serves the FULL daily history
@@ -120,7 +156,7 @@ rate-limited, paid, or legally delicate.
 
 ## Tier 1 — near-term (mostly reuses data we already ingest)
 
-### KEV latency ledger
+### KEV latency ledger — SHIPPED as module 03
 - **Thesis:** "By the time the government confirms it's exploited, you've
   been exposed for months."
 - **Signals:** days from CVE publication to KEV listing (distribution per
@@ -129,7 +165,7 @@ rate-limited, paid, or legally delicate.
 - **Sources:** CISA KEV JSON + cvelistV5 (both already ingested).
 - **Feasibility:** easy — one new metrics builder and contract section.
 
-### CVE program concentration
+### CVE program concentration — SHIPPED as module 04
 - **Thesis:** "The CVE database is becoming a handful of vendors grading
   themselves at scale."
 - **Signals:** CNA count over time; share of annual CVEs from the top 5/10
