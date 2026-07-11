@@ -17,8 +17,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "advisory_quality.json", "cwe_distribution.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json",
-             "epss_report.json", "cve_calendar.json", "rescore_log.json"]
-             "epss_report.json", "cve_calendar.json", "kev_changelog.json"]
+             "epss_report.json", "cve_calendar.json", "rescore_log.json",
+             "kev_changelog.json"]
 
 
 def _load(out: Path, name: str) -> dict:

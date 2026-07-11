@@ -34,8 +34,8 @@ export const editorial = {
     { id: "guards", href: "guards.html", label: "Security Products" },
     { id: "epss", href: "epss.html", label: "EPSS Report Card" },
     { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
-    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
     { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
+    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -190,17 +190,6 @@ export const editorial = {
         live: true,
       },
       {
-        id: "rescores",
-        href: "rescores.html",
-        num: "13",
-        label: "Silent Rescores",
-        headline: "Severity gets edited after publication. Nobody announces the edits.",
-        blurb:
-          "Every night CyberMon diffs each CVE's CNA-assigned score against the " +
-          "previous night's corpus and logs what moved: scores raised, scores " +
-          "lowered, scores backfilled years late, scores withdrawn. No upstream " +
-          "keeps this history, so the record starts now — thin by design, deeper " +
-          "every night.",
         id: "changelog",
         href: "changelog.html",
         num: "12",
@@ -212,6 +201,20 @@ export const editorial = {
           "that flipped, descriptions that were rewritten, entries that quietly " +
           "vanished — seeded backwards with Internet Archive captures of the " +
           "feed, then extended one nightly diff at a time.",
+        live: true,
+      },
+      {
+        id: "rescores",
+        href: "rescores.html",
+        num: "13",
+        label: "Silent Rescores",
+        headline: "Severity gets edited after publication. Nobody announces the edits.",
+        blurb:
+          "Every night CyberMon diffs each CVE's CNA-assigned score against the " +
+          "previous night's corpus and logs what moved: scores raised, scores " +
+          "lowered, scores backfilled years late, scores withdrawn. No upstream " +
+          "keeps this history, so the record starts now — thin by design, deeper " +
+          "every night.",
         live: true,
       },
     ],
@@ -1604,7 +1607,7 @@ export const editorial = {
     },
 
     // --------------------------------------------- rescores.html · 1 · hero
-    edits: {
+    week: {
       num: "01",
       kicker: "Edits per week",
       source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
@@ -1731,6 +1734,8 @@ export const editorial = {
         "is young, and windowing it would empty it; when the log is deep enough for a " +
         "rolling window, this note will change. Default sort: rescore count, " +
         "descending. Click any column header to re-sort.",
+    },
+
     // --------------------------------------------- changelog.html · 1 · hero
     edits: {
       num: "01",
@@ -1878,7 +1883,7 @@ export const editorial = {
       "ATT&CK enterprise v{attack_version} ({attack_versions} releases) · " +
       "APNIC DNSSEC series fetched {apnic_fetched} · " +
       "EPSS history: {epss_graded} KEV entries graded · " +
-      "rescore log: {rescore_events} events on record",
+      "rescore log: {rescore_events} events on record · " +
       "KEV changelog: {kev_changelog_events} catalog events on record",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:

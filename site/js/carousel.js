@@ -166,9 +166,11 @@ const MODULES = {
   rescores: {
     file: "data/rescore_log.json",
     sections: [
-      { id: "edits", render: renderRescoreWeek },
+      { id: "week", render: renderRescoreWeek },
       { id: "magnitude", render: renderRescoreMagnitude },
       { id: "editors", render: renderRescoreEditors, table: true },
+    ],
+  },
   changelog: {
     file: "data/kev_changelog.json",
     sections: [

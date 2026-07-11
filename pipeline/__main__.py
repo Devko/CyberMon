@@ -30,12 +30,8 @@ from typing import Iterator
 from . import (attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, epss_report_metrics,
                extortion_metrics, guards_metrics, history, hygiene_metrics,
-               kev_metrics, market_metrics, metrics, nvd_throughput,
-               quality_metrics)
-               kev_metrics, market_metrics, metrics, quality_metrics,
-               rescore_tracker)
                kev_changelog, kev_metrics, market_metrics, metrics,
-               quality_metrics)
+               nvd_throughput, quality_metrics, rescore_tracker)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file

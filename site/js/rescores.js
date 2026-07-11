@@ -18,7 +18,7 @@ import { render as renderEditors } from "./charts/rescore_editors.js";
 const DATA_FILE = "data/rescore_log.json";
 
 const SECTIONS = [
-  { id: "edits", render: renderWeek, hero: true },
+  { id: "week", render: renderWeek, hero: true },
   { id: "magnitude", render: renderMagnitude },
   { id: "editors", render: renderEditors },
 ];
