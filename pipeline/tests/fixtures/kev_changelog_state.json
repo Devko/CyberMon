@@ -1,0 +1,75 @@
+{
+ "backfill": null,
+ "baseline_date": "2026-07-01",
+ "entries": {
+  "CVE-2020-5555": {
+   "action": "e3b0c44298fc",
+   "added": "2021-11-03",
+   "desc": "1ce830f6a682",
+   "due": "2021-11-17",
+   "name": "OldVendor OldProduct Fixture Vulnerability",
+   "notes": "e3b0c44298fc",
+   "product": "OldProduct",
+   "ransom": "Unknown",
+   "vendor": "OldVendor"
+  },
+  "CVE-2023-0001": {
+   "action": "e3b0c44298fc",
+   "added": "2023-02-14",
+   "desc": "8aa4fb13ce3f",
+   "due": "2023-02-28",
+   "name": "",
+   "notes": "498e18e1e213",
+   "product": "Widget",
+   "ransom": "Known",
+   "vendor": "VendorX"
+  },
+  "CVE-2023-0003": {
+   "action": "e3b0c44298fc",
+   "added": "2021-12-01",
+   "desc": "620900127d22",
+   "due": "2021-12-15",
+   "name": "",
+   "notes": "e3b0c44298fc",
+   "product": "Gadget",
+   "ransom": "Unknown",
+   "vendor": "GitHub_M"
+  },
+  "CVE-2023-9001": {
+   "action": "e3b0c44298fc",
+   "added": "2023-06-14",
+   "desc": "b6d15ca3637c",
+   "due": "2023-07-05",
+   "name": "",
+   "notes": "e3b0c44298fc",
+   "product": "FortiOS",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
+  },
+  "CVE-2023-9003": {
+   "action": "975dbe03c141",
+   "added": "2023-09-01",
+   "desc": "29fae5836651",
+   "due": "2023-09-22",
+   "name": "Cisco ASA WebVPN Vulnerability",
+   "notes": "e3b0c44298fc",
+   "product": "Adaptive Security Appliance (ASA)",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
+  "CVE-2024-0002": {
+   "action": "e3b0c44298fc",
+   "added": "2024-03-30",
+   "desc": "e617b364de76",
+   "due": "2024-04-20",
+   "name": "",
+   "notes": "e3b0c44298fc",
+   "product": "Thing",
+   "ransom": "Unknown",
+   "vendor": "mitre"
+  }
+ },
+ "last_observed": "2026-07-01",
+ "removed": {},
+ "version": 1
+}

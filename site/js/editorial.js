@@ -34,6 +34,8 @@ export const editorial = {
     { id: "guards", href: "guards.html", label: "Security Products" },
     { id: "epss", href: "epss.html", label: "EPSS Report Card" },
     { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
+    { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
+    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -58,8 +60,8 @@ export const editorial = {
         headline: "CVE severity has become meaningless — here are the receipts.",
         blurb:
           "CVSS inflation, the 9.8 flood, scores vs. real-world exploitation, NVD backlog " +
-          "decay, CNA scoring habits, the volume curve, advisory quality, bug-class " +
-          "inertia. Eight charts, " +
+          "decay, NVD throughput, CNA scoring habits, the volume curve, advisory quality, " +
+          "bug-class inertia. Nine charts, " +
           "rebuilt every night.",
         live: true,
       },
@@ -185,6 +187,34 @@ export const editorial = {
           "stream actually spikes, and how much of each year lands on the twelve " +
           "patch Tuesdays — publication timing, read straight off the corpus every " +
           "night.",
+        live: true,
+      },
+      {
+        id: "changelog",
+        href: "changelog.html",
+        num: "12",
+        label: "KEV Changelog",
+        headline: "CISA edits the exploited list without a changelog. CyberMon keeps the diffs.",
+        blurb:
+          "Every night the Known Exploited Vulnerabilities catalog is diffed " +
+          "against the last observed one: due dates that moved, ransomware flags " +
+          "that flipped, descriptions that were rewritten, entries that quietly " +
+          "vanished — seeded backwards with Internet Archive captures of the " +
+          "feed, then extended one nightly diff at a time.",
+        live: true,
+      },
+      {
+        id: "rescores",
+        href: "rescores.html",
+        num: "13",
+        label: "Silent Rescores",
+        headline: "Severity gets edited after publication. Nobody announces the edits.",
+        blurb:
+          "Every night CyberMon diffs each CVE's CNA-assigned score against the " +
+          "previous night's corpus and logs what moved: scores raised, scores " +
+          "lowered, scores backfilled years late, scores withdrawn. No upstream " +
+          "keeps this history, so the record starts now — thin by design, deeper " +
+          "every night.",
         live: true,
       },
     ],
@@ -458,8 +488,62 @@ export const editorial = {
     },
 
     // ------------------------------------------------------------------- 5
-    cna: {
+    throughput: {
       num: "05",
+      kicker: "NVD throughput",
+      source: "NVD API 2.0 (NIST) · CyberMon's own nightly snapshots",
+      headline: "NVD publishes the pile, never the pace.",
+      caption:
+        "The chart above counts the backlog; this one watches it move. Every night " +
+        "CyberMon diffs its snapshot of every CVE's NVD status against the previous " +
+        "night's, and the differences are the day's traffic: new CVEs arriving, records " +
+        "joining the analysis queue, records leaving it as Analyzed or as Deferred. Held " +
+        "long enough, the same diffs also clock the queue — how many days a CVE visibly " +
+        "waits before its analysis lands. All of it is measured from the outside; NVD " +
+        "itself reports only the totals.",
+      note:
+        "NVD publishes no transition history — CyberMon's record of these flows starts " +
+        "{first_date}. Waits are clocked between our own nightly snapshots, so every " +
+        "duration is a lower bound.",
+      lineTitle: "CVEs moved per day, one point per nightly diff",
+      seriesAnalyzed: "Analyzed (left the queue)",
+      seriesDeferred: "Deferred (waved off)",
+      seriesReceived: "Newly received",
+      statMedianLabel: "median observed wait in the analysis queue",
+      statMedianBig: "{days} days",
+      statMedianNote:
+        "across {n} timed queue exits — each one a lower bound; the clock starts at " +
+        "our first sighting of the CVE in the queue",
+      statCountLabel: "timed queue exits collected so far",
+      statCountNote:
+        "the median publishes at {min_known} timed exits — fewer would let one odd " +
+        "week pose as a trend",
+      resweepFlag: "full-resweep day — may include catch-up from healed sync gaps",
+      methodology:
+        "Each nightly run syncs NVD's per-CVE vulnStatus (incremental API pulls; a full " +
+        "resweep from NVD's yearly feeds at least weekly) and diffs the fresh snapshot " +
+        "against the previous one. A status change between snapshots is a transition; the " +
+        "chart counts them per day: CVEs entering “Received,” entering “Awaiting " +
+        "Analysis,” leaving the live queue for “Analyzed,” and leaving it for “Deferred.” " +
+        "Dates attach at observation: NVD publishes no status-change timestamps, so a " +
+        "CVE's status is stamped with the day CyberMon first saw it. A queue wait is " +
+        "therefore the span between our sighting of the entry and our sighting of the " +
+        "exit — lower-bounded by the nightly cadence, and blind to hops that happen " +
+        "between two snapshots. Statuses recorded before this tracker shipped carry no " +
+        "entry date; their transitions count in the flow but are never timed — an " +
+        "unknown date stays unknown rather than being backfilled. The median stat stays " +
+        "unpublished until {min_known} timed exits have accumulated — below that a median " +
+        "is noise wearing a unit. Weekly full resweeps can heal missed sync windows and " +
+        "land several days of catch-up transitions on one date; those rows are flagged in " +
+        "the record and in the tooltip. One row per run date is appended to a committed " +
+        "CSV (data/history/nvd_throughput.csv, last run per date wins) — like the backlog " +
+        "record above, it is append-only and irreplaceable: the history starts when we " +
+        "started keeping it.",
+    },
+
+    // ------------------------------------------------------------------- 6
+    cna: {
+      num: "06",
       kicker: "CNA rubber-stamp board",
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "Who grades their own homework hardest?",
@@ -484,9 +568,9 @@ export const editorial = {
         "descending. Click any column header to re-sort.",
     },
 
-    // ------------------------------------------------------------------- 6
+    // ------------------------------------------------------------------- 7
     volume: {
-      num: "06",
+      num: "07",
       kicker: "Volume curve",
       source: "cvelistV5 (MITRE)",
       headline: "More CVEs than anyone can read.",
@@ -511,9 +595,9 @@ export const editorial = {
         "solid line keeps showing the actual partial count.",
     },
 
-    // ------------------------------------------------------------------- 7
+    // ------------------------------------------------------------------- 8
     quality: {
-      num: "07",
+      num: "08",
       kicker: "Advisory quality",
       source: "cvelistV5 (MITRE)",
       headline: "A CVE record is still allowed to say almost nothing.",
@@ -545,9 +629,9 @@ export const editorial = {
         "refills nightly.",
     },
 
-    // ------------------------------------------------------------------- 8
+    // ------------------------------------------------------------------- 9
     cwe: {
-      num: "08",
+      num: "09",
       kicker: "Bug-class inertia",
       source: "cvelistV5 (MITRE)",
       headline: "The bug classes outlast the news cycle.",
@@ -1521,6 +1605,270 @@ export const editorial = {
         "500 dated records. The current year (marked *) is partial and refills " +
         "nightly.",
     },
+
+    // --------------------------------------------- rescores.html · 1 · hero
+    week: {
+      num: "01",
+      kicker: "Edits per week",
+      source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
+      headline: "Published is not final.",
+      caption:
+        "A CVE record stays editable after it ships, and the severity score is no " +
+        "exception: the assigning CNA can raise it, lower it, add one years later, or " +
+        "withdraw it — on the live record, with no changelog attached. Every night " +
+        "CyberMon re-reads the whole corpus and diffs each record's CNA-assigned score " +
+        "against the night before. Bars above the line are scores revised upward, bars " +
+        "below are revisions downward; backfilled first scores and CVSS version changes " +
+        "ride along as separate muted counts, because bookkeeping and edits must never " +
+        "blend. This record starts at first deploy and deepens nightly.",
+      legendUp: "Score raised",
+      legendDown: "Score lowered",
+      legendFirst: "First score backfilled",
+      legendShift: "CVSS version shift",
+      legendRemoved: "Score removed",
+      statLabel: "Events on the committed log",
+      statSince: "since {first_date}",
+      // {first_date} is filled from the data (the log's first observed
+      // date); the empty variant renders while the log has no events yet.
+      note:
+        "No upstream publishes score-edit history — CyberMon has kept this record " +
+        "since {first_date}.",
+      noteEmpty:
+        "No upstream publishes score-edit history — CyberMon's record starts with " +
+        "tonight's corpus. Edits appear once there are two nights to compare.",
+      emptyChart:
+        "No diff nights on the log yet — the record starts now, and the first " +
+        "comparable night fills the first bar.",
+      methodology:
+        "Every night the pipeline reduces each published CVE record to a score " +
+        "fingerprint: the CNA-assigned base score of the newest CVSS version the record " +
+        "carries, read by the same extraction the severity-inflation chart uses — the " +
+        "two pages cannot disagree about what a record's score is. Tonight's " +
+        "fingerprints are diffed against the previous night's, kept as cached state " +
+        "alongside the corpus release tag (a re-run against the same release is " +
+        "detected and skipped, so nothing double-counts). A changed score on the same " +
+        "CVSS version is a rescore, raised or lowered. A record whose newest scored " +
+        "version changed is a version shift, logged separately and never charted as up " +
+        "or down: v2, v3 and v4 are different scales, and reading a v3-to-v4 move as a " +
+        "raise would manufacture an edit out of a methodology change. A record gaining " +
+        "its first in-record score is backfill-scoring, counted separately — filling a " +
+        "blank is not editing a judgment; a score disappearing from a live record logs " +
+        "as removed. Brand-new records produce no event at all: first assignment is the " +
+        "inflation chart's subject. Events append to a committed CSV " +
+        "(data/history/rescore_log.csv) that no upstream can replace. If the cached " +
+        "state is ever lost it is rebuilt from that night's corpus and the night logs " +
+        "zero events — at worst one night of edits goes unrecorded, and that failure " +
+        "mode is stated here rather than papered over. Bars group by ISO week of the " +
+        "observation date, UTC; the week in progress keeps filling until it closes.",
+    },
+
+    // --------------------------------------------- rescores.html · 2
+    magnitude: {
+      num: "02",
+      kicker: "Magnitude",
+      source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
+      headline: "How far a score moves when it moves.",
+      caption:
+        "Each rescore's arithmetic: the new score minus the old, always on the same " +
+        "CVSS version — an edit that changes version is a version shift and never lands " +
+        "here. A half-point correction and a four-point rewrite are different events, " +
+        "and this chart exists to keep them apart. Until the log holds enough rescores " +
+        "to distribute honestly, the panel reports exactly how many it has instead of " +
+        "plotting a histogram of anecdotes.",
+      // Rendered instead of the chart while the log sits under the min-n
+      // gate; both variants are filled from the data file, never hardcoded.
+      placeholder:
+        "{n} rescore events on the log since {first_date} — the distribution charts " +
+        "once {min_n} have accumulated.",
+      placeholderEmpty:
+        "No rescore events on the log yet — the distribution charts once {min_n} " +
+        "have accumulated.",
+      medianLabel: "median delta {median}",
+      tooltipCount: "{n} rescore events",
+      xAxisLabel: "score delta (new − old)",
+      yAxisLabel: "rescore events",
+      methodology:
+        "Delta is the new score minus the old per rescore event — same CVSS version by " +
+        "construction, so every delta compares like with like; version shifts are " +
+        "excluded from this chart entirely, because a difference across scoring scales " +
+        "is not a measurement. Deltas land in fixed signed buckets (under −4, −4 to −2, " +
+        "under −2 to −0.1, +0.1 to under +2, +2 to under +4, +4 and over) at the " +
+        "scores' own one-decimal precision; a delta of exactly zero cannot occur, since " +
+        "an unchanged score is not an event. The distribution and its median stay " +
+        "unplotted until the log holds at least 30 rescore events — a histogram of a " +
+        "handful of edits would chart noise with a straight face. The gate and the " +
+        "current count ship in the data file, and the placeholder shown before the gate " +
+        "opens is rendered from them, not hardcoded.",
+    },
+
+    // --------------------------------------------- rescores.html · 3
+    editors: {
+      num: "03",
+      kicker: "Who edits",
+      source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
+      headline: "Every edit has an author.",
+      caption:
+        "The CNAs that assign scores are the ones who revise them, and the log records " +
+        "which. The board counts rescore events per CNA — same version, new number — " +
+        "split into raised and lowered. Expect it to start sparse: a board of " +
+        "after-the-fact edits can only fill at the speed the ecosystem edits, and the " +
+        "line above the board states exactly how much record it stands on.",
+      boardNote: "{events} events on the log since {first_date}",
+      boardNoteEmpty: "no events on the log yet — collection is live",
+      windowTemplate:
+        "whole record · {context} · min {min_events} rescore events per CNA",
+      colCna: "CNA",
+      colRescores: "rescores",
+      colUp: "raised",
+      colDown: "lowered",
+      emptyBoard:
+        "No CNA has enough logged rescores to rank yet — the board fills as the " +
+        "record grows.",
+      methodology:
+        "For each CNA — the record's assigner on the night the edit was observed — the " +
+        "board counts rescore events across the whole committed log, split by " +
+        "direction. Version shifts, backfilled first scores and removals are excluded: " +
+        "the board asks who changes their own numbers, not who fills in paperwork. " +
+        "CNAs with fewer than 3 logged rescores stay off the board — two edits are an " +
+        "anecdote, not a habit. There is deliberately no time window yet: the record " +
+        "is young, and windowing it would empty it; when the log is deep enough for a " +
+        "rolling window, this note will change. Default sort: rescore count, " +
+        "descending. Click any column header to re-sort.",
+    },
+
+    // --------------------------------------------- changelog.html · 1 · hero
+    edits: {
+      num: "01",
+      kicker: "The edit stream",
+      source: "CISA KEV · CyberMon's own nightly diffs",
+      headline: "The exploited list gets edited after publication.",
+      caption:
+        "CISA's Known Exploited Vulnerabilities catalog is the closest thing " +
+        "the industry has to an official list of what attackers actually use — " +
+        "and it changes in place, with no published changelog. CyberMon diffs " +
+        "every fresh catalog against the last observed one and keeps the " +
+        "ledger. Bars count edits per month: remediation deadlines that moved, " +
+        "ransomware flags that flipped, wording that was rewritten, and " +
+        "entries that vanished outright. New listings are deliberately not " +
+        "counted — a growing catalog is the system working; this chart counts " +
+        "revisions to what was already published.",
+      statLabel: "Edits to already-published entries, whole record",
+      statNote: "edits across a catalog of {entries} entries · new listings excluded: {additions}",
+      legendDueDate: "Due date moved",
+      legendFlag: "Ransomware flag",
+      legendText: "Text revised",
+      legendRemoved: "Entry removed",
+      // Filled by the renderer from the catalog block; the capture sentence
+      // is appended only when the record carries Wayback-seeded events.
+      note: "CyberMon started keeping this record on {first_observed}.",
+      waybackNote:
+        "History before the nightly diffs is reconstructed from {captures} " +
+        "Internet Archive captures of the feed — a backfilled edit is dated " +
+        "to the first capture that shows it, and the true date lies " +
+        "somewhere between that capture and the one before.",
+      methodology:
+        "Every run fingerprints each catalog entry: dueDate, " +
+        "knownRansomwareCampaignUse, vendorProject, product, and " +
+        "vulnerabilityName are kept verbatim; shortDescription, " +
+        "requiredAction, and notes are kept as short stable hashes of the " +
+        "whitespace-normalized text, so the log can say a text changed " +
+        "without republishing it, and a pure whitespace reflow never counts. " +
+        "The fresh catalog is diffed against the stored fingerprints; each " +
+        "difference is one event in an append-only CSV " +
+        "(data/history/kev_changelog.csv — like the NVD backlog history, an " +
+        "original dataset this project accumulates, because CISA publishes " +
+        "only the current snapshot). A missing ransomware flag reads as " +
+        "“Unknown,” the same rule every KEV module on this site applies — so " +
+        "the day CISA added that column to the feed did not log a fake edit " +
+        "wave. Additions are logged but never charted as edits, and removals " +
+        "are charted here and listed by name in the receipts board. Events " +
+        "carry a granularity flag: “daily” events are dated to the nightly " +
+        "run that first saw them (if the pipeline misses nights, changes pool " +
+        "on the next run's date); “capture” events come from the one-time " +
+        "Internet Archive backfill and are dated to the first capture showing " +
+        "them — with weeks to months between captures, a capture-era month is " +
+        "a lower-resolution bucket, and single-capture spikes can be one bulk " +
+        "revision by CISA. The record's very first observation is a baseline: " +
+        "it writes the fingerprints and logs nothing, because there is " +
+        "nothing earlier to compare against.",
+    },
+
+    // --------------------------------------------- changelog.html · 2
+    flagflip: {
+      num: "02",
+      kicker: "The ransomware flag",
+      source: "CISA KEV · CyberMon's own nightly diffs",
+      headline: "The ransomware flag arrives late.",
+      caption:
+        "Each KEV entry carries CISA's assessment of whether the " +
+        "vulnerability is known to have been used in ransomware campaigns — " +
+        "and that flag gets flipped on entries that have sat in the catalog " +
+        "for months or years. Every KEV consumer who read the entry before " +
+        "the flip saw “Unknown” where the catalog now says “Known.” The line " +
+        "accumulates observed Unknown-to-Known flips; the stat is how long " +
+        "after listing the flip typically lands.",
+      statBig: "{n}",
+      statLead: "entries flipped to “Known” after they were already listed",
+      statNote: "median gap from listing to observed flip: {median} days",
+      statNoteThin:
+        "too few observed flips to state a typical gap yet — counts ship in " +
+        "the data file either way",
+      legendMonthly: "Flips observed that month",
+      legendCumulative: "Cumulative flips",
+      methodology:
+        "A flip is a logged change of knownRansomwareCampaignUse to “Known” " +
+        "on an entry already present in the previous observation. The gap is " +
+        "measured from the entry's own dateAdded to the date the flip was " +
+        "observed, so it is an upper bound at capture granularity: a flip " +
+        "CISA made between two Internet Archive captures is dated to the " +
+        "later one. One step in the curve is structural and worth naming: " +
+        "CISA only added the ransomware column to the feed in October 2023, " +
+        "so the first capture carrying it logs a flip for every entry that " +
+        "arrived already flagged — for those, the gap measures how long the " +
+        "entry sat in the catalog before the flag existed at all, and the " +
+        "curve shows them as the step where the record's flag history " +
+        "begins. The median is published only with at least 10 observed " +
+        "flips; below that the count ships and the statistic stays null. " +
+        "Flips back to “Unknown” are rarer, tracked, and disclosed in the " +
+        "data file as reversals rather than netted against the total.",
+    },
+
+    // --------------------------------------------- changelog.html · 3
+    receipts: {
+      num: "03",
+      kicker: "The receipts board",
+      source: "CISA KEV · CyberMon's own nightly diffs",
+      headline: "Some entries never stop changing.",
+      caption:
+        "The catalog entries with the most logged edits — every one a " +
+        "revision CISA made to an already-published listing — and, below " +
+        "them, every entry observed leaving the catalog. A removal is worth " +
+        "naming: the exploited list is a federal remediation mandate, and an " +
+        "entry that disappears from it takes its deadline along.",
+      colCve: "CVE",
+      colVendor: "Vendor",
+      colProduct: "Product",
+      colEdits: "edits",
+      colLast: "last change",
+      removalsTitle: "Removed from the catalog",
+      removalRow: "{cve} — {vendor} {product} · listed {listed} · removed {removed}",
+      removalRowUnlisted: "{cve} — {vendor} {product} · removed {removed}",
+      noRemovals:
+        "No removals observed in the record so far — when one happens, it " +
+        "will be listed here by name.",
+      methodology:
+        "An entry's edit count is its logged field changes plus text " +
+        "revisions across the whole record — additions and removals are not " +
+        "edits and never inflate the count. The board shows the top dozen by " +
+        "edit count (ties break by CVE id); “last change” is the date of the " +
+        "entry's most recent logged edit. Removals come from the state's own " +
+        "removal ledger: an entry present in one observation and absent from " +
+        "the next is logged as removed and remembered — it stays on this " +
+        "list even if it later returns (the return is logged as a new " +
+        "addition). Capture-era dates carry the same granularity caveat as " +
+        "the rest of the page: observed at the first capture that shows the " +
+        "change, not necessarily the day CISA made it.",
+    },
   },
 
   footer: {
@@ -1534,7 +1882,9 @@ export const editorial = {
       "fetched {ransomwhere_fetched} · " +
       "ATT&CK enterprise v{attack_version} ({attack_versions} releases) · " +
       "APNIC DNSSEC series fetched {apnic_fetched} · " +
-      "EPSS history: {epss_graded} KEV entries graded",
+      "EPSS history: {epss_graded} KEV entries graded · " +
+      "rescore log: {rescore_events} events on record · " +
+      "KEV changelog: {kev_changelog_events} catalog events on record",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
@@ -1587,6 +1937,8 @@ export const editorial = {
       guards: "CISA KEV catalog",
       epss: "EPSS (FIRST.org) · CISA KEV",
       calendar: "CVE List V5 (MITRE)",
+      rescores: "CVE List V5 (MITRE) · CyberMon nightly diffs",
+      changelog: "CISA KEV catalog · Internet Archive Wayback Machine",
     },
   },
 };

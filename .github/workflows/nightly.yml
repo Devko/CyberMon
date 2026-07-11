@@ -1,7 +1,14 @@
 name: Nightly data refresh
 
 # Runs the full pipeline against live sources, commits the refreshed
-# site/data/ (including the append-only history/nvd_backlog.csv, which
+# site/data/ (including the append-only history/nvd_backlog.csv and
+# history/nvd_throughput.csv, which CANNOT be regenerated), then deploys
+# the site to GitHub Pages.
+# site/data/ (including the append-only history/ CSVs — nvd_backlog.csv
+# and rescore_log.csv — which CANNOT be regenerated), then deploys the
+# site to GitHub Pages.
+# site/data/ (including the append-only history files — nvd_backlog.csv
+# and the KEV changelog's kev_changelog.csv + kev_state.json — which
 # CANNOT be regenerated), then deploys the site to GitHub Pages.
 
 on:
@@ -44,10 +51,14 @@ jobs:
       - name: Install pipeline dependencies
         run: pip install -r pipeline/requirements.txt
 
-      # NVD incremental-sync state (per-CVE status map). A cache miss is
-      # harmless: the pipeline just does a full corpus sweep and rebuilds
-      # it. The key is unique per run so the updated state is saved after
-      # every night; restore-keys picks up the newest previous one.
+      # NVD incremental-sync state (per-CVE status map + the throughput
+      # tracker's since-dates). A cache miss is mostly harmless: the
+      # pipeline does a full corpus sweep and rebuilds the map — but the
+      # throughput diff then has no baseline, so that night appends no
+      # transition row and observed queue durations restart accumulating
+      # (the committed CSV keeps everything already measured). The key is
+      # unique per run so the updated state is saved after every night;
+      # restore-keys picks up the newest previous one.
       - name: Restore NVD sync state
         uses: actions/cache@v4
         with:
@@ -93,6 +104,20 @@ jobs:
           restore-keys: |
             epss-report-state-
 
+      # Silent-rescores diff state (per-CVE CNA score fingerprints from
+      # the previous night's corpus, plus that corpus's release tag). A
+      # cache miss is harmless: the pipeline rebuilds the state from
+      # tonight's corpus and logs zero rescore events that night — at
+      # worst one night's diffs are lost, and the committed append-only
+      # site/data/history/rescore_log.csv is never touched by the rebuild.
+      - name: Restore rescore diff state
+        uses: actions/cache@v4
+        with:
+          path: .cache/rescore_state.json.gz
+          key: rescore-state-${{ github.run_id }}
+          restore-keys: |
+            rescore-state-
+
       # If this step fails, the job fails and the deploy job below is
       # skipped — stale/broken data is never deployed. Do NOT add
       # continue-on-error here.
@@ -118,9 +143,19 @@ jobs:
           fi
 
       # Once per ISO week, freeze an immutable snapshot tag on HEAD. The
-      # append-only site/data/history/nvd_backlog.csv CANNOT be regenerated
-      # (this repo is its only copy), so a weekly tag is a rollback point if
-      # the file is ever corrupted or truncated by a bad run. Insurance, not
+      # append-only site/data/history/ CSVs (nvd_backlog.csv,
+      # nvd_throughput.csv) CANNOT be regenerated
+      # (this repo is their only copy), so a weekly tag is a rollback point if
+      # a file is ever corrupted or truncated by a bad run. Insurance, not
+      # append-only site/data/history/ CSVs (nvd_backlog.csv and
+      # rescore_log.csv) CANNOT be regenerated (this repo is their only
+      # copy), so a weekly tag is a rollback point if a file is ever
+      # corrupted or truncated by a bad run. Insurance, not
+      # append-only history files (site/data/history/nvd_backlog.csv, and
+      # the KEV changelog's kev_changelog.csv + kev_state.json) CANNOT be
+      # regenerated (this repo is their only copy), so a weekly tag is a
+      # rollback point if a file is ever corrupted or truncated by a bad
+      # run. Insurance, not
       # the product: every failure mode here is swallowed so it can never
       # take down the refresh itself (the pipeline-run step above still must
       # NOT get continue-on-error — this leniency is for the backup only).

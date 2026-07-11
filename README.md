@@ -21,7 +21,7 @@ Each module is its own directly linkable page with its own pipeline stage and
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
-*CVE severity has become meaningless — here are the receipts.* Eight charts:
+*CVE severity has become meaningless — here are the receipts.* Nine charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't
@@ -34,13 +34,18 @@ Each module is its own directly linkable page with its own pipeline stage and
 4. **NVD decay** — NVD's current enrichment backlog by status, plus our own
    accumulated snapshot time series (NVD publishes no backlog history — we
    are the historical record).
-5. **CNA rubber-stamp board** — CNAs ranked by average assigned severity and
+5. **NVD throughput** — daily status transitions derived by diffing our own
+   nightly per-CVE snapshots: CVEs received, entering the analysis queue,
+   leaving it as Analyzed or Deferred, plus the observed queue wait (NVD
+   publishes totals only, never flow — again, we are the record; all
+   durations are observed-by-CyberMon lower bounds).
+6. **CNA rubber-stamp board** — CNAs ranked by average assigned severity and
    share of scores ≥ 9.0 (minimum 100 CVEs in a 3-year window).
-6. **Volume curve** — CVEs published and rejected per year.
-7. **Advisory quality** — share of each year's records missing a CWE, a
+7. **Volume curve** — CVEs published and rejected per year.
+8. **Advisory quality** — share of each year's records missing a CWE, a
    CVSS score, or usable affected-version data, checked against the record
    itself.
-8. **Bug-class inertia** — the top-8 weakness classes of the last decade
+9. **Bug-class inertia** — the top-8 weakness classes of the last decade
    and each one's share of the year's CWE-tagged records.
 
 ### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
@@ -162,10 +167,50 @@ from the same cvelistV5 corpus (all date judgments UTC):
    twelve second Tuesdays, against the 3.3% those days would hold under
    a calendar-blind uniform flow.
 
+### 12 · KEV Changelog — [changelog.html](https://devko.github.io/CyberMon/changelog.html) (live)
+
+*CISA edits the exploited list without a changelog — CyberMon keeps the
+diffs.* Three views over the project's own diff record of the CISA KEV
+catalog: edits per month by kind (due-date moves, ransomware-flag flips,
+text revisions, removals — additions are excluded, because a growing
+catalog is the system working), the cumulative Unknown→Known ransomware
+flips with the median listing-to-flip gap, and a receipts board of the
+most-edited entries plus every entry observed leaving the catalog. Each
+nightly run fingerprints the fresh catalog (tracked fields verbatim,
+free-text fields as short hashes) and diffs it against the committed
+state (`site/data/history/kev_state.json`), appending events to the
+committed, append-only `site/data/history/kev_changelog.csv`. The record
+was seeded once from Internet Archive captures of the feed
+(`--kev-changelog-backfill`, batch-capped, cached in
+`.cache/kev_wayback/`; CI never runs it) — backfilled events carry
+`granularity: "capture"` and are dated to the first capture showing the
+change; nightly events carry `"daily"`.
+
 ### Next
 
 Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
 each entry names its thesis, open data sources, and feasibility.
+
+### 13 · Silent Rescores — [rescores.html](https://devko.github.io/CyberMon/rescores.html) (live)
+
+*Severity is not just assigned — it is edited after the fact, quietly, on
+live records.* Every night the pipeline fingerprints each published CVE's
+CNA-assigned base score (the exact extraction the severity-inflation
+chart uses, so the two can never disagree) and diffs it against the
+previous night's corpus (`.cache/rescore_state.json.gz`). Changes land on
+a committed, append-only event log
+(`site/data/history/rescore_log.csv`) as one of four types: `rescore`
+(same CVSS version, new score — the only type with an up/down direction),
+`version_shift` (moved to another CVSS version; never charted as a score
+change, because v2/v3/v4 are different scales), `first_score` (an old
+record backfilled with its first score) and `score_removed`. Three
+charts: edits per week (up vs. down, the other types as separate muted
+series), the rescore-delta distribution (behind a min-n gate until the
+record is deep enough), and a CNA board of who edits. **No upstream
+publishes this history — the record starts at first deploy and grows
+every night.** A lost diff state rebuilds from that night's corpus (zero
+events that night, at worst one night's diffs lost); a re-run on the same
+corpus release is detected and never double-counts.
 
 ## Architecture
 
@@ -204,6 +249,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
 | [APNIC Labs DNSSEC measurement](https://stats.labs.apnic.net/dnssec) | Measured DNSSEC validation rates: per-code daily time series (`cgi-bin/json-table.pl?x=<code>`) + the world-map snapshot table | © APNIC Pty Ltd; "re-use with attribution permitted" (stated in every JSON response), provided on a hold-harmless basis with attribution |
+| [Internet Archive Wayback Machine](https://web.archive.org/) | Historical captures of the CISA KEV JSON (CDX index + snapshot bodies), fetched once for the KEV Changelog backfill — paced ~1 req/s, cached in `.cache/kev_wayback/`, never touched by CI | Archived US Government (CC0-style) content, served by the Internet Archive; capture metadata via the [CDX API](https://archive.org/developers/wayback-cdx-server.html) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
@@ -213,10 +259,23 @@ whenever the state is missing or unreadable) so drift can never outlive
 `FULL_RESYNC_DAYS`; full sweeps read NVD's static yearly JSON feeds
 (CDN-served flat files, minutes total) instead of paging the API.
 
-`site/data/history/` — the nightly NVD backlog snapshots — is an **original
-dataset accumulated by this project**; NVD publishes no such history. You are
-welcome to reuse it, CC-BY style: just credit "CyberMon
+`site/data/history/` holds **original datasets accumulated by this
+project**: the nightly NVD backlog snapshots (`nvd_backlog.csv` — NVD
+publishes no backlog history) and the silent-rescore event log
+(`rescore_log.csv` — no upstream publishes score-edit history). Both are
+append-only and cannot be regenerated from any source; the weekly
+`data-backup-*` tags are their rollback insurance. You are welcome to
+reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
+`site/data/history/` holds two **original datasets accumulated by this
+project**: the nightly NVD backlog snapshots (`nvd_backlog.csv` — NVD
+publishes no such history) and the KEV changelog
+(`kev_changelog.csv` + `kev_state.json` — CISA publishes only the current
+catalog snapshot, so the diff record of its edits, flag flips and
+removals exists nowhere else; the pre-launch prefix was reconstructed
+once from Internet Archive captures, everything since is observed live
+and cannot be regenerated). You are welcome to reuse them, CC-BY style:
+just credit "CyberMon (https://github.com/Devko/CyberMon)".
 
 ## Local development
 

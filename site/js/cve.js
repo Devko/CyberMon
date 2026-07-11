@@ -1,5 +1,5 @@
 // =============================================================================
-// cve.js — CVE Ecosystem tab (cve.html). Builds the eight chart sections from
+// cve.js — CVE Ecosystem tab (cve.html). Builds the nine chart sections from
 // editorial.js, fetches each contract file independently, renders charts.
 // A failed fetch only takes down its own section (inline error card).
 // Shared chrome (masthead/nav/banner/footer) comes from common.js.
@@ -12,6 +12,7 @@ import { render as renderInflation } from "./charts/inflation.js";
 import { render as renderFlood } from "./charts/flood.js";
 import { render as renderReality } from "./charts/reality.js";
 import { render as renderDecay } from "./charts/decay.js";
+import { render as renderThroughput } from "./charts/throughput.js";
 import { render as renderCna } from "./charts/cna.js";
 import { render as renderVolume } from "./charts/volume.js";
 import { render as renderQuality } from "./charts/quality.js";
@@ -24,6 +25,7 @@ const SECTIONS = [
   { id: "flood", file: "data/nine_eight_flood.json", render: renderFlood },
   { id: "reality", file: "data/score_vs_reality.json", render: renderReality },
   { id: "decay", file: "data/nvd_decay.json", render: renderDecay },
+  { id: "throughput", file: "data/nvd_throughput.json", render: renderThroughput },
   { id: "cna", file: "data/cna_leaderboard.json", render: renderCna },
   { id: "volume", file: "data/volume_curve.json", render: renderVolume },
   { id: "quality", file: "data/advisory_quality.json", render: renderQuality },
@@ -101,6 +103,11 @@ async function boot() {
               window_years: data.window_years,
               min_cves: data.min_cves,
             });
+          }
+          if (cfg.id === "throughput") {
+            methodText.textContent = tpl(
+              editorial.sections.throughput.methodology,
+              { min_known: data.min_known_duration });
           }
           cfg.render(slots, data);
         })

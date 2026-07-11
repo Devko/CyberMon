@@ -72,6 +72,17 @@ reason as `attack` (`--skip-epss-report` with no prior data omits it);
 when present it carries `fetched_at` (ISO-8601 UTC), `graded` (KEV entries
 with a day-before score) and `pending_backfill` (pairs not yet looked up),
 plus `"stale": true` on carry-forward runs.
+`sources.rescores` (Silent Rescores module) is validated additively —
+optional because older committed meta files predate the module, but the
+stage always emits it: `events_total` = rows on the committed event log
+after tonight's append, `state_release` = the corpus release recorded in
+tonight's fingerprint state (the release-skew guard's reference point).
+`sources.kev_changelog` (KEV Changelog module) is validated additively —
+optional because older committed meta files predate the module, but the
+stage itself always emits it (no skip flag; it rides on the KEV fetch):
+`fetched_at` (ISO-8601 UTC), `events_total` (rows in the committed event
+log, additions included) and `last_observed` (date of the newest catalog
+observation; empty string only in the degenerate no-record-yet case).
 
 ## site/data/severity_inflation.json  (chart 1, hero)
 
@@ -189,7 +200,55 @@ History is read from `site/data/history/nvd_backlog.csv` (append-only,
 columns: `date,backlog_total,awaiting_analysis,undergoing_analysis,received`),
 one row per pipeline run date (last run per date wins).
 
-## site/data/cna_leaderboard.json  (chart 5)
+## site/data/nvd_throughput.json  (chart 5)
+
+```json
+{
+  "generated_at": "...",
+  "min_known_duration": 30,
+  "queue": {"median_days": null, "n_known_duration": 12},
+  "history": [
+    {"date": "2026-07-11", "received_new": 141, "entered_awaiting": 118,
+     "analyzed_from_awaiting": 96, "deferred_from_awaiting": 4,
+     "resweep": false}
+  ]
+}
+```
+
+Daily NVD status-transition counts, derived by diffing CyberMon's own
+nightly per-CVE status snapshots (`pipeline/nvd_throughput.py`) — NVD
+publishes totals only, never flow. **Every figure is observed-by-CyberMon,
+not an official NVD number**: a "transition" is a status difference
+between two of our snapshots (multiple hops between snapshots read as
+one), and a queue wait is the span between our first sighting of the
+entry status and our sighting of the exit — lower-bounded by the nightly
+cadence. Since-dates are never invented: statuses recorded before the
+tracker shipped have no entry date, so their transitions count in the
+flow but never contribute a duration.
+
+`queue.median_days`/`n_known_duration` are cumulative over the whole
+record; the median is null until `min_known_duration` timed exits have
+accumulated (a median of a handful of observations is noise), and the
+validator rejects a median published below the threshold. `history`
+dates are unique and ascending; `resweep: true` flags runs whose sync did
+a full feed resweep — drift healing can land catch-up transitions in one
+lump on those dates. An empty `history` is legal (the record starts at
+first deploy).
+
+History is read from `site/data/history/nvd_throughput.csv` (append-only,
+columns: `date,received_new,entered_awaiting,analyzed_from_awaiting,`
+`deferred_from_awaiting,median_queue_days,n_known_duration,resweep`), one
+row per pipeline run date (last run per date wins; `median_queue_days`
+empty until the threshold). Like `nvd_backlog.csv`, this CSV is the
+IRREPLACEABLE original record — no upstream source can regenerate it.
+
+`meta.sources.nvd` may additively carry `throughput_events` (int ≥ 0):
+the transitions counted by that run's diff; absent on carry-forward runs
+and on runs with no previous state to diff against. `--skip-nvd` carries
+`nvd_throughput.json` forward stale exactly like `nvd_decay.json` and
+appends no CSV row.
+
+## site/data/cna_leaderboard.json  (chart 6)
 
 ```json
 {
@@ -207,7 +266,7 @@ Sorted by `pct_geq_9` descending. Uses CNA-assigned scores only (that is the
 point of the chart). `cna` = short name from the record's assigner, `org` =
 full org name where resolvable, else same as `cna`.
 
-## site/data/volume_curve.json  (chart 6)
+## site/data/volume_curve.json  (chart 7)
 
 ```json
 {
@@ -224,7 +283,7 @@ published and rejected counts paced to a full year. Keyed off the
 published flow — it ships only when the current year has ≥ 1 published
 record (so `published` ≥ 1); `rejected` may legitimately pace to 0.
 
-## site/data/advisory_quality.json  (chart 7)
+## site/data/advisory_quality.json  (chart 8)
 
 ```json
 {
@@ -255,7 +314,7 @@ labels it. Pre-2018 caveat: CWE and CVSS then lived downstream in NVD's
 database, which this chart deliberately does not ingest — the early years
 chart where the data lived, not sloppiness by today's CNAs.
 
-## site/data/cwe_distribution.json  (chart 8)
+## site/data/cwe_distribution.json  (chart 9)
 
 ```json
 {
@@ -611,8 +670,275 @@ here is a share, already normalized to its year. Validator:
 `pipeline/calendar_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
+## site/data/rescore_log.json  (Silent Rescores module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "weeks": [
+    {"week": "2026-W29", "rescore_up": 12, "rescore_down": 7,
+     "first_score": 31, "version_shift": 4, "score_removed": 1}
+  ],
+  "magnitude": {
+    "min_n": 30, "n": 84, "up": 51, "down": 33,
+    "buckets": [{"bucket": "+0.1..+1.9", "n": 40}],
+    "median_delta": 0.6
+  },
+  "cna_board": {
+    "min_events": 3,
+    "cnas": [{"cna": "VendorX", "rescores": 21, "up": 14, "down": 7}]
+  },
+  "catalog": {
+    "state_size": 331204,
+    "corpus_release": "cve_2026-07-11_0700Z",
+    "totals": {"rescore": 84, "version_shift": 9,
+               "first_score": 112, "score_removed": 3},
+    "events_total": 208,
+    "first_observed": "2026-07-12"
+  }
+}
+```
+
+Source: CyberMon's own nightly diffs of the cvelistV5 corpus. Each night,
+the streaming pass collects a per-published-CVE **fingerprint** — the
+newest-version CNA-assigned base score as `(version family, score)`,
+extracted by the SAME property the severity-inflation chart's blended
+series reads (`CveFacts.newest_cna_fingerprint`), so the two modules can
+never disagree about a record's score — and diffs it against last night's
+fingerprints (`.cache/rescore_state.json.gz`, which also records the
+corpus release tag). Unscored published records are kept in the state
+with a null fingerprint: that is what makes a late first score
+distinguishable from a brand-new record.
+
+Event taxonomy — the boundaries are the module's honesty rules:
+`rescore` = same CVSS version, different score (the ONLY type with an
+up/down direction and the only population the magnitude section reads);
+`version_shift` = the record's newest scored CVSS version changed —
+score comparison across versions is NOT a rescore (different scales), so
+shifts are logged separately and never charted as up/down, even when the
+number moved; `first_score` = a record already on last night's log gained
+its first in-record CNA score — backfill-scoring, counted separately,
+never an edit; `score_removed` = the score disappeared from a
+still-published record. Brand-new records and records leaving the
+published corpus produce no event.
+
+Events append to **`site/data/history/rescore_log.csv`** (columns:
+`observed_date,cve,cna,change_type,version_old,score_old,version_new,
+score_new`; empty cells = not applicable, scores at 1 decimal, dates
+non-decreasing). Like `nvd_backlog.csv`, this file is an **original
+dataset accumulated by this project and CANNOT be regenerated** — no
+upstream publishes score-edit history; the weekly `data-backup-*` tags
+are its rollback insurance. `rescore_log.json` is rebuilt from the full
+CSV nightly; the CSV is written only after every output validates.
+
+Self-healing and re-run safety: a missing/unreadable state rebuilds from
+tonight's corpus and the night logs zero events (at worst one night's
+diffs are lost; the committed CSV is untouched). When tonight's corpus
+release equals the state's recorded release, the diff is skipped so
+re-runs never double-count; the state is persisted only after a fully
+validated run, so a failed run's retry still diffs.
+
+`weeks` = per-ISO-week (`YYYY-Www`, UTC observation dates) event counts,
+gap-filled between the first and last observed week, sorted, unique;
+`rescore_up`/`rescore_down` split rescores by direction, the other three
+types count whole (direction-free by design). Weekly counts must sum to
+`catalog.totals` per type. `magnitude` covers rescore events only
+(`n == catalog.totals.rescore`; `up + down == n`): signed deltas
+`score_new − score_old` (same version by construction) in the fixed
+buckets `<=-4.0, -3.9..-2.0, -1.9..-0.1, +0.1..+1.9, +2.0..+3.9, >=+4.0`
+(a delta of exactly 0 cannot occur). `buckets` and `median_delta` are
+null exactly while `n < min_n` (production 30; fixture mode 1) — the site
+renders the placeholder from `n`, never a fake distribution. `cna_board`
+= CNAs with at least `min_events` rescore events (production 3; fixture
+mode 1), `up + down == rescores` per row, sorted by `rescores`
+descending. `catalog` is the audit block: totals carry exactly the four
+change types and sum to `events_total`; `first_observed` is null exactly
+when the log is empty — the record starts at first deploy, and the data
+file says so rather than hiding it. No pace projection: the record is
+launch-thin and edit flow is nightly-batched, so a pace would be noise
+dressed as a forecast. Validator: `pipeline/rescore_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).
+
 ## site/data/breach_ledger.json  (Breach Ledger module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "catalog": {
+    "total": 1015, "cohort": 982,
+    "excluded": {"fabricated": 3, "spam_list": 16, "malware": 8,
+                 "stealer_log": 6}
+  },
+  "import_era": {"added_before": "2014-01-01", "n": 7, "median_days": 511.0},
+  "lag_by_year": [
+    {"year": 2014, "n": 27, "median_days": 5.0, "p25_days": 1.0,
+     "p75_days": 222.0, "pct_negative": 0.0, "pct_over_365d": 25.9}
+  ],
+  "volume_by_year": [
+    {"year": 2013, "breaches": 7, "records": 155137175}
+  ],
+  "class_shares": {
+    "classes": ["Email addresses", "Passwords", "Names", "Usernames",
+                "IP addresses", "Phone numbers"],
+    "years": [
+      {"year": 2016, "n": 109,
+       "shares": {"Email addresses": 100.0, "Passwords": 74.3,
+                  "Names": 45.0, "Usernames": 39.4,
+                  "IP addresses": 33.9, "Phone numbers": 22.9}}
+    ]
+  },
+  "headline": {"trend_n": 975, "median_days": 144.0, "pct_over_365d": 35.5,
+               "latest_year": 2025, "median_days_latest": 194.0},
+  "projection": {"year": 2026, "breaches": 149, "elapsed": 0.523}
+}
+```
+
+Source: the Have I Been Pwned public breaches feed (one JSON GET, no key;
+attribution carried in the site footer). Cohort rule, applied everywhere:
+`IsFabricated` (never happened) and `IsSpamList` (address collections, no
+breached organization) are excluded; `IsMalware` and `IsStealerLog` are
+excluded for the same reason as spam lists — real credential theft, but
+harvested device-by-device with no single breached organization, and a
+nominal `BreachDate` that describes the compilation of the corpus, which
+would poison the lag stats. Each excluded entry counts under its FIRST
+matching reason, in that order, so `cohort + sum(excluded) == total`
+always holds — `catalog` is the audit trail. `excluded` carries exactly
+those four keys.
+
+All per-year series group by the `AddedDate` calendar year (years ≥ 2013,
+sorted, unique). Entries with an unparseable `AddedDate` join no year but
+still count in `catalog`; lag stats additionally require a parseable
+`BreachDate`.
+
+`lag_by_year` (hero): `lag = AddedDate − BreachDate` in days, per catalog
+year, median + p25/p75. Negative lags (a breach catalogued before its
+self-reported, usually month-rounded, breach date) are KEPT, never
+floored — same rule as `kev_latency`, they flag source date quality.
+Entries with `AddedDate` before `import_era.added_before` (fixed at
+`2014-01-01`) are the catalog's opening import — HIBP launched 2013-12-04
+by loading breaches that were already public (empirically: six of its
+seven December 2013 entries predate the service itself, median nominal
+lag 511 days, vs a 5-day median for 2014 additions) — and are excluded
+from `lag_by_year` and `headline`, reported once as `import_era`
+(`median_days` null iff `n` = 0). Pre-2014 *breaches* surfacing later
+stay in the trend: surfacing late is the measured phenomenon; only the
+opening import is an artifact of the catalog's birthday. Years with fewer
+than `min_n` cohort breaches are omitted (production 10; fixture mode 1).
+
+`volume_by_year`: cohort breaches catalogued per year (`breaches` ≥ 1 —
+a year exists only because something was catalogued) and `records` = the
+year's `PwnCount` sum (compromised accounts per breach; a person appears
+once per breach they are in, so the sum counts exposures, not people).
+No `min_n` filter and no import-era exclusion — counts are counts.
+
+`class_shares`: `classes` = up to 6 data classes ranked by the number of
+cohort breaches listing them, all-time, ties broken alphabetically —
+derived from the data nightly, never hardcoded, so the list may reshape
+as the catalog grows. `years[].shares` carries exactly those classes;
+each value is the share of that year's cohort breaches listing the class
+(counted at most once per breach). Multi-label: shares are independent
+per class — there is deliberately no "other" key and no 100% sum. Years
+under `min_n` are omitted.
+
+`headline`: `trend_n`/`median_days`/`pct_over_365d` pool every trend-era
+lag (import era excluded, all years, unfiltered by `min_n`);
+`latest_year`/`median_days_latest` echo the last complete plotted year,
+falling back to the partial current year only when nothing else survived
+(`kev_latency` rule). An empty trend is `trend_n` 0, zeros elsewhere and
+`latest_year` 0 — consumers must treat `latest_year` 0 as "no data",
+never as a year.
+
+`projection` (optional; see "Pace projections" above): the current year's
+catalogued-breach count paced to a full year (`breaches` ≥ 1). Breaches
+catalogued are a flow, so a pace applies; `records` is deliberately never
+projected — one mega-dump can outweigh the rest of the year, so a records
+pace would dress one upload up as a forecast. Validator:
+`pipeline/breach_contracts.py` (registered into `pipeline/contracts.py`'s
+dispatch).
+
 ## site/data/extortion_ledger.json  (Extortion Ledger module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "revenue_by_quarter": [
+    {"year": 2020, "quarter": 3, "usd": 139502184}
+  ],
+  "payments_by_year": [
+    {"year": 2016, "payments": 9324, "usd": 68400000, "median_usd": 575.5}
+  ],
+  "families": {
+    "top": [
+      {"family": "Conti", "usd": 101561482, "payments": 128,
+       "first_year": 2017, "last_year": 2022}
+    ],
+    "other": {"families": 96, "usd": 12345678, "payments": 990},
+    "unattributed": {"usd": 682149269, "payments": 850}
+  },
+  "catalog": {"addresses": 11186, "families": 106, "transactions": 21802,
+              "payments": 18902, "total_usd": 1018573922},
+  "headline": {"total_usd": 1018573922,
+               "peak_quarter": {"year": 2020, "quarter": 3, "usd": 139502184},
+               "first_year": 2012, "last_year": 2024}
+}
+```
+
+Source: the Ransomwhere export (`api.ransomwhe.re/export`, CC0) —
+crowdsourced, verified ransomware payment addresses with their on-chain
+transactions. Everything in this file is a FLOOR: a payment enters the
+dataset only after someone reported the address and the transfers were
+verified, so site copy must always claim "at least this much", never
+"the market is this big".
+
+All `usd` values are **integers (whole dollars)** at the HISTORICAL
+BTC/USD rate of each transaction's date (upstream's `amountUSD`; the
+implied rate per transaction year tracks the price history) — a 2016
+payment stays in 2016 dollars. `median_usd` is the one float, rounded to
+**2** decimals — a documented exception to the 1-decimal rule: early
+mass-campaign years have sub-dollar medians ($0.03 in 2013), which
+1-decimal rounding would crush to a false zero. Years are bounded below
+by 2008 (pre-Bitcoin "payments" are parser breakage); any single USD
+value above 10^10 fails validation as a unit error (satoshi summed as
+dollars).
+
+`revenue_by_quarter`: transaction `amountUSD` summed by the UTC calendar
+quarter of the on-chain timestamp, over ALL ledger entries as published
+(the export lists a transaction once per receiving tracked address;
+exact repeated entries carry ~1% of total USD and are trusted rather
+than second-guessed without chain data). Quarters are **contiguous** from
+first to last observed payment — gaps chart as zero, the axis never
+silently skips time.
+
+`payments_by_year`: a payment is one distinct on-chain transaction
+(unique `hash`, outputs to tracked addresses summed — multi-wallet
+transfers collapse). `payments` ≥ 1 per row; `median_usd` is present
+only when the year has at least `min_n` payments (production 10; fixture
+mode 1) — absence means "not charted", never zero. `catalog.payments` ≤
+`catalog.transactions` always.
+
+`families`: Ransomwhere's own labels, neutral identifiers. `top` = up to
+8 labeled families ranked descending by all-time confirmed USD; the
+literal `"Unlabeled"` bucket (verified but unattributed — the largest
+single slice) must NEVER appear in `top`: it ships as
+`families.unattributed` and the site discloses it beside the board.
+Remaining labeled families pool into `families.other`.
+`catalog.families` counts labeled families only. A ranked board is
+shipped instead of a per-year share series on purpose: wallets are often
+reported long after a campaign ran, so yearly family shares would chart
+reporting dates, not activity.
+
+NO `projection` key, ever, although yearly payment counts are a flow:
+crowdsourced reports arrive with a lag, so the partial current year
+structurally undercounts and the uniform-flow assumption behind "Pace
+projections" (above) does not hold. `headline.total_usd` must equal
+`catalog.total_usd`; `headline.peak_quarter.usd` must equal the series
+maximum. `meta.json` gains an optional `sources.ransomwhere`
+`{fetched_at, address_count, tx_count}` block (validated when present).
+Validator: `pipeline/extortion_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
 ## site/data/attack_churn.json  (ATT&CK Churn module, all 3 charts)
 
 ```json
@@ -836,6 +1162,64 @@ and its round-trip test in the same commit. Validator:
 dispatch).
 
 ## site/data/kev_guards.json  (Security Products module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "min_vendor_entries": 5,
+  "years": [
+    {"year": 2021, "total": 311, "security": 44, "pct_security": 14.1}
+  ],
+  "vendors": [
+    {"vendor": "Fortinet", "entries": 26, "security_entries": 26,
+     "pct_security": 100.0, "first_added": "2021-11-03",
+     "last_added": "2026-04-13", "median_gap_days": 42.0}
+  ],
+  "ransomware": {
+    "security": {"total": 188, "known": 70, "pct_known": 37.2},
+    "other": {"total": 1447, "known": 259, "pct_known": 17.9}
+  },
+  "catalog": {"total": 1635, "security": 188, "pct_security": 11.5,
+              "classifier_version": 1, "classifier_rules": 32}
+}
+```
+
+Every KEV entry is classified by `pipeline/security_products.py` — a
+curated, versioned table of security vendors plus product-keyword rules
+for mixed vendors (the decision rule and every judgment call live in
+that module's docstring; the table is data, reviewable in the repo).
+`catalog` is the audit block: whole-catalog totals plus the
+`classifier_version`/`classifier_rules` that produced them, so any
+published share is traceable to the classifier revision behind it.
+
+`years` (hero): per `dateAdded` calendar year, entries added (`total`),
+entries classified as security products (`security` ≤ `total`), and
+`pct_security`. ALL cohorts belong, the 2021–22 seeding era included —
+like `kev_ransomware`, the catalog is read as a snapshot and the
+classification rides on the entry itself. Years with fewer than `min_n`
+entries are omitted (production 10; fixture mode 1); sorted, unique.
+Entries with an unparseable `dateAdded` join no year but still count in
+`catalog` and `ransomware`.
+
+`vendors` (recidivism board): every vendor label with at least
+`min_vendor_entries` catalog entries (production 5; fixture mode 1).
+Labels are whitespace-normalized but NEVER merged (Pulse Secure stays
+distinct from Ivanti — the catalog's attribution is the record).
+`median_gap_days` is the median of day gaps between consecutive
+`dateAdded` values (0.0 = same-day bulk additions), `null` iff the
+vendor has a single dated entry. `first_added` ≤ `last_added`. Sorted by
+`entries` descending, ties by casefolded vendor name; vendor names
+unique. The site flags rows with `pct_security` ≥ 50 as security-vendor
+rows.
+
+`ransomware`: the `knownRansomwareCampaignUse` split ("Known" vs
+anything else, missing never counts — `kev_ransomware`'s rule) across
+the classifier's two halves; `security.total + other.total` must equal
+`catalog.total`, so nothing is dropped silently. No CVE-corpus join
+anywhere in this file. Validator: `pipeline/guards_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).
+
 ## site/data/epss_report.json  (EPSS Report Card module, all 3 charts)
 
 ```json
@@ -994,4 +1378,112 @@ from this file, so a lost CI cache costs one JSON read instead of ~450 API
 requests. Changing the per-entry shape therefore REQUIRES updating
 `reconstruct_state` and its round-trip test in the same commit. Validator:
 `pipeline/epss_report_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
+## site/data/kev_changelog.json  (KEV Changelog module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 10,
+  "months": [
+    {"month": "2023-12", "due_date": 0, "ransomware_flag": 206,
+     "text": 134, "removed": 6, "total": 346}
+  ],
+  "flips": {
+    "total": 285, "reversals": 0,
+    "by_month": [{"month": "2023-12", "flips": 206, "cumulative": 206}],
+    "lag": {"n": 285, "median_days": 626.0,
+            "p25_days": 400.0, "p75_days": 768.0}
+  },
+  "board": {
+    "most_edited": [
+      {"cve": "CVE-2019-11510", "vendor": "Ivanti",
+       "product": "Pulse Connect Secure", "edits": 12,
+       "last_change": "2025-12-22"}
+    ],
+    "removals": [
+      {"cve": "CVE-2022-31460", "vendor": "Owl Labs",
+       "product": "Meeting Owl Pro and Whiteboard Owl",
+       "listed": "2022-06-08", "removed": "2023-12-11"}
+    ]
+  },
+  "catalog": {
+    "entries": 1637, "removed_total": 9,
+    "events_total": 4240, "edits_total": 2905,
+    "additions_excluded": 1335,
+    "first_observed": "2021-12-23", "last_observed": "2026-07-11",
+    "backfill_captures": 53
+  },
+  "headline": {"edits_total": 2905, "edits_per_100_entries": 177.5,
+               "pct_flag_flips": 9.8}
+}
+```
+
+CISA edits the KEV catalog in place and publishes no changelog; this
+module keeps one. Every run fingerprints each catalog entry — `dueDate`,
+`knownRansomwareCampaignUse` (normalized Known/Unknown; a missing field
+never reads as Known), `vendorProject`, `product`, `vulnerabilityName`
+verbatim; `shortDescription`, `requiredAction`, `notes` as 12-hex-char
+sha256 hashes of the whitespace-normalized text — and diffs the fresh
+catalog against the committed state. Each difference is one event:
+`added`, `removed`, `field_changed` (old/new logged verbatim) or
+`text_changed` (hash-tracked; the event never carries the text).
+
+**Committed history files (both under `site/data/history/`):**
+
+* `kev_changelog.csv` — the append-only event log (columns:
+  `observed_date,cve,change_type,field,old,new,granularity`). Like
+  `nvd_backlog.csv`, this is an **original dataset accumulated by this
+  project and it CANNOT be regenerated**: CISA publishes only the current
+  snapshot. The Wayback-seeded prefix could be rebuilt from the Internet
+  Archive at capture granularity; everything observed live has this repo
+  as its only copy (the weekly `data-backup-*` tags cover it).
+* `kev_state.json` — the compact per-entry fingerprint state
+  (`version`, `baseline_date`, `last_observed`, `backfill`
+  `{captures, watermark, complete}`, `entries`, and a `removed` ledger
+  that remembers every entry observed leaving the catalog: removals are
+  logged AND retained, never silently dropped).
+
+Both are written by `__main__.run()` **only after every output validates**
+(the `nvd_backlog.csv` discipline), via `pipeline.kev_changelog.persist`.
+
+**Granularity semantics** (per event, last CSV column): `daily` events
+are dated to the nightly run that first observed them (missed nights pool
+changes on the next run's date); `capture` events come from the one-time
+Wayback backfill (`--kev-changelog-backfill N`, integrator-run once, CI
+never — default 0 contacts nothing) and are dated to the FIRST Internet
+Archive capture showing the change — the true date lies between that
+capture and the one before. The record's first observation is a baseline:
+state written, zero events. While a batch-capped backfill is incomplete,
+the live diff is skipped (diffing today's catalog against a
+half-backfilled state would date years of edits to one night); snapshot
+bodies are cached in `.cache/kev_wayback/` so a rerun never refetches.
+
+`months` (hero): edits per month by category — `due_date`,
+`ransomware_flag`, `text` (text-field hash changes plus
+vendor/product/name wording changes), `removed` — contiguous ascending
+labels (gap months at zero), per-month categories sum to `total`, month
+totals sum to `catalog.edits_total`. **Additions are logged but never
+charted as edits** (catalog growth is the system working; the exclusion
+is disclosed as `catalog.additions_excluded`, and
+`edits_total + additions_excluded == events_total` always).
+
+`flips`: Unknown→Known changes of the ransomware flag. `by_month` is the
+cumulative series (running sum ends at `total`); `lag` measures
+`observed_date − dateAdded` in days per flip — `median/p25/p75` are
+published only with `n >= min_n` flips (production 10; fixture mode 1),
+null below (thin data renders honestly). Known→Unknown changes are
+counted as `reversals`, disclosed, never netted. Note the structural
+step: CISA added the flag column in October 2023, so the first capture
+carrying it flips every already-flagged entry at once.
+
+`board`: `most_edited` — top entries by logged edit count (field changes
++ text revisions; additions/removals never inflate it), sorted
+descending, ties by CVE id, with `last_change`; `removals` — every entry
+in the state's removed ledger (`listed` may be an empty string when the
+removed entry's dateAdded was unusable), sorted by removal date, one row
+per CVE, `len == catalog.removed_total`. `headline` is null iff there
+are no entries or no edits. Validator:
+`pipeline/kev_changelog_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).

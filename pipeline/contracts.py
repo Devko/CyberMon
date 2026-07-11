@@ -158,6 +158,11 @@ def _validate_meta(obj: Any) -> None:
     if "nvd" in src:
         _check_str(_get(src["nvd"], "fetched_at", "meta.sources.nvd"),
                    "meta.sources.nvd.fetched_at", ISO_UTC_RE)
+        # Additive: transitions counted by today's throughput diff. Absent
+        # on carry-forward runs and on runs with no prior state to diff.
+        if "throughput_events" in src["nvd"]:
+            _check_int(src["nvd"]["throughput_events"],
+                       "meta.sources.nvd.throughput_events")
 
     # Optional for the same reason (--skip-attack with no prior data).
     if "attack" in src:
@@ -208,6 +213,30 @@ def _validate_meta(obj: Any) -> None:
         _check_int(_get(eh, "pending_backfill",
                         "meta.sources.epss_history"),
                    "meta.sources.epss_history.pending_backfill")
+
+    # Optional (additive extension): the Silent Rescores diff stage.
+    # ``events_total`` = rows on the committed event log after tonight's
+    # append; ``state_release`` = the corpus release recorded in tonight's
+    # fingerprint state (the release-skew guard's reference point).
+    if "rescores" in src:
+        rs = src["rescores"]
+        _check_int(_get(rs, "events_total", "meta.sources.rescores"),
+                   "meta.sources.rescores.events_total")
+        _check_str(_get(rs, "state_release", "meta.sources.rescores"),
+                   "meta.sources.rescores.state_release")
+    # Optional additively (older committed meta files predate the module);
+    # the KEV Changelog stage itself always emits it. last_observed may be
+    # empty only in the degenerate no-record-yet case.
+    if "kev_changelog" in src:
+        kc = src["kev_changelog"]
+        _check_str(_get(kc, "fetched_at", "meta.sources.kev_changelog"),
+                   "meta.sources.kev_changelog.fetched_at", ISO_UTC_RE)
+        _check_int(_get(kc, "events_total", "meta.sources.kev_changelog"),
+                   "meta.sources.kev_changelog.events_total")
+        last = _get(kc, "last_observed", "meta.sources.kev_changelog")
+        if last != "":
+            _check_str(last, "meta.sources.kev_changelog.last_observed",
+                       DATE_RE)
 
     # Optional (additive extension, market precedent): the Ransomwhere
     # export behind the Extortion Ledger module. Checked when present.
@@ -365,6 +394,43 @@ def _validate_nvd_decay(obj: Any) -> None:
         _fail("nvd_decay.history", "duplicate dates (one row per run date)")
 
 
+# ------------------------------------------------------ nvd_throughput.json
+
+def _validate_nvd_throughput(obj: Any) -> None:
+    _check_generated_at(obj, "nvd_throughput")
+    _check_int(_get(obj, "min_known_duration", "nvd_throughput"),
+               "nvd_throughput.min_known_duration", minimum=1)
+
+    queue = _get(obj, "queue", "nvd_throughput")
+    n_known = _get(queue, "n_known_duration", "nvd_throughput.queue")
+    _check_int(n_known, "nvd_throughput.queue.n_known_duration")
+    median = _get(queue, "median_days", "nvd_throughput.queue")
+    if median is not None:
+        _check_num(median, "nvd_throughput.queue.median_days", 0.0, 100000.0)
+    # The threshold is a promise: no median publishes on a small sample.
+    if median is not None and n_known < obj["min_known_duration"]:
+        _fail("nvd_throughput.queue.median_days",
+              f"median published with only {n_known} known durations "
+              f"(threshold {obj['min_known_duration']})")
+
+    history = _check_list(_get(obj, "history", "nvd_throughput"),
+                          "nvd_throughput.history")
+    dates = []
+    for i, h in enumerate(history):
+        path = f"nvd_throughput.history[{i}]"
+        date = _get(h, "date", path)
+        _check_str(date, f"{path}.date", DATE_RE)
+        for k in ("received_new", "entered_awaiting",
+                  "analyzed_from_awaiting", "deferred_from_awaiting"):
+            _check_int(_get(h, k, path), f"{path}.{k}")
+        _check_bool(_get(h, "resweep", path), f"{path}.resweep")
+        dates.append(date)
+    _check_sorted(dates, "nvd_throughput.history")
+    if len(set(dates)) != len(dates):
+        _fail("nvd_throughput.history",
+              "duplicate dates (one row per run date)")
+
+
 # ----------------------------------------------------- cna_leaderboard.json
 
 def _validate_cna_leaderboard(obj: Any) -> None:
@@ -411,6 +477,7 @@ VALIDATORS: dict[str, Callable[[Any], None]] = {
     "nine_eight_flood.json": _validate_nine_eight_flood,
     "score_vs_reality.json": _validate_score_vs_reality,
     "nvd_decay.json": _validate_nvd_decay,
+    "nvd_throughput.json": _validate_nvd_throughput,
     "cna_leaderboard.json": _validate_cna_leaderboard,
     "volume_curve.json": _validate_volume_curve,
 }
@@ -461,3 +528,9 @@ VALIDATORS.update(epss_report_contracts.VALIDATORS)
 from . import calendar_contracts  # noqa: E402
 
 VALIDATORS.update(calendar_contracts.VALIDATORS)
+from . import rescore_contracts  # noqa: E402
+
+VALIDATORS.update(rescore_contracts.VALIDATORS)
+from . import kev_changelog_contracts  # noqa: E402
+
+VALIDATORS.update(kev_changelog_contracts.VALIDATORS)

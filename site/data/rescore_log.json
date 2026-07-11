@@ -1,0 +1,28 @@
+{
+ "generated_at": "2026-07-11T08:32:09Z",
+ "weeks": [],
+ "magnitude": {
+  "min_n": 30,
+  "n": 0,
+  "up": 0,
+  "down": 0,
+  "buckets": null,
+  "median_delta": null
+ },
+ "cna_board": {
+  "min_events": 3,
+  "cnas": []
+ },
+ "catalog": {
+  "state_size": 347092,
+  "corpus_release": "cve_2026-07-11_0700Z",
+  "totals": {
+   "rescore": 0,
+   "version_shift": 0,
+   "first_score": 0,
+   "score_removed": 0
+  },
+  "events_total": 0,
+  "first_observed": null
+ }
+}

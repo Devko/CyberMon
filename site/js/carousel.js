@@ -19,6 +19,7 @@ import { render as renderInflation } from "./charts/inflation.js";
 import { render as renderFlood } from "./charts/flood.js";
 import { render as renderReality } from "./charts/reality.js";
 import { render as renderDecay } from "./charts/decay.js";
+import { render as renderThroughput } from "./charts/throughput.js";
 import { render as renderCna } from "./charts/cna.js";
 import { render as renderVolume } from "./charts/volume.js";
 import { render as renderQuality } from "./charts/quality.js";
@@ -54,6 +55,12 @@ import { render as renderEpssPercentile } from "./charts/epss_percentile.js";
 import { render as renderIdAge } from "./charts/calendar_idage.js";
 import { render as renderWeekday } from "./charts/calendar_weekday.js";
 import { render as renderPatch } from "./charts/calendar_patch.js";
+import { render as renderRescoreWeek } from "./charts/rescore_week.js";
+import { render as renderRescoreMagnitude } from "./charts/rescore_magnitude.js";
+import { render as renderRescoreEditors } from "./charts/rescore_editors.js";
+import { render as renderEdits } from "./charts/changelog_edits.js";
+import { render as renderChangelogFlips } from "./charts/changelog_flips.js";
+import { render as renderReceipts } from "./charts/changelog_receipts.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -68,6 +75,7 @@ const MODULES = {
       { id: "flood", file: "data/nine_eight_flood.json", render: renderFlood },
       { id: "reality", file: "data/score_vs_reality.json", render: renderReality },
       { id: "decay", file: "data/nvd_decay.json", render: renderDecay },
+      { id: "throughput", file: "data/nvd_throughput.json", render: renderThroughput },
       { id: "cna", file: "data/cna_leaderboard.json", render: renderCna, table: true },
       { id: "volume", file: "data/volume_curve.json", render: renderVolume },
       { id: "quality", file: "data/advisory_quality.json", render: renderQuality },
@@ -153,6 +161,22 @@ const MODULES = {
       { id: "reservation", render: renderIdAge },
       { id: "weekbeat", render: renderWeekday },
       { id: "patchtuesday", render: renderPatch },
+    ],
+  },
+  rescores: {
+    file: "data/rescore_log.json",
+    sections: [
+      { id: "week", render: renderRescoreWeek },
+      { id: "magnitude", render: renderRescoreMagnitude },
+      { id: "editors", render: renderRescoreEditors, table: true },
+    ],
+  },
+  changelog: {
+    file: "data/kev_changelog.json",
+    sections: [
+      { id: "edits", render: renderEdits },
+      { id: "flagflip", render: renderChangelogFlips },
+      { id: "receipts", render: renderReceipts, table: true },
     ],
   },
 };
