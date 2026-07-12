@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-11T08:32:09Z",
+ "generated_at": "2026-07-12T03:57:49Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -622,10 +622,10 @@
    }
   ],
   "latest": {
-   "date": "2026-07-08",
+   "date": "2026-07-09",
    "validating_pc": 38.6,
-   "partial_pc": 8.7,
-   "seen": 495201141
+   "partial_pc": 8.6,
+   "seen": 513347642
   },
   "baseline": {
    "month": "2016-07",
@@ -1066,7 +1066,7 @@
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 54.3,
+   "latest_pc": 54.4,
    "series": [
     {
      "month": "2013-12",
@@ -1274,7 +1274,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 54.3
+     "validating_pc": 54.4
     }
    ]
   },
@@ -1496,7 +1496,7 @@
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 45.1,
+   "latest_pc": 45.4,
    "series": [
     {
      "month": "2013-12",
@@ -1704,14 +1704,14 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 45.1
+     "validating_pc": 45.4
     }
    ]
   },
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 44.2,
+   "latest_pc": 43.9,
    "series": [
     {
      "month": "2013-12",
@@ -1919,7 +1919,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 44.2
+     "validating_pc": 43.9
     }
    ]
   },
@@ -2141,7 +2141,7 @@
   {
    "cc": "MX",
    "name": "Mexico",
-   "latest_pc": 20.9,
+   "latest_pc": 21.0,
    "series": [
     {
      "month": "2013-12",
@@ -2349,7 +2349,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 20.9
+     "validating_pc": 21.0
     }
    ]
   },
@@ -2786,7 +2786,7 @@
  ],
  "spread": {
   "min_seen": 10000,
-  "n_economies": 203,
+  "n_economies": 204,
   "buckets": [
    {
     "bucket": "<10%",
@@ -2798,11 +2798,11 @@
    },
    {
     "bucket": "25-50%",
-    "n": 48
+    "n": 47
    },
    {
     "bucket": "50-75%",
-    "n": 50
+    "n": 52
    },
    {
     "bucket": "75%+",

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-11T08:32:09Z",
+ "generated_at": "2026-07-12T03:57:49Z",
  "years": [
   {
    "year": 1999,
@@ -222,8 +222,8 @@
    "cna_count": 346,
    "newcomer_count": 32,
    "top5_share": 51.5,
-   "top10_share": 70.7,
-   "hhi": 733.9
+   "top10_share": 70.8,
+   "hhi": 733.6
   }
  ],
  "rejection_leaderboard": {
@@ -304,15 +304,15 @@
    },
    {
     "cna": "Joomla",
-    "total": 215,
+    "total": 217,
     "rejected": 31,
-    "rejected_rate_pct": 14.4
+    "rejected_rate_pct": 14.3
    },
    {
     "cna": "VulnCheck",
-    "total": 5270,
+    "total": 5291,
     "rejected": 689,
-    "rejected_rate_pct": 13.1
+    "rejected_rate_pct": 13.0
    },
    {
     "cna": "f5",
@@ -441,16 +441,16 @@
     "rejected_rate_pct": 3.7
    },
    {
-    "cna": "zephyr",
-    "total": 119,
-    "rejected": 4,
-    "rejected_rate_pct": 3.4
-   },
-   {
     "cna": "Mitsubishi",
     "total": 117,
     "rejected": 4,
     "rejected_rate_pct": 3.4
+   },
+   {
+    "cna": "zephyr",
+    "total": 120,
+    "rejected": 4,
+    "rejected_rate_pct": 3.3
    },
    {
     "cna": "Esri",
@@ -477,15 +477,15 @@
     "rejected_rate_pct": 2.7
    },
    {
-    "cna": "Wordfence",
-    "total": 10466,
-    "rejected": 268,
-    "rejected_rate_pct": 2.6
-   },
-   {
     "cna": "Linux",
     "total": 12888,
     "rejected": 323,
+    "rejected_rate_pct": 2.5
+   },
+   {
+    "cna": "Wordfence",
+    "total": 10519,
+    "rejected": 268,
     "rejected_rate_pct": 2.5
    },
    {
@@ -670,7 +670,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15209,
+    "total": 15210,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
@@ -796,7 +796,7 @@
    },
    {
     "cna": "microsoft",
-    "total": 5161,
+    "total": 5162,
     "rejected": 3,
     "rejected_rate_pct": 0.1
    },
@@ -1324,6 +1324,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 61,
-  "elapsed": 0.526
+  "elapsed": 0.529
  }
 }

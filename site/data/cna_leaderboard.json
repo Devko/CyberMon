@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-11T08:32:09Z",
+ "generated_at": "2026-07-12T03:57:49Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -150,11 +150,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 4549,
+   "n": 4570,
    "avg_cvss": 7.4,
    "median_cvss": 8.3,
    "pct_geq_9": 14.9,
-   "pct_geq_7": 61.8
+   "pct_geq_7": 61.7
   },
   {
    "cna": "ivanti",
@@ -393,7 +393,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9149,
+   "n": 9202,
    "avg_cvss": 6.3,
    "median_cvss": 6.4,
    "pct_geq_9": 6.2,
@@ -447,7 +447,7 @@
   {
    "cna": "microsoft",
    "org": "microsoft",
-   "n": 3233,
+   "n": 3234,
    "avg_cvss": 7.4,
    "median_cvss": 7.8,
    "pct_geq_9": 4.9,
@@ -582,7 +582,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 12338,
+   "n": 12339,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.5,
