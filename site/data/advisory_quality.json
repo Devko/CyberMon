@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-12T03:57:49Z",
+ "generated_at": "2026-07-13T03:58:53Z",
  "min_n": 500,
  "years": [
   {
@@ -264,11 +264,11 @@
   },
   {
    "year": 2026,
-   "n": 38268,
+   "n": 38334,
    "missing_cwe": 2991,
    "pct_missing_cwe": 7.8,
    "missing_cvss": 1820,
-   "pct_missing_cvss": 4.8,
+   "pct_missing_cvss": 4.7,
    "missing_affected": 2007,
    "pct_missing_affected": 5.2
   }

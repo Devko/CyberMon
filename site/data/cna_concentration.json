@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-12T03:57:49Z",
+ "generated_at": "2026-07-13T03:58:53Z",
  "years": [
   {
    "year": 1999,
@@ -223,7 +223,7 @@
    "newcomer_count": 32,
    "top5_share": 51.5,
    "top10_share": 70.8,
-   "hhi": 733.6
+   "hhi": 733.8
   }
  ],
  "rejection_leaderboard": {
@@ -310,7 +310,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 5291,
+    "total": 5305,
     "rejected": 689,
     "rejected_rate_pct": 13.0
    },
@@ -448,9 +448,9 @@
    },
    {
     "cna": "zephyr",
-    "total": 120,
+    "total": 126,
     "rejected": 4,
-    "rejected_rate_pct": 3.3
+    "rejected_rate_pct": 3.2
    },
    {
     "cna": "Esri",
@@ -622,9 +622,9 @@
    },
    {
     "cna": "samsung.tv_appliance",
-    "total": 86,
+    "total": 87,
     "rejected": 1,
-    "rejected_rate_pct": 1.2
+    "rejected_rate_pct": 1.1
    },
    {
     "cna": "nvidia",
@@ -670,7 +670,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15210,
+    "total": 15254,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
@@ -796,7 +796,7 @@
    },
    {
     "cna": "microsoft",
-    "total": 5162,
+    "total": 5163,
     "rejected": 3,
     "rejected_rate_pct": 0.1
    },
@@ -1323,7 +1323,7 @@
  },
  "projection": {
   "year": 2026,
-  "newcomers": 61,
-  "elapsed": 0.529
+  "newcomers": 60,
+  "elapsed": 0.532
  }
 }

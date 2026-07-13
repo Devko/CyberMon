@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-12T03:57:49Z",
+ "generated_at": "2026-07-13T03:58:53Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -150,7 +150,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 4570,
+   "n": 4584,
    "avg_cvss": 7.4,
    "median_cvss": 8.3,
    "pct_geq_9": 14.9,
@@ -447,7 +447,7 @@
   {
    "cna": "microsoft",
    "org": "microsoft",
-   "n": 3234,
+   "n": 3235,
    "avg_cvss": 7.4,
    "median_cvss": 7.8,
    "pct_geq_9": 4.9,
@@ -582,7 +582,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 12339,
+   "n": 12383,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.5,
