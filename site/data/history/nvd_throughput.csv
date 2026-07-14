@@ -1,3 +1,4 @@
 date,received_new,entered_awaiting,analyzed_from_awaiting,deferred_from_awaiting,median_queue_days,n_known_duration,resweep
 2026-07-12,82,0,0,0,,0,0
 2026-07-13,70,0,0,0,,0,0
+2026-07-14,88,58,104,173,,0,0

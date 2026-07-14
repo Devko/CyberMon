@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-13T03:58:53Z",
+ "generated_at": "2026-07-14T03:46:16Z",
  "weeks": [],
  "magnitude": {
   "min_n": 30,
@@ -14,8 +14,8 @@
   "cnas": []
  },
  "catalog": {
-  "state_size": 347237,
-  "corpus_release": "cve_2026-07-13_0300Z",
+  "state_size": 347571,
+  "corpus_release": "cve_2026-07-14_0300Z",
   "totals": {
    "rescore": 0,
    "version_shift": 0,

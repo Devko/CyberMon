@@ -4239,3 +4239,4 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-07-11,CVE-2026-56290,added,,,,daily
 2026-07-11,CVE-2026-56291,added,,,,daily
 2026-07-11,CVE-2025-3248,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-07-14,CVE-2008-4128,added,,,,daily

@@ -149,6 +149,17 @@
    "ransom": "Unknown",
    "vendor": "Oracle"
   },
+  "CVE-2008-4128": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-13",
+   "desc": "9c1da8966831",
+   "due": "2026-07-16",
+   "name": "Cisco IOS Cross-Site Request Forgery Vulnerability",
+   "notes": "41da03d0aace",
+   "product": "IOS",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2008-4250": {
    "action": "f09df147152e",
    "added": "2026-05-20",
@@ -18014,7 +18025,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-13",
+ "last_observed": "2026-07-14",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

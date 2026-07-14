@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-13T03:58:53Z",
+ "generated_at": "2026-07-14T03:46:16Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -622,10 +622,10 @@
    }
   ],
   "latest": {
-   "date": "2026-07-10",
+   "date": "2026-07-11",
    "validating_pc": 38.7,
    "partial_pc": 8.6,
-   "seen": 513144629
+   "seen": 511898622
   },
   "baseline": {
    "month": "2016-07",
@@ -851,7 +851,7 @@
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 60.5,
+   "latest_pc": 60.4,
    "series": [
     {
      "month": "2013-12",
@@ -1059,7 +1059,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 60.5
+     "validating_pc": 60.4
     }
    ]
   },
@@ -1281,7 +1281,7 @@
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 50.8,
+   "latest_pc": 50.9,
    "series": [
     {
      "month": "2013-12",
@@ -1489,14 +1489,14 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 50.8
+     "validating_pc": 50.9
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 45.6,
+   "latest_pc": 46.0,
    "series": [
     {
      "month": "2013-12",
@@ -1704,14 +1704,14 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 45.6
+     "validating_pc": 46.0
     }
    ]
   },
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 43.6,
+   "latest_pc": 43.3,
    "series": [
     {
      "month": "2013-12",
@@ -1919,14 +1919,14 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 43.6
+     "validating_pc": 43.3
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 38.1,
+   "latest_pc": 38.3,
    "series": [
     {
      "month": "2013-12",
@@ -2134,7 +2134,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 38.1
+     "validating_pc": 38.3
     }
    ]
   },
@@ -2786,7 +2786,7 @@
  ],
  "spread": {
   "min_seen": 10000,
-  "n_economies": 203,
+  "n_economies": 202,
   "buckets": [
    {
     "bucket": "<10%",
@@ -2798,7 +2798,7 @@
    },
    {
     "bucket": "25-50%",
-    "n": 48
+    "n": 47
    },
    {
     "bucket": "50-75%",

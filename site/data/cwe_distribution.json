@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-13T03:58:53Z",
+ "generated_at": "2026-07-14T03:46:16Z",
  "min_n": 500,
  "window": {
   "start_year": 2016,
@@ -127,7 +127,7 @@
   },
   {
    "year": 2022,
-   "n_tagged": 14115,
+   "n_tagged": 14116,
    "n_published": 25000,
    "pct_tagged": 56.5,
    "shares": {

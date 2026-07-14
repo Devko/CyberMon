@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-13T03:58:53Z",
+ "generated_at": "2026-07-14T03:46:16Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,13 +96,13 @@
   },
   {
    "year": 2026,
-   "graded": 118,
+   "graded": 119,
    "n_below_1pct": 61,
    "n_1_to_10pct": 22,
-   "n_above_10pct": 35,
-   "pct_below_1pct": 51.7,
-   "pct_1_to_10pct": 18.6,
-   "pct_above_10pct": 29.7,
+   "n_above_10pct": 36,
+   "pct_below_1pct": 51.3,
+   "pct_1_to_10pct": 18.5,
+   "pct_above_10pct": 30.3,
    "ungradeable": 35,
    "pending": 0
   }
@@ -157,12 +157,12 @@
    },
    {
     "model": "v5",
-    "n": 15,
+    "n": 16,
     "counts": {
      "<0.1%": 0,
      "0.1-1%": 10,
      "1-10%": 4,
-     ">10%": 1
+     ">10%": 2
     }
    }
   ]
@@ -191,8 +191,8 @@
    },
    {
     "bucket": "90-99",
-    "n": 315,
-    "pct": 23.3
+    "n": 316,
+    "pct": 23.4
    },
    {
     "bucket": "99-100",
@@ -200,16 +200,16 @@
     "pct": 20.3
    }
   ],
-  "n": 1352,
+  "n": 1353,
   "bottom_half": {
    "n": 397,
-   "pct": 29.4
+   "pct": 29.3
   },
-  "median_percentile": 84.5
+  "median_percentile": 84.6
  },
  "catalog": {
-  "total": 1637,
-  "graded": 1352,
+  "total": 1638,
+  "graded": 1353,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 202,
@@ -218,7 +218,7 @@
   "pending_backfill": 0
  },
  "headline": {
-  "graded": 1352,
+  "graded": 1353,
   "pct_below_1pct": 31.7,
   "latest_year": 2025,
   "graded_latest": 184,
@@ -14957,6 +14957,15 @@
    "percentile": null,
    "model": null,
    "reason": "no_score_for_date"
+  },
+  {
+   "cve": "CVE-2008-4128",
+   "date_added": "2026-07-13",
+   "score_date": "2026-07-12",
+   "epss": 0.12036,
+   "percentile": 0.95646,
+   "model": "v5",
+   "reason": null
   }
  ]
 }

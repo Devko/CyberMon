@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-13T03:58:53Z",
+ "generated_at": "2026-07-14T03:46:16Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 346,
    "newcomer_count": 32,
-   "top5_share": 51.5,
-   "top10_share": 70.8,
-   "hhi": 733.8
+   "top5_share": 51.7,
+   "top10_share": 70.9,
+   "hhi": 732.7
   }
  ],
  "rejection_leaderboard": {
@@ -304,15 +304,15 @@
    },
    {
     "cna": "Joomla",
-    "total": 217,
+    "total": 219,
     "rejected": 31,
-    "rejected_rate_pct": 14.3
+    "rejected_rate_pct": 14.2
    },
    {
     "cna": "VulnCheck",
-    "total": 5305,
+    "total": 5346,
     "rejected": 689,
-    "rejected_rate_pct": 13.0
+    "rejected_rate_pct": 12.9
    },
    {
     "cna": "f5",
@@ -334,7 +334,7 @@
    },
    {
     "cna": "redhat",
-    "total": 2337,
+    "total": 2340,
     "rejected": 236,
     "rejected_rate_pct": 10.1
    },
@@ -424,7 +424,7 @@
    },
    {
     "cna": "CERTVDE",
-    "total": 571,
+    "total": 572,
     "rejected": 24,
     "rejected_rate_pct": 4.2
    },
@@ -478,13 +478,13 @@
    },
    {
     "cna": "Linux",
-    "total": 12888,
+    "total": 12890,
     "rejected": 323,
     "rejected_rate_pct": 2.5
    },
    {
     "cna": "Wordfence",
-    "total": 10519,
+    "total": 10521,
     "rejected": 268,
     "rejected_rate_pct": 2.5
    },
@@ -532,7 +532,7 @@
    },
    {
     "cna": "mitre",
-    "total": 27582,
+    "total": 27594,
     "rejected": 461,
     "rejected_rate_pct": 1.7
    },
@@ -598,8 +598,8 @@
    },
    {
     "cna": "GitHub_M",
-    "total": 15549,
-    "rejected": 200,
+    "total": 15563,
+    "rejected": 202,
     "rejected_rate_pct": 1.3
    },
    {
@@ -646,7 +646,7 @@
    },
    {
     "cna": "apache",
-    "total": 1394,
+    "total": 1398,
     "rejected": 12,
     "rejected_rate_pct": 0.9
    },
@@ -664,19 +664,19 @@
    },
    {
     "cna": "INCIBE",
-    "total": 1078,
+    "total": 1081,
     "rejected": 8,
     "rejected_rate_pct": 0.7
    },
    {
     "cna": "VulDB",
-    "total": 15254,
+    "total": 15297,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
    {
     "cna": "twcert",
-    "total": 630,
+    "total": 633,
     "rejected": 4,
     "rejected_rate_pct": 0.6
    },
@@ -694,19 +694,19 @@
    },
    {
     "cna": "mozilla",
-    "total": 1057,
+    "total": 1058,
     "rejected": 5,
     "rejected_rate_pct": 0.5
    },
    {
-    "cna": "Liferay",
+    "cna": "CPANSec",
     "total": 211,
     "rejected": 1,
     "rejected_rate_pct": 0.5
    },
    {
-    "cna": "CPANSec",
-    "total": 206,
+    "cna": "Liferay",
+    "total": 211,
     "rejected": 1,
     "rejected_rate_pct": 0.5
    },
@@ -748,7 +748,7 @@
    },
    {
     "cna": "adobe",
-    "total": 3131,
+    "total": 3133,
     "rejected": 8,
     "rejected_rate_pct": 0.3
    },
@@ -784,13 +784,13 @@
    },
    {
     "cna": "CERT-PL",
-    "total": 441,
+    "total": 446,
     "rejected": 1,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "Patchstack",
-    "total": 16935,
+    "total": 17084,
     "rejected": 24,
     "rejected_rate_pct": 0.1
    },
@@ -802,7 +802,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 3620,
+    "total": 3631,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -814,7 +814,7 @@
    },
    {
     "cna": "zdi",
-    "total": 2468,
+    "total": 2474,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -856,7 +856,7 @@
    },
    {
     "cna": "Mattermost",
-    "total": 434,
+    "total": 444,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -994,7 +994,7 @@
    },
    {
     "cna": "EEF",
-    "total": 123,
+    "total": 124,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1029,6 +1029,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "DIVD",
+    "total": 107,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "Hitachi Energy",
     "total": 102,
     "rejected": 0,
@@ -1041,20 +1047,14 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "wolfSSL",
+    "cna": "3DS",
     "total": 101,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "3DS",
-    "total": 100,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "DIVD",
-    "total": 98,
+    "cna": "wolfSSL",
+    "total": 101,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1324,6 +1324,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 60,
-  "elapsed": 0.532
+  "elapsed": 0.534
  }
 }
