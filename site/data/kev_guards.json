@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-14T03:46:16Z",
+ "generated_at": "2026-07-15T03:46:40Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,19 +35,19 @@
   },
   {
    "year": 2026,
-   "total": 154,
-   "security": 22,
-   "pct_security": 14.3
+   "total": 158,
+   "security": 24,
+   "pct_security": 15.2
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 378,
+   "entries": 380,
    "security_entries": 7,
-   "pct_security": 1.9,
+   "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-01",
+   "last_added": "2026-07-14",
    "median_gap_days": 0.0
   },
   {
@@ -177,6 +177,15 @@
    "median_gap_days": 90.5
   },
   {
+   "vendor": "SonicWall",
+   "entries": 17,
+   "security_entries": 17,
+   "pct_security": 100.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-07-14",
+   "median_gap_days": 20.0
+  },
+  {
    "vendor": "Palo Alto Networks",
    "entries": 15,
    "security_entries": 15,
@@ -193,15 +202,6 @@
    "first_added": "2022-11-08",
    "last_added": "2026-04-24",
    "median_gap_days": 19.5
-  },
-  {
-   "vendor": "SonicWall",
-   "entries": 15,
-   "security_entries": 15,
-   "pct_security": 100.0,
-   "first_added": "2021-11-03",
-   "last_added": "2025-12-17",
-   "median_gap_days": 20.0
   },
   {
    "vendor": "SAP",
@@ -440,20 +440,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 192,
+   "total": 194,
    "known": 71,
-   "pct_known": 37.0
+   "pct_known": 36.6
   },
   "other": {
-   "total": 1446,
+   "total": 1448,
    "known": 258,
    "pct_known": 17.8
   }
  },
  "catalog": {
-  "total": 1638,
-  "security": 192,
-  "pct_security": 11.7,
+  "total": 1642,
+  "security": 194,
+  "pct_security": 11.8,
   "classifier_version": 2,
   "classifier_rules": 35
  }

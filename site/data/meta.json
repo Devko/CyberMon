@@ -1,61 +1,61 @@
 {
- "generated_at": "2026-07-14T03:46:16Z",
+ "generated_at": "2026-07-15T03:46:40Z",
  "sample": false,
  "sources": {
   "cvelist": {
-   "release": "cve_2026-07-14_0300Z",
-   "cve_count": 365230
+   "release": "cve_2026-07-15_0300Z",
+   "cve_count": 366237
   },
   "epss": {
    "model_version": "v2026.06.15",
-   "score_date": "2026-07-13",
-   "row_count": 347460
+   "score_date": "2026-07-14",
+   "row_count": 347639
   },
   "kev": {
-   "catalog_version": "2026.07.13",
-   "count": 1638
+   "catalog_version": "2026.07.14",
+   "count": 1642
   },
   "nvd": {
-   "fetched_at": "2026-07-14T03:46:16Z",
-   "throughput_events": 423
+   "fetched_at": "2026-07-15T03:46:40Z",
+   "throughput_events": 1065
   },
   "market": {
-   "fetched_at": "2026-07-14T03:46:16Z",
+   "fetched_at": "2026-07-15T03:46:40Z",
    "term_count": 14,
    "backfill_remaining": 0
   },
   "hibp": {
-   "fetched_at": "2026-07-14T03:46:16Z",
+   "fetched_at": "2026-07-15T03:46:40Z",
    "breach_count": 1016
   },
   "ransomwhere": {
-   "fetched_at": "2026-07-14T03:46:16Z",
+   "fetched_at": "2026-07-15T03:46:40Z",
    "address_count": 11186,
    "tx_count": 21802
   },
   "attack": {
-   "fetched_at": "2026-07-14T03:46:16Z",
+   "fetched_at": "2026-07-15T03:46:40Z",
    "latest_version": "19.1",
    "version_count": 40
   },
   "epss_history": {
-   "fetched_at": "2026-07-14T03:46:16Z",
+   "fetched_at": "2026-07-15T03:46:40Z",
    "graded": 1353,
    "pending_backfill": 0
   },
   "apnic": {
-   "fetched_at": "2026-07-14T03:46:16Z",
+   "fetched_at": "2026-07-15T03:46:40Z",
    "economy_count": 10,
-   "spread_economy_count": 202
+   "spread_economy_count": 206
   },
   "rescores": {
-   "events_total": 0,
-   "state_release": "cve_2026-07-14_0300Z"
+   "events_total": 4,
+   "state_release": "cve_2026-07-15_0300Z"
   },
   "kev_changelog": {
-   "fetched_at": "2026-07-14T03:46:16Z",
-   "events_total": 4241,
-   "last_observed": "2026-07-14"
+   "fetched_at": "2026-07-15T03:46:40Z",
+   "events_total": 4245,
+   "last_observed": "2026-07-15"
   }
  }
 }

@@ -17155,6 +17155,28 @@
    "ransom": "Unknown",
    "vendor": "Ivanti"
   },
+  "CVE-2026-15409": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-14",
+   "desc": "6f435f302de4",
+   "due": "2026-07-17",
+   "name": "SonicWall SMA1000 Appliances Server-Side Request Forgery Vulnerability",
+   "notes": "5e0963924c6d",
+   "product": "SMA1000 Appliances",
+   "ransom": "Unknown",
+   "vendor": "SonicWall"
+  },
+  "CVE-2026-15410": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-14",
+   "desc": "1a4d912f1176",
+   "due": "2026-07-17",
+   "name": "SonicWall SMA1000 Appliances Code Injection Vulnerability",
+   "notes": "4cd69cb7cea0",
+   "product": "SMA1000 Appliances",
+   "ransom": "Unknown",
+   "vendor": "SonicWall"
+  },
   "CVE-2026-1603": {
    "action": "f09df147152e",
    "added": "2026-03-09",
@@ -17958,6 +17980,28 @@
    "ransom": "Unknown",
    "vendor": "Langflow"
   },
+  "CVE-2026-56155": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-14",
+   "desc": "798cb7cdfeaa",
+   "due": "2026-07-28",
+   "name": "Microsoft Active Directory Federation Services Insufficient Granularity of Access Control Vulnerability",
+   "notes": "8527ddc22b89",
+   "product": "Active Directory Federation Services",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
+  "CVE-2026-56164": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-14",
+   "desc": "5a5c0ac22dbe",
+   "due": "2026-07-17",
+   "name": "Microsoft SharePoint Server Missing Authentication for Critical Function Vulnerability",
+   "notes": "3b6a36b759f3",
+   "product": "SharePoint Server",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
   "CVE-2026-56290": {
    "action": "ba0d649eb29b",
    "added": "2026-07-07",
@@ -18025,7 +18069,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-14",
+ "last_observed": "2026-07-15",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
