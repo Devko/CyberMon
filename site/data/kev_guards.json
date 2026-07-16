@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-15T03:46:40Z",
+ "generated_at": "2026-07-16T05:27:22Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 158,
+   "total": 160,
    "security": 24,
-   "pct_security": 15.2
+   "pct_security": 15.0
   }
  ],
  "vendors": [
@@ -88,12 +88,12 @@
   },
   {
    "vendor": "Oracle",
-   "entries": 44,
+   "entries": 45,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-06-12",
-   "median_gap_days": 8.0
+   "last_added": "2026-07-15",
+   "median_gap_days": 9.5
   },
   {
    "vendor": "Apache",
@@ -445,13 +445,13 @@
    "pct_known": 36.6
   },
   "other": {
-   "total": 1448,
+   "total": 1450,
    "known": 258,
    "pct_known": 17.8
   }
  },
  "catalog": {
-  "total": 1642,
+  "total": 1644,
   "security": 194,
   "pct_security": 11.8,
   "classifier_version": 2,

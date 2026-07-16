@@ -3,3 +3,8 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-07-15,CVE-2024-21529,snyk,version_shift,v3,8.2,v4,8.8
 2026-07-15,CVE-2026-10642,zephyr,rescore,v3,6.5,v3,4.6
 2026-07-15,CVE-2026-7891,DIVD,rescore,v4,9.3,v4,9.1
+2026-07-16,CVE-2022-34659,siemens,first_score,,,v4,6.9
+2026-07-16,CVE-2024-21529,snyk,version_shift,v3,8.2,v4,8.8
+2026-07-16,CVE-2025-40646,INCIBE,rescore,v4,5.1,v4,5.9
+2026-07-16,CVE-2026-10642,zephyr,rescore,v3,6.5,v3,4.6
+2026-07-16,CVE-2026-7891,DIVD,rescore,v4,9.3,v4,9.1

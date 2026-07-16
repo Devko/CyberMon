@@ -1,20 +1,20 @@
 {
- "generated_at": "2026-07-15T03:46:40Z",
+ "generated_at": "2026-07-16T05:27:22Z",
  "weeks": [
   {
    "week": "2026-W29",
-   "rescore_up": 0,
-   "rescore_down": 2,
-   "first_score": 1,
-   "version_shift": 1,
+   "rescore_up": 1,
+   "rescore_down": 4,
+   "first_score": 2,
+   "version_shift": 2,
    "score_removed": 0
   }
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 2,
-  "up": 0,
-  "down": 2,
+  "n": 5,
+  "up": 1,
+  "down": 4,
   "buckets": null,
   "median_delta": null
  },
@@ -23,15 +23,15 @@
   "cnas": []
  },
  "catalog": {
-  "state_size": 348576,
-  "corpus_release": "cve_2026-07-15_0300Z",
+  "state_size": 348844,
+  "corpus_release": "cve_2026-07-16_0500Z",
   "totals": {
-   "rescore": 2,
-   "version_shift": 1,
-   "first_score": 1,
+   "rescore": 5,
+   "version_shift": 2,
+   "first_score": 2,
    "score_removed": 0
   },
-  "events_total": 4,
+  "events_total": 9,
   "first_observed": "2026-07-15"
  }
 }

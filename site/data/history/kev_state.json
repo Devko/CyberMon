@@ -12931,6 +12931,17 @@
    "ransom": "Known",
    "vendor": "NextGen Healthcare"
   },
+  "CVE-2023-4346": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-15",
+   "desc": "c7462fc66b0e",
+   "due": "2026-07-29",
+   "name": "KNX Association KNX Protocol Connection Authorization Option 1 Overly Restrictive Account Lockout Mechanism Vulnerability",
+   "notes": "3aec1af30246",
+   "product": "KNX Protocol Connection Authorization Option 1",
+   "ransom": "Unknown",
+   "vendor": "KNX Association"
+  },
   "CVE-2023-43770": {
    "action": "af6aa6680722",
    "added": "2024-02-12",
@@ -17859,6 +17870,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2026-46817": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-15",
+   "desc": "62c7e544924b",
+   "due": "2026-07-18",
+   "name": "Oracle E-Business Suite Improper Privilege Management Vulnerability",
+   "notes": "28fc881a6c98",
+   "product": "E-Business Suite",
+   "ransom": "Unknown",
+   "vendor": "Oracle"
+  },
   "CVE-2026-48027": {
    "action": "f09df147152e",
    "added": "2026-05-27",
@@ -17986,7 +18008,7 @@
    "desc": "798cb7cdfeaa",
    "due": "2026-07-28",
    "name": "Microsoft Active Directory Federation Services Insufficient Granularity of Access Control Vulnerability",
-   "notes": "8527ddc22b89",
+   "notes": "854868c2479a",
    "product": "Active Directory Federation Services",
    "ransom": "Unknown",
    "vendor": "Microsoft"
@@ -18069,7 +18091,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-15",
+ "last_observed": "2026-07-16",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

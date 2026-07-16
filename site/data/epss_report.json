@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-15T03:46:40Z",
+ "generated_at": "2026-07-16T05:27:22Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,13 +96,13 @@
   },
   {
    "year": 2026,
-   "graded": 119,
-   "n_below_1pct": 61,
+   "graded": 121,
+   "n_below_1pct": 63,
    "n_1_to_10pct": 22,
    "n_above_10pct": 36,
-   "pct_below_1pct": 51.3,
-   "pct_1_to_10pct": 18.5,
-   "pct_above_10pct": 30.3,
+   "pct_below_1pct": 52.1,
+   "pct_1_to_10pct": 18.2,
+   "pct_above_10pct": 29.8,
    "ungradeable": 39,
    "pending": 0
   }
@@ -157,10 +157,10 @@
    },
    {
     "model": "v5",
-    "n": 16,
+    "n": 18,
     "counts": {
      "<0.1%": 0,
-     "0.1-1%": 10,
+     "0.1-1%": 12,
      "1-10%": 4,
      ">10%": 2
     }
@@ -176,8 +176,8 @@
    },
    {
     "bucket": "25-50",
-    "n": 206,
-    "pct": 15.2
+    "n": 208,
+    "pct": 15.4
    },
    {
     "bucket": "50-75",
@@ -192,24 +192,24 @@
    {
     "bucket": "90-99",
     "n": 316,
-    "pct": 23.4
+    "pct": 23.3
    },
    {
     "bucket": "99-100",
     "n": 274,
-    "pct": 20.3
+    "pct": 20.2
    }
   ],
-  "n": 1353,
+  "n": 1355,
   "bottom_half": {
-   "n": 397,
-   "pct": 29.3
+   "n": 399,
+   "pct": 29.4
   },
-  "median_percentile": 84.6
+  "median_percentile": 84.5
  },
  "catalog": {
-  "total": 1642,
-  "graded": 1353,
+  "total": 1644,
+  "graded": 1355,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 206,
@@ -218,8 +218,8 @@
   "pending_backfill": 0
  },
  "headline": {
-  "graded": 1353,
-  "pct_below_1pct": 31.7,
+  "graded": 1355,
+  "pct_below_1pct": 31.8,
   "latest_year": 2025,
   "graded_latest": 184,
   "pct_below_1pct_latest": 59.2
@@ -15002,6 +15002,24 @@
    "percentile": null,
    "model": null,
    "reason": "no_score_for_date"
+  },
+  {
+   "cve": "CVE-2023-4346",
+   "date_added": "2026-07-15",
+   "score_date": "2026-07-14",
+   "epss": 0.00483,
+   "percentile": 0.38348,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-46817",
+   "date_added": "2026-07-15",
+   "score_date": "2026-07-14",
+   "epss": 0.00677,
+   "percentile": 0.48012,
+   "model": "v5",
+   "reason": null
   }
  ]
 }
