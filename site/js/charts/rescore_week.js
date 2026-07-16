@@ -9,7 +9,7 @@ import { editorial, tpl } from "../editorial.js";
 import { el, frag } from "../dom.js";
 
 export function render(slots, data) {
-  const ed = editorial.sections.edits;
+  const ed = editorial.sections.week;
   const first = data.catalog.first_observed;
 
   // The static note carries a {first_date} placeholder — fill it from the
