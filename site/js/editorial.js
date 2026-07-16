@@ -94,7 +94,7 @@ export const editorial = {
         href: "concentration.html",
         num: "04",
         label: "CNA Concentration",
-        headline: "The CVE database is becoming a handful of vendors grading themselves at scale.",
+        headline: "A handful of vendors still ship most of the CVE database — grading themselves at scale.",
         blurb:
           "CNA count, top-5/10 volume share, a formal concentration index, and who rejects " +
           "more of their own reservations than they publish — rebuilt nightly from the same " +
@@ -351,7 +351,9 @@ export const editorial = {
         "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
         "both indices carry real month-to-month noise. Terms missing three recent " +
         "populated months in either source — usually a source still waiting on " +
-        "collection — are omitted.",
+        "collection — are omitted, as are terms with fewer than ten raw hits across a " +
+        "source's three averaged months: a couple of papers against a tiny peak makes " +
+        "an index of 100, not a divergence.",
     },
 
     // -------------------------------------------------------------- 1 · hero
@@ -398,8 +400,9 @@ export const editorial = {
       headline: "“Critical” was an exception. Now it's a product line.",
       caption:
         "Published CVEs per year, bucketed by the base score embedded in the CVE record. " +
-        "Watch the red band: four-thousand-plus records a year now ship stamped Critical, " +
-        "and nearly everything arrives pre-labeled, so the label does all the triage. Read " +
+        "Watch the red band: close to four thousand records a year now ship stamped Critical " +
+        "— the half-written current year has already passed that mark — and nearly " +
+        "everything arrives pre-labeled, so the label does all the triage. Read " +
         "the years left of the vertical marker through it: severity existed there too, but " +
         "it lived downstream in NVD's database, which this chart deliberately does not " +
         "read — the wide gray band is a fact about the record format, not about the era's " +
@@ -417,9 +420,11 @@ export const editorial = {
         "done in the record at all — CNAs filed bare entries and NVD assigned CVSS " +
         "downstream, in its own database (which this chart deliberately does not ingest). " +
         "The unscored band's collapse since is the scoring duty migrating to the source: " +
-        "CNA self-scoring rose from under 2% of records (2017) to ~80% (now), and when NVD's " +
-        "enrichment stalled in 2024, CISA's Vulnrichment program (the ADP container) began " +
-        "backstopping the rest — a quarter of all 2024 records carry only a CISA score. " +
+        "CNA self-scoring rose from under 2% of records (2017) to roughly four in five " +
+        "(as of mid-2026), and when NVD's enrichment stalled in 2024, CISA's Vulnrichment " +
+        "program (the ADP container) began backstopping the rest — as of mid-2026, about " +
+        "a quarter of 2024's records carry only a CISA score, a share CNA backfill keeps " +
+        "eroding. " +
         "The share view normalizes each year to 100%. The current year (marked *) is " +
         "partial and refills nightly. In the absolute view, a dashed marker at the " +
         "current-year edge paces the partial year's total — all published records, " +
@@ -578,8 +583,9 @@ export const editorial = {
         "CVE records published per year, with rejections alongside. The curve explains the rest " +
         "of the page: at this volume, triage runs on the severity label alone — which is exactly " +
         "why an inflated label is expensive. The rejection line is the system's error-correction " +
-        "budget: as a share of what ships, it keeps shrinking. The current year is partial — " +
-        "the apparent dip at the right edge is a year still being written.",
+        "budget: it collapsed from a fifth of everything shipped in 2017 to under two percent " +
+        "by 2023 — and the last two complete years bent it back up. The current year is " +
+        "partial — the apparent dip at the right edge is a year still being written.",
       toggleLinear: "Linear",
       toggleLog: "Log scale",
       methodology:
@@ -640,7 +646,8 @@ export const editorial = {
         "tracked as its slice of that year's CWE-tagged records, with everything else " +
         "pooled as “Other.” Memory-safety errors and the injection classics anchor the " +
         "list across the whole window — a decade of churn in tooling, funding, and " +
-        "research agendas shows up here as swings of a few to a dozen points — never as a class leaving the board.",
+        "research agendas shows up here as swings of a few points to a dozen-plus at the " +
+        "extreme — never as a class leaving the board.",
       // rendered as a panel-note by cve.js (same slot the decay chart uses)
       note:
         "Shares are of CWE-tagged records only; each year's tooltip shows how much of " +
@@ -732,7 +739,8 @@ export const editorial = {
         "interquartile range per year of listing. Unlike the latency chart, the seeding era " +
         "belongs here — the deadline is set the day the entry lands, back-catalog included, " +
         "so this is a policy timeline, not a backlog artifact. The early catalog handed out " +
-        "months; the standing rule since has been three weeks, and the newest listings are tightening further.",
+        "months; the standing rule since has been three weeks — and the listings of the " +
+        "half-written current year are so far coming in tighter still.",
       methodology:
         "Remediation span is the KEV dueDate minus dateAdded, in days, for every catalog " +
         "entry carrying both fields — no CVE match is needed, so this covers the catalog " +
@@ -781,10 +789,11 @@ export const editorial = {
       caption:
         "Three lines from one corpus: how many CVE Numbering Authorities published at least " +
         "one record each year, and what share of the year's volume came from the top 5 and " +
-        "top 10 of them. The CNA program keeps growing — federation is the point — but growth " +
-        "in assignors has not meant dispersion in output. Most of the database still ships " +
-        "from the same short list of vendors, and the largest of them are scoring their own " +
-        "products while they're at it.",
+        "top 10 of them. The CNA program keeps growing — federation is the point — and for a " +
+        "decade output slowly dispersed with it. Since 2023 that trend has reversed: the " +
+        "roster grew seventeen-fold, yet five of its hundreds of names still ship a majority " +
+        "of the database, and their share is climbing again — under a design in which every " +
+        "assigner, vendor or not, grades its own submissions.",
       statLabel: "Share of published CVEs from the year's top 5 CNAs",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -793,7 +802,7 @@ export const editorial = {
         "publication year; a CNA is active in a year if it published or rejected at least one record. " +
         "Top-5/top-10 share is the fraction of that year's volume from its five or ten " +
         "largest assignors, membership recomputed every year — the names in the top 5 " +
-        "change, the concentration doesn't. The pipeline also computes a " +
+        "change even when the share doesn't move. The pipeline also computes a " +
         "Herfindahl–Hirschman Index per year (the sum of squared volume shares, on the " +
         "0–10,000 scale antitrust regulators use; {hhi_latest} for the latest complete year) as a " +
         "formal concentration measure that sees the whole distribution, not just the head. " +
@@ -811,14 +820,14 @@ export const editorial = {
       headline: "New CNAs keep arriving. Most of them don't move the needle.",
       caption:
         "Bars count CNAs publishing their first-ever CVE record that year; the line is the " +
-        "total active roster. Recruitment is real — the program is adding assignors faster " +
-        "than it ever has. Hold that against the chart above: the newcomers add count, " +
-        "not share. The head of the table absorbs the growth.",
+        "total active roster. Recruitment is real — the three biggest recruiting years on " +
+        "record are the last three complete ones. Hold that against the chart above: the " +
+        "newcomers add count, not share. The head of the table absorbs the growth.",
       methodology:
         "A newcomer in year Y is a CNA whose earliest record in the entire corpus (published or rejected) " +
         "falls in Y — first appearance in the data, not accreditation date, which the corpus " +
-        "doesn't carry. The active-roster line counts CNAs with at least one published " +
-        "record that year, the same definition as the concentration chart. Because first " +
+        "doesn't carry. The active-roster line counts CNAs with at least one published or " +
+        "rejected record that year, the same definition as the concentration chart. Because first " +
         "appearance is computed against the full corpus, the first charted year counts " +
         "every CNA as new by construction — read the left edge accordingly. The current " +
         "year is partial and refills nightly. The hollow extension above the current-year " +
@@ -873,7 +882,8 @@ export const editorial = {
         "callout below, out of the trend. What the live-era record shows: the typical gap " +
         "is measured in months, and roughly a third of entries take more than a year to " +
         "surface. Vendors sell dwell-time figures measured on their own customers; this " +
-        "chart is what the open record shows.",
+        "chart measures a different clock — breach to public record — and it is the one " +
+        "clock anyone can audit.",
       statLabel: "Median days from breach to public catalog",
       statWhole: "since {trend_start}",
       statLatest: "{latest_year}",
@@ -986,9 +996,10 @@ export const editorial = {
         "is Ransomwhere: crowdsourced reports of extortion addresses, each verified before " +
         "it counts. That design makes every bar a floor, not a market estimate — a payment " +
         "appears here only after somebody reported the wallet, so the true total sits above " +
-        "every number on this page. Read the thin right edge accordingly: volunteer " +
-        "reporting has slowed, and the chart cannot separate that from the extortion " +
-        "economy itself cooling off.",
+        "every number on this page. Read the right edge accordingly: volunteer reporting " +
+        "has stalled — the ledger's last verified payment landed in Q3 2024 — and the chart " +
+        "ends where the reporting does, unable to separate a quiet ledger from the " +
+        "extortion economy itself cooling off.",
       statLabel: "Confirmed ransom revenue on the public ledger, all-time",
       statNote: "at least — {payments} verified payments to {addresses} tracked addresses",
       methodology:
@@ -1034,8 +1045,10 @@ export const editorial = {
         "on-chain UTC timestamp; the median is over per-payment USD at the historical, " +
         "day-of-transfer rate. A year's median plots only with at least 10 payments — a " +
         "median of three payments is an anecdote — while the payment count always " +
-        "plots. The current year (marked *) is partial and refills nightly; no pace " +
-        "projection is drawn, for the reporting-lag reason in the revenue methodology.",
+        "plots. A year is marked * only when it is the partial generation year; the " +
+        "record currently ends before that (last verified payment: Q3 2024), so the " +
+        "final bar is simply where the reporting stops. No pace projection is drawn, " +
+        "for the reporting-lag reason in the revenue methodology.",
     },
 
     // --------------------------------------- extortion.html · 3
@@ -1136,9 +1149,9 @@ export const editorial = {
         "arrives already deprecated counts once, as an addition; an object retired in an " +
         "earlier release is never re-counted. The earliest indexed release (v1.0) has no " +
         "predecessor and shows no bars. The axis is a category axis of releases: the unit " +
-        "of churn is a release, and gaps between releases vary from a couple of months to " +
-        "nearly a year, so the equal spacing here is deliberate — the two time-axis charts " +
-        "on this page carry the calendar.",
+        "of churn is a release, and gaps between releases vary from same-day point " +
+        "releases to about half a year, so the equal spacing here is deliberate — the two " +
+        "time-axis charts on this page carry the calendar.",
     },
 
     // --------------------------------------------- attack.html · 3
@@ -1150,8 +1163,8 @@ export const editorial = {
       caption:
         "Active adversary groups (intrusion sets) and software — malware and tools, " +
         "counted together — per release, on the same release-date axis as the hero. This " +
-        "is the evidence base the technique map stands on: every technique cites the " +
-        "groups observed using it and the software that implements it, so the two catalogs " +
+        "is the evidence base the technique map stands on: techniques cite the " +
+        "groups observed using them and the software that implements them, so the two catalogs " +
         "grow as attribution work accumulates, and entries leave only by deprecation or " +
         "revocation.",
       legendGroups: "Groups (intrusion sets)",
@@ -1178,7 +1191,7 @@ export const editorial = {
         "the DNS answer it hands you is the one the domain owner signed, and switching " +
         "validation on is a resolver configuration choice, free of charge. The line is " +
         "APNIC's measured share of internet users whose resolvers actually perform that " +
-        "check — climbing from under a tenth when the record starts in 2013 to just under " +
+        "check — climbing from under a tenth when the record starts in 2013 to roughly " +
         "four in ten today. At the pace of the last decade, universal validation is still " +
         "decades away.",
       statLabel: "Share of internet users behind validating resolvers",
@@ -1191,7 +1204,7 @@ export const editorial = {
         "one of which carries a deliberately broken signature. A resolver that rejects " +
         "the broken name while fetching the valid one counts as validating; a user whose " +
         "queries land on a mix of validating and non-validating resolvers counts as " +
-        "partially validating — shipped in the data file, deliberately kept out of the " +
+        "partially validating — shipped alongside the latest reading, deliberately kept out of the " +
         "headline line. The chart plots APNIC's world aggregate (code XA), 30-day " +
         "smoothed window, sampled by CyberMon to the last published day of each calendar " +
         "month; the full daily series is refetched from stats.labs.apnic.net every " +
@@ -1232,9 +1245,9 @@ export const editorial = {
         "quarter-end month (30-day smoothed window), plus the newest available day; " +
         "legend order is current rate, descending. Per-economy caveat, per APNIC: " +
         "samples arrive where the measurement ads are delivered, and delivery volume " +
-        "varies by economy — where it runs thin (Russia currently yields a small " +
-        "fraction of the samples of comparable economies) the measured rate carries " +
-        "more noise.",
+        "varies by economy — where it runs thin (as of this module's mid-2026 launch, " +
+        "Russia yielded a small fraction of the samples of comparable economies) the " +
+        "measured rate carries more noise.",
     },
 
     // --------------------------------------------- hygiene.html · 3
@@ -1280,8 +1293,9 @@ export const editorial = {
         "Every entry in CISA's Known Exploited Vulnerabilities catalog, classified by " +
         "what the product is for. Bars show the share of each year's new listings that " +
         "are security products — VPN appliances, firewalls, endpoint protection, secure " +
-        "gateways: the things bought to keep attackers out. About one in nine entries " +
-        "in the whole catalog is in a product sold to enforce security. The 2021–22 " +
+        "gateways: the things bought to keep attackers out. More than one entry in nine " +
+        "in the whole catalog is in a product sold to enforce security — and recent " +
+        "years run well above that. The 2021–22 " +
         "seeding years chart like any other year: the classification rides on the entry " +
         "itself, so a back-catalog import answers the question as well as a fresh " +
         "listing does.",
@@ -1393,7 +1407,11 @@ export const editorial = {
         "under 1%, 1–10%, and 10% or higher. EPSS predicts exploitation within 30 days, " +
         "and a KEV listing means exploitation was already observed, so on listing eve " +
         "the model should be at its most alarmed. Instead, in the catalog's recent years most " +
-        "arrive having been scored below one percent the day before. Listings that " +
+        "arrive having been scored below one percent the day before. One reading caveat " +
+        "up front: the sharp 2022-to-2023 flip in the bars is a model change, not a " +
+        "performance change — the v2-era model scored high across the board, every model " +
+        "since scores low, and section 02 splits the eras so they never pool. The " +
+        "whole-catalog comparison figure pools them anyway (it says so). Listings that " +
         "could not have a prior score are counted separately, never as misses.",
       statLabel: "Graded KEV additions scored under 1% on listing eve",
       statLatest: "{latest_year}",
@@ -1405,8 +1423,9 @@ export const editorial = {
       // appended only while the historical backfill is still incomplete.
       note:
         "{ungradeable} of {total} catalog entries had no day-before score to grade — " +
-        "{before_pub} were listed before (or the day) their CVE record published — and " +
-        "are counted separately, never as misses.",
+        "{before_pub} were listed before (or the day) their CVE record published; the " +
+        "rest simply had no row in FIRST's corpus that day — and are counted " +
+        "separately, never as misses.",
       pendingNote:
         "{pending} entries are still awaiting their historical day-before lookup; " +
         "every number on this page covers only what has been fetched so far.",
@@ -1450,8 +1469,8 @@ export const editorial = {
         "materially different score distributions, and pooling them into one histogram " +
         "would be the same landmine as mixing CVSS v2 with v3 scores. Read each model " +
         "on its own terms; what changes is where the mass sits — the v2-era model pushed " +
-        "most of this cohort above 1%, while every model since 2023 has placed the " +
-        "majority below it.",
+        "most of this cohort above 1%, while the v3 and v4 models placed the majority " +
+        "below it (and the month-old v5, on a small early cohort, points the same way).",
       methodology:
         "Each graded entry contributes its day-before probability to one bucket: " +
         "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive — the " +
@@ -1479,7 +1498,7 @@ export const editorial = {
         "same cohort on that scale, and it is the fairest scale available to the " +
         "model. Even here, nearly three in ten of the graded cohort sat in the bottom " +
         "half of that day's ranking — confirmed-exploited vulnerabilities the model " +
-        "placed behind roughly a hundred thousand others on listing eve.",
+        "placed behind at least a hundred thousand others on listing eve.",
       statBig: "{n} of {total}",
       statLead: "graded entries ranked in the model's bottom half on listing eve",
       statNote: "median day-before percentile: {median}",
@@ -1655,11 +1674,14 @@ export const editorial = {
         "blank is not editing a judgment; a score disappearing from a live record logs " +
         "as removed. Brand-new records produce no event at all: first assignment is the " +
         "inflation chart's subject. Events append to a committed CSV " +
-        "(data/history/rescore_log.csv) that no upstream can replace. If the cached " +
-        "state is ever lost it is rebuilt from that night's corpus and the night logs " +
-        "zero events — at worst one night of edits goes unrecorded, and that failure " +
-        "mode is stated here rather than papered over. Bars group by ISO week of the " +
-        "observation date, UTC; the week in progress keeps filling until it closes.",
+        "(data/history/rescore_log.csv) that no upstream can replace, and the diffing " +
+        "state is committed right beside it — the two can no longer diverge (the one " +
+        "night they did, in July 2026, taught this module that lesson and left a " +
+        "deduplicated scar on the log). If the state is ever lost it is rebuilt from " +
+        "that night's corpus and the night logs zero events — at worst one night of " +
+        "edits goes unrecorded, and that failure mode is stated here rather than " +
+        "papered over. Bars group by ISO week of the observation date, UTC; the week " +
+        "in progress keeps filling until it closes.",
     },
 
     // --------------------------------------------- rescores.html · 2
@@ -1691,7 +1713,7 @@ export const editorial = {
         "Delta is the new score minus the old per rescore event — same CVSS version by " +
         "construction, so every delta compares like with like; version shifts are " +
         "excluded from this chart entirely, because a difference across scoring scales " +
-        "is not a measurement. Deltas land in fixed signed buckets (under −4, −4 to −2, " +
+        "is not a measurement. Deltas land in fixed signed buckets (−4 and under, over −4 to −2, " +
         "under −2 to −0.1, +0.1 to under +2, +2 to under +4, +4 and over) at the " +
         "scores' own one-decimal precision; a delta of exactly zero cannot occur, since " +
         "an unchanged score is not an event. The distribution and its median stay " +
@@ -1760,7 +1782,7 @@ export const editorial = {
       legendRemoved: "Entry removed",
       // Filled by the renderer from the catalog block; the capture sentence
       // is appended only when the record carries Wayback-seeded events.
-      note: "CyberMon started keeping this record on {first_observed}.",
+      note: "This record's first observation is {first_observed}.",
       waybackNote:
         "History before the nightly diffs is reconstructed from {captures} " +
         "Internet Archive captures of the feed — a backfilled edit is dated " +
@@ -1809,7 +1831,9 @@ export const editorial = {
         "after listing the flip typically lands.",
       statBig: "{n}",
       statLead: "entries flipped to “Known” after they were already listed",
-      statNote: "median gap from listing to observed flip: {median} days",
+      statNote:
+        "median gap from listing to observed flip: {median} days — includes the 2023-12 " +
+        "step where the flag column first appears in the captures",
       statNoteThin:
         "too few observed flips to state a typical gap yet — counts ship in " +
         "the data file either way",
@@ -1889,8 +1913,9 @@ export const editorial = {
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
-      "Ransomwhere, or APNIC. Charts aggregate public data; no individual CVE is news here, " +
-      "and no victim is identified or identifiable anywhere on this site.",
+      "Ransomwhere, APNIC, or the Internet Archive. Charts aggregate public data; no " +
+      "individual CVE is news here, and no victim is identified or identifiable anywhere " +
+      "on this site.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -1906,8 +1931,9 @@ export const editorial = {
       // (attack.mitre.org → Resources → Terms of Use). Do not paraphrase it.
       "MITRE ATT&CK® (© 2026 The MITRE Corporation. This work is reproduced and distributed " +
       "with the permission of The MITRE Corporation.), " +
-      "and DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
-      "re-use with attribution permitted).",
+      "DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
+      "re-use with attribution permitted), " +
+      "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
     // deploy time by tools/make_carousels.py and ships only inside the Pages
@@ -1923,6 +1949,9 @@ export const editorial = {
     slideFooter: "CyberMon · devko.github.io/CyberMon · data: {sources}",
     siteUrl: "devko.github.io/CyberMon",
     closingSources: "Data: {sources}",
+    // Printed under a board the fit pass had to cut — a truncated table
+    // must say so (the full ranking lives on the site).
+    tableMore: "Top {shown} of {total} — the full board is on the site.",
     // Per-module primary upstreams, short enough for a slide footer. The
     // full attribution (editorial.footer.dataNote) stays on the site.
     sources: {

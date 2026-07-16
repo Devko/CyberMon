@@ -22,17 +22,24 @@ dollars-of-the-day, never a today's-price revaluation.
 
 Unlike fetch_kev's tolerant filtering, malformed records here raise: every
 record is money, and silently dropping one would silently understate an
-already lower-bound dataset. Fail loud, fix upstream or fix the parser.
+already lower-bound dataset. Fail loud, fix upstream or fix the parser —
+transient network blips (HTTP 429/5xx, connection errors) get a bounded
+retry (3 attempts, backoff), but an exhausted retry still raises: there is
+no carry-forward for this source.
 """
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
 RANSOMWHERE_URL = "https://api.ransomwhe.re/export"
 
 USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
+
+_RETRY_STATUSES = {429, 500, 502, 503, 504}
+_MAX_ATTEMPTS = 3
 
 # Ransomwhere's literal label for verified payments nobody has attributed
 # to a family. Downstream metrics must never rank it as a "family".
@@ -126,12 +133,39 @@ def load_ransomwhere_file(path: Path) -> RansomwhereData:
     return parse_ransomwhere(json.loads(path.read_text(encoding="utf-8")))
 
 
-def fetch_ransomwhere(session=None, timeout: float = 120.0) -> RansomwhereData:
-    """Download and parse the current Ransomwhere export."""
+def _get_with_retry(session, url: str, timeout: float, sleep, log):
+    """GET with fetch_attack's bounded-retry discipline: up to
+    ``_MAX_ATTEMPTS`` attempts, backing off on 429/5xx statuses and
+    connection errors. The final failure raises exactly as an unretried
+    call would — the retry absorbs blips, it never softens the
+    loud-failure policy."""
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        last = attempt == _MAX_ATTEMPTS
+        try:
+            resp = session.get(url, timeout=timeout,
+                               headers={"User-Agent": USER_AGENT})
+        except OSError as exc:  # requests exceptions subclass OSError
+            if last:
+                raise
+            message = f"request failed: {exc!r}"
+        else:
+            if last or resp.status_code not in _RETRY_STATUSES:
+                resp.raise_for_status()
+                return resp
+            message = f"HTTP {resp.status_code}"
+        backoff = 15.0 * attempt
+        log(f"  ransomwhere: {message} for {url}; retrying in "
+            f"{backoff:.0f}s (attempt {attempt}/{_MAX_ATTEMPTS})")
+        sleep(backoff)
+
+
+def fetch_ransomwhere(session=None, timeout: float = 120.0,
+                      sleep=time.sleep, log=print) -> RansomwhereData:
+    """Download and parse the current Ransomwhere export. Transient
+    failures are retried (see :func:`_get_with_retry`); the last failure
+    raises unchanged."""
     import requests
 
     session = session or requests.Session()
-    resp = session.get(RANSOMWHERE_URL, timeout=timeout,
-                       headers={"User-Agent": USER_AGENT})
-    resp.raise_for_status()
+    resp = _get_with_retry(session, RANSOMWHERE_URL, timeout, sleep, log)
     return parse_ransomwhere(resp.json())

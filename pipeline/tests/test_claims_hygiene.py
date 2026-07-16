@@ -40,7 +40,7 @@ def load(name: str) -> dict:
 
 def check_world_line(d: dict) -> None:
     # editorial.js (hygiene.html hero): "climbing from under a tenth when
-    # the record starts in 2013 to just under four in ten today"
+    # the record starts in 2013 to roughly four in ten today"
     first = d["world"]["series"][0]
     latest = d["world"]["latest"]["validating_pc"]
     assert first["month"].startswith("2013"), (
@@ -52,7 +52,7 @@ def check_world_line(d: dict) -> None:
         f"data says {first['validating_pc']}%"
     )
     assert 32 <= latest <= 43, (
-        f"'just under four in ten today' claims ~38%; data says {latest}%"
+        f"'roughly four in ten today' claims ~40%; data says {latest}%"
     )
 
 
@@ -75,7 +75,7 @@ def check_giants_gap(d: dict) -> None:
 
 CLAIMS = [
     (
-        "climbing from under a tenth when the record starts in 2013 to just under four in ten today",
+        "climbing from under a tenth when the record starts in 2013 to roughly four in ten today",
         "dnssec_adoption.json",
         check_world_line,
     ),

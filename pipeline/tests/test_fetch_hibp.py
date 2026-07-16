@@ -1,11 +1,12 @@
-"""HIBP feed parsing: field extraction, defaults, malformed entries."""
+"""HIBP feed parsing: field extraction, defaults, malformed entries —
+plus the fetcher's bounded-retry discipline."""
 from __future__ import annotations
 
 from pathlib import Path
 
 import pytest
 
-from pipeline.fetch_hibp import load_hibp_file, parse_hibp
+from pipeline.fetch_hibp import fetch_hibp, load_hibp_file, parse_hibp
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -72,3 +73,63 @@ def test_load_fixture_file():
     assert by_name["BotnetDump"].is_malware
     assert by_name["StealerBatch"].is_stealer_log
     assert by_name["ImportEraForum"].added_date.startswith("2013-12-05")
+
+
+# ------------------------------------------------------------- bounded retry
+
+class FakeResponse:
+    def __init__(self, payload=None, status_code=200):
+        self.status_code = status_code
+        self._payload = payload
+
+    def json(self):
+        return self._payload
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise RuntimeError(f"HTTP {self.status_code}")
+
+
+class FakeSession:
+    """Serves a scripted sequence of responses (a scripted exception is
+    raised instead of returned) and records every request — the
+    test_fetch_nvd FakeSession pattern."""
+
+    def __init__(self, script):
+        self.script = list(script)
+        self.requests = []
+
+    def get(self, url, headers=None, timeout=None):
+        self.requests.append({"url": url, "headers": dict(headers or {})})
+        item = self.script.pop(0)
+        if isinstance(item, Exception):
+            raise item
+        return item
+
+
+def test_fetch_retries_transient_failures_then_succeeds():
+    session = FakeSession([FakeResponse(status_code=503),
+                           OSError("connection reset"),
+                           FakeResponse(payload=[{"Name": "Acme"}])])
+    sleeps = []
+    data = fetch_hibp(session=session, sleep=sleeps.append,
+                      log=lambda m: None)
+    assert data.breach_count == 1
+    assert len(session.requests) == 3
+    assert len(sleeps) == 2  # backoff between attempts, none after success
+
+
+def test_fetch_persistent_failure_raises_after_bounded_attempts():
+    session = FakeSession([FakeResponse(status_code=503)] * 5)
+    with pytest.raises(RuntimeError, match="HTTP 503"):
+        fetch_hibp(session=session, sleep=lambda s: None,
+                   log=lambda m: None)
+    assert len(session.requests) == 3  # bounded: never a fourth attempt
+
+
+def test_fetch_non_retryable_status_raises_immediately():
+    session = FakeSession([FakeResponse(status_code=404)] * 3)
+    with pytest.raises(RuntimeError, match="HTTP 404"):
+        fetch_hibp(session=session, sleep=lambda s: None,
+                   log=lambda m: None)
+    assert len(session.requests) == 1  # 404 is not a blip; no retry

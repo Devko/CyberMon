@@ -434,8 +434,26 @@ function fitSlides() {
       const rows = [...tableBox.querySelectorAll("tbody tr")];
       let keep = Math.min(rows.length, TABLE_ROWS_MAX);
       rows.slice(keep).forEach((tr) => tr.remove());
+      // Never truncate silently: a cut board must say it's a cut board.
+      // The note is appended BEFORE the shrink loop so its own height
+      // participates in the fit check (it once overflowed a sheet by 23px).
+      let note = null;
+      const ensureNote = () => {
+        if (!note) {
+          // nbsp placeholder: an empty <p> has no line box (0px) and would
+          // let the shrink loop under-measure by one line height.
+          note = el("p", "table-context slide-table-more", " ");
+          tableBox.append(note);
+        }
+      };
+      if (keep < rows.length) ensureNote();
       while (keep > TABLE_ROWS_MIN && tableBox.scrollHeight > tableBox.clientHeight) {
         rows[--keep].remove();
+        ensureNote();
+      }
+      if (note) {
+        note.textContent = tpl(editorial.carousel.tableMore,
+                               { shown: keep, total: rows.length });
       }
     }
   }

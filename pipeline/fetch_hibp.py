@@ -7,18 +7,24 @@ month), the date HIBP cataloged it (``AddedDate``), the account count
 cohort rule in :mod:`pipeline.breach_metrics` keys off. HIBP requires a
 User-Agent and attribution (handled in the site's shared footer copy).
 
-Failures are loud on purpose: no carry-forward machinery. If HIBP is down,
-the run fails and nothing stale is deployed.
+Failures are loud on purpose: transient blips (HTTP 429/5xx, connection
+errors) get a bounded retry (3 attempts, backoff), but there is no
+carry-forward machinery — if HIBP stays down, the run fails and nothing
+stale is deployed.
 """
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .fetch_market import USER_AGENT
 
 HIBP_URL = "https://haveibeenpwned.com/api/v3/breaches"
+
+_RETRY_STATUSES = {429, 500, 502, 503, 504}
+_MAX_ATTEMPTS = 3
 
 
 @dataclass
@@ -82,12 +88,39 @@ def load_hibp_file(path: Path) -> HibpData:
     return parse_hibp(json.loads(path.read_text(encoding="utf-8")))
 
 
-def fetch_hibp(session=None, timeout: float = 60.0) -> HibpData:
-    """Download and parse the current HIBP breach catalog."""
+def _get_with_retry(session, url: str, timeout: float, sleep, log):
+    """GET with fetch_attack's bounded-retry discipline: up to
+    ``_MAX_ATTEMPTS`` attempts, backing off on 429/5xx statuses and
+    connection errors. The final failure raises exactly as an unretried
+    call would — the retry absorbs blips, it never softens the
+    loud-failure policy."""
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        last = attempt == _MAX_ATTEMPTS
+        try:
+            resp = session.get(url, timeout=timeout,
+                               headers={"User-Agent": USER_AGENT})
+        except OSError as exc:  # requests exceptions subclass OSError
+            if last:
+                raise
+            message = f"request failed: {exc!r}"
+        else:
+            if last or resp.status_code not in _RETRY_STATUSES:
+                resp.raise_for_status()
+                return resp
+            message = f"HTTP {resp.status_code}"
+        backoff = 15.0 * attempt
+        log(f"  hibp: {message} for {url}; retrying in {backoff:.0f}s "
+            f"(attempt {attempt}/{_MAX_ATTEMPTS})")
+        sleep(backoff)
+
+
+def fetch_hibp(session=None, timeout: float = 60.0,
+               sleep=time.sleep, log=print) -> HibpData:
+    """Download and parse the current HIBP breach catalog. Transient
+    failures are retried (see :func:`_get_with_retry`); the last failure
+    raises unchanged."""
     import requests
 
     session = session or requests.Session()
-    resp = session.get(HIBP_URL, timeout=timeout,
-                       headers={"User-Agent": USER_AGENT})
-    resp.raise_for_status()
+    resp = _get_with_retry(session, HIBP_URL, timeout, sleep, log)
     return parse_hibp(resp.json())

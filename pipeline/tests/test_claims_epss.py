@@ -74,7 +74,7 @@ def graded_report() -> dict:
 
 
 def check_most_recent_below_1pct(d: dict) -> None:
-    # editorial.js (epss.html hero): "in its recent years most arrive
+    # editorial.js (epss.html hero): "in the catalog's recent years most arrive
     # having been scored below one percent the day before" — live samples
     # put the last complete year at ~61% (2025) and the newest additions
     # at ~65%; the range tolerates drift down to a bare majority and up
@@ -91,12 +91,12 @@ def check_most_recent_below_1pct(d: dict) -> None:
 
 
 def check_bottom_half_share(d: dict) -> None:
-    # editorial.js (epss.html percentile section): "roughly a third of the
-    # graded cohort sat in the bottom half of that day's ranking" — live
-    # estimate: seeding era ~25%, live era ~45-58%, cohort-wide ~35%.
+    # editorial.js (epss.html percentile section): "nearly three in ten of
+    # the graded cohort sat in the bottom half" — live value at last copy
+    # edit: 29.4% cohort-wide.
     pct = d["percentiles"]["bottom_half"]["pct"]
-    assert 20.0 <= pct <= 55.0, (
-        f"'roughly a third of the graded cohort sat in the bottom half' "
+    assert 20.0 <= pct <= 38.0, (
+        f"'nearly three in ten of the graded cohort sat in the bottom half' "
         f"needs the cohort-wide bottom-half share ({pct}%) to stay in "
         f"that neighbourhood"
     )
@@ -111,7 +111,7 @@ CLAIMS = [
         check_most_recent_below_1pct,
     ),
     (
-        "roughly a third of the graded cohort sat in the bottom half",
+        "nearly three in ten of the graded cohort sat in the bottom half",
         check_bottom_half_share,
     ),
 ]

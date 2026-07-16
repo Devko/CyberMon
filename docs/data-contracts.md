@@ -429,9 +429,14 @@ nonzero prior-12-month sum, AND at least 30 raw hits across the two
 compared windows (`MIN_YOY_VOLUME` — a percentage of almost nothing is a
 rumor, not a rate); `pct_change` is computed on raw counts.
 `divergence` is `null` unless both `gdelt` and `arxiv` have ≥ 3 populated
-months; `research_vs_media_index` = arxiv 3-month index average minus
-gdelt's; `direction` ∈ research_leads / media_leads / aligned with a ±10
-dead zone. Every `headline` field is nullable — no eligible pair means
+months AND ≥ 10 raw hits across each source's three averaged months
+(`MIN_DIVERGENCE_VOLUME` — two papers against a two-paper peak is an
+index of 100 and a fabricated headline, not a divergence);
+`research_vs_media_index` = arxiv 3-month index average minus gdelt's;
+`direction` ∈ research_leads / media_leads / aligned with a ±10 dead
+zone. arXiv series store an explicit count for every window month on a
+successful fetch, zeros included — for arXiv the gaps ARE the world;
+only failed fetches leave gaps. Every `headline` field is nullable — no eligible pair means
 `null`, never a fabricated number; ties break by `term_id` ascending.
 
 The term list (ids, labels, per-source query strings) lives in
@@ -705,8 +710,13 @@ newest-version CNA-assigned base score as `(version family, score)`,
 extracted by the SAME property the severity-inflation chart's blended
 series reads (`CveFacts.newest_cna_fingerprint`), so the two modules can
 never disagree about a record's score — and diffs it against last night's
-fingerprints (`.cache/rescore_state.json.gz`, which also records the
-corpus release tag). Unscored published records are kept in the state
+fingerprints (**`site/data/history/rescore_state.json`**, COMMITTED next
+to the log like the KEV changelog's `kev_state.json`; it also records the
+corpus release tag and the last observed date). The state used to live in
+`.cache` behind actions/cache — which saves only on job success, so two
+failed nights restored the same stale state and double-appended the same
+events; committed state and log now travel in the same nightly commit.
+Unscored published records are kept in the state
 with a null fingerprint: that is what makes a late first score
 distinguishable from a brand-new record.
 
@@ -735,8 +745,14 @@ Self-healing and re-run safety: a missing/unreadable state rebuilds from
 tonight's corpus and the night logs zero events (at worst one night's
 diffs are lost; the committed CSV is untouched). When tonight's corpus
 release equals the state's recorded release, the diff is skipped so
-re-runs never double-count; the state is persisted only after a fully
-validated run, so a failed run's retry still diffs.
+re-runs never double-count; state and CSV are persisted together, only
+after a fully validated run, so a failed run's retry still diffs and the
+two files cannot diverge. Belt-and-suspenders double-count guard: if the
+state is nevertheless stale (its `last_observed` predates the log's
+newest observed date), any diffed event identical (cve, change_type, old
+fields, new fields) to one already on the log is dropped with a loud
+warning — with committed state it should never fire; firing means
+state/log divergence and a human should look.
 
 `weeks` = per-ISO-week (`YYYY-Www`, UTC observation dates) event counts,
 gap-filled between the first and last observed week, sorted, unique;
@@ -944,173 +960,6 @@ Validator: `pipeline/extortion_contracts.py` (registered into
 ```json
 {
   "generated_at": "...",
-  "min_n": 10,
-  "catalog": {
-    "total": 1015, "cohort": 982,
-    "excluded": {"fabricated": 3, "spam_list": 16, "malware": 8,
-                 "stealer_log": 6}
-  },
-  "import_era": {"added_before": "2014-01-01", "n": 7, "median_days": 511.0},
-  "lag_by_year": [
-    {"year": 2014, "n": 27, "median_days": 5.0, "p25_days": 1.0,
-     "p75_days": 222.0, "pct_negative": 0.0, "pct_over_365d": 25.9}
-  ],
-  "volume_by_year": [
-    {"year": 2013, "breaches": 7, "records": 155137175}
-  ],
-  "class_shares": {
-    "classes": ["Email addresses", "Passwords", "Names", "Usernames",
-                "IP addresses", "Phone numbers"],
-    "years": [
-      {"year": 2016, "n": 109,
-       "shares": {"Email addresses": 100.0, "Passwords": 74.3,
-                  "Names": 45.0, "Usernames": 39.4,
-                  "IP addresses": 33.9, "Phone numbers": 22.9}}
-    ]
-  },
-  "headline": {"trend_n": 975, "median_days": 144.0, "pct_over_365d": 35.5,
-               "latest_year": 2025, "median_days_latest": 194.0},
-  "projection": {"year": 2026, "breaches": 149, "elapsed": 0.523}
-}
-```
-
-Source: the Have I Been Pwned public breaches feed (one JSON GET, no key;
-attribution carried in the site footer). Cohort rule, applied everywhere:
-`IsFabricated` (never happened) and `IsSpamList` (address collections, no
-breached organization) are excluded; `IsMalware` and `IsStealerLog` are
-excluded for the same reason as spam lists — real credential theft, but
-harvested device-by-device with no single breached organization, and a
-nominal `BreachDate` that describes the compilation of the corpus, which
-would poison the lag stats. Each excluded entry counts under its FIRST
-matching reason, in that order, so `cohort + sum(excluded) == total`
-always holds — `catalog` is the audit trail. `excluded` carries exactly
-those four keys.
-
-All per-year series group by the `AddedDate` calendar year (years ≥ 2013,
-sorted, unique). Entries with an unparseable `AddedDate` join no year but
-still count in `catalog`; lag stats additionally require a parseable
-`BreachDate`.
-
-`lag_by_year` (hero): `lag = AddedDate − BreachDate` in days, per catalog
-year, median + p25/p75. Negative lags (a breach catalogued before its
-self-reported, usually month-rounded, breach date) are KEPT, never
-floored — same rule as `kev_latency`, they flag source date quality.
-Entries with `AddedDate` before `import_era.added_before` (fixed at
-`2014-01-01`) are the catalog's opening import — HIBP launched 2013-12-04
-by loading breaches that were already public (empirically: six of its
-seven December 2013 entries predate the service itself, median nominal
-lag 511 days, vs a 5-day median for 2014 additions) — and are excluded
-from `lag_by_year` and `headline`, reported once as `import_era`
-(`median_days` null iff `n` = 0). Pre-2014 *breaches* surfacing later
-stay in the trend: surfacing late is the measured phenomenon; only the
-opening import is an artifact of the catalog's birthday. Years with fewer
-than `min_n` cohort breaches are omitted (production 10; fixture mode 1).
-
-`volume_by_year`: cohort breaches catalogued per year (`breaches` ≥ 1 —
-a year exists only because something was catalogued) and `records` = the
-year's `PwnCount` sum (compromised accounts per breach; a person appears
-once per breach they are in, so the sum counts exposures, not people).
-No `min_n` filter and no import-era exclusion — counts are counts.
-
-`class_shares`: `classes` = up to 6 data classes ranked by the number of
-cohort breaches listing them, all-time, ties broken alphabetically —
-derived from the data nightly, never hardcoded, so the list may reshape
-as the catalog grows. `years[].shares` carries exactly those classes;
-each value is the share of that year's cohort breaches listing the class
-(counted at most once per breach). Multi-label: shares are independent
-per class — there is deliberately no "other" key and no 100% sum. Years
-under `min_n` are omitted.
-
-`headline`: `trend_n`/`median_days`/`pct_over_365d` pool every trend-era
-lag (import era excluded, all years, unfiltered by `min_n`);
-`latest_year`/`median_days_latest` echo the last complete plotted year,
-falling back to the partial current year only when nothing else survived
-(`kev_latency` rule). An empty trend is `trend_n` 0, zeros elsewhere and
-`latest_year` 0 — consumers must treat `latest_year` 0 as "no data",
-never as a year.
-
-`projection` (optional; see "Pace projections" above): the current year's
-catalogued-breach count paced to a full year (`breaches` ≥ 1). Breaches
-catalogued are a flow, so a pace applies; `records` is deliberately never
-projected — one mega-dump can outweigh the rest of the year, so a records
-pace would dress one upload up as a forecast. Validator:
-`pipeline/breach_contracts.py` (registered into `pipeline/contracts.py`'s
-dispatch).
-  "revenue_by_quarter": [
-    {"year": 2020, "quarter": 3, "usd": 139502184}
-  ],
-  "payments_by_year": [
-    {"year": 2016, "payments": 9324, "usd": 68400000, "median_usd": 575.5}
-  ],
-  "families": {
-    "top": [
-      {"family": "Conti", "usd": 101561482, "payments": 128,
-       "first_year": 2017, "last_year": 2022}
-    ],
-    "other": {"families": 96, "usd": 12345678, "payments": 990},
-    "unattributed": {"usd": 682149269, "payments": 850}
-  },
-  "catalog": {"addresses": 11186, "families": 106, "transactions": 21802,
-              "payments": 18902, "total_usd": 1018573922},
-  "headline": {"total_usd": 1018573922,
-               "peak_quarter": {"year": 2020, "quarter": 3, "usd": 139502184},
-               "first_year": 2012, "last_year": 2024}
-}
-```
-
-Source: the Ransomwhere export (`api.ransomwhe.re/export`, CC0) —
-crowdsourced, verified ransomware payment addresses with their on-chain
-transactions. Everything in this file is a FLOOR: a payment enters the
-dataset only after someone reported the address and the transfers were
-verified, so site copy must always claim "at least this much", never
-"the market is this big".
-
-All `usd` values are **integers (whole dollars)** at the HISTORICAL
-BTC/USD rate of each transaction's date (upstream's `amountUSD`; the
-implied rate per transaction year tracks the price history) — a 2016
-payment stays in 2016 dollars. `median_usd` is the one float, rounded to
-**2** decimals — a documented exception to the 1-decimal rule: early
-mass-campaign years have sub-dollar medians ($0.03 in 2013), which
-1-decimal rounding would crush to a false zero. Years are bounded below
-by 2008 (pre-Bitcoin "payments" are parser breakage); any single USD
-value above 10^10 fails validation as a unit error (satoshi summed as
-dollars).
-
-`revenue_by_quarter`: transaction `amountUSD` summed by the UTC calendar
-quarter of the on-chain timestamp, over ALL ledger entries as published
-(the export lists a transaction once per receiving tracked address;
-exact repeated entries carry ~1% of total USD and are trusted rather
-than second-guessed without chain data). Quarters are **contiguous** from
-first to last observed payment — gaps chart as zero, the axis never
-silently skips time.
-
-`payments_by_year`: a payment is one distinct on-chain transaction
-(unique `hash`, outputs to tracked addresses summed — multi-wallet
-transfers collapse). `payments` ≥ 1 per row; `median_usd` is present
-only when the year has at least `min_n` payments (production 10; fixture
-mode 1) — absence means "not charted", never zero. `catalog.payments` ≤
-`catalog.transactions` always.
-
-`families`: Ransomwhere's own labels, neutral identifiers. `top` = up to
-8 labeled families ranked descending by all-time confirmed USD; the
-literal `"Unlabeled"` bucket (verified but unattributed — the largest
-single slice) must NEVER appear in `top`: it ships as
-`families.unattributed` and the site discloses it beside the board.
-Remaining labeled families pool into `families.other`.
-`catalog.families` counts labeled families only. A ranked board is
-shipped instead of a per-year share series on purpose: wallets are often
-reported long after a campaign ran, so yearly family shares would chart
-reporting dates, not activity.
-
-NO `projection` key, ever, although yearly payment counts are a flow:
-crowdsourced reports arrive with a lag, so the partial current year
-structurally undercounts and the uniform-flow assumption behind "Pace
-projections" (above) does not hold. `headline.total_usd` must equal
-`catalog.total_usd`; `headline.peak_quarter.usd` must equal the series
-maximum. `meta.json` gains an optional `sources.ransomwhere`
-`{fetched_at, address_count, tx_count}` block (validated when present).
-Validator: `pipeline/extortion_contracts.py` (registered into
-`pipeline/contracts.py`'s dispatch).
   "versions": [
     {"version": "1.0", "released": "2018-01-17",
      "techniques": 187, "subtechniques": 0, "groups": 68, "software": 328,

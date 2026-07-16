@@ -27,8 +27,10 @@ def _monthly(counts, start="2024-01"):
 
 
 def _series(indexes, start_month=1):
-    """A minimal index series with the given index values (recent last)."""
-    return [{"month": f"2026-{start_month + i:02d}", "n": 1, "index": v}
+    """A minimal index series with the given index values (recent last).
+    n=10 per point so three points comfortably clear MIN_DIVERGENCE_VOLUME
+    — the volume floor has its own dedicated tests below."""
+    return [{"month": f"2026-{start_month + i:02d}", "n": 10, "index": v}
             for i, v in enumerate(indexes)]
 
 
@@ -132,6 +134,19 @@ def test_divergence_directions_and_dead_zone_edges():
     assert rvm(60.1, 50.0)["direction"] == "media_leads"
 
 
+def test_divergence_needs_minimum_volume_per_source():
+    # 2 papers against a 2-paper peak is an index of 100, not a divergence.
+    thin = [{"month": f"2026-{m:02d}", "n": n, "index": i}
+            for m, n, i in ((4, 0, 0.0), (5, 2, 100.0), (6, 2, 100.0))]
+    fat = _series([50.0, 50.0, 50.0])
+    assert divergence(fat, thin) is None   # arXiv side under the floor
+    assert divergence(thin, fat) is None   # GDELT side under the floor
+    # exactly at the floor (10 hits over the three months) it may post
+    at_floor = [{"month": f"2026-{m:02d}", "n": n, "index": i}
+                for m, n, i in ((4, 3, 30.0), (5, 3, 30.0), (6, 4, 40.0))]
+    assert divergence(fat, at_floor) is not None
+
+
 # ---------------------------------------------------------------- headline
 
 def test_headline_riser_faller_and_tiebreak_by_term_id():
@@ -152,7 +167,7 @@ def test_headline_riser_faller_and_tiebreak_by_term_id():
 
 def test_headline_divergence_tiebreak_by_term_id():
     series = {"gdelt": _monthly([10, 10, 10], start="2026-04"),
-              "arxiv": _monthly([1, 2, 4], start="2026-04")}
+              "arxiv": _monthly([3, 6, 12], start="2026-04")}
     state = _state({"bbb": series,
                     "aaa": {k: dict(v) for k, v in series.items()}})
     obj = build_market_hype(state, [_term(t) for t in ("bbb", "aaa")],

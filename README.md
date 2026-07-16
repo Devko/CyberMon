@@ -197,8 +197,9 @@ each entry names its thesis, open data sources, and feasibility.
 live records.* Every night the pipeline fingerprints each published CVE's
 CNA-assigned base score (the exact extraction the severity-inflation
 chart uses, so the two can never disagree) and diffs it against the
-previous night's corpus (`.cache/rescore_state.json.gz`). Changes land on
-a committed, append-only event log
+previous night's corpus (`site/data/history/rescore_state.json`,
+committed next to the log so state and history can never drift apart).
+Changes land on a committed, append-only event log
 (`site/data/history/rescore_log.csv`) as one of four types: `rescore`
 (same CVSS version, new score — the only type with an up/down direction),
 `version_shift` (moved to another CVSS version; never charted as a score

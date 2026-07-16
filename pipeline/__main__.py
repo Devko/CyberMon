@@ -403,13 +403,14 @@ def run(args: argparse.Namespace) -> int:
         generated_at, offline_fixtures=args.offline_fixtures)
     outputs["dnssec_adoption.json"] = dnssec_adoption
     # Silent Rescores: diff tonight's per-CVE CNA score fingerprints (from
-    # the same streaming pass) against last night's cached state. The
-    # merged event rows and tonight's state come back UNWRITTEN — both are
-    # persisted below, only after every output validates, so a failed run
-    # never records tonight's release (the retry must still diff).
+    # the same streaming pass) against the committed state (which lives
+    # next to the log in site/data/history, the kev_changelog pattern).
+    # The merged event rows and tonight's state come back UNWRITTEN — both
+    # are persisted below, only after every output validates, so a failed
+    # run never records tonight's release (the retry must still diff).
     rescore_log, rescore_source, rescore_rows, rescore_state = \
         rescore_tracker.run_stage(
-            args.out, args.cache_dir, agg.rescore_fingerprints, release,
+            args.out, agg.rescore_fingerprints, release,
             generated_at, offline_fixtures=args.offline_fixtures,
             **({"min_n": 1, "min_cna_events": 1}
                if args.offline_fixtures else {}))
@@ -462,21 +463,18 @@ def run(args: argparse.Namespace) -> int:
         nvd_throughput.write_rows(csv_path, throughput_rows)
         print(f"  history: {len(throughput_rows)} transition day(s) "
               f"in {csv_path}")
-    rescore_csv = args.out / "history" / "rescore_log.csv"
-    rescore_tracker.write_events(rescore_csv, rescore_rows)
-    print(f"  history: {len(rescore_rows)} rescore event(s) in {rescore_csv}")
-    # KEV changelog history (event CSV + fingerprint state): written only
+    # Rescore history (event CSV + committed fingerprint state) and KEV
+    # changelog history (event CSV + fingerprint state): written only
     # here, after every output above validated — same discipline as the
-    # NVD history; both files are irreplaceable records.
+    # NVD history; the event logs are irreplaceable records, and each
+    # state travels in the same commit as its log so the two can never
+    # diverge (only a validated run records tonight's release as diffed).
+    rescore_tracker.persist(args.out, rescore_rows, rescore_state)
     kev_changelog.persist(args.out, changelog_pending)
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")
         print(f"wrote {path}")
-    # Persist the rescore fingerprint state LAST: only a run that emitted
-    # everything may record tonight's release as diffed (see run_stage).
-    if rescore_state is not None:
-        rescore_tracker.save_state(args.cache_dir, rescore_state)
     return 0
 
 

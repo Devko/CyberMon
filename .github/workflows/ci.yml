@@ -108,14 +108,20 @@ jobs:
           cache: pip
           cache-dependency-path: pipeline/requirements-dev.txt
 
+      # Carousel steps are continue-on-error on purpose: the PDFs are
+      # nice-to-have build products and must never block a site deploy
+      # (see nightly.yml for the incident that taught us this).
       - name: Install Playwright
+        continue-on-error: true
         run: pip install -r pipeline/requirements-dev.txt
 
       # --with-deps also apt-installs the browser's system libraries.
       - name: Install headless Chromium
+        continue-on-error: true
         run: playwright install --with-deps chromium
 
       - name: Build carousel PDFs
+        continue-on-error: true
         run: python3 tools/make_carousels.py --out site/carousels
 
       - name: Upload site artifact

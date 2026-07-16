@@ -285,7 +285,9 @@ def test_arxiv_atom_parsing_pagination_and_bucketing(monkeypatch):
     assert reqs[0]["params"]["start"] == 0
     assert reqs[1]["params"]["start"] == 2  # offset past the first page
     assert reqs[0]["params"]["max_results"] == 2
-    assert state["series"]["alpha"]["arxiv"] == {"2026-05": 2, "2026-06": 1}
+    # 2026-07 had no papers: a successful pass records the real zero
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 2, "2026-06": 1, "2026-07": 0}
 
 
 def test_arxiv_page_cap_stops_at_three_pages(monkeypatch):
@@ -300,15 +302,40 @@ def test_arxiv_page_cap_stops_at_three_pages(monkeypatch):
     state = _sync(session, [TERM_A], months=3, log=logs.append)
     assert len(session.requests["arxiv"]) == 3
     assert any("capped" in line for line in logs)
-    assert state["series"]["alpha"]["arxiv"] == {"2026-05": 1, "2026-06": 2}
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 1, "2026-06": 2, "2026-07": 0}
 
 
-def test_arxiv_failure_keeps_cached_months():
+def test_arxiv_success_stores_zeros_for_paperless_window_months():
+    # A successful pass queries the whole window at once, so months with
+    # no papers are real observations: stored as zeros, never left as
+    # gaps (a gap means the fetch failed). Without this, divergence()
+    # would average the last 3 *nonzero* months and fabricate research
+    # attention for terms whose recent months are genuinely quiet.
+    session = FakeSession(arxiv=[_atom(1, ["2026-06-15T00:00:00Z"])])
+    state = _sync(session, [TERM_A], months=3)
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 0, "2026-06": 1, "2026-07": 0}
+
+
+def test_arxiv_success_zero_fill_replaces_stale_cached_months():
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"arxiv": {"2026-05": 9}}}, "pending": []}
+    session = FakeSession(arxiv=[_atom(1, ["2026-06-15T00:00:00Z"])])
+    state = _sync(session, [TERM_A], state=prior, months=3)
+    # the fresh curve replaces the cache wholesale, zeros included
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 0, "2026-06": 1, "2026-07": 0}
+
+
+def test_arxiv_failure_keeps_cached_months_without_zero_fill():
     prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
              "series": {"alpha": {"arxiv": {"2026-06": 4}}}, "pending": []}
     session = FakeSession(arxiv=[FakeResponse(503, text="unavailable")])
     state = _sync(session, [TERM_A], state=prior, months=3)
     assert len(session.requests["arxiv"]) == 1  # no retry loop for arXiv
+    # exactly the cached months survive: a failed fetch never invents
+    # zeros for months it did not observe
     assert state["series"]["alpha"]["arxiv"] == {"2026-06": 4}
 
 
@@ -457,4 +484,7 @@ def test_full_sync_pass_request_counts_for_two_terms():
     for term_id in ("alpha", "beta"):
         assert set(state["series"][term_id]) == {"gdelt", "hn", "arxiv"}
         assert state["series"][term_id]["hn"] == \
+            {"2026-05": 0, "2026-06": 0, "2026-07": 0}
+        # the empty-feed arXiv success stores explicit zeros, not a gap
+        assert state["series"][term_id]["arxiv"] == \
             {"2026-05": 0, "2026-06": 0, "2026-07": 0}

@@ -7,7 +7,6 @@ exercised against it too (the fingerprint/inflation identity guarantee).
 """
 from __future__ import annotations
 
-import gzip
 from pathlib import Path
 
 import pytest
@@ -16,8 +15,8 @@ from pipeline import rescore_tracker
 from pipeline.metrics import CveFacts
 from pipeline.rescore_tracker import (build_rescore_log, delta_bucket,
                                       diff_events, load_state, make_state,
-                                      read_events, run_stage, save_state,
-                                      write_events)
+                                      read_events, run_stage, state_path,
+                                      write_events, write_state)
 
 DAY1 = "2026-07-10"
 
@@ -120,23 +119,27 @@ def test_version_shift_never_carries_a_direction_reading():
 def test_state_round_trip(tmp_path):
     fps = {"CVE-2024-0001": ("VendorX", "v3", 9.8),
            "CVE-2024-0002": ("mitre", None, None)}
-    state = make_state("release-1", fps)
+    state = make_state("release-1", fps, "2026-07-10")
     assert state == {"release": "release-1",
+                     "last_observed": "2026-07-10",
                      "fingerprints": {"CVE-2024-0001": ["v3", 9.8],
                                       "CVE-2024-0002": [None, None]}}
-    save_state(tmp_path, state)
+    # committed next to the log, plain JSON (the kev_state.json pattern)
+    assert state_path(tmp_path) == tmp_path / "history" / \
+        "rescore_state.json"
+    write_state(state_path(tmp_path), state)
     assert load_state(tmp_path, log=lambda m: None) == state
 
 
 def test_missing_unreadable_or_misshapen_state_is_none(tmp_path):
     assert load_state(tmp_path, log=lambda m: None) is None  # missing
 
-    path = tmp_path / "rescore_state.json.gz"
-    path.write_bytes(b"not gzip at all")
+    path = state_path(tmp_path)
+    path.parent.mkdir(parents=True)
+    path.write_bytes(b"not json at all")
     assert load_state(tmp_path, log=lambda m: None) is None  # unreadable
 
-    with gzip.open(path, "wt", encoding="utf-8") as f:
-        f.write('{"release": 42}')  # wrong shape
+    path.write_text('{"release": 42}', encoding="utf-8")  # wrong shape
     assert load_state(tmp_path, log=lambda m: None) is None
 
 
@@ -275,54 +278,54 @@ def test_build_empty_log_is_the_launch_shape():
 
 # -------------------------------------------------------------------- stage
 
-def _persist(out: Path, cache: Path, result):
+def _persist(out: Path, result):
     obj, source, rows, state = result
-    write_events(out / "history" / "rescore_log.csv", rows)
-    if state is not None:
-        save_state(cache, state)
+    rescore_tracker.persist(out, rows, state, log=lambda m: None)
     return obj, source
 
 
-def _stage(out, cache, fps, release, generated_at):
-    return run_stage(out, cache, fps, release, generated_at,
+def _stage(out, fps, release, generated_at, log=None):
+    return run_stage(out, fps, release, generated_at,
                      offline_fixtures=False, min_n=1, min_cna_events=1,
-                     log=lambda m: None)
+                     log=log or (lambda m: None))
 
 
 def test_stage_two_run_synthetic_with_release_guard(tmp_path):
-    out, cache = tmp_path / "out", tmp_path / "cache"
+    out = tmp_path / "out"
 
     # Night 1: no state — self-healing baseline, zero events.
     fps1 = {"CVE-2024-0001": ("VendorX", "v3", 9.8),
             "CVE-2024-0002": ("mitre", None, None)}
-    obj, source = _persist(out, cache, _stage(
-        out, cache, fps1, "r1", "2026-07-10T02:43:00Z"))
+    obj, source = _persist(out, _stage(
+        out, fps1, "r1", "2026-07-10T02:43:00Z"))
     assert obj["catalog"]["events_total"] == 0
     assert obj["catalog"]["state_size"] == 2
     assert source == {"events_total": 0, "state_release": "r1"}
+    # persist() committed the state next to the log
+    assert state_path(out).exists()
 
     # Night 2: a rescore, a first score, and a brand-new record (no event).
     fps2 = {"CVE-2024-0001": ("VendorX", "v3", 7.5),
             "CVE-2024-0002": ("mitre", "v2", 5.0),
             "CVE-2024-0003": ("mitre", "v3", 9.9)}
-    obj, source = _persist(out, cache, _stage(
-        out, cache, fps2, "r2", "2026-07-11T02:43:00Z"))
+    obj, source = _persist(out, _stage(
+        out, fps2, "r2", "2026-07-11T02:43:00Z"))
     assert obj["catalog"]["totals"] == {"rescore": 1, "first_score": 1,
                                         "version_shift": 0,
                                         "score_removed": 0}
     assert source["events_total"] == 2
 
     # Same-release re-run: the guard skips the diff — no double-count.
-    obj, source = _persist(out, cache, _stage(
-        out, cache, fps2, "r2", "2026-07-11T03:00:00Z"))
+    obj, source = _persist(out, _stage(
+        out, fps2, "r2", "2026-07-11T03:00:00Z"))
     assert source["events_total"] == 2
 
     # Night 3: a version shift and a score removal append to the log.
     fps3 = {"CVE-2024-0001": ("VendorX", "v4", 9.1),
             "CVE-2024-0002": ("mitre", None, None),
             "CVE-2024-0003": ("mitre", "v3", 9.9)}
-    obj, source = _persist(out, cache, _stage(
-        out, cache, fps3, "r3", "2026-07-12T02:43:00Z"))
+    obj, source = _persist(out, _stage(
+        out, fps3, "r3", "2026-07-12T02:43:00Z"))
     assert obj["catalog"]["totals"] == {"rescore": 1, "first_score": 1,
                                         "version_shift": 1,
                                         "score_removed": 1}
@@ -331,26 +334,93 @@ def test_stage_two_run_synthetic_with_release_guard(tmp_path):
     rows = read_events(out / "history" / "rescore_log.csv")
     dates = [r["observed_date"] for r in rows]
     assert dates == sorted(dates) and len(rows) == 4
+    # the committed state records tonight's diff
+    state = load_state(out, log=lambda m: None)
+    assert state["release"] == "r3"
+    assert state["last_observed"] == "2026-07-12"
+
+
+def test_stage_stale_state_rediff_does_not_double_append(tmp_path):
+    # The 2026-07-15/16 incident, replayed: the log already holds a corpus
+    # transition's events, but the state reverts to the PRE-transition
+    # fingerprints (actions/cache only saved on success). The re-diff
+    # reproduces the logged events — the guard must drop them, loudly.
+    out = tmp_path / "out"
+    fps1 = {"CVE-2024-0001": ("VendorX", "v3", 9.8),
+            "CVE-2024-0002": ("mitre", None, None)}
+    fps2 = {"CVE-2024-0001": ("VendorX", "v3", 7.5),
+            "CVE-2024-0002": ("mitre", "v2", 5.0)}
+    _persist(out, _stage(out, fps1, "r1", "2026-07-14T02:43:00Z"))
+    obj, _ = _persist(out, _stage(out, fps2, "r2", "2026-07-15T02:43:00Z"))
+    assert obj["catalog"]["events_total"] == 2
+
+    # State rolls back to night 1 (stale restore); log keeps night 2.
+    write_state(state_path(out), make_state("r1", fps1, "2026-07-14"))
+
+    messages: list[str] = []
+    obj, source = _persist(out, _stage(
+        out, fps2, "r3", "2026-07-16T02:43:00Z", log=messages.append))
+    # the re-diffed rescore + first_score are already on the log: dropped
+    assert source["events_total"] == 2
+    rows = read_events(out / "history" / "rescore_log.csv")
+    assert [r["observed_date"] for r in rows] == ["2026-07-15",
+                                                  "2026-07-15"]
+    assert any("state/log diverged" in m and "2 event(s)" in m
+               for m in messages)
+
+    # A genuinely new change riding the same stale re-diff still lands.
+    write_state(state_path(out), make_state("r1", fps1, "2026-07-14"))
+    fps4 = {"CVE-2024-0001": ("VendorX", "v3", 7.5),
+            "CVE-2024-0002": ("mitre", "v2", 5.5)}  # 5.0 -> 5.5 is news
+    obj, source = _persist(out, _stage(
+        out, fps4, "r4", "2026-07-17T02:43:00Z"))
+    assert source["events_total"] == 3
+    rows = read_events(out / "history" / "rescore_log.csv")
+    assert rows[-1]["cve"] == "CVE-2024-0002" and \
+        rows[-1]["score_new"] == 5.5
+
+
+def test_stage_fresh_state_keeps_genuine_retransitions(tmp_path):
+    # a->b, b->a, a->b again: the third event is byte-identical to the
+    # first, but the state is FRESH each night (last_observed == the log's
+    # newest date), so the guard stays off and the re-transition lands.
+    out = tmp_path / "out"
+    a = {"CVE-2024-0001": ("VendorX", "v3", 9.8)}
+    b = {"CVE-2024-0001": ("VendorX", "v3", 7.5)}
+    _persist(out, _stage(out, a, "r1", "2026-07-10T02:43:00Z"))
+    _persist(out, _stage(out, b, "r2", "2026-07-11T02:43:00Z"))
+    _persist(out, _stage(out, a, "r3", "2026-07-12T02:43:00Z"))
+    obj, source = _persist(out, _stage(
+        out, b, "r4", "2026-07-13T02:43:00Z"))
+    assert source["events_total"] == 3
+    rows = read_events(out / "history" / "rescore_log.csv")
+    assert [(r["observed_date"], r["score_new"]) for r in rows] == [
+        ("2026-07-11", 7.5), ("2026-07-12", 9.8), ("2026-07-13", 7.5)]
 
 
 def test_stage_unreadable_state_self_heals(tmp_path):
-    out, cache = tmp_path / "out", tmp_path / "cache"
-    cache.mkdir()
-    (cache / "rescore_state.json.gz").write_bytes(b"corrupt")
+    out = tmp_path / "out"
+    state_path(out).parent.mkdir(parents=True)
+    state_path(out).write_bytes(b"corrupt")
     fps = {"CVE-2024-0001": ("VendorX", "v3", 9.8)}
-    obj, _source, rows, state = _stage(out, cache, fps, "r1",
+    obj, _source, rows, state = _stage(out, fps, "r1",
                                        "2026-07-10T02:43:00Z")
     assert obj["catalog"]["events_total"] == 0 and rows == []
-    assert state == make_state("r1", fps)  # rebuilt from tonight's corpus
+    # rebuilt from tonight's corpus
+    assert state == make_state("r1", fps, "2026-07-10")
 
 
 def test_stage_offline_fixtures_is_stateless(tmp_path):
-    out, cache = tmp_path / "out", tmp_path / "cache"
+    out = tmp_path / "out"
     fps = {"CVE-2024-0001": ("VendorX", "v3", 9.8)}
     obj, source, rows, state = run_stage(
-        out, cache, fps, "fixtures", "2026-07-10T02:43:00Z",
+        out, fps, "fixtures", "2026-07-10T02:43:00Z",
         offline_fixtures=True, log=lambda m: None)
-    assert state is None and rows == []  # never touches .cache
-    assert not cache.exists()
+    assert state is None and rows == []  # no state read or produced
+    assert not state_path(out).exists()
     assert obj["magnitude"]["min_n"] == 1  # fixture-mode defaults
     assert source == {"events_total": 0, "state_release": "fixtures"}
+    # persist() with a None state writes the log alone
+    rescore_tracker.persist(out, rows, state, log=lambda m: None)
+    assert (out / "history" / "rescore_log.csv").exists()
+    assert not state_path(out).exists()

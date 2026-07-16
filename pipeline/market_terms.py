@@ -3,10 +3,12 @@
 Each term carries one explicit query string per source, because the three
 sources search very different corpora:
 
-* **GDELT** sweeps general world news, so short acronyms are disambiguated
-  with a security/tech context ('"SASE" (security OR network)') — a bare
-  "SASE" or "MDR" in a news corpus matches airlines, EU medical-device
-  regulation, and worse. Truly ambiguous acronyms are spelled out.
+* **GDELT** sweeps general world news, so acronyms are disambiguated
+  with a security/tech context ('"CNAPP" (cloud OR security)') — a bare
+  acronym in a news corpus matches airlines, EU medical-device
+  regulation, and worse. Quoted phrases under 5 characters (SBOM, XDR,
+  SASE, MDR) are rejected outright by the GDELT DOC API (non-JSON error
+  response), so those terms are spelled out in full instead.
 * **Hacker News** (Algolia) is already tech-centric; plain phrases work.
 * **arXiv** queries run scoped to ``cat:cs.CR`` (cryptography & security),
   so plain phrases are unambiguous there.
@@ -36,7 +38,7 @@ TERMS: list[TermDef] = [
             hn_query='"zero trust"',
             arxiv_query='"zero trust"'),
     TermDef("sbom", "SBOM",
-            gdelt_query='"SBOM" (software OR security)',
+            gdelt_query='"software bill of materials"',
             hn_query='"SBOM"',
             arxiv_query='"SBOM"'),
     TermDef("post_quantum", "Post-Quantum",
@@ -44,11 +46,11 @@ TERMS: list[TermDef] = [
             hn_query='"post-quantum"',
             arxiv_query='"post-quantum"'),
     TermDef("xdr", "XDR",
-            gdelt_query='"XDR" (security OR "threat detection")',
+            gdelt_query='"extended detection and response"',
             hn_query='"XDR" security',
             arxiv_query='"XDR"'),
     TermDef("sase", "SASE",
-            gdelt_query='"SASE" (security OR network)',
+            gdelt_query='"secure access service edge"',
             hn_query='"SASE"',
             arxiv_query='"SASE"'),
     TermDef("cnapp", "CNAPP",

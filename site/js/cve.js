@@ -36,6 +36,7 @@ const SECTIONS = [
 
 function buildSection(cfg) {
   const ed = editorial.sections[cfg.id];
+  if (!ed) throw new Error(`no editorial.sections entry for section "${cfg.id}"`);
   const section = el("section", "chart-section" + (cfg.hero ? " hero" : ""));
   section.id = `s-${cfg.id}`;
 
@@ -125,4 +126,4 @@ if (!window.echarts) {
   // ECharts CDN failed: sections degrade to error cards, the prose survives.
   console.warn("[CyberMon] ECharts failed to load from CDN.");
 }
-boot();
+boot().catch((err) => console.error("[CyberMon] page boot failed:", err));

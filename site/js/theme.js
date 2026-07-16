@@ -148,7 +148,9 @@ export function tooltipRows(params, valueFmt = (v) => v) {
     .map(
       (p) =>
         `<div style="display:flex;gap:10px;justify-content:space-between;align-items:baseline;">` +
-        `<span>${p.marker} ${p.seriesName}</span>` +
+        // seriesName is usually editorial copy, but some charts feed it
+        // data-derived names (economy names) — escape unconditionally.
+        `<span>${p.marker} ${escapeHtml(p.seriesName)}</span>` +
         `<strong style="font-family:inherit">${valueFmt(p.value)}</strong></div>`
     )
     .join("");

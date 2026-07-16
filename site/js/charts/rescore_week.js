@@ -41,6 +41,15 @@ export function render(slots, data) {
     return;
   }
 
+  // ISO week label ("2026-W29") of the generation date, so the still-open
+  // week is starred like the partial year/month on the sibling modules.
+  const gen = new Date(data.generated_at);
+  const d = new Date(Date.UTC(gen.getUTCFullYear(), gen.getUTCMonth(), gen.getUTCDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7)); // ISO: Thursday decides the year
+  const isoYear = d.getUTCFullYear();
+  const weekNo = Math.ceil(((d - Date.UTC(isoYear, 0, 1)) / 86400000 + 1) / 7);
+  const genWeek = `${isoYear}-W${String(weekNo).padStart(2, "0")}`;
+
   // Rescores diverge around zero in one stack; the direction-free change
   // types stack separately in muted inks so they can never read as up/down.
   const SERIES = [
@@ -81,7 +90,7 @@ export function render(slots, data) {
         return head + body;
       },
     },
-    xAxis: catAxis(weeks.map((w) => w.week), {
+    xAxis: catAxis(weeks.map((w) => (w.week === genWeek ? `${w.week}*` : w.week)), {
       axisLabel: { ...catAxis([]).axisLabel, rotate: weeks.length > 16 ? 45 : 0 },
     }),
     yAxis: valAxis({

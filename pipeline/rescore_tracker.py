@@ -30,25 +30,38 @@ Records that leave the published corpus (late rejections) simply leave
 the fingerprint map; that is a state transition, not a score edit, and
 produces no event.
 
-State (``.cache/rescore_state.json.gz``, the nvd_status_state pattern):
-``{"release": <corpus tag>, "fingerprints": {cve: [version, score]}}``.
-Self-healing: a missing or unreadable state is rebuilt from tonight's
-corpus and the night logs zero events — at worst one night's diffs are
-lost, and the committed log is never touched by the rebuild. Release-skew
-guard: when tonight's corpus release tag equals the state's recorded
-release, the diff is skipped entirely, so a re-run can never double-count
-the same corpus transition.
+State (``site/data/history/rescore_state.json``, COMMITTED next to the
+log — the kev_changelog pattern, plain JSON, atomic tmp+replace):
+``{"release": <corpus tag>, "last_observed": <YYYY-MM-DD>,
+"fingerprints": {cve: [version, score]}}``. The state used to live in
+``.cache`` behind actions/cache, and that corrupted the log once: cache
+saves only on job success, so two failing nights kept restoring a stale
+state and re-diffing the same corpus transition — the same events were
+appended twice. Committed state and log now travel in the same commit and
+can never diverge like that again. Self-healing: a missing or unreadable
+state is rebuilt from tonight's corpus and the night logs zero events —
+at worst one night's diffs are lost, and the committed log is never
+touched by the rebuild. Release-skew guard: when tonight's corpus release
+tag equals the state's recorded release, the diff is skipped entirely, so
+a re-run can never double-count the same corpus transition.
+
+Belt-and-suspenders double-count guard (:func:`drop_already_logged`): if
+the state is nevertheless stale (its ``last_observed`` predates the log's
+newest observed date), any diffed event that is byte-identical
+(cve, change_type, old fields, new fields) to one already on the log is
+dropped with a loud warning — with committed state this should never
+fire; if it does, state and log diverged and a human should look.
 
 The log (``site/data/history/rescore_log.csv``) is committed and
 append-only — like nvd_backlog.csv it is an ORIGINAL dataset this repo is
 the only copy of; ``rescore_log.json`` is rebuilt from it nightly. State
-and CSV writes are deferred to __main__ (after contract validation), so a
-failed run records neither tonight's release nor its events.
+and CSV writes are deferred to __main__ (after contract validation, via
+:func:`persist` — the kev_changelog discipline), so a failed run records
+neither tonight's release nor its events.
 """
 from __future__ import annotations
 
 import csv
-import gzip
 import json
 import statistics
 from collections import Counter
@@ -135,21 +148,32 @@ def diff_events(old: Mapping[str, list],
 
 # -------------------------------------------------------------------- state
 
-def _state_path(cache_dir: Path) -> Path:
-    return cache_dir / "rescore_state.json.gz"
+STATE_FILENAME = "rescore_state.json"
+CSV_FILENAME = "rescore_log.csv"
 
 
-def load_state(cache_dir: Path, log: Callable[[str], None] = print
+def state_path(out_dir: Path) -> Path:
+    """Committed next to the log (the kev_state.json pattern): state and
+    log travel in the same nightly data commit and cannot diverge the way
+    an actions/cache copy once did."""
+    return out_dir / "history" / STATE_FILENAME
+
+
+def csv_path(out_dir: Path) -> Path:
+    return out_dir / "history" / CSV_FILENAME
+
+
+def load_state(out_dir: Path, log: Callable[[str], None] = print
                ) -> dict | None:
-    """Cached fingerprint state, or None when absent/unreadable/misshapen
-    (the stage then rebuilds from tonight's corpus and logs zero events —
-    the state is only ever a cache; the committed log is the record)."""
-    path = _state_path(cache_dir)
+    """Committed fingerprint state, or None when absent/unreadable/
+    misshapen (the stage then rebuilds from tonight's corpus and logs zero
+    events — a lost state costs at most one night's diffs; the committed
+    log is the record and is never touched by the rebuild)."""
+    path = state_path(out_dir)
     if not path.exists():
         return None
     try:
-        with gzip.open(path, "rt", encoding="utf-8") as f:
-            state = json.load(f)
+        state = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         log(f"warning: ignoring unreadable rescore state {path}: {exc!r}")
         return None
@@ -161,24 +185,68 @@ def load_state(cache_dir: Path, log: Callable[[str], None] = print
     return state
 
 
-def save_state(cache_dir: Path, state: dict) -> None:
-    path = _state_path(cache_dir)
+def write_state(path: Path, state: dict) -> None:
+    """Atomic tmp+replace (the kev_state.json pattern); compact separators
+    because the fingerprint map covers the whole published corpus."""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(path.name + ".tmp")
-    with gzip.open(tmp, "wt", encoding="utf-8") as f:
-        json.dump(state, f, separators=(",", ":"))
+    tmp.write_text(json.dumps(state, sort_keys=True,
+                              separators=(",", ":")) + "\n",
+                   encoding="utf-8")
     tmp.replace(path)
 
 
 def make_state(release: str,
                fingerprints: Mapping[str, tuple[str, str | None,
-                                                float | None]]) -> dict:
+                                                float | None]],
+               last_observed: str) -> dict:
     """Tonight's persistable state (the CNA is per-run context, not state:
-    every event names the CNA the record carries on the night observed)."""
+    every event names the CNA the record carries on the night observed).
+    ``last_observed`` (YYYY-MM-DD) is what the double-count guard compares
+    against the log's newest observed date."""
     return {"release": release,
+            "last_observed": last_observed,
             "fingerprints": {cve: [version, score]
                              for cve, (_cna, version, score)
                              in fingerprints.items()}}
+
+
+def _event_key(row: dict) -> tuple:
+    """Identity of an event minus its observation date — what a stale-state
+    re-diff reproduces verbatim."""
+    return (row["cve"], row["change_type"],
+            row["version_old"], row["score_old"],
+            row["version_new"], row["score_new"])
+
+
+def drop_already_logged(existing: list[dict], events: list[dict],
+                        state_observed: str,
+                        log: Callable[[str], None] = print) -> list[dict]:
+    """Belt-and-suspenders double-count guard.
+
+    When the state that produced ``events`` predates the log's newest
+    observed date (``state_observed`` < max logged date — a stale state
+    re-diffing a corpus transition the log already recorded), drop every
+    event that is identical (cve, change_type, old fields, new fields) to
+    one already on the log, and warn loudly: with committed state this
+    should never fire, and firing means state and log diverged. A fresh
+    state (``state_observed`` >= every logged date) disables the guard, so
+    a legitimate a->b -> b->a -> a->b re-transition is never suppressed.
+    A missing ``state_observed`` counts as maximally stale."""
+    if not existing or not events:
+        return events
+    newest = max(row["observed_date"] for row in existing)
+    if state_observed >= newest:
+        return events
+    logged = {_event_key(row) for row in existing}
+    kept = [e for e in events if _event_key(e) not in logged]
+    dropped = len(events) - len(kept)
+    if dropped:
+        log(f"WARNING: rescore state/log diverged — the fingerprint state "
+            f"(last observed {state_observed or 'unknown'}) predates the "
+            f"log's newest date ({newest}); dropped {dropped} event(s) "
+            f"already on the log instead of double-appending them")
+    return kept
 
 
 # ---------------------------------------------------------- the event log
@@ -345,7 +413,22 @@ def build_rescore_log(rows: list[dict], *, state_size: int, release: str,
 
 # --------------------------------------------------------------------- stage
 
-def run_stage(out_dir: Path, cache_dir: Path,
+def persist(out_dir: Path, rows: list[dict], state: dict | None,
+            log: Callable[[str], None] = print) -> None:
+    """Write the event log and the fingerprint state — called by
+    ``__main__.run()`` only after every pipeline output has validated (the
+    kev_changelog.persist discipline). State None (offline fixtures) means
+    the log alone is written; state and log otherwise land in the same
+    deferred phase and travel in the same nightly data commit."""
+    write_events(csv_path(out_dir), rows)
+    log(f"  history: {len(rows)} rescore event(s) in {csv_path(out_dir)}")
+    if state is not None:
+        write_state(state_path(out_dir), state)
+        log(f"  rescore: state covers {len(state['fingerprints'])} "
+            f"fingerprint(s) in {state_path(out_dir)}")
+
+
+def run_stage(out_dir: Path,
               fingerprints: Mapping[str, tuple[str, str | None,
                                                float | None]],
               release: str, generated_at: str, *, offline_fixtures: bool,
@@ -356,31 +439,34 @@ def run_stage(out_dir: Path, cache_dir: Path,
     event rows to persist, state to persist or None).
 
     The CSV rows and the state are RETURNED, not written: __main__ persists
-    both only after every output validates (the nvd history-row pattern).
-    That ordering is load-bearing for the release guard — a run that fails
-    validation must not record tonight's release, or the retry would skip
-    the diff and lose the night's events.
+    both via :func:`persist` only after every output validates (the
+    kev_changelog pattern). That ordering is load-bearing for the release
+    guard — a run that fails validation must not record tonight's release,
+    or the retry would skip the diff and lose the night's events.
 
-    * ``offline_fixtures`` — stateless baseline: no cached state is read
-      or produced (state result is None), zero events; the prior log is
-      still read from ``out_dir`` so the identical build/validate path
+    * ``offline_fixtures`` — stateless baseline: no committed state is
+      read or produced (state result is None), zero events; the prior log
+      is still read from ``out_dir`` so the identical build/validate path
       runs against whatever the fixture out-dir holds (normally nothing).
     * live, no state — self-healing baseline: tonight's corpus becomes the
       new state and the night logs zero events. At worst one night's
       diffs are lost; the committed log is untouched by the rebuild.
     * live, state release == tonight's release — re-run of an already
       diffed corpus: skip the diff so nothing double-counts.
-    * live, state release differs — diff and append.
+    * live, state release differs — diff and append; any diffed event a
+      stale state would double-append is dropped by
+      :func:`drop_already_logged` (loud warning; see module docstring).
     """
     if min_n is None:
         min_n = 1 if offline_fixtures else DEFAULT_MIN_N
     if min_cna_events is None:
         min_cna_events = 1 if offline_fixtures else DEFAULT_MIN_CNA_EVENTS
 
+    existing = read_events(csv_path(out_dir))
     events: list[dict] = []
-    state = None if offline_fixtures else load_state(cache_dir, log=log)
+    state = None if offline_fixtures else load_state(out_dir, log=log)
     if offline_fixtures:
-        pass  # stateless baseline by design (no .cache writes in tests)
+        pass  # stateless baseline by design (no state writes in tests)
     elif state is None:
         log("  rescore: no previous fingerprint state — baseline night, "
             "zero events (at worst one night's diffs are lost; the "
@@ -393,13 +479,16 @@ def run_stage(out_dir: Path, cache_dir: Path,
                              generated_at[:10])
         log(f"  rescore: {len(events)} event(s) "
             f"({state['release']} -> {release})")
+        events = drop_already_logged(existing, events,
+                                     state.get("last_observed") or "",
+                                     log=log)
 
-    rows = read_events(out_dir / "history" / "rescore_log.csv") + events
+    rows = existing + events
     obj = build_rescore_log(rows, state_size=len(fingerprints),
                             release=release, generated_at=generated_at,
                             min_n=min_n, min_cna_events=min_cna_events)
     source = {"events_total": obj["catalog"]["events_total"],
               "state_release": release}
-    new_state = None if offline_fixtures else make_state(release,
-                                                         fingerprints)
+    new_state = None if offline_fixtures else \
+        make_state(release, fingerprints, generated_at[:10])
     return obj, source, rows, new_state

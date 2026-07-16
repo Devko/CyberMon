@@ -51,14 +51,14 @@ def load(name: str) -> dict:
 
 
 def check_one_in_nine_guard_share(d: dict) -> None:
-    # editorial.js (guards.html hero): "about one in nine entries in the
-    # whole catalog is a product sold to enforce security". Live-feed
-    # value at module creation: 11.5%. One-in-nine reads honestly for
-    # anything from ~1/12 (8%) to ~1/7 (15%).
+    # editorial.js (guards.html hero): "more than one entry in nine in the
+    # whole catalog is in a product sold to enforce security — and recent
+    # years run well above that". Live value at last copy edit: 11.8%.
+    # "More than one in nine" needs share > 11.1%, with headroom above.
     share = d["catalog"]["pct_security"]
-    assert 8.0 <= share <= 15.0, (
-        f"'about one in nine entries ... is a product sold to enforce "
-        f"security' needs the catalog guard share in [8%, 15%]; data says "
+    assert 11.2 <= share <= 20.0, (
+        f"'more than one entry in nine ... is in a product sold to enforce "
+        f"security' needs the catalog guard share in [11.2%, 20%]; data says "
         f"{share}% ({d['catalog']['security']} of {d['catalog']['total']})"
     )
 
@@ -81,7 +81,7 @@ def check_ransomware_roughly_twice(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "about one in nine entries in the whole catalog is a product sold to enforce security",
+        "more than one entry in nine in the whole catalog is in a product sold to enforce security",
         "kev_guards.json",
         check_one_in_nine_guard_share,
     ),

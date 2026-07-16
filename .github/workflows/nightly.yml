@@ -104,19 +104,10 @@ jobs:
           restore-keys: |
             epss-report-state-
 
-      # Silent-rescores diff state (per-CVE CNA score fingerprints from
-      # the previous night's corpus, plus that corpus's release tag). A
-      # cache miss is harmless: the pipeline rebuilds the state from
-      # tonight's corpus and logs zero rescore events that night — at
-      # worst one night's diffs are lost, and the committed append-only
-      # site/data/history/rescore_log.csv is never touched by the rebuild.
-      - name: Restore rescore diff state
-        uses: actions/cache@v4
-        with:
-          path: .cache/rescore_state.json.gz
-          key: rescore-state-${{ github.run_id }}
-          restore-keys: |
-            rescore-state-
+      # NOTE: the silent-rescores diff state deliberately has NO cache
+      # entry here — it is committed at site/data/history/rescore_state.json
+      # next to its append-only log (an actions/cache copy once restored a
+      # stale state after two failed nights and double-appended events).
 
       # If this step fails, the job fails and the deploy job below is
       # skipped — stale/broken data is never deployed. Do NOT add
@@ -180,15 +171,46 @@ jobs:
       # before the artifact upload, so the PDFs ship inside the Pages
       # artifact without ever touching git history — binary PDFs regenerated
       # every night would bloat the repo (site/carousels/ is gitignored).
+      #
+      # Every carousel step is continue-on-error ON PURPOSE: the PDFs are
+      # nice-to-have build products, and a single module's rendering bug
+      # must never block the site deploy (it did, for two days — the site
+      # served stale data while fresh commits piled up on main). A carousel
+      # failure still leaves a paper trail via the notify step below.
       - name: Install Playwright
+        id: carousel-deps
+        continue-on-error: true
         run: pip install -r pipeline/requirements-dev.txt
 
       # --with-deps also apt-installs the browser's system libraries.
       - name: Install headless Chromium
+        id: carousel-browser
+        continue-on-error: true
         run: playwright install --with-deps chromium
 
       - name: Build carousel PDFs
+        id: carousels
+        continue-on-error: true
         run: python3 tools/make_carousels.py --out site/carousels
+
+      - name: Report carousel failure (non-blocking)
+        if: steps.carousels.outcome == 'failure' || steps.carousel-deps.outcome == 'failure' || steps.carousel-browser.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          issue="$(gh issue list --label nightly-failure --state open \
+            --json number --jq '.[0].number // empty')"
+          body="Carousel build failed (deploy proceeded without PDFs): $RUN_URL"
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body "$body"
+          else
+            gh issue create \
+              --title "Nightly carousel build is failing" \
+              --label nightly-failure \
+              --body "$body"
+          fi
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

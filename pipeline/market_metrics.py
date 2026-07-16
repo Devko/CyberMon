@@ -39,6 +39,10 @@ DIVERGENCE_DEAD_ZONE = 10.0
 # compared years before it may post a YoY percentage — 11 hits shrinking
 # to 4 is not a -63.6% market move, it's noise wearing a percent sign.
 MIN_YOY_VOLUME = 30
+# Each source feeding a divergence call needs at least this many raw hits
+# across the three averaged months — two papers against a two-paper peak
+# is an index of 100 and a fabricated "research leads by 50" headline.
+MIN_DIVERGENCE_VOLUME = 10
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 
 
@@ -90,9 +94,15 @@ def divergence(gdelt_series: list[dict],
     ``research_vs_media_index`` = arXiv average minus GDELT average, so
     positive means research runs closer to its own peak than the media
     narrative does. None when either source has fewer than 3 populated
-    months. Direction is "aligned" inside the +/-``DIVERGENCE_DEAD_ZONE``.
+    months, or fewer than ``MIN_DIVERGENCE_VOLUME`` raw hits across the
+    three averaged months (an index built on a couple of papers is an
+    artifact, not a divergence). Direction is "aligned" inside the
+    +/-``DIVERGENCE_DEAD_ZONE``.
     """
     if len(gdelt_series) < 3 or len(arxiv_series) < 3:
+        return None
+    if (sum(p["n"] for p in gdelt_series[-3:]) < MIN_DIVERGENCE_VOLUME
+            or sum(p["n"] for p in arxiv_series[-3:]) < MIN_DIVERGENCE_VOLUME):
         return None
     gdelt_avg = _r1(sum(p["index"] for p in gdelt_series[-3:]) / 3.0)
     arxiv_avg = _r1(sum(p["index"] for p in arxiv_series[-3:]) / 3.0)

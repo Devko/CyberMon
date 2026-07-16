@@ -1,4 +1,5 @@
-"""fetch_dnssec parsers: fixture shapes parse; shape drift fails loudly."""
+"""fetch_dnssec parsers: fixture shapes parse; shape drift fails loudly —
+plus the fetchers' bounded-retry discipline."""
 from __future__ import annotations
 
 import json
@@ -6,7 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from pipeline.fetch_dnssec import (ECONOMIES, WORLD_CC, load_index_file,
+from pipeline.fetch_dnssec import (ECONOMIES, WORLD_CC, fetch_index,
+                                   fetch_series, load_index_file,
                                    load_series_file, parse_index,
                                    parse_series)
 
@@ -85,6 +87,73 @@ def test_index_default_floor_is_production_strength():
     # ~240 economies live; anything under 100 must break the run.
     with pytest.raises(ValueError, match="only 0 economy rows"):
         parse_index("")
+
+
+# ------------------------------------------------------------- bounded retry
+
+class FakeResponse:
+    def __init__(self, payload=None, status_code=200, text=""):
+        self.status_code = status_code
+        self._payload = payload
+        self.text = text
+
+    def json(self):
+        return self._payload
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise RuntimeError(f"HTTP {self.status_code}")
+
+
+class FakeSession:
+    """Serves a scripted sequence of responses (a scripted exception is
+    raised instead of returned) and records every request — the
+    test_fetch_nvd FakeSession pattern."""
+
+    def __init__(self, script):
+        self.script = list(script)
+        self.requests = []
+
+    def get(self, url, params=None, headers=None, timeout=None):
+        self.requests.append({"url": url, "params": dict(params or {}),
+                              "headers": dict(headers or {})})
+        item = self.script.pop(0)
+        if isinstance(item, Exception):
+            raise item
+        return item
+
+
+_SERIES_DOC = {"data": [{"date": "2026-07-07", "cc": "US",
+                         "30_day": {"seen": 10, "validating_pc": 40.0,
+                                    "partial_validating_pc": 2.0}}]}
+
+
+def test_fetch_series_retries_transient_failures_then_succeeds():
+    session = FakeSession([FakeResponse(status_code=503),
+                           OSError("connection reset"),
+                           FakeResponse(payload=_SERIES_DOC)])
+    sleeps = []
+    series = fetch_series("US", session, sleep=sleeps.append,
+                          log=lambda m: None)
+    assert series.cc == "US" and len(series.points) == 1
+    assert len(session.requests) == 3
+    assert all(r["params"] == {"x": "US"} for r in session.requests)
+    assert len(sleeps) == 2  # backoff between attempts, none after success
+
+
+def test_fetch_series_persistent_failure_raises_after_bounded_attempts():
+    session = FakeSession([FakeResponse(status_code=503)] * 5)
+    with pytest.raises(RuntimeError, match="HTTP 503"):
+        fetch_series("US", session, sleep=lambda s: None,
+                     log=lambda m: None)
+    assert len(session.requests) == 3  # bounded: never a fourth attempt
+
+
+def test_fetch_index_persistent_failure_raises_after_bounded_attempts():
+    session = FakeSession([OSError("boom")] * 5)
+    with pytest.raises(OSError, match="boom"):
+        fetch_index(session, sleep=lambda s: None, log=lambda m: None)
+    assert len(session.requests) == 3
 
 
 # ---------------------------------------------------------------- constants

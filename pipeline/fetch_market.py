@@ -35,8 +35,13 @@ Three public corpora feed one nightly sync-state file
   feed paged 2000 entries at a time (must be https; http 301s). Each night
   re-buckets every term's submissions over the whole window by
   ``<published>`` date, capped at 3 pages per term (logged when the cap
-  bites), keeping the term's cached months on failure. arXiv's ToS asks
-  for at least 3s between API requests; we sleep 3.1s after every one.
+  bites), keeping the term's cached months on failure. Because a single
+  pass queries the entire window, a fetched window stores an explicit
+  count for *every* window month, zeros included — for arXiv the gaps ARE
+  the world; only failed fetches leave gaps. (HN differs: its unfetched
+  backfill cells are genuinely unknown, so only fetched cells are stored.)
+  arXiv's ToS asks for at least 3s between API requests; we sleep 3.1s
+  after every one.
 
 The state is a cache, never a source of truth: months are pruned to the
 rolling window on every sync, and pending entries whose month left the
@@ -368,7 +373,7 @@ def _fetch_arxiv(session, term: TermDef, window: list[str],
 
 
 def _arxiv_pass(session, series: dict, terms: list[TermDef],
-                window: list[str], window_set: set[str],
+                window: list[str],
                 sleep: Callable[[float], None],
                 log: Callable[[str], None]) -> None:
     refreshed = kept = 0
@@ -377,8 +382,12 @@ def _arxiv_pass(session, series: dict, terms: list[TermDef],
         if monthly is None:
             kept += 1
             continue
+        # One successful pass covers the whole window, so a zero-paper
+        # month is a real observation: store the zero rather than leaving
+        # a gap (downstream, a gap means "fetch failed / unknown", and
+        # metrics like divergence() skip over it).
         series.setdefault(term.id, {})["arxiv"] = \
-            {m: n for m, n in monthly.items() if m in window_set}
+            {m: monthly.get(m, 0) for m in window}
         refreshed += 1
     log(f"  market/arxiv: {refreshed}/{len(terms)} term curve(s) "
         f"re-bucketed, {kept} kept from cache")
@@ -486,7 +495,7 @@ def sync_state(state: dict | None, terms: list[TermDef],
     window_set = set(window)
     series, pending = _pruned_state(state, terms, window_set, log)
     _gdelt_pass(session, series, terms, window_set, now.date(), sleep, log)
-    _arxiv_pass(session, series, terms, window, window_set, sleep, log)
+    _arxiv_pass(session, series, terms, window, sleep, log)
     pending = _hn_pass(session, series, pending, terms, window,
                        backfill_batch, sleep, log)
     return {"version": STATE_VERSION, "last_sync": _iso(now),
