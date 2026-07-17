@@ -17540,6 +17540,17 @@
    "ransom": "Unknown",
    "vendor": "Fortinet"
   },
+  "CVE-2026-25089": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-16",
+   "desc": "935e77e06c68",
+   "due": "2026-07-19",
+   "name": "Fortinet FortiSandbox OS Command Injection Vulnerability",
+   "notes": "011627642f64",
+   "product": "FortiSandbox",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
+  },
   "CVE-2026-25108": {
    "action": "f09df147152e",
    "added": "2026-02-24",
@@ -17759,6 +17770,17 @@
    "product": "Chromium V8",
    "ransom": "Unknown",
    "vendor": "Google"
+  },
+  "CVE-2026-39808": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-16",
+   "desc": "4b37517528b8",
+   "due": "2026-07-19",
+   "name": "Fortinet FortiSandbox OS Command Injection Vulnerability",
+   "notes": "5eddf6b1fb4e",
+   "product": "FortiSandbox",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
   },
   "CVE-2026-39987": {
    "action": "f09df147152e",
@@ -18046,6 +18068,17 @@
    "ransom": "Unknown",
    "vendor": "Balbooa"
   },
+  "CVE-2026-58644": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-16",
+   "desc": "cfd4d8b9dd17",
+   "due": "2026-07-19",
+   "name": "Microsoft SharePoint Deserialization of Untrusted Data Vulnerability",
+   "notes": "eab9ed40bc82",
+   "product": "SharePoint",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
   "CVE-2026-6973": {
    "action": "f09df147152e",
    "added": "2026-05-07",
@@ -18091,7 +18124,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-16",
+ "last_observed": "2026-07-17",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

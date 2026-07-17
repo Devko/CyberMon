@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-16T15:02:46Z",
+ "generated_at": "2026-07-17T05:29:15Z",
  "years": [
   {
    "year": 1999,
@@ -128,24 +128,24 @@
   },
   {
    "year": 2024,
-   "published": 39930,
-   "rejected": 813
+   "published": 39929,
+   "rejected": 814
   },
   {
    "year": 2025,
-   "published": 48168,
-   "rejected": 1865
+   "published": 48163,
+   "rejected": 1870
   },
   {
    "year": 2026,
-   "published": 39941,
-   "rejected": 504
+   "published": 40228,
+   "rejected": 507
   }
  ],
  "projection": {
   "year": 2026,
-  "published": 74002,
-  "rejected": 934,
-  "elapsed": 0.54
+  "published": 74158,
+  "rejected": 935,
+  "elapsed": 0.542
  }
 }

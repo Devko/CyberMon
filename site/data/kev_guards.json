@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-16T15:02:46Z",
+ "generated_at": "2026-07-17T05:29:15Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,19 +35,19 @@
   },
   {
    "year": 2026,
-   "total": 160,
-   "security": 24,
-   "pct_security": 15.0
+   "total": 163,
+   "security": 26,
+   "pct_security": 16.0
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 380,
+   "entries": 381,
    "security_entries": 7,
    "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-14",
+   "last_added": "2026-07-16",
    "median_gap_days": 0.0
   },
   {
@@ -114,6 +114,15 @@
    "median_gap_days": 7.5
   },
   {
+   "vendor": "Fortinet",
+   "entries": 28,
+   "security_entries": 28,
+   "pct_security": 100.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-07-16",
+   "median_gap_days": 42.0
+  },
+  {
    "vendor": "D-Link",
    "entries": 26,
    "security_entries": 0,
@@ -121,15 +130,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-04-24",
    "median_gap_days": 11.0
-  },
-  {
-   "vendor": "Fortinet",
-   "entries": 26,
-   "security_entries": 26,
-   "pct_security": 100.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-04-13",
-   "median_gap_days": 42.0
   },
   {
    "vendor": "Linux",
@@ -440,20 +440,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 194,
+   "total": 196,
    "known": 71,
-   "pct_known": 36.6
+   "pct_known": 36.2
   },
   "other": {
-   "total": 1450,
+   "total": 1451,
    "known": 258,
    "pct_known": 17.8
   }
  },
  "catalog": {
-  "total": 1644,
-  "security": 194,
-  "pct_security": 11.8,
+  "total": 1647,
+  "security": 196,
+  "pct_security": 11.9,
   "classifier_version": 2,
   "classifier_rules": 35
  }
