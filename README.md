@@ -229,6 +229,24 @@ published `naming.json`, so a normal night costs one `index.json` fetch and
 the bundle downloads only on a new ATT&CK release. The alias-inflation time
 series (aliases per release) is a documented follow-up.
 
+### 15 · CWE Top 25 — [top25.html](https://devko.github.io/CyberMon/top25.html) (live)
+
+*The official worst-bugs list, checked against what actually ships and gets
+exploited.* Two charts set MITRE's annual **CWE Top 25** — a small,
+hand-committed static list (`pipeline/cwe_top25_data.py`, the module's only
+new source; 2023 and 2024 transcribed from cwe.mitre.org) — against the
+corpus: a board pairing each class's official rank with the rank it earns
+from raw first-listed-CWE prevalence over the last five complete calendar
+years (an official pick can rank anywhere, or fall right out), and a bar
+chart of how many CISA KEV entries carry each official class — which of the
+25 actually get weaponized. Both cuts read the shared streaming aggregate
+(one additive accumulator, `agg.kev_cwe_counts` for the exploited cut; the
+measured cut reuses the bug-class `cwe_year_counts`), so the module adds no
+second pass over the corpus. Honesty note kept on the page: MITRE's own
+Top-25 formula is itself derived from NVD CVEs joined to CISA KEV, so it is
+not an independent oracle — the **divergence** between the published rank and
+raw prevalence is the story, and the measured window is stated explicitly.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the

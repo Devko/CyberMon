@@ -52,6 +52,7 @@ PAGES = [
     "rescores.html",
     "changelog.html",
     "naming.html",
+    "top25.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

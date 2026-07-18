@@ -63,6 +63,8 @@ import { render as renderChangelogFlips } from "./charts/changelog_flips.js";
 import { render as renderReceipts } from "./charts/changelog_receipts.js";
 import { render as renderNamingBoard } from "./charts/naming_board.js";
 import { render as renderNamingDist } from "./charts/naming_distribution.js";
+import { render as renderTop25Ranks } from "./charts/top25_ranks.js";
+import { render as renderTop25Exploited } from "./charts/top25_exploited.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -186,6 +188,13 @@ const MODULES = {
     sections: [
       { id: "naming_board", render: renderNamingBoard, table: true },
       { id: "naming_dist", render: renderNamingDist },
+    ],
+  },
+  top25: {
+    file: "data/cwe_top25.json",
+    sections: [
+      { id: "top25_ranks", render: renderTop25Ranks, table: true },
+      { id: "top25_exploited", render: renderTop25Exploited },
     ],
   },
 };

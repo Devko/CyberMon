@@ -37,6 +37,7 @@ export const editorial = {
     { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
     { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
     { id: "naming", href: "naming.html", label: "Naming Chaos" },
+    { id: "top25", href: "top25.html", label: "CWE Top 25" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -229,6 +230,19 @@ export const editorial = {
           "aliases every other vendor uses for it — a most-renamed leaderboard " +
           "and the alias-count distribution across the active roster, read from " +
           "the current enterprise STIX bundle each night.",
+        live: true,
+      },
+      {
+        id: "top25",
+        href: "top25.html",
+        num: "15",
+        label: "CWE Top 25",
+        headline: "The official worst-bugs list, checked against what ships and gets exploited.",
+        blurb:
+          "MITRE's annual CWE Top 25 set beside raw first-listed-CWE prevalence " +
+          "in the CVE corpus and the exploited (CISA KEV) cut: the official rank " +
+          "of each class against the rank it actually earns, and which of the 25 " +
+          "get weaponized. Rebuilt nightly.",
         live: true,
       },
     ],
@@ -1966,6 +1980,85 @@ export const editorial = {
         "name — is drawn muted to set it apart from the renamed tail. A snapshot " +
         "of the current release, not a trend.",
     },
+
+    // --------------------------------- top25.html · 1 · hero
+    top25_ranks: {
+      num: "01",
+      kicker: "Official rank vs. reality",
+      source: "CVE List V5 (MITRE) · CISA KEV · CWE Top 25 (MITRE)",
+      headline: "The worst-bugs list and the wild rank the same bugs differently.",
+      caption:
+        "MITRE publishes a CWE Top 25 every year — the weakness classes it calls " +
+        "the most dangerous. Set each one's official rank beside the rank it " +
+        "actually earns from raw prevalence in the CVE corpus: how often that " +
+        "class is the first-listed CWE on a published record. The two orders " +
+        "pull apart, and several never crack the 25 most common weaknesses we " +
+        "actually measure. One caveat kept in plain view: MITRE builds the list " +
+        "partly from the same CVE and exploited-vulnerability data, so this is a " +
+        "disagreement about ranking, not two independent worlds.",
+      statTemplate:
+        "MITRE CWE Top 25 ({year}) · measured prevalence {start}–{end} · " +
+        "{in_top25} of {total} also rank in the measured top 25",
+      colWeakness: "Weakness",
+      colOfficial: "official",
+      colMeasured: "measured",
+      colPrevalence: "prevalence",
+      colKev: "KEV hits",
+      unranked: "outside",
+      unrankedTitle: "not among the 25 most common weaknesses measured in the window",
+      nodata: "Not enough data yet.",
+      methodology:
+        "The official column is MITRE's published CWE Top 25 for the newest " +
+        "committed year — a static, hand-transcribed list from cwe.mitre.org/" +
+        "top25, the module's only added source. The measured column ranks EVERY " +
+        "weakness class by how often it is the first-listed CWE (CNA container " +
+        "preferred, CISA-ADP as fallback) on a published CVE record over the " +
+        "last five complete calendar years; an official pick can rank anywhere " +
+        "in — or fall right out of — that ranking, shown as “outside.” " +
+        "Prevalence is that class's share of all CWE-tagged published records in " +
+        "the window. KEV hits count the class among CISA Known Exploited " +
+        "Vulnerabilities entries that match a corpus record. One honest limit, " +
+        "stated plainly: MITRE's own Top-25 formula is derived from NVD CVEs " +
+        "joined to CISA KEV and re-scored, so it is not an independent oracle — " +
+        "there is partial circularity with our KEV column. That is exactly why " +
+        "the story is the DIVERGENCE between the published order and raw " +
+        "prevalence, not the list itself. Recomputed nightly; the newest " +
+        "committed official list wins. Sort any column.",
+    },
+
+    // --------------------------------- top25.html · 2
+    top25_exploited: {
+      num: "02",
+      kicker: "What gets weaponized",
+      source: "CVE List V5 (MITRE) · CISA KEV · CWE Top 25 (MITRE)",
+      headline: "On the list is not the same as in the wild.",
+      caption:
+        "Take the same official Top 25 and ask a blunter question: which of " +
+        "these classes actually show up in CISA's catalog of exploited " +
+        "vulnerabilities? Each bar counts the KEV entries carrying that class as " +
+        "their first-listed weakness; classes the exploited set never touches " +
+        "fade to gray. Almost every one of the official Top 25 turns up in the " +
+        "exploited set — so the list names the right hazards — but the volume " +
+        "concentrates on a handful, and a few celebrated classes barely register.",
+      statTemplate:
+        "{in_kev} of {total} official classes appear in the exploited set · " +
+        "together {coverage} of tagged KEV entries",
+      xAxis: "exploited (KEV) entries",
+      nodata: "Not enough data yet.",
+      methodology:
+        "Each bar is one of the official Top 25 classes, counting how many CISA " +
+        "Known Exploited Vulnerabilities (KEV) entries carry that class as their " +
+        "first-listed CWE (CNA container preferred, CISA-ADP as fallback) among " +
+        "entries that match a record in the CVE corpus. Bars are sorted " +
+        "most-exploited first; a class the exploited set never touches fades to " +
+        "gray. “Coverage” is the share of all tagged KEV entries whose class " +
+        "sits on the official list. The KEV catalog is small next to the full " +
+        "corpus, and only entries matched to a corpus record carry a CWE here, " +
+        "so read the counts as a floor. Same caveat as the board: MITRE builds " +
+        "the Top 25 partly from KEV, so a class being both on the list and in " +
+        "KEV is expected — the telling reads are the on-list classes with no KEV " +
+        "entry, and the exploited classes the list ranks low. Recomputed nightly.",
+    },
   },
 
   footer: {
@@ -2042,6 +2135,7 @@ export const editorial = {
       rescores: "CVE List V5 (MITRE) · CyberMon nightly diffs",
       changelog: "CISA KEV catalog · Internet Archive Wayback Machine",
       naming: "MITRE ATT&CK®",
+      top25: "CVE List V5 (MITRE) · CWE Top 25 (MITRE)",
     },
   },
 };

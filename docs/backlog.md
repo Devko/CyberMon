@@ -1,11 +1,11 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the fourteen that exist today
+Candidate monitoring modules, beyond the fifteen that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
-Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos — all
-live).
+Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
+15 CWE Top 25 — all live).
 
 ## Fresh candidates — probed 2026-07-18
 
@@ -198,7 +198,19 @@ changelog, the silent rescoring tracker, and NVD throughput.
   ~210 MB — ATT&CK-style cache-once pattern).
 - **Feasibility:** medium — bulk size needs the state-cache pattern.
 
-### CWE Top 25 vs reality
+### CWE Top 25 vs reality — SHIPPED as module 15
+Live as **15 · CWE Top 25** ([top25.html](../site/top25.html)). Shipped as
+its own module: the latest official MITRE CWE Top 25 (hand-committed in
+`pipeline/cwe_top25_data.py`, the only new source) set against raw
+first-listed-CWE prevalence over a five-complete-year window and the
+KEV-exploited cut, both read from the shared streaming aggregate (one
+additive accumulator, `agg.kev_cwe_counts`). Two charts — official rank
+vs. measured prevalence rank (the divergence board), and the KEV share of
+each official class. Honesty note carried in the methodology: MITRE's own
+Top-25 formula derives from NVD CVEs + CISA KEV, so the divergence from the
+published rank is the story, not the list. Contract
+`pipeline/top25_contracts.py`; see data-contracts.md. Original candidate
+note:
 - **Thesis:** the official Top 25 vs what actually gets exploited.
 - **Signals:** MITRE's annual Top 25 lists against CyberMon's measured
   KEV/EPSS-weighted CWE distribution (data already ingested).

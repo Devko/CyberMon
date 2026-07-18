@@ -260,6 +260,18 @@ def _validate_meta(obj: Any) -> None:
         _check_int(_get(nm, "group_count", "meta.sources.naming"),
                    "meta.sources.naming.group_count")
 
+    # Optional additively (older committed meta files predate the module);
+    # the CWE Top 25 stage itself always emits it. official_year is the
+    # newest committed MITRE list; list_count is how many years are committed.
+    if "top25" in src:
+        t25 = src["top25"]
+        _check_str(_get(t25, "fetched_at", "meta.sources.top25"),
+                   "meta.sources.top25.fetched_at", ISO_UTC_RE)
+        _check_int(_get(t25, "official_year", "meta.sources.top25"),
+                   "meta.sources.top25.official_year", minimum=1999)
+        _check_int(_get(t25, "list_count", "meta.sources.top25"),
+                   "meta.sources.top25.list_count", minimum=1)
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -548,3 +560,6 @@ VALIDATORS.update(kev_changelog_contracts.VALIDATORS)
 from . import naming_contracts  # noqa: E402
 
 VALIDATORS.update(naming_contracts.VALIDATORS)
+from . import top25_contracts  # noqa: E402
+
+VALIDATORS.update(top25_contracts.VALIDATORS)

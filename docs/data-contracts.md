@@ -1066,6 +1066,74 @@ Validator: `pipeline/naming_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch). `meta.sources.naming`
 (`{fetched_at, version, group_count}`) records the release.
 
+## site/data/cwe_top25.json  (CWE Top 25 vs reality module, both charts)
+
+```json
+{
+  "generated_at": "...",
+  "official_year": 2024,
+  "official_years": [2023, 2024],
+  "window": {"start": 2021, "end": 2025},
+  "window_years": 5,
+  "min_n": 2000,
+  "measured_total": 987654,
+  "kev_total": 1234,
+  "ranks": [
+    {"cwe": "CWE-79", "name": "Cross-site scripting",
+     "official_rank": 1, "measured_rank": 2, "measured_n": 54321,
+     "measured_share": 5.5, "kev_n": 42},
+    {"cwe": "CWE-269", "name": "Improper privilege management",
+     "official_rank": 15, "measured_rank": null, "measured_n": 0,
+     "measured_share": 0.0, "kev_n": 7}
+  ],
+  "headline": {
+    "official_year": 2024, "window_start": 2021, "window_end": 2025,
+    "official_top_cwe": "CWE-79", "measured_top_cwe": "CWE-787",
+    "in_measured_top25": 17, "outside_measured_top25": 8,
+    "in_kev": 22, "kev_coverage_pct": 71.4
+  }
+}
+```
+
+Three views of the same 25 CWE ids. **OFFICIAL** is MITRE's published CWE
+Top 25 for `official_year` — the newest committed year in
+`pipeline/cwe_top25_data.py`, a static hand-transcribed list (the module's
+only added source; `official_years` lists every committed year, ascending).
+**MEASURED** is raw first-listed-CWE prevalence: `agg.cwe_year_counts`
+summed over the last `window_years` **complete** calendar years (`window`,
+ending the year before `generated_at` — the partial current year cannot
+rank a ranking). **EXPLOITED** is `agg.kev_cwe_counts`, the first-listed CWE
+of every KEV-listed published record (flat, not windowed — the KEV set is
+small).
+
+`ranks` is the official Top-25 in official rank order (`official_rank` is
+`1..N` contiguous, one entry per CWE, no dups). `measured_rank` is the CWE's
+position among **all** observed classes by windowed prevalence (ties by CWE
+number ascending), or `null` **iff** `measured_n` is 0 — an official pick
+never seen in the window. `measured_share` is that class's share of
+`measured_total` (0–100, 1 decimal); `kev_n` its KEV entry count.
+
+`headline` is `null` **iff** `measured_total < min_n` (a divergence summary
+computed on a handful of records would be noise; the offline fixtures pass
+`min_n=1`). When present: `official_year` / `window_start` / `window_end`
+restate the top-level fields; `official_top_cwe` equals `ranks[0].cwe`;
+`measured_top_cwe` is the single most prevalent measured class (which need
+**not** be on the list — that is the point); `in_measured_top25 +
+outside_measured_top25 == len(ranks)`; `in_kev` (≤ `len(ranks)`) counts
+official classes with any KEV entry; `kev_coverage_pct` is the share of
+`kev_total` captured by the official list.
+
+Honesty note (also in the site methodology): MITRE's own Top-25 formula is
+derived from NVD CVEs joined to CISA KEV, so it is **not** an independent
+oracle — there is partial circularity with the KEV cut. The measured cut is
+plain first-listed-CWE prevalence and the exploited cut is plain KEV
+membership; the **divergence** from the official rank is the story, and the
+measured window ships explicitly in `window`. Reads the shared streaming
+aggregate — no second corpus pass. Validator:
+`pipeline/top25_contracts.py` (registered into `pipeline/contracts.py`'s
+dispatch). `meta.sources.top25` (`{fetched_at, official_year, list_count}`)
+records the newest committed list and how many years are committed.
+
 ## site/data/kev_guards.json  (Security Products module, all 3 charts)
 
 ```json
