@@ -6,6 +6,136 @@ Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores — all live).
 
+## Fresh candidates — probed 2026-07-18
+
+Six ideas probed live this round (every endpoint fetched, not taken from
+docs). Four land as new modules — two with a thesis the data forced us to
+sharpen; one folds into an existing module instead of duplicating it.
+
+### The Vulnrichment handoff (ADP enrichment coverage)
+- **Thesis:** when NVD's analysis pipeline stalled in 2024, CISA's
+  Vulnrichment program quietly became the de-facto enricher of the CVE
+  record — here is the handoff, month by month, against the curve of NVD's
+  own retreat (module 01).
+- **Signals:** share of each month's CVEs carrying a `CISA-ADP` container
+  (the handoff curve) overlaid on NVD's analysis-rate collapse; what ADP
+  adds most (SSVC near-universal, CVSS/CWE selective patch-ins); the "is
+  anyone else an ADP?" answer — effectively no, CISA is the sole
+  substantive enricher.
+- **Source:** `containers.adp[]` in the cvelistV5 corpus already ingested
+  nightly — no new fetch. Spot-probed via `cveawg.mitre.org/api/cve/<ID>`
+  (HTTP 200): `CISA-ADP` is a stable provider (orgId 134c704f…) carrying an
+  SSVC decision point plus KEV/CVSS/CWE where present. Licensing already
+  cleared (CVE Program terms; corpus republished by modules 01/04/11/13).
+- **Feasibility:** easy — reuses ingested data; the new work is one coverage
+  metrics builder, not a fetch. Landmine: bucket by the CISA-ADP container's
+  own `dateUpdated`, not the CVE's `datePublished` — CISA back-fills legacy
+  KEV records (a 2019 CVE's ADP block is stamped 2025), so a publish-date
+  axis would smear a false pre-2024 signal.
+
+### EPSS volatility
+- **Thesis:** teams triage by EPSS *percentile* — a number that moves under
+  ~98% of CVEs every night while the model's actual probability holds for
+  ~99% of them. The churn is real, largely a population artifact, and nobody
+  keeps the log. *(Probe relocated the thesis: the raw score barely twitches;
+  the spin is in the percentile teams actually gate on.)*
+- **Signals:** daily share of CVEs whose raw score crosses movement
+  thresholds (the "material churn" line, a few hundred/day); top single-day
+  swings; the headline gap between percentile movement (~98%/day) and
+  probability movement (~1%/day); model-version reset shocks quarantined
+  from the trend (a header `model_version` change is a whole-distribution
+  jump), the same treatment as the KEV launch-batch quarantine.
+- **Source:** `epss.cyentia.com/epss_scores-YYYY-MM-DD.csv.gz` (301 →
+  `empiricalsecurity.com`, 200); gzip, header carries `model_version` and
+  `score_date`, columns `cve,epss,percentile`; ~349k CVEs/day. Dated files
+  backfill for years, so the whole history seeds on day one. CyberMon
+  already fetches the current CSV nightly (`fetch_epss.py`). License: FIRST
+  grants EPSS free with attribution.
+- **Feasibility:** easy — diff-yesterday-against-today-then-append is the
+  `rescore_tracker` / `kev_changelog` pattern. Distinct from module 10
+  (accuracy, not stability). Two honest caveats: title it "volatility," not
+  "churn" (module 07 owns that word); and the moat is softer than the KEV
+  changelog — the daily snapshots are publicly archived, so CyberMon becomes
+  the only *maintained* per-CVE churn log, not the only possible source.
+
+### Threat-actor naming chaos
+- **Thesis:** one adversary, sixteen names — every vendor rebrands the same
+  actor in its own house taxonomy, so the "naming standard" is a marketing
+  surface. APT28 answers to Fancy Bear, Forest Blizzard, Sofacy, STRONTIUM,
+  IRON TWILIGHT.
+- **Signals:** most-renamed leaderboard (alias count per actor); alias
+  inflation over time — a genuine series off the versioned bundles module 07
+  already caches (348 → 592 alias strings v10.0 → v19.1, outpacing actor
+  growth); how many distinct vendor taxonomies collapse onto one MITRE
+  group.
+- **Source:** MITRE ATT&CK enterprise STIX bundle (attack-stix-data,
+  `enterprise-attack.json`, HTTP 200, v19.1): 189 intrusion-sets, 187 with
+  an `aliases` array. Already fetched and version-cached by module 07 — a
+  parse pass over data on disk. Optional broadening: MISP threat-actor
+  galaxy (1,017 clusters, dual CC0/BSD-2). ATT&CK ToU already cleared.
+- **Feasibility:** easy — no new fetch for the core; MISP is a cheap
+  optional stretch, though ATT&CK↔MISP name-matching is fuzzy (keep it a
+  labeled side signal). Caveat: ATT&CK's alias list is MITRE's own curation
+  and ~40% of actors carry no alias, so the leaderboard reflects the famous
+  ~30 — state it in the footnote.
+
+### GHSA vs CVE — ecosystem coverage gap
+- **Thesis:** the software ecosystem grades its own vulnerabilities now, and
+  roughly one in six GitHub-reviewed advisories never becomes a CVE the
+  government records. *(The "registries grade faster than the CVE program"
+  framing was probe-tested and killed — GHSA and NVD publish in near-
+  lockstep, median lag ≈ 0 days. The durable story is coverage, not speed.)*
+- **Signals:** lead chart — share of GHSA reviewed advisories with no CVE
+  alias, per month (~17% in the sample), the slice the CVE program never
+  sees; reviewed advisories per ecosystem per month (npm/PyPI/Maven/Go/…),
+  the ecosystem-native tagging CVE never had; ecosystem mix over time.
+- **Source:** `github/advisory-database` git repo, OSV JSON under
+  `advisories/github-reviewed/YYYY/MM/GHSA-…`. Tree API (not truncated):
+  33,347 reviewed advisories, 2017–2026; each file carries `aliases`→CVE,
+  ecosystem, and both `github_reviewed_at` and `nvd_published_at` (both lag
+  legs in one file). License: CC-BY 4.0. Distinct from the OSV
+  registry-malware item below — that counts MAL-* takedowns; this is GHSA-*
+  reviewed vulnerability advisories.
+- **Feasibility:** medium — bulk git (~3.5 GB), clone-once + incremental
+  pull (the ATT&CK pattern; the unauthenticated API is 60/hr, too tight to
+  ingest with). Landmine: the directory year is the ingestion date, not
+  disclosure — bulk backfills spike 2022 and 2026 — so every series must key
+  off the JSON date fields.
+
+### Detection-rule churn (Sigma)
+- **Thesis:** detections chase last year's technique — Sigma coverage lags
+  the ATT&CK catalog it claims to defend.
+- **Signals:** Sigma rules added vs. deprecated per quarter (`date`,
+  `status`, the dedicated `deprecated/` tree); ATT&CK technique coverage
+  over time — share of module 07's technique list with at least one rule
+  (sub-technique tags rolled up to the parent); median lag from a
+  technique's ATT&CK debut (module 07 has release dates) to its first Sigma
+  rule.
+- **Source:** `github.com/SigmaHQ/sigma` (git, no auth): ~3,142 active rules
+  under `rules/` (~4,238 repo-wide), tree not truncated; rules carry
+  `date`/`modified`/`status`/`tags` including `attack.tXXXX`. License:
+  Detection Rule License 1.1 — MIT-style permissive, publish/distribute
+  granted (checked against the DRL text); credit SigmaHQ + DRL in the
+  footnote.
+- **Feasibility:** medium — clean nightly git fetch; work is a YAML parse of
+  ~4k files plus the join to module 07's technique list. Caveats: not every
+  rule carries a technique-level tag (compute coverage only over those that
+  do); a rule's `date` is not its git-commit date, so treat "added" as
+  approximate.
+
+### KEV vintage — fold into module 03, not a new module
+Probed and deliberately **not** promoted. "How old is a CVE when CISA adds
+it to KEV" is the same `dateAdded − datePublished` subtraction module 03
+already computes, buckets, and quarantines; a separate page replotting it
+under a "vintage" caption is a one-page-one-thesis violation. The live data
+also kills the "old inventory" thesis at the median — post-quarantine the
+2025 median KEV add is ~27 days old, and only a durable ~15% tail is 1y+ old
+(2007-era CVEs still land). Ship the survivor as a **counterpoint chart in
+module 03**: split the lumped `3y+` latency bucket into `3–5y / 5–10y /
+10y+`, add a per-year "vintage share" line (generalising the `pct_over_365d`
+field module 03 already emits), and an "oldest CVEs still landing" callout.
+No new fetch, no new contract file.
+
 ## Snapshot collectors — become the historical record (probed 2026-07-11)
 
 The NVD backlog history proved the pattern: when an upstream publishes
