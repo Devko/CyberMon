@@ -18,7 +18,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json",
              "epss_report.json", "cve_calendar.json", "rescore_log.json",
-             "kev_changelog.json"]
+             "epss_volatility.json", "kev_changelog.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -248,6 +248,31 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert (tmp_path / "history" / "rescore_log.csv").exists()
     assert meta["sources"]["rescores"] == {"events_total": 0,
                                            "state_release": "fixtures"}
+
+    # EPSS Volatility: with no committed state, the offline run seeds its
+    # prior night from fixtures/epss_volatility_state.json (score_date
+    # 2026-07-07) and diffs the EPSS fixture (2026-07-08) into one row: of
+    # the 6 CVEs on both nights, 3 probabilities moved (one crossing 0.001,
+    # one crossing 0.05) and 5 percentiles moved; CVE-2099-9999 is new
+    # tonight and never compared. CVE-2024-0001's 0.04 -> 0.97 jump is the
+    # day's single biggest mover.
+    evol = _load(tmp_path, "epss_volatility.json")
+    assert evol["catalog"]["days_observed"] == 1
+    assert evol["catalog"]["trend_days"] == 1
+    assert evol["catalog"]["resets_quarantined"] == 0
+    assert evol["catalog"]["crossed_totals"] == {"lo": 1, "mid": 0, "hi": 1}
+    assert evol["catalog"]["first_observed"] == "2026-07-08"
+    assert evol["gap"]["prob_moved_pct"] == 50.0   # 3 of 6
+    assert evol["gap"]["pct_moved_pct"] == 83.3    # 5 of 6
+    assert [(w["week"], w["crossed_lo"], w["crossed_hi"])
+            for w in evol["churn"]["weeks"]] == [("2026-W28", 1, 1)]
+    assert evol["movers"]["entries"] == [
+        {"cve": "CVE-2024-0001", "observed_date": "2026-07-08",
+         "old": 0.04, "new": 0.97, "delta": 0.93}]
+    assert (tmp_path / "history" / "epss_volatility.csv").exists()
+    assert (tmp_path / "history" / "epss_volatility_state.json").exists()
+    assert meta["sources"]["epssvol"] == {"score_date": "2026-07-08",
+                                          "days_observed": 1}
     # KEV changelog: with no committed state, the offline run seeds its
     # "prior night" from fixtures/kev_changelog_state.json, so the first
     # diff produces the full event mix: 2 additions (excluded from edits),
@@ -296,6 +321,10 @@ def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):
     # the changelog re-diffs against its own committed state: no new events
     changelog = _load(tmp_path, "kev_changelog.json")
     assert changelog["catalog"]["events_total"] == 7  # idempotent re-run
+    # EPSS volatility: same EPSS score_date on the re-run -> snapshot guard
+    # skips, merge-by-date keeps one row (no double-count)
+    evol = _load(tmp_path, "epss_volatility.json")
+    assert evol["catalog"]["days_observed"] == 1
 
 
 def test_skip_nvd_carries_previous_run_forward(tmp_path, capsys):
@@ -341,6 +370,8 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     assert not (tmp_path / "history" / "nvd_throughput.csv").exists()
     assert not (tmp_path / "history" / "kev_changelog.csv").exists()
     assert not (tmp_path / "history" / "kev_state.json").exists()
+    assert not (tmp_path / "history" / "epss_volatility.csv").exists()
+    assert not (tmp_path / "history" / "epss_volatility_state.json").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
 

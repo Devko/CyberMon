@@ -18,12 +18,21 @@ EPSS_URL = "https://epss.cyentia.com/epss_scores-current.csv.gz"
 
 @dataclass
 class EpssData:
-    """Parsed EPSS feed: header metadata + cve -> probability map."""
+    """Parsed EPSS feed: header metadata + cve -> probability map.
+
+    ``percentiles`` (cve -> published percentile, 0..1) rides alongside
+    ``scores`` for the EPSS Volatility module, which needs both the raw
+    probability and the corpus-relative rank to tell their movements apart.
+    It is additive: the older consumers (score_vs_reality, epss_report)
+    read only ``scores`` and never touch it, and a row without a parseable
+    percentile is simply absent from the map (the earliest EPSS era shipped
+    scores with no percentile column at all)."""
 
     model_version: str
     score_date: str  # YYYY-MM-DD
     row_count: int
     scores: dict[str, float] = field(default_factory=dict, repr=False)
+    percentiles: dict[str, float] = field(default_factory=dict, repr=False)
 
 
 def parse_epss(lines: Iterable[str]) -> EpssData:
@@ -42,6 +51,7 @@ def parse_epss(lines: Iterable[str]) -> EpssData:
         iterator = iter([first, *iterator])  # no comment header: keep line 1
 
     scores: dict[str, float] = {}
+    percentiles: dict[str, float] = {}
     row_count = 0
     for row in csv.DictReader(iterator):
         cve, epss = row.get("cve"), row.get("epss")
@@ -49,8 +59,15 @@ def parse_epss(lines: Iterable[str]) -> EpssData:
             continue
         row_count += 1
         scores[cve] = float(epss)
+        pct = row.get("percentile")
+        if pct not in (None, ""):
+            try:
+                percentiles[cve] = float(pct)
+            except ValueError:
+                pass  # unparseable percentile: absent, never fatal
     return EpssData(model_version=model_version, score_date=score_date,
-                    row_count=row_count, scores=scores)
+                    row_count=row_count, scores=scores,
+                    percentiles=percentiles)
 
 
 def load_epss_file(path: Path) -> EpssData:

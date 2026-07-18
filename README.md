@@ -263,6 +263,30 @@ adds only reference tags). No NVD overlay: CyberMon's own NVD history begins at
 launch, so there is no 2024 NVD flow to chart — the slowdown is prose, and the
 live backlog is read client-side for scale, never a fabricated trend.
 
+### 17 · EPSS Volatility — [epssvol.html](https://devko.github.io/CyberMon/epssvol.html) (live)
+
+*Teams triage on the EPSS percentile — a number that reshuffles under most
+CVEs every night as the growing corpus re-ranks — while the model's actual
+probability holds for nearly all of them.* Every night CyberMon fingerprints
+the EPSS feed it already fetches (each CVE's probability and percentile) and
+diffs it against the previous night's committed fingerprint
+(`site/data/history/epss_volatility_state.json`, beside the log so the two
+can never drift apart). One aggregate row per snapshot appends to a
+committed, append-only daily log (`site/data/history/epss_volatility.csv`):
+how many compared CVEs had their percentile move versus their probability
+move, how many crossed the material thresholds (0.1% / 1% / 5%), and the
+day's single biggest probability mover. Three charts: the headline gap
+(percentile churn against probability churn), weekly material crossings, and
+a biggest-single-day movers board. Model-version reset shocks — a new model
+rescoring the whole corpus overnight — are quarantined from every trend, the
+same treatment Silent Rescores gives its seeding. **No upstream keeps a
+per-CVE EPSS change log, so the record starts at first deploy — thin by
+design, deeper every night.** Distinct from the EPSS Report Card (module
+10), which grades the model's accuracy; this measures its stability. Honest
+caveat kept in the copy: FIRST's dated daily snapshots are publicly
+archived, so this is the only *maintained* per-CVE churn log, not the only
+possible source.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the
