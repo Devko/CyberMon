@@ -213,6 +213,22 @@ every night.** A lost diff state rebuilds from that night's corpus (zero
 events that night, at worst one night's diffs lost); a re-run on the same
 corpus release is detected and never double-counts.
 
+### 14 · Naming Chaos — [naming.html](https://devko.github.io/CyberMon/naming.html) (live)
+
+*One adversary, a roomful of names — every vendor rebrands the same actor.*
+Two charts over the intrusion-set roster of MITRE's current enterprise
+ATT&CK STIX bundle: a most-renamed leaderboard (each group's alternate
+names — the aliases besides its canonical one, so APT28 is also Fancy Bear,
+Forest Blizzard, Sofacy, STRONTIUM), and the alias-count distribution across
+the active roster, where roughly four in ten groups carry no second name and
+a short tail answers to a dozen or more. A snapshot of today's taxonomy that
+reuses the ATT&CK fetch the Churn module already makes (no new upstream); the
+alias list is MITRE's own curation, a floor rather than a full census. State
+is cached in `.cache/naming_state.json` and reconstructable from the
+published `naming.json`, so a normal night costs one `index.json` fetch and
+the bundle downloads only on a new ATT&CK release. The alias-inflation time
+series (aliases per release) is a documented follow-up.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the

@@ -31,7 +31,8 @@ from . import (attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, epss_report_metrics,
                extortion_metrics, guards_metrics, history, hygiene_metrics,
                kev_changelog, kev_metrics, market_metrics, metrics,
-               nvd_throughput, quality_metrics, rescore_tracker)
+               naming_metrics, nvd_throughput, quality_metrics,
+               rescore_tracker)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -387,6 +388,14 @@ def run(args: argparse.Namespace) -> int:
         skip=args.skip_attack, offline_fixtures=args.offline_fixtures)
     if attack_churn is not None:
         outputs["attack_churn.json"] = attack_churn
+    # Threat-actor naming chaos: reuses the ATT&CK fetch primitives to read
+    # the current enterprise bundle's intrusion-set aliases (no skip flag —
+    # a normal night is one cheap index fetch; the bundle downloads only on
+    # a new ATT&CK release).
+    naming_obj, naming_source = naming_metrics.run_stage(
+        args.out, args.cache_dir, generated_at,
+        offline_fixtures=args.offline_fixtures)
+    outputs["naming.json"] = naming_obj
     epss_report, epss_history_source = epss_report_metrics.run_stage(
         args.out, args.cache_dir, generated_at,
         kev_entries=kev.entries,
@@ -449,6 +458,7 @@ def run(args: argparse.Namespace) -> int:
     outputs["meta.json"]["sources"]["apnic"] = apnic_source
     outputs["meta.json"]["sources"]["rescores"] = rescore_source
     outputs["meta.json"]["sources"]["kev_changelog"] = changelog_source
+    outputs["meta.json"]["sources"]["naming"] = naming_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

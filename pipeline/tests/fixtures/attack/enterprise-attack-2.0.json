@@ -56,12 +56,14 @@
     {
       "type": "intrusion-set",
       "id": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
-      "name": "FIXTURE BEAR"
+      "name": "FIXTURE BEAR",
+      "aliases": ["FIXTURE BEAR", "Fixture Panda", "Grizzly Fixture"]
     },
     {
       "type": "intrusion-set",
       "id": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
-      "name": "FIXTURE SPIDER (added in 2.0)"
+      "name": "FIXTURE SPIDER (added in 2.0)",
+      "aliases": ["FIXTURE SPIDER (added in 2.0)", "Web Fixture"]
     },
     {
       "type": "malware",
