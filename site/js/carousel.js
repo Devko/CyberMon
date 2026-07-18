@@ -65,6 +65,9 @@ import { render as renderNamingBoard } from "./charts/naming_board.js";
 import { render as renderNamingDist } from "./charts/naming_distribution.js";
 import { render as renderTop25Ranks } from "./charts/top25_ranks.js";
 import { render as renderTop25Exploited } from "./charts/top25_exploited.js";
+import { render as renderAdpHandoff } from "./charts/adp_handoff.js";
+import { render as renderAdpAdds } from "./charts/adp_adds.js";
+import { render as renderAdpProviders } from "./charts/adp_providers.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -195,6 +198,14 @@ const MODULES = {
     sections: [
       { id: "top25_ranks", render: renderTop25Ranks, table: true },
       { id: "top25_exploited", render: renderTop25Exploited },
+    ],
+  },
+  adp: {
+    file: "data/adp_coverage.json",
+    sections: [
+      { id: "adp_handoff", render: renderAdpHandoff },
+      { id: "adp_adds", render: renderAdpAdds },
+      { id: "adp_providers", render: renderAdpProviders, table: true },
     ],
   },
 };

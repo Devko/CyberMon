@@ -271,6 +271,14 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.top25.official_year", minimum=1999)
         _check_int(_get(t25, "list_count", "meta.sources.top25"),
                    "meta.sources.top25.list_count", minimum=1)
+    # the Vulnrichment handoff stage emits it from the same corpus pass (no
+    # separate fetch — fetched_at is the run's generation time).
+    if "adp" in src:
+        adp = src["adp"]
+        _check_str(_get(adp, "fetched_at", "meta.sources.adp"),
+                   "meta.sources.adp.fetched_at", ISO_UTC_RE)
+        _check_int(_get(adp, "cisa_records", "meta.sources.adp"),
+                   "meta.sources.adp.cisa_records")
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -563,3 +571,6 @@ VALIDATORS.update(naming_contracts.VALIDATORS)
 from . import top25_contracts  # noqa: E402
 
 VALIDATORS.update(top25_contracts.VALIDATORS)
+from . import adp_contracts  # noqa: E402
+
+VALIDATORS.update(adp_contracts.VALIDATORS)
