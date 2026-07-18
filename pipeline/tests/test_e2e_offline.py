@@ -271,7 +271,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
         {"cve": "CVE-2024-0001", "observed_date": "2026-07-08",
          "old": 0.04, "new": 0.97, "delta": 0.93}]
     assert (tmp_path / "history" / "epss_volatility.csv").exists()
-    assert (tmp_path / "history" / "epss_volatility_state.json").exists()
+    assert (tmp_path / "history" / "epss_volatility_state.json.gz").exists()
     assert meta["sources"]["epssvol"] == {"score_date": "2026-07-08",
                                           "days_observed": 1}
     # KEV changelog: with no committed state, the offline run seeds its
@@ -395,7 +395,7 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     assert not (tmp_path / "history" / "kev_changelog.csv").exists()
     assert not (tmp_path / "history" / "kev_state.json").exists()
     assert not (tmp_path / "history" / "epss_volatility.csv").exists()
-    assert not (tmp_path / "history" / "epss_volatility_state.json").exists()
+    assert not (tmp_path / "history" / "epss_volatility_state.json.gz").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
 

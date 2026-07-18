@@ -107,7 +107,7 @@ def test_state_round_trip(tmp_path):
                      "fingerprints": {"CVE-A": [0.02, 0.88],
                                       "CVE-B": [0.5, None]}}
     assert state_path(tmp_path) == tmp_path / "history" / \
-        "epss_volatility_state.json"
+        "epss_volatility_state.json.gz"
     write_state(state_path(tmp_path), state)
     assert load_state(tmp_path, log=lambda m: None) == state
 
@@ -116,9 +116,9 @@ def test_missing_unreadable_or_misshapen_state_is_none(tmp_path):
     assert load_state(tmp_path, log=lambda m: None) is None  # missing
     path = state_path(tmp_path)
     path.parent.mkdir(parents=True)
-    path.write_bytes(b"not json")
-    assert load_state(tmp_path, log=lambda m: None) is None  # unreadable
-    path.write_text('{"model_version": 42}', encoding="utf-8")  # wrong shape
+    path.write_bytes(b"not json")  # not gzip -> unreadable
+    assert load_state(tmp_path, log=lambda m: None) is None
+    write_state(path, {"model_version": 42})  # valid gzip, wrong shape
     assert load_state(tmp_path, log=lambda m: None) is None
 
 
