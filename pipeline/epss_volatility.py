@@ -39,9 +39,9 @@ do with any one CVE. That night's row is written for the audit trail with
 ``reset`` set, and every trend (churn weeks, gap, movers, totals) excludes
 reset rows. Only ``catalog.resets_quarantined`` counts them.
 
-State (``site/data/history/epss_volatility_state.json``, COMMITTED next to
-the log — the rescore_state.json / kev_state.json pattern, plain JSON,
-atomic tmp+replace): ``{"model_version", "score_date", "last_observed",
+State (``site/data/history/epss_volatility_state.json.gz``, COMMITTED next
+to the log — the rescore_state.json / kev_state.json pattern, gzipped
+(the map re-ranks nightly, so it can't be git-delta'd), atomic tmp+replace): ``{"model_version", "score_date", "last_observed",
 "fingerprints": {cve: [prob, percentile|null]}}``. State and log persist
 together after validation (via :func:`persist`), so a failed run records
 neither, and the two can never diverge. Same-snapshot guard: when tonight's
@@ -64,6 +64,7 @@ diff-nights accumulate (``min_days`` gate).
 from __future__ import annotations
 
 import csv
+import gzip
 import json
 from collections import Counter
 from datetime import date, timedelta
@@ -85,7 +86,10 @@ CSV_COLUMNS = ("observed_date", "model_version", "n_scored", "n_compared",
 _INT_COLUMNS = ("n_scored", "n_compared", "prob_moved", "pct_moved",
                 "crossed_lo", "crossed_mid", "crossed_hi")
 
-STATE_FILENAME = "epss_volatility_state.json"
+STATE_FILENAME = "epss_volatility_state.json.gz"
+# The offline prior-night seed is a small hand-written fixture, kept
+# uncompressed for readability; the committed OUTPUT state is gzipped.
+FIXTURE_STATE_FILENAME = "epss_volatility_state.json"
 CSV_FILENAME = "epss_volatility.csv"
 
 DEFAULT_MIN_DAYS = 3       # diff-nights before the churn/gap trends chart
@@ -183,7 +187,8 @@ def load_state(out_dir: Path, log: Callable[[str], None] = print
     if not path.exists():
         return None
     try:
-        state = json.loads(path.read_text(encoding="utf-8"))
+        with gzip.open(path, "rt", encoding="utf-8") as f:
+            state = json.load(f)
     except (OSError, ValueError) as exc:
         log(f"warning: ignoring unreadable EPSS-volatility state {path}: "
             f"{exc!r}")
@@ -213,12 +218,18 @@ def make_state(epss: EpssData) -> dict:
 
 def write_state(path: Path, state: dict) -> None:
     """Atomic tmp+replace (the rescore_state.json pattern); compact
-    separators because the fingerprint map covers the whole EPSS corpus."""
+    separators because the fingerprint map covers the whole EPSS corpus.
+    Gzipped with a zeroed mtime (identical state -> identical bytes): unlike
+    the rescore fingerprints, the EPSS percentile map re-ranks nightly, so
+    it churns wholesale and git cannot delta it between commits —
+    compression is the only lever, and it cuts the committed file ~4x."""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(path.name + ".tmp")
-    tmp.write_text(json.dumps(state, sort_keys=True,
-                              separators=(",", ":")) + "\n",
-                   encoding="utf-8")
+    data = (json.dumps(state, sort_keys=True, separators=(",", ":"))
+            + "\n").encode("utf-8")
+    with open(tmp, "wb") as raw:
+        with gzip.GzipFile(fileobj=raw, mode="wb", mtime=0) as gz:
+            gz.write(data)
     tmp.replace(path)
 
 
@@ -467,7 +478,7 @@ def run_stage(out_dir: Path, epss: EpssData, generated_at: str, *,
     rows = read_events(csv_path(out_dir))
     state = load_state(out_dir, log=log)
     if offline_fixtures and state is None:
-        state = json.loads((fixtures_dir / STATE_FILENAME)
+        state = json.loads((fixtures_dir / FIXTURE_STATE_FILENAME)
                            .read_text(encoding="utf-8"))
         log(f"  epssvol: seeded prior EPSS state from fixtures "
             f"({len(state['fingerprints'])} fingerprints, "

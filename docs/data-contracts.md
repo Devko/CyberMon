@@ -1175,8 +1175,9 @@ Source: CyberMon's own nightly diffs of the EPSS feed (FIRST.org). Each
 night the pipeline fingerprints the EPSS snapshot it already fetches for
 the rest of the site — per CVE, `[probability, percentile]` from
 `EpssData.scores` / `EpssData.percentiles` — and diffs it against the
-previous night's fingerprint (**`site/data/history/epss_volatility_state.json`**,
-COMMITTED next to the log like the rescore/KEV `*_state.json`; it also
+previous night's fingerprint (**`site/data/history/epss_volatility_state.json.gz`**,
+COMMITTED next to the log like the rescore/KEV `*_state.json`, but **gzipped**
+because the percentile map re-ranks nightly and git cannot delta it; it also
 records the feed's `model_version`, `score_date` and last observed date).
 Only CVEs present on **both** nights are compared: a CVE new to tonight's
 feed has no prior to move from, and its arrival is exactly what drives the
