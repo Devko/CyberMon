@@ -37,6 +37,20 @@ ANNOTATIONS = [
 ]
 _FAMILY_ORDER = ("v4", "v3", "v2")  # newest first
 
+# CISA's Vulnrichment program publishes into the CVE record as an ADP
+# ("Authorized Data Publisher") container. It is identified by its provider
+# shortName or the stable Vulnrichment orgId; the block carries its own
+# ``dateUpdated`` — the ENRICHMENT date, not the CVE's publication date
+# (CISA back-fills legacy records, so a 2019 CVE's CISA-ADP block is stamped
+# 2025). Consumed by pipeline/adp_metrics.py; see its module docstring.
+ADP_CISA_SHORTNAME = "CISA-ADP"
+ADP_CISA_ORGID = "134c704f-9b21-4f2e-91b3-4a467353bcc0"
+# A CISA-ADP enrichment counts as a legacy back-fill when the CVE ID's
+# reservation vintage is at least this many years before the enrichment
+# year — the signal a month's ADP activity swept old records in bulk rather
+# than enriching fresh ones.
+ADP_LEGACY_GAP_YEARS = 2
+
 
 # ------------------------------------------------------------- bucket math
 
@@ -142,6 +156,14 @@ class CveFacts:
     date_published: str | None = None  # day precision "YYYY-MM-DD"
     cwe: str | None = None  # first cweId in the record (CNA preferred)
     has_affected: bool = False  # any usable affected[] entry in the record
+    # Vulnrichment / CISA-ADP handoff (adp_metrics.py). All default to the
+    # "no CISA-ADP" state, so records without one fold in harmlessly.
+    adp_cisa: bool = False              # a CISA-ADP container is present
+    adp_cisa_month: str | None = None   # its dateUpdated month "YYYY-MM"
+    adp_cisa_legacy: bool = False       # enriches a >= ADP_LEGACY_GAP old CVE
+    adp_added: frozenset[str] = frozenset()   # subset of {ssvc, cvss, cwe}
+    adp_providers: tuple[str, ...] = ()       # every ADP provider shortName
+    adp_substantive: tuple[str, ...] = ()     # ADP providers that added SSVC/CVSS/CWE
 
     @property
     def newest_cna_fingerprint(self) -> tuple[str, float] | None:
@@ -234,6 +256,75 @@ def _first_cwe(container: Any) -> str | None:
     return None
 
 
+def _provider_shortname(container: Any) -> str | None:
+    """A container's ``providerMetadata.shortName`` (the publisher's label),
+    or None when absent."""
+    if not isinstance(container, dict):
+        return None
+    meta = container.get("providerMetadata")
+    if isinstance(meta, dict):
+        name = meta.get("shortName")
+        if isinstance(name, str) and name:
+            return name
+    return None
+
+
+def _is_cisa_adp(adp: Any) -> bool:
+    """True if an ADP container is CISA's Vulnrichment block, matched by its
+    provider shortName OR the stable Vulnrichment orgId (either identifies
+    it — shortName can be absent while orgId is present, and vice versa)."""
+    if not isinstance(adp, dict):
+        return False
+    meta = adp.get("providerMetadata")
+    if not isinstance(meta, dict):
+        return False
+    return (meta.get("shortName") == ADP_CISA_SHORTNAME
+            or meta.get("orgId") == ADP_CISA_ORGID)
+
+
+def _adp_ssvc(metrics: Any) -> bool:
+    """True if a ``metrics[]`` entry carries an SSVC decision — an ``other``
+    block with ``type == "ssvc"``. This is CISA-ADP's near-universal
+    contribution (a stakeholder-specific exploitation call), and it lives
+    outside the CVSS keys ``_scores_from_metrics`` reads, so the two never
+    collide."""
+    if not isinstance(metrics, list):
+        return False
+    for entry in metrics:
+        if not isinstance(entry, dict):
+            continue
+        other = entry.get("other")
+        if isinstance(other, dict) and other.get("type") == "ssvc":
+            return True
+    return False
+
+
+def _adp_is_substantive(adp: Any) -> bool:
+    """True if an ADP container adds real vulnerability enrichment — an SSVC
+    decision, a CVSS score, or a CWE — rather than only reference tags. The
+    CVE Program's own top-level root container rides on most records but adds
+    only references; it is not an enricher, so the sole-enricher board is
+    built from this predicate and never crowns the root."""
+    if not isinstance(adp, dict):
+        return False
+    return (_adp_ssvc(adp.get("metrics"))
+            or bool(_scores_from_metrics(adp.get("metrics")))
+            or _first_cwe(adp) is not None)
+
+
+def _year_month(value: Any) -> str | None:
+    """The ``"YYYY-MM"`` prefix of an ISO timestamp, or None when it isn't
+    one with a 01-12 month. stdlib-only (no ``re`` import in this module)."""
+    if not isinstance(value, str) or len(value) < 7:
+        return None
+    year, sep, month = value[:4], value[4:5], value[5:7]
+    if not (year.isdigit() and sep == "-" and month.isdigit()):
+        return None
+    if not 1 <= int(month) <= 12:
+        return None
+    return f"{year}-{month}"
+
+
 # Version strings that carry no actual version information. Old records
 # converted from the v4 format ship ``versions: [{"version": "n/a", ...}]``
 # — counting those as structured version data would flatter the corpus.
@@ -302,6 +393,41 @@ def extract_facts(record: dict) -> CveFacts | None:
     has_affected = _has_usable_affected(cna) or \
         any(_has_usable_affected(adp) for adp in adps)
 
+    # Vulnrichment / CISA-ADP handoff (adp_metrics.py) — additive, reusing
+    # the already-parsed ``adps``. Every distinct ADP provider shortName (for
+    # the sole-enricher board), plus, for the CISA-ADP block if present: its
+    # dateUpdated month, which of {ssvc, cvss, cwe} it adds, and whether it
+    # is a legacy back-fill (enrichment year vs the CVE ID's vintage).
+    adp_providers = tuple(dict.fromkeys(
+        n for n in (_provider_shortname(a) for a in adps) if n))
+    # Providers that added real enrichment (not just reference tags) — the
+    # sole-enricher board ranks by this so the CVE-program root never leads.
+    adp_substantive = tuple(dict.fromkeys(
+        _provider_shortname(a) for a in adps
+        if _adp_is_substantive(a) and _provider_shortname(a)))
+    adp_cisa = False
+    adp_cisa_month: str | None = None
+    adp_cisa_legacy = False
+    adp_added: frozenset[str] = frozenset()
+    cisa = next((a for a in adps if _is_cisa_adp(a)), None)
+    if cisa is not None:
+        adp_cisa = True
+        added: set[str] = set()
+        if _adp_ssvc(cisa.get("metrics")):
+            added.add("ssvc")
+        if _scores_from_metrics(cisa.get("metrics")):
+            added.add("cvss")
+        if _first_cwe(cisa) is not None:
+            added.add("cwe")
+        adp_added = frozenset(added)
+        adp_cisa_month = _year_month(
+            (cisa.get("providerMetadata") or {}).get("dateUpdated"))
+        if adp_cisa_month is not None:
+            id_year = cve_id_year(cve_id)
+            if id_year is not None and \
+                    int(adp_cisa_month[:4]) - id_year >= ADP_LEGACY_GAP_YEARS:
+                adp_cisa_legacy = True
+
     return CveFacts(
         cve_id=cve_id,
         state=str(meta.get("state", "PUBLISHED")).upper(),
@@ -314,6 +440,12 @@ def extract_facts(record: dict) -> CveFacts | None:
                         and len(date_published) >= 10 else None),
         cwe=cwe,
         has_affected=has_affected,
+        adp_cisa=adp_cisa,
+        adp_cisa_month=adp_cisa_month,
+        adp_cisa_legacy=adp_cisa_legacy,
+        adp_added=adp_added,
+        adp_providers=adp_providers,
+        adp_substantive=adp_substantive,
     )
 
 
@@ -374,6 +506,21 @@ class Aggregator:
         # later first score be told apart from a brand-new record.
         self.rescore_fingerprints: dict[
             str, tuple[str, str | None, float | None]] = {}
+        # Vulnrichment / CISA-ADP handoff (adp_metrics.py), PUBLISHED records
+        # only. Totals, plus the monthly enrichment curve bucketed by the
+        # CISA-ADP container's own dateUpdated (never the CVE's publish date)
+        # and the legacy-back-fill count that flags sweep months.
+        self.adp_published_total = 0            # published records seen
+        self.adp_cisa_total = 0                 # ... carrying a CISA-ADP block
+        self.adp_add_counts: Counter[str] = Counter()      # ssvc / cvss / cwe
+        self.adp_month_enriched: Counter[str] = Counter()  # by dateUpdated mo.
+        self.adp_month_added: dict[str, Counter[str]] = defaultdict(Counter)
+        self.adp_month_legacy: Counter[str] = Counter()
+        self.adp_provider_counts: Counter[str] = Counter()
+        # The sole-enricher board ranks by SUBSTANTIVE enrichment (a provider
+        # that added SSVC/CVSS/CWE), so the reference-only CVE-program root
+        # never tops it despite riding on most records.
+        self.adp_provider_substantive: Counter[str] = Counter()
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
@@ -431,6 +578,27 @@ class Aggregator:
                 self.kev_cwe_counts[facts.cwe] += 1
         if not facts.has_affected:
             self.quality_missing[facts.year]["affected"] += 1
+
+        # Vulnrichment / CISA-ADP handoff (published records only; REJECTED
+        # already returned above). Every ADP provider on the record scores
+        # once; the CISA-ADP block, when present, feeds the adds tally and —
+        # if its dateUpdated parsed — the monthly enrichment curve.
+        self.adp_published_total += 1
+        for provider in facts.adp_providers:
+            self.adp_provider_counts[provider] += 1
+        for provider in facts.adp_substantive:
+            self.adp_provider_substantive[provider] += 1
+        if facts.adp_cisa:
+            self.adp_cisa_total += 1
+            for field_ in facts.adp_added:
+                self.adp_add_counts[field_] += 1
+            month = facts.adp_cisa_month
+            if month is not None:
+                self.adp_month_enriched[month] += 1
+                for field_ in facts.adp_added:
+                    self.adp_month_added[month][field_] += 1
+                if facts.adp_cisa_legacy:
+                    self.adp_month_legacy[month] += 1
 
     def consume(self, records: Iterable[dict]) -> None:
         for record in records:

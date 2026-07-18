@@ -1,0 +1,272 @@
+{
+ "generated_at": "2026-07-18T07:42:46Z",
+ "min_n": 50,
+ "months": [
+  {
+   "month": "2024-06",
+   "enriched": 8917,
+   "ssvc": 8917,
+   "cvss": 1009,
+   "cwe": 1082,
+   "legacy": 938,
+   "backfill": false
+  },
+  {
+   "month": "2024-07",
+   "enriched": 5530,
+   "ssvc": 5530,
+   "cvss": 956,
+   "cwe": 875,
+   "legacy": 483,
+   "backfill": false
+  },
+  {
+   "month": "2024-08",
+   "enriched": 5964,
+   "ssvc": 5964,
+   "cvss": 1659,
+   "cwe": 1595,
+   "legacy": 240,
+   "backfill": false
+  },
+  {
+   "month": "2024-09",
+   "enriched": 10184,
+   "ssvc": 10184,
+   "cvss": 940,
+   "cwe": 1023,
+   "legacy": 2523,
+   "backfill": false
+  },
+  {
+   "month": "2024-10",
+   "enriched": 10597,
+   "ssvc": 10597,
+   "cvss": 1421,
+   "cwe": 1309,
+   "legacy": 4138,
+   "backfill": false
+  },
+  {
+   "month": "2024-11",
+   "enriched": 8292,
+   "ssvc": 8292,
+   "cvss": 1569,
+   "cwe": 1253,
+   "legacy": 2974,
+   "backfill": false
+  },
+  {
+   "month": "2024-12",
+   "enriched": 4420,
+   "ssvc": 4420,
+   "cvss": 769,
+   "cwe": 764,
+   "legacy": 477,
+   "backfill": false
+  },
+  {
+   "month": "2025-01",
+   "enriched": 6585,
+   "ssvc": 6584,
+   "cvss": 2225,
+   "cwe": 1827,
+   "legacy": 3791,
+   "backfill": true
+  },
+  {
+   "month": "2025-02",
+   "enriched": 7298,
+   "ssvc": 7298,
+   "cvss": 2071,
+   "cwe": 2061,
+   "legacy": 4316,
+   "backfill": true
+  },
+  {
+   "month": "2025-03",
+   "enriched": 8013,
+   "ssvc": 8013,
+   "cvss": 3314,
+   "cwe": 3020,
+   "legacy": 3014,
+   "backfill": false
+  },
+  {
+   "month": "2025-04",
+   "enriched": 11556,
+   "ssvc": 11556,
+   "cvss": 3631,
+   "cwe": 3072,
+   "legacy": 7755,
+   "backfill": true
+  },
+  {
+   "month": "2025-05",
+   "enriched": 6827,
+   "ssvc": 6827,
+   "cvss": 3126,
+   "cwe": 2627,
+   "legacy": 3261,
+   "backfill": false
+  },
+  {
+   "month": "2025-06",
+   "enriched": 5245,
+   "ssvc": 5245,
+   "cvss": 1232,
+   "cwe": 1084,
+   "legacy": 1500,
+   "backfill": false
+  },
+  {
+   "month": "2025-07",
+   "enriched": 3161,
+   "ssvc": 3161,
+   "cvss": 543,
+   "cwe": 506,
+   "legacy": 119,
+   "backfill": false
+  },
+  {
+   "month": "2025-08",
+   "enriched": 3326,
+   "ssvc": 3326,
+   "cvss": 630,
+   "cwe": 547,
+   "legacy": 231,
+   "backfill": false
+  },
+  {
+   "month": "2025-09",
+   "enriched": 3162,
+   "ssvc": 3162,
+   "cvss": 569,
+   "cwe": 536,
+   "legacy": 85,
+   "backfill": false
+  },
+  {
+   "month": "2025-10",
+   "enriched": 5275,
+   "ssvc": 5275,
+   "cvss": 2476,
+   "cwe": 2159,
+   "legacy": 1630,
+   "backfill": false
+  },
+  {
+   "month": "2025-11",
+   "enriched": 2379,
+   "ssvc": 2379,
+   "cvss": 679,
+   "cwe": 594,
+   "legacy": 76,
+   "backfill": false
+  },
+  {
+   "month": "2025-12",
+   "enriched": 3807,
+   "ssvc": 3807,
+   "cvss": 874,
+   "cwe": 838,
+   "legacy": 568,
+   "backfill": false
+  },
+  {
+   "month": "2026-01",
+   "enriched": 3821,
+   "ssvc": 3821,
+   "cvss": 926,
+   "cwe": 762,
+   "legacy": 880,
+   "backfill": false
+  },
+  {
+   "month": "2026-02",
+   "enriched": 7019,
+   "ssvc": 7019,
+   "cvss": 1095,
+   "cwe": 878,
+   "legacy": 804,
+   "backfill": false
+  },
+  {
+   "month": "2026-03",
+   "enriched": 5598,
+   "ssvc": 5598,
+   "cvss": 1053,
+   "cwe": 750,
+   "legacy": 414,
+   "backfill": false
+  },
+  {
+   "month": "2026-04",
+   "enriched": 8086,
+   "ssvc": 8086,
+   "cvss": 995,
+   "cwe": 683,
+   "legacy": 292,
+   "backfill": false
+  },
+  {
+   "month": "2026-05",
+   "enriched": 7864,
+   "ssvc": 7864,
+   "cvss": 1423,
+   "cwe": 1040,
+   "legacy": 1128,
+   "backfill": false
+  },
+  {
+   "month": "2026-06",
+   "enriched": 7610,
+   "ssvc": 7610,
+   "cvss": 1578,
+   "cwe": 1236,
+   "legacy": 462,
+   "backfill": false
+  },
+  {
+   "month": "2026-07",
+   "enriched": 5001,
+   "ssvc": 5001,
+   "cvss": 980,
+   "cwe": 463,
+   "legacy": 58,
+   "backfill": false
+  }
+ ],
+ "adds": {
+  "total": 165537,
+  "ssvc": 165536,
+  "pct_ssvc": 100.0,
+  "cvss": 37743,
+  "pct_cvss": 22.8,
+  "cwe": 32584,
+  "pct_cwe": 19.7
+ },
+ "providers": [
+  {
+   "provider": "CISA-ADP",
+   "n": 165537,
+   "pct": 47.4
+  },
+  {
+   "provider": "redhat-SADP",
+   "n": 1169,
+   "pct": 0.3
+  }
+ ],
+ "headline": {
+  "total_published": 349374,
+  "total_cisa": 165537,
+  "pct_cisa": 47.4,
+  "first_month": "2024-06",
+  "last_month": "2026-07",
+  "peak_month": "2025-04",
+  "peak_enriched": 11556,
+  "sole_enricher": "CISA-ADP",
+  "backfill_month_count": 3
+ }
+}

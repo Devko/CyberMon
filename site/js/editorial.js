@@ -38,6 +38,7 @@ export const editorial = {
     { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
     { id: "naming", href: "naming.html", label: "Naming Chaos" },
     { id: "top25", href: "top25.html", label: "CWE Top 25" },
+    { id: "adp", href: "adp.html", label: "Vulnrichment" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -243,6 +244,21 @@ export const editorial = {
           "in the CVE corpus and the exploited (CISA KEV) cut: the official rank " +
           "of each class against the rank it actually earns, and which of the 25 " +
           "get weaponized. Rebuilt nightly.",
+        live: true,
+      },
+      {
+        id: "adp",
+        href: "adp.html",
+        num: "16",
+        label: "Vulnrichment",
+        headline: "When the scorekeeper walked off, CISA picked up the pen.",
+        blurb:
+          "As NVD's enrichment stalled through 2024, CISA's Vulnrichment " +
+          "program — the CISA-ADP container — quietly became the CVE " +
+          "record's de-facto enricher. The monthly handoff curve by the " +
+          "container's own update date, what it adds (SSVC almost always, " +
+          "CVSS and CWE as patch-ins), and the board where one agency does " +
+          "nearly all of it. Read nightly from the CVE List.",
         live: true,
       },
     ],
@@ -2059,6 +2075,114 @@ export const editorial = {
         "KEV is expected — the telling reads are the on-list classes with no KEV " +
         "entry, and the exploited classes the list ranks low. Recomputed nightly.",
     },
+
+    // --------------------------------- adp.html · 1 · hero
+    adp_handoff: {
+      num: "01",
+      kicker: "The handoff",
+      source: "CVE List V5 (MITRE) — CISA-ADP containers",
+      headline: "When the referee stopped scoring, a new hand picked up the pen.",
+      caption:
+        "Each month, the CVE records whose CISA-ADP (Vulnrichment) block was " +
+        "last stamped then — the enrichment date, deliberately not the CVE's " +
+        "birthday, because CISA back-fills legacy records by the thousand. The " +
+        "curve climbs from Vulnrichment's 2024 launch, through the very months " +
+        "NVD's own analysis pipeline had stalled. Red bars mark back-fill " +
+        "sweeps: a month CISA spent stamping a bulk batch of old CVEs rather " +
+        "than enriching fresh ones.",
+      statLabel: "Share of the published CVE corpus now carrying a CISA-ADP enrichment",
+      statNote: "{cisa} of {total} published records carry a CISA-ADP block",
+      sweepTooltip: "Back-fill sweep",
+      sweepNote:
+        "Red bars are back-fill sweep months — most of that month's " +
+        "enrichments landed on legacy CVEs (an ID reservation two or more " +
+        "years older than the enrichment), the signature of a bulk pass over " +
+        "old records rather than fresh triage.",
+      nvdContext:
+        "For scale, NVD's own analysis backlog stands at about {backlog} CVEs " +
+        "right now — the gap Vulnrichment fills.",
+      nodata: "Not enough data yet.",
+      methodology:
+        "Every published CVE record is checked for a CISA-ADP container — " +
+        "CISA's Vulnrichment program, matched by its provider shortName " +
+        "“CISA-ADP” or the stable Vulnrichment orgId. Each such record " +
+        "is bucketed by that container's own dateUpdated month — deliberately " +
+        "NOT the CVE's datePublished: CISA back-fills legacy records (a 2019 " +
+        "CVE's CISA-ADP block is stamped 2025), so a publication-date axis " +
+        "would smear a false pre-2024 signal. A month is flagged as a back-fill " +
+        "sweep (red) when it clears the volume floor and at least half its " +
+        "enrichments land on legacy CVEs — an ID vintage two or more years " +
+        "older than the enrichment year. The series starts at the first month " +
+        "clearing the floor and runs gap-filled to the latest. On the missing " +
+        "overlay: this chart deliberately does not draw NVD's 2024 analysis " +
+        "collapse as a line, because CyberMon's own NVD backlog record only " +
+        "begins at launch and there is no 2024 NVD flow to chart honestly. " +
+        "NVD's documented slowdown is described here in prose, and the live " +
+        "backlog figure shown for scale is read client-side from the current " +
+        "nvd_decay.json — context, never a fabricated trend. Counts are of the " +
+        "cvelistV5 corpus; the CVE List is the source of truth.",
+    },
+
+    // --------------------------------- adp.html · 2
+    adp_adds: {
+      num: "02",
+      kicker: "What it adds",
+      source: "CVE List V5 (MITRE) — CISA-ADP containers",
+      headline: "Vulnrichment speaks in decisions, not just scores.",
+      caption:
+        "Of the records CISA enriched, the share carrying each machine-readable " +
+        "addition. An SSVC decision — CISA's stakeholder-specific exploitation " +
+        "call — rides on nearly every one; a CVSS score and a CWE weakness " +
+        "class are selective patch-ins, added where the CNA left the field " +
+        "blank. A record can carry all three, so the bars are independent and " +
+        "never sum to a hundred.",
+      labelSsvc: "SSVC decision",
+      labelCvss: "CVSS score",
+      labelCwe: "CWE class",
+      yAxis: "share of CISA-ADP records",
+      nodata: "Not enough data yet.",
+      methodology:
+        "For every published record carrying a CISA-ADP container, three checks " +
+        "against that container: an SSVC decision (a metrics entry whose " +
+        "“other” block has type “ssvc”), a CVSS base score " +
+        "(any CVSS version in its metrics), and a CWE (any problemTypes cweId). " +
+        "Each bar is the share of CISA-ADP records carrying that field; a record " +
+        "can carry all three, so the bars are independent and do not sum to 100. " +
+        "The denominator is every published record with a CISA-ADP block, " +
+        "whether or not its container is dated.",
+    },
+
+    // --------------------------------- adp.html · 3
+    adp_providers: {
+      num: "03",
+      kicker: "The sole enricher",
+      source: "CVE List V5 (MITRE) — ADP containers",
+      headline: "One agency does almost all of it.",
+      caption:
+        "Every organization that publishes as an Authorized Data Publisher " +
+        "(ADP) — a second, non-CNA container bolted onto the CVE record — " +
+        "ranked by how many records it actually enriches: where it added an " +
+        "SSVC decision, a CVSS score, or a CWE, not just a reference tag. The " +
+        "board is short and lopsided: CISA-ADP does the substantive work, " +
+        "while the CVE Program's own root container rides on most records but " +
+        "enriches none, so it doesn't appear. Ask “is anyone but CISA an " +
+        "ADP?” and the record answers: effectively, no.",
+      statTemplate: "{shown} ADP publishers · CISA-ADP on {pct} of the published corpus",
+      colProvider: "Publisher",
+      colRecords: "records",
+      colShare: "% of corpus",
+      nodata: "Not enough data yet.",
+      methodology:
+        "Each published record's ADP containers are read for their provider " +
+        "shortName; a publisher scores a record only when its container added " +
+        "substantive enrichment — an SSVC decision, a CVSS score, or a CWE, " +
+        "not merely reference tags. Share is of all published records in the " +
+        "cvelistV5 corpus. ADP is the CVE v5 mechanism for a third party to " +
+        "enrich a record it did not assign; the CVE Program's own root " +
+        "container rides on most records but adds only references, so it is " +
+        "not counted here — in practice CISA-ADP is the only substantive " +
+        "enricher, which is the whole point of the board.",
+    },
   },
 
   footer: {
@@ -2136,6 +2260,7 @@ export const editorial = {
       changelog: "CISA KEV catalog · Internet Archive Wayback Machine",
       naming: "MITRE ATT&CK®",
       top25: "CVE List V5 (MITRE) · CWE Top 25 (MITRE)",
+      adp: "CVE List V5 (MITRE)",
     },
   },
 };

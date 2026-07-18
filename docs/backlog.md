@@ -1,11 +1,11 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the fifteen that exist today
+Candidate monitoring modules, beyond the sixteen that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
-15 CWE Top 25 — all live).
+15 CWE Top 25, 16 Vulnrichment — all live).
 
 ## Fresh candidates — probed 2026-07-18
 
@@ -13,7 +13,15 @@ Six ideas probed live this round (every endpoint fetched, not taken from
 docs). Four land as new modules — two with a thesis the data forced us to
 sharpen; one folds into an existing module instead of duplicating it.
 
-### The Vulnrichment handoff (ADP enrichment coverage)
+### The Vulnrichment handoff (ADP enrichment coverage) — SHIPPED as module 16
+Live as **16 · Vulnrichment** ([adp.html](../site/adp.html)). Ships the
+monthly CISA-ADP enrichment curve (bucketed by the container's own
+`dateUpdated`, not the CVE publish date — CISA back-fills legacy records),
+the SSVC/CVSS/CWE add-shares, and the sole-enricher board. The
+NVD-2024-collapse overlay was dropped: the site's own NVD history starts at
+launch, so there's no 2024 flow to chart honestly — NVD's slowdown is prose,
+the live backlog is client-side scale context. See `pipeline/adp_metrics.py`
+and data-contracts.md. Original candidate note:
 - **Thesis:** when NVD's analysis pipeline stalled in 2024, CISA's
   Vulnrichment program quietly became the de-facto enricher of the CVE
   record — here is the handoff, month by month, against the curve of NVD's

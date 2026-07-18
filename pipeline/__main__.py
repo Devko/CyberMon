@@ -27,7 +27,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (attack_metrics, breach_metrics, calendar_metrics,
+from . import (adp_metrics, attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, cwe_top25_data,
                epss_report_metrics, extortion_metrics, guards_metrics,
                history, hygiene_metrics, kev_changelog, kev_metrics,
@@ -370,6 +370,13 @@ def run(args: argparse.Namespace) -> int:
             calendar_metrics.build_cve_calendar(
                 agg, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
+        # Vulnrichment / CISA-ADP handoff: reads the same streaming pass's
+        # ADP tallies (agg) — no separate fetch. Tiny fixture corpus needs
+        # the month floor dropped to 1.
+        "adp_coverage.json":
+            adp_metrics.build_adp_coverage(
+                agg, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)
@@ -475,6 +482,10 @@ def run(args: argparse.Namespace) -> int:
         "official_year": outputs["cwe_top25.json"]["official_year"],
         "list_count": len(outputs["cwe_top25.json"]["official_years"]),
     }
+    # Vulnrichment handoff rides the corpus pass (no separate fetch), so its
+    # source stamp is the run's generation time plus the CISA-carrier count.
+    outputs["meta.json"]["sources"]["adp"] = {
+        "fetched_at": generated_at, "cisa_records": agg.adp_cisa_total}
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

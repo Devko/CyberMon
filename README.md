@@ -247,6 +247,22 @@ Top-25 formula is itself derived from NVD CVEs joined to CISA KEV, so it is
 not an independent oracle — the **divergence** between the published rank and
 raw prevalence is the story, and the measured window is stated explicitly.
 
+### 16 · Vulnrichment — [adp.html](https://devko.github.io/CyberMon/adp.html) (live)
+
+*When the scorekeeper walked off, CISA picked up the pen.* As NVD's analysis
+pipeline stalled through 2024, CISA's Vulnrichment program — the `CISA-ADP`
+container bolted onto the CVE record — quietly became the record's de-facto
+enricher. Three charts over the `containers.adp[]` blocks the CVE-corpus pass
+already parses (no new fetch): the monthly enrichment curve bucketed by the
+CISA-ADP container's own `dateUpdated` (NOT the CVE's publish date, because
+CISA back-fills legacy records — a 2019 CVE's block is stamped 2025; back-fill
+sweep months are flagged), what the enrichment adds (an SSVC decision on
+nearly every record, CVSS and CWE as selective patch-ins), and the
+sole-enricher board (CISA-ADP does the substantive work; the CVE Program root
+adds only reference tags). No NVD overlay: CyberMon's own NVD history begins at
+launch, so there is no 2024 NVD flow to chart — the slowdown is prose, and the
+live backlog is read client-side for scale, never a fabricated trend.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the
