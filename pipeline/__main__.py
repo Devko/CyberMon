@@ -28,11 +28,11 @@ from pathlib import Path
 from typing import Iterator
 
 from . import (attack_metrics, breach_metrics, calendar_metrics,
-               concentration_metrics, contracts, epss_report_metrics,
-               extortion_metrics, guards_metrics, history, hygiene_metrics,
-               kev_changelog, kev_metrics, market_metrics, metrics,
-               naming_metrics, nvd_throughput, quality_metrics,
-               rescore_tracker)
+               concentration_metrics, contracts, cwe_top25_data,
+               epss_report_metrics, extortion_metrics, guards_metrics,
+               history, hygiene_metrics, kev_changelog, kev_metrics,
+               market_metrics, metrics, naming_metrics, nvd_throughput,
+               quality_metrics, rescore_tracker, top25_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -341,6 +341,14 @@ def run(args: argparse.Namespace) -> int:
             quality_metrics.build_cwe_distribution(
                 agg, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
+        # CWE Top 25 vs reality: the latest official MITRE Top-25 (static,
+        # committed in cwe_top25_data) against measured first-listed-CWE
+        # prevalence + the KEV-exploited cut, both read from the shared agg.
+        "cwe_top25.json":
+            top25_metrics.build_cwe_top25(
+                agg, generated_at,
+                official_lists=cwe_top25_data.OFFICIAL,
+                **({"min_n": 1} if args.offline_fixtures else {})),
         "kev_ransomware.json":
             kev_metrics.build_kev_ransomware(
                 kev.entries, generated_at,
@@ -459,6 +467,14 @@ def run(args: argparse.Namespace) -> int:
     outputs["meta.json"]["sources"]["rescores"] = rescore_source
     outputs["meta.json"]["sources"]["kev_changelog"] = changelog_source
     outputs["meta.json"]["sources"]["naming"] = naming_source
+    # CWE Top 25 reads the shared agg (no run_stage), so its meta source is
+    # built here from the emitted object — the newest committed official year
+    # and how many yearly lists ship in cwe_top25_data.
+    outputs["meta.json"]["sources"]["top25"] = {
+        "fetched_at": generated_at,
+        "official_year": outputs["cwe_top25.json"]["official_year"],
+        "list_count": len(outputs["cwe_top25.json"]["official_years"]),
+    }
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

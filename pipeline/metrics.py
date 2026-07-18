@@ -348,6 +348,11 @@ class Aggregator:
         # chart 8 (bug-class inertia): year -> Counter of first-listed CWE
         # per CWE-tagged published record
         self.cwe_year_counts: dict[int, Counter[str]] = defaultdict(Counter)
+        # CWE Top 25 module (top25_metrics.py): first-listed CWE tally over
+        # KEV-listed published records only — the "exploited" cut set against
+        # measured prevalence. Flat (not per-year): the KEV set is small and
+        # the comparison is a single recent-window snapshot, not a trend.
+        self.kev_cwe_counts: Counter[str] = Counter()
         # CVE Calendar module (calendar_metrics.py), published records only:
         # publication year -> Counter of ID ages in years (publication year
         # minus the CVE ID's year prefix, negatives clamped to 0), plus the
@@ -422,6 +427,8 @@ class Aggregator:
             self.quality_missing[facts.year]["cwe"] += 1
         else:
             self.cwe_year_counts[facts.year][facts.cwe] += 1
+            if facts.cve_id in self.kev_ids:
+                self.kev_cwe_counts[facts.cwe] += 1
         if not facts.has_affected:
             self.quality_missing[facts.year]["affected"] += 1
 
