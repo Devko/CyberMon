@@ -71,6 +71,9 @@ import { render as renderAdpProviders } from "./charts/adp_providers.js";
 import { render as renderEpssvolGap } from "./charts/epssvol_gap.js";
 import { render as renderEpssvolChurn } from "./charts/epssvol_churn.js";
 import { render as renderEpssvolMovers } from "./charts/epssvol_movers.js";
+import { render as renderRosterSize } from "./charts/roster_size.js";
+import { render as renderRosterFlux } from "./charts/roster_flux.js";
+import { render as renderRosterMix } from "./charts/roster_mix.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -217,6 +220,14 @@ const MODULES = {
       { id: "epssvol_gap", render: renderEpssvolGap },
       { id: "epssvol_churn", render: renderEpssvolChurn },
       { id: "epssvol_movers", render: renderEpssvolMovers, table: true },
+    ],
+  },
+  roster: {
+    file: "data/cna_roster.json",
+    sections: [
+      { id: "roster_size", render: renderRosterSize },
+      { id: "roster_flux", render: renderRosterFlux },
+      { id: "roster_mix", render: renderRosterMix },
     ],
   },
 };

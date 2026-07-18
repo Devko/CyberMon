@@ -28,12 +28,13 @@ from pathlib import Path
 from typing import Iterator
 
 from . import (adp_metrics, attack_metrics, breach_metrics, calendar_metrics,
-               concentration_metrics, contracts, cwe_top25_data,
+               cna_roster, concentration_metrics, contracts, cwe_top25_data,
                epss_report_metrics, epss_volatility, extortion_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
                kev_metrics, market_metrics, metrics, naming_metrics,
                nvd_throughput, quality_metrics, rescore_tracker,
                top25_metrics)
+from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -275,6 +276,7 @@ def run(args: argparse.Namespace) -> int:
         kev = load_kev_file(FIXTURES_DIR / "kev.json")
         hibp = load_hibp_file(FIXTURES_DIR / "hibp_breaches.json")
         ransomwhere = load_ransomwhere_file(FIXTURES_DIR / "ransomwhere.json")
+        roster = load_roster_file(FIXTURES_DIR / "cna_roster.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -290,6 +292,9 @@ def run(args: argparse.Namespace) -> int:
         ransomwhere = fetch_ransomwhere()
         print(f"  Ransomwhere: {ransomwhere.address_count} addresses, "
               f"{ransomwhere.tx_count} transactions")
+        print("fetching CVE.org organization roster ...")
+        roster = fetch_roster()
+        print(f"  CNA roster: {roster.org_count} organizations")
     nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
@@ -463,6 +468,15 @@ def run(args: argparse.Namespace) -> int:
             offline_fixtures=args.offline_fixtures,
             backfill_batch=args.kev_changelog_backfill)
     outputs["kev_changelog.json"] = changelog
+    # CNA Roster History: diff tonight's CVE.org org roster against the
+    # committed state; onboardings/departures/scope changes append to a
+    # committed CSV (an original dataset — the federation keeps no history).
+    # No skip flag (the roster fetch it rides on has none either); the
+    # history writes are deferred to after validation, like nvd_backlog.
+    roster_obj, roster_source, roster_pending = cna_roster.run_stage(
+        args.out, generated_at, snapshot=roster,
+        offline_fixtures=args.offline_fixtures)
+    outputs["cna_roster.json"] = roster_obj
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -501,6 +515,7 @@ def run(args: argparse.Namespace) -> int:
     outputs["meta.json"]["sources"]["adp"] = {
         "fetched_at": generated_at, "cisa_records": agg.adp_cisa_total}
     outputs["meta.json"]["sources"]["epssvol"] = epssvol_source
+    outputs["meta.json"]["sources"]["roster"] = roster_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
@@ -527,6 +542,7 @@ def run(args: argparse.Namespace) -> int:
     # deferred discipline: the irreplaceable per-CVE EPSS churn record and
     # its diffing state travel in one validated commit.
     epss_volatility.persist(args.out, epssvol_rows, epssvol_state)
+    cna_roster.persist(args.out, roster_pending)
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")

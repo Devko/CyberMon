@@ -289,6 +289,16 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.epssvol.score_date", DATE_RE)
         _check_int(_get(ev, "days_observed", "meta.sources.epssvol"),
                    "meta.sources.epssvol.days_observed")
+    # the CNA Roster History stage itself always emits it. ``events_total`` =
+    # rows on the committed churn log after tonight's append.
+    if "roster" in src:
+        rt = src["roster"]
+        _check_str(_get(rt, "fetched_at", "meta.sources.roster"),
+                   "meta.sources.roster.fetched_at", ISO_UTC_RE)
+        _check_int(_get(rt, "org_count", "meta.sources.roster"),
+                   "meta.sources.roster.org_count", minimum=1)
+        _check_int(_get(rt, "events_total", "meta.sources.roster"),
+                   "meta.sources.roster.events_total")
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -587,3 +597,6 @@ VALIDATORS.update(adp_contracts.VALIDATORS)
 from . import epssvol_contracts  # noqa: E402
 
 VALIDATORS.update(epssvol_contracts.VALIDATORS)
+from . import roster_contracts  # noqa: E402
+
+VALIDATORS.update(roster_contracts.VALIDATORS)

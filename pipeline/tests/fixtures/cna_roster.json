@@ -1,0 +1,146 @@
+[
+  {
+    "shortName": "adobe",
+    "cnaID": "CNA-2009-0001",
+    "organizationName": "Adobe Systems Incorporated",
+    "scope": "Adobe issues only.",
+    "country": "USA",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": false,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["Vendor"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}]
+    }
+  },
+  {
+    "shortName": "microsoft",
+    "cnaID": "CNA-2015-0001",
+    "organizationName": "Microsoft Corporation",
+    "scope": "Microsoft issues only.",
+    "country": "USA",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": false,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["Vendor"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}]
+    }
+  },
+  {
+    "shortName": "redhat",
+    "cnaID": "CNA-2011-0002",
+    "organizationName": "Red Hat, Inc.",
+    "scope": "All Red Hat products and the open-source components they ship.",
+    "country": "USA",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": true,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["Vendor", "Open Source"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}, {"helpText": "", "role": "Root"}]
+    }
+  },
+  {
+    "shortName": "siemens",
+    "cnaID": "CNA-2016-0011",
+    "organizationName": "Siemens AG",
+    "scope": "Siemens products.",
+    "country": "Germany",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": false,
+      "root": {"shortName": "icscert", "organizationName": "CISA ICS"},
+      "type": ["Vendor"],
+      "TLR": {"shortName": "CISA", "organizationName": "Cybersecurity and Infrastructure Security Agency"},
+      "roles": [{"helpText": "", "role": "CNA"}]
+    }
+  },
+  {
+    "shortName": "jpcert",
+    "cnaID": "CNA-2016-0012",
+    "organizationName": "JPCERT/CC",
+    "scope": "Vulnerabilities coordinated through JPCERT/CC.",
+    "country": "Japan",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": true,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["CERT"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}, {"helpText": "", "role": "Root"}]
+    }
+  },
+  {
+    "shortName": "python",
+    "cnaID": "CNA-2020-0031",
+    "organizationName": "Python Software Foundation",
+    "scope": "The CPython interpreter, the standard library, and the pip installer.",
+    "country": "USA",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": false,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["Open Source"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}]
+    }
+  },
+  {
+    "shortName": "hackerone",
+    "cnaID": "CNA-2020-0044",
+    "organizationName": "HackerOne, Inc.",
+    "scope": "Vulnerabilities reported through the HackerOne platform for participating programs.",
+    "country": "USA",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": false,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["Bug Bounty Provider"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}]
+    }
+  },
+  {
+    "shortName": "curl",
+    "cnaID": "CNA-2024-0090",
+    "organizationName": "curl",
+    "scope": "The curl command-line tool and libcurl.",
+    "country": "Sweden",
+    "contact": [],
+    "disclosurePolicy": [],
+    "securityAdvisories": {"alerts": [], "advisories": []},
+    "resources": [],
+    "CNA": {
+      "isRoot": false,
+      "root": {"shortName": "n/a", "organizationName": "n/a"},
+      "type": ["Open Source"],
+      "TLR": {"shortName": "mitre", "organizationName": "MITRE Corporation"},
+      "roles": [{"helpText": "", "role": "CNA"}]
+    }
+  }
+]
