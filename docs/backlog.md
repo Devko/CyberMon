@@ -1,11 +1,12 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the seventeen that exist today
+Candidate monitoring modules, beyond the eighteen that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
-15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility — all live).
+15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster —
+all live).
 
 ## Fresh candidates — probed 2026-07-18
 
@@ -174,7 +175,19 @@ each accumulated dataset is irreplaceable by construction (covered by
 the weekly data-backup tags). Shipping now as modules: the KEV
 changelog, the silent rescoring tracker, and NVD throughput.
 
-### CNA roster history
+### CNA roster history — SHIPPED as module 18
+Live as **18 · CNA Roster** ([roster.html](../site/roster.html)). Shipped the
+snapshot-collector: a nightly diff of the CVE Program's published org roster
+into a committed churn log (onboarded / departed / scope_changed) plus a size
+series, alongside the current composition by type, top-level root, reporting
+root and country — the one section that is real from day one. The churn record
+starts at first deploy because no accreditation date is published (onboarding =
+first observed in our snapshots), so the size and flux charts are launch-thin
+by design and say so, exactly like Silent Rescores. Real source: the roster
+that powers cve.org's List of Partners
+(`raw.githubusercontent.com/CVEProject/cve-website/dev/src/assets/data/CNAsList.json`,
+~530 orgs). See `pipeline/fetch_cna_roster.py`, `pipeline/cna_roster.py` and
+data-contracts.md. Original candidate note:
 - **Thesis:** the CVE federation's true growth and churn — accreditation
   dates aren't published as history.
 - **Signals:** onboardings/departures per quarter, scope changes,

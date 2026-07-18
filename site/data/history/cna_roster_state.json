@@ -1,0 +1,3193 @@
+{
+ "baseline_date": "2026-07-18",
+ "last_observed": "2026-07-18",
+ "orgs": {
+  "2N": {
+   "country": "Czech Republic",
+   "org": "2N Telekomunikace a.s.",
+   "scope": "1d1efabbaa23",
+   "type": "Vendor"
+  },
+  "42Gears": {
+   "country": "India",
+   "org": "42Gears Mobility Systems Pvt Ltd",
+   "scope": "69aaab914b17",
+   "type": "Vendor"
+  },
+  "9front": {
+   "country": "USA",
+   "org": "9front Systems",
+   "scope": "21e64bc69e2d",
+   "type": "Open Source"
+  },
+  "@huntr_ai": {
+   "country": "USA",
+   "org": "Protect AI (formerly huntr.dev)",
+   "scope": "ab2fa63b12a3",
+   "type": "Bug Bounty Provider + Open Source + Researcher"
+  },
+  "ABB": {
+   "country": "Switzerland",
+   "org": "Asea Brown Boveri Ltd. (ABB)",
+   "scope": "90c696a7fcf7",
+   "type": "Vendor"
+  },
+  "ADI": {
+   "country": "USA",
+   "org": "Analog Devices, Inc.",
+   "scope": "c124583f9aa2",
+   "type": "Vendor"
+  },
+  "AHA": {
+   "country": "USA",
+   "org": "Austin Hackers Anonymous",
+   "scope": "3643d7cf8cde",
+   "type": "Researcher"
+  },
+  "AMD": {
+   "country": "USA",
+   "org": "Advanced Micro Devices Inc.",
+   "scope": "0ce14ccab6c8",
+   "type": "Vendor"
+  },
+  "AMI": {
+   "country": "USA",
+   "org": "AMI",
+   "scope": "d1180211a178",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "AMZN": {
+   "country": "USA",
+   "org": "Amazon",
+   "scope": "830d13e0cc35",
+   "type": "Bug Bounty Provider + Open Source + Vendor"
+  },
+  "ARCON": {
+   "country": "India",
+   "org": "ARCON Techsolutions Private Limited",
+   "scope": "7fc03db75546",
+   "type": "Vendor"
+  },
+  "ASR": {
+   "country": "China",
+   "org": "ASR Microelectronics Co., Ltd.",
+   "scope": "13c95709fab6",
+   "type": "Vendor"
+  },
+  "ASRG": {
+   "country": "USA",
+   "org": "Automotive Security Research Group (ASRG)",
+   "scope": "4bb3e06c3e95",
+   "type": "Researcher"
+  },
+  "ASUS": {
+   "country": "Taiwan",
+   "org": "ASUSTeK Computer Incorporation",
+   "scope": "78ed483cfbf9",
+   "type": "Vendor"
+  },
+  "ASUSTOR": {
+   "country": "Taiwan",
+   "org": "ASUSTOR, Inc.",
+   "scope": "f1f9c919776a",
+   "type": "Vendor"
+  },
+  "ATIS": {
+   "country": "Spain",
+   "org": "ATISoluciones Dise\u00f1o de Sistemas Electr\u00f3nicos, S.L.",
+   "scope": "969cdd0e87ac",
+   "type": "Vendor"
+  },
+  "Absolute": {
+   "country": "USA",
+   "org": "Absolute Software",
+   "scope": "f1ef73abc79d",
+   "type": "Vendor"
+  },
+  "Acer": {
+   "country": "Taiwan",
+   "org": "Acer Inc.",
+   "scope": "2bc59d931957",
+   "type": "Vendor"
+  },
+  "Acronis": {
+   "country": "Switzerland",
+   "org": "Acronis International GmbH",
+   "scope": "67d71e229a5c",
+   "type": "Vendor"
+  },
+  "Airlock": {
+   "country": "Switzerland",
+   "org": "Airlock by Ergon",
+   "scope": "66a217aba3a1",
+   "type": "Vendor"
+  },
+  "AlgoSec": {
+   "country": "Israel",
+   "org": "AlgoSec",
+   "scope": "afa241f24354",
+   "type": "Vendor"
+  },
+  "Alias": {
+   "country": "Spain",
+   "org": "Alias Robotics S.L.",
+   "scope": "b4d3c9d054a3",
+   "type": "Researcher + Vendor"
+  },
+  "Almaviva": {
+   "country": "Italy",
+   "org": "Almaviva S.p.A.",
+   "scope": "d2810e512ce2",
+   "type": "Hosted Service + Vendor"
+  },
+  "Altera": {
+   "country": "USA",
+   "org": "Altera",
+   "scope": "73d35a241d2f",
+   "type": "Vendor"
+  },
+  "Altium": {
+   "country": "USA",
+   "org": "Altium",
+   "scope": "40433e87c25f",
+   "type": "Vendor"
+  },
+  "Ampere": {
+   "country": "USA",
+   "org": "Ampere Computing",
+   "scope": "abf618c19f99",
+   "type": "Vendor"
+  },
+  "Anolis": {
+   "country": "China",
+   "org": "OpenAnolis",
+   "scope": "59b1dfc913f1",
+   "type": "Open Source + Vendor"
+  },
+  "Antenna": {
+   "country": "USA",
+   "org": "Antenna",
+   "scope": "77c74867ab56",
+   "type": "Open Source"
+  },
+  "AppCheck": {
+   "country": "UK",
+   "org": "AppCheck Ltd.",
+   "scope": "9c28d17efb04",
+   "type": "Researcher"
+  },
+  "Arista": {
+   "country": "USA",
+   "org": "Arista Networks, Inc.",
+   "scope": "9c9b8ec7116a",
+   "type": "Vendor"
+  },
+  "Arm": {
+   "country": "UK",
+   "org": "Arm Limited",
+   "scope": "5543d7c52bd3",
+   "type": "Open Source + Vendor"
+  },
+  "Armis": {
+   "country": "USA",
+   "org": "Armis, Inc.",
+   "scope": "32b3d3d0ec26",
+   "type": "Researcher + Vendor"
+  },
+  "Arteche": {
+   "country": "Spain",
+   "org": "Arteche",
+   "scope": "e11329bbe2b6",
+   "type": "Vendor"
+  },
+  "Arxscan": {
+   "country": "USA",
+   "org": "Arxscan, Inc.",
+   "scope": "deac5964a59e",
+   "type": "Vendor"
+  },
+  "Automox": {
+   "country": "USA",
+   "org": "Automox Inc.",
+   "scope": "876ecf062510",
+   "type": "Hosted Service + Vendor"
+  },
+  "Axis": {
+   "country": "Sweden",
+   "org": "Axis Communications AB",
+   "scope": "b9c2a0d0a559",
+   "type": "Vendor"
+  },
+  "AxxonSoft": {
+   "country": "Ireland",
+   "org": "AxxonSoft Limited",
+   "scope": "33b031d2f44f",
+   "type": "Hosted Service + Vendor"
+  },
+  "B.Braun": {
+   "country": "Germany",
+   "org": "B. Braun SE",
+   "scope": "b3dfe9826298",
+   "type": "Vendor"
+  },
+  "BAE": {
+   "country": "USA",
+   "org": "BAE Systems, Inc.",
+   "scope": "9bd2c678d0a9",
+   "type": "Hosted Service"
+  },
+  "BCNY": {
+   "country": "USA",
+   "org": "The Browser Company of New York",
+   "scope": "519434db135a",
+   "type": "Bug Bounty Provider + Vendor"
+  },
+  "BD": {
+   "country": "USA",
+   "org": "Becton, Dickinson and Company (BD)",
+   "scope": "6c64671a245e",
+   "type": "Vendor"
+  },
+  "BECDX": {
+   "country": "USA",
+   "org": "Beckman Coulter Diagnostics",
+   "scope": "b9ec177c8bc4",
+   "type": "Vendor"
+  },
+  "BECLS": {
+   "country": "USA",
+   "org": "Beckman Coulter Life Sciences",
+   "scope": "2ac436332589",
+   "type": "Vendor"
+  },
+  "BHV": {
+   "country": "USA",
+   "org": "Biohacking Village",
+   "scope": "65001b7f7a23",
+   "type": "Researcher"
+  },
+  "BLSOPS": {
+   "country": "USA",
+   "org": "Black Lantern Security",
+   "scope": "370f70f9ecf8",
+   "type": "Researcher"
+  },
+  "BT": {
+   "country": "USA",
+   "org": "BeyondTrust Inc.",
+   "scope": "28ada0546f84",
+   "type": "Vendor"
+  },
+  "Baidu": {
+   "country": "China",
+   "org": "Baidu, Inc.",
+   "scope": "a37cf3e605e2",
+   "type": "Open Source + Vendor"
+  },
+  "Baxter": {
+   "country": "USA",
+   "org": "Baxter Healthcare",
+   "scope": "c81febc109c7",
+   "type": "Vendor"
+  },
+  "Bitdefender": {
+   "country": "Romania",
+   "org": "Bitdefender",
+   "scope": "79ddff410410",
+   "type": "Researcher + Vendor"
+  },
+  "BlackDuck": {
+   "country": "USA",
+   "org": "Black Duck Software, Inc.",
+   "scope": "d98fe0cfc5b8",
+   "type": "Researcher + Vendor"
+  },
+  "BombadilSystems": {
+   "country": "USA",
+   "org": "Bombadil Systems LLC",
+   "scope": "95e787d57b00",
+   "type": "Researcher"
+  },
+  "Bugcrowd": {
+   "country": "USA",
+   "org": "Bugcrowd Inc.",
+   "scope": "e127790c5d5d",
+   "type": "Bug Bounty Provider + Open Source + Vendor"
+  },
+  "Bull": {
+   "country": "France",
+   "org": "Bull SAS",
+   "scope": "111e4a228a7e",
+   "type": "Vendor"
+  },
+  "ByteDance": {
+   "country": "China",
+   "org": "ByteDance, Ltd.",
+   "scope": "09472dda26ba",
+   "type": "Open Source + Vendor"
+  },
+  "CEP": {
+   "country": "USA",
+   "org": "Cepheid",
+   "scope": "3702c33bcc11",
+   "type": "Vendor"
+  },
+  "CERT-In": {
+   "country": "India",
+   "org": "Indian Computer Emergency Response Team (CERT-In)",
+   "scope": "aefed5ff9979",
+   "type": "CERT"
+  },
+  "CERT-PL": {
+   "country": "Poland",
+   "org": "CERT.PL",
+   "scope": "4a5a64339ec6",
+   "type": "CERT"
+  },
+  "CERTVDE": {
+   "country": "Germany",
+   "org": "CERT@VDE",
+   "scope": "d00addb71365",
+   "type": "CERT"
+  },
+  "CIRCL": {
+   "country": "Luxembourg",
+   "org": "Computer Incident Response Center Luxembourg (CIRCL)",
+   "scope": "93b9752e546e",
+   "type": "CERT"
+  },
+  "CISA": {
+   "country": "USA",
+   "org": "Cybersecurity and Infrastructure Security Agency (CISA)",
+   "scope": "5d548df9b8fe",
+   "type": "N/A"
+  },
+  "CODRA": {
+   "country": "France",
+   "org": "CODRA",
+   "scope": "1ab36acb921f",
+   "type": "Vendor"
+  },
+  "CPANSec": {
+   "country": "Canada",
+   "org": "CPAN Security Group",
+   "scope": "c852d3c9e4e8",
+   "type": "Open Source"
+  },
+  "CSA": {
+   "country": "Singapore",
+   "org": "Cyber Security Agency of Singapore",
+   "scope": "a32484cefabf",
+   "type": "CERT"
+  },
+  "CSAI": {
+   "country": "USA",
+   "org": "Cloud Security Alliance",
+   "scope": "d8818cb47fd1",
+   "type": "Vendor"
+  },
+  "CSW": {
+   "country": "India",
+   "org": "Cyber Security Works Pvt. Ltd.",
+   "scope": "cbe7b7c411ff",
+   "type": "Researcher"
+  },
+  "CTOne": {
+   "country": "Taiwan",
+   "org": "CTOne Inc.",
+   "scope": "c4b1ead53e8a",
+   "type": "Bug Bounty Provider + Researcher + Vendor"
+  },
+  "Caliptra": {
+   "country": "USA",
+   "org": "Caliptra Project",
+   "scope": "0259877c775c",
+   "type": "Open Source"
+  },
+  "Canon": {
+   "country": "Japan",
+   "org": "Canon Inc.",
+   "scope": "6dd7e0b04ddb",
+   "type": "Vendor"
+  },
+  "Canon_EMEA": {
+   "country": "UK",
+   "org": "Canon EMEA",
+   "scope": "535815cf887c",
+   "type": "Vendor"
+  },
+  "Canva": {
+   "country": "Australia",
+   "org": "Canva",
+   "scope": "bd2806f23321",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "Carrier": {
+   "country": "USA",
+   "org": "Carrier Global Corporation",
+   "scope": "2d1df933fe81",
+   "type": "Hosted Service + Vendor"
+  },
+  "Cato": {
+   "country": "Israel",
+   "org": "Cato Networks",
+   "scope": "5d215c069416",
+   "type": "Researcher + Vendor"
+  },
+  "Censys": {
+   "country": "USA",
+   "org": "Censys",
+   "scope": "f26d7cff478c",
+   "type": "Researcher + Vendor"
+  },
+  "Centreon": {
+   "country": "France",
+   "org": "Centreon",
+   "scope": "d6d2c6bac5d7",
+   "type": "Open Source + Vendor"
+  },
+  "Checkmarx": {
+   "country": "Israel",
+   "org": "Checkmarx",
+   "scope": "d35051fcf6c1",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "Checkmk": {
+   "country": "Germany",
+   "org": "Checkmk GmbH",
+   "scope": "472e6f908a4e",
+   "type": "Open Source + Vendor"
+  },
+  "Chrome": {
+   "country": "USA",
+   "org": "Chrome",
+   "scope": "f2585cac3092",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "ChromeOS": {
+   "country": "USA",
+   "org": "ChromeOS Project",
+   "scope": "28def8ae1bd8",
+   "type": "Bug Bounty Provider + Vendor"
+  },
+  "Ciena": {
+   "country": "USA",
+   "org": "Ciena Corporation",
+   "scope": "c5bacd99c3a1",
+   "type": "Vendor"
+  },
+  "Citrix": {
+   "country": "USA",
+   "org": "Citrix Systems, Inc.",
+   "scope": "6d03a74de055",
+   "type": "Vendor"
+  },
+  "ClickHouse": {
+   "country": "USA",
+   "org": "ClickHouse, Inc.",
+   "scope": "640b6ea6916c",
+   "type": "Open Source + Vendor"
+  },
+  "Commvault": {
+   "country": "USA",
+   "org": "Commvault Systems Inc.",
+   "scope": "c5eda5362255",
+   "type": "Hosted Service + Vendor"
+  },
+  "ConcreteCMS": {
+   "country": "USA",
+   "org": "Concrete CMS",
+   "scope": "2a9566957ae7",
+   "type": "Open Source"
+  },
+  "ConnectWise": {
+   "country": "USA",
+   "org": "ConnectWise LLC",
+   "scope": "0065d965ab6e",
+   "type": "Researcher + Vendor"
+  },
+  "CoolKit": {
+   "country": "China",
+   "org": "SHENZHEN CoolKit Technology CO., LTD.",
+   "scope": "13211dc1fd20",
+   "type": "Vendor"
+  },
+  "Crafter_CMS": {
+   "country": "USA",
+   "org": "Crafter CMS",
+   "scope": "6ac237996121",
+   "type": "Open Source + Vendor"
+  },
+  "Crestron": {
+   "country": "USA",
+   "org": "Crestron Electronics, Inc.",
+   "scope": "93c28ff84cd8",
+   "type": "Vendor"
+  },
+  "Cribl": {
+   "country": "USA",
+   "org": "Cribl, Inc.",
+   "scope": "507e00a9d500",
+   "type": "Vendor"
+  },
+  "CrowdStrike": {
+   "country": "USA",
+   "org": "CrowdStrike Holdings, Inc.",
+   "scope": "3baa5a8befcc",
+   "type": "Vendor"
+  },
+  "CyberArk": {
+   "country": "Israel",
+   "org": "CyberArk Labs",
+   "scope": "6379561e7381",
+   "type": "Researcher + Vendor"
+  },
+  "CyberDanube": {
+   "country": "Austria",
+   "org": "CyberDanube",
+   "scope": "308a65a0f7f6",
+   "type": "Researcher + Vendor"
+  },
+  "Cynet": {
+   "country": "USA",
+   "org": "Cynet Security Inc.",
+   "scope": "9ae08ceafa64",
+   "type": "Vendor"
+  },
+  "Cytiva": {
+   "country": "USA",
+   "org": "Cytiva",
+   "scope": "9a7bdb357a94",
+   "type": "Vendor"
+  },
+  "DEVOLUTIONS": {
+   "country": "Canada",
+   "org": "Devolutions Inc.",
+   "scope": "816c962e9c31",
+   "type": "Open Source + Vendor"
+  },
+  "DHIS2": {
+   "country": "Norway",
+   "org": "The HISP Centre at the University of Oslo",
+   "scope": "fb2aebabc4f1",
+   "type": "Open Source + Vendor"
+  },
+  "DIVD": {
+   "country": "Netherlands",
+   "org": "Dutch Institute for Vulnerability Disclosure (DIVD)",
+   "scope": "b9f819564130",
+   "type": "Researcher"
+  },
+  "DSF": {
+   "country": "USA",
+   "org": "Django Software Foundation",
+   "scope": "5638d250b34a",
+   "type": "Open Source + Vendor"
+  },
+  "DTEX": {
+   "country": "USA",
+   "org": "DTEX Systems, Inc.",
+   "scope": "53504ee504d8",
+   "type": "Hosted Service + Vendor"
+  },
+  "Danfoss": {
+   "country": "Denmark",
+   "org": "Danfoss",
+   "scope": "c24211717c52",
+   "type": "Vendor"
+  },
+  "Dassault_Systemes": {
+   "country": "France",
+   "org": "Dassault Syst\u00e8mes",
+   "scope": "d73634fd8db7",
+   "type": "Vendor"
+  },
+  "Delinea": {
+   "country": "USA",
+   "org": "Delinea, Inc.",
+   "scope": "d8fac4a1524b",
+   "type": "Hosted Service + Researcher + Vendor"
+  },
+  "Deltaww": {
+   "country": "Taiwan",
+   "org": "Delta Electronics, Inc.",
+   "scope": "69a10c97bc75",
+   "type": "Vendor"
+  },
+  "DevCycle": {
+   "country": "Canada",
+   "org": "DevCycle",
+   "scope": "9c9da3bcbb1b",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "Dfinity": {
+   "country": "Switzerland",
+   "org": "DFINITY Foundation",
+   "scope": "ca293d767663",
+   "type": "Open Source + Vendor"
+  },
+  "Digi": {
+   "country": "USA",
+   "org": "Digi International Inc.",
+   "scope": "e9b0b7f3cbb7",
+   "type": "Vendor"
+  },
+  "Docker": {
+   "country": "USA",
+   "org": "Docker Inc.",
+   "scope": "3bdff23ffcb6",
+   "type": "Open Source + Vendor"
+  },
+  "Document_Fdn.": {
+   "country": "Germany",
+   "org": "Document Foundation, The",
+   "scope": "ce92c7da5604",
+   "type": "Open Source + Vendor"
+  },
+  "Dragos": {
+   "country": "USA",
+   "org": "Dragos, Inc.",
+   "scope": "e28fae52c830",
+   "type": "Researcher + Vendor"
+  },
+  "Dremio": {
+   "country": "USA",
+   "org": "Dremio Corporation",
+   "scope": "2b19c005fb7e",
+   "type": "Open Source + Vendor"
+  },
+  "DualVS": {
+   "country": "USA",
+   "org": "Dual Vipers LLC",
+   "scope": "a8d420701a72",
+   "type": "Hosted Service + Open Source + Researcher + Vendor"
+  },
+  "EA": {
+   "country": "USA",
+   "org": "Electronic Arts, Inc.",
+   "scope": "87e170982a59",
+   "type": "Vendor"
+  },
+  "EDB": {
+   "country": "USA",
+   "org": "EnterpriseDB Corporation",
+   "scope": "52a3867132c9",
+   "type": "Open Source + Vendor"
+  },
+  "EEF": {
+   "country": "USA",
+   "org": "Erlang Ecosystem Foundation",
+   "scope": "d11849e9619c",
+   "type": "Consortium + Open Source"
+  },
+  "ELAN": {
+   "country": "Taiwan",
+   "org": "ELAN Microelectronics Corp.",
+   "scope": "ffa928833708",
+   "type": "Vendor"
+  },
+  "ENISA": {
+   "country": "Greece",
+   "org": "EU Agency for Cybersecurity (ENISA)",
+   "scope": "24c338892a35",
+   "type": "Consortium"
+  },
+  "ERIC": {
+   "country": "Sweden",
+   "org": "Ericsson",
+   "scope": "c4109d0d5ad0",
+   "type": "Vendor"
+  },
+  "ESET": {
+   "country": "Slovak Republic",
+   "org": "ESET, spol. s r.o.",
+   "scope": "5f57778fce0b",
+   "type": "Vendor"
+  },
+  "Eaton": {
+   "country": "Ireland",
+   "org": "Eaton",
+   "scope": "d41c02b08ae8",
+   "type": "Vendor"
+  },
+  "Echo": {
+   "country": "Israel",
+   "org": "Echo Software Ltd.",
+   "scope": "8d00f01f47a9",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "Edgewatch": {
+   "country": "Spain",
+   "org": "Edgewatch Security Intelligence",
+   "scope": "d265247a3f76",
+   "type": "Hosted Service + Researcher"
+  },
+  "Entrust": {
+   "country": "USA",
+   "org": "Entrust Corporation",
+   "scope": "95d31d1bbc72",
+   "type": "Hosted Service + Vendor"
+  },
+  "Esri": {
+   "country": "USA",
+   "org": "Environmental Systems Research Institute, Inc.",
+   "scope": "e58cca781340",
+   "type": "Vendor"
+  },
+  "Everpure": {
+   "country": "USA",
+   "org": "Everpure, Inc.",
+   "scope": "b958cf3ce09e",
+   "type": "Vendor"
+  },
+  "ExtremeNetworks": {
+   "country": "USA",
+   "org": "Extreme Networks, Inc.",
+   "scope": "2a630cf52d70",
+   "type": "Vendor"
+  },
+  "F5": {
+   "country": "USA",
+   "org": "F5, Inc.",
+   "scope": "9cde41d503b4",
+   "type": "Open Source + Vendor"
+  },
+  "FB": {
+   "country": "Japan",
+   "org": "Fujifilm Business Innovation Corp.",
+   "scope": "73619448c8e1",
+   "type": "Vendor"
+  },
+  "FERMAX": {
+   "country": "Spain",
+   "org": "Fermax Technologies SLU",
+   "scope": "2c5861980235",
+   "type": "Vendor"
+  },
+  "FSI": {
+   "country": "South Korea",
+   "org": "Financial Security Institute (FSI)",
+   "scope": "dc9c31c756d0",
+   "type": "Bug Bounty Provider + CERT + Researcher"
+  },
+  "FSOFT": {
+   "country": "Vietnam",
+   "org": "FPT Software Co., Ltd.",
+   "scope": "a925d2cecead",
+   "type": "Researcher + Vendor"
+  },
+  "FTI": {
+   "country": "Germany",
+   "org": "Fsas Technologies",
+   "scope": "795af1f56be7",
+   "type": "Vendor"
+  },
+  "FULL": {
+   "country": "Brazil",
+   "org": "FULL INTERNET",
+   "scope": "f1531dd5ceaf",
+   "type": "Bug Bounty Provider + Hosted Service + Researcher + Vendor"
+  },
+  "Fidelis": {
+   "country": "USA",
+   "org": "Fidelis Security, LLC",
+   "scope": "9ddaefb78f14",
+   "type": "Vendor"
+  },
+  "Fluid_Attacks": {
+   "country": "Colombia",
+   "org": "Fluid Attacks",
+   "scope": "08569b9ec1f0",
+   "type": "Researcher"
+  },
+  "Forescout": {
+   "country": "USA",
+   "org": "Forescout Technologies",
+   "scope": "f9e87745e001",
+   "type": "Researcher + Vendor"
+  },
+  "Fortra": {
+   "country": "USA",
+   "org": "Fortra, LLC",
+   "scope": "c20758ea8318",
+   "type": "Researcher + Vendor"
+  },
+  "Foxit": {
+   "country": "USA",
+   "org": "Foxit Software Incorporated",
+   "scope": "80527038c1db",
+   "type": "Vendor"
+  },
+  "GEN": {
+   "country": "USA",
+   "org": "Gen Digital Inc.",
+   "scope": "e9941090e0b7",
+   "type": "Vendor"
+  },
+  "GE_Healthcare": {
+   "country": "USA",
+   "org": "GE Healthcare",
+   "scope": "6c4a64fb6836",
+   "type": "Vendor"
+  },
+  "GE_Vernova": {
+   "country": "USA",
+   "org": "GE Vernova",
+   "scope": "d59bde0a6b94",
+   "type": "Vendor"
+  },
+  "GRAFANA": {
+   "country": "USA",
+   "org": "Grafana Labs",
+   "scope": "499577634030",
+   "type": "Open Source + Vendor"
+  },
+  "GV": {
+   "country": "Taiwan",
+   "org": "GeoVision Inc.",
+   "scope": "dfe890553888",
+   "type": "Vendor"
+  },
+  "Gallagher": {
+   "country": "New Zealand",
+   "org": "Gallagher Group Ltd.",
+   "scope": "ceb4a3298376",
+   "type": "Vendor"
+  },
+  "GandC": {
+   "country": "USA",
+   "org": "Glyph & Cog, LLC",
+   "scope": "9a847aaad14a",
+   "type": "Open Source + Vendor"
+  },
+  "Genetec": {
+   "country": "Canada",
+   "org": "Genetec Inc.",
+   "scope": "710d938f3cf5",
+   "type": "Hosted Service + Vendor"
+  },
+  "GitHub_M": {
+   "country": "USA",
+   "org": "GitHub, Inc.",
+   "scope": "049da96d140b",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "GitHub_P": {
+   "country": "USA",
+   "org": "GitHub, Inc. (Products Only)",
+   "scope": "9941c30760d7",
+   "type": "Vendor"
+  },
+  "GitLab": {
+   "country": "USA",
+   "org": "GitLab Inc.",
+   "scope": "86695ed1ceca",
+   "type": "Researcher + Vendor"
+  },
+  "Gitea": {
+   "country": "China",
+   "org": "Gitea Limited",
+   "scope": "2c024f17a861",
+   "type": "Open Source + Vendor"
+  },
+  "Go": {
+   "country": "USA",
+   "org": "Go Project",
+   "scope": "29fd3b6dd0f1",
+   "type": "Open Source + Vendor"
+  },
+  "Google": {
+   "country": "USA",
+   "org": "Google LLC",
+   "scope": "010ff828da63",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "GoogleCloud": {
+   "country": "USA",
+   "org": "Google Cloud",
+   "scope": "4ade9f2e0df0",
+   "type": "Vendor"
+  },
+  "Google_Devices": {
+   "country": "USA",
+   "org": "Google Devices",
+   "scope": "c17dd4e60354",
+   "type": "Vendor"
+  },
+  "GreenRocketSecurity": {
+   "country": "USA",
+   "org": "Green Rocket Security Inc.",
+   "scope": "153fd20c5efe",
+   "type": "Vendor"
+  },
+  "Gridware": {
+   "country": "Australia",
+   "org": "Gridware Cybersecurity",
+   "scope": "363c0395e777",
+   "type": "Researcher"
+  },
+  "HCL": {
+   "country": "India",
+   "org": "HCL Software",
+   "scope": "b895220cfafd",
+   "type": "Vendor"
+  },
+  "HDFG": {
+   "country": "USA",
+   "org": "The HDF Group",
+   "scope": "bb804224ae18",
+   "type": "Open Source"
+  },
+  "HDS": {
+   "country": "Slovak Republic",
+   "org": "HDS a.s.",
+   "scope": "7096db6eef35",
+   "type": "Vendor"
+  },
+  "HYPR": {
+   "country": "USA",
+   "org": "HYPR Corp",
+   "scope": "d08f6319c69b",
+   "type": "Vendor"
+  },
+  "HackRTU": {
+   "country": "Spain",
+   "org": "HackRTU",
+   "scope": "44453caf95b9",
+   "type": "Researcher"
+  },
+  "Hackrate": {
+   "country": "Hungary",
+   "org": "Hackrate Kft.",
+   "scope": "ca2cca0ba34f",
+   "type": "Bug Bounty Provider"
+  },
+  "Halborn": {
+   "country": "USA",
+   "org": "Halborn",
+   "scope": "c539b8e39b4d",
+   "type": "Researcher"
+  },
+  "Hallo_Welt": {
+   "country": "Germany",
+   "org": "Hallo Welt! GmbH",
+   "scope": "9a983204f83b",
+   "type": "Vendor"
+  },
+  "Hanwha_Vision": {
+   "country": "South Korea",
+   "org": "Hanwha Vision Co., Ltd.",
+   "scope": "0b3180708e81",
+   "type": "Vendor"
+  },
+  "HashiCorp": {
+   "country": "USA",
+   "org": "HashiCorp Inc.",
+   "scope": "795f0c4e4c03",
+   "type": "Vendor"
+  },
+  "HemoCue": {
+   "country": "Sweden",
+   "org": "HemoCue AB",
+   "scope": "aff89582361e",
+   "type": "Vendor"
+  },
+  "HeroDevs": {
+   "country": "USA",
+   "org": "HeroDevs",
+   "scope": "004b02a82e8a",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "HiddenLayer": {
+   "country": "USA",
+   "org": "HiddenLayer, Inc.",
+   "scope": "08c3c78bd1c0",
+   "type": "Hosted Service + Researcher + Vendor"
+  },
+  "Hillstone": {
+   "country": "China",
+   "org": "Hillstone Networks Inc.",
+   "scope": "a7cec4277d3d",
+   "type": "Vendor"
+  },
+  "Hitachi": {
+   "country": "Japan",
+   "org": "Hitachi, Ltd.",
+   "scope": "e34763632a03",
+   "type": "Vendor"
+  },
+  "Hitachi_Energy": {
+   "country": "Switzerland",
+   "org": "Hitachi Energy",
+   "scope": "f4ee8b9a944e",
+   "type": "Vendor"
+  },
+  "Hitachi_Vantara": {
+   "country": "USA",
+   "org": "Hitachi Vantara",
+   "scope": "47b5302e97f6",
+   "type": "Vendor"
+  },
+  "Hologic": {
+   "country": "USA",
+   "org": "Hologic, Inc.",
+   "scope": "0884e9e4e621",
+   "type": "Vendor"
+  },
+  "Honeywell": {
+   "country": "USA",
+   "org": "Honeywell International Inc.",
+   "scope": "6599edad29d4",
+   "type": "Vendor"
+  },
+  "Honor": {
+   "country": "China",
+   "org": "Honor Device Co., Ltd.",
+   "scope": "c7f9ac15d320",
+   "type": "Vendor"
+  },
+  "Huntress": {
+   "country": "USA",
+   "org": "Huntress Labs Inc.",
+   "scope": "daadc8a24202",
+   "type": "Researcher + Vendor"
+  },
+  "ICT": {
+   "country": "New Zealand",
+   "org": "Integrated Control Technology LTD",
+   "scope": "ef9343d7c01b",
+   "type": "Vendor"
+  },
+  "IDBS": {
+   "country": "UK",
+   "org": "ID Business Solutions",
+   "scope": "29ba3e59ccc1",
+   "type": "Vendor"
+  },
+  "IDEMIA": {
+   "country": "France",
+   "org": "IDEMIA",
+   "scope": "499488990079",
+   "type": "Researcher + Vendor"
+  },
+  "IDT-DNA": {
+   "country": "USA",
+   "org": "Integrated DNA Technologies, Inc.",
+   "scope": "7e75ad6df71b",
+   "type": "Vendor"
+  },
+  "INCD": {
+   "country": "Israel",
+   "org": "Israel National Cyber Directorate (INCD)",
+   "scope": "c539cc56c22d",
+   "type": "CERT"
+  },
+  "INCIBE": {
+   "country": "Spain",
+   "org": "Spanish National Cybersecurity Institute, S.A. (INCIBE)",
+   "scope": "b65168d70f95",
+   "type": "CERT"
+  },
+  "IQSIGHT": {
+   "country": "Netherlands",
+   "org": "IQSIGHT B.V.",
+   "scope": "1792898a15d1",
+   "type": "Vendor"
+  },
+  "Illumio": {
+   "country": "USA",
+   "org": "Illumio",
+   "scope": "9b2e30c7fa64",
+   "type": "Vendor"
+  },
+  "Insyde": {
+   "country": "USA",
+   "org": "Insyde Software",
+   "scope": "9dac6876432d",
+   "type": "Researcher + Vendor"
+  },
+  "Intigriti": {
+   "country": "Belgium",
+   "org": "Intigriti",
+   "scope": "30e13dee4f72",
+   "type": "Bug Bounty Provider + Hosted Service + Vendor"
+  },
+  "IoT83": {
+   "country": "USA",
+   "org": "IoT83 Ltd",
+   "scope": "0442311738ad",
+   "type": "Vendor"
+  },
+  "JAMF": {
+   "country": "USA",
+   "org": "Jamf",
+   "scope": "e7c5bd7b520d",
+   "type": "Open Source + Vendor"
+  },
+  "JFrog": {
+   "country": "Israel",
+   "org": "JFrog",
+   "scope": "f42b9bdda6d0",
+   "type": "Researcher + Vendor"
+  },
+  "Jaspersoft": {
+   "country": "USA",
+   "org": "Jaspersoft",
+   "scope": "1caadb724bf2",
+   "type": "Vendor"
+  },
+  "JetBrains": {
+   "country": "Czech Republic",
+   "org": "JetBrains s.r.o.",
+   "scope": "34cd4ba81c0f",
+   "type": "Open Source + Vendor"
+  },
+  "Joomla": {
+   "country": "USA",
+   "org": "Joomla! Project",
+   "scope": "d91a65d419b7",
+   "type": "Open Source + Vendor"
+  },
+  "JupiterOne": {
+   "country": "USA",
+   "org": "JupiterOne, Inc.",
+   "scope": "6a23b1ae48b3",
+   "type": "Hosted Service + Researcher + Vendor"
+  },
+  "KCFTech": {
+   "country": "USA",
+   "org": "KCF Technologies, Inc.",
+   "scope": "1af5e6d612dd",
+   "type": "Hosted Service + Vendor"
+  },
+  "KNIME": {
+   "country": "Switzerland",
+   "org": "KNIME AG",
+   "scope": "c9d2c6dac238",
+   "type": "Vendor"
+  },
+  "Kaspersky": {
+   "country": "Russia",
+   "org": "Kaspersky",
+   "scope": "54dc2465a5de",
+   "type": "Researcher + Vendor"
+  },
+  "KeeperSecurity": {
+   "country": "USA",
+   "org": "Keeper Security, Inc.",
+   "scope": "a826fa5760f8",
+   "type": "Vendor"
+  },
+  "Kong": {
+   "country": "USA",
+   "org": "Kong Inc.",
+   "scope": "cbe4850f87fb",
+   "type": "Vendor"
+  },
+  "KoreLogic": {
+   "country": "USA",
+   "org": "KoreLogic Security",
+   "scope": "d46d51790722",
+   "type": "Researcher"
+  },
+  "KrakenD": {
+   "country": "Spain",
+   "org": "KrakenD, S.L.",
+   "scope": "711006a825c0",
+   "type": "Open Source + Vendor"
+  },
+  "LGE": {
+   "country": "South Korea",
+   "org": "LG Electronics",
+   "scope": "da1245071158",
+   "type": "Vendor"
+  },
+  "LMS": {
+   "country": "Germany",
+   "org": "Leica Microsystems",
+   "scope": "18ae49455410",
+   "type": "Vendor"
+  },
+  "LY-Corporation": {
+   "country": "Japan",
+   "org": "LY Corporation",
+   "scope": "2d4ed98ac120",
+   "type": "Open Source"
+  },
+  "LeicaBiosystems": {
+   "country": "USA",
+   "org": "Leica Biosystems",
+   "scope": "cfc861f14279",
+   "type": "Vendor"
+  },
+  "Leonardo": {
+   "country": "Italy",
+   "org": "Leonardo S.p.A.",
+   "scope": "7c0613fe19bf",
+   "type": "CERT + Vendor"
+  },
+  "Lexmark": {
+   "country": "USA",
+   "org": "Lexmark International Inc.",
+   "scope": "a7acf5aee780",
+   "type": "Vendor"
+  },
+  "Liferay": {
+   "country": "USA",
+   "org": "Liferay, Inc.",
+   "scope": "033ca511cab8",
+   "type": "Vendor"
+  },
+  "Linux": {
+   "country": "USA",
+   "org": "kernel.org",
+   "scope": "4832d532f97e",
+   "type": "Open Source + Vendor"
+  },
+  "Logitech": {
+   "country": "Switzerland",
+   "org": "Logitech",
+   "scope": "2f8928b45d8b",
+   "type": "Vendor"
+  },
+  "M-Files": {
+   "country": "Finland",
+   "org": "M-Files Corporation",
+   "scope": "5666d41af50e",
+   "type": "Vendor"
+  },
+  "MHV": {
+   "country": "USA",
+   "org": "Maritime Hacking Village",
+   "scope": "903011201db3",
+   "type": "Researcher"
+  },
+  "MIM": {
+   "country": "USA",
+   "org": "MIM Software Inc.",
+   "scope": "ecb5d9e7ad27",
+   "type": "Vendor"
+  },
+  "MON-CSIRT": {
+   "country": "Australia",
+   "org": "Monash University - Cyber Security Incident Response Team",
+   "scope": "b478e06babb3",
+   "type": "CERT + Open Source + Researcher"
+  },
+  "Mandiant": {
+   "country": "USA",
+   "org": "Mandiant Inc.",
+   "scope": "5d9af2fac569",
+   "type": "Researcher + Vendor"
+  },
+  "Mattermost": {
+   "country": "USA",
+   "org": "Mattermost, Inc.",
+   "scope": "fb9a9bbb202e",
+   "type": "Researcher + Vendor"
+  },
+  "Mautic": {
+   "country": "USA",
+   "org": "Mautic",
+   "scope": "f1527b245b18",
+   "type": "Open Source + Vendor"
+  },
+  "MediaTek": {
+   "country": "Taiwan",
+   "org": "MediaTek, Inc.",
+   "scope": "dc46a503a705",
+   "type": "Vendor"
+  },
+  "Medtronic": {
+   "country": "USA",
+   "org": "Medtronic",
+   "scope": "86202ac7df7d",
+   "type": "Vendor"
+  },
+  "Meta": {
+   "country": "USA",
+   "org": "Meta Platforms, Inc.",
+   "scope": "214b7122de01",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "Microchip": {
+   "country": "USA",
+   "org": "Microchip Technology",
+   "scope": "8e8ed8fe57fa",
+   "type": "Vendor"
+  },
+  "Mirantis": {
+   "country": "USA",
+   "org": "Mirantis",
+   "scope": "82dfe4f68673",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "Mitsubishi": {
+   "country": "Japan",
+   "org": "Mitsubishi Electric Corporation",
+   "scope": "9942381b3c49",
+   "type": "Vendor"
+  },
+  "MolDev": {
+   "country": "USA",
+   "org": "Molecular Devices",
+   "scope": "0b244ed08a0e",
+   "type": "Vendor"
+  },
+  "Moxa": {
+   "country": "Taiwan",
+   "org": "Moxa Inc.",
+   "scope": "7ad0ed9a3922",
+   "type": "Vendor"
+  },
+  "MyMMT": {
+   "country": "USA",
+   "org": "Mammotome",
+   "scope": "1694b99ce501",
+   "type": "Vendor"
+  },
+  "N-able": {
+   "country": "USA",
+   "org": "N-able",
+   "scope": "b7ac05ab1799",
+   "type": "Vendor"
+  },
+  "NCSC-FI": {
+   "country": "Finland",
+   "org": "National Cyber Security Centre Finland (NCSC-FI)",
+   "scope": "ceb892a8c9ce",
+   "type": "CERT"
+  },
+  "NCSC-NL": {
+   "country": "Netherlands",
+   "org": "National Cyber Security Centre Netherlands (NCSC-NL)",
+   "scope": "12b3fbd43472",
+   "type": "Vendor"
+  },
+  "NCSC.ch": {
+   "country": "Switzerland",
+   "org": "Switzerland National Cyber Security Centre (NCSC)",
+   "scope": "f6d9ee7be6eb",
+   "type": "CERT"
+  },
+  "NEC": {
+   "country": "Japan",
+   "org": "NEC Corporation",
+   "scope": "ae21185093b3",
+   "type": "Vendor"
+  },
+  "NETGEAR": {
+   "country": "USA",
+   "org": "NETGEAR",
+   "scope": "d39f8becd2d7",
+   "type": "Vendor"
+  },
+  "NI": {
+   "country": "USA",
+   "org": "National Instruments",
+   "scope": "c561789f1de9",
+   "type": "Vendor"
+  },
+  "NIBEGroup": {
+   "country": "Sweden",
+   "org": "NIBE Group",
+   "scope": "12f7cdd191b7",
+   "type": "Vendor"
+  },
+  "NLnet_Labs": {
+   "country": "Netherlands",
+   "org": "NLnet Labs",
+   "scope": "622cf6cf930a",
+   "type": "Open Source + Vendor"
+  },
+  "NX": {
+   "country": "USA",
+   "org": "Network Optix",
+   "scope": "23fc5e0348c5",
+   "type": "Open Source + Vendor"
+  },
+  "Neo4j": {
+   "country": "Sweden",
+   "org": "Neo4j",
+   "scope": "19749e44feca",
+   "type": "Open Source + Vendor"
+  },
+  "NetRise": {
+   "country": "USA",
+   "org": "NetRise",
+   "scope": "0a2691afb8e7",
+   "type": "Researcher"
+  },
+  "NetScaler": {
+   "country": "USA",
+   "org": "NetScaler",
+   "scope": "9001fca93323",
+   "type": "Vendor"
+  },
+  "Netskope": {
+   "country": "USA",
+   "org": "Netskope",
+   "scope": "294f498089a9",
+   "type": "Vendor"
+  },
+  "Nintendo": {
+   "country": "Japan",
+   "org": "Nintendo Co., Ltd.",
+   "scope": "491dc9c33d08",
+   "type": "Vendor"
+  },
+  "Nokia": {
+   "country": "Finland",
+   "org": "Nokia",
+   "scope": "2ea16febc79a",
+   "type": "Vendor"
+  },
+  "Nozomi": {
+   "country": "USA",
+   "org": "Nozomi Networks Inc.",
+   "scope": "3b01b3f1ba7f",
+   "type": "Researcher + Vendor"
+  },
+  "Nutanix": {
+   "country": "USA",
+   "org": "Nutanix",
+   "scope": "8c3d47819f6c",
+   "type": "Vendor"
+  },
+  "OAI": {
+   "country": "USA",
+   "org": "OpenAI",
+   "scope": "487de5d6845c",
+   "type": "Vendor"
+  },
+  "OB": {
+   "country": "China",
+   "org": "OceanBase",
+   "scope": "46b3585e63ec",
+   "type": "Vendor"
+  },
+  "OCD": {
+   "country": "France",
+   "org": "Orange Cyberdefense",
+   "scope": "b291b25ba621",
+   "type": "CERT + Researcher + Vendor"
+  },
+  "ODA": {
+   "country": "USA",
+   "org": "Open Design Alliance",
+   "scope": "8340c3c45aab",
+   "type": "Vendor"
+  },
+  "OMICRON": {
+   "country": "Austria",
+   "org": "OMICRON electronics",
+   "scope": "6f06dc72ac04",
+   "type": "Vendor"
+  },
+  "OMRON": {
+   "country": "Japan",
+   "org": "OMRON Corporation",
+   "scope": "3ba86df552c4",
+   "type": "Vendor"
+  },
+  "ONEKEY": {
+   "country": "Germany",
+   "org": "ONEKEY GmbH",
+   "scope": "13df7e878770",
+   "type": "Researcher + Vendor"
+  },
+  "OPPO": {
+   "country": "China",
+   "org": "OPPO Mobile Telecommunication Corp., Ltd.",
+   "scope": "f8102e6745bd",
+   "type": "Vendor"
+  },
+  "OS-S": {
+   "country": "Germany",
+   "org": "OpenSource Security GmbH",
+   "scope": "20d16f468c6a",
+   "type": "Researcher"
+  },
+  "OTRS": {
+   "country": "Germany",
+   "org": "OTRS AG",
+   "scope": "6bbf08795c4a",
+   "type": "Vendor"
+  },
+  "OX": {
+   "country": "Germany",
+   "org": "Open-Xchange",
+   "scope": "dfef3142a63e",
+   "type": "Open Source + Vendor"
+  },
+  "Octopus": {
+   "country": "Australia",
+   "org": "Octopus Deploy",
+   "scope": "7755ac904f5d",
+   "type": "Open Source + Vendor"
+  },
+  "Okta": {
+   "country": "USA",
+   "org": "Okta",
+   "scope": "79d63b2d76fc",
+   "type": "Vendor"
+  },
+  "Omnissa": {
+   "country": "USA",
+   "org": "Omnissa, LLC",
+   "scope": "cae3cfcf9859",
+   "type": "Vendor"
+  },
+  "OnLogic": {
+   "country": "USA",
+   "org": "OnLogic",
+   "scope": "afb7e6ce2ff9",
+   "type": "Vendor"
+  },
+  "OpenBMC": {
+   "country": "USA",
+   "org": "The OpenBMC Project",
+   "scope": "fc1ab75c9ca2",
+   "type": "Open Source + Vendor"
+  },
+  "OpenHarmony": {
+   "country": "China",
+   "org": "OpenHarmony",
+   "scope": "de4dccf4a3de",
+   "type": "Open Source"
+  },
+  "OpenNMS": {
+   "country": "USA",
+   "org": "The OpenNMS Group",
+   "scope": "f67c6c447fdf",
+   "type": "Open Source + Vendor"
+  },
+  "OpenText": {
+   "country": "USA",
+   "org": "OpenText (formerly Micro Focus)",
+   "scope": "c5cc1cee366a",
+   "type": "Vendor"
+  },
+  "OpenVPN": {
+   "country": "USA",
+   "org": "OpenVPN Inc.",
+   "scope": "3b9412ae05eb",
+   "type": "Open Source + Vendor"
+  },
+  "Opera": {
+   "country": "Norway",
+   "org": "Opera Norway AS",
+   "scope": "78e7ca386de3",
+   "type": "Open Source + Vendor"
+  },
+  "PRJBLK": {
+   "country": "Australia",
+   "org": "Project Black",
+   "scope": "3806c3e04eb4",
+   "type": "Researcher"
+  },
+  "PSF": {
+   "country": "USA",
+   "org": "Python Software Foundation",
+   "scope": "4c40ee1d1bc6",
+   "type": "Open Source + Vendor"
+  },
+  "PTC": {
+   "country": "USA",
+   "org": "PTC Inc.",
+   "scope": "1dc636955c50",
+   "type": "Vendor"
+  },
+  "Palantir": {
+   "country": "USA",
+   "org": "Palantir Technologies",
+   "scope": "ebc53afeb5f6",
+   "type": "Vendor"
+  },
+  "Pall": {
+   "country": "USA",
+   "org": "Pall Corporation",
+   "scope": "ea088c165b85",
+   "type": "Vendor"
+  },
+  "Panasonic_Holdings_Corporation": {
+   "country": "Japan",
+   "org": "Panasonic Holdings Corporation",
+   "scope": "3581ce8c64ad",
+   "type": "Vendor"
+  },
+  "PandoraFMS": {
+   "country": "Spain",
+   "org": "Pandora FMS",
+   "scope": "4e772b59fb57",
+   "type": "Vendor"
+  },
+  "PangeaCyber": {
+   "country": "USA",
+   "org": "Pangea Cyber Corporation",
+   "scope": "e553fd30f6c2",
+   "type": "Hosted Service + Researcher + Vendor"
+  },
+  "PaperCut": {
+   "country": "Australia",
+   "org": "PaperCut Software Pty Ltd",
+   "scope": "84d68af43488",
+   "type": "Vendor"
+  },
+  "Patchstack": {
+   "country": "Estonia",
+   "org": "Patchstack",
+   "scope": "7902f499de4e",
+   "type": "Bug Bounty Provider + Hosted Service + Open Source + Researcher + Vendor"
+  },
+  "Payara": {
+   "country": "UK",
+   "org": "Payara",
+   "scope": "a45b9797626d",
+   "type": "Open Source + Vendor"
+  },
+  "Pega": {
+   "country": "USA",
+   "org": "Pegasystems Inc.",
+   "scope": "400914be8256",
+   "type": "Vendor"
+  },
+  "Pentraze": {
+   "country": "Dominican Republic",
+   "org": "Pentraze Cybersecurity",
+   "scope": "f5195fe932ee",
+   "type": "Researcher"
+  },
+  "Perforce": {
+   "country": "USA",
+   "org": "Perforce",
+   "scope": "c8723bf604f8",
+   "type": "Open Source + Vendor"
+  },
+  "Philips": {
+   "country": "Netherlands",
+   "org": "Philips",
+   "scope": "91a8589842cf",
+   "type": "Vendor"
+  },
+  "Phoenix": {
+   "country": "USA",
+   "org": "Phoenix Technologies, Inc.",
+   "scope": "795463482a50",
+   "type": "Researcher + Vendor"
+  },
+  "PingCAP": {
+   "country": "USA",
+   "org": "PingCAP (US), Inc.",
+   "scope": "2b065267221d",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "PingIdentity": {
+   "country": "USA",
+   "org": "Ping Identity Corporation",
+   "scope": "1dfc8a42f66b",
+   "type": "Bug Bounty Provider + Hosted Service + Researcher"
+  },
+  "PlexTrac": {
+   "country": "USA",
+   "org": "PlexTrac, Inc.",
+   "scope": "c5dbb5616107",
+   "type": "Vendor"
+  },
+  "PostgreSQL": {
+   "country": "Canada",
+   "org": "PostgreSQL",
+   "scope": "046ff7d45bbc",
+   "type": "Open Source"
+  },
+  "Profelis": {
+   "country": "T\u00fcrkiye",
+   "org": "Profelis IT Consultancy",
+   "scope": "386421a42a6b",
+   "type": "Vendor"
+  },
+  "Profisee": {
+   "country": "USA",
+   "org": "Profisee Group, Inc.",
+   "scope": "271229d86ff0",
+   "type": "Vendor"
+  },
+  "ProgressSoftware": {
+   "country": "USA",
+   "org": "Progress Software Corporation",
+   "scope": "3ae13b03f50b",
+   "type": "Vendor"
+  },
+  "Proofpoint": {
+   "country": "USA",
+   "org": "Proofpoint Inc.",
+   "scope": "9a4397ae518f",
+   "type": "Hosted Service + Vendor"
+  },
+  "Proton": {
+   "country": "Switzerland",
+   "org": "Proton AG",
+   "scope": "0972cde835f6",
+   "type": "Vendor"
+  },
+  "QCI": {
+   "country": "Taiwan",
+   "org": "Quanta Computer, Inc.",
+   "scope": "942f15cf78a6",
+   "type": "Vendor"
+  },
+  "Qualys": {
+   "country": "USA",
+   "org": "Qualys, Inc.",
+   "scope": "8e5dd74db27d",
+   "type": "Researcher + Vendor"
+  },
+  "RTI": {
+   "country": "USA",
+   "org": "Real-Time Innovations, Inc.",
+   "scope": "b0a273ced48e",
+   "type": "Vendor"
+  },
+  "Radiometer": {
+   "country": "Denmark",
+   "org": "Radiometer Medical ApS",
+   "scope": "d490f4d9a089",
+   "type": "Vendor"
+  },
+  "RealPage": {
+   "country": "USA",
+   "org": "RealPage",
+   "scope": "8068d7310180",
+   "type": "Vendor"
+  },
+  "Replicated": {
+   "country": "USA",
+   "org": "Replicated, Inc.",
+   "scope": "675568caacae",
+   "type": "Vendor"
+  },
+  "Ribose": {
+   "country": "UK",
+   "org": "Ribose Limited",
+   "scope": "8098ae5aad9e",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "Roche": {
+   "country": "Switzerland",
+   "org": "Roche Diagnostics",
+   "scope": "3d8cbfe10267",
+   "type": "Vendor"
+  },
+  "Rockwell": {
+   "country": "USA",
+   "org": "Rockwell Automation",
+   "scope": "a63d1b391b49",
+   "type": "Vendor"
+  },
+  "S21sec": {
+   "country": "Spain",
+   "org": "S21sec Cyber Solutions by Thales",
+   "scope": "a4119615e869",
+   "type": "Researcher"
+  },
+  "SCHUTZWERK": {
+   "country": "Germany",
+   "org": "SCHUTZWERK GmbH",
+   "scope": "e05790c404a0",
+   "type": "Researcher"
+  },
+  "SCIEX": {
+   "country": "USA",
+   "org": "SCIEX",
+   "scope": "8425d500bf68",
+   "type": "Vendor"
+  },
+  "SDC": {
+   "country": "USA",
+   "org": "Sandisk",
+   "scope": "7f1a018fa56b",
+   "type": "Vendor"
+  },
+  "SEC-VLab": {
+   "country": "Austria",
+   "org": "SEC Consult Vulnerability Lab",
+   "scope": "9fce3a750392",
+   "type": "Researcher"
+  },
+  "SEL": {
+   "country": "USA",
+   "org": "Schweitzer Engineering Laboratories, Inc.",
+   "scope": "63f3379fe438",
+   "type": "Vendor"
+  },
+  "SICK_AG": {
+   "country": "Germany",
+   "org": "SICK AG",
+   "scope": "8bd731040ed7",
+   "type": "Vendor"
+  },
+  "SK-CERT": {
+   "country": "Slovak Republic",
+   "org": "National Cyber Security Centre SK-CERT",
+   "scope": "724b702fc120",
+   "type": "CERT"
+  },
+  "SN": {
+   "country": "USA",
+   "org": "ServiceNow",
+   "scope": "f48e49c72f78",
+   "type": "Hosted Service + Researcher + Vendor"
+  },
+  "SNOW": {
+   "country": "USA",
+   "org": "Snowflake",
+   "scope": "bec51140f8ac",
+   "type": "Vendor"
+  },
+  "SOCRadar": {
+   "country": "USA",
+   "org": "SOCRadar Cyber Intelligence Inc.",
+   "scope": "1230d059324d",
+   "type": "Researcher + Vendor"
+  },
+  "SRA": {
+   "country": "USA",
+   "org": "Security Risk Advisors (SRA)",
+   "scope": "0fef2e6e6c12",
+   "type": "Researcher"
+  },
+  "STAR_Labs": {
+   "country": "Singapore",
+   "org": "STAR Labs SG Pte. Ltd.",
+   "scope": "05d3e74b0712",
+   "type": "Researcher"
+  },
+  "SailPoint": {
+   "country": "USA",
+   "org": "SailPoint Technologies",
+   "scope": "cfe2f31ae4db",
+   "type": "Vendor"
+  },
+  "Salesforce": {
+   "country": "USA",
+   "org": "Salesforce, Inc.",
+   "scope": "6fb07ff45d10",
+   "type": "Vendor"
+  },
+  "Samsung_Mobile": {
+   "country": "South Korea",
+   "org": "Samsung Mobile",
+   "scope": "8226c07c7b63",
+   "type": "Vendor"
+  },
+  "Saviynt": {
+   "country": "USA",
+   "org": "Saviynt Inc.",
+   "scope": "1cd599f00faa",
+   "type": "Vendor"
+  },
+  "Seagate": {
+   "country": "USA",
+   "org": "Seagate Technology",
+   "scope": "8cf51b7d1862",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "Secomea": {
+   "country": "Denmark",
+   "org": "Secomea A/S",
+   "scope": "6d71fcaf62b8",
+   "type": "Vendor"
+  },
+  "Secur0": {
+   "country": "Spain",
+   "org": "Secur0",
+   "scope": "d1e1a83a8841",
+   "type": "Bug Bounty Provider"
+  },
+  "Securifera": {
+   "country": "USA",
+   "org": "Securifera, Inc.",
+   "scope": "c3b52e7866f0",
+   "type": "Researcher"
+  },
+  "Semtech": {
+   "country": "Canada",
+   "org": "Semtech Corporation",
+   "scope": "17137906ae2d",
+   "type": "Vendor"
+  },
+  "ShopBeat": {
+   "country": "South Africa",
+   "org": "Shop Beat Solutions (Pty) LTD",
+   "scope": "ac0251244414",
+   "type": "Hosted Service + Vendor"
+  },
+  "Silabs": {
+   "country": "USA",
+   "org": "Silicon Labs",
+   "scope": "12370d44a33f",
+   "type": "Vendor"
+  },
+  "Silver_Peak": {
+   "country": "USA",
+   "org": "Silver Peak Systems, Inc.",
+   "scope": "9bd22f126572",
+   "type": "Vendor"
+  },
+  "Simplinx": {
+   "country": "T\u00fcrkiye",
+   "org": "Simplinx Ltd.",
+   "scope": "133fe9f58a31",
+   "type": "Vendor"
+  },
+  "SmileDigitalHealth": {
+   "country": "Canada",
+   "org": "Smile CDR Inc. (doing business as \u201cSmile Digital Health\u201d)",
+   "scope": "96536764d5c3",
+   "type": "Open Source + Vendor"
+  },
+  "Snow": {
+   "country": "Sweden",
+   "org": "Snow Software",
+   "scope": "7896b53e5447",
+   "type": "Vendor"
+  },
+  "SoftIron": {
+   "country": "USA",
+   "org": "SoftIron",
+   "scope": "b9c7c036e1b1",
+   "type": "Vendor"
+  },
+  "Softing": {
+   "country": "Germany",
+   "org": "Softing",
+   "scope": "8be8c064ed28",
+   "type": "Vendor"
+  },
+  "SolarWinds": {
+   "country": "USA",
+   "org": "SolarWinds",
+   "scope": "d957f1f955d4",
+   "type": "Vendor"
+  },
+  "Solidigm": {
+   "country": "USA",
+   "org": "Solidigm",
+   "scope": "7d07a2002e77",
+   "type": "Vendor"
+  },
+  "Sonatype": {
+   "country": "USA",
+   "org": "Sonatype Inc.",
+   "scope": "cb9a9fce7cd6",
+   "type": "Researcher + Vendor"
+  },
+  "Sophos": {
+   "country": "UK",
+   "org": "Sophos Limited",
+   "scope": "00fad0ffee2c",
+   "type": "Vendor"
+  },
+  "Spotfire": {
+   "country": "USA",
+   "org": "Spotfire",
+   "scope": "67cd6356beea",
+   "type": "Vendor"
+  },
+  "Stackable": {
+   "country": "Germany",
+   "org": "Stackable GmbH",
+   "scope": "4813c8d3e5b4",
+   "type": "Open Source + Vendor"
+  },
+  "StrongDM": {
+   "country": "USA",
+   "org": "StrongDM",
+   "scope": "f90b7f8aedb8",
+   "type": "Vendor"
+  },
+  "Stryker": {
+   "country": "USA",
+   "org": "Stryker Corporation",
+   "scope": "d1a48efac9bc",
+   "type": "Researcher + Vendor"
+  },
+  "Supermicro": {
+   "country": "USA",
+   "org": "Super Micro Computer, Inc.",
+   "scope": "2c22560fc2ab",
+   "type": "Vendor"
+  },
+  "Swift": {
+   "country": "USA",
+   "org": "Swift Project",
+   "scope": "875a942d5ef8",
+   "type": "Open Source + Vendor"
+  },
+  "Synaptics": {
+   "country": "USA",
+   "org": "Synaptics, Inc.",
+   "scope": "106dd76467b0",
+   "type": "Vendor"
+  },
+  "Synopsys": {
+   "country": "USA",
+   "org": "Synopsys, Inc.",
+   "scope": "31615f729588",
+   "type": "Vendor"
+  },
+  "TCL_Smart_Terminal": {
+   "country": "China",
+   "org": "TCL Electronics Holdings Limited",
+   "scope": "e4a99d556b85",
+   "type": "Vendor"
+  },
+  "TCS-CERT": {
+   "country": "Belgium",
+   "org": "TCS-CERT (Thales Cyber Solutions Customer\u2019s CERT)",
+   "scope": "1312ede005a4",
+   "type": "CERT"
+  },
+  "TECNOMobile": {
+   "country": "China",
+   "org": "TECNO Mobile Limited",
+   "scope": "f435413e505f",
+   "type": "Vendor"
+  },
+  "THA-PSIRT": {
+   "country": "France",
+   "org": "Thales Group",
+   "scope": "f01b3193fe51",
+   "type": "Researcher + Vendor"
+  },
+  "TMUS": {
+   "country": "USA",
+   "org": "T-Mobile US",
+   "scope": "3d9414d432fc",
+   "type": "Researcher + Vendor"
+  },
+  "TPLink": {
+   "country": "USA",
+   "org": "TP-Link Systems Inc.",
+   "scope": "fee10266e050",
+   "type": "Hosted Service + Vendor"
+  },
+  "TQtC": {
+   "country": "Finland",
+   "org": "The Qt Company",
+   "scope": "ba951e28bcd5",
+   "type": "Vendor"
+  },
+  "TR-CERT": {
+   "country": "T\u00fcrkiye",
+   "org": "TR-CERT (Computer Emergency Response Team of the Republic of T\u00fcrkiye)",
+   "scope": "c539cc56c22d",
+   "type": "CERT"
+  },
+  "TRO": {
+   "country": "Denmark",
+   "org": "Teradyne Robotics",
+   "scope": "1785b30fc928",
+   "type": "Vendor"
+  },
+  "TXOne": {
+   "country": "Taiwan",
+   "org": "TXOne Networks, Inc.",
+   "scope": "007f2e480a83",
+   "type": "Researcher + Vendor"
+  },
+  "TYPO3": {
+   "country": "Switzerland",
+   "org": "TYPO3 Association",
+   "scope": "3d0105c6d72d",
+   "type": "Open Source"
+  },
+  "Tanium": {
+   "country": "USA",
+   "org": "Tanium Inc.",
+   "scope": "6ae50ef0362c",
+   "type": "Vendor"
+  },
+  "Tcpdump": {
+   "country": "Canada",
+   "org": "Tcpdump Group",
+   "scope": "fa6de4d20972",
+   "type": "Open Source + Vendor"
+  },
+  "TeamViewer": {
+   "country": "Germany",
+   "org": "TeamViewer Germany GmbH",
+   "scope": "186a1a399bda",
+   "type": "Vendor"
+  },
+  "Tego_Cyber": {
+   "country": "USA",
+   "org": "Tego Cyber, Inc.",
+   "scope": "2b80d0b9a532",
+   "type": "Researcher + Vendor"
+  },
+  "Temporal": {
+   "country": "USA",
+   "org": "Temporal Technologies Inc.",
+   "scope": "c3094fa1def5",
+   "type": "Hosted Service + Open Source"
+  },
+  "The_Missing_Link": {
+   "country": "Australia",
+   "org": "The Missing Link Australia (TML)",
+   "scope": "8856230cf429",
+   "type": "Researcher"
+  },
+  "ThinkstAppliedResearch": {
+   "country": "South Africa",
+   "org": "Thinkst Applied Research",
+   "scope": "4471244d03e5",
+   "type": "Vendor"
+  },
+  "TianoCore": {
+   "country": "USA",
+   "org": "TianoCore.org",
+   "scope": "0e38ee5972ef",
+   "type": "Open Source + Vendor"
+  },
+  "Tigera": {
+   "country": "USA",
+   "org": "Tigera, Inc.",
+   "scope": "39f6426be525",
+   "type": "Open Source + Vendor"
+  },
+  "Toreon": {
+   "country": "Belgium",
+   "org": "Toreon",
+   "scope": "0345e00195fb",
+   "type": "Researcher"
+  },
+  "Toshiba": {
+   "country": "Japan",
+   "org": "Toshiba Corporation",
+   "scope": "314e5162f71e",
+   "type": "Vendor"
+  },
+  "Trellix": {
+   "country": "USA",
+   "org": "Trellix",
+   "scope": "81714743e0ee",
+   "type": "Researcher + Vendor"
+  },
+  "TuranSec": {
+   "country": "Uzbekistan",
+   "org": "Turan Security",
+   "scope": "db3f31694962",
+   "type": "Researcher"
+  },
+  "Unisoc": {
+   "country": "China",
+   "org": "Unisoc (Shanghai) Technologies Co., Ltd.",
+   "scope": "94c7b165008d",
+   "type": "Vendor"
+  },
+  "Uniview": {
+   "country": "China",
+   "org": "Zhejiang Uniview Technologies Co., Ltd.",
+   "scope": "5a5eb1bbfc4c",
+   "type": "Vendor"
+  },
+  "VULSec": {
+   "country": "Israel",
+   "org": "VULSec Labs",
+   "scope": "6b1ebb288bab",
+   "type": "Researcher"
+  },
+  "Vaadin": {
+   "country": "Finland",
+   "org": "Vaadin Ltd.",
+   "scope": "2bae1b636dad",
+   "type": "Open Source + Vendor"
+  },
+  "Vantive": {
+   "country": "USA",
+   "org": "Vantive",
+   "scope": "0a5459fb2b86",
+   "type": "Vendor"
+  },
+  "Verizon": {
+   "country": "USA",
+   "org": "Verizon",
+   "scope": "8291d6ce1863",
+   "type": "Hosted Service + Open Source + Researcher + Vendor"
+  },
+  "Vestel": {
+   "country": "T\u00fcrkiye",
+   "org": "Vestel Electronics Industry & Trade Co.",
+   "scope": "7f4055b9574d",
+   "type": "Vendor"
+  },
+  "Vivo": {
+   "country": "China",
+   "org": "Vivo Mobile Communication Co., Ltd.",
+   "scope": "68259d6f370f",
+   "type": "Vendor"
+  },
+  "VulDB": {
+   "country": "Switzerland",
+   "org": "VulDB",
+   "scope": "c927de2dbcec",
+   "type": "Researcher"
+  },
+  "VulNow": {
+   "country": "Netherlands",
+   "org": "VulNow",
+   "scope": "428a31ba1a8e",
+   "type": "Researcher"
+  },
+  "VulnCheck": {
+   "country": "USA",
+   "org": "VulnCheck",
+   "scope": "5b43acb0a0ac",
+   "type": "Bug Bounty Provider + Researcher"
+  },
+  "WDC_PSIRT": {
+   "country": "USA",
+   "org": "Western Digital",
+   "scope": "9a9ca96a632f",
+   "type": "Vendor"
+  },
+  "WPScan": {
+   "country": "France",
+   "org": "WPScan",
+   "scope": "55150b126a9b",
+   "type": "Open Source + Vendor"
+  },
+  "WSO2": {
+   "country": "USA",
+   "org": "WSO2 LLC",
+   "scope": "25c583c9433d",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "WatchGuard": {
+   "country": "USA",
+   "org": "WatchGuard Technologies, Inc.",
+   "scope": "0aaa0eed4002",
+   "type": "Vendor"
+  },
+  "WindRiver": {
+   "country": "USA",
+   "org": "Wind River Systems Inc.",
+   "scope": "8c9686e2511f",
+   "type": "Vendor"
+  },
+  "Wiz": {
+   "country": "USA",
+   "org": "Wiz, Inc.",
+   "scope": "22a1feb1b239",
+   "type": "Researcher + Vendor"
+  },
+  "Wordfence": {
+   "country": "USA",
+   "org": "Wordfence",
+   "scope": "a950c3244d04",
+   "type": "Researcher + Vendor"
+  },
+  "WrenSecurity": {
+   "country": "Czech Republic",
+   "org": "Wren Security",
+   "scope": "f567822d831a",
+   "type": "Open Source"
+  },
+  "XEN": {
+   "country": "UK",
+   "org": "Xen Project",
+   "scope": "019773318d75",
+   "type": "Open Source + Vendor"
+  },
+  "XI": {
+   "country": "USA",
+   "org": "Exodus Intelligence",
+   "scope": "fa587fa57241",
+   "type": "Bug Bounty Provider + Researcher"
+  },
+  "XONA": {
+   "country": "USA",
+   "org": "Xona Systems",
+   "scope": "5cbd72653d5c",
+   "type": "Vendor"
+  },
+  "Xerox": {
+   "country": "USA",
+   "org": "Xerox Corporation",
+   "scope": "ce027864e542",
+   "type": "Vendor"
+  },
+  "Xiaomi": {
+   "country": "China",
+   "org": "Xiaomi Technology Co., Ltd.",
+   "scope": "a7b683a64761",
+   "type": "Vendor"
+  },
+  "Xylem": {
+   "country": "USA",
+   "org": "Xylem",
+   "scope": "d116566e8d2a",
+   "type": "Vendor"
+  },
+  "YesWeHack": {
+   "country": "France",
+   "org": "YesWeHack",
+   "scope": "5f825655d2bc",
+   "type": "Bug Bounty Provider"
+  },
+  "Ygreky": {
+   "country": "France",
+   "org": "Ygreky SASU",
+   "scope": "2bca3e047618",
+   "type": "Bug Bounty Provider + Open Source + Researcher + Vendor"
+  },
+  "YokogawaGroup": {
+   "country": "Japan",
+   "org": "Yokogawa Group",
+   "scope": "c61f6d8b7d2c",
+   "type": "Vendor"
+  },
+  "Yugabyte": {
+   "country": "USA",
+   "org": "Yugabyte, Inc.",
+   "scope": "5309693f2ec1",
+   "type": "Hosted Service + Vendor"
+  },
+  "ZGR": {
+   "country": "Spain",
+   "org": "ZGR",
+   "scope": "66a7ab49aa74",
+   "type": "Vendor"
+  },
+  "ZTE": {
+   "country": "China",
+   "org": "ZTE Corporation",
+   "scope": "bcb0f3a101c3",
+   "type": "Vendor"
+  },
+  "ZUSO_ART": {
+   "country": "Taiwan",
+   "org": "ZUSO Advanced Research Team (ZUSO ART)",
+   "scope": "7fea9daa104c",
+   "type": "Researcher"
+  },
+  "Zabbix": {
+   "country": "Latvia",
+   "org": "Zabbix",
+   "scope": "9e6ef3390f58",
+   "type": "Vendor"
+  },
+  "Zohocorp": {
+   "country": "India",
+   "org": "Zohocorp",
+   "scope": "58ea97eba57d",
+   "type": "Vendor"
+  },
+  "Zoom": {
+   "country": "USA",
+   "org": "Zoom Communications, Inc.",
+   "scope": "5055d16252a2",
+   "type": "Vendor"
+  },
+  "Zowe": {
+   "country": "USA",
+   "org": "Zowe",
+   "scope": "6f0d67de0a45",
+   "type": "Open Source"
+  },
+  "Zscaler": {
+   "country": "USA",
+   "org": "Zscaler, Inc.",
+   "scope": "651f8461a9f9",
+   "type": "Vendor"
+  },
+  "Zyxel": {
+   "country": "Taiwan",
+   "org": "Zyxel Corporation",
+   "scope": "ed83becaf1ec",
+   "type": "Vendor"
+  },
+  "adobe": {
+   "country": "USA",
+   "org": "Adobe Systems Incorporated",
+   "scope": "a94bcf8324ac",
+   "type": "Vendor"
+  },
+  "airbus": {
+   "country": "Netherlands",
+   "org": "Airbus",
+   "scope": "af1aa75f312e",
+   "type": "Researcher + Vendor"
+  },
+  "alibaba": {
+   "country": "China",
+   "org": "Alibaba, Inc.",
+   "scope": "3b9cb17b96d4",
+   "type": "Open Source + Vendor"
+  },
+  "apache": {
+   "country": "USA",
+   "org": "Apache Software Foundation",
+   "scope": "b61ffb129623",
+   "type": "Open Source + Vendor"
+  },
+  "apple": {
+   "country": "USA",
+   "org": "Apple Inc.",
+   "scope": "9390fe363dab",
+   "type": "Vendor"
+  },
+  "arcinfo": {
+   "country": "France",
+   "org": "ARC Informatique",
+   "scope": "65fe54127f7a",
+   "type": "Vendor"
+  },
+  "atlassian": {
+   "country": "Australia",
+   "org": "Atlassian",
+   "scope": "3f5eb8103169",
+   "type": "Open Source + Vendor"
+  },
+  "autodesk": {
+   "country": "USA",
+   "org": "Autodesk",
+   "scope": "20c29c330a13",
+   "type": "Vendor"
+  },
+  "avaya": {
+   "country": "USA",
+   "org": "Avaya, Inc.",
+   "scope": "d687a7107fc0",
+   "type": "Vendor"
+  },
+  "azure-access": {
+   "country": "USA",
+   "org": "Azure Access Technology",
+   "scope": "a5b45fc48d42",
+   "type": "Vendor"
+  },
+  "bcorg": {
+   "country": "Australia",
+   "org": "Legion of the Bouncy Castle Inc.",
+   "scope": "1f0b61f6822b",
+   "type": "Open Source"
+  },
+  "bizerba": {
+   "country": "Germany",
+   "org": "Bizerba SE & Co. KG",
+   "scope": "61ad35e253f8",
+   "type": "Vendor"
+  },
+  "blackberry": {
+   "country": "Canada",
+   "org": "BlackBerry",
+   "scope": "f36d2bce0eda",
+   "type": "Vendor"
+  },
+  "bosch": {
+   "country": "Germany",
+   "org": "Robert Bosch GmbH",
+   "scope": "fb80a81db09f",
+   "type": "Vendor"
+  },
+  "brocade": {
+   "country": "USA",
+   "org": "Brocade Communications Systems LLC, a Broadcom Company",
+   "scope": "1644ec410ce6",
+   "type": "Vendor"
+  },
+  "ca": {
+   "country": "USA",
+   "org": "CA Technologies - A Broadcom Company",
+   "scope": "0b82224c6b46",
+   "type": "Vendor"
+  },
+  "canonical": {
+   "country": "UK",
+   "org": "Canonical Ltd.",
+   "scope": "9a24331834f0",
+   "type": "Open Source + Vendor"
+  },
+  "certcc": {
+   "country": "USA",
+   "org": "CERT/CC",
+   "scope": "c539cc56c22d",
+   "type": "CERT"
+  },
+  "checkpoint": {
+   "country": "Israel",
+   "org": "Check Point Software Ltd.",
+   "scope": "c5a4ef21ced1",
+   "type": "Researcher + Vendor"
+  },
+  "cirosec": {
+   "country": "Germany",
+   "org": "cirosec GmbH",
+   "scope": "b3d1687c7717",
+   "type": "Researcher"
+  },
+  "cisa-cg": {
+   "country": "USA",
+   "org": "Cybersecurity and Infrastructure Security Agency (CISA) U.S. Civilian Government",
+   "scope": "a689847c7589",
+   "type": "CERT"
+  },
+  "cisco": {
+   "country": "USA",
+   "org": "Cisco Systems, Inc.",
+   "scope": "0d538040b6ba",
+   "type": "Hosted Service + Open Source + Researcher + Vendor"
+  },
+  "cloudflare": {
+   "country": "USA",
+   "org": "Cloudflare, Inc.",
+   "scope": "c755f9a5e6a0",
+   "type": "Vendor"
+  },
+  "curl": {
+   "country": "Sweden",
+   "org": "curl",
+   "scope": "de4c957807f6",
+   "type": "Open Source"
+  },
+  "cygence": {
+   "country": "Australia",
+   "org": "Cygence Pty Ltd",
+   "scope": "e58d56ca4ec2",
+   "type": "Researcher"
+  },
+  "dahua": {
+   "country": "China",
+   "org": "Dahua Technologies",
+   "scope": "7ee84123bbd9",
+   "type": "Vendor"
+  },
+  "debian": {
+   "country": "USA",
+   "org": "Debian GNU/Linux",
+   "scope": "da93b259fec5",
+   "type": "Open Source + Vendor"
+  },
+  "dell": {
+   "country": "USA",
+   "org": "Dell",
+   "scope": "18eed97420ed",
+   "type": "Vendor"
+  },
+  "directcyber": {
+   "country": "Australia",
+   "org": "DirectCyber",
+   "scope": "b4b61c79cb4a",
+   "type": "Open Source + Researcher"
+  },
+  "dotCMS": {
+   "country": "USA",
+   "org": "dotCMS LLC",
+   "scope": "aeb05fa55add",
+   "type": "Hosted Service"
+  },
+  "drupal": {
+   "country": "USA",
+   "org": "Drupal.org",
+   "scope": "deb40de80c5d",
+   "type": "Open Source + Vendor"
+  },
+  "eclipse": {
+   "country": "Belgium",
+   "org": "Eclipse Foundation",
+   "scope": "c9e9ac7c6b81",
+   "type": "Open Source + Vendor"
+  },
+  "eclypsium": {
+   "country": "USA",
+   "org": "Eclypsium, Inc.",
+   "scope": "06e2e19dd3be",
+   "type": "Researcher + Vendor"
+  },
+  "elastic": {
+   "country": "Netherlands",
+   "org": "Elastic",
+   "scope": "8bdf0551fce6",
+   "type": "Vendor"
+  },
+  "fedora": {
+   "country": "USA",
+   "org": "Fedora Project",
+   "scope": "14ee6b30294d",
+   "type": "Open Source + Vendor"
+  },
+  "flexera": {
+   "country": "USA",
+   "org": "Flexera Software LLC",
+   "scope": "679da4aa30c7",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "floragunn": {
+   "country": "Germany",
+   "org": "floragunn GmbH",
+   "scope": "f90d732b8517",
+   "type": "Open Source + Vendor"
+  },
+  "forcepoint": {
+   "country": "USA",
+   "org": "Forcepoint",
+   "scope": "e651de0a6a4a",
+   "type": "Vendor"
+  },
+  "fortinet": {
+   "country": "USA",
+   "org": "Fortinet, Inc.",
+   "scope": "f8d4017fcdaf",
+   "type": "Vendor"
+  },
+  "freebsd": {
+   "country": "USA",
+   "org": "FreeBSD",
+   "scope": "f2f47340c8b9",
+   "type": "Open Source + Vendor"
+  },
+  "glibc": {
+   "country": "USA",
+   "org": "GNU C Library",
+   "scope": "54fd8d09edf2",
+   "type": "Open Source"
+  },
+  "google_android": {
+   "country": "USA",
+   "org": "Android (associated with Google Inc. or Open Handset Alliance)",
+   "scope": "27e6083f941f",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "graphql-java": {
+   "country": "Australia",
+   "org": "GraphQL Java",
+   "scope": "63a8986257de",
+   "type": "Open Source + Vendor"
+  },
+  "gvision-it": {
+   "country": "Italy",
+   "org": "GVision Italia S.r.l.",
+   "scope": "ce04a6515d08",
+   "type": "Vendor"
+  },
+  "hackerone": {
+   "country": "USA",
+   "org": "HackerOne",
+   "scope": "2f1f2fb9a4dc",
+   "type": "Bug Bounty Provider"
+  },
+  "harborist": {
+   "country": "USA",
+   "org": "Harborist",
+   "scope": "20c05220200e",
+   "type": "Open Source"
+  },
+  "hikvision": {
+   "country": "China",
+   "org": "Hangzhou Hikvision Digital Technology Co., Ltd.",
+   "scope": "35b48d83a1d8",
+   "type": "Vendor"
+  },
+  "hp": {
+   "country": "USA",
+   "org": "HP Inc.",
+   "scope": "e4e02d10bc6e",
+   "type": "Vendor"
+  },
+  "hpe": {
+   "country": "USA",
+   "org": "Hewlett Packard Enterprise (HPE)",
+   "scope": "b19e64d30616",
+   "type": "Vendor"
+  },
+  "huawei": {
+   "country": "China",
+   "org": "Huawei Technologies",
+   "scope": "b19cfd2ab13d",
+   "type": "Vendor"
+  },
+  "iManage": {
+   "country": "USA",
+   "org": "iManage LLC",
+   "scope": "a413bbfd631f",
+   "type": "Vendor"
+  },
+  "ibm": {
+   "country": "USA",
+   "org": "IBM Corporation",
+   "scope": "97e05a92c2ce",
+   "type": "Open Source + Vendor"
+  },
+  "icscert": {
+   "country": "USA",
+   "org": "Cybersecurity and Infrastructure Security Agency (CISA) Industrial Control Systems (ICS)",
+   "scope": "8966c4aa958a",
+   "type": "CERT"
+  },
+  "illumos": {
+   "country": "USA",
+   "org": "The illumos project",
+   "scope": "1b0637acf674",
+   "type": "Open Source"
+  },
+  "imaginationtech": {
+   "country": "UK",
+   "org": "Imagination Technologies",
+   "scope": "51bd320a3b6d",
+   "type": "Open Source + Vendor"
+  },
+  "intel": {
+   "country": "USA",
+   "org": "Intel Corporation",
+   "scope": "03069e3c6a3a",
+   "type": "Open Source + Vendor"
+  },
+  "isc": {
+   "country": "USA",
+   "org": "Internet Systems Consortium (ISC)",
+   "scope": "30f91e39c671",
+   "type": "Open Source + Vendor"
+  },
+  "ivanti": {
+   "country": "USA",
+   "org": "Ivanti",
+   "scope": "bab6526ec496",
+   "type": "Vendor"
+  },
+  "jci": {
+   "country": "USA",
+   "org": "Johnson Controls",
+   "scope": "77932f897c9d",
+   "type": "Vendor"
+  },
+  "jenkins": {
+   "country": "USA",
+   "org": "Jenkins Project",
+   "scope": "1f980bfce90e",
+   "type": "Open Source"
+  },
+  "jpcert": {
+   "country": "Japan",
+   "org": "JPCERT/CC",
+   "scope": "2c69e7dfbc47",
+   "type": "CERT"
+  },
+  "juniper": {
+   "country": "USA",
+   "org": "Juniper Networks, Inc.",
+   "scope": "fb4de653c763",
+   "type": "Open Source + Vendor"
+  },
+  "krcert": {
+   "country": "South Korea",
+   "org": "KrCERT/CC",
+   "scope": "c539cc56c22d",
+   "type": "CERT"
+  },
+  "kubernetes": {
+   "country": "USA",
+   "org": "Kubernetes",
+   "scope": "5c9eedf0323c",
+   "type": "Open Source + Vendor"
+  },
+  "larry_cashdollar": {
+   "country": "USA",
+   "org": "Larry Cashdollar",
+   "scope": "38f8c1fcd68a",
+   "type": "Researcher"
+  },
+  "lenovo": {
+   "country": "USA",
+   "org": "Lenovo Group Ltd.",
+   "scope": "a4a5225d39c2",
+   "type": "Vendor"
+  },
+  "libreswan": {
+   "country": "n/a",
+   "org": "Libreswan Project",
+   "scope": "671416f3d25e",
+   "type": "Open Source + Vendor"
+  },
+  "linqi": {
+   "country": "Germany",
+   "org": "linqi GmbH",
+   "scope": "7b8090688daf",
+   "type": "Vendor"
+  },
+  "microsoft": {
+   "country": "USA",
+   "org": "Microsoft Corporation",
+   "scope": "3d96e07cd6cb",
+   "type": "Vendor"
+  },
+  "milestonesys": {
+   "country": "Denmark",
+   "org": "Milestone Systems A/S",
+   "scope": "5e4c18979451",
+   "type": "Vendor"
+  },
+  "mitre": {
+   "country": "USA",
+   "org": "MITRE Corporation",
+   "scope": "6ae42b8ba055",
+   "type": "N/A"
+  },
+  "mongodb": {
+   "country": "USA",
+   "org": "MongoDB, Inc.",
+   "scope": "2f401594623d",
+   "type": "Open Source + Vendor"
+  },
+  "mozilla": {
+   "country": "USA",
+   "org": "Mozilla Corporation",
+   "scope": "9bc492f01b31",
+   "type": "Open Source + Vendor"
+  },
+  "naver": {
+   "country": "South Korea",
+   "org": "Naver Corporation",
+   "scope": "e798cf4d0c09",
+   "type": "Vendor"
+  },
+  "netapp": {
+   "country": "USA",
+   "org": "NetApp, Inc.",
+   "scope": "bfff17cee2e4",
+   "type": "Vendor"
+  },
+  "netflix": {
+   "country": "USA",
+   "org": "Netflix, Inc.",
+   "scope": "c4ca38c24cde",
+   "type": "Open Source + Vendor"
+  },
+  "nodejs": {
+   "country": "USA",
+   "org": "Node.js",
+   "scope": "4719ff9205ef",
+   "type": "Open Source + Vendor"
+  },
+  "nvidia": {
+   "country": "USA",
+   "org": "NVIDIA Corporation",
+   "scope": "7739bcb5ab6b",
+   "type": "Vendor"
+  },
+  "obdev": {
+   "country": "Austria",
+   "org": "Objective Development Software GmbH",
+   "scope": "6b4783004ac9",
+   "type": "Vendor"
+  },
+  "odoo": {
+   "country": "Belgium",
+   "org": "Odoo",
+   "scope": "605bd0917025",
+   "type": "Vendor"
+  },
+  "openEuler": {
+   "country": "China",
+   "org": "openEuler",
+   "scope": "bc03107941b7",
+   "type": "Open Source + Vendor"
+  },
+  "openGauss": {
+   "country": "China",
+   "org": "openGauss Community",
+   "scope": "f358160d0e9a",
+   "type": "Open Source"
+  },
+  "openam-jp": {
+   "country": "Japan",
+   "org": "OpenAM Consortium",
+   "scope": "a6605e7c80f0",
+   "type": "Consortium + Open Source"
+  },
+  "openjs": {
+   "country": "USA",
+   "org": "OpenJS Foundation",
+   "scope": "710fbe1d44b7",
+   "type": "Open Source"
+  },
+  "openssl": {
+   "country": "USA",
+   "org": "OpenSSL Software Foundation",
+   "scope": "adbb34eca4be",
+   "type": "Open Source + Vendor"
+  },
+  "oracle": {
+   "country": "USA",
+   "org": "Oracle",
+   "scope": "5e9b2ce53cba",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "palo_alto": {
+   "country": "USA",
+   "org": "Palo Alto Networks, Inc.",
+   "scope": "c9340a5924d1",
+   "type": "Researcher + Vendor"
+  },
+  "php": {
+   "country": "USA",
+   "org": "PHP Group",
+   "scope": "c3a79533bf03",
+   "type": "Open Source + Vendor"
+  },
+  "qnap": {
+   "country": "Taiwan",
+   "org": "QNAP Systems, Inc.",
+   "scope": "97075b6e2edb",
+   "type": "Vendor"
+  },
+  "qualcomm": {
+   "country": "USA",
+   "org": "Qualcomm, Inc.",
+   "scope": "9d3bbbaaaa41",
+   "type": "Vendor"
+  },
+  "rami.io": {
+   "country": "Germany",
+   "org": "rami.io GmbH",
+   "scope": "b9c2344f6a2e",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "rapid7": {
+   "country": "USA",
+   "org": "Rapid7, Inc.",
+   "scope": "7e3dcc5b3d5b",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "redhat": {
+   "country": "USA",
+   "org": "Red Hat, Inc.",
+   "scope": "6cbcea456d72",
+   "type": "Open Source + Vendor"
+  },
+  "runZero": {
+   "country": "USA",
+   "org": "runZero, Inc.",
+   "scope": "476f4edc708a",
+   "type": "Hosted Service + Open Source + Researcher + Vendor"
+  },
+  "rust": {
+   "country": "USA",
+   "org": "The Rust Project",
+   "scope": "387957f0fecf",
+   "type": "Open Source + Vendor"
+  },
+  "samsung.tv_appliance": {
+   "country": "South Korea",
+   "org": "Samsung TV & Appliance",
+   "scope": "cb669246f142",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "sap": {
+   "country": "Germany",
+   "org": "SAP SE",
+   "scope": "4ba658b16e88",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
+  "sba-research": {
+   "country": "Austria",
+   "org": "SBA Research gGmbH",
+   "scope": "0d690e8cfa8b",
+   "type": "Researcher"
+  },
+  "schneider": {
+   "country": "France",
+   "org": "Schneider Electric",
+   "scope": "f100e4f4bfc9",
+   "type": "Vendor"
+  },
+  "seal": {
+   "country": "USA",
+   "org": "Seal Security",
+   "scope": "57689ec26de3",
+   "type": "Open Source + Vendor"
+  },
+  "sec1": {
+   "country": "India",
+   "org": "Sec1",
+   "scope": "3d86db471e1e",
+   "type": "Vendor"
+  },
+  "securepoint": {
+   "country": "Germany",
+   "org": "Securepoint GmbH",
+   "scope": "a245bd927534",
+   "type": "Vendor"
+  },
+  "securin": {
+   "country": "USA",
+   "org": "Securin",
+   "scope": "07adbe6055d4",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "senhasegura": {
+   "country": "Brazil",
+   "org": "senhasegura",
+   "scope": "bc128b8e0478",
+   "type": "Researcher + Vendor"
+  },
+  "siemens": {
+   "country": "Germany",
+   "org": "Siemens",
+   "scope": "d706fc7939ad",
+   "type": "Vendor"
+  },
+  "sirius": {
+   "country": "USA",
+   "org": "Sirius Computer, Inc.",
+   "scope": "8edfd8714b16",
+   "type": "Vendor"
+  },
+  "snyk": {
+   "country": "UK",
+   "org": "Snyk",
+   "scope": "7411f246e035",
+   "type": "Open Source + Researcher"
+  },
+  "sonicwall": {
+   "country": "USA",
+   "org": "SonicWall, Inc.",
+   "scope": "0dd2d3980ce9",
+   "type": "Vendor"
+  },
+  "spartans-security": {
+   "country": "Australia",
+   "org": "Spartans Security",
+   "scope": "f9c1d2993f24",
+   "type": "Researcher"
+  },
+  "suse": {
+   "country": "USA",
+   "org": "SUSE",
+   "scope": "4ad5475cf29a",
+   "type": "Open Source + Researcher + Vendor"
+  },
+  "symantec": {
+   "country": "USA",
+   "org": "Symantec - A Division of Broadcom",
+   "scope": "c31bc1e25d66",
+   "type": "Researcher + Vendor"
+  },
+  "synology": {
+   "country": "Taiwan",
+   "org": "Synology Inc.",
+   "scope": "e9c2fc7514d9",
+   "type": "Vendor"
+  },
+  "systemd": {
+   "country": "Germany",
+   "org": "The systemd project",
+   "scope": "540edb9cf7b9",
+   "type": "Open Source + Vendor"
+  },
+  "talos": {
+   "country": "USA",
+   "org": "Talos",
+   "scope": "ac51cdfe0f94",
+   "type": "Researcher"
+  },
+  "tenable": {
+   "country": "USA",
+   "org": "Tenable Network Security, Inc.",
+   "scope": "a38433c738cf",
+   "type": "Vendor"
+  },
+  "tibco": {
+   "country": "USA",
+   "org": "TIBCO Software Inc.",
+   "scope": "49c72dc0460f",
+   "type": "Vendor"
+  },
+  "tlt_net": {
+   "country": "Lithuania",
+   "org": "Teltonika Networks",
+   "scope": "ad4da98ed7a0",
+   "type": "Vendor"
+  },
+  "trendmicro": {
+   "country": "Japan",
+   "org": "Trend Micro, Inc.",
+   "scope": "98ade7a6cd49",
+   "type": "Vendor"
+  },
+  "tuxcare": {
+   "country": "USA",
+   "org": "Tuxcare Inc.",
+   "scope": "eb5ca3fd197a",
+   "type": "Open Source + Vendor"
+  },
+  "twcert": {
+   "country": "Taiwan",
+   "org": "TWCERT/CC",
+   "scope": "c539cc56c22d",
+   "type": "CERT"
+  },
+  "upKeeper": {
+   "country": "Sweden",
+   "org": "upKeeper Solutions",
+   "scope": "886b4259a74a",
+   "type": "Vendor"
+  },
+  "vmware": {
+   "country": "USA",
+   "org": "VMware by Broadcom",
+   "scope": "83ad7804ae44",
+   "type": "Open Source + Vendor"
+  },
+  "vx": {
+   "country": "USA",
+   "org": "VotingWorks",
+   "scope": "1b6eef19b208",
+   "type": "Open Source + Vendor"
+  },
+  "watchdog": {
+   "country": "USA",
+   "org": "WatchDogDevelopment.com, LLC",
+   "scope": "c438e4257663",
+   "type": "Vendor"
+  },
+  "wikimedia-foundation": {
+   "country": "USA",
+   "org": "The Wikimedia Foundation",
+   "scope": "8ce42dfffd30",
+   "type": "Open Source"
+  },
+  "wolfSSL": {
+   "country": "USA",
+   "org": "wolfSSL Inc.",
+   "scope": "8db89f05849a",
+   "type": "Open Source + Vendor"
+  },
+  "yandex": {
+   "country": "Russia",
+   "org": "Yandex N.V.",
+   "scope": "f900372af821",
+   "type": "Vendor"
+  },
+  "zdi": {
+   "country": "Japan",
+   "org": "Zero Day Initiative",
+   "scope": "f0e92ae0d3d4",
+   "type": "Bug Bounty Provider + Researcher"
+  },
+  "zephyr": {
+   "country": "USA",
+   "org": "Zephyr Project",
+   "scope": "66aaba2f227a",
+   "type": "Open Source + Vendor"
+  }
+ },
+ "size_history": [
+  [
+   "2026-07-18",
+   530
+  ]
+ ],
+ "version": 1
+}

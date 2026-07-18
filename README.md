@@ -287,6 +287,25 @@ caveat kept in the copy: FIRST's dated daily snapshots are publicly
 archived, so this is the only *maintained* per-CVE churn log, not the only
 possible source.
 
+### 18 · CNA Roster — [roster.html](https://devko.github.io/CyberMon/roster.html) (live)
+
+*The CVE federation grows and churns; nobody keeps the history.* The CVE
+Program publishes who can assign a CVE today but no record of how the roster
+got there. CyberMon snapshots the org roster every night — the JSON behind
+cve.org's List of Partners (~530 orgs) — and keeps the diff: onboardings,
+departures and scope changes append to a committed, append-only log
+(`data/history/cna_roster.csv`), a new irreplaceable dataset because the
+upstream keeps only today's roster. Three charts: roster size over time and
+onboardings-vs-departures per month (both drawn from the committed record, so
+they start launch-thin — onboarding means *first observed in our snapshots*,
+since no accreditation date is published — and deepen one night at a time,
+like Silent Rescores), plus today's composition by type, top-level root
+(MITRE vs CISA), reporting root and country, which is fully real from day one.
+State and log are written only after every output validates and travel in the
+same nightly commit. Roster data is CVE Program data; the program's terms
+permit reuse of the published data. New fetcher `pipeline/fetch_cna_roster.py`,
+stage `pipeline/cna_roster.py`; no shared upstream.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the

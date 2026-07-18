@@ -18,7 +18,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "kev_ransomware.json", "kev_guards.json", "breach_ledger.json",
              "extortion_ledger.json", "dnssec_adoption.json",
              "epss_report.json", "cve_calendar.json", "rescore_log.json",
-             "epss_volatility.json", "kev_changelog.json"]
+             "epss_volatility.json", "kev_changelog.json",
+             "cna_roster.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -296,6 +297,24 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert (tmp_path / "history" / "kev_changelog.csv").exists()
     assert meta["sources"]["kev_changelog"]["events_total"] == 7
 
+    # CNA roster: with no committed state, the offline run seeds its "prior
+    # snapshot" from fixtures/cna_roster_state.json (7 orgs), so the diff
+    # against the 8-org fixture roster yields 2 onboardings (curl, hackerone),
+    # 1 departure (oldvendor), 1 scope change (python). Composition is real
+    # from day one; the size series gains a second point (7 -> 8).
+    roster = _load(tmp_path, "cna_roster.json")
+    assert roster["roster_mix"]["total"] == 8
+    assert roster["roster_mix"]["by_type"][0] == {"label": "Vendor", "n": 4}
+    assert roster["roster_flux"]["totals"] == {"onboarded": 2, "departed": 1,
+                                               "scope_changed": 1}
+    assert roster["roster_flux"]["events_total"] == 4
+    assert roster["roster_size"]["net_change"] == 1  # 7 -> 8
+    assert roster["headline"]["top_type"] == "Vendor"
+    assert (tmp_path / "history" / "cna_roster_state.json").exists()
+    assert (tmp_path / "history" / "cna_roster.csv").exists()
+    assert meta["sources"]["roster"] == {"fetched_at": meta["generated_at"],
+                                         "org_count": 8, "events_total": 4}
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -325,6 +344,11 @@ def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):
     # skips, merge-by-date keeps one row (no double-count)
     evol = _load(tmp_path, "epss_volatility.json")
     assert evol["catalog"]["days_observed"] == 1
+    # the roster re-diffs against its own committed state too: no new events,
+    # and the same-date size row is replaced rather than duplicated
+    roster = _load(tmp_path, "cna_roster.json")
+    assert roster["roster_flux"]["events_total"] == 4  # idempotent re-run
+    assert len(roster["roster_size"]["series"]) == 2   # 2026-07-01 + today
 
 
 def test_skip_nvd_carries_previous_run_forward(tmp_path, capsys):

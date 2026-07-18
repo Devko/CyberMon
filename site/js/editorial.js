@@ -40,6 +40,7 @@ export const editorial = {
     { id: "top25", href: "top25.html", label: "CWE Top 25" },
     { id: "adp", href: "adp.html", label: "Vulnrichment" },
     { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
+    { id: "roster", href: "roster.html", label: "CNA Roster" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -276,6 +277,20 @@ export const editorial = {
           "threshold crossings, the percentile-vs-probability gap, and the " +
           "biggest single-day moves — a change log no upstream maintains, so " +
           "the record starts now.",
+        live: true,
+      },
+      {
+        id: "roster",
+        href: "roster.html",
+        num: "18",
+        label: "CNA Roster",
+        headline: "The CVE federation grows and churns. Nobody keeps the history.",
+        blurb:
+          "The CVE Program publishes who can assign a CVE today but no record " +
+          "of how the roster got there. CyberMon snapshots it every night and " +
+          "keeps the diff: onboardings, departures, scope changes, and the " +
+          "current composition by type, root and country — a churn history that " +
+          "starts at first deploy because no accreditation date is published.",
         live: true,
       },
     ],
@@ -2350,6 +2365,125 @@ export const editorial = {
         "a lower bound on volatility, not a complete list. Reset nights are " +
         "excluded — a whole-corpus rescore is not one CVE moving.",
     },
+
+    // --------------------------------- roster.html · 1 · hero
+    roster_size: {
+      num: "01",
+      kicker: "Roster over time",
+      source: "CVE.org organization roster · CyberMon nightly snapshots",
+      headline: "The roster changes. Nobody keeps the history.",
+      caption:
+        "The CVE Program lists every organization allowed to assign a CVE today, " +
+        "but publishes no history of the list: not when an assigner joined, not " +
+        "when one left, not when its remit changed. CyberMon reads the roster " +
+        "every night and keeps the diff. This line is the federation's headcount " +
+        "over time — it begins as a single point tonight and deepens one snapshot " +
+        "at a time, because the record can only start when the snapshots do.",
+      yAxis: "organizations",
+      statLabel: "Organizations on the roster",
+      statSince: "tracked since {first_date}",
+      statNet: "net {net} since {first_date}",
+      // {first_date} is filled from the data (the record's first snapshot
+      // date); the empty variant renders while there is only one snapshot.
+      note:
+        "No upstream publishes roster history — CyberMon has snapshotted the " +
+        "roster since {first_date}, and the line deepens one night at a time.",
+      noteEmpty:
+        "No upstream publishes roster history — CyberMon's record starts with " +
+        "tonight's snapshot. The curve begins to move once there are two nights " +
+        "to compare.",
+      emptyChart:
+        "No snapshots on the record yet — the size series begins tonight.",
+      methodology:
+        "Every night the pipeline fetches the CVE Program's published " +
+        "organization roster — the same CNAsList.json that powers cve.org's " +
+        "List of Partners — and reduces it to one fingerprint per organization, " +
+        "keyed by the shortName the assigner carries on CVE records. The count " +
+        "of organizations is appended to a committed size history " +
+        "(data/history/cna_roster_state.json), and the line is drawn from it. " +
+        "The record starts at first deploy: the program publishes no " +
+        "accreditation dates, so there is no earlier history to import, and the " +
+        "series honestly begins as a single point rather than faking depth. A " +
+        "broken fetch that returns a fraction of the roster is refused rather " +
+        "than charted. Roster data is CVE Program data, the same source family " +
+        "as the CVE List this site already aggregates; the program's terms " +
+        "permit reuse of the published data.",
+    },
+
+    // --------------------------------- roster.html · 2
+    roster_flux: {
+      num: "02",
+      kicker: "Onboardings & departures",
+      source: "CVE.org organization roster · CyberMon nightly snapshots",
+      headline: "Who joins, who leaves.",
+      caption:
+        "Each month's new assigners and departures, with scope changes to " +
+        "existing organizations riding alongside. Because the program publishes " +
+        "no accreditation date, an onboarding here means first seen in " +
+        "CyberMon's snapshots — a floor that starts at first deploy, not a claim " +
+        "about when an organization was actually accredited. Bars above the line " +
+        "are organizations that appeared; below, ones that vanished; scope " +
+        "changes are counted apart, never blended into either.",
+      statOnboarded: "organizations joined · {departed} left the roster",
+      legendOnboarded: "Joined (first observed)",
+      legendDeparted: "Departed",
+      legendScope: "Scope changed",
+      note:
+        "{events} roster changes recorded since {first_date}.",
+      noteEmpty:
+        "No roster changes recorded yet — a snapshot has to differ from the " +
+        "night before, and the record starts now.",
+      emptyChart:
+        "No roster changes on the record yet — the first onboarding or " +
+        "departure fills the first bar.",
+      methodology:
+        "Tonight's roster is diffed against the previous snapshot, keyed by " +
+        "shortName. An organization present tonight but not last time is an " +
+        "onboarding; present last time but gone now is a departure; present in " +
+        "both with a changed scope statement is a scope change (compared by a " +
+        "short stable hash of the text, so the event records that the scope " +
+        "moved without republishing the prose). Events append to a committed, " +
+        "append-only log (data/history/cna_roster.csv) — like the NVD backlog " +
+        "history, an original dataset this project accumulates, because the " +
+        "upstream keeps only today's roster. Bars group by calendar month of " +
+        "the observation date, gap-filled so the axis never skips time. " +
+        "Onboarding is first-observed, not accredited-on: with no published " +
+        "accreditation dates, the log dates each organization to the night " +
+        "CyberMon first saw it, and the very first run logs nothing because " +
+        "there is no prior snapshot to diff.",
+    },
+
+    // --------------------------------- roster.html · 3
+    roster_mix: {
+      num: "03",
+      kicker: "Today's composition",
+      source: "CVE.org organization roster · CyberMon nightly snapshots",
+      headline: "Mostly vendors, speaking for themselves.",
+      caption:
+        "Every organization on the roster tonight, tallied by the kind of " +
+        "authority it claims — vendor, open-source project, researcher, CERT, " +
+        "bug-bounty platform. Most CNAs are vendors scoped to their own " +
+        "products; a shorter tail covers everyone else. Organizations can hold " +
+        "more than one type, so the bars sum above the roster total. Above them " +
+        "all sit two top-level roots, MITRE and CISA, that vouch for the rest.",
+      statTemplate:
+        "{total} organizations · {countries} countries · top-level roots " +
+        "MITRE {mitre} / CISA {cisa}",
+      xAxis: "organizations",
+      nodata: "Not enough data yet.",
+      methodology:
+        "The composition is read straight from tonight's roster fetch, so " +
+        "unlike the two charts above it is fully populated from day one. Each " +
+        "organization's CNA.type list is tallied — an organization that lists " +
+        "several types (a vendor that is also an open-source steward) counts " +
+        "once in each, so the bars sum above the roster headcount by design. " +
+        "The data file also carries the same roster split by top-level root " +
+        "(MITRE or CISA), by reporting root, and by country, each a clean " +
+        "partition that sums to the total, for anyone who wants to read the " +
+        "federation a different way. A snapshot of today's roster, not a trend " +
+        "— the trend is what the size and flux charts above are slowly " +
+        "accumulating.",
+    },
   },
 
   footer: {
@@ -2429,6 +2563,7 @@ export const editorial = {
       top25: "CVE List V5 (MITRE) · CWE Top 25 (MITRE)",
       adp: "CVE List V5 (MITRE)",
       epssvol: "EPSS (FIRST.org) · CyberMon nightly diffs",
+      roster: "CVE.org organization roster · CyberMon nightly snapshots",
     },
   },
 };

@@ -1,0 +1,55 @@
+{
+ "baseline_date": "2026-07-01",
+ "last_observed": "2026-07-01",
+ "orgs": {
+  "adobe": {
+   "country": "USA",
+   "org": "Adobe Systems Incorporated",
+   "scope": "a94bcf8324ac",
+   "type": "Vendor"
+  },
+  "jpcert": {
+   "country": "Japan",
+   "org": "JPCERT/CC",
+   "scope": "1caba48d9361",
+   "type": "CERT"
+  },
+  "microsoft": {
+   "country": "USA",
+   "org": "Microsoft Corporation",
+   "scope": "8bf2e373076d",
+   "type": "Vendor"
+  },
+  "oldvendor": {
+   "country": "Germany",
+   "org": "Old Vendor GmbH",
+   "scope": "ba84b0b782a4",
+   "type": "Vendor"
+  },
+  "python": {
+   "country": "USA",
+   "org": "Python Software Foundation",
+   "scope": "f8303e6a2ee3",
+   "type": "Open Source"
+  },
+  "redhat": {
+   "country": "USA",
+   "org": "Red Hat, Inc.",
+   "scope": "72b03c4dfd57",
+   "type": "Open Source + Vendor"
+  },
+  "siemens": {
+   "country": "Germany",
+   "org": "Siemens AG",
+   "scope": "c2ddb5ddf65b",
+   "type": "Vendor"
+  }
+ },
+ "size_history": [
+  [
+   "2026-07-01",
+   7
+  ]
+ ],
+ "version": 1
+}

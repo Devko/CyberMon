@@ -84,6 +84,12 @@ stage itself always emits it (no skip flag; it rides on the KEV fetch):
 log, additions included) and `last_observed` (date of the newest catalog
 observation; empty string only in the degenerate no-record-yet case).
 
+`sources.roster` (CNA Roster History module) is validated additively —
+optional because older committed meta files predate the module, but the
+stage itself always emits it (no skip flag): `fetched_at` (ISO-8601 UTC),
+`org_count` (organizations on tonight's roster, `>= 1`) and `events_total`
+(rows on the committed churn log after tonight's append).
+
 ## site/data/severity_inflation.json  (chart 1, hero)
 
 ```json
@@ -1503,4 +1509,95 @@ removed entry's dateAdded was unusable), sorted by removal date, one row
 per CVE, `len == catalog.removed_total`. `headline` is null iff there
 are no entries or no edits. Validator:
 `pipeline/kev_changelog_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
+
+## site/data/cna_roster.json  (CNA Roster History module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "roster_size": {
+    "min_n": 2, "current": 530, "net_change": null,
+    "first_observed": "2026-07-18",
+    "series": [{"date": "2026-07-18", "size": 530}]
+  },
+  "roster_flux": {
+    "months": [{"month": "2026-07", "onboarded": 0, "departed": 0,
+                "scope_changed": 0}],
+    "totals": {"onboarded": 0, "departed": 0, "scope_changed": 0},
+    "events_total": 0, "first_observed": null
+  },
+  "roster_mix": {
+    "total": 530,
+    "by_type": [{"label": "Vendor", "n": 432},
+                {"label": "Open Source", "n": 142}],
+    "by_tlr": [{"label": "mitre", "n": 443}, {"label": "CISA", "n": 85}],
+    "by_root": [{"label": "n/a", "n": 382}, {"label": "icscert", "n": 83}],
+    "by_country": [{"label": "USA", "n": 281}, {"label": "Germany", "n": 26}]
+  },
+  "headline": {"roster_total": 530, "top_type": "Vendor", "top_type_n": 432,
+               "country_count": 44, "root_count": 7, "mitre_n": 443,
+               "cisa_n": 85}
+}
+```
+
+The CVE Program publishes its current CNA/root roster but no history —
+accreditation dates, onboardings, departures and scope changes are recorded
+nowhere upstream. This module makes CyberMon that record. Source: the
+roster JSON that powers cve.org's List of Partners
+(`raw.githubusercontent.com/CVEProject/cve-website/dev/src/assets/data/CNAsList.json`,
+~530 orgs; the `cveawg.mitre.org/api/org` CVE Services endpoint requires an
+authenticated `CVE-API-ORG` header and is not usable for public aggregates,
+and `cve.org/api/?action=getOrgs` returns only the SPA HTML shell). Roster
+data is CVE Program data — the same source family as the CVE List this site
+already aggregates — and the program's terms permit reuse of the published
+data. Fields read: `shortName` (the natural key — unique; the assigner id
+CVE records carry; `cnaID` is NOT unique and is only an identity attribute),
+`organizationName`, `scope`, `country`, `CNA.type`, `CNA.roles`, `CNA.TLR`
+and `CNA.root`.
+
+**Committed history files (both under `site/data/history/`):**
+
+* `cna_roster.csv` — the append-only churn log (columns
+  `observed_date,short_name,change_type,org,country,type`). Like
+  `nvd_backlog.csv`, this is an **original dataset accumulated by this
+  project and it CANNOT be regenerated**: the upstream publishes only
+  today's roster (the weekly `data-backup-*` tags cover it).
+* `cna_roster_state.json` — the compact state: the per-org fingerprint
+  (org name, country, type label, and a 12-hex-char scope hash) as of the
+  last snapshot, the `size_history` series (one `[date, size]` per observed
+  date — chart 1 is drawn from it), and the baseline/last-observed dates.
+
+Both are written by `__main__.run()` **only after every output validates**
+(the `nvd_backlog.csv` discipline), via `pipeline.cna_roster.persist`. A
+fresh roster that lost more than half the orgs is refused as a broken fetch
+rather than mass-logging departures.
+
+Event taxonomy: `onboarded` = a `shortName` observed for the first time —
+**first-observed, not accredited-on**, because no accreditation date is
+published, so the very first run logs ZERO events (no prior snapshot to
+diff); `departed` = a `shortName` present last snapshot, gone now;
+`scope_changed` = an org present in both whose `scope` text changed
+(compared by the stable hash — the event records that the scope moved, not
+the prose).
+
+`roster_size` (hero): the size series from the committed `size_history`,
+sorted, unique dates, `current == series[-1].size`,
+`first_observed == series[0].date`. `net_change` (`series[-1] − series[0]`,
+may be negative) is null exactly while the series holds fewer than `min_n`
+points (production 2) — the record starts as a single point tonight and the
+site renders the thin-start placeholder rather than a fake trend.
+`roster_flux`: onboardings/departures/scope changes per calendar month,
+contiguous ascending labels (gap months at zero); per-month counts sum to
+`totals` per type, `totals` sum to `events_total`; `first_observed` is null
+exactly when the log is empty. `roster_mix` (real from day one): today's
+composition. `by_type` is a **flattened** tally (an org counts once per type
+it claims, so it may sum above `total`); `by_tlr`, `by_root`, `by_country`
+are clean partitions that sum to `total`; each breakdown is `[{label, n}]`
+sorted by `n` descending, `n >= 1`, unique labels. `headline` summarizes the
+composition (always present — the roster is never empty): `roster_total ==
+roster_mix.total`, `top_type`/`top_type_n` mirror `by_type[0]`,
+`country_count == len(by_country)`, and `mitre_n + cisa_n <= total`.
+Validator: `pipeline/roster_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).

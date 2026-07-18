@@ -1,0 +1,297 @@
+{
+ "generated_at": "2026-07-18T08:35:22Z",
+ "roster_size": {
+  "min_n": 2,
+  "current": 530,
+  "net_change": null,
+  "first_observed": "2026-07-18",
+  "series": [
+   {
+    "date": "2026-07-18",
+    "size": 530
+   }
+  ]
+ },
+ "roster_flux": {
+  "months": [],
+  "totals": {
+   "onboarded": 0,
+   "departed": 0,
+   "scope_changed": 0
+  },
+  "events_total": 0,
+  "first_observed": null
+ },
+ "roster_mix": {
+  "total": 530,
+  "by_type": [
+   {
+    "label": "Vendor",
+    "n": 432
+   },
+   {
+    "label": "Open Source",
+    "n": 142
+   },
+   {
+    "label": "Researcher",
+    "n": 119
+   },
+   {
+    "label": "Hosted Service",
+    "n": 37
+   },
+   {
+    "label": "CERT",
+    "n": 22
+   },
+   {
+    "label": "Bug Bounty Provider",
+    "n": 19
+   },
+   {
+    "label": "Consortium",
+    "n": 3
+   },
+   {
+    "label": "N/A",
+    "n": 2
+   }
+  ],
+  "by_tlr": [
+   {
+    "label": "mitre",
+    "n": 443
+   },
+   {
+    "label": "CISA",
+    "n": 85
+   },
+   {
+    "label": "n/a",
+    "n": 2
+   }
+  ],
+  "by_root": [
+   {
+    "label": "n/a",
+    "n": 382
+   },
+   {
+    "label": "icscert",
+    "n": 83
+   },
+   {
+    "label": "redhat",
+    "n": 18
+   },
+   {
+    "label": "ENISA",
+    "n": 16
+   },
+   {
+    "label": "jpcert",
+    "n": 12
+   },
+   {
+    "label": "INCIBE",
+    "n": 10
+   },
+   {
+    "label": "Google",
+    "n": 7
+   },
+   {
+    "label": "THA-PSIRT",
+    "n": 2
+   }
+  ],
+  "by_country": [
+   {
+    "label": "USA",
+    "n": 281
+   },
+   {
+    "label": "Germany",
+    "n": 26
+   },
+   {
+    "label": "China",
+    "n": 24
+   },
+   {
+    "label": "Taiwan",
+    "n": 16
+   },
+   {
+    "label": "Japan",
+    "n": 15
+   },
+   {
+    "label": "Australia",
+    "n": 13
+   },
+   {
+    "label": "France",
+    "n": 12
+   },
+   {
+    "label": "Spain",
+    "n": 12
+   },
+   {
+    "label": "Switzerland",
+    "n": 12
+   },
+   {
+    "label": "UK",
+    "n": 11
+   },
+   {
+    "label": "Canada",
+    "n": 9
+   },
+   {
+    "label": "Israel",
+    "n": 9
+   },
+   {
+    "label": "Netherlands",
+    "n": 8
+   },
+   {
+    "label": "Sweden",
+    "n": 8
+   },
+   {
+    "label": "India",
+    "n": 7
+   },
+   {
+    "label": "South Korea",
+    "n": 7
+   },
+   {
+    "label": "Austria",
+    "n": 5
+   },
+   {
+    "label": "Belgium",
+    "n": 5
+   },
+   {
+    "label": "Denmark",
+    "n": 5
+   },
+   {
+    "label": "Finland",
+    "n": 5
+   },
+   {
+    "label": "T\u00fcrkiye",
+    "n": 4
+   },
+   {
+    "label": "Czech Republic",
+    "n": 3
+   },
+   {
+    "label": "Italy",
+    "n": 3
+   },
+   {
+    "label": "Slovak Republic",
+    "n": 3
+   },
+   {
+    "label": "Brazil",
+    "n": 2
+   },
+   {
+    "label": "Ireland",
+    "n": 2
+   },
+   {
+    "label": "New Zealand",
+    "n": 2
+   },
+   {
+    "label": "Norway",
+    "n": 2
+   },
+   {
+    "label": "Russia",
+    "n": 2
+   },
+   {
+    "label": "Singapore",
+    "n": 2
+   },
+   {
+    "label": "South Africa",
+    "n": 2
+   },
+   {
+    "label": "Colombia",
+    "n": 1
+   },
+   {
+    "label": "Dominican Republic",
+    "n": 1
+   },
+   {
+    "label": "Estonia",
+    "n": 1
+   },
+   {
+    "label": "Greece",
+    "n": 1
+   },
+   {
+    "label": "Hungary",
+    "n": 1
+   },
+   {
+    "label": "Latvia",
+    "n": 1
+   },
+   {
+    "label": "Lithuania",
+    "n": 1
+   },
+   {
+    "label": "Luxembourg",
+    "n": 1
+   },
+   {
+    "label": "Poland",
+    "n": 1
+   },
+   {
+    "label": "Romania",
+    "n": 1
+   },
+   {
+    "label": "Uzbekistan",
+    "n": 1
+   },
+   {
+    "label": "Vietnam",
+    "n": 1
+   },
+   {
+    "label": "n/a",
+    "n": 1
+   }
+  ]
+ },
+ "headline": {
+  "roster_total": 530,
+  "top_type": "Vendor",
+  "top_type_n": 432,
+  "country_count": 44,
+  "root_count": 7,
+  "mitre_n": 443,
+  "cisa_n": 85
+ }
+}
