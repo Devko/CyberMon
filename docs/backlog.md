@@ -1,11 +1,11 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the sixteen that exist today
+Candidate monitoring modules, beyond the seventeen that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
-15 CWE Top 25, 16 Vulnrichment — all live).
+15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility — all live).
 
 ## Fresh candidates — probed 2026-07-18
 
@@ -42,7 +42,18 @@ and data-contracts.md. Original candidate note:
   KEV records (a 2019 CVE's ADP block is stamped 2025), so a publish-date
   axis would smear a false pre-2024 signal.
 
-### EPSS volatility
+### EPSS volatility — SHIPPED as module 17
+Live as **17 · EPSS Volatility** ([epssvol.html](../site/epssvol.html)).
+Committed-history diff collector: each night the pipeline diffs the EPSS feed
+(probability and percentile) against the night before and appends one row per
+snapshot to `site/data/history/epss_volatility.csv` — a new irreplaceable
+dataset (FIRST publishes only the current snapshot). Three charts: the
+percentile-vs-probability gap, weekly material threshold crossings, and the
+biggest single-day movers; model-version resets quarantined. Like Silent
+Rescores the record starts at first deploy — the CSV ships empty and the page
+renders "not enough data yet" until diffs accumulate. Distinct from module 10
+(stability, not accuracy). See `pipeline/epss_volatility.py`. Original
+candidate note:
 - **Thesis:** teams triage by EPSS *percentile* — a number that moves under
   ~98% of CVEs every night while the model's actual probability holds for
   ~99% of them. The churn is real, largely a population artifact, and nobody

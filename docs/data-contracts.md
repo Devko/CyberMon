@@ -1134,6 +1134,102 @@ aggregate — no second corpus pass. Validator:
 dispatch). `meta.sources.top25` (`{fetched_at, official_year, list_count}`)
 records the newest committed list and how many years are committed.
 
+## site/data/epss_volatility.json  (EPSS Volatility module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "thresholds": {"lo": 0.001, "mid": 0.01, "hi": 0.05},
+  "churn": {
+    "weeks": [
+      {"week": "2026-W29", "crossed_lo": 2431, "crossed_mid": 812,
+       "crossed_hi": 140, "days": 5}
+    ]
+  },
+  "gap": {
+    "min_days": 3, "trend_days": 12,
+    "prob_moved_pct": 3.4, "pct_moved_pct": 98.1,
+    "days": [{"date": "2026-07-13", "prob_moved": 3.1, "pct_moved": 98.2}]
+  },
+  "movers": {
+    "min_delta": 0.1,
+    "entries": [{"cve": "CVE-2025-1234", "observed_date": "2026-07-14",
+                 "old": 0.12, "new": 0.86, "delta": 0.74}]
+  },
+  "catalog": {
+    "state_model_version": "v2025.03.14", "state_score_date": "2026-07-14",
+    "state_size": 268314, "days_observed": 13, "trend_days": 12,
+    "resets_quarantined": 1, "crossed_totals": {"lo": 9004, "mid": 3110,
+    "hi": 512}, "first_observed": "2026-07-02"
+  }
+}
+```
+
+Source: CyberMon's own nightly diffs of the EPSS feed (FIRST.org). Each
+night the pipeline fingerprints the EPSS snapshot it already fetches for
+the rest of the site — per CVE, `[probability, percentile]` from
+`EpssData.scores` / `EpssData.percentiles` — and diffs it against the
+previous night's fingerprint (**`site/data/history/epss_volatility_state.json`**,
+COMMITTED next to the log like the rescore/KEV `*_state.json`; it also
+records the feed's `model_version`, `score_date` and last observed date).
+Only CVEs present on **both** nights are compared: a CVE new to tonight's
+feed has no prior to move from, and its arrival is exactly what drives the
+percentile reshuffle. "Moved" means the value changed at the five-decimal
+precision EPSS publishes (this module's documented exception to CyberMon's
+one-decimal float rule, same as the EPSS Report Card — the point is the
+movement of very small numbers).
+
+One **aggregate row per observed EPSS snapshot** appends to
+**`site/data/history/epss_volatility.csv`** (columns
+`observed_date,model_version,n_scored,n_compared,prob_moved,pct_moved,
+crossed_lo,crossed_mid,crossed_hi,top_cve,top_old,top_new,reset`; last run
+per date wins, the `nvd_backlog.csv` merge-by-date pattern). Like
+`nvd_backlog.csv` it is an **original dataset accumulated by this project**:
+FIRST ships only the current daily snapshot, so the night-to-night deltas
+are a record only if somebody keeps one. One honesty caveat, stated in the
+copy too: the moat is softer than the KEV changelog's — FIRST's dated daily
+snapshots ARE publicly archived, so CyberMon is the only *maintained*
+per-CVE EPSS churn log, not the only possible source. Distinct from the
+EPSS Report Card (module 10), which grades the model's ACCURACY; this
+measures its STABILITY.
+
+`crossed_lo/mid/hi` count compared CVEs whose raw probability crossed
+`0.001 / 0.01 / 0.05` in either direction (the "≥ threshold" side flipped);
+the three are independent, so one big jump counts under all three. `top_*`
+is the day's single biggest absolute probability move (the movers board's
+raw material). `reset` marks a **model-version reset shock**: when the
+feed's `model_version` changes, a new model rescores the whole corpus
+overnight and ~everything moves for a reason unrelated to any one CVE — that
+row is kept flagged for the audit trail, its top mover suppressed, and it
+is **excluded from every trend** (`churn`, `gap`, `movers`, `crossed_totals`),
+the same quarantine Silent Rescores applies to its seeding. First-ever run
+= baseline: no prior state, zero rows, the committed CSV ships **empty**.
+State and CSV are persisted together only after a fully validated run (the
+`rescore_tracker` discipline), so they cannot diverge; a re-run against the
+same EPSS `score_date` is skipped, and merge-by-date makes it idempotent
+regardless.
+
+`churn.weeks` = per-ISO-week (`YYYY-Www`, UTC observation dates)
+material-crossing counts over trend rows, gap-filled between the first and
+last observed week, sorted, unique; empty until the `min_days` gate opens.
+Weekly `crossed_*` must sum to `catalog.crossed_totals`, and weekly `days`
+to `catalog.trend_days`. `gap` is the headline: `days` carries the per-day
+share of compared CVEs whose percentile moved vs. whose probability moved,
+and `prob_moved_pct`/`pct_moved_pct` their record averages; both averages
+are null and `days` is `[]` **exactly** while `trend_days < min_days`
+(production `min_days` 3; fixture mode 1) — below the gate the site renders
+a placeholder from `trend_days`, never a fake line. `movers.entries` = the
+biggest single-day probability moves on record (one per night, `|delta| >=
+min_delta`, production `0.1`), ranked by magnitude descending; `delta ==
+new − old`. `catalog` is the audit block: `days_observed == trend_days +
+resets_quarantined`, `crossed_totals` carries exactly `{lo, mid, hi}`, and
+`first_observed` is null exactly when the log is empty — the record starts
+at first deploy, and the file says so rather than faking depth. No pace
+projection: the record is launch-thin and the movement is nightly-batched.
+Validator: `pipeline/epssvol_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).
+
+
 ## site/data/kev_guards.json  (Security Products module, all 3 charts)
 
 ```json

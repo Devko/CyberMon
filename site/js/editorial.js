@@ -39,6 +39,7 @@ export const editorial = {
     { id: "naming", href: "naming.html", label: "Naming Chaos" },
     { id: "top25", href: "top25.html", label: "CWE Top 25" },
     { id: "adp", href: "adp.html", label: "Vulnrichment" },
+    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -259,6 +260,22 @@ export const editorial = {
           "container's own update date, what it adds (SSVC almost always, " +
           "CVSS and CWE as patch-ins), and the board where one agency does " +
           "nearly all of it. Read nightly from the CVE List.",
+        live: true,
+      },
+      {
+        id: "epssvol",
+        href: "epssvol.html",
+        num: "17",
+        label: "EPSS Volatility",
+        headline: "Teams triage on a number that reshuffles under most CVEs every night.",
+        blurb:
+          "Every night CyberMon diffs the EPSS feed against the night before. " +
+          "The model's actual probability holds for nearly every CVE; the " +
+          "percentile teams gate on moves under almost all of them, because the " +
+          "corpus keeps growing and the whole population re-ranks. Material " +
+          "threshold crossings, the percentile-vs-probability gap, and the " +
+          "biggest single-day moves — a change log no upstream maintains, so " +
+          "the record starts now.",
         live: true,
       },
     ],
@@ -2183,6 +2200,156 @@ export const editorial = {
         "not counted here — in practice CISA-ADP is the only substantive " +
         "enricher, which is the whole point of the board.",
     },
+
+    // --------------------------------- epssvol.html · 1 · hero
+    epssvol_gap: {
+      num: "01",
+      kicker: "The gap",
+      source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
+      headline: "The number teams triage on moves overnight. The number that matters holds.",
+      caption:
+        "EPSS ships two figures per CVE: a probability of exploitation and " +
+        "the percentile that ranks it against every other scored CVE. Triage " +
+        "runs on the percentile — and it moves under almost every CVE from one " +
+        "night to the next, not because the model changed its mind but because " +
+        "the corpus grows by a few hundred CVEs a day and the whole population " +
+        "re-ranks. The two lines are the share of CVEs whose percentile moved " +
+        "and whose probability moved; the space between them is the whole " +
+        "story. The exact figures are in the stat and the tooltip — read them " +
+        "against each other.",
+      // {first_date} is filled from the data (the log's first observed date);
+      // the empty variant renders while the log has no diff-nights yet.
+      note:
+        "No upstream keeps a per-CVE EPSS change log — CyberMon has diffed the " +
+        "feed nightly since {first_date}.",
+      noteEmpty:
+        "No upstream keeps a per-CVE EPSS change log — CyberMon's record " +
+        "starts with tonight's feed. The gap appears once there are two nights " +
+        "to compare.",
+      // Rendered instead of the chart while the log sits under the min-days
+      // gate; both variants are filled from the data file, never hardcoded.
+      placeholder:
+        "{days} of {min_days} diff-nights on record since {first_date} — the " +
+        "gap charts once {min_days} nights have accumulated.",
+      placeholderEmpty:
+        "No diff-nights on the record yet — EPSS volatility begins at first " +
+        "deploy, and the first comparable night draws the first point.",
+      statLabel: "Share of compared CVEs whose EPSS percentile moved overnight",
+      statVersus: "vs {prob} whose probability moved · {days} nights on record",
+      legendPct: "Percentile moved",
+      legendProb: "Probability moved",
+      yAxisLabel: "share of compared CVEs",
+      methodology:
+        "Every night the pipeline fingerprints the EPSS feed already fetched " +
+        "for the rest of the site — each CVE's raw probability and its " +
+        "published percentile — and diffs it against the previous night's " +
+        "fingerprint, kept as committed state beside the log (a re-run against " +
+        "the same EPSS score_date is detected and skipped, so nothing " +
+        "double-counts). Only CVEs present on both nights are compared: a CVE " +
+        "new to tonight's feed has no prior to move from, and its arrival is " +
+        "precisely what drives the reshuffle. “Moved” means the value changed " +
+        "at the five-decimal precision EPSS publishes. The two lines are the " +
+        "share of compared CVEs whose percentile moved and whose probability " +
+        "moved; they diverge by design, because FIRST recomputes every " +
+        "percentile nightly against that day's whole corpus while the raw " +
+        "probability is the model's actual estimate — the percentile is a " +
+        "moving denominator. When the feed's model_version changes, a new " +
+        "model rescores the entire corpus overnight and everything moves for a " +
+        "reason that has nothing to do with any one CVE; that night is logged " +
+        "flagged and excluded from every trend here, the same quarantine " +
+        "Silent Rescores applies to its seeding. This is a stability " +
+        "measurement, not an accuracy one — the EPSS Report Card grades " +
+        "whether the model was right; this asks how much it moves. Two honesty " +
+        "notes: the record starts at first deploy, so it is thin by design and " +
+        "deepens nightly; and the moat is soft — FIRST's dated daily snapshots " +
+        "are publicly archived, so this is the only maintained per-CVE EPSS " +
+        "change log, not the only one anyone could build.",
+    },
+
+    // --------------------------------- epssvol.html · 2
+    epssvol_churn: {
+      num: "02",
+      kicker: "Material crossings",
+      source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
+      headline: "Most of the movement is bookkeeping. This is the part that isn't.",
+      caption:
+        "A percentile reshuffle changes a CVE's rank without changing what the " +
+        "model believes; a probability that crosses a decision line does. " +
+        "These bars count only the second kind — CVEs whose raw probability " +
+        "crossed 0.1%, 1%, or 5% in a week, in either direction. Set against " +
+        "the churn on the hero chart, material crossings are a rounding error, " +
+        "and that is the point: the number teams gate on moves constantly, " +
+        "while the number that should trigger action barely does.",
+      note:
+        "Thresholds are the probability lines triage policies actually gate on " +
+        "(0.001 / 0.01 / 0.05); a crossing counts in either direction, and the " +
+        "three counts are independent — one big jump can cross all three.",
+      legendLo: "crossed 0.1%",
+      legendMid: "crossed 1%",
+      legendHi: "crossed 5%",
+      yAxisLabel: "CVEs crossing a threshold",
+      emptyChart:
+        "No diff-nights on the log yet — material crossings appear once there " +
+        "are two nights to compare.",
+      methodology:
+        "For each CVE compared on two consecutive EPSS snapshots (the " +
+        "fingerprint and reset rules are in the hero methodology), the " +
+        "pipeline checks whether its raw probability crossed any of three " +
+        "fixed thresholds — 0.001, 0.01, 0.05 — meaning the “≥ threshold” side " +
+        "flipped between the two nights, up or down. Bars group the per-night " +
+        "counts by ISO week of the observation date (UTC); the week in " +
+        "progress is starred and keeps filling until it closes, and empty " +
+        "weeks between observed ones chart at zero so the axis never skips " +
+        "time. The three series are counted independently, so a probability " +
+        "that jumps from near zero to above 5% is counted under all three " +
+        "lines. Reset nights (a model_version change) are excluded, as " +
+        "everywhere on this page. The thresholds are the module's own, not " +
+        "FIRST's — they stand in for the decision lines real triage policies " +
+        "draw, and they are stated here so a reader can disagree with them.",
+    },
+
+    // --------------------------------- epssvol.html · 3
+    epssvol_movers: {
+      num: "03",
+      kicker: "Biggest single-day moves",
+      source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
+      headline: "When the model does change its mind, this is how far.",
+      caption:
+        "The largest single-night jumps in raw EPSS probability on record — " +
+        "the events the churn charts are the quiet background to. Each row is " +
+        "one CVE on one night, ranked by the size of the move; the arrow and " +
+        "the from→to column carry its direction. Expect the board to launch " +
+        "sparse: a genuine probability swing is rare by construction, which is " +
+        "exactly why the percentile-driven churn underneath it is so " +
+        "misleading.",
+      note:
+        "The board keeps each night's single biggest move; a night with " +
+        "several large moves contributes only its largest, so read it as a " +
+        "floor on the day's volatility, not a full census.",
+      windowTemplate: "{context} · {shown} shown · min move {min_delta}",
+      boardNote: "{days} nights on record since {first_date}",
+      boardNoteEmpty: "no diff-nights on the log yet — collection is live",
+      colCve: "CVE",
+      colDate: "moved",
+      colShift: "probability",
+      colDelta: "move",
+      emptyBoard:
+        "No single-day probability move has cleared the bar yet — the board " +
+        "fills as the record grows.",
+      methodology:
+        "Each observed night contributes its single largest absolute change " +
+        "in raw probability among the CVEs compared that night (the " +
+        "fingerprint and reset rules are in the hero methodology). The board " +
+        "ranks those nightly champions across the whole record by the " +
+        "magnitude of the move — the sign is shown, never sorted on — and " +
+        "keeps the biggest twenty above a minimum-move threshold (production " +
+        "0.1; the placeholder and the threshold both ship in the data file). " +
+        "Probabilities are shown as percentages at the feed's own precision. " +
+        "Because only one mover is kept per night, a night with several large " +
+        "independent swings is represented by its biggest alone; the board is " +
+        "a lower bound on volatility, not a complete list. Reset nights are " +
+        "excluded — a whole-corpus rescore is not one CVE moving.",
+    },
   },
 
   footer: {
@@ -2261,6 +2428,7 @@ export const editorial = {
       naming: "MITRE ATT&CK®",
       top25: "CVE List V5 (MITRE) · CWE Top 25 (MITRE)",
       adp: "CVE List V5 (MITRE)",
+      epssvol: "EPSS (FIRST.org) · CyberMon nightly diffs",
     },
   },
 };

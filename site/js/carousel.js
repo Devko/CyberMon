@@ -68,6 +68,9 @@ import { render as renderTop25Exploited } from "./charts/top25_exploited.js";
 import { render as renderAdpHandoff } from "./charts/adp_handoff.js";
 import { render as renderAdpAdds } from "./charts/adp_adds.js";
 import { render as renderAdpProviders } from "./charts/adp_providers.js";
+import { render as renderEpssvolGap } from "./charts/epssvol_gap.js";
+import { render as renderEpssvolChurn } from "./charts/epssvol_churn.js";
+import { render as renderEpssvolMovers } from "./charts/epssvol_movers.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -206,6 +209,14 @@ const MODULES = {
       { id: "adp_handoff", render: renderAdpHandoff },
       { id: "adp_adds", render: renderAdpAdds },
       { id: "adp_providers", render: renderAdpProviders, table: true },
+    ],
+  },
+  epssvol: {
+    file: "data/epss_volatility.json",
+    sections: [
+      { id: "epssvol_gap", render: renderEpssvolGap },
+      { id: "epssvol_churn", render: renderEpssvolChurn },
+      { id: "epssvol_movers", render: renderEpssvolMovers, table: true },
     ],
   },
 };

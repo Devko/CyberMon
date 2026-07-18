@@ -279,6 +279,16 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.adp.fetched_at", ISO_UTC_RE)
         _check_int(_get(adp, "cisa_records", "meta.sources.adp"),
                    "meta.sources.adp.cisa_records")
+    # the EPSS Volatility stage itself always emits it. score_date = the
+    # EPSS snapshot recorded in tonight's committed fingerprint state (the
+    # same-snapshot guard's reference point); days_observed = rows on the
+    # committed daily log after tonight's diff.
+    if "epssvol" in src:
+        ev = src["epssvol"]
+        _check_str(_get(ev, "score_date", "meta.sources.epssvol"),
+                   "meta.sources.epssvol.score_date", DATE_RE)
+        _check_int(_get(ev, "days_observed", "meta.sources.epssvol"),
+                   "meta.sources.epssvol.days_observed")
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -574,3 +584,6 @@ VALIDATORS.update(top25_contracts.VALIDATORS)
 from . import adp_contracts  # noqa: E402
 
 VALIDATORS.update(adp_contracts.VALIDATORS)
+from . import epssvol_contracts  # noqa: E402
+
+VALIDATORS.update(epssvol_contracts.VALIDATORS)

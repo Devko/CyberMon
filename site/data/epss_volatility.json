@@ -1,0 +1,36 @@
+{
+ "generated_at": "2026-07-18T07:58:04Z",
+ "thresholds": {
+  "lo": 0.001,
+  "mid": 0.01,
+  "hi": 0.05
+ },
+ "churn": {
+  "weeks": []
+ },
+ "gap": {
+  "min_days": 3,
+  "trend_days": 0,
+  "prob_moved_pct": null,
+  "pct_moved_pct": null,
+  "days": []
+ },
+ "movers": {
+  "min_delta": 0.1,
+  "entries": []
+ },
+ "catalog": {
+  "state_model_version": "v2026.06.15",
+  "state_score_date": "2026-07-17",
+  "state_size": 349158,
+  "days_observed": 0,
+  "trend_days": 0,
+  "resets_quarantined": 0,
+  "crossed_totals": {
+   "lo": 0,
+   "mid": 0,
+   "hi": 0
+  },
+  "first_observed": null
+ }
+}

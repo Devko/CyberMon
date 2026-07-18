@@ -29,10 +29,11 @@ from typing import Iterator
 
 from . import (adp_metrics, attack_metrics, breach_metrics, calendar_metrics,
                concentration_metrics, contracts, cwe_top25_data,
-               epss_report_metrics, extortion_metrics, guards_metrics,
-               history, hygiene_metrics, kev_changelog, kev_metrics,
-               market_metrics, metrics, naming_metrics, nvd_throughput,
-               quality_metrics, rescore_tracker, top25_metrics)
+               epss_report_metrics, epss_volatility, extortion_metrics,
+               guards_metrics, history, hygiene_metrics, kev_changelog,
+               kev_metrics, market_metrics, metrics, naming_metrics,
+               nvd_throughput, quality_metrics, rescore_tracker,
+               top25_metrics)
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -439,6 +440,19 @@ def run(args: argparse.Namespace) -> int:
             **({"min_n": 1, "min_cna_events": 1}
                if args.offline_fixtures else {}))
     outputs["rescore_log.json"] = rescore_log
+    # EPSS Volatility: diff tonight's EPSS feed (probability AND percentile,
+    # both from the epss object already fetched above) against the committed
+    # fingerprint of last night's feed, appending one aggregate row per EPSS
+    # snapshot to a NEW committed daily log next to the state (the
+    # rescore_tracker pattern). The merged rows and tonight's state come back
+    # UNWRITTEN — persisted below, only after every output validates, so a
+    # failed run never records tonight's snapshot as diffed.
+    epssvol_obj, epssvol_source, epssvol_rows, epssvol_state = \
+        epss_volatility.run_stage(
+            args.out, epss, generated_at,
+            offline_fixtures=args.offline_fixtures,
+            fixtures_dir=FIXTURES_DIR)
+    outputs["epss_volatility.json"] = epssvol_obj
     # KEV changelog: diffs the fresh catalog against the committed state.
     # No skip flag (the KEV fetch it rides on has none either); its
     # history writes are deferred to after validation, like nvd_backlog.
@@ -486,6 +500,7 @@ def run(args: argparse.Namespace) -> int:
     # source stamp is the run's generation time plus the CISA-carrier count.
     outputs["meta.json"]["sources"]["adp"] = {
         "fetched_at": generated_at, "cisa_records": agg.adp_cisa_total}
+    outputs["meta.json"]["sources"]["epssvol"] = epssvol_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
@@ -508,6 +523,10 @@ def run(args: argparse.Namespace) -> int:
     # diverge (only a validated run records tonight's release as diffed).
     rescore_tracker.persist(args.out, rescore_rows, rescore_state)
     kev_changelog.persist(args.out, changelog_pending)
+    # EPSS Volatility daily log + committed fingerprint state — same
+    # deferred discipline: the irreplaceable per-CVE EPSS churn record and
+    # its diffing state travel in one validated commit.
+    epss_volatility.persist(args.out, epssvol_rows, epssvol_state)
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")
