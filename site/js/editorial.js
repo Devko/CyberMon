@@ -36,6 +36,7 @@ export const editorial = {
     { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
     { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
     { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
+    { id: "naming", href: "naming.html", label: "Naming Chaos" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -215,6 +216,19 @@ export const editorial = {
           "lowered, scores backfilled years late, scores withdrawn. No upstream " +
           "keeps this history, so the record starts now — thin by design, deeper " +
           "every night.",
+        live: true,
+      },
+      {
+        id: "naming",
+        href: "naming.html",
+        num: "14",
+        label: "Naming Chaos",
+        headline: "One adversary, a roomful of names.",
+        blurb:
+          "MITRE ATT&CK files each threat group under one name and lists the " +
+          "aliases every other vendor uses for it — a most-renamed leaderboard " +
+          "and the alias-count distribution across the active roster, read from " +
+          "the current enterprise STIX bundle each night.",
         live: true,
       },
     ],
@@ -1893,6 +1907,65 @@ export const editorial = {
         "the rest of the page: observed at the first capture that shows the " +
         "change, not necessarily the day CISA made it.",
     },
+
+    // --------------------------------- naming.html · 1 · hero
+    naming_board: {
+      num: "01",
+      kicker: "The most-renamed",
+      source: "MITRE ATT&CK (enterprise)",
+      headline: "One adversary, a roomful of names.",
+      caption:
+        "MITRE files each tracked threat group under a single name and records " +
+        "the aliases every other vendor uses. The most-renamed answer to a dozen " +
+        "or more names apiece — the same actor rebranded in each shop's house " +
+        "style, so APT28 is also Fancy Bear, Forest Blizzard, Sofacy and " +
+        "STRONTIUM. This board counts the names besides the canonical one. " +
+        "ATT&CK's alias list is MITRE's own editorial call, not a full census of " +
+        "the industry, and roughly four in ten tracked groups carry no second " +
+        "name at all — the leaderboard belongs to the famous few.",
+      statTemplate:
+        "ATT&CK v{version} · the {shown} most-renamed of {with_aliases} groups " +
+        "that answer to another name, out of {total} tracked",
+      colActor: "Actor",
+      colCount: "aliases",
+      colAliases: "also tracked as",
+      nodata: "Not enough data yet.",
+      methodology:
+        "Every threat-group entry in MITRE's current enterprise ATT&CK STIX " +
+        "bundle carries an alias list: the first name is the group's canonical " +
+        "label, the rest are the alternates other vendors publish. This board " +
+        "counts the alternates — every alias that isn't the canonical name — for " +
+        "each active group (neither revoked nor deprecated), ranked high to low " +
+        "with ties broken by name; the page shows the top thirty and the full " +
+        "ranking ships in the data file. It reads only the latest release, so it " +
+        "is a snapshot of today's taxonomy, not a trend. One honest limit: the " +
+        "alias list is MITRE's own curation, not an exhaustive record of every " +
+        "vendor's naming, so read the counts as a floor.",
+    },
+
+    // --------------------------------- naming.html · 2
+    naming_dist: {
+      num: "02",
+      kicker: "How many names",
+      source: "MITRE ATT&CK (enterprise)",
+      headline: "The names pile up on a famous few.",
+      caption:
+        "Each bar counts the active tracked groups carrying that many alternate " +
+        "names. The distribution is lopsided: roughly four in ten groups carry " +
+        "none at all — the taxonomy never renamed them — while a short tail of " +
+        "headline actors answers to ten, twelve, fifteen. Aliasing isn't spread " +
+        "across the threat landscape; it accretes on the groups vendors compete " +
+        "to name.",
+      xAxis: "alternate names per group",
+      yAxis: "tracked groups",
+      nodata: "Not enough data yet.",
+      methodology:
+        "The same active intrusion-sets as the board, bucketed by how many " +
+        "alternate names each carries and gap-filled from zero so no count is " +
+        "skipped. The zero bucket — groups the taxonomy tracks under a single " +
+        "name — is drawn muted to set it apart from the renamed tail. A snapshot " +
+        "of the current release, not a trend.",
+    },
   },
 
   footer: {
@@ -1968,6 +2041,7 @@ export const editorial = {
       calendar: "CVE List V5 (MITRE)",
       rescores: "CVE List V5 (MITRE) · CyberMon nightly diffs",
       changelog: "CISA KEV catalog · Internet Archive Wayback Machine",
+      naming: "MITRE ATT&CK®",
     },
   },
 };

@@ -460,6 +460,16 @@ code {
 .cna-short { display: block; color: var(--ink); }
 .cna-org { display: block; font-size: 11px; color: var(--faint); }
 
+/* Naming Chaos board: the alternate-name list — secondary to the count,
+   wraps within a sane column width instead of stretching the table. */
+.alias-list {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 42ch;
+  white-space: normal;
+}
+
 .cellbar {
   position: relative;
   display: inline-block;

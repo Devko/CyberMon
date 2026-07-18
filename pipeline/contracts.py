@@ -249,6 +249,17 @@ def _validate_meta(obj: Any) -> None:
         _check_int(_get(rw, "tx_count", "meta.sources.ransomwhere"),
                    "meta.sources.ransomwhere.tx_count", minimum=1)
 
+    # Optional additively (older committed meta files predate the module);
+    # the Threat-actor naming stage itself always emits it.
+    if "naming" in src:
+        nm = src["naming"]
+        _check_str(_get(nm, "fetched_at", "meta.sources.naming"),
+                   "meta.sources.naming.fetched_at", ISO_UTC_RE)
+        _check_str(_get(nm, "version", "meta.sources.naming"),
+                   "meta.sources.naming.version")
+        _check_int(_get(nm, "group_count", "meta.sources.naming"),
+                   "meta.sources.naming.group_count")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -534,3 +545,6 @@ VALIDATORS.update(rescore_contracts.VALIDATORS)
 from . import kev_changelog_contracts  # noqa: E402
 
 VALIDATORS.update(kev_changelog_contracts.VALIDATORS)
+from . import naming_contracts  # noqa: E402
+
+VALIDATORS.update(naming_contracts.VALIDATORS)

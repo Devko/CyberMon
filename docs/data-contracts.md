@@ -1010,6 +1010,62 @@ and its round-trip test in the same commit. Validator:
 `pipeline/attack_contracts.py` (registered into `pipeline/contracts.py`'s
 dispatch).
 
+## site/data/naming.json  (Threat-actor Naming Chaos module, both charts)
+
+```json
+{
+  "generated_at": "...",
+  "version": "19.1",
+  "released": "2026-05-12",
+  "groups": [
+    {"name": "APT28", "alt_count": 15,
+     "aliases": ["Fancy Bear", "Forest Blizzard", "Sofacy", "..."]}
+  ],
+  "distribution": [
+    {"alt_count": 0, "n": 69},
+    {"alt_count": 1, "n": 27}
+  ],
+  "headline": {
+    "total_groups": 174, "groups_with_aliases": 105,
+    "total_alias_strings": 418, "distinct_alias_strings": 417,
+    "most_renamed": "APT28", "most_renamed_alt_count": 15
+  }
+}
+```
+
+Read from the current enterprise ATT&CK STIX bundle's `intrusion-set`
+objects. Each object's `aliases[0]` is the group's canonical `name`; the
+**alternates** are every alias that isn't the canonical name (compared by
+value, so an upstream reordering can't fold the canonical name into the
+count). Only **active** groups count — an object carrying `revoked: true`
+or `x_mitre_deprecated: true` is excluded, matching the ATT&CK Churn group
+definition.
+
+`groups` is the most-renamed board: only groups with `alt_count >= 1`,
+sorted by `alt_count` descending (ties by name), each carrying its
+alternate names in `aliases` (length always equals `alt_count`). The page
+renders the top thirty; the full board ships here. `distribution` counts
+**all** active groups by `alt_count`, gap-filled from zero (one bucket per
+count, ascending, unique) so the histogram never skips a value.
+
+`headline` is `null` iff `groups` is empty. When present: `total_groups`
+is every active group (equals the summed `distribution`),
+`groups_with_aliases` equals `len(groups)`, `most_renamed` /
+`most_renamed_alt_count` restate `groups[0]`, and `total_alias_strings` /
+`distinct_alias_strings` count the alternate names across the board (with
+vs. without de-duplication across groups). `version` / `released` identify
+the ATT&CK release read.
+
+Snapshot, not a time series: only the latest bundle is parsed. Alias data
+is cached in `.cache/naming_state.json` keyed by ATT&CK version and
+reconstructed from this published file when the cache is lost, so a normal
+night costs only the `index.json` fetch the ATT&CK Churn stage already
+makes; the tens-of-MB bundle downloads only on a new release. No new
+upstream — the fetch primitives are reused from `pipeline/fetch_attack.py`.
+Validator: `pipeline/naming_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch). `meta.sources.naming`
+(`{fetched_at, version, group_count}`) records the release.
+
 ## site/data/kev_guards.json  (Security Products module, all 3 charts)
 
 ```json

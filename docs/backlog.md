@@ -1,10 +1,11 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the thirteen that exist today
+Candidate monitoring modules, beyond the fourteen that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
-Calendar, 12 KEV Changelog, 13 Silent Rescores — all live).
+Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos — all
+live).
 
 ## Fresh candidates — probed 2026-07-18
 
@@ -58,7 +59,16 @@ sharpen; one folds into an existing module instead of duplicating it.
   changelog — the daily snapshots are publicly archived, so CyberMon becomes
   the only *maintained* per-CVE churn log, not the only possible source.
 
-### Threat-actor naming chaos
+### Threat-actor naming chaos — SHIPPED as module 14
+Live as **14 · Naming Chaos** ([naming.html](../site/naming.html)). Shipped
+the current-release snapshot: a most-renamed leaderboard plus the
+alias-count distribution over the active intrusion-sets, reusing the ATT&CK
+fetch primitives (no new upstream). Real v19.1 numbers: 174 active groups,
+105 carrying an alias, APT28 and Mustang Panda tied at 15 alternates. The
+alias-**inflation time series** (aliases per release) is the documented
+follow-up — it needs a one-time per-version alias backfill, the module-07
+pattern — and MISP stays the optional broadening. See
+`pipeline/naming_metrics.py` and data-contracts.md. Original candidate note:
 - **Thesis:** one adversary, sixteen names — every vendor rebrands the same
   actor in its own house taxonomy, so the "naming standard" is a marketing
   surface. APT28 answers to Fancy Bear, Forest Blizzard, Sofacy, STRONTIUM,
