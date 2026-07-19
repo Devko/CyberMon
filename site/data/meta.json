@@ -1,61 +1,84 @@
 {
- "generated_at": "2026-07-18T05:11:52Z",
+ "generated_at": "2026-07-19T05:38:05Z",
  "sample": false,
  "sources": {
   "cvelist": {
-   "release": "cve_2026-07-18_0300Z",
-   "cve_count": 367067
+   "release": "cve_2026-07-19_0500Z",
+   "cve_count": 367149
   },
   "epss": {
    "model_version": "v2026.06.15",
-   "score_date": "2026-07-17",
-   "row_count": 349158
+   "score_date": "2026-07-18",
+   "row_count": 349390
   },
   "kev": {
    "catalog_version": "2026.07.16",
    "count": 1647
   },
   "nvd": {
-   "fetched_at": "2026-07-18T05:11:52Z",
-   "throughput_events": 570
+   "fetched_at": "2026-07-19T05:38:05Z",
+   "throughput_events": 98
   },
   "market": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "term_count": 14,
    "backfill_remaining": 0
   },
   "hibp": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "breach_count": 1018
   },
   "ransomwhere": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "address_count": 11186,
    "tx_count": 21802
   },
   "attack": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "latest_version": "19.1",
    "version_count": 40
   },
   "epss_history": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "graded": 1358,
    "pending_backfill": 0
   },
   "apnic": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "economy_count": 10,
    "spread_economy_count": 206
   },
   "rescores": {
-   "events_total": 5,
-   "state_release": "cve_2026-07-18_0300Z"
+   "events_total": 22,
+   "state_release": "cve_2026-07-19_0500Z"
   },
   "kev_changelog": {
-   "fetched_at": "2026-07-18T05:11:52Z",
+   "fetched_at": "2026-07-19T05:38:05Z",
    "events_total": 4251,
-   "last_observed": "2026-07-18"
+   "last_observed": "2026-07-19"
+  },
+  "naming": {
+   "fetched_at": "2026-07-19T05:38:05Z",
+   "version": "19.1",
+   "group_count": 174
+  },
+  "top25": {
+   "fetched_at": "2026-07-19T05:38:05Z",
+   "official_year": 2024,
+   "list_count": 2
+  },
+  "adp": {
+   "fetched_at": "2026-07-19T05:38:05Z",
+   "cisa_records": 165581
+  },
+  "epssvol": {
+   "score_date": "2026-07-18",
+   "days_observed": 1
+  },
+  "roster": {
+   "fetched_at": "2026-07-19T05:38:05Z",
+   "org_count": 530,
+   "events_total": 0
   }
  }
 }

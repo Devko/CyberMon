@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-18T05:11:52Z",
+ "generated_at": "2026-07-19T05:38:05Z",
  "min_n": 10,
  "months": [
   {
@@ -751,7 +751,7 @@
   "edits_total": 2906,
   "additions_excluded": 1345,
   "first_observed": "2021-12-23",
-  "last_observed": "2026-07-18",
+  "last_observed": "2026-07-19",
   "backfill_captures": 53
  },
  "headline": {

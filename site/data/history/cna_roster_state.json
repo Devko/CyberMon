@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-07-18",
+ "last_observed": "2026-07-19",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -3186,6 +3186,10 @@
  "size_history": [
   [
    "2026-07-18",
+   530
+  ],
+  [
+   "2026-07-19",
    530
   ]
  ],

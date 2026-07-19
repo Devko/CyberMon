@@ -1,13 +1,17 @@
 {
- "generated_at": "2026-07-18T08:35:22Z",
+ "generated_at": "2026-07-19T05:38:05Z",
  "roster_size": {
   "min_n": 2,
   "current": 530,
-  "net_change": null,
+  "net_change": 0,
   "first_observed": "2026-07-18",
   "series": [
    {
     "date": "2026-07-18",
+    "size": 530
+   },
+   {
+    "date": "2026-07-19",
     "size": 530
    }
   ]

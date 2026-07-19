@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-18T10:10:33Z",
+ "generated_at": "2026-07-19T05:38:05Z",
  "thresholds": {
   "lo": 0.001,
   "mid": 0.01,
@@ -10,7 +10,7 @@
  },
  "gap": {
   "min_days": 3,
-  "trend_days": 0,
+  "trend_days": 1,
   "prob_moved_pct": null,
   "pct_moved_pct": null,
   "days": []
@@ -21,16 +21,16 @@
  },
  "catalog": {
   "state_model_version": "v2026.06.15",
-  "state_score_date": "2026-07-17",
-  "state_size": 349158,
-  "days_observed": 0,
-  "trend_days": 0,
+  "state_score_date": "2026-07-18",
+  "state_size": 349390,
+  "days_observed": 1,
+  "trend_days": 1,
   "resets_quarantined": 0,
   "crossed_totals": {
-   "lo": 0,
-   "mid": 0,
-   "hi": 0
+   "lo": 5,
+   "mid": 33,
+   "hi": 5
   },
-  "first_observed": null
+  "first_observed": "2026-07-18"
  }
 }

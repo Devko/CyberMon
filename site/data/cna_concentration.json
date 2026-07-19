@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-18T05:11:52Z",
+ "generated_at": "2026-07-19T05:38:05Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 351,
    "newcomer_count": 34,
-   "top5_share": 50.8,
+   "top5_share": 50.9,
    "top10_share": 71.0,
-   "hhi": 724.7
+   "hhi": 724.9
   }
  ],
  "rejection_leaderboard": {
@@ -310,7 +310,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 5474,
+    "total": 5505,
     "rejected": 692,
     "rejected_rate_pct": 12.6
    },
@@ -352,7 +352,7 @@
    },
    {
     "cna": "@huntr_ai",
-    "total": 874,
+    "total": 875,
     "rejected": 69,
     "rejected_rate_pct": 7.9
    },
@@ -484,7 +484,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10577,
+    "total": 10578,
     "rejected": 269,
     "rejected_rate_pct": 2.5
    },
@@ -646,7 +646,7 @@
    },
    {
     "cna": "apache",
-    "total": 1410,
+    "total": 1411,
     "rejected": 12,
     "rejected_rate_pct": 0.9
    },
@@ -670,7 +670,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15344,
+    "total": 15382,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
@@ -838,7 +838,7 @@
    },
    {
     "cna": "vmware",
-    "total": 494,
+    "total": 501,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1197,6 +1197,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "openjs",
+    "total": 60,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "Octopus",
     "total": 59,
     "rejected": 0,
@@ -1216,12 +1222,6 @@
    },
    {
     "cna": "curl",
-    "total": 57,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "openjs",
     "total": 57,
     "rejected": 0,
     "rejected_rate_pct": 0.0
@@ -1336,6 +1336,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 62,
-  "elapsed": 0.545
+  "elapsed": 0.548
  }
 }
