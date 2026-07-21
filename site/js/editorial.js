@@ -94,26 +94,8 @@ export const editorial = {
     { id: "adp", href: "adp.html", label: "Vulnrichment", group: "machine" },
     { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility", group: "exploitation" },
     { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
-    { id: "cve", href: "cve.html", label: "CVE Ecosystem" },
-    { id: "market", href: "market.html", label: "Security Market" },
-    { id: "kev", href: "kev.html", label: "KEV Latency" },
-    { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
-    { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
-    { id: "extortion", href: "extortion.html", label: "Extortion Ledger" },
-    { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
-    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index" },
-    { id: "guards", href: "guards.html", label: "Security Products" },
-    { id: "epss", href: "epss.html", label: "EPSS Report Card" },
-    { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
-    { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
-    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
-    { id: "naming", href: "naming.html", label: "Naming Chaos" },
-    { id: "top25", href: "top25.html", label: "CWE Top 25" },
-    { id: "adp", href: "adp.html", label: "Vulnrichment" },
-    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
-    { id: "roster", href: "roster.html", label: "CNA Roster" },
-    { id: "exploits", href: "exploits.html", label: "Time to PoC" },
-    { id: "c2", href: "c2.html", label: "Botnet Weather" },
+    { id: "exploits", href: "exploits.html", label: "Time to PoC", group: "exploitation" },
+    { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackers" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -381,6 +363,9 @@ export const editorial = {
           "the announcement, and which severity buckets attract public " +
           "PoCs at all, with Nuclei template coverage riding along. " +
           "Rebuilt nightly from the trackers' published indexes.",
+        live: true,
+      },
+      {
         id: "c2",
         href: "c2.html",
         num: "20",
@@ -2713,6 +2698,8 @@ export const editorial = {
         "deliberately recent: it shows today's arming rate rather than the archive's " +
         "decades-deep accumulation, at the price of right-censoring that the note " +
         "above owns.",
+    },
+
     // --------------------------------- c2.html · 1 (hero)
     c2_weather: {
       num: "01",
@@ -2838,28 +2825,19 @@ export const editorial = {
       "KEV changelog: {kev_changelog_events} catalog events on record · " +
       "Exploit-DB index ({exploitdb_entries} entries) · " +
       "Metasploit metadata ({metasploit_modules} modules) · " +
-      "Nuclei CVE templates ({nuclei_cves})",
-    metaError: "Edition metadata (data/meta.json) failed to load.",
-    disclaimer:
-      "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
-      "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
-      "Ransomwhere, APNIC, or the Internet Archive. Charts aggregate public data; no " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
-      "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, or the Internet Archive. " +
-      "Charts aggregate public data; no " +
-      "individual CVE is news here, and no victim is identified or identifiable anywhere " +
-      "on this site.",
+      "Nuclei CVE templates ({nuclei_cves}) · " +
       "Feodo Tracker: {feodo_listed} C2s listed ({feodo_online} online) " +
       "fetched {feodo_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
-      "Ransomwhere, APNIC, abuse.ch, or the Internet Archive. Charts aggregate public data; no " +
-      "individual CVE is news here, no victim is identified or identifiable anywhere " +
-      "on this site, and no attacker infrastructure is republished — C2 servers appear " +
-      "only as aggregate counts, never as addresses.",
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
+      "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
+      "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, or the Internet " +
+      "Archive. Charts aggregate public data; no individual CVE is news here, no victim " +
+      "is identified or identifiable anywhere on this site, and no attacker " +
+      "infrastructure is republished — C2 servers appear only as aggregate counts, " +
+      "never as addresses.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +

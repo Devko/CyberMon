@@ -242,6 +242,8 @@ const MODULES = {
       { id: "poc_gap", render: renderPocGap },
       { id: "poc_preempt", render: renderPocPreempt },
       { id: "poc_coverage", render: renderPocCoverage },
+    ],
+  },
   c2: {
     file: "data/botnet_weather.json",
     sections: [
