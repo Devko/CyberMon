@@ -74,6 +74,9 @@ import { render as renderEpssvolMovers } from "./charts/epssvol_movers.js";
 import { render as renderRosterSize } from "./charts/roster_size.js";
 import { render as renderRosterFlux } from "./charts/roster_flux.js";
 import { render as renderRosterMix } from "./charts/roster_mix.js";
+import { render as renderC2Weather } from "./charts/c2_weather.js";
+import { render as renderC2Today } from "./charts/c2_today.js";
+import { render as renderC2Age } from "./charts/c2_age.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -228,6 +231,14 @@ const MODULES = {
       { id: "roster_size", render: renderRosterSize },
       { id: "roster_flux", render: renderRosterFlux },
       { id: "roster_mix", render: renderRosterMix },
+    ],
+  },
+  c2: {
+    file: "data/botnet_weather.json",
+    sections: [
+      { id: "c2_weather", render: renderC2Weather },
+      { id: "c2_today", render: renderC2Today },
+      { id: "c2_age", render: renderC2Age },
     ],
   },
 };

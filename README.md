@@ -301,6 +301,27 @@ same nightly commit. Roster data is CVE Program data; the program's terms
 permit reuse of the published data. New fetcher `pipeline/fetch_cna_roster.py`,
 stage `pipeline/cna_roster.py`; no shared upstream.
 
+### 20 · Botnet Weather — [c2.html](https://devko.github.io/CyberMon/c2.html) (live)
+
+*Botnet command-and-control has weather. Nobody keeps the forecasts.*
+abuse.ch's Feodo Tracker publishes the live blocklist of botnet C2 servers
+(Emotet, QakBot, Pikabot, ...) — only today's picture. CyberMon snapshots it
+nightly and keeps the series: per-family daily counts (listed vs online)
+append to a committed, append-only log (`data/history/botnet_c2.csv`),
+another irreplaceable dataset because the upstream keeps no history. Three
+charts: active C2s over time by family (launch-thin by design, deepening one
+night at a time — takedowns show as cliffs), tonight's composition by
+family / hosting country / network, and the age distribution of the listed
+infrastructure (both real from day one). Single-digit — even zero — counts
+are normal here: the tracker's own FAQ credits its empty stretches to the
+Emotet (2021) and Operation Endgame (2024) takedowns, so there is
+deliberately no count-collapse guard (a collapse is the story); broken
+fetches are guarded structurally instead (malformed feed = loud failure,
+nothing recorded). **Aggregates only:** family/country/AS counts — no IP,
+port or hostname ever reaches the site, a red line the output contract
+enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
+`pipeline/botnet_metrics.py`; no shared upstream.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the
@@ -341,6 +362,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Internet Archive Wayback Machine](https://web.archive.org/) | Historical captures of the CISA KEV JSON (CDX index + snapshot bodies), fetched once for the KEV Changelog backfill — paced ~1 req/s, cached in `.cache/kev_wayback/`, never touched by CI | Archived US Government (CC0-style) content, served by the Internet Archive; capture metadata via the [CDX API](https://archive.org/developers/wayback-cdx-server.html) |
 | [MITRE CWE Top 25](https://cwe.mitre.org/top25/) | The published annual CWE Top 25 rankings (static, hand-transcribed per year into `pipeline/cwe_top25_data.py`), set against the corpus's own first-listed-CWE prevalence and the KEV-exploited cut | [CWE Terms of Use](https://cwe.mitre.org/about/termsofuse.html); CWE is a trademark of The MITRE Corporation |
 | [CVE.org organization roster](https://www.cve.org/PartnerInformation/ListofPartners) | The CVE Program's partner list (`CNAsList.json` from the [cve-website](https://github.com/CVEProject/cve-website) repo): org short names, type, scope, top-level/reporting roots and country — snapshotted nightly for the CNA Roster growth/churn record | [CVE terms of use](https://www.cve.org/Legal/TermsOfUse); same CVE Program data family as cvelistV5 |
+| [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS — snapshotted nightly for the Botnet Weather count record; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
@@ -366,7 +388,10 @@ are their rollback insurance:
 - `rescore_log.csv` — the silent-rescore event log (no upstream
   publishes score-edit history);
 - `epss_volatility.csv` and `cna_roster.csv` — the newest collectors,
-  accumulating since 2026-07-18.
+  accumulating since 2026-07-18;
+- `botnet_c2.csv` — nightly per-family counts of the Feodo Tracker botnet
+  C2 blocklist, listed and online (the tracker publishes only the current
+  picture, never a series).
 
 You are welcome to reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
@@ -438,7 +463,7 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 
 CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
 CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
-Pwned, Ransomwhere, or APNIC**. All upstream data is © its
+Pwned, Ransomwhere, APNIC, or abuse.ch**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
 

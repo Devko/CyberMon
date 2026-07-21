@@ -134,6 +134,9 @@ function renderMeta(meta) {
       epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US"),
       rescore_events: (s.rescores?.events_total ?? 0).toLocaleString("en-US"),
       kev_changelog_events: (s.kev_changelog?.events_total ?? 0).toLocaleString("en-US"),
+      feodo_listed: (s.feodo?.listed ?? 0).toLocaleString("en-US"),
+      feodo_online: (s.feodo?.online ?? 0).toLocaleString("en-US"),
+      feodo_fetched: s.feodo?.fetched_at ?? "?",
     }))
   );
 }
