@@ -132,15 +132,36 @@ code {
   line-height: 1.7;
 }
 
-/* ---- module tabs ---- */
+/* ---- module tabs (grouped: one row per theme, hairlines between rows) ---- */
 
 .site-nav {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
   margin-top: 26px;
   border-top: 1px solid var(--rule);
 }
+
+.site-nav-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 2px;
+}
+
+.site-nav-row + .site-nav-row { border-top: 1px solid var(--rule); }
+
+.site-nav-group-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+  padding: 11px 18px 9px 0;
+  margin-right: 10px;
+  border-right: 1px solid var(--rule);
+}
+
+.site-nav-row.is-active .site-nav-group-label { color: var(--muted); }
 
 .site-nav-tab {
   font-family: var(--mono);
@@ -149,7 +170,7 @@ code {
   text-transform: uppercase;
   text-decoration: none;
   color: var(--muted);
-  padding: 13px 24px 11px;
+  padding: 11px 14px 9px;
   border-bottom: 2px solid transparent;
 }
 
@@ -560,6 +581,31 @@ code {
 
 /* ------------------------------------------------- landing module cards --- */
 
+/* Thematic group header: same label + one-line lede as the nav groups
+   (both fold over editorial.nav's group tags via groupNav()). */
+.module-group { margin: 36px 0 0; }
+
+.module-group-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 16px;
+  margin: 0 0 6px;
+}
+
+.module-group-lede {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.02rem;
+  max-width: var(--measure);
+  margin: 0 0 18px;
+}
+
 .module-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -662,6 +708,23 @@ code {
   .masthead { padding: 40px 16px 28px; }
   .sections { padding: 0 16px; }
   .chart-section { padding: 44px 0 40px; }
+
+  /* Grouped nav stacks: label becomes a full-width heading over its tabs;
+     tabs shrink and wrap — never a horizontal scroll, never a JS dependency. */
+  .site-nav-row { padding-bottom: 6px; }
+  .site-nav-group-label {
+    flex-basis: 100%;
+    text-align: center;
+    border-right: none;
+    margin: 0;
+    padding: 12px 0 2px;
+  }
+  .site-nav-tab {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 7px 9px 6px;
+  }
+  .site-nav-row-lead .site-nav-tab { padding-top: 11px; }
 
   .chart { height: 320px; }
   .chart-tall { height: 360px; }

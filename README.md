@@ -17,7 +17,9 @@ the pipeline source.
 
 Each module is its own directly linkable page with its own pipeline stage and
 [data contracts](docs/data-contracts.md). The landing page
-([index.html](site/index.html)) is the module directory.
+([index.html](site/index.html)) is the module directory, grouped by theme —
+The CVE machine, Exploitation, The industry, Attacker's map — the same groups
+as the site nav (both fold over the `group` tags in `site/js/editorial.js`).
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 

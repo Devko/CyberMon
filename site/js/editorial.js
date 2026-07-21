@@ -19,28 +19,81 @@ export const editorial = {
     sub: "Every number on this site pairs a claim with the exact method that produced it. Disagree with one? The pipeline is open; rerun it.",
   },
 
+  // Thematic nav groups, in display order. Each entry: a short label for the
+  // nav row, and a one-line lede for the landing page's group header. The
+  // LAST entry ("more") is the automatic catch-all: any nav entry with a
+  // missing or unrecognized `group` id lands there, so a module merged
+  // without a tag still ships navigable and a new group never needs code.
+  navGroups: [
+    {
+      id: "machine",
+      label: "The CVE machine",
+      lede: "The pipeline behind the record: who mints it, who scores it, what gets edited after the fact.",
+    },
+    {
+      id: "exploitation",
+      label: "Exploitation",
+      lede: "What actually gets exploited, and how the forecasts and catalogs tracking it keep up.",
+    },
+    {
+      id: "industry",
+      label: "The industry",
+      lede: "Market hype, breach disclosure, ransom payments, and the state of everyday hygiene.",
+    },
+    {
+      id: "attackmap",
+      label: "Attacker's map",
+      lede: "How the industry maps and names its adversaries — and how often the map gets redrawn.",
+    },
+    {
+      id: "more",
+      label: "More",
+      lede: "Just landed — not yet filed under a theme.",
+    },
+  ],
+
   // Tabs in the shared top-nav. href values stay RELATIVE (GitHub Pages subpath).
   // Every tab is its own page — direct-linkable and bookmarkable.
+  //
+  // This array stays FLAT on purpose — carousel.js and the deploy tools read
+  // it as a plain module list. Grouping is one `group` field per entry (an id
+  // from navGroups above); groupNav() in common.js does the render-time fold
+  // for both the nav and the landing page. Ungrouped entries at the HEAD of
+  // the array (Overview) render as standalone leading tabs.
+  //
+  // Group assignments follow where each module's DATA lives, not its topic:
+  //   machine      — read from the CVE record pipeline itself: the cvelistV5
+  //                  corpus, NVD's database, and the CVE Program's own CNA
+  //                  roster. CNA Roster sits here, next to CNA Concentration
+  //                  — two views of the same federation — not under
+  //                  "The industry".
+  //   exploitation — read from the exploited-in-the-wild record: CISA's KEV
+  //                  catalog and FIRST's EPSS feed (Security Products and
+  //                  KEV Changelog are both KEV-derived).
+  //   industry     — read from outside-world ledgers: GDELT/HN/arXiv (hype),
+  //                  HIBP (breaches), Ransomwhere (ransoms), APNIC (hygiene).
+  //   attackmap    — read from MITRE ATT&CK's STIX bundles (Naming Chaos is
+  //                  ATT&CK alias data, not CVE data — it lives here).
   nav: [
     { id: "home", href: "index.html", label: "Overview" },
-    { id: "cve", href: "cve.html", label: "CVE Ecosystem" },
-    { id: "market", href: "market.html", label: "Security Market" },
-    { id: "kev", href: "kev.html", label: "KEV Latency" },
-    { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
-    { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
-    { id: "extortion", href: "extortion.html", label: "Extortion Ledger" },
-    { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
-    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index" },
-    { id: "guards", href: "guards.html", label: "Security Products" },
-    { id: "epss", href: "epss.html", label: "EPSS Report Card" },
-    { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
-    { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
-    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
-    { id: "naming", href: "naming.html", label: "Naming Chaos" },
-    { id: "top25", href: "top25.html", label: "CWE Top 25" },
-    { id: "adp", href: "adp.html", label: "Vulnrichment" },
-    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
-    { id: "roster", href: "roster.html", label: "CNA Roster" },
+    { id: "cve", href: "cve.html", label: "CVE Ecosystem", group: "machine" },
+    { id: "market", href: "market.html", label: "Security Market", group: "industry" },
+    { id: "kev", href: "kev.html", label: "KEV Latency", group: "exploitation" },
+    { id: "concentration", href: "concentration.html", label: "CNA Concentration", group: "machine" },
+    { id: "breaches", href: "breaches.html", label: "Breach Ledger", group: "industry" },
+    { id: "extortion", href: "extortion.html", label: "Extortion Ledger", group: "industry" },
+    { id: "attack", href: "attack.html", label: "ATT&CK Churn", group: "attackmap" },
+    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index", group: "industry" },
+    { id: "guards", href: "guards.html", label: "Security Products", group: "exploitation" },
+    { id: "epss", href: "epss.html", label: "EPSS Report Card", group: "exploitation" },
+    { id: "calendar", href: "calendar.html", label: "CVE Calendar", group: "machine" },
+    { id: "changelog", href: "changelog.html", label: "KEV Changelog", group: "exploitation" },
+    { id: "rescores", href: "rescores.html", label: "Silent Rescores", group: "machine" },
+    { id: "naming", href: "naming.html", label: "Naming Chaos", group: "attackmap" },
+    { id: "top25", href: "top25.html", label: "CWE Top 25", group: "machine" },
+    { id: "adp", href: "adp.html", label: "Vulnrichment", group: "machine" },
+    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility", group: "exploitation" },
+    { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
   ],
 
   // ------------------------------------------------- index.html (landing)
