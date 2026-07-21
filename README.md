@@ -17,7 +17,9 @@ the pipeline source.
 
 Each module is its own directly linkable page with its own pipeline stage and
 [data contracts](docs/data-contracts.md). The landing page
-([index.html](site/index.html)) is the module directory.
+([index.html](site/index.html)) is the module directory, grouped by theme —
+The CVE machine, Exploitation, The industry, Attacker's map — the same groups
+as the site nav (both fold over the `group` tags in `site/js/editorial.js`).
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
@@ -51,11 +53,14 @@ Each module is its own directly linkable page with its own pipeline stage and
 ### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
 
 *The security industry runs on a hype curve. Nobody publishes the curve.*
-A data-driven hype-cycle tracker for 14 curated buzzwords across three
+A data-driven hype-cycle tracker for 14 curated buzzwords across five
 independent attention signals — news coverage (GDELT), practitioner
-chatter (Hacker News), research output (arXiv cs.CR) — each term indexed
-to its own five-year peak. Hype curves, YoY risers/fallers, and a
-research-vs-media divergence quadrant.
+chatter (Hacker News), research output (arXiv cs.CR), public curiosity
+(Wikipedia pageviews, one curated article per term), and investor-facing
+filings (SEC EDGAR full-text search) — each term indexed to its own
+five-year peak. Hype curves, YoY risers/fallers, and a research-vs-media
+divergence quadrant (deliberately still GDELT vs. arXiv — the cleanest
+media-vs-research pair of the five).
 
 ### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html) (live)
 
@@ -301,6 +306,47 @@ same nightly commit. Roster data is CVE Program data; the program's terms
 permit reuse of the published data. New fetcher `pipeline/fetch_cna_roster.py`,
 stage `pipeline/cna_roster.py`; no shared upstream.
 
+### 19 · Time to PoC — [exploits.html](https://devko.github.io/CyberMon/exploits.html) (live)
+
+*The only deadline that matters is the gap between disclosure and public
+exploit code.* Three charts joining the public exploit trackers to the CVE
+corpus — the third leg of the exploitation trilogy (KEV Latency is the
+government's clock, EPSS Report Card the forecast's grade, this the
+attacker's): the gap from CVE publication to the first dated public PoC
+(median/IQR per publication year, negative gaps kept — since the mid-2000s
+the median hugs zero, and half the PoC'd cohort has code out before the
+record), the share of KEV listings whose exploit code predates the listing
+(seeding era split out, KEV-Latency style), and PoC coverage per CVSS
+bucket for the latest complete year — the one place severity predicts
+attention. Sources: the Exploit-DB index CSV (`date_published`),
+Metasploit's `modules_metadata_base.json` (`disclosure_date` — the
+disclosure, not the module merge; documented), and the Nuclei templates
+CVE index (undated upstream, so coverage only — no repo histories are
+cloned). All three publish full history, so the stage refetches
+statelessly every night (`pipeline/fetch_poc.py`, day-cached in
+`.cache/poc/`); honesty notes — public-tracker lower bound, self-selected
+cohort, right-censored recent years — live in the page methodology.
+### 20 · Botnet Weather — [c2.html](https://devko.github.io/CyberMon/c2.html) (live)
+
+*Botnet command-and-control has weather. Nobody keeps the forecasts.*
+abuse.ch's Feodo Tracker publishes the live blocklist of botnet C2 servers
+(Emotet, QakBot, Pikabot, ...) — only today's picture. CyberMon snapshots it
+nightly and keeps the series: per-family daily counts (listed vs online)
+append to a committed, append-only log (`data/history/botnet_c2.csv`),
+another irreplaceable dataset because the upstream keeps no history. Three
+charts: active C2s over time by family (launch-thin by design, deepening one
+night at a time — takedowns show as cliffs), tonight's composition by
+family / hosting country / network, and the age distribution of the listed
+infrastructure (both real from day one). Single-digit — even zero — counts
+are normal here: the tracker's own FAQ credits its empty stretches to the
+Emotet (2021) and Operation Endgame (2024) takedowns, so there is
+deliberately no count-collapse guard (a collapse is the story); broken
+fetches are guarded structurally instead (malformed feed = loud failure,
+nothing recorded). **Aggregates only:** family/country/AS counts — no IP,
+port or hostname ever reaches the site, a red line the output contract
+enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
+`pipeline/botnet_metrics.py`; no shared upstream.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the
@@ -319,6 +365,8 @@ reads a few-KB JSON file; there are no runtime queries.
       │              ├─ ATT&CK STIX index      https://devko.github.io/CyberMon/
       │              ├─ APNIC DNSSEC series
       │              ├─ GDELT · HN · arXiv
+      │              ├─ Wikipedia · SEC EDGAR
+      │              ├─ Exploit-DB · Metasploit · Nuclei
       │              └─ NVD API (status)
       └─ on failure: workflow fails, nothing is deployed
 ```
@@ -334,6 +382,8 @@ reads a few-KB JSON file; there are no runtime queries.
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
+| [Wikimedia Pageviews REST API](https://wikimedia.org/api/rest_v1/) | Monthly pageviews of one curated en.wikipedia article per tracked term (`agent=user`, bot traffic excluded); the term→article mapping is reviewable data in `pipeline/market_terms.py` | Aggregate pageview data is [CC0](https://creativecommons.org/publicdomain/zero/1.0/); accessed per the [Wikimedia API policy](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_API_Policy) (descriptive User-Agent with contact info) |
+| [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; corpus reaches back to 2001) | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
@@ -341,6 +391,10 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Internet Archive Wayback Machine](https://web.archive.org/) | Historical captures of the CISA KEV JSON (CDX index + snapshot bodies), fetched once for the KEV Changelog backfill — paced ~1 req/s, cached in `.cache/kev_wayback/`, never touched by CI | Archived US Government (CC0-style) content, served by the Internet Archive; capture metadata via the [CDX API](https://archive.org/developers/wayback-cdx-server.html) |
 | [MITRE CWE Top 25](https://cwe.mitre.org/top25/) | The published annual CWE Top 25 rankings (static, hand-transcribed per year into `pipeline/cwe_top25_data.py`), set against the corpus's own first-listed-CWE prevalence and the KEV-exploited cut | [CWE Terms of Use](https://cwe.mitre.org/about/termsofuse.html); CWE is a trademark of The MITRE Corporation |
 | [CVE.org organization roster](https://www.cve.org/PartnerInformation/ListofPartners) | The CVE Program's partner list (`CNAsList.json` from the [cve-website](https://github.com/CVEProject/cve-website) repo): org short names, type, scope, top-level/reporting roots and country — snapshotted nightly for the CNA Roster growth/churn record | [CVE terms of use](https://www.cve.org/Legal/TermsOfUse); same CVE Program data family as cvelistV5 |
+| [Exploit-DB](https://www.exploit-db.com/) (OffSec) | The exploit archive's index CSV (`files_exploits.csv` from the [exploitdb](https://gitlab.com/exploit-database/exploitdb) repo): per-exploit `date_published` and CVE references from the `codes` column — metadata only, no exploit code is fetched | Archive maintained by OffSec as a public service; index metadata used as facts with attribution (credited in the site footer); not affiliated |
+| [Metasploit Framework](https://github.com/rapid7/metasploit-framework) (Rapid7) | Module metadata (`db/modules_metadata_base.json`): `disclosure_date` and CVE `references` per module — the disclosure date, not the module merge date, documented as such | [BSD-3-Clause](https://github.com/rapid7/metasploit-framework/blob/master/LICENSE); Metasploit is a Rapid7 project (credited in the site footer) |
+| [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template — coverage only, the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
+| [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS — snapshotted nightly for the Botnet Weather count record; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
@@ -366,7 +420,10 @@ are their rollback insurance:
 - `rescore_log.csv` — the silent-rescore event log (no upstream
   publishes score-edit history);
 - `epss_volatility.csv` and `cna_roster.csv` — the newest collectors,
-  accumulating since 2026-07-18.
+  accumulating since 2026-07-18;
+- `botnet_c2.csv` — nightly per-family counts of the Feodo Tracker botnet
+  C2 blocklist, listed and online (the tracker publishes only the current
+  picture, never a series).
 
 You are welcome to reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
@@ -437,8 +494,14 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 ## Disclaimer & license
 
 CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
-CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, the Wikimedia
+Foundation, the U.S. Securities and Exchange Commission, Have I Been
 Pwned, Ransomwhere, or APNIC**. All upstream data is © its
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+Pwned, Ransomwhere, APNIC, OffSec, Rapid7, or ProjectDiscovery**. All
+upstream data is © its
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+Pwned, Ransomwhere, APNIC, or abuse.ch**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
 

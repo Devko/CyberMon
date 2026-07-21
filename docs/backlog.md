@@ -196,7 +196,17 @@ data-contracts.md. Original candidate note:
   daily snapshot + diff.
 - **Feasibility:** easy — one small JSON, compact committed state.
 
-### Botnet weather (Feodo tracker)
+### Botnet weather (Feodo tracker) — SHIPPED as module 20
+
+Shipped 2026-07 as the Botnet Weather module (`c2.html`): nightly snapshot
+of the Feodo Tracker C2 blocklist into an append-only per-family count log
+(`site/data/history/botnet_c2.csv`, listed + online per day), with today's
+composition and infrastructure-age sections real from day one. Zero counts
+are recorded, never refused — the tracker's FAQ credits its empty
+stretches to the Emotet 2021 / Operation Endgame 2024 takedowns, and the
+cliffs are the story. Aggregates only; no address is republished. See
+`pipeline/fetch_feodo.py`, `pipeline/botnet_metrics.py` and
+data-contracts.md. Original candidate note:
 - **Thesis:** the C2 weather report — takedowns visible as cliffs.
 - **Signals:** active C2 count by malware family, daily; family
   birth/death.
@@ -313,13 +323,18 @@ all-economies snapshot comes from the world-map page's inline table
 `pipeline/fetch_dnssec.py` and data-contracts.md.
 
 **Verified spare data sources for Security Market v1.1** (live-tested
-2026-07-09): SEC EDGAR full-text search (free JSON API, mandatory
+2026-07-09, re-verified and SHIPPED as the module's 4th and 5th lanes
+2026-07-21): SEC EDGAR full-text search (free JSON API, mandatory
 User-Agent header, history to 2001 — an "enterprise/investor attention"
 lane) and Wikipedia Pageviews REST API (server-side monthly aggregates,
 one request per term for the whole history, the most reliable API tested —
 designated fallback if GDELT's rate limiting becomes intolerable).
-Rejected: Stack Exchange (too sparse), GitHub search (workable but
-rate-limit-cramped; future 4th source at best).
+Both lanes are stateless nightly full-window refetches; the first run
+needs no special backfill step (~13 Wikipedia requests plus ~840 EDGAR
+term-month cells, roughly 15–25 minutes at the polite pacing baked into
+`pipeline/fetch_market.py`). Rejected: Stack Exchange (too sparse),
+GitHub search (workable but rate-limit-cramped; future 6th source at
+best).
 
 House rules for any module that ships (same bar as the existing two):
 

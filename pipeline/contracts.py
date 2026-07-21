@@ -289,6 +289,31 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.epssvol.score_date", DATE_RE)
         _check_int(_get(ev, "days_observed", "meta.sources.epssvol"),
                    "meta.sources.epssvol.days_observed")
+    # Optional additively (older committed meta files predate the module);
+    # the Time-to-PoC stage itself always emits all three — one stamp per
+    # upstream exploit corpus (Exploit-DB / Metasploit / Nuclei).
+    if "exploitdb" in src:
+        edb = src["exploitdb"]
+        _check_str(_get(edb, "fetched_at", "meta.sources.exploitdb"),
+                   "meta.sources.exploitdb.fetched_at", ISO_UTC_RE)
+        _check_int(_get(edb, "entry_count", "meta.sources.exploitdb"),
+                   "meta.sources.exploitdb.entry_count", minimum=1)
+        _check_int(_get(edb, "cve_count", "meta.sources.exploitdb"),
+                   "meta.sources.exploitdb.cve_count", minimum=1)
+    if "metasploit" in src:
+        msf = src["metasploit"]
+        _check_str(_get(msf, "fetched_at", "meta.sources.metasploit"),
+                   "meta.sources.metasploit.fetched_at", ISO_UTC_RE)
+        _check_int(_get(msf, "module_count", "meta.sources.metasploit"),
+                   "meta.sources.metasploit.module_count", minimum=1)
+        _check_int(_get(msf, "cve_count", "meta.sources.metasploit"),
+                   "meta.sources.metasploit.cve_count", minimum=1)
+    if "nuclei" in src:
+        nuc = src["nuclei"]
+        _check_str(_get(nuc, "fetched_at", "meta.sources.nuclei"),
+                   "meta.sources.nuclei.fetched_at", ISO_UTC_RE)
+        _check_int(_get(nuc, "cve_count", "meta.sources.nuclei"),
+                   "meta.sources.nuclei.cve_count", minimum=1)
     # the CNA Roster History stage itself always emits it. ``events_total`` =
     # rows on the committed churn log after tonight's append.
     if "roster" in src:
@@ -299,6 +324,19 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.roster.org_count", minimum=1)
         _check_int(_get(rt, "events_total", "meta.sources.roster"),
                    "meta.sources.roster.events_total")
+    # the Botnet Weather stage itself always emits it. ``listed`` may be
+    # ZERO — the tracker's documented post-takedown empty state is a valid
+    # snapshot for this source, never a broken fetch.
+    if "feodo" in src:
+        fd = src["feodo"]
+        _check_str(_get(fd, "fetched_at", "meta.sources.feodo"),
+                   "meta.sources.feodo.fetched_at", ISO_UTC_RE)
+        _check_int(_get(fd, "listed", "meta.sources.feodo"),
+                   "meta.sources.feodo.listed")
+        _check_int(_get(fd, "online", "meta.sources.feodo"),
+                   "meta.sources.feodo.online")
+        if fd["online"] > fd["listed"]:
+            _fail("meta.sources.feodo.online", "exceeds listed")
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -600,3 +638,9 @@ VALIDATORS.update(epssvol_contracts.VALIDATORS)
 from . import roster_contracts  # noqa: E402
 
 VALIDATORS.update(roster_contracts.VALIDATORS)
+from . import poc_contracts  # noqa: E402
+
+VALIDATORS.update(poc_contracts.VALIDATORS)
+from . import botnet_contracts  # noqa: E402
+
+VALIDATORS.update(botnet_contracts.VALIDATORS)

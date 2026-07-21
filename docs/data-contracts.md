@@ -90,6 +90,13 @@ stage itself always emits it (no skip flag): `fetched_at` (ISO-8601 UTC),
 `org_count` (organizations on tonight's roster, `>= 1`) and `events_total`
 (rows on the committed churn log after tonight's append).
 
+`sources.feodo` (Botnet Weather module) is validated additively — optional
+because older committed meta files predate the module, but the stage itself
+always emits it (no skip flag): `fetched_at` (ISO-8601 UTC), `listed`
+(C2s on tonight's blocklist, `>= 0` — **zero is a valid reading**, the
+tracker's documented post-takedown state) and `online` (`>= 0`,
+`<= listed`).
+
 ## site/data/severity_inflation.json  (chart 1, hero)
 
 ```json
@@ -395,7 +402,7 @@ into `pipeline/contracts.py`'s dispatch, as are the two charts above).
 {
   "generated_at": "...",
   "window_months": 60,
-  "sources": ["gdelt", "hn", "arxiv"],
+  "sources": ["gdelt", "hn", "arxiv", "wiki", "edgar"],
   "backfill_remaining": 812,
   "terms": [
     {
@@ -404,14 +411,19 @@ into `pipeline/contracts.py`'s dispatch, as are the two charts above).
       "series": {
         "gdelt": [{"month": "2023-04", "n": 812, "index": 12.4}],
         "hn":    [{"month": "2023-06", "n": 41,  "index": 8.0}],
-        "arxiv": [{"month": "2023-05", "n": 4,   "index": 40.0}]
+        "arxiv": [{"month": "2023-05", "n": 4,   "index": 40.0}],
+        "wiki":  [{"month": "2023-05", "n": 14203, "index": 55.1}],
+        "edgar": [{"month": "2023-05", "n": 31,  "index": 62.0}]
       },
       "yoy": {
         "gdelt": {"latest_month": "2026-06", "pct_change": 340.2,
                   "n_latest_12m": 41200, "n_prior_12m": 9360},
         "hn": null,
         "arxiv": {"latest_month": "2026-06", "pct_change": 118.6,
-                  "n_latest_12m": 61, "n_prior_12m": 28}
+                  "n_latest_12m": 61, "n_prior_12m": 28},
+        "wiki": {"latest_month": "2026-06", "pct_change": 12.3,
+                 "n_latest_12m": 160410, "n_prior_12m": 142840},
+        "edgar": null
       },
       "divergence": {
         "gdelt_index_avg3m": 88.1, "arxiv_index_avg3m": 61.4,
@@ -442,6 +454,22 @@ series), 1)` (all `0.0` when the peak is 0) — index-to-own-peak, NOT
 share-of-total, so editing the tracked-term list never reshapes other
 terms' history.
 
+The two v1.1 sources: `wiki` = monthly pageviews (`agent=user`, bot
+traffic excluded) of ONE curated en.wikipedia article per term — the
+term→article mapping is reviewable data in `pipeline/market_terms.py`,
+and a term mapped to `null` (no on-topic article exists; CNAPP at
+launch) simply has an empty `wiki` series. Months before an article
+existed are gaps, not zeros. `edgar` = SEC EDGAR full-text-search
+filing counts (`hits.total.value`) for the term as a quoted phrase, one
+request per (term, month), acronyms spelled out to dodge finance
+collisions (XDR = SDR currency, MDR = EU medical-device regulation).
+Both lanes re-fetch their whole window nightly (stateless, like
+GDELT/arXiv); a failed fetch keeps the previously cached months.
+Transitional: a published file may still declare the pre-v1.1
+`"sources": ["gdelt", "hn", "arxiv"]` (with exactly those per-term
+keys) until the first five-source nightly rewrites it — the validator
+accepts precisely those two shapes, never a mix.
+
 `yoy[source]` is `null` unless the pair has ≥ 24 populated months, a
 nonzero prior-12-month sum, AND at least 30 raw hits across the two
 compared windows (`MIN_YOY_VOLUME` — a percentage of almost nothing is a
@@ -450,9 +478,11 @@ rumor, not a rate); `pct_change` is computed on raw counts.
 months AND ≥ 10 raw hits across each source's three averaged months
 (`MIN_DIVERGENCE_VOLUME` — two papers against a two-paper peak is an
 index of 100 and a fabricated headline, not a divergence);
-`research_vs_media_index` = arxiv 3-month index average minus gdelt's;
-`direction` ∈ research_leads / media_leads / aligned with a ±10 dead
-zone. arXiv series store an explicit count for every window month on a
+`research_vs_media_index` = arxiv 3-month index average minus gdelt's —
+divergence deliberately stays gdelt-vs-arxiv after v1.1: those two
+remain the cleanest media-vs-research pair (Wikipedia mixes both
+audiences, EDGAR tracks investor language); `direction` ∈
+research_leads / media_leads / aligned with a ±10 dead zone. arXiv series store an explicit count for every window month on a
 successful fetch, zeros included — for arXiv the gaps ARE the world;
 only failed fetches leave gaps. Every `headline` field is nullable — no eligible pair means
 `null`, never a fabricated number; ties break by `term_id` ascending.
@@ -1658,3 +1688,216 @@ roster_mix.total`, `top_type`/`top_type_n` mirror `by_type[0]`,
 `country_count == len(by_country)`, and `mitre_n + cisa_n <= total`.
 Validator: `pipeline/roster_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
+
+## site/data/time_to_poc.json  (Time to PoC module, all 3 charts)
+
+## site/data/botnet_weather.json  (Botnet Weather module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "hero": {
+    "matched": {"dated_cves": 26182, "matched_cves": 26139,
+                "unmatched_cves": 43},
+    "years": [
+      {"year": 2025, "n": 502, "median_days": -12.0, "p25_days": -4452.0,
+       "p75_days": 6.8, "pct_negative": 55.4, "pct_within_week": 75.3}
+    ],
+    "headline": {"latest_year": 2025, "median_days_latest": -12.0,
+                 "pct_negative_latest": 55.4,
+                 "baseline_year": 2015, "median_days_baseline": -2.0}
+  },
+  "kev_preempt": {
+    "cutoff": "2023-01-01",
+    "total_kev": 1651,
+    "trend": {"with_poc_date": 228, "preempted": 184,
+              "pct_preempted": 80.7},
+    "seeding": {"with_poc_date": 412, "preempted": 407,
+                "pct_preempted": 98.8},
+    "years": [
+      {"year": 2024, "total_added": 186, "with_poc_date": 65,
+       "preempted": 51, "pct_preempted": 78.5}
+    ]
+  },
+  "coverage": {
+    "window_year": 2025,
+    "buckets": [
+      {"bucket": "9.0-10.0", "total": 3955, "with_poc": 328, "pct": 8.3}
+    ],
+    "unscored": {"total": 4398, "with_poc": 2, "pct": 0.0}
+  },
+  "catalog": {
+    "exploitdb": {"entries": 47108, "with_cve": 27384, "cves": 25041,
+                  "dated_cves": 25041},
+    "metasploit": {"modules": 7110, "with_cve": 3078, "cves": 3169,
+                   "dated_cves": 3007},
+    "nuclei": {"templates": 4222, "cves": 4222},
+    "union_cves": 29360, "dated_cves": 26182, "matched_in_corpus": 29293
+  "c2_weather": {
+    "first_observed": "2026-07-21",
+    "families": ["Emotet", "QakBot"],
+    "series": [{"date": "2026-07-21",
+                "online": {"Emotet": 0, "QakBot": 1},
+                "listed": {"Emotet": 1, "QakBot": 4},
+                "online_total": 1, "listed_total": 5}],
+    "current_online": 1, "current_listed": 5
+  },
+  "c2_today": {
+    "snapshot_date": "2026-07-21", "listed_total": 5, "online_total": 1,
+    "families": [{"label": "QakBot", "listed": 4, "online": 1},
+                 {"label": "Emotet", "listed": 1, "online": 0}],
+    "countries": [{"label": "US", "n": 3}, {"label": "GB", "n": 1},
+                  {"label": "JP", "n": 1}],
+    "asns": [{"label": "AMAZON-AES", "n": 2},
+             {"label": "DIGITALOCEAN-ASN", "n": 2},
+             {"label": "SAKURA-B SAKURA Internet Inc.", "n": 1}]
+  },
+  "c2_age": {
+    "snapshot_date": "2026-07-21", "n": 5,
+    "median_age_days": 169, "oldest_age_days": 1508,
+    "buckets": [{"label": "under 30 days", "n": 0},
+                {"label": "30–90 days", "n": 0},
+                {"label": "90 days – 1 year", "n": 4},
+                {"label": "1–2 years", "n": 0},
+                {"label": "over 2 years", "n": 1}]
+  },
+  "catalog": {
+    "snapshot_size": 5, "online_now": 1,
+    "families": ["Emotet", "QakBot"], "family_count": 2,
+    "first_date": "2026-07-21", "last_date": "2026-07-21",
+    "days_observed": 1
+  }
+}
+```
+
+Sources (all public index files, all shipping their full history, so the
+stage refetches statelessly every night — the APNIC pattern; downloads are
+cached per UTC day in `.cache/poc/`, ~23 MB total; `pipeline/fetch_poc.py`):
+
+* **Exploit-DB index CSV**
+  (`gitlab.com/exploit-database/exploitdb` → raw `files_exploits.csv`,
+  ~10 MB, ~47k rows) — CVE ids extracted from the semicolon-separated
+  `codes` column (~58% of rows carry at least one). A PoC is dated by
+  `date_published` — the archive's record of when the exploit was
+  published, which can predate `date_added` (when it entered the
+  archive); the choice is stated in the page methodology.
+* **Metasploit module metadata**
+  (`raw.githubusercontent.com/rapid7/metasploit-framework/master/db/modules_metadata_base.json`,
+  ~11 MB, ~7.1k modules) — CVE ids from `references`;
+  `disclosure_date` dates the DISCLOSURE the module targets, not the
+  module's merge (module merge dates would need git history, which the
+  pipeline never clones) — a conservative dated lower bound on public
+  tooling, stated as such. Placeholder dates (`1900-01-01`, anything
+  before 1988-01-01) contribute coverage but never a date.
+* **Nuclei templates CVE index**
+  (`raw.githubusercontent.com/projectdiscovery/nuclei-templates/main/cves.json`,
+  ~2 MB JSONL, ~4.2k CVE-keyed templates) — NO dates published, so
+  Nuclei contributes to `coverage` only, never to dating; stated
+  honestly in the methodology.
+
+Parsing is lenient per row/line but a source yielding zero CVE-linked
+entries fails the run loudly (`ValueError`). Per CVE, the **first public
+PoC date** = the minimum over the dated sources. The corpus join reuses
+the shared streaming pass: `Aggregator.poc_published_dates` (ids
+referenced by any source → `datePublished`, the exact mirror of the KEV
+join) and `Aggregator.poc_flood` (per publication year, PoC-covered
+records per severity bucket — the same bucket assignment as `flood`, so
+coverage can never re-bucket).
+
+`hero`: gap = first PoC date − `datePublished`, in days, grouped by CVE
+publication year; **negative gaps are kept** (the KEV-latency rule — a
+PoC predating the record is real signal: advisories shipping with
+exploits, or old exploits assigned CVEs years later, which is why early
+p25 values run to thousands of negative days). A year plots only with
+`min_n` (production 10) matched CVEs. `matched_cves + unmatched_cves ==
+dated_cves` (enforced); the headline never leans on the partial current
+year and prefers a ten-year-lookback baseline. Honesty, owned in the
+copy: public PoC in three trackers is a lower bound on tooling; the
+cohort is self-selected (~8% of records ever match); recent years are
+right-censored.
+
+`kev_preempt`: a KEV entry is *preempted* when its first PoC date
+**strictly** predates `dateAdded` (same-day does not count). Denominator
+= entries with a dated PoC; entries without one say nothing about the
+race and are excluded rather than counted either way. The 2021-22
+seeding era (`dateAdded` before `kev_metrics.LAUNCH_CUTOFF`, the KEV
+Latency cutoff) is reported in `seeding`, kept out of the headline
+`trend` block; per-year rows plot all eras (seeding years render muted
+on the site) with the `min_n` gate on `with_poc_date`.
+
+`coverage`: for the latest complete calendar year (`window_year`),
+per-CVSS-bucket share of published records referenced by ANY source
+(dated or not). Buckets follow the Score-vs-Reality `CVSS_BUCKETS`
+order; a bucket below `min_n` records is withheld; `unscored` records
+get their own block rather than being hidden. `with_poc <= total` per
+row (enforced). `catalog` is the audit block: per-source totals,
+extraction counts (`with_cve <= entries/modules`, `dated_cves <= cves`),
+the three-source union, and the corpus join coverage;
+`catalog.dated_cves == hero.matched.dated_cves` (same join, enforced).
+No pace projection and no committed history: every number rebuilds from
+tonight's fetched corpora. Validator: `pipeline/poc_contracts.py`
+abuse.ch's Feodo Tracker publishes the live blocklist of botnet
+command-and-control servers — only the current picture, never a series.
+This module makes CyberMon the series. Source:
+`feodotracker.abuse.ch/downloads/ipblocklist.json` (public endpoint, no
+auth-key — verified 2026-07-21; the authenticated-platform terms cover
+abuse.ch's query APIs, not these blocklist downloads, and the blocklist
+page's own Terms of Services put the datasets under CC0). Fields read:
+`ip_address`+`port` (dedup key only — never emitted), `status`
+(`online` = answered like a botnet C2 on the tracker's last probe /
+`offline`; any other value is a broken fetch), `malware` (family),
+`first_seen` (date part; the age chart), `country`, `as_name`. The
+tracker only lists an address after it responded with a valid botnet C2
+response, which keeps its false-positive rate low.
+
+**Committed history (under `site/data/history/`):**
+
+* `botnet_c2.csv` — append-only daily counts, long format (columns
+  `date,family,online,listed`): one row per malware family with at least
+  one listed C2 that day, PLUS one `_total` row per day, always present —
+  an empty-blocklist day records `_total,0,0`, because the zero IS the
+  weather. Family rows must sum to the day's `_total` row. A same-day
+  re-run replaces that day's block. Like `nvd_backlog.csv`, this is an
+  **original dataset accumulated by this project and it CANNOT be
+  regenerated** (the weekly `data-backup-*` tags cover it). There is no
+  separate state file — counts are absolute snapshots, so the CSV is the
+  whole memory. Written by `__main__.run()` **only after every output
+  validates**, via `pipeline.botnet_metrics.persist`.
+
+**Guard rule (documented choice, the inverse of the roster's):** there is
+NO count-collapse guard — single-digit and zero counts are normal for
+this source (the tracker's FAQ credits its empty stretches to the Emotet
+2021 and Operation Endgame 2024 takedowns), and refusing a collapse would
+censor exactly the takedown cliffs the module exists to record. The
+broken-fetch guard is structural instead, in `pipeline/fetch_feodo.py`: a
+non-array document, a malformed entry, an unrecognized `status` or an
+unparseable `first_seen` raises; transient HTTP failures exhaust a
+bounded retry (3 attempts) and then raise; a failed run appends nothing.
+
+`c2_weather` (hero): the per-day series from the committed CSV — dates
+sorted unique; `families` = the sorted union over the whole record (a
+family that vanished stays in the union; the `_total` sentinel never
+appears); each point's `online`/`listed` maps cover the same families
+(`listed >= 1` for a family present that day, `online <= listed`) and sum
+to `online_total`/`listed_total`; `first_observed == series[0].date`;
+`current_*` mirror the last point. Launch-thin by design: the record
+starts at first deploy, and the page note says so, data-driven.
+`c2_today` (real from day one): tonight's snapshot only.
+`families` `[{label, listed, online}]` sorted by `listed` desc (ties label
+asc); `countries`/`asns` are `[{label, n}]` clean partitions of the
+listed set, sorted `n` desc (ties label asc), empty exactly when
+`listed_total == 0` (the honest empty). Totals cross-check the last
+series point. `c2_age` (real from day one): whole days from each listed
+server's `first_seen` to the snapshot date (future stamps clamp to 0),
+fixed buckets exactly `under 30 days / 30–90 days / 90 days – 1 year /
+1–2 years / over 2 years` summing to `n == listed_total`;
+`median_age_days` (rounded) and `oldest_age_days` are null exactly when
+the snapshot is empty. `catalog`: tonight's size/online/families (sorted;
+subset story of the union) plus the record's `first_date`/`last_date`/
+`days_observed`.
+
+**Red line (enforced by the validator):** the emitted object may contain
+NO per-server data — no `ip_address`/`hostname`/`ip`/`port` key anywhere,
+and no string value shaped like an IPv4 address. The module renders the
+weather, never the blocklist. Validator: `pipeline/botnet_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).

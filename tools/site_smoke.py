@@ -56,6 +56,8 @@ PAGES = [
     "adp.html",
     "epssvol.html",
     "roster.html",
+    "exploits.html",
+    "c2.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

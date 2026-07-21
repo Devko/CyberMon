@@ -19,7 +19,7 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "extortion_ledger.json", "dnssec_adoption.json",
              "epss_report.json", "cve_calendar.json", "rescore_log.json",
              "epss_volatility.json", "kev_changelog.json",
-             "cna_roster.json"]
+             "cna_roster.json", "time_to_poc.json", "botnet_weather.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -101,6 +101,33 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     for name in ("volume_curve.json", "nine_eight_flood.json",
                  "cna_concentration.json", "breach_ledger.json"):
         assert "projection" not in _load(tmp_path, name), name
+
+    # Time to PoC: 8 dated CVEs across Exploit-DB/Metasploit, 7 matched
+    # in the corpus (CVE-2099-0001 is deliberately absent), the earliest
+    # date winning per CVE (Exploit-DB 2023-01-10 beats Metasploit
+    # 2023-01-20 for CVE-2023-0001, gap -5 vs publish 2023-01-15). KEV:
+    # the trend cohort matches two entries, one preempted; the seeding
+    # era matches none (its only covered id carries a placeholder date).
+    poc = _load(tmp_path, "time_to_poc.json")
+    assert poc["hero"]["matched"] == {"dated_cves": 8, "matched_cves": 7,
+                                      "unmatched_cves": 1}
+    assert [(y["year"], y["n"], y["median_days"])
+            for y in poc["hero"]["years"]] == [
+        (2014, 2, -348.0), (2023, 2, 12.5), (2024, 2, 77.0), (2025, 1, 30.0)]
+    assert poc["kev_preempt"]["trend"] == {"with_poc_date": 2,
+                                           "preempted": 1,
+                                           "pct_preempted": 50.0}
+    assert poc["kev_preempt"]["seeding"]["with_poc_date"] == 0
+    assert poc["coverage"]["window_year"] == 2025
+    assert poc["catalog"]["union_cves"] == 11
+    assert poc["catalog"]["metasploit"] == {"modules": 4, "with_cve": 3,
+                                            "cves": 3, "dated_cves": 2}
+    assert meta["sources"]["exploitdb"] == {
+        "fetched_at": meta["generated_at"], "entry_count": 8, "cve_count": 7}
+    assert meta["sources"]["metasploit"] == {
+        "fetched_at": meta["generated_at"], "module_count": 4, "cve_count": 3}
+    assert meta["sources"]["nuclei"] == {
+        "fetched_at": meta["generated_at"], "cve_count": 3}
 
     # Breach ledger: 4 of the 9 fixture entries are excluded (one per
     # reason; SpamHaul carries both spam and malware flags and counts once,
@@ -315,6 +342,32 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sources"]["roster"] == {"fetched_at": meta["generated_at"],
                                          "org_count": 8, "events_total": 4}
 
+    # Botnet Weather: with no committed history, the offline run seeds two
+    # prior days from fixtures/botnet_c2.csv and merges tonight's fixture
+    # snapshot (6 listed, 2 online) on top. TrickBot lives only in the
+    # seeded record — the series' family union keeps it, tonight's catalog
+    # doesn't. The today/age sections read only tonight's snapshot. (Age
+    # numbers shift with the run date, so only date-independent facts are
+    # asserted: the fixture's 2022-vintage Emotet C2 is always 2+ years
+    # old by now, and every listed server has an age.)
+    botnet = _load(tmp_path, "botnet_weather.json")
+    assert botnet["catalog"]["days_observed"] == 3
+    assert botnet["c2_weather"]["first_observed"] == "2026-07-01"
+    assert botnet["c2_weather"]["families"] == \
+        ["Emotet", "Pikabot", "QakBot", "TrickBot"]
+    assert botnet["catalog"]["families"] == ["Emotet", "Pikabot", "QakBot"]
+    assert botnet["c2_weather"]["current_listed"] == 6
+    assert botnet["c2_weather"]["current_online"] == 2
+    assert [f["label"] for f in botnet["c2_today"]["families"]] == \
+        ["QakBot", "Pikabot", "Emotet"]
+    assert botnet["c2_today"]["countries"][0] == {"label": "DE", "n": 2}
+    assert botnet["c2_age"]["n"] == 6
+    assert botnet["c2_age"]["oldest_age_days"] >= 730
+    assert botnet["c2_age"]["median_age_days"] >= 90
+    assert (tmp_path / "history" / "botnet_c2.csv").exists()
+    assert meta["sources"]["feodo"] == {"fetched_at": meta["generated_at"],
+                                        "listed": 6, "online": 2}
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -349,6 +402,10 @@ def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):
     roster = _load(tmp_path, "cna_roster.json")
     assert roster["roster_flux"]["events_total"] == 4  # idempotent re-run
     assert len(roster["roster_size"]["series"]) == 2   # 2026-07-01 + today
+    # botnet weather merges by date too: tonight's rows replaced, and the
+    # committed file (not the fixture seed) is what the re-run reads
+    botnet = _load(tmp_path, "botnet_weather.json")
+    assert botnet["catalog"]["days_observed"] == 3     # 2 seeded + today
 
 
 def test_skip_nvd_carries_previous_run_forward(tmp_path, capsys):
@@ -396,6 +453,7 @@ def test_validation_failure_writes_nothing(tmp_path, capsys, monkeypatch):
     assert not (tmp_path / "history" / "kev_state.json").exists()
     assert not (tmp_path / "history" / "epss_volatility.csv").exists()
     assert not (tmp_path / "history" / "epss_volatility_state.json.gz").exists()
+    assert not (tmp_path / "history" / "botnet_c2.csv").exists()
     for name in ALL_FILES:
         assert not (tmp_path / name).exists()
 

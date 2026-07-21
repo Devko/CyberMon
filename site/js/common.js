@@ -44,15 +44,62 @@ export function errorCard(file) {
 
 // ---- shared chrome -----------------------------------------------------------
 
+// Fold the FLAT editorial.nav into the thematic groups declared in
+// editorial.navGroups. One fold, used by the nav below AND the landing
+// page's card groups (home.js), so the two can never disagree about where
+// a module lives. Rules:
+//   - ungrouped entries at the head of the array (Overview) come back as
+//     `leading` — standalone tabs before any group;
+//   - every other entry lands in its declared group, or — when the group id
+//     is missing or unknown — in the LAST navGroups entry ("More"), so a
+//     module merged without a tag still ships navigable;
+//   - groups with no entries are dropped, never rendered empty.
+export function groupNav() {
+  const groups = editorial.navGroups.map((g) => ({ ...g, tabs: [] }));
+  const byId = new Map(groups.map((g) => [g.id, g]));
+  const more = groups[groups.length - 1];
+  const leading = [];
+  let grouped = false;
+  for (const tab of editorial.nav) {
+    if (!tab.group && !grouped) {
+      leading.push(tab);
+      continue;
+    }
+    grouped = true;
+    (byId.get(tab.group) ?? more).tabs.push(tab);
+  }
+  return { leading, groups: groups.filter((g) => g.tabs.length) };
+}
+
+// Grouped nav: one centered row of standalone tabs (Overview), then one row
+// per group — group label on the left of its tabs, rows separated by
+// hairlines, tabs wrapping within their row. Plain <a> elements throughout:
+// navigation needs no JS beyond this render (progressive enhancement only).
 function renderNav(activeId) {
   const nav = document.getElementById("site-nav");
   if (!nav) return;
   clear(nav);
-  for (const tab of editorial.nav) {
+
+  const tabEl = (tab) => {
     const a = el("a", "site-nav-tab" + (tab.id === activeId ? " is-active" : ""), tab.label);
     a.href = tab.href; // relative — works under GitHub Pages subpaths
     if (tab.id === activeId) a.setAttribute("aria-current", "page");
-    nav.append(a);
+    return a;
+  };
+
+  const { leading, groups } = groupNav();
+
+  if (leading.length) {
+    const row = el("div", "site-nav-row site-nav-row-lead");
+    for (const tab of leading) row.append(tabEl(tab));
+    nav.append(row);
+  }
+  for (const g of groups) {
+    const active = g.tabs.some((t) => t.id === activeId);
+    const row = el("div", "site-nav-row" + (active ? " is-active" : ""));
+    row.append(el("span", "site-nav-group-label", g.label));
+    for (const tab of g.tabs) row.append(tabEl(tab));
+    nav.append(row);
   }
 }
 
@@ -134,6 +181,12 @@ function renderMeta(meta) {
       epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US"),
       rescore_events: (s.rescores?.events_total ?? 0).toLocaleString("en-US"),
       kev_changelog_events: (s.kev_changelog?.events_total ?? 0).toLocaleString("en-US"),
+      exploitdb_entries: (s.exploitdb?.entry_count ?? 0).toLocaleString("en-US"),
+      metasploit_modules: (s.metasploit?.module_count ?? 0).toLocaleString("en-US"),
+      nuclei_cves: (s.nuclei?.cve_count ?? 0).toLocaleString("en-US"),
+      feodo_listed: (s.feodo?.listed ?? 0).toLocaleString("en-US"),
+      feodo_online: (s.feodo?.online ?? 0).toLocaleString("en-US"),
+      feodo_fetched: s.feodo?.fetched_at ?? "?",
     }))
   );
 }

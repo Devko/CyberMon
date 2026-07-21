@@ -1,0 +1,30 @@
+{
+  "exploit_fixture_a": {
+    "name": "Fixture module for CVE-2023-0001",
+    "fullname": "exploit/linux/http/fixture_a",
+    "type": "exploit",
+    "disclosure_date": "2023-01-20",
+    "references": ["CVE-2023-0001", "OSVDB-999", "URL-https://example.invalid/a"]
+  },
+  "auxiliary_fixture_b": {
+    "name": "Fixture module with a placeholder disclosure date",
+    "fullname": "auxiliary/scanner/http/fixture_b",
+    "type": "auxiliary",
+    "disclosure_date": "1900-01-01",
+    "references": ["CVE-2023-0003"]
+  },
+  "exploit_fixture_c": {
+    "name": "Fixture module disclosed before its CVE record published",
+    "fullname": "exploit/windows/smb/fixture_c",
+    "type": "exploit",
+    "disclosure_date": "2012-06-05",
+    "references": ["CVE-2012-0002", "MSB-MS12-020"]
+  },
+  "post_fixture_d": {
+    "name": "Fixture module with no CVE reference",
+    "fullname": "post/multi/gather/fixture_d",
+    "type": "post",
+    "disclosure_date": "2021-04-01",
+    "references": ["URL-https://example.invalid/d"]
+  }
+}

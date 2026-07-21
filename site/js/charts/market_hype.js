@@ -1,7 +1,9 @@
 // Market 1 (hero) — the hype index. Contract: site/data/market_hype.json
 // (shared by all three market sections; market.js fetches it once).
 // A strip of per-term GDELT sparkline cards selects the term shown in the
-// big three-source line chart (GDELT / Hacker News / arXiv, index 0–100).
+// big five-source line chart (GDELT / Hacker News / arXiv / Wikipedia /
+// SEC EDGAR, index 0–100). Sources absent for a term (pre-v1.1 payloads,
+// unmapped terms, backfill) simply don't get a line or a legend entry.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
@@ -10,6 +12,10 @@ const SOURCES = [
   { key: "gdelt", name: "GDELT", color: C.accent },
   { key: "hn", name: "Hacker News", color: C.versions.v3 },
   { key: "arxiv", name: "arXiv", color: C.versions.v2 },
+  // v1.1 lanes. Colors reuse palette stops distinct from the three
+  // above; the legend and tooltip scale by iterating this list.
+  { key: "wiki", name: "Wikipedia", color: C.sev.high },
+  { key: "edgar", name: "SEC EDGAR", color: C.versions.v4 },
 ];
 
 // Honest empty state for launch-time payloads (backfill still running).
@@ -102,7 +108,7 @@ export function render(slots, data) {
     });
   }
 
-  // ---- big chart: 3 sources for the selected term ----------------------------
+  // ---- big chart: all present sources for the selected term -------------------
   const big = mkChart(slots.chart);
   // display name -> Map(month -> raw row) for the selected term (tooltip needs n)
   let rawLookup = {};

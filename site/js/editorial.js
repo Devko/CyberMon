@@ -19,28 +19,83 @@ export const editorial = {
     sub: "Every number on this site pairs a claim with the exact method that produced it. Disagree with one? The pipeline is open; rerun it.",
   },
 
+  // Thematic nav groups, in display order. Each entry: a short label for the
+  // nav row, and a one-line lede for the landing page's group header. The
+  // LAST entry ("more") is the automatic catch-all: any nav entry with a
+  // missing or unrecognized `group` id lands there, so a module merged
+  // without a tag still ships navigable and a new group never needs code.
+  navGroups: [
+    {
+      id: "machine",
+      label: "The CVE machine",
+      lede: "The pipeline behind the record: who mints it, who scores it, what gets edited after the fact.",
+    },
+    {
+      id: "exploitation",
+      label: "Exploitation",
+      lede: "What actually gets exploited, and how the forecasts and catalogs tracking it keep up.",
+    },
+    {
+      id: "industry",
+      label: "The industry",
+      lede: "Market hype, breach disclosure, ransom payments, and the state of everyday hygiene.",
+    },
+    {
+      id: "attackmap",
+      label: "Attacker's map",
+      lede: "How the industry maps and names its adversaries — and how often the map gets redrawn.",
+    },
+    {
+      id: "more",
+      label: "More",
+      lede: "Just landed — not yet filed under a theme.",
+    },
+  ],
+
   // Tabs in the shared top-nav. href values stay RELATIVE (GitHub Pages subpath).
   // Every tab is its own page — direct-linkable and bookmarkable.
+  //
+  // This array stays FLAT on purpose — carousel.js and the deploy tools read
+  // it as a plain module list. Grouping is one `group` field per entry (an id
+  // from navGroups above); groupNav() in common.js does the render-time fold
+  // for both the nav and the landing page. Ungrouped entries at the HEAD of
+  // the array (Overview) render as standalone leading tabs.
+  //
+  // Group assignments follow where each module's DATA lives, not its topic:
+  //   machine      — read from the CVE record pipeline itself: the cvelistV5
+  //                  corpus, NVD's database, and the CVE Program's own CNA
+  //                  roster. CNA Roster sits here, next to CNA Concentration
+  //                  — two views of the same federation — not under
+  //                  "The industry".
+  //   exploitation — read from the exploited-in-the-wild record: CISA's KEV
+  //                  catalog and FIRST's EPSS feed (Security Products and
+  //                  KEV Changelog are both KEV-derived).
+  //   industry     — read from outside-world ledgers: GDELT/HN/arXiv (hype),
+  //                  HIBP (breaches), Ransomwhere (ransoms), APNIC (hygiene).
+  //   attackmap    — read from MITRE ATT&CK's STIX bundles (Naming Chaos is
+  //                  ATT&CK alias data, not CVE data — it lives here).
   nav: [
     { id: "home", href: "index.html", label: "Overview" },
-    { id: "cve", href: "cve.html", label: "CVE Ecosystem" },
-    { id: "market", href: "market.html", label: "Security Market" },
-    { id: "kev", href: "kev.html", label: "KEV Latency" },
-    { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
-    { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
-    { id: "extortion", href: "extortion.html", label: "Extortion Ledger" },
-    { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
-    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index" },
-    { id: "guards", href: "guards.html", label: "Security Products" },
-    { id: "epss", href: "epss.html", label: "EPSS Report Card" },
-    { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
-    { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
-    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
-    { id: "naming", href: "naming.html", label: "Naming Chaos" },
-    { id: "top25", href: "top25.html", label: "CWE Top 25" },
-    { id: "adp", href: "adp.html", label: "Vulnrichment" },
-    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
-    { id: "roster", href: "roster.html", label: "CNA Roster" },
+    { id: "cve", href: "cve.html", label: "CVE Ecosystem", group: "machine" },
+    { id: "market", href: "market.html", label: "Security Market", group: "industry" },
+    { id: "kev", href: "kev.html", label: "KEV Latency", group: "exploitation" },
+    { id: "concentration", href: "concentration.html", label: "CNA Concentration", group: "machine" },
+    { id: "breaches", href: "breaches.html", label: "Breach Ledger", group: "industry" },
+    { id: "extortion", href: "extortion.html", label: "Extortion Ledger", group: "industry" },
+    { id: "attack", href: "attack.html", label: "ATT&CK Churn", group: "attackmap" },
+    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index", group: "industry" },
+    { id: "guards", href: "guards.html", label: "Security Products", group: "exploitation" },
+    { id: "epss", href: "epss.html", label: "EPSS Report Card", group: "exploitation" },
+    { id: "calendar", href: "calendar.html", label: "CVE Calendar", group: "machine" },
+    { id: "changelog", href: "changelog.html", label: "KEV Changelog", group: "exploitation" },
+    { id: "rescores", href: "rescores.html", label: "Silent Rescores", group: "machine" },
+    { id: "naming", href: "naming.html", label: "Naming Chaos", group: "attackmap" },
+    { id: "top25", href: "top25.html", label: "CWE Top 25", group: "machine" },
+    { id: "adp", href: "adp.html", label: "Vulnrichment", group: "machine" },
+    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility", group: "exploitation" },
+    { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
+    { id: "exploits", href: "exploits.html", label: "Time to PoC", group: "exploitation" },
+    { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackmap" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -77,9 +132,10 @@ export const editorial = {
         label: "Security Market",
         headline: "The security industry runs on a hype curve. Nobody publishes the curve.",
         blurb:
-          "Buzzword hype curves across news coverage (GDELT), practitioner chatter " +
-          "(Hacker News), and research output (arXiv) — every term graded against its " +
-          "own five-year peak, rebuilt nightly.",
+          "Buzzword hype curves across five attention signals — news coverage (GDELT), " +
+          "practitioner chatter (Hacker News), research output (arXiv), public curiosity " +
+          "(Wikipedia pageviews), and investor filings (SEC EDGAR) — every term graded " +
+          "against its own five-year peak, rebuilt nightly.",
         live: true,
       },
       {
@@ -294,6 +350,35 @@ export const editorial = {
           "starts at first deploy because no accreditation date is published.",
         live: true,
       },
+      {
+        id: "exploits",
+        href: "exploits.html",
+        num: "19",
+        label: "Time to PoC",
+        headline: "The exploit is usually public before the paperwork settles.",
+        blurb:
+          "Days from CVE publication to the first public exploit code in " +
+          "Exploit-DB or Metasploit — a clock that often starts in the " +
+          "negative — the share of CISA's exploited list the code beat to " +
+          "the announcement, and which severity buckets attract public " +
+          "PoCs at all, with Nuclei template coverage riding along. " +
+          "Rebuilt nightly from the trackers' published indexes.",
+        live: true,
+      },
+      {
+        id: "c2",
+        href: "c2.html",
+        num: "20",
+        label: "Botnet Weather",
+        headline: "Botnet command-and-control has weather. Nobody keeps the forecasts.",
+        blurb:
+          "abuse.ch's Feodo Tracker publishes the live blocklist of botnet C2 " +
+          "servers — today's picture only. CyberMon snapshots it nightly and " +
+          "keeps the count by malware family, so takedowns show as cliffs and " +
+          "the quiet stretches stay on the record. Tonight's composition and " +
+          "the age of the surviving infrastructure are real from day one.",
+        live: true,
+      },
     ],
   },
 
@@ -336,23 +421,29 @@ export const editorial = {
     hype: {
       num: "01",
       kicker: "Hype curves",
-      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR",
+      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR full-text search",
       headline: "Every term is graded against its own best month.",
       caption:
-        "Media mentions (GDELT news coverage), practitioner chatter (Hacker News), and " +
-        "research output (arXiv cs.CR preprints) for one term at a time, each indexed to " +
-        "its own five-year peak so a slow-burning research topic and a marketing blitz " +
-        "can share an axis without one drowning the other. Pick a term; the cards are " +
-        "shortcuts.",
+        "Media mentions (GDELT news coverage), practitioner chatter (Hacker News), " +
+        "research output (arXiv cs.CR preprints), public curiosity (Wikipedia " +
+        "pageviews), and investor-facing filings (SEC EDGAR) for one term at a time, " +
+        "each indexed to its own five-year peak so a slow-burning research topic and a " +
+        "marketing blitz can share an axis without one drowning the other. Pick a term; " +
+        "the cards are shortcuts.",
       selectLabel: "Term",
       termCountNote: "Tracking {n} terms — curated list: pipeline/market_terms.py",
       sparklineNote:
         "Click a card to load it above. Sparklines show the media (GDELT) index only — terms " +
         "still waiting on a media fetch show an honest blank, not an invented curve.",
       methodology:
-        "For each tracked term and each of three sources — GDELT 2.0 (news article volume), " +
+        "For each tracked term and each of five sources — GDELT 2.0 (news article volume), " +
         "Hacker News (Algolia search API, stories and comments), arXiv (cs.CR preprint " +
-        "count) — the pipeline pulls a monthly count over a rolling five-year window. Each " +
+        "count), Wikipedia (monthly pageviews of one curated on-topic article per term, " +
+        "bot traffic excluded; the term-to-article mapping is reviewable data in " +
+        "pipeline/market_terms.py, and a term with no on-topic article has no Wikipedia " +
+        "series), and SEC EDGAR full-text search (filings matching the term as a quoted " +
+        "phrase, acronyms spelled out to dodge finance collisions) — the pipeline pulls a " +
+        "monthly count over a rolling five-year window. Each " +
         "series is indexed to its own highest month in that window (peak = 100); this is " +
         "recomputed nightly, so a new peak nudges every earlier point down proportionally. " +
         "Raw counts ride along in the tooltip for every point. Series are deliberately not " +
@@ -369,7 +460,7 @@ export const editorial = {
     risers: {
       num: "02",
       kicker: "Risers & fallers",
-      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR",
+      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR full-text search",
       headline: "Same twelve months, opposite direction.",
       caption:
         "Year-over-year change in mention volume, term by term and source by source — the " +
@@ -423,7 +514,11 @@ export const editorial = {
       methodology:
         "Each axis is the term's own attention index (see Hype curves methodology), " +
         "averaged over the three most recent populated complete months (the month in progress never counts), for GDELT (x) and arXiv " +
-        "(y). A term's divergence score is the y-axis value minus the x-axis value, in " +
+        "(y). Of the five collected sources, this chart deliberately stays with GDELT " +
+        "versus arXiv: they remain the cleanest media-versus-research pair — Wikipedia " +
+        "pageviews mix both audiences, SEC filings track investor language, and Hacker " +
+        "News sits somewhere between all of them, so none of the three sharpens the " +
+        "comparison. A term's divergence score is the y-axis value minus the x-axis value, in " +
         "index points; scores beyond ±10 are labeled “research leads” or “media leads,” " +
         "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
         "both indices carry real month-to-month noise. Terms missing three recent " +
@@ -2487,6 +2582,231 @@ export const editorial = {
         "— the trend is what the size and flux charts above are slowly " +
         "accumulating.",
     },
+
+    // --------------------------------- exploits.html · 1 · hero
+    poc_gap: {
+      num: "01",
+      kicker: "The attacker's clock",
+      source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE)",
+      headline: "The exploit rarely waits for the record.",
+      caption:
+        "For every CVE that a public exploit tracker references and dates, the gap from " +
+        "the CVE record's publication to the first public exploit code — median and " +
+        "interquartile range per publication year. In the program's first years the " +
+        "median ran deeply negative: early CVE records were cataloguing an arsenal that " +
+        "already existed. Since the mid-2000s the median has hugged zero, and in most " +
+        "years it is negative — for the CVEs that get public exploit code at all, the " +
+        "code tends to exist by the time the record lands. The gap is measured in days, " +
+        "not months, and the band below zero is disclosure culture in the raw: exploits " +
+        "that shipped with the advisory, or years before a CVE id was finally assigned.",
+      statLabel: "Median days from CVE publication to first public exploit code",
+      statLatest: "{latest_year}",
+      statAgo: "{ago_year}",
+      note:
+        "{dated} CVEs carry a dated public exploit across Exploit-DB and Metasploit; " +
+        "{matched} matched a CVE record in the corpus and are charted — {unmatched} " +
+        "found no record to join.",
+      methodology:
+        "For every CVE id referenced by the Exploit-DB index or Metasploit's module " +
+        "metadata, the first public PoC date is the earliest date either offers: " +
+        "Exploit-DB's date_published (the archive's record of when the exploit was " +
+        "published, which can predate its addition to the archive) and Metasploit's " +
+        "disclosure_date (the module author's record of when the vulnerability was " +
+        "publicly disclosed — module metadata does not publish the module's own merge " +
+        "date, so this is a conservative stand-in, stated as such). Nuclei templates " +
+        "carry no usable date and never contribute to dating — they count only toward " +
+        "coverage in the chart below. The gap is that first date minus the CVE record's " +
+        "datePublished, in days, grouped by the CVE's publication year; a year plots " +
+        "only with at least 10 matched CVEs. Negative gaps are kept as negative, the " +
+        "KEV-latency rule: exploit code published before the CVE record exists is a " +
+        "real event — an advisory shipping with its exploit, or an old exploit assigned " +
+        "a CVE years later — and flooring it would flatter the system. Placeholder " +
+        "dates (Metasploit's 1900-01-01) are treated as absent. Two honesty notes: " +
+        "this measures public PoC code in three trackers, a lower bound on tooling " +
+        "that undercounts private exploits and everything published elsewhere; and the " +
+        "cohort is self-selected — only a few percent of records ever get a tracked " +
+        "public exploit, so the chart describes the CVEs somebody bothered to arm, and " +
+        "recent years are additionally right-censored (a young CVE has had less time " +
+        "to attract code).",
+    },
+
+    // --------------------------------- exploits.html · 2
+    poc_preempt: {
+      num: "02",
+      kicker: "Before the government confirms",
+      source: "CISA KEV · Exploit-DB (OffSec) · Metasploit (Rapid7)",
+      headline: "The code was public before the confirmation.",
+      caption:
+        "CISA's Known Exploited Vulnerabilities catalog is the government's confirmation " +
+        "that a vulnerability is being used in the wild. For KEV entries whose CVE " +
+        "carries a dated public exploit, the bars show how often that exploit code was " +
+        "public before the day CISA listed it. The 2021–22 seeding years plot muted: a " +
+        "launch-era import of years-old CVEs is trivially beaten by equally old exploit " +
+        "code, so the figure that matters is the trend since — and even there, roughly " +
+        "four in five listings with a dated PoC were beaten to the announcement.",
+      note:
+        "Since {cutoff_year}: {trend_pct} of the {trend_n} KEV listings with a dated " +
+        "public PoC saw that code published before the listing day.",
+      methodology:
+        "Every KEV entry is joined to the first-public-PoC date built for the hero " +
+        "chart (Exploit-DB and Metasploit; Nuclei is undated and never used here). An " +
+        "entry counts as preempted when that date strictly predates the catalog's " +
+        "dateAdded — a same-day PoC does not count. The denominator is entries with a " +
+        "dated PoC, roughly four in ten of the catalog: an entry with no tracked public " +
+        "exploit says nothing about the race and is excluded rather than counted either " +
+        "way. The 2021–22 seeding era (entries added before 2023-01-01, the same cutoff " +
+        "the KEV Latency module uses) is split out of the headline figure because the " +
+        "launch backfill imported years-old CVEs whose exploits are as old as the " +
+        "backlog; those years chart muted for context. A year plots only with at least " +
+        "10 matched entries. The KEV side is the same feed the rest of the site " +
+        "fetches; the exploit side carries the hero chart's caveats — tracked public " +
+        "code only, so the share is a floor on how often defenders were actually " +
+        "behind.",
+    },
+
+    // --------------------------------- exploits.html · 3
+    poc_coverage: {
+      num: "03",
+      kicker: "Who gets weaponized",
+      source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei templates (ProjectDiscovery) · cvelistV5 (MITRE)",
+      headline: "Severity predicts attention, if nothing else.",
+      caption:
+        "Take the latest complete year of CVE records and ask which ones any of the " +
+        "three trackers touched — an Exploit-DB entry, a Metasploit module, a Nuclei " +
+        "template. Coverage is thin everywhere: the overwhelming majority of records " +
+        "never attract tracked public exploit code at all. But it climbs the scale " +
+        "steeply — criticals draw public exploit attention at several times the rate of " +
+        "the middle of the scale — which makes this the one place the score does what " +
+        "everyone assumes it does. The natural companion to Score vs. Reality: EPSS " +
+        "asks what will be exploited, this chart shows what already got a public tool.",
+      note:
+        "Records published in {window_year} — the latest complete year. A young record " +
+        "has had limited time to attract code and coverage can only grow, so every bar " +
+        "is a floor.",
+      methodology:
+        "For the latest complete calendar year, every published CVE record is bucketed " +
+        "by the same effective score the Score-vs-Reality grid uses (the newest-version " +
+        "base score anywhere in the record; records without one count as unscored) and " +
+        "marked covered when any of the three sources references its id: an Exploit-DB " +
+        "entry or Metasploit module with or without a usable date, or a Nuclei CVE " +
+        "template — which contributes coverage precisely because dating it would " +
+        "require the repository's git history, and this pipeline reads only published " +
+        "index files. Buckets with fewer than 10 records are withheld. Coverage is a " +
+        "share of that year's published records, so the chart inherits the corpus's own " +
+        "composition — the unscored bar is dominated by records nobody has touched, " +
+        "tracker or scorer. The window is one complete year, stated on the chart, and " +
+        "deliberately recent: it shows today's arming rate rather than the archive's " +
+        "decades-deep accumulation, at the price of right-censoring that the note " +
+        "above owns.",
+    },
+
+    // --------------------------------- c2.html · 1 (hero)
+    c2_weather: {
+      num: "01",
+      kicker: "The C2 forecast",
+      source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
+      headline: "Quiet is a result, not an absence.",
+      caption:
+        "Each night CyberMon counts the botnet command-and-control servers " +
+        "on abuse.ch's Feodo Tracker blocklist and keeps what the tracker " +
+        "doesn't: the series. The tracker's own FAQ credits its empty " +
+        "stretches to law-enforcement takedowns — Emotet in 2021, Operation " +
+        "Endgame in 2024 — so a reading in the single digits is a normal day " +
+        "in the aftermath, not a broken gauge. When the next family stands " +
+        "up new infrastructure, this line is where it will show.",
+      yAxis: "C2 servers",
+      statLabel: "C2 servers online tonight",
+      statWhen: "of {listed} listed · snapshots since {first_date}",
+      legendListed: "All listed (context)",
+      // {first_date} fills from the record's actual start; the empty
+      // variant renders while there is only one snapshot on file.
+      note:
+        "No upstream publishes this series — CyberMon has snapshotted the " +
+        "blocklist since {first_date}, one night at a time.",
+      noteEmpty:
+        "No upstream publishes this series — the record starts with " +
+        "tonight's snapshot and deepens one night at a time.",
+      methodology:
+        "Every night the pipeline fetches Feodo Tracker's public botnet C2 " +
+        "blocklist (ipblocklist.json) and reduces it to per-family counts: " +
+        "listed — on the blocklist tonight — and online, meaning the server " +
+        "answered like a botnet C2 on the tracker's last probe. The counts " +
+        "append to a committed, append-only history " +
+        "(data/history/botnet_c2.csv) — like the NVD backlog record, an " +
+        "original dataset this project accumulates, because the upstream " +
+        "publishes only the current picture. The chart stacks the online " +
+        "count by malware family; the dashed line adds everything still " +
+        "listed. There is deliberately no too-few-servers guard: a collapse " +
+        "to zero is a takedown doing its job and is recorded as data, while " +
+        "a malformed or unfetchable feed fails loudly and records nothing. " +
+        "Feodo Tracker data is published by abuse.ch under CC0; the record " +
+        "here starts at first deploy.",
+    },
+
+    // --------------------------------- c2.html · 2
+    c2_today: {
+      num: "02",
+      kicker: "Tonight's weather",
+      source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
+      headline: "The forecast fits on a postcard.",
+      caption:
+        "Every server on tonight's blocklist, tallied by malware family — " +
+        "the accent slice is still answering as a C2, the rest is listed " +
+        "but dark. Below, the same handful cut by hosting country and " +
+        "network. Aggregates only, by design: the module is the weather, " +
+        "not the blocklist, so no address appears here — anyone who needs " +
+        "the raw list can fetch the tracker's feed directly.",
+      statTemplate: "{listed} C2s listed · {online} online · {families} malware families",
+      legendOnline: "Online (answered as C2)",
+      legendDark: "Listed, dark",
+      countriesLabel: "By hosting country",
+      asnsLabel: "By network (AS name)",
+      xAxis: "C2 servers",
+      nodata:
+        "Nothing on the blocklist tonight — an empty sky, exactly as the " +
+        "tracker reports it.",
+      methodology:
+        "The composition is read straight from tonight's snapshot, so it is " +
+        "fully populated from day one. Each listed server counts once " +
+        "toward its malware family, its hosting country and its network " +
+        "(the AS name the tracker publishes); online means the server " +
+        "responded like a botnet C2 on the tracker's last probe — and the " +
+        "tracker only lists an address in the first place after it answered " +
+        "with a valid C2 response, which keeps false positives rare. " +
+        "Countries and networks render as text tallies rather than a table " +
+        "of servers: per-server details — addresses, ports, hostnames — " +
+        "never leave the pipeline, an editorial line the output contract " +
+        "enforces mechanically.",
+    },
+
+    // --------------------------------- c2.html · 3
+    c2_age: {
+      num: "03",
+      kicker: "Infrastructure age",
+      source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
+      headline: "How long a C2 lives.",
+      caption:
+        "For every server on tonight's blocklist, the time since Feodo " +
+        "Tracker first saw it. Fresh buckets mean a campaign standing up " +
+        "new infrastructure; the old tail is machinery that has stayed " +
+        "listed through months of quiet — compromised hosts and rented " +
+        "servers nobody has reclaimed. The median moves with the weather, " +
+        "and tonight's value sits above the chart.",
+      statLabel: "Median age of tonight's C2s",
+      statValue: "{median} days",
+      statWhen: "oldest survivor {oldest} days",
+      yAxis: "C2 servers",
+      nodata: "Nothing on the blocklist tonight — no infrastructure to age.",
+      methodology:
+        "Age is the number of whole days between a server's first_seen " +
+        "stamp on Feodo Tracker and tonight's snapshot date, bucketed on a " +
+        "fixed scale from under 30 days to over 2 years. The median and the " +
+        "oldest survivor are computed over every listed server, online or " +
+        "dark — a server that stopped answering but remains listed is still " +
+        "infrastructure on the record. Like the composition chart, this " +
+        "reads entirely from tonight's snapshot and is meaningful from the " +
+        "first run; it needs no accumulated history.",
+    },
   },
 
   footer: {
@@ -2502,14 +2822,22 @@ export const editorial = {
       "APNIC DNSSEC series fetched {apnic_fetched} · " +
       "EPSS history: {epss_graded} KEV entries graded · " +
       "rescore log: {rescore_events} events on record · " +
-      "KEV changelog: {kev_changelog_events} catalog events on record",
+      "KEV changelog: {kev_changelog_events} catalog events on record · " +
+      "Exploit-DB index ({exploitdb_entries} entries) · " +
+      "Metasploit metadata ({metasploit_modules} modules) · " +
+      "Nuclei CVE templates ({nuclei_cves}) · " +
+      "Feodo Tracker: {feodo_listed} C2s listed ({feodo_online} online) " +
+      "fetched {feodo_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
-      "Ransomwhere, APNIC, or the Internet Archive. Charts aggregate public data; no " +
-      "individual CVE is news here, and no victim is identified or identifiable anywhere " +
-      "on this site.",
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
+      "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
+      "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, or the Internet " +
+      "Archive. Charts aggregate public data; no individual CVE is news here, no victim " +
+      "is identified or identifiable anywhere on this site, and no attacker " +
+      "infrastructure is republished — C2 servers appear only as aggregate counts, " +
+      "never as addresses.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -2519,6 +2847,9 @@ export const editorial = {
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
       "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
+      "Wikipedia pageview statistics via the Wikimedia REST API (CC0 aggregate data, " +
+      "Wikimedia Foundation), SEC EDGAR full-text search (efts.sec.gov, public U.S. " +
+      "Government data accessed per SEC fair-access guidelines), " +
       "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com), " +
       "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0), " +
       // The quoted sentence is MITRE's required copyright designation, verbatim
@@ -2527,6 +2858,11 @@ export const editorial = {
       "with the permission of The MITRE Corporation.), " +
       "DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
       "re-use with attribution permitted), " +
+      "the Exploit Database index (OffSec, exploit-db.com), " +
+      "Metasploit Framework module metadata (Rapid7, BSD-3-Clause), " +
+      "the Nuclei templates CVE index (ProjectDiscovery, MIT), " +
+      "botnet C2 blocklist by abuse.ch's Feodo Tracker (feodotracker.abuse.ch, CC0 — " +
+      "attribution appreciated), " +
       "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
@@ -2550,7 +2886,7 @@ export const editorial = {
     // full attribution (editorial.footer.dataNote) stays on the site.
     sources: {
       cve: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · NVD (NIST)",
-      market: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR",
+      market: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR",
       kev: "CISA KEV catalog · CVE List V5 (MITRE)",
       concentration: "CVE List V5 (MITRE)",
       breaches: "Have I Been Pwned",
@@ -2567,6 +2903,8 @@ export const editorial = {
       adp: "CVE List V5 (MITRE)",
       epssvol: "EPSS (FIRST.org) · CyberMon nightly diffs",
       roster: "CVE.org organization roster · CyberMon nightly snapshots",
+      exploits: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei (ProjectDiscovery)",
+      c2: "abuse.ch Feodo Tracker (CC0) · CyberMon nightly snapshots",
     },
   },
 };
