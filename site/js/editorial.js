@@ -95,7 +95,7 @@ export const editorial = {
     { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility", group: "exploitation" },
     { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
     { id: "exploits", href: "exploits.html", label: "Time to PoC", group: "exploitation" },
-    { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackers" },
+    { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackmap" },
   ],
 
   // ------------------------------------------------- index.html (landing)
