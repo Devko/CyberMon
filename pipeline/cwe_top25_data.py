@@ -9,7 +9,9 @@ rank order (rank 1 first). Regenerate by copying the next year's archive
 page when MITRE publishes it.
 
 Sources (verbatim rank order transcribed from these pages):
-* 2024: https://cwe.mitre.org/top25/archive/2024/2024_cwe_top25.html
+* 2025: https://cwe.mitre.org/top25/archive/2025/2025_cwe_top25.html
+* 2024: https://cwe.mitre.org/top25/archive/2024/2024_top25_list
+  (the older 2024_cwe_top25.html URL now serves a JS tab shell)
 * 2023: https://cwe.mitre.org/top25/archive/2023/2023_cwe_top25.html
 
 The MITRE Top-25 methodology itself is derived from NVD CVEs joined to
@@ -36,6 +38,13 @@ OFFICIAL: dict[int, list[str]] = {
         "CWE-918", "CWE-119", "CWE-476", "CWE-798", "CWE-190", "CWE-400",
         "CWE-306",
     ],
+    2025: [
+        "CWE-79", "CWE-89", "CWE-352", "CWE-862", "CWE-787", "CWE-22",
+        "CWE-416", "CWE-125", "CWE-78", "CWE-94", "CWE-120", "CWE-434",
+        "CWE-476", "CWE-121", "CWE-502", "CWE-122", "CWE-863", "CWE-20",
+        "CWE-284", "CWE-200", "CWE-306", "CWE-918", "CWE-77", "CWE-639",
+        "CWE-770",
+    ],
 }
 
 # Concise, chart-friendly names for every CWE that appears in any committed
@@ -50,11 +59,15 @@ NAMES: dict[str, str] = {
     "CWE-89": "SQL injection",
     "CWE-94": "Code injection",
     "CWE-119": "Memory-buffer bounds",
+    "CWE-120": "Classic buffer overflow",
+    "CWE-121": "Stack-based buffer overflow",
+    "CWE-122": "Heap-based buffer overflow",
     "CWE-125": "Out-of-bounds read",
     "CWE-190": "Integer overflow",
     "CWE-200": "Sensitive info exposure",
     "CWE-269": "Improper privilege management",
     "CWE-276": "Incorrect default permissions",
+    "CWE-284": "Improper access control",
     "CWE-287": "Improper authentication",
     "CWE-306": "Missing authentication",
     "CWE-352": "Cross-site request forgery",
@@ -64,6 +77,8 @@ NAMES: dict[str, str] = {
     "CWE-434": "Unrestricted file upload",
     "CWE-476": "NULL pointer dereference",
     "CWE-502": "Deserialization of untrusted data",
+    "CWE-639": "Authz bypass via user-controlled key",
+    "CWE-770": "Unbounded resource allocation",
     "CWE-787": "Out-of-bounds write",
     "CWE-798": "Hard-coded credentials",
     "CWE-862": "Missing authorization",

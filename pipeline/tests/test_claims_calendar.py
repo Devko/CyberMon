@@ -128,19 +128,19 @@ CLAIMS = [
         check_wednesday_baseline_and_clamps,
     ),
     (
-        "one in five of the latest complete year's records carried an ID "
-        "minted in an earlier year",
+        "In the latest complete year, one in five records shipped on an "
+        "earlier-year ID",
         "cve_calendar.json",
         check_old_id_share,
     ),
     (
-        "Tuesday is the busiest day of the CVE week — roughly a quarter of "
-        "the records — while the weekend is close to silent",
+        "In the latest complete year, Tuesday leads with roughly a quarter "
+        "of all records",
         "cve_calendar.json",
         check_tuesday_peak,
     ),
     (
-        "twelve days carrying roughly triple their calendar share",
+        "The latest complete year put roughly triple that share on them",
         "cve_calendar.json",
         check_patch_tuesday_multiple,
     ),

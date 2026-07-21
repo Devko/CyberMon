@@ -8619,6 +8619,17 @@
    "ransom": "Known",
    "vendor": "Accellion"
   },
+  "CVE-2021-27137": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-21",
+   "desc": "39bbe7b9a797",
+   "due": "2026-07-24",
+   "name": "DD-WRT Stack-Based Buffer Overflow Vulnerability",
+   "notes": "2c82ebcddb58",
+   "product": "DD-WRT",
+   "ransom": "Unknown",
+   "vendor": "DD-WRT"
+  },
   "CVE-2021-27561": {
    "action": "975dbe03c141",
    "added": "2021-11-03",
@@ -17097,7 +17108,7 @@
    "name": "Palo Alto Networks PAN-OS Authentication Bypass Vulnerability",
    "notes": "c4f8542f7da4",
    "product": "PAN-OS",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Palo Alto Networks"
   },
   "CVE-2026-0300": {
@@ -17110,6 +17121,17 @@
    "product": "PAN-OS",
    "ransom": "Unknown",
    "vendor": "Palo Alto Networks"
+  },
+  "CVE-2026-0770": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-21",
+   "desc": "6e17d652206f",
+   "due": "2026-07-24",
+   "name": "Langflow Inclusion of Functionality from Untrusted Control Sphere Vulnerability",
+   "notes": "cf4f3da22e04",
+   "product": "Langflow",
+   "ransom": "Unknown",
+   "vendor": "Langflow"
   },
   "CVE-2026-10520": {
    "action": "ba0d649eb29b",
@@ -18078,6 +18100,28 @@
    "product": "SharePoint",
    "ransom": "Unknown",
    "vendor": "Microsoft"
+  },
+  "CVE-2026-60137": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-21",
+   "desc": "bdb1d5ca878a",
+   "due": "2026-08-04",
+   "name": "WordPress Core SQL Injection Vulnerability",
+   "notes": "53ea816991b6",
+   "product": "Core",
+   "ransom": "Unknown",
+   "vendor": "WordPress"
+  },
+  "CVE-2026-63030": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-21",
+   "desc": "d258d73ad021",
+   "due": "2026-07-24",
+   "name": "WordPress Core Interpretation Conflict Vulnerability",
+   "notes": "b4b3ef0ae4dc",
+   "product": "Core",
+   "ransom": "Unknown",
+   "vendor": "WordPress"
   },
   "CVE-2026-6973": {
    "action": "f09df147152e",

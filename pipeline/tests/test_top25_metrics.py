@@ -60,8 +60,8 @@ def test_measured_rank_and_kev_math():
                           window_years=5, min_n=1)
     contracts.validate("cwe_top25.json", obj)
 
-    assert obj["official_year"] == 2024
-    assert obj["official_years"] == [2023, 2024]
+    assert obj["official_year"] == 2025
+    assert obj["official_years"] == [2023, 2024, 2025]
     assert obj["window"] == {"start": 2021, "end": 2025}
     assert obj["measured_total"] == 190      # 80 + 40 + 60 + 10; 2019 excluded
     assert obj["kev_total"] == 10            # off-list CWE-999 still in total
@@ -91,7 +91,7 @@ def test_ranks_cover_the_full_official_list_in_order():
     obj = build_cwe_top25(agg, GENERATED_AT,
                           official_lists=cwe_top25_data.OFFICIAL, min_n=1)
     assert [r["official_rank"] for r in obj["ranks"]] == list(range(1, 26))
-    assert [r["cwe"] for r in obj["ranks"]] == cwe_top25_data.OFFICIAL[2024]
+    assert [r["cwe"] for r in obj["ranks"]] == cwe_top25_data.OFFICIAL[2025]
     contracts.validate("cwe_top25.json", obj)
 
 
@@ -123,8 +123,8 @@ def test_offline_pipeline_run_emits_valid_cwe_top25(tmp_path):
     contracts.validate("cwe_top25.json", obj)
 
     # Static, clock-independent facts.
-    assert obj["official_year"] == 2024
-    assert obj["official_years"] == [2023, 2024]
+    assert obj["official_year"] == 2025
+    assert obj["official_years"] == [2023, 2024, 2025]
     assert len(obj["ranks"]) == 25
     assert obj["ranks"][0]["cwe"] == "CWE-79"      # official rank 1
 
@@ -148,5 +148,5 @@ def test_offline_pipeline_run_emits_valid_cwe_top25(tmp_path):
     meta = json.loads((tmp_path / "meta.json").read_text(encoding="utf-8"))
     contracts.validate("meta.json", meta)
     assert meta["sources"]["top25"] == {
-        "fetched_at": meta["generated_at"], "official_year": 2024,
-        "list_count": 2}
+        "fetched_at": meta["generated_at"], "official_year": 2025,
+        "list_count": 3}

@@ -79,7 +79,27 @@ def check_ransomware_roughly_twice(d: dict) -> None:
 
 
 # --------------------------------------------------------------------------
+def check_recent_years_above_catalog_share(d: dict) -> None:
+    # editorial.js (guards hero): "More than one entry in nine in the whole
+    # catalog is in a product sold to enforce security — and recent years
+    # run well above that." Both of the last two complete years must beat
+    # the whole-catalog share.
+    catalog_pct = d["catalog"]["pct_security"]
+    gen_year = int(d["generated_at"][:4])
+    complete = [y for y in d["years"] if y["year"] < gen_year]
+    for y in complete[-2:]:
+        assert y["pct_security"] > catalog_pct, (
+            f"'recent years run well above that' vs {y['year']} at "
+            f"{y['pct_security']}% against catalog {catalog_pct}%"
+        )
+
+
 CLAIMS = [
+    (
+        "and recent years run well above that",
+        "kev_guards.json",
+        check_recent_years_above_catalog_share,
+    ),
     (
         "more than one entry in nine in the whole catalog is in a product sold to enforce security",
         "kev_guards.json",

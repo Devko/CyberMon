@@ -254,6 +254,18 @@ and on runs with no previous state to diff against. `--skip-nvd` carries
 `nvd_throughput.json` forward stale exactly like `nvd_decay.json` and
 appends no CSV row.
 
+**Record seam, 2026-07-16/17 (dated note — do not remove):** the per-CVE
+status state was reseeded with `tools/seed_nvd_state.py` on 2026-07-16;
+three same-day runs overwrote each other under the last-run-wins rule and
+an older actions/cache state was briefly restored on 2026-07-17. Both
+days carry `resweep=1`. Effects a reader will see in the CSV: the
+07-15→16 organic flow row was replaced, `n_known_duration` is not
+monotonic across the seam (30 → 0 → 31 → 344), and a large share of the
+early timed exits were clocked in the post-seam catch-up on 2026-07-18.
+The rows are honest observations of what the state showed each night —
+the seam is a fact about the instrument, recorded here so it is never
+misread as data corruption.
+
 ## site/data/cna_leaderboard.json  (chart 6)
 
 ```json
@@ -1140,6 +1152,42 @@ aggregate — no second corpus pass. Validator:
 dispatch). `meta.sources.top25` (`{fetched_at, official_year, list_count}`)
 records the newest committed list and how many years are committed.
 
+## site/data/adp_coverage.json  (ADP Coverage module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "min_n": 50,
+  "months": [
+    {"month": "2024-06", "enriched": 8917, "ssvc": 8917, "cvss": 1009,
+     "cwe": 1082, "legacy": 938, "backfill": false}
+  ],
+  "adds": {"total": 165892, "ssvc": 165891, "pct_ssvc": 100.0,
+           "cvss": 37780, "pct_cvss": 22.8, "cwe": 32615, "pct_cwe": 19.7},
+  "providers": [{"provider": "CISA-ADP", "n": 165892, "pct": 47.4}],
+  "headline": {"total_published": 350191, "total_cisa": 165892,
+               "pct_cisa": 47.4, "first_month": "2024-06",
+               "last_month": "2026-07", "peak_month": "2025-04",
+               "peak_enriched": 11556, "sole_enricher": "CISA-ADP",
+               "backfill_month_count": 3}
+}
+```
+
+A CISA-ADP container is matched by `providerMetadata.shortName ==
+"CISA-ADP"` OR the program's orgId; the month is the container's own
+`providerMetadata.dateUpdated`. `months[]` is contiguous and ascending
+from the first observed enrichment month; `backfill` is true when the
+month clears `min_n` and at least half its enrichments are legacy
+(ID reservation ≥ 2 years older than the enrichment — old-vintage IDs
+freshly published the same month count too, see the on-page note).
+`adds` counts what the containers contribute: SSVC decisions, CVSS
+vectors, CWE tags (shares of `adds.total`, 1 decimal). `providers`
+ranks ADP containers by substantive contributions (ssvc/cvss/cwe > 0),
+which organically excludes the reference-only CVE Program root
+container. `headline` is payload-authoritative; `sole_enricher` is the
+top provider's name. Validator: `pipeline/adp_contracts.py` (registered
+into `pipeline/contracts.py`'s dispatch).
+
 ## site/data/epss_volatility.json  (EPSS Volatility module, all 3 charts)
 
 ```json
@@ -1235,6 +1283,14 @@ at first deploy, and the file says so rather than faking depth. No pace
 projection: the record is launch-thin and the movement is nightly-batched.
 Validator: `pipeline/epssvol_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
+
+**Launch provenance note (dated, do not remove):** the module merged on
+2026-07-18 with an EMPTY event CSV but a PRE-SEEDED fingerprint state
+(committed in the launch PR from a dev run against the real 2026-07-17
+FIRST feed, 349,158 fingerprints). The first nightly therefore diffed
+2026-07-17 → 2026-07-18 and logged a real row on night one — the data is
+genuine FIRST data on both sides of that first diff; only the state's
+origin differs from the every-night-since pattern.
 
 
 ## site/data/kev_guards.json  (Security Products module, all 3 charts)

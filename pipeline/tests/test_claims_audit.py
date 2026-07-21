@@ -194,25 +194,29 @@ def check_volume_belongs_to_a_handful(d: dict) -> None:
     )
 
 
-def check_rejections_keep_shrinking(d: dict) -> None:
-    # editorial.js (volume curve): the rejection share "runs far below what
-    # it was five years ago" — "far below" is enforced as at most 80% of
-    # the five-years-ago share, not merely smaller.
+def check_rejection_share_story(d: dict) -> None:
+    # editorial.js (volume curve): "it collapsed from a fifth of everything
+    # shipped in 2017 to under two percent by 2023 — and the last two
+    # complete years bent it back up."
     rows = complete_years(d["years"])
-    latest = max(rows, key=lambda r: r["year"])
-    earlier = next((r for r in rows if r["year"] == latest["year"] - 5), None)
-    assert earlier is not None, (
-        f"no data for {latest['year'] - 5} to compare rejection share against"
-    )
+    by_year = {r["year"]: r for r in rows}
 
-    def share(r: dict) -> float:
+    def share(y: int) -> float:
+        r = by_year[y]
         total = r["published"] + r["rejected"]
         return 100.0 * r["rejected"] / total if total else 0.0
 
-    assert share(latest) < 0.8 * share(earlier), (
-        f"'far below what it was five years ago' needs {latest['year']}'s "
-        f"rejection share ({share(latest):.2f}%) well under "
-        f"{earlier['year']}'s ({share(earlier):.2f}%)"
+    assert 15 <= share(2017) <= 27, (
+        f"'a fifth of everything shipped in 2017' vs {share(2017):.2f}%"
+    )
+    assert share(2023) < 2.0, (
+        f"'under two percent by 2023' vs {share(2023):.2f}%"
+    )
+    latest = max(by_year)
+    assert share(latest) > share(2023) and share(latest - 1) > share(2023), (
+        f"'the last two complete years bent it back up' vs "
+        f"{latest - 1}: {share(latest - 1):.2f}%, {latest}: {share(latest):.2f}% "
+        f"against 2023's {share(2023):.2f}%"
     )
 
 
@@ -228,13 +232,70 @@ def check_flood_critical_volume(d: dict) -> None:
     )
 
 
+def check_entrants_top3_recruiting(d: dict) -> None:
+    # editorial.js (concentration entrants): "the three biggest recruiting
+    # years on record are the last three complete ones". Will legitimately
+    # fail the January this stops being true — then update the caption.
+    rows = [y for y in d["years"] if y["year"] < int(d["generated_at"][:4])]
+    top3 = sorted(rows, key=lambda y: y["newcomer_count"], reverse=True)[:3]
+    last3 = {y["year"] for y in rows[-3:]}
+    assert {y["year"] for y in top3} == last3, (
+        f"'three biggest recruiting years are the last three complete ones' — "
+        f"top3 by newcomers: {[(y['year'], y['newcomer_count']) for y in top3]}"
+    )
+
+
+def check_concentration_reversal(d: dict) -> None:
+    # editorial.js (concentration hero): "five of its hundreds of names
+    # still ship a majority of the database, and their share is climbing
+    # again" — majority means >50%, climbing means the last three complete
+    # years rise monotonically.
+    rows = [y for y in d["years"] if y["year"] < int(d["generated_at"][:4])]
+    a, b, c = rows[-3:]
+    assert c["top5_share"] > 50.0, (
+        f"'still ship a majority' vs top5 {c['top5_share']}% in {c['year']}"
+    )
+    assert a["top5_share"] < b["top5_share"] < c["top5_share"], (
+        f"'their share is climbing again' vs "
+        f"{[(y['year'], y['top5_share']) for y in (a, b, c)]}"
+    )
+
+
+def check_flood_partial_year_mark(d: dict) -> None:
+    # editorial.js (flood caption): "the half-written current year has
+    # already passed that mark" (the ~four-thousand-Critical mark). This
+    # is TRUE from mid-year and false every January — the test failing in
+    # January is the reminder to reword the caption seasonally.
+    year = int(d["generated_at"][:4])
+    row = next((y for y in d["years"] if y["year"] == year), None)
+    assert row is not None and row["critical"] >= 3600, (
+        f"'current year has already passed that mark' vs "
+        f"{row['critical'] if row else 0} Critical so far in {year}"
+    )
+
+
 # --------------------------------------------------------------------------
 # (verbatim claim from editorial.js, data file, assertion) — one row per
 # sentence the site commits to. Keep the claim text greppable.
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "nearly four thousand records a year now ship stamped Critical",
+        "the three biggest recruiting years on record are the last three complete ones",
+        "cna_concentration.json",
+        check_entrants_top3_recruiting,
+    ),
+    (
+        "still ship a majority of the database, and their share is climbing again",
+        "cna_concentration.json",
+        check_concentration_reversal,
+    ),
+    (
+        "the half-written current year has already passed that mark",
+        "nine_eight_flood.json",
+        check_flood_partial_year_mark,
+    ),
+    (
+        "close to four thousand records a year now ship stamped Critical",
         "nine_eight_flood.json",
         check_flood_critical_volume,
     ),
@@ -279,7 +340,7 @@ CLAIMS = [
         check_kev_getting_slower,
     ),
     (
-        "the standing rule since has been three weeks.",
+        "the standing rule since has been three weeks — and the listings of the",
         "kev_latency.json",
         check_kev_three_week_rule,
     ),
@@ -294,9 +355,9 @@ CLAIMS = [
         check_volume_belongs_to_a_handful,
     ),
     (
-        "as a share of what ships, it keeps shrinking",
+        "collapsed from a fifth of everything shipped in 2017 to under two percent by 2023 — and the last two complete years bent it back up",
         "volume_curve.json",
-        check_rejections_keep_shrinking,
+        check_rejection_share_story,
     ),
 ]
 

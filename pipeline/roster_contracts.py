@@ -176,7 +176,8 @@ def _validate_cna_roster(obj: Any) -> None:
         _fail("cna_roster.headline.top_type", "must equal by_type[0].label")
     if headline["top_type_n"] != by_type[0]["n"]:
         _fail("cna_roster.headline.top_type_n", "must equal by_type[0].n")
-    if headline["country_count"] != len(mix["by_country"]):
+    expected_countries = len([k for k in mix["by_country"] if k != "n/a"])
+    if headline["country_count"] != expected_countries:
         _fail("cna_roster.headline.country_count",
               "must equal the number of country buckets")
     if headline["mitre_n"] + headline["cisa_n"] > total:

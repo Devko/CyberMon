@@ -110,7 +110,7 @@ previously published `attack_churn.json`, and a normal night costs one
 
 ### 08 · Hygiene Index — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
 
-*The fix is twenty years old, free, and still not deployed.* Three charts
+*The fix is two decades old, free, and still not deployed.* Three charts
 on measured DNSSEC validation (APNIC Labs): the world adoption line since
 2013, a fixed set of the ten largest online populations compared (frozen
 by APNIC's own internet-user weighting at module creation), and the
@@ -185,11 +185,6 @@ was seeded once from Internet Archive captures of the feed
 `.cache/kev_wayback/`; CI never runs it) — backfilled events carry
 `granularity: "capture"` and are dated to the first capture showing the
 change; nightly events carry `"daily"`.
-
-### Next
-
-Candidate modules are collected in [docs/backlog.md](docs/backlog.md) —
-each entry names its thesis, open data sources, and feasibility.
 
 ### 13 · Silent Rescores — [rescores.html](https://devko.github.io/CyberMon/rescores.html) (live)
 
@@ -270,7 +265,7 @@ CVEs every night as the growing corpus re-ranks — while the model's actual
 probability holds for nearly all of them.* Every night CyberMon fingerprints
 the EPSS feed it already fetches (each CVE's probability and percentile) and
 diffs it against the previous night's committed fingerprint
-(`site/data/history/epss_volatility_state.json`, beside the log so the two
+(`site/data/history/epss_volatility_state.json.gz`, beside the log so the two
 can never drift apart). One aggregate row per snapshot appends to a
 committed, append-only daily log (`site/data/history/epss_volatility.csv`):
 how many compared CVEs had their percentile move versus their probability
@@ -355,23 +350,26 @@ whenever the state is missing or unreadable) so drift can never outlive
 `FULL_RESYNC_DAYS`; full sweeps read NVD's static yearly JSON feeds
 (CDN-served flat files, minutes total) instead of paging the API.
 
-`site/data/history/` holds **original datasets accumulated by this
-project**: the nightly NVD backlog snapshots (`nvd_backlog.csv` — NVD
-publishes no backlog history) and the silent-rescore event log
-(`rescore_log.csv` — no upstream publishes score-edit history). Both are
-append-only and cannot be regenerated from any source; the weekly
-`data-backup-*` tags are their rollback insurance. You are welcome to
-reuse them, CC-BY style: just credit "CyberMon
+`site/data/history/` holds the project's **original, irreplaceable
+datasets** — append-only records that no upstream publishes and that
+cannot be regenerated from any source; the weekly `data-backup-*` tags
+are their rollback insurance:
+
+- `nvd_backlog.csv` — nightly NVD backlog snapshots (NVD publishes no
+  backlog history);
+- `nvd_throughput.csv` — observed daily NVD flow (analyzed/deferred
+  per day, queue-wait times);
+- `kev_changelog.csv` + `kev_state.json` — the diff record of CISA's
+  KEV edits, flag flips and removals (the pre-launch prefix was
+  reconstructed once from Internet Archive captures; everything since
+  is observed live);
+- `rescore_log.csv` — the silent-rescore event log (no upstream
+  publishes score-edit history);
+- `epss_volatility.csv` and `cna_roster.csv` — the newest collectors,
+  accumulating since 2026-07-18.
+
+You are welcome to reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
-`site/data/history/` holds two **original datasets accumulated by this
-project**: the nightly NVD backlog snapshots (`nvd_backlog.csv` — NVD
-publishes no such history) and the KEV changelog
-(`kev_changelog.csv` + `kev_state.json` — CISA publishes only the current
-catalog snapshot, so the diff record of its edits, flag flips and
-removals exists nowhere else; the pre-launch prefix was reconstructed
-once from Internet Archive captures, everything since is observed live
-and cannot be regenerated). You are welcome to reuse them, CC-BY style:
-just credit "CyberMon (https://github.com/Devko/CyberMon)".
 
 ## Local development
 

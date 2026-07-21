@@ -148,7 +148,7 @@ export const editorial = {
         href: "hygiene.html",
         num: "08",
         label: "Hygiene Index",
-        headline: "The fix is twenty years old, free, and still not deployed.",
+        headline: "The fix is two decades old, free, and still not deployed.",
         blurb:
           "DNSSEC validation as measured by APNIC Labs — the world adoption line since " +
           "2013, the ten biggest online populations compared, and how many economies " +
@@ -217,9 +217,10 @@ export const editorial = {
         blurb:
           "Every night CyberMon diffs each CVE's CNA-assigned score against the " +
           "previous night's corpus and logs what moved: scores raised, scores " +
-          "lowered, scores backfilled years late, scores withdrawn. No upstream " +
-          "keeps this history, so the record starts now — thin by design, deeper " +
-          "every night.",
+          "lowered, and scores added after the fact — occasionally years after " +
+          "the record published, more often in bulk batches days later. No " +
+          "upstream keeps this history; the record started July 2026 and " +
+          "deepens every night.",
         live: true,
       },
       {
@@ -577,8 +578,8 @@ export const editorial = {
       caption:
         "The chart above counts the backlog; this one watches it move. Every night " +
         "CyberMon diffs its snapshot of every CVE's NVD status against the previous " +
-        "night's, and the differences are the day's traffic: new CVEs arriving, records " +
-        "joining the analysis queue, records leaving it as Analyzed or as Deferred. Held " +
+        "night's, and the differences are the day's traffic: new CVEs arriving and records " +
+        "leaving the analysis queue as Analyzed or as Deferred. Held " +
         "long enough, the same diffs also clock the queue — how many days a CVE visibly " +
         "waits before its analysis lands. All of it is measured from the outside; NVD " +
         "itself reports only the totals.",
@@ -594,7 +595,8 @@ export const editorial = {
       statMedianBig: "{days} days",
       statMedianNote:
         "across {n} timed queue exits — each one a lower bound; the clock starts at " +
-        "our first sighting of the CVE in the queue",
+        "our first sighting of the CVE in the queue. A young record can only have " +
+        "timed short waits so far: expect this figure to grow as the record ages.",
       statCountLabel: "timed queue exits collected so far",
       statCountNote:
         "the median publishes at {min_known} timed exits — fewer would let one odd " +
@@ -770,7 +772,7 @@ export const editorial = {
         "datePublished, in days. The trend cohort starts in 2023: the catalog launched in " +
         "November 2021 by inheriting a backlog of years-old CVEs and kept bulk-importing its " +
         "back-catalog through 2022 (the data shows the regime change — the median 'latency' " +
-        "of 2022 additions is 1,436 days; of 2023 additions, 12), so a seeding-era entry's " +
+        "of 2022 additions ran over a thousand days; of 2023 additions, twelve), so a seeding-era entry's " +
         "nominal latency measures the age of the backlog, not the speed of triage — it is " +
         "reported in the callout, never plotted in the trend. Negative " +
         "latencies are kept as negative, not floored at zero: a KEV listing that predates its " +
@@ -1546,7 +1548,7 @@ export const editorial = {
         "would be the same landmine as mixing CVSS v2 with v3 scores. Read each model " +
         "on its own terms; what changes is where the mass sits — the v2-era model pushed " +
         "most of this cohort above 1%, while the v3 and v4 models placed the majority " +
-        "below it (and the month-old v5, on a small early cohort, points the same way).",
+        "below it (and the young v5 era, on a small early cohort, points the same way).",
       methodology:
         "Each graded entry contributes its day-before probability to one bucket: " +
         "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive — the " +
@@ -1574,7 +1576,7 @@ export const editorial = {
         "same cohort on that scale, and it is the fairest scale available to the " +
         "model. Even here, nearly three in ten of the graded cohort sat in the bottom " +
         "half of that day's ranking — confirmed-exploited vulnerabilities the model " +
-        "placed behind at least a hundred thousand others on listing eve.",
+        "typically placed behind more than a hundred thousand others on listing eve.",
       statBig: "{n} of {total}",
       statLead: "graded entries ranked in the model's bottom half on listing eve",
       statNote: "median day-before percentile: {median}",
@@ -1826,7 +1828,7 @@ export const editorial = {
         "For each CNA — the record's assigner on the night the edit was observed — the " +
         "board counts rescore events across the whole committed log, split by " +
         "direction. Version shifts, backfilled first scores and removals are excluded: " +
-        "the board asks who changes their own numbers, not who fills in paperwork. " +
+        "the board asks who changes their own numbers rather than who fills in paperwork. " +
         "CNAs with fewer than 3 logged rescores stay off the board — two edits are an " +
         "anecdote, not a habit. There is deliberately no time window yet: the record " +
         "is young, and windowing it would empty it; when the log is deep enough for a " +
@@ -2126,10 +2128,11 @@ export const editorial = {
       statNote: "{cisa} of {total} published records carry a CISA-ADP block",
       sweepTooltip: "Back-fill sweep",
       sweepNote:
-        "Red bars are back-fill sweep months — most of that month's " +
+        "Red bars are back-fill sweep months — at least half of that month's " +
         "enrichments landed on legacy CVEs (an ID reservation two or more " +
-        "years older than the enrichment), the signature of a bulk pass over " +
-        "old records rather than fresh triage.",
+        "years older than the enrichment). That is the signature of a bulk " +
+        "pass over old records, though old-vintage IDs freshly published and " +
+        "triaged the same month count toward it too.",
       nvdContext:
         "For scale, NVD's own analysis backlog stands at about {backlog} CVEs " +
         "right now — the gap Vulnrichment fills.",
