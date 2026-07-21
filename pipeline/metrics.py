@@ -453,13 +453,22 @@ class Aggregator:
     """Folds a stream of :class:`CveFacts` into the aggregates the
     six output builders need. Never stores whole records."""
 
-    def __init__(self, kev_ids: Iterable[str] = ()) -> None:
+    def __init__(self, kev_ids: Iterable[str] = (),
+                 poc_ids: Iterable[str] = ()) -> None:
         self.cve_count = 0
         self.published_by_year: Counter[int] = Counter()
         self.rejected_by_year: Counter[int] = Counter()
         # KEV latency join: KEV-listed ids -> day-precision publish date
         self.kev_ids: frozenset[str] = frozenset(kev_ids)
         self.kev_published_dates: dict[str, str] = {}
+        # Time to PoC join (poc_metrics.py): ids referenced by any public
+        # PoC corpus -> day-precision publish date, the exact mirror of the
+        # KEV join above; plus, per publication year, how many PUBLISHED
+        # records with a PoC reference fall in each severity bucket — read
+        # against ``flood`` for the coverage-by-CVSS-bucket chart.
+        self.poc_ids: frozenset[str] = frozenset(poc_ids)
+        self.poc_published_dates: dict[str, str] = {}
+        self.poc_flood: dict[int, Counter[str]] = defaultdict(Counter)
         # CNA concentration: year -> Counter of records per CNA
         self.cna_year_published: dict[int, Counter[str]] = defaultdict(Counter)
         self.cna_year_rejected: dict[int, Counter[str]] = defaultdict(Counter)
@@ -528,6 +537,10 @@ class Aggregator:
         # later rejected — the publish date is whatever the record carries.
         if facts.date_published is not None and facts.cve_id in self.kev_ids:
             self.kev_published_dates[facts.cve_id] = facts.date_published
+        # PoC join, same rule: a public PoC is real even against a record
+        # that was later rejected — the publish date is what the record says.
+        if facts.date_published is not None and facts.cve_id in self.poc_ids:
+            self.poc_published_dates[facts.cve_id] = facts.date_published
         if facts.state == "REJECTED":
             self.rejected_by_year[facts.year] += 1
             self.cna_year_rejected[facts.year][facts.cna] += 1
@@ -569,6 +582,13 @@ class Aggregator:
         else:
             self.flood[facts.year][severity_bucket(effective)] += 1
             self.effective_by_cve[facts.cve_id] = effective
+        # PoC coverage tally: the same bucket assignment as ``flood``, over
+        # the subset of published records any PoC corpus references — the
+        # two must bucket identically or the coverage rates would lie.
+        if facts.cve_id in self.poc_ids:
+            self.poc_flood[facts.year][
+                "unscored" if effective is None
+                else severity_bucket(effective)] += 1
 
         if facts.cwe is None:
             self.quality_missing[facts.year]["cwe"] += 1

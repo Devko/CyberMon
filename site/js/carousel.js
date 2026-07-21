@@ -74,6 +74,9 @@ import { render as renderEpssvolMovers } from "./charts/epssvol_movers.js";
 import { render as renderRosterSize } from "./charts/roster_size.js";
 import { render as renderRosterFlux } from "./charts/roster_flux.js";
 import { render as renderRosterMix } from "./charts/roster_mix.js";
+import { render as renderPocGap } from "./charts/poc_gap.js";
+import { render as renderPocPreempt } from "./charts/poc_preempt.js";
+import { render as renderPocCoverage } from "./charts/poc_coverage.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -228,6 +231,14 @@ const MODULES = {
       { id: "roster_size", render: renderRosterSize },
       { id: "roster_flux", render: renderRosterFlux },
       { id: "roster_mix", render: renderRosterMix },
+    ],
+  },
+  exploits: {
+    file: "data/time_to_poc.json",
+    sections: [
+      { id: "poc_gap", render: renderPocGap },
+      { id: "poc_preempt", render: renderPocPreempt },
+      { id: "poc_coverage", render: renderPocCoverage },
     ],
   },
 };

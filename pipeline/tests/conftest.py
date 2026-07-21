@@ -9,11 +9,12 @@ import pytest
 from pipeline import (breach_metrics, calendar_metrics,
                       concentration_metrics, epss_report_metrics,
                       extortion_metrics, guards_metrics, kev_metrics,
-                      metrics, quality_metrics, rescore_tracker)
+                      metrics, poc_metrics, quality_metrics, rescore_tracker)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_hibp import load_hibp_file
 from pipeline.fetch_kev import load_kev_file
+from pipeline.fetch_poc import load_poc_files
 from pipeline.fetch_ransomwhere import load_ransomwhere_file
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -21,8 +22,16 @@ GENERATED_AT = "2026-07-09T00:00:00Z"
 
 
 @pytest.fixture()
-def agg(kev) -> metrics.Aggregator:
-    aggregator = metrics.Aggregator(kev_ids=kev.cve_ids)
+def poc():
+    return load_poc_files(FIXTURES / "exploitdb.csv",
+                          FIXTURES / "metasploit.json",
+                          FIXTURES / "nuclei_cves.json")
+
+
+@pytest.fixture()
+def agg(kev, poc) -> metrics.Aggregator:
+    aggregator = metrics.Aggregator(kev_ids=kev.cve_ids,
+                                    poc_ids=poc.all_ids)
     aggregator.consume(iter_cve_records_from_dir(FIXTURES / "cvelist"))
     return aggregator
 
@@ -48,7 +57,7 @@ def ransomwhere():
 
 
 @pytest.fixture()
-def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
+def outputs(agg, epss, kev, hibp, ransomwhere, poc) -> dict[str, dict]:
     """Every contracted output file, built from fixtures (min_cves=1)."""
     import json
 
@@ -94,6 +103,9 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
                                                      GENERATED_AT, min_n=1),
         "cve_calendar.json":
             calendar_metrics.build_cve_calendar(agg, GENERATED_AT, min_n=1),
+        "time_to_poc.json":
+            poc_metrics.build_time_to_poc(agg, poc, kev.entries,
+                                          GENERATED_AT, min_n=1),
         "rescore_log.json":
             rescore_tracker.build_rescore_log(
                 [], state_size=len(agg.rescore_fingerprints),
@@ -118,4 +130,12 @@ def outputs(agg, epss, kev, hibp, ransomwhere) -> dict[str, dict]:
     out["meta.json"]["sources"]["epss_history"] = epss_history_source
     out["meta.json"]["sources"]["rescores"] = {
         "events_total": 0, "state_release": "fixtures"}
+    out["meta.json"]["sources"]["exploitdb"] = {
+        "fetched_at": GENERATED_AT, "entry_count": poc.edb_entries,
+        "cve_count": len(poc.edb_ids)}
+    out["meta.json"]["sources"]["metasploit"] = {
+        "fetched_at": GENERATED_AT, "module_count": poc.msf_modules,
+        "cve_count": len(poc.msf_ids)}
+    out["meta.json"]["sources"]["nuclei"] = {
+        "fetched_at": GENERATED_AT, "cve_count": len(poc.nuclei_ids)}
     return out
