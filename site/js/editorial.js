@@ -130,9 +130,10 @@ export const editorial = {
         label: "Security Market",
         headline: "The security industry runs on a hype curve. Nobody publishes the curve.",
         blurb:
-          "Buzzword hype curves across news coverage (GDELT), practitioner chatter " +
-          "(Hacker News), and research output (arXiv) — every term graded against its " +
-          "own five-year peak, rebuilt nightly.",
+          "Buzzword hype curves across five attention signals — news coverage (GDELT), " +
+          "practitioner chatter (Hacker News), research output (arXiv), public curiosity " +
+          "(Wikipedia pageviews), and investor filings (SEC EDGAR) — every term graded " +
+          "against its own five-year peak, rebuilt nightly.",
         live: true,
       },
       {
@@ -389,23 +390,29 @@ export const editorial = {
     hype: {
       num: "01",
       kicker: "Hype curves",
-      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR",
+      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR full-text search",
       headline: "Every term is graded against its own best month.",
       caption:
-        "Media mentions (GDELT news coverage), practitioner chatter (Hacker News), and " +
-        "research output (arXiv cs.CR preprints) for one term at a time, each indexed to " +
-        "its own five-year peak so a slow-burning research topic and a marketing blitz " +
-        "can share an axis without one drowning the other. Pick a term; the cards are " +
-        "shortcuts.",
+        "Media mentions (GDELT news coverage), practitioner chatter (Hacker News), " +
+        "research output (arXiv cs.CR preprints), public curiosity (Wikipedia " +
+        "pageviews), and investor-facing filings (SEC EDGAR) for one term at a time, " +
+        "each indexed to its own five-year peak so a slow-burning research topic and a " +
+        "marketing blitz can share an axis without one drowning the other. Pick a term; " +
+        "the cards are shortcuts.",
       selectLabel: "Term",
       termCountNote: "Tracking {n} terms — curated list: pipeline/market_terms.py",
       sparklineNote:
         "Click a card to load it above. Sparklines show the media (GDELT) index only — terms " +
         "still waiting on a media fetch show an honest blank, not an invented curve.",
       methodology:
-        "For each tracked term and each of three sources — GDELT 2.0 (news article volume), " +
+        "For each tracked term and each of five sources — GDELT 2.0 (news article volume), " +
         "Hacker News (Algolia search API, stories and comments), arXiv (cs.CR preprint " +
-        "count) — the pipeline pulls a monthly count over a rolling five-year window. Each " +
+        "count), Wikipedia (monthly pageviews of one curated on-topic article per term, " +
+        "bot traffic excluded; the term-to-article mapping is reviewable data in " +
+        "pipeline/market_terms.py, and a term with no on-topic article has no Wikipedia " +
+        "series), and SEC EDGAR full-text search (filings matching the term as a quoted " +
+        "phrase, acronyms spelled out to dodge finance collisions) — the pipeline pulls a " +
+        "monthly count over a rolling five-year window. Each " +
         "series is indexed to its own highest month in that window (peak = 100); this is " +
         "recomputed nightly, so a new peak nudges every earlier point down proportionally. " +
         "Raw counts ride along in the tooltip for every point. Series are deliberately not " +
@@ -422,7 +429,7 @@ export const editorial = {
     risers: {
       num: "02",
       kicker: "Risers & fallers",
-      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR",
+      source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR full-text search",
       headline: "Same twelve months, opposite direction.",
       caption:
         "Year-over-year change in mention volume, term by term and source by source — the " +
@@ -476,7 +483,11 @@ export const editorial = {
       methodology:
         "Each axis is the term's own attention index (see Hype curves methodology), " +
         "averaged over the three most recent populated complete months (the month in progress never counts), for GDELT (x) and arXiv " +
-        "(y). A term's divergence score is the y-axis value minus the x-axis value, in " +
+        "(y). Of the five collected sources, this chart deliberately stays with GDELT " +
+        "versus arXiv: they remain the cleanest media-versus-research pair — Wikipedia " +
+        "pageviews mix both audiences, SEC filings track investor language, and Hacker " +
+        "News sits somewhere between all of them, so none of the three sharpens the " +
+        "comparison. A term's divergence score is the y-axis value minus the x-axis value, in " +
         "index points; scores beyond ±10 are labeled “research leads” or “media leads,” " +
         "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
         "both indices carry real month-to-month noise. Terms missing three recent " +
@@ -2559,7 +2570,8 @@ export const editorial = {
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
-      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
+      "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, or the Internet Archive. Charts aggregate public data; no " +
       "individual CVE is news here, and no victim is identified or identifiable anywhere " +
       "on this site.",
@@ -2572,6 +2584,9 @@ export const editorial = {
       "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
       "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
+      "Wikipedia pageview statistics via the Wikimedia REST API (CC0 aggregate data, " +
+      "Wikimedia Foundation), SEC EDGAR full-text search (efts.sec.gov, public U.S. " +
+      "Government data accessed per SEC fair-access guidelines), " +
       "breach catalog courtesy of Have I Been Pwned (haveibeenpwned.com), " +
       "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0), " +
       // The quoted sentence is MITRE's required copyright designation, verbatim
@@ -2603,7 +2618,7 @@ export const editorial = {
     // full attribution (editorial.footer.dataNote) stays on the site.
     sources: {
       cve: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · NVD (NIST)",
-      market: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR",
+      market: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR",
       kev: "CISA KEV catalog · CVE List V5 (MITRE)",
       concentration: "CVE List V5 (MITRE)",
       breaches: "Have I Been Pwned",

@@ -19,7 +19,13 @@ from .contracts import (_check_bool, _check_generated_at, _check_int,
                         _fail, _get)
 
 MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
-SOURCES = ["gdelt", "hn", "arxiv"]
+SOURCES = ["gdelt", "hn", "arxiv", "wiki", "edgar"]
+# Pre-v1.1 files (three sources). Accepted so the committed
+# site/data/market_hype.json — one nightly behind this code by
+# construction — keeps validating between the v1.1 merge and the first
+# nightly rebuild, which rewrites it with five sources. Safe to delete
+# after that first nightly has committed.
+LEGACY_SOURCES = ["gdelt", "hn", "arxiv"]
 DIRECTIONS = ("research_leads", "media_leads", "aligned")
 # pct_change is bounded below (counts cannot drop more than 100%) but a
 # breakout term can rise by any amount, so there is no upper bound.
@@ -79,8 +85,14 @@ def _validate_market_hype(obj: Any) -> None:
     _check_generated_at(obj, "market_hype")
     _check_int(_get(obj, "window_months", "market_hype"),
                "market_hype.window_months", minimum=1)
-    if _get(obj, "sources", "market_hype") != SOURCES:
-        _fail("market_hype.sources", f"must equal {SOURCES}")
+    # The declared source list drives the per-term key checks below, so a
+    # legacy file is held to exactly its three keys and a v1.1 file to
+    # all five — never a mix.
+    declared = _get(obj, "sources", "market_hype")
+    if declared not in (SOURCES, LEGACY_SOURCES):
+        _fail("market_hype.sources",
+              f"must equal {SOURCES} (or, until the first v1.1 nightly "
+              f"rewrites the published file, {LEGACY_SOURCES})")
     _check_int(_get(obj, "backfill_remaining", "market_hype"),
                "market_hype.backfill_remaining")
     # Optional: present (and true) only on --skip-market carry-forwards.
@@ -93,13 +105,13 @@ def _validate_market_hype(obj: Any) -> None:
         _check_str(_get(t, "id", path), f"{path}.id")
         _check_str(_get(t, "label", path), f"{path}.label")
         series = _get(t, "series", path)
-        for source in SOURCES:
+        for source in declared:
             _check_series(
                 _check_list(_get(series, source, f"{path}.series"),
                             f"{path}.series.{source}"),
                 f"{path}.series.{source}")
         yoy = _get(t, "yoy", path)
-        for source in SOURCES:
+        for source in declared:
             y = _get(yoy, source, f"{path}.yoy")
             if y is not None:
                 _check_yoy(y, f"{path}.yoy.{source}")

@@ -1,4 +1,4 @@
-"""Security Market metrics: per-term interest series across three sources.
+"""Security Market metrics: per-term interest series across five sources.
 
 Monthly hit counts arrive as sync state maintained by ``fetch_market``
 (``{"series": {term_id: {source: {month: count}}}, "pending": [...]}``);
@@ -30,7 +30,11 @@ from typing import Callable
 
 from .market_terms import TERMS, TermDef
 
-SOURCES = ("gdelt", "hn", "arxiv")
+# Order is the published contract order (market_hype.json "sources").
+# Divergence stays gdelt-vs-arxiv: those two remain the cleanest
+# media-vs-research pair — Wikipedia mixes both audiences and EDGAR
+# tracks filings, so neither side of that comparison gains anything.
+SOURCES = ("gdelt", "hn", "arxiv", "wiki", "edgar")
 WINDOW_MONTHS = 60
 # |research_vs_media_index| must clear this before a direction is called;
 # a few index points of drift on 3-month averages is noise, not a signal.
