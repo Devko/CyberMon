@@ -1,23 +1,61 @@
 {
- "generated_at": "2026-07-20T05:55:47Z",
+ "generated_at": "2026-07-21T05:37:09Z",
  "thresholds": {
   "lo": 0.001,
   "mid": 0.01,
   "hi": 0.05
  },
  "churn": {
-  "weeks": []
+  "weeks": [
+   {
+    "week": "2026-W29",
+    "crossed_lo": 7,
+    "crossed_mid": 67,
+    "crossed_hi": 13,
+    "days": 2
+   },
+   {
+    "week": "2026-W30",
+    "crossed_lo": 3,
+    "crossed_mid": 16,
+    "crossed_hi": 15,
+    "days": 1
+   }
+  ]
  },
  "gap": {
   "min_days": 3,
-  "trend_days": 2,
-  "prob_moved_pct": null,
-  "pct_moved_pct": null,
-  "days": []
+  "trend_days": 3,
+  "prob_moved_pct": 0.8,
+  "pct_moved_pct": 95.8,
+  "days": [
+   {
+    "date": "2026-07-18",
+    "prob_moved": 0.8,
+    "pct_moved": 95.8
+   },
+   {
+    "date": "2026-07-19",
+    "prob_moved": 0.8,
+    "pct_moved": 92.3
+   },
+   {
+    "date": "2026-07-20",
+    "prob_moved": 0.8,
+    "pct_moved": 99.3
+   }
+  ]
  },
  "movers": {
   "min_delta": 0.1,
   "entries": [
+   {
+    "cve": "CVE-2002-0693",
+    "observed_date": "2026-07-20",
+    "old": 0.52422,
+    "new": 0.31337,
+    "delta": -0.21085
+   },
    {
     "cve": "CVE-2019-6453",
     "observed_date": "2026-07-19",
@@ -29,15 +67,15 @@
  },
  "catalog": {
   "state_model_version": "v2026.06.15",
-  "state_score_date": "2026-07-19",
-  "state_size": 349491,
-  "days_observed": 2,
-  "trend_days": 2,
+  "state_score_date": "2026-07-20",
+  "state_size": 349944,
+  "days_observed": 3,
+  "trend_days": 3,
   "resets_quarantined": 0,
   "crossed_totals": {
-   "lo": 7,
-   "mid": 67,
-   "hi": 13
+   "lo": 10,
+   "mid": 83,
+   "hi": 28
   },
   "first_observed": "2026-07-18"
  }

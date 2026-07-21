@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-20T05:55:47Z",
+ "generated_at": "2026-07-21T05:37:09Z",
  "years": [
   {
    "year": 1999,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "cna_count": 351,
+   "cna_count": 352,
    "newcomer_count": 34,
-   "top5_share": 51.4,
+   "top5_share": 51.5,
    "top10_share": 71.3,
-   "hhi": 724.6
+   "hhi": 728.2
   }
  ],
  "rejection_leaderboard": {
@@ -304,15 +304,15 @@
    },
    {
     "cna": "Joomla",
-    "total": 228,
+    "total": 242,
     "rejected": 31,
-    "rejected_rate_pct": 13.6
+    "rejected_rate_pct": 12.8
    },
    {
     "cna": "VulnCheck",
-    "total": 5505,
+    "total": 5559,
     "rejected": 692,
-    "rejected_rate_pct": 12.6
+    "rejected_rate_pct": 12.4
    },
    {
     "cna": "f5",
@@ -334,9 +334,9 @@
    },
    {
     "cna": "redhat",
-    "total": 2365,
+    "total": 2373,
     "rejected": 236,
-    "rejected_rate_pct": 10.0
+    "rejected_rate_pct": 9.9
    },
    {
     "cna": "Go",
@@ -352,9 +352,9 @@
    },
    {
     "cna": "@huntr_ai",
-    "total": 876,
-    "rejected": 69,
-    "rejected_rate_pct": 7.9
+    "total": 877,
+    "rejected": 70,
+    "rejected_rate_pct": 8.0
    },
    {
     "cna": "freebsd",
@@ -418,7 +418,7 @@
    },
    {
     "cna": "CERTVDE",
-    "total": 575,
+    "total": 576,
     "rejected": 25,
     "rejected_rate_pct": 4.3
    },
@@ -478,13 +478,13 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10578,
+    "total": 10579,
     "rejected": 269,
     "rejected_rate_pct": 2.5
    },
    {
     "cna": "Linux",
-    "total": 13322,
+    "total": 13331,
     "rejected": 323,
     "rejected_rate_pct": 2.4
    },
@@ -532,8 +532,8 @@
    },
    {
     "cna": "mitre",
-    "total": 27659,
-    "rejected": 462,
+    "total": 27676,
+    "rejected": 463,
     "rejected_rate_pct": 1.7
    },
    {
@@ -544,7 +544,7 @@
    },
    {
     "cna": "TR-CERT",
-    "total": 701,
+    "total": 703,
     "rejected": 12,
     "rejected_rate_pct": 1.7
    },
@@ -580,13 +580,13 @@
    },
    {
     "cna": "GitHub_M",
-    "total": 15970,
+    "total": 16073,
     "rejected": 221,
     "rejected_rate_pct": 1.4
    },
    {
     "cna": "hackerone",
-    "total": 660,
+    "total": 661,
     "rejected": 9,
     "rejected_rate_pct": 1.4
    },
@@ -645,16 +645,16 @@
     "rejected_rate_pct": 1.0
    },
    {
-    "cna": "apache",
-    "total": 1411,
-    "rejected": 12,
-    "rejected_rate_pct": 0.9
-   },
-   {
     "cna": "snyk",
     "total": 427,
     "rejected": 4,
     "rejected_rate_pct": 0.9
+   },
+   {
+    "cna": "apache",
+    "total": 1421,
+    "rejected": 12,
+    "rejected_rate_pct": 0.8
    },
    {
     "cna": "juniper",
@@ -670,7 +670,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15411,
+    "total": 15416,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
@@ -718,7 +718,7 @@
    },
    {
     "cna": "Chrome",
-    "total": 2799,
+    "total": 2806,
     "rejected": 10,
     "rejected_rate_pct": 0.4
    },
@@ -742,7 +742,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 229,
+    "total": 234,
     "rejected": 1,
     "rejected_rate_pct": 0.4
    },
@@ -772,7 +772,7 @@
    },
    {
     "cna": "adobe",
-    "total": 3222,
+    "total": 3223,
     "rejected": 8,
     "rejected_rate_pct": 0.2
    },
@@ -784,7 +784,7 @@
    },
    {
     "cna": "CERT-PL",
-    "total": 448,
+    "total": 451,
     "rejected": 1,
     "rejected_rate_pct": 0.2
    },
@@ -802,7 +802,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 3663,
+    "total": 3681,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -844,7 +844,7 @@
    },
    {
     "cna": "HCL",
-    "total": 488,
+    "total": 489,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1131,13 +1131,13 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "Citrix",
-    "total": 66,
+    "cna": "WSO2",
+    "total": 67,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "WSO2",
+    "cna": "Citrix",
     "total": 66,
     "rejected": 0,
     "rejected_rate_pct": 0.0
@@ -1335,7 +1335,7 @@
  },
  "projection": {
   "year": 2026,
-  "newcomers": 62,
-  "elapsed": 0.551
+  "newcomers": 61,
+  "elapsed": 0.553
  }
 }
