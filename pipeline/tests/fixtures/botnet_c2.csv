@@ -1,0 +1,9 @@
+date,family,online,listed
+2026-07-01,Emotet,1,2
+2026-07-01,QakBot,2,3
+2026-07-01,TrickBot,1,1
+2026-07-01,_total,4,6
+2026-07-02,Emotet,0,1
+2026-07-02,QakBot,1,3
+2026-07-02,TrickBot,0,1
+2026-07-02,_total,1,5

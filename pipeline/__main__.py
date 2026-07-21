@@ -34,7 +34,15 @@ from . import (adp_metrics, attack_metrics, breach_metrics, calendar_metrics,
                kev_metrics, market_metrics, metrics, naming_metrics,
                nvd_throughput, poc_metrics, quality_metrics, rescore_tracker,
                top25_metrics)
+from . import (adp_metrics, attack_metrics, botnet_metrics, breach_metrics,
+               calendar_metrics, cna_roster, concentration_metrics, contracts,
+               cwe_top25_data, epss_report_metrics, epss_volatility,
+               extortion_metrics, guards_metrics, history, hygiene_metrics,
+               kev_changelog, kev_metrics, market_metrics, metrics,
+               naming_metrics, nvd_throughput, quality_metrics,
+               rescore_tracker, top25_metrics)
 from .fetch_cna_roster import fetch_roster, load_roster_file
+from .fetch_feodo import fetch_blocklist, load_blocklist_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
                             iter_cve_records_from_dir, latest_release)
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
@@ -281,6 +289,7 @@ def run(args: argparse.Namespace) -> int:
         poc = load_poc_files(FIXTURES_DIR / "exploitdb.csv",
                              FIXTURES_DIR / "metasploit.json",
                              FIXTURES_DIR / "nuclei_cves.json")
+        feodo = load_blocklist_file(FIXTURES_DIR / "feodo_c2.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -306,6 +315,10 @@ def run(args: argparse.Namespace) -> int:
               f"{poc.msf_modules} Metasploit modules, "
               f"{poc.nuclei_templates} Nuclei CVE templates "
               f"({len(poc.all_ids)} CVEs referenced)")
+        print("fetching Feodo Tracker C2 blocklist ...")
+        feodo = fetch_blocklist()
+        print(f"  Feodo Tracker: {feodo.entry_count} C2s listed "
+              f"({feodo.online_count} online)")
     nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
@@ -495,6 +508,17 @@ def run(args: argparse.Namespace) -> int:
         args.out, generated_at, snapshot=roster,
         offline_fixtures=args.offline_fixtures)
     outputs["cna_roster.json"] = roster_obj
+    # Botnet Weather: tonight's Feodo Tracker C2 counts merge into a
+    # committed append-only daily CSV (an original dataset — the tracker
+    # publishes only the current blocklist). No skip flag (a ~2 KB fetch)
+    # and no state file (absolute counts: the CSV is the whole memory);
+    # the history write is deferred to after validation, like nvd_backlog.
+    # Zero listed C2s is a valid reading, never refused — the empty state
+    # is the takedown story this module exists to record.
+    botnet_obj, feodo_source, botnet_rows = botnet_metrics.run_stage(
+        args.out, generated_at, snapshot=feodo,
+        offline_fixtures=args.offline_fixtures)
+    outputs["botnet_weather.json"] = botnet_obj
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -544,6 +568,7 @@ def run(args: argparse.Namespace) -> int:
         "cve_count": len(poc.msf_ids)}
     outputs["meta.json"]["sources"]["nuclei"] = {
         "fetched_at": generated_at, "cve_count": len(poc.nuclei_ids)}
+    outputs["meta.json"]["sources"]["feodo"] = feodo_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
@@ -571,6 +596,7 @@ def run(args: argparse.Namespace) -> int:
     # its diffing state travel in one validated commit.
     epss_volatility.persist(args.out, epssvol_rows, epssvol_state)
     cna_roster.persist(args.out, roster_pending)
+    botnet_metrics.persist(args.out, botnet_rows)
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")

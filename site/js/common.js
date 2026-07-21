@@ -184,6 +184,9 @@ function renderMeta(meta) {
       exploitdb_entries: (s.exploitdb?.entry_count ?? 0).toLocaleString("en-US"),
       metasploit_modules: (s.metasploit?.module_count ?? 0).toLocaleString("en-US"),
       nuclei_cves: (s.nuclei?.cve_count ?? 0).toLocaleString("en-US"),
+      feodo_listed: (s.feodo?.listed ?? 0).toLocaleString("en-US"),
+      feodo_online: (s.feodo?.online ?? 0).toLocaleString("en-US"),
+      feodo_fetched: s.feodo?.fetched_at ?? "?",
     }))
   );
 }

@@ -1,0 +1,74 @@
+[
+  {
+    "ip_address": "192.0.2.10",
+    "port": 8080,
+    "status": "offline",
+    "hostname": null,
+    "as_number": 64496,
+    "as_name": "EXAMPLE-BACKBONE",
+    "country": "US",
+    "first_seen": "2022-06-04 21:24:53",
+    "last_online": "2026-03-07",
+    "malware": "Emotet"
+  },
+  {
+    "ip_address": "198.51.100.21",
+    "port": 443,
+    "status": "online",
+    "hostname": "c2-a.example.net",
+    "as_number": 64497,
+    "as_name": "CLOUD-HOSTING-A",
+    "country": "US",
+    "first_seen": "2026-01-13 21:41:15",
+    "last_online": "2026-07-01",
+    "malware": "QakBot"
+  },
+  {
+    "ip_address": "198.51.100.22",
+    "port": 443,
+    "status": "offline",
+    "hostname": null,
+    "as_number": 64497,
+    "as_name": "CLOUD-HOSTING-A",
+    "country": "GB",
+    "first_seen": "2026-02-17 05:41:23",
+    "last_online": "2026-02-18",
+    "malware": "QakBot"
+  },
+  {
+    "ip_address": "203.0.113.33",
+    "port": 4443,
+    "status": "offline",
+    "hostname": null,
+    "as_number": 64498,
+    "as_name": "TOKYO-NET",
+    "country": "JP",
+    "first_seen": "2026-03-04 14:28:39",
+    "last_online": "2026-03-05",
+    "malware": "QakBot"
+  },
+  {
+    "ip_address": "203.0.113.44",
+    "port": 2222,
+    "status": "online",
+    "hostname": null,
+    "as_number": 64499,
+    "as_name": "RHEIN-HOSTING",
+    "country": "DE",
+    "first_seen": "2026-03-20 09:15:00",
+    "last_online": "2026-07-02",
+    "malware": "Pikabot"
+  },
+  {
+    "ip_address": "203.0.113.45",
+    "port": 2222,
+    "status": "offline",
+    "hostname": null,
+    "as_number": 64499,
+    "as_name": "RHEIN-HOSTING",
+    "country": "DE",
+    "first_seen": "2026-03-28 18:00:41",
+    "last_online": "2026-04-02",
+    "malware": "Pikabot"
+  }
+]

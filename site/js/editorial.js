@@ -113,6 +113,7 @@ export const editorial = {
     { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
     { id: "roster", href: "roster.html", label: "CNA Roster" },
     { id: "exploits", href: "exploits.html", label: "Time to PoC" },
+    { id: "c2", href: "c2.html", label: "Botnet Weather" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -380,6 +381,17 @@ export const editorial = {
           "the announcement, and which severity buckets attract public " +
           "PoCs at all, with Nuclei template coverage riding along. " +
           "Rebuilt nightly from the trackers' published indexes.",
+        id: "c2",
+        href: "c2.html",
+        num: "20",
+        label: "Botnet Weather",
+        headline: "Botnet command-and-control has weather. Nobody keeps the forecasts.",
+        blurb:
+          "abuse.ch's Feodo Tracker publishes the live blocklist of botnet C2 " +
+          "servers — today's picture only. CyberMon snapshots it nightly and " +
+          "keeps the count by malware family, so takedowns show as cliffs and " +
+          "the quiet stretches stay on the record. Tonight's composition and " +
+          "the age of the surviving infrastructure are real from day one.",
         live: true,
       },
     ],
@@ -2701,6 +2713,112 @@ export const editorial = {
         "deliberately recent: it shows today's arming rate rather than the archive's " +
         "decades-deep accumulation, at the price of right-censoring that the note " +
         "above owns.",
+    // --------------------------------- c2.html · 1 (hero)
+    c2_weather: {
+      num: "01",
+      kicker: "The C2 forecast",
+      source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
+      headline: "Quiet is a result, not an absence.",
+      caption:
+        "Each night CyberMon counts the botnet command-and-control servers " +
+        "on abuse.ch's Feodo Tracker blocklist and keeps what the tracker " +
+        "doesn't: the series. The tracker's own FAQ credits its empty " +
+        "stretches to law-enforcement takedowns — Emotet in 2021, Operation " +
+        "Endgame in 2024 — so a reading in the single digits is a normal day " +
+        "in the aftermath, not a broken gauge. When the next family stands " +
+        "up new infrastructure, this line is where it will show.",
+      yAxis: "C2 servers",
+      statLabel: "C2 servers online tonight",
+      statWhen: "of {listed} listed · snapshots since {first_date}",
+      legendListed: "All listed (context)",
+      // {first_date} fills from the record's actual start; the empty
+      // variant renders while there is only one snapshot on file.
+      note:
+        "No upstream publishes this series — CyberMon has snapshotted the " +
+        "blocklist since {first_date}, one night at a time.",
+      noteEmpty:
+        "No upstream publishes this series — the record starts with " +
+        "tonight's snapshot and deepens one night at a time.",
+      methodology:
+        "Every night the pipeline fetches Feodo Tracker's public botnet C2 " +
+        "blocklist (ipblocklist.json) and reduces it to per-family counts: " +
+        "listed — on the blocklist tonight — and online, meaning the server " +
+        "answered like a botnet C2 on the tracker's last probe. The counts " +
+        "append to a committed, append-only history " +
+        "(data/history/botnet_c2.csv) — like the NVD backlog record, an " +
+        "original dataset this project accumulates, because the upstream " +
+        "publishes only the current picture. The chart stacks the online " +
+        "count by malware family; the dashed line adds everything still " +
+        "listed. There is deliberately no too-few-servers guard: a collapse " +
+        "to zero is a takedown doing its job and is recorded as data, while " +
+        "a malformed or unfetchable feed fails loudly and records nothing. " +
+        "Feodo Tracker data is published by abuse.ch under CC0; the record " +
+        "here starts at first deploy.",
+    },
+
+    // --------------------------------- c2.html · 2
+    c2_today: {
+      num: "02",
+      kicker: "Tonight's weather",
+      source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
+      headline: "The forecast fits on a postcard.",
+      caption:
+        "Every server on tonight's blocklist, tallied by malware family — " +
+        "the accent slice is still answering as a C2, the rest is listed " +
+        "but dark. Below, the same handful cut by hosting country and " +
+        "network. Aggregates only, by design: the module is the weather, " +
+        "not the blocklist, so no address appears here — anyone who needs " +
+        "the raw list can fetch the tracker's feed directly.",
+      statTemplate: "{listed} C2s listed · {online} online · {families} malware families",
+      legendOnline: "Online (answered as C2)",
+      legendDark: "Listed, dark",
+      countriesLabel: "By hosting country",
+      asnsLabel: "By network (AS name)",
+      xAxis: "C2 servers",
+      nodata:
+        "Nothing on the blocklist tonight — an empty sky, exactly as the " +
+        "tracker reports it.",
+      methodology:
+        "The composition is read straight from tonight's snapshot, so it is " +
+        "fully populated from day one. Each listed server counts once " +
+        "toward its malware family, its hosting country and its network " +
+        "(the AS name the tracker publishes); online means the server " +
+        "responded like a botnet C2 on the tracker's last probe — and the " +
+        "tracker only lists an address in the first place after it answered " +
+        "with a valid C2 response, which keeps false positives rare. " +
+        "Countries and networks render as text tallies rather than a table " +
+        "of servers: per-server details — addresses, ports, hostnames — " +
+        "never leave the pipeline, an editorial line the output contract " +
+        "enforces mechanically.",
+    },
+
+    // --------------------------------- c2.html · 3
+    c2_age: {
+      num: "03",
+      kicker: "Infrastructure age",
+      source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
+      headline: "How long a C2 lives.",
+      caption:
+        "For every server on tonight's blocklist, the time since Feodo " +
+        "Tracker first saw it. Fresh buckets mean a campaign standing up " +
+        "new infrastructure; the old tail is machinery that has stayed " +
+        "listed through months of quiet — compromised hosts and rented " +
+        "servers nobody has reclaimed. The median moves with the weather, " +
+        "and tonight's value sits above the chart.",
+      statLabel: "Median age of tonight's C2s",
+      statValue: "{median} days",
+      statWhen: "oldest survivor {oldest} days",
+      yAxis: "C2 servers",
+      nodata: "Nothing on the blocklist tonight — no infrastructure to age.",
+      methodology:
+        "Age is the number of whole days between a server's first_seen " +
+        "stamp on Feodo Tracker and tonight's snapshot date, bucketed on a " +
+        "fixed scale from under 30 days to over 2 years. The median and the " +
+        "oldest survivor are computed over every listed server, online or " +
+        "dark — a server that stopped answering but remains listed is still " +
+        "infrastructure on the record. Like the composition chart, this " +
+        "reads entirely from tonight's snapshot and is meaningful from the " +
+        "first run; it needs no accumulated history.",
     },
   },
 
@@ -2732,6 +2850,16 @@ export const editorial = {
       "Charts aggregate public data; no " +
       "individual CVE is news here, and no victim is identified or identifiable anywhere " +
       "on this site.",
+      "Feodo Tracker: {feodo_listed} C2s listed ({feodo_online} online) " +
+      "fetched {feodo_fetched}",
+    metaError: "Edition metadata (data/meta.json) failed to load.",
+    disclaimer:
+      "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
+      "Ransomwhere, APNIC, abuse.ch, or the Internet Archive. Charts aggregate public data; no " +
+      "individual CVE is news here, no victim is identified or identifiable anywhere " +
+      "on this site, and no attacker infrastructure is republished — C2 servers appear " +
+      "only as aggregate counts, never as addresses.",
     reuseNote:
       "Reuse is welcome: take any chart or number — screenshot, embed, quote — with a link " +
       "back to CyberMon as the source. This is a spare-time project rebuilt nightly by an " +
@@ -2755,6 +2883,8 @@ export const editorial = {
       "the Exploit Database index (OffSec, exploit-db.com), " +
       "Metasploit Framework module metadata (Rapid7, BSD-3-Clause), " +
       "the Nuclei templates CVE index (ProjectDiscovery, MIT), " +
+      "botnet C2 blocklist by abuse.ch's Feodo Tracker (feodotracker.abuse.ch, CC0 — " +
+      "attribution appreciated), " +
       "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
@@ -2796,6 +2926,7 @@ export const editorial = {
       epssvol: "EPSS (FIRST.org) · CyberMon nightly diffs",
       roster: "CVE.org organization roster · CyberMon nightly snapshots",
       exploits: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei (ProjectDiscovery)",
+      c2: "abuse.ch Feodo Tracker (CC0) · CyberMon nightly snapshots",
     },
   },
 };

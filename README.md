@@ -326,6 +326,26 @@ cloned). All three publish full history, so the stage refetches
 statelessly every night (`pipeline/fetch_poc.py`, day-cached in
 `.cache/poc/`); honesty notes — public-tracker lower bound, self-selected
 cohort, right-censored recent years — live in the page methodology.
+### 20 · Botnet Weather — [c2.html](https://devko.github.io/CyberMon/c2.html) (live)
+
+*Botnet command-and-control has weather. Nobody keeps the forecasts.*
+abuse.ch's Feodo Tracker publishes the live blocklist of botnet C2 servers
+(Emotet, QakBot, Pikabot, ...) — only today's picture. CyberMon snapshots it
+nightly and keeps the series: per-family daily counts (listed vs online)
+append to a committed, append-only log (`data/history/botnet_c2.csv`),
+another irreplaceable dataset because the upstream keeps no history. Three
+charts: active C2s over time by family (launch-thin by design, deepening one
+night at a time — takedowns show as cliffs), tonight's composition by
+family / hosting country / network, and the age distribution of the listed
+infrastructure (both real from day one). Single-digit — even zero — counts
+are normal here: the tracker's own FAQ credits its empty stretches to the
+Emotet (2021) and Operation Endgame (2024) takedowns, so there is
+deliberately no count-collapse guard (a collapse is the story); broken
+fetches are guarded structurally instead (malformed feed = loud failure,
+nothing recorded). **Aggregates only:** family/country/AS counts — no IP,
+port or hostname ever reaches the site, a red line the output contract
+enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
+`pipeline/botnet_metrics.py`; no shared upstream.
 
 ## Architecture
 
@@ -374,6 +394,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Exploit-DB](https://www.exploit-db.com/) (OffSec) | The exploit archive's index CSV (`files_exploits.csv` from the [exploitdb](https://gitlab.com/exploit-database/exploitdb) repo): per-exploit `date_published` and CVE references from the `codes` column — metadata only, no exploit code is fetched | Archive maintained by OffSec as a public service; index metadata used as facts with attribution (credited in the site footer); not affiliated |
 | [Metasploit Framework](https://github.com/rapid7/metasploit-framework) (Rapid7) | Module metadata (`db/modules_metadata_base.json`): `disclosure_date` and CVE `references` per module — the disclosure date, not the module merge date, documented as such | [BSD-3-Clause](https://github.com/rapid7/metasploit-framework/blob/master/LICENSE); Metasploit is a Rapid7 project (credited in the site footer) |
 | [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template — coverage only, the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
+| [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS — snapshotted nightly for the Botnet Weather count record; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
@@ -399,7 +420,10 @@ are their rollback insurance:
 - `rescore_log.csv` — the silent-rescore event log (no upstream
   publishes score-edit history);
 - `epss_volatility.csv` and `cna_roster.csv` — the newest collectors,
-  accumulating since 2026-07-18.
+  accumulating since 2026-07-18;
+- `botnet_c2.csv` — nightly per-family counts of the Feodo Tracker botnet
+  C2 blocklist, listed and online (the tracker publishes only the current
+  picture, never a series).
 
 You are welcome to reuse them, CC-BY style: just credit "CyberMon
 (https://github.com/Devko/CyberMon)".
@@ -476,6 +500,8 @@ Pwned, Ransomwhere, or APNIC**. All upstream data is © its
 CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
 Pwned, Ransomwhere, APNIC, OffSec, Rapid7, or ProjectDiscovery**. All
 upstream data is © its
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+Pwned, Ransomwhere, APNIC, or abuse.ch**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
 

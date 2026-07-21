@@ -90,6 +90,13 @@ stage itself always emits it (no skip flag): `fetched_at` (ISO-8601 UTC),
 `org_count` (organizations on tonight's roster, `>= 1`) and `events_total`
 (rows on the committed churn log after tonight's append).
 
+`sources.feodo` (Botnet Weather module) is validated additively — optional
+because older committed meta files predate the module, but the stage itself
+always emits it (no skip flag): `fetched_at` (ISO-8601 UTC), `listed`
+(C2s on tonight's blocklist, `>= 0` — **zero is a valid reading**, the
+tracker's documented post-takedown state) and `online` (`>= 0`,
+`<= listed`).
+
 ## site/data/severity_inflation.json  (chart 1, hero)
 
 ```json
@@ -1684,6 +1691,8 @@ Validator: `pipeline/roster_contracts.py` (registered into
 
 ## site/data/time_to_poc.json  (Time to PoC module, all 3 charts)
 
+## site/data/botnet_weather.json  (Botnet Weather module, all 3 charts)
+
 ```json
 {
   "generated_at": "...",
@@ -1724,6 +1733,39 @@ Validator: `pipeline/roster_contracts.py` (registered into
                    "dated_cves": 3007},
     "nuclei": {"templates": 4222, "cves": 4222},
     "union_cves": 29360, "dated_cves": 26182, "matched_in_corpus": 29293
+  "c2_weather": {
+    "first_observed": "2026-07-21",
+    "families": ["Emotet", "QakBot"],
+    "series": [{"date": "2026-07-21",
+                "online": {"Emotet": 0, "QakBot": 1},
+                "listed": {"Emotet": 1, "QakBot": 4},
+                "online_total": 1, "listed_total": 5}],
+    "current_online": 1, "current_listed": 5
+  },
+  "c2_today": {
+    "snapshot_date": "2026-07-21", "listed_total": 5, "online_total": 1,
+    "families": [{"label": "QakBot", "listed": 4, "online": 1},
+                 {"label": "Emotet", "listed": 1, "online": 0}],
+    "countries": [{"label": "US", "n": 3}, {"label": "GB", "n": 1},
+                  {"label": "JP", "n": 1}],
+    "asns": [{"label": "AMAZON-AES", "n": 2},
+             {"label": "DIGITALOCEAN-ASN", "n": 2},
+             {"label": "SAKURA-B SAKURA Internet Inc.", "n": 1}]
+  },
+  "c2_age": {
+    "snapshot_date": "2026-07-21", "n": 5,
+    "median_age_days": 169, "oldest_age_days": 1508,
+    "buckets": [{"label": "under 30 days", "n": 0},
+                {"label": "30–90 days", "n": 0},
+                {"label": "90 days – 1 year", "n": 4},
+                {"label": "1–2 years", "n": 0},
+                {"label": "over 2 years", "n": 1}]
+  },
+  "catalog": {
+    "snapshot_size": 5, "online_now": 1,
+    "families": ["Emotet", "QakBot"], "family_count": 2,
+    "first_date": "2026-07-21", "last_date": "2026-07-21",
+    "days_observed": 1
   }
 }
 ```
@@ -1794,4 +1836,68 @@ the three-source union, and the corpus join coverage;
 `catalog.dated_cves == hero.matched.dated_cves` (same join, enforced).
 No pace projection and no committed history: every number rebuilds from
 tonight's fetched corpora. Validator: `pipeline/poc_contracts.py`
+abuse.ch's Feodo Tracker publishes the live blocklist of botnet
+command-and-control servers — only the current picture, never a series.
+This module makes CyberMon the series. Source:
+`feodotracker.abuse.ch/downloads/ipblocklist.json` (public endpoint, no
+auth-key — verified 2026-07-21; the authenticated-platform terms cover
+abuse.ch's query APIs, not these blocklist downloads, and the blocklist
+page's own Terms of Services put the datasets under CC0). Fields read:
+`ip_address`+`port` (dedup key only — never emitted), `status`
+(`online` = answered like a botnet C2 on the tracker's last probe /
+`offline`; any other value is a broken fetch), `malware` (family),
+`first_seen` (date part; the age chart), `country`, `as_name`. The
+tracker only lists an address after it responded with a valid botnet C2
+response, which keeps its false-positive rate low.
+
+**Committed history (under `site/data/history/`):**
+
+* `botnet_c2.csv` — append-only daily counts, long format (columns
+  `date,family,online,listed`): one row per malware family with at least
+  one listed C2 that day, PLUS one `_total` row per day, always present —
+  an empty-blocklist day records `_total,0,0`, because the zero IS the
+  weather. Family rows must sum to the day's `_total` row. A same-day
+  re-run replaces that day's block. Like `nvd_backlog.csv`, this is an
+  **original dataset accumulated by this project and it CANNOT be
+  regenerated** (the weekly `data-backup-*` tags cover it). There is no
+  separate state file — counts are absolute snapshots, so the CSV is the
+  whole memory. Written by `__main__.run()` **only after every output
+  validates**, via `pipeline.botnet_metrics.persist`.
+
+**Guard rule (documented choice, the inverse of the roster's):** there is
+NO count-collapse guard — single-digit and zero counts are normal for
+this source (the tracker's FAQ credits its empty stretches to the Emotet
+2021 and Operation Endgame 2024 takedowns), and refusing a collapse would
+censor exactly the takedown cliffs the module exists to record. The
+broken-fetch guard is structural instead, in `pipeline/fetch_feodo.py`: a
+non-array document, a malformed entry, an unrecognized `status` or an
+unparseable `first_seen` raises; transient HTTP failures exhaust a
+bounded retry (3 attempts) and then raise; a failed run appends nothing.
+
+`c2_weather` (hero): the per-day series from the committed CSV — dates
+sorted unique; `families` = the sorted union over the whole record (a
+family that vanished stays in the union; the `_total` sentinel never
+appears); each point's `online`/`listed` maps cover the same families
+(`listed >= 1` for a family present that day, `online <= listed`) and sum
+to `online_total`/`listed_total`; `first_observed == series[0].date`;
+`current_*` mirror the last point. Launch-thin by design: the record
+starts at first deploy, and the page note says so, data-driven.
+`c2_today` (real from day one): tonight's snapshot only.
+`families` `[{label, listed, online}]` sorted by `listed` desc (ties label
+asc); `countries`/`asns` are `[{label, n}]` clean partitions of the
+listed set, sorted `n` desc (ties label asc), empty exactly when
+`listed_total == 0` (the honest empty). Totals cross-check the last
+series point. `c2_age` (real from day one): whole days from each listed
+server's `first_seen` to the snapshot date (future stamps clamp to 0),
+fixed buckets exactly `under 30 days / 30–90 days / 90 days – 1 year /
+1–2 years / over 2 years` summing to `n == listed_total`;
+`median_age_days` (rounded) and `oldest_age_days` are null exactly when
+the snapshot is empty. `catalog`: tonight's size/online/families (sorted;
+subset story of the union) plus the record's `first_date`/`last_date`/
+`days_observed`.
+
+**Red line (enforced by the validator):** the emitted object may contain
+NO per-server data — no `ip_address`/`hostname`/`ip`/`port` key anywhere,
+and no string value shaped like an IPv4 address. The module renders the
+weather, never the blocklist. Validator: `pipeline/botnet_contracts.py`
 (registered into `pipeline/contracts.py`'s dispatch).

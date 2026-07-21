@@ -324,6 +324,19 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.roster.org_count", minimum=1)
         _check_int(_get(rt, "events_total", "meta.sources.roster"),
                    "meta.sources.roster.events_total")
+    # the Botnet Weather stage itself always emits it. ``listed`` may be
+    # ZERO — the tracker's documented post-takedown empty state is a valid
+    # snapshot for this source, never a broken fetch.
+    if "feodo" in src:
+        fd = src["feodo"]
+        _check_str(_get(fd, "fetched_at", "meta.sources.feodo"),
+                   "meta.sources.feodo.fetched_at", ISO_UTC_RE)
+        _check_int(_get(fd, "listed", "meta.sources.feodo"),
+                   "meta.sources.feodo.listed")
+        _check_int(_get(fd, "online", "meta.sources.feodo"),
+                   "meta.sources.feodo.online")
+        if fd["online"] > fd["listed"]:
+            _fail("meta.sources.feodo.online", "exceeds listed")
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -628,3 +641,6 @@ VALIDATORS.update(roster_contracts.VALIDATORS)
 from . import poc_contracts  # noqa: E402
 
 VALIDATORS.update(poc_contracts.VALIDATORS)
+from . import botnet_contracts  # noqa: E402
+
+VALIDATORS.update(botnet_contracts.VALIDATORS)
