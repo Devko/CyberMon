@@ -51,11 +51,14 @@ Each module is its own directly linkable page with its own pipeline stage and
 ### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
 
 *The security industry runs on a hype curve. Nobody publishes the curve.*
-A data-driven hype-cycle tracker for 14 curated buzzwords across three
+A data-driven hype-cycle tracker for 14 curated buzzwords across five
 independent attention signals — news coverage (GDELT), practitioner
-chatter (Hacker News), research output (arXiv cs.CR) — each term indexed
-to its own five-year peak. Hype curves, YoY risers/fallers, and a
-research-vs-media divergence quadrant.
+chatter (Hacker News), research output (arXiv cs.CR), public curiosity
+(Wikipedia pageviews, one curated article per term), and investor-facing
+filings (SEC EDGAR full-text search) — each term indexed to its own
+five-year peak. Hype curves, YoY risers/fallers, and a research-vs-media
+divergence quadrant (deliberately still GDELT vs. arXiv — the cleanest
+media-vs-research pair of the five).
 
 ### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html) (live)
 
@@ -319,6 +322,7 @@ reads a few-KB JSON file; there are no runtime queries.
       │              ├─ ATT&CK STIX index      https://devko.github.io/CyberMon/
       │              ├─ APNIC DNSSEC series
       │              ├─ GDELT · HN · arXiv
+      │              ├─ Wikipedia · SEC EDGAR
       │              └─ NVD API (status)
       └─ on failure: workflow fails, nothing is deployed
 ```
@@ -334,6 +338,8 @@ reads a few-KB JSON file; there are no runtime queries.
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
+| [Wikimedia Pageviews REST API](https://wikimedia.org/api/rest_v1/) | Monthly pageviews of one curated en.wikipedia article per tracked term (`agent=user`, bot traffic excluded); the term→article mapping is reviewable data in `pipeline/market_terms.py` | Aggregate pageview data is [CC0](https://creativecommons.org/publicdomain/zero/1.0/); accessed per the [Wikimedia API policy](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_API_Policy) (descriptive User-Agent with contact info) |
+| [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; corpus reaches back to 2001) | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
@@ -437,7 +443,8 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 ## Disclaimer & license
 
 CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
-CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, the Wikimedia
+Foundation, the U.S. Securities and Exchange Commission, Have I Been
 Pwned, Ransomwhere, or APNIC**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).

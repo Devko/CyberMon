@@ -6,7 +6,13 @@ import { editorial, tpl } from "../editorial.js";
 import { el, clear } from "../dom.js";
 import { fmtInt } from "../theme.js";
 
-const SOURCE_LABELS = { gdelt: "GDELT", hn: "Hacker News", arxiv: "arXiv" };
+const SOURCE_LABELS = {
+  gdelt: "GDELT",
+  hn: "Hacker News",
+  arxiv: "arXiv",
+  wiki: "Wikipedia",
+  edgar: "SEC EDGAR",
+};
 
 // Visual cap for the diverging in-cell bars: one 900% outlier must not
 // flatten every other bar. Values beyond the cap clip and say so via title.

@@ -183,6 +183,24 @@ def test_headline_null_when_nothing_eligible():
                                "top_divergence": None}
 
 
+def test_build_trims_current_month_for_every_source():
+    # GENERATED_AT is 2026-07-09: the in-progress 2026-07 must vanish
+    # from series, YoY windows and divergence inputs for ALL five
+    # sources — new lanes inherit the trim because build_market_hype
+    # iterates SOURCES, but that stays true only while nobody
+    # special-cases a source; this test pins it.
+    months = {"2026-06": 10, "2026-07": 99}
+    state = _state({"aaa": {s: dict(months)
+                            for s in ("gdelt", "hn", "arxiv",
+                                      "wiki", "edgar")}})
+    obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    series = obj["terms"][0]["series"]
+    assert set(series) == {"gdelt", "hn", "arxiv", "wiki", "edgar"}
+    for source, points in series.items():
+        assert [p["month"] for p in points] == ["2026-06"], source
+        assert points[0]["index"] == 100.0  # peak computed post-trim
+
+
 # ----------------------------------------------- end-to-end from the fixture
 
 def test_build_market_hype_from_fixture_state():
@@ -193,7 +211,7 @@ def test_build_market_hype_from_fixture_state():
 
     assert obj["generated_at"] == GENERATED_AT
     assert obj["window_months"] == 60
-    assert obj["sources"] == ["gdelt", "hn", "arxiv"]
+    assert obj["sources"] == ["gdelt", "hn", "arxiv", "wiki", "edgar"]
     assert obj["backfill_remaining"] == 3
     assert [t["id"] for t in obj["terms"]] == [t.id for t in terms]
 
@@ -207,6 +225,21 @@ def test_build_market_hype_from_fixture_state():
     assert by_id["cnapp"]["divergence"] is None         # 2 arxiv months < 3
     assert by_id["sase"]["divergence"] is None          # no arxiv at all
     assert by_id["sase"]["series"]["arxiv"] == []       # absent source = empty
+    assert by_id["sase"]["series"]["wiki"] == []        # v1.1 lanes too
+    assert by_id["sase"]["series"]["edgar"] == []
+
+    # v1.1 lanes: YoY math and the current-month trim apply unchanged.
+    assert by_id["zero_trust"]["yoy"]["wiki"] == {
+        "latest_month": "2026-06", "pct_change": 20.0,
+        "n_latest_12m": 1440, "n_prior_12m": 1200}
+    assert by_id["zero_trust"]["yoy"]["edgar"] is None  # only 3 months
+    assert by_id["ransomware"]["yoy"]["edgar"] == {
+        "latest_month": "2026-06", "pct_change": -10.0,
+        "n_latest_12m": 108, "n_prior_12m": 120}
+    # the fixture's in-progress 2026-07 wiki/edgar cells never publish
+    assert all(p["month"] != "2026-07"
+               for t in obj["terms"] for s in t["series"].values()
+               for p in s)
 
     assert by_id["post_quantum"]["divergence"] == {
         "gdelt_index_avg3m": 42.0, "arxiv_index_avg3m": 90.9,
@@ -245,7 +278,8 @@ def test_run_stage_offline_fixtures(tmp_path):
 
 def test_run_stage_skip_carries_prior_file_forward(tmp_path):
     prior = {"generated_at": "2026-06-01T00:00:00Z", "window_months": 60,
-             "sources": ["gdelt", "hn", "arxiv"], "backfill_remaining": 2,
+             "sources": ["gdelt", "hn", "arxiv", "wiki", "edgar"],
+             "backfill_remaining": 2,
              "terms": [],
              "headline": {"top_riser": None, "top_faller": None,
                           "top_divergence": None}}

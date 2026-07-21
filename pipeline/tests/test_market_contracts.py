@@ -109,6 +109,25 @@ def test_bad_direction_enum_rejected(hype):
 
 def test_wrong_sources_list_rejected(hype):
     bad = _corrupt(hype)
-    bad["sources"] = ["gdelt", "arxiv", "hn"]  # right set, wrong order
+    bad["sources"] = ["gdelt", "arxiv", "hn", "wiki", "edgar"]  # wrong order
     with pytest.raises(ContractViolation, match="sources"):
         market_contracts.validate("market_hype.json", bad)
+
+
+def test_legacy_three_source_file_still_validates(hype):
+    # The committed market_hype.json is one nightly behind the code: the
+    # pre-v1.1 shape (exactly gdelt/hn/arxiv) must keep validating until
+    # the first five-source nightly rewrites it.
+    legacy = _corrupt(hype)
+    legacy["sources"] = ["gdelt", "hn", "arxiv"]
+    for t in legacy["terms"]:
+        for src in ("wiki", "edgar"):
+            del t["series"][src]
+            del t["yoy"][src]
+    market_contracts.validate("market_hype.json", legacy)
+    # ... but a partial mix (legacy declaration, v1.1 keys required by a
+    # five-source declaration) is caught the moment sources claims five.
+    partial = _corrupt(legacy)
+    partial["sources"] = market_contracts.SOURCES
+    with pytest.raises(ContractViolation, match="wiki"):
+        market_contracts.validate("market_hype.json", partial)

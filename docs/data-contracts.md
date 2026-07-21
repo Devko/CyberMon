@@ -395,7 +395,7 @@ into `pipeline/contracts.py`'s dispatch, as are the two charts above).
 {
   "generated_at": "...",
   "window_months": 60,
-  "sources": ["gdelt", "hn", "arxiv"],
+  "sources": ["gdelt", "hn", "arxiv", "wiki", "edgar"],
   "backfill_remaining": 812,
   "terms": [
     {
@@ -404,14 +404,19 @@ into `pipeline/contracts.py`'s dispatch, as are the two charts above).
       "series": {
         "gdelt": [{"month": "2023-04", "n": 812, "index": 12.4}],
         "hn":    [{"month": "2023-06", "n": 41,  "index": 8.0}],
-        "arxiv": [{"month": "2023-05", "n": 4,   "index": 40.0}]
+        "arxiv": [{"month": "2023-05", "n": 4,   "index": 40.0}],
+        "wiki":  [{"month": "2023-05", "n": 14203, "index": 55.1}],
+        "edgar": [{"month": "2023-05", "n": 31,  "index": 62.0}]
       },
       "yoy": {
         "gdelt": {"latest_month": "2026-06", "pct_change": 340.2,
                   "n_latest_12m": 41200, "n_prior_12m": 9360},
         "hn": null,
         "arxiv": {"latest_month": "2026-06", "pct_change": 118.6,
-                  "n_latest_12m": 61, "n_prior_12m": 28}
+                  "n_latest_12m": 61, "n_prior_12m": 28},
+        "wiki": {"latest_month": "2026-06", "pct_change": 12.3,
+                 "n_latest_12m": 160410, "n_prior_12m": 142840},
+        "edgar": null
       },
       "divergence": {
         "gdelt_index_avg3m": 88.1, "arxiv_index_avg3m": 61.4,
@@ -442,6 +447,22 @@ series), 1)` (all `0.0` when the peak is 0) — index-to-own-peak, NOT
 share-of-total, so editing the tracked-term list never reshapes other
 terms' history.
 
+The two v1.1 sources: `wiki` = monthly pageviews (`agent=user`, bot
+traffic excluded) of ONE curated en.wikipedia article per term — the
+term→article mapping is reviewable data in `pipeline/market_terms.py`,
+and a term mapped to `null` (no on-topic article exists; CNAPP at
+launch) simply has an empty `wiki` series. Months before an article
+existed are gaps, not zeros. `edgar` = SEC EDGAR full-text-search
+filing counts (`hits.total.value`) for the term as a quoted phrase, one
+request per (term, month), acronyms spelled out to dodge finance
+collisions (XDR = SDR currency, MDR = EU medical-device regulation).
+Both lanes re-fetch their whole window nightly (stateless, like
+GDELT/arXiv); a failed fetch keeps the previously cached months.
+Transitional: a published file may still declare the pre-v1.1
+`"sources": ["gdelt", "hn", "arxiv"]` (with exactly those per-term
+keys) until the first five-source nightly rewrites it — the validator
+accepts precisely those two shapes, never a mix.
+
 `yoy[source]` is `null` unless the pair has ≥ 24 populated months, a
 nonzero prior-12-month sum, AND at least 30 raw hits across the two
 compared windows (`MIN_YOY_VOLUME` — a percentage of almost nothing is a
@@ -450,9 +471,11 @@ rumor, not a rate); `pct_change` is computed on raw counts.
 months AND ≥ 10 raw hits across each source's three averaged months
 (`MIN_DIVERGENCE_VOLUME` — two papers against a two-paper peak is an
 index of 100 and a fabricated headline, not a divergence);
-`research_vs_media_index` = arxiv 3-month index average minus gdelt's;
-`direction` ∈ research_leads / media_leads / aligned with a ±10 dead
-zone. arXiv series store an explicit count for every window month on a
+`research_vs_media_index` = arxiv 3-month index average minus gdelt's —
+divergence deliberately stays gdelt-vs-arxiv after v1.1: those two
+remain the cleanest media-vs-research pair (Wikipedia mixes both
+audiences, EDGAR tracks investor language); `direction` ∈
+research_leads / media_leads / aligned with a ±10 dead zone. arXiv series store an explicit count for every window month on a
 successful fetch, zeros included — for arXiv the gaps ARE the world;
 only failed fetches leave gaps. Every `headline` field is nullable — no eligible pair means
 `null`, never a fabricated number; ties break by `term_id` ascending.

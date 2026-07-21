@@ -313,13 +313,18 @@ all-economies snapshot comes from the world-map page's inline table
 `pipeline/fetch_dnssec.py` and data-contracts.md.
 
 **Verified spare data sources for Security Market v1.1** (live-tested
-2026-07-09): SEC EDGAR full-text search (free JSON API, mandatory
+2026-07-09, re-verified and SHIPPED as the module's 4th and 5th lanes
+2026-07-21): SEC EDGAR full-text search (free JSON API, mandatory
 User-Agent header, history to 2001 — an "enterprise/investor attention"
 lane) and Wikipedia Pageviews REST API (server-side monthly aggregates,
 one request per term for the whole history, the most reliable API tested —
 designated fallback if GDELT's rate limiting becomes intolerable).
-Rejected: Stack Exchange (too sparse), GitHub search (workable but
-rate-limit-cramped; future 4th source at best).
+Both lanes are stateless nightly full-window refetches; the first run
+needs no special backfill step (~13 Wikipedia requests plus ~840 EDGAR
+term-month cells, roughly 15–25 minutes at the polite pacing baked into
+`pipeline/fetch_market.py`). Rejected: Stack Exchange (too sparse),
+GitHub search (workable but rate-limit-cramped; future 6th source at
+best).
 
 House rules for any module that ships (same bar as the existing two):
 

@@ -1,6 +1,6 @@
 """Security Market fetchers: monthly interest counts per term x source.
 
-Three public corpora feed one nightly sync-state file
+Five public corpora feed one nightly sync-state file
 (``.cache/market_state.json``, plain JSON — it stays small and greppable):
 
 * **GDELT DOC 2.0** (news volume) — ``mode=timelinevolraw`` returns the raw
@@ -42,6 +42,31 @@ Three public corpora feed one nightly sync-state file
   backfill cells are genuinely unknown, so only fetched cells are stored.)
   arXiv's ToS asks for at least 3s between API requests; we sleep 3.1s
   after every one.
+* **Wikipedia Pageviews REST API** (public attention) — one request per
+  term covers the whole window: ``per-article/.../monthly/...`` returns
+  server-side monthly view totals for the term's curated article
+  (``TermDef.wiki_article``; terms mapped to None are skipped). Like
+  GDELT there is no backfill concept: every night re-fetches the whole
+  curve and replaces the cached months; a failed term (or an HTTP 404 —
+  a renamed/deleted article, which must be fixed in market_terms.py)
+  keeps its cached months. Months the API omits (article did not exist
+  yet) stay gaps — unknown, not zero. ``agent=user`` filters bot
+  traffic. Wikimedia's API policy requires a descriptive User-Agent
+  with contact info; we send one and sleep 0.5s between terms.
+* **SEC EDGAR full-text search** (enterprise/investor attention) — one
+  request per *(term, month)* cell, like HN:
+  ``efts.sec.gov/LATEST/search-index?q="<phrase>"&startdt=..&enddt=..``
+  read for ``hits.total.value`` (the corpus reaches back to 2001, far
+  past our window). There is no date-histogram aggregation, so the
+  whole window is re-fetched cell by cell each night — stateless, no
+  queue; a failed cell keeps its cached count (per-cell healing) and
+  ``_EDGAR_ABORT_AFTER`` *consecutive* failures abort the whole pass
+  for the night (SEC is telling us to go away; cached months stand).
+  SEC's fair-access policy demands a ``Company contact@email`` style
+  User-Agent (anything less returns an HTML block page, not JSON) and
+  at most 10 req/s; we send one request at a time and sleep 0.25s
+  after each, which with observed 0.5-2s response times paces the
+  ~840-cell pass to roughly 15-25 minutes.
 
 The state is a cache, never a source of truth: months are pruned to the
 rolling window on every sync, and pending entries whose month left the
@@ -58,7 +83,7 @@ from __future__ import annotations
 import json
 import time
 import xml.etree.ElementTree as ET
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -67,12 +92,29 @@ from .market_terms import TermDef
 GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
 HN_URL = "https://hn.algolia.com/api/v1/search"
 ARXIV_URL = "https://export.arxiv.org/api/query"
+WIKI_URL = ("https://wikimedia.org/api/rest_v1/metrics/pageviews/"
+            "per-article/en.wikipedia.org/all-access/user")
+EDGAR_URL = "https://efts.sec.gov/LATEST/search-index"
 USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
+# SEC's fair-access policy requires a "Company contact@email" User-Agent.
+# Tested live 2026-07-21: this exact shape returns JSON; a UA without a
+# contact address — or even one that ALSO carries the project URL in
+# parentheses like our default UA does — gets the HTML "Undeclared
+# Automated Tool" block page instead. Keep it to name/version + email.
+EDGAR_USER_AGENT = "CyberMon/1.0 claude@devko.de"
+# Still 1 after the Wikipedia/EDGAR lanes landed (v1.1): new sources are
+# ADDITIVE keys inside each term's series map — _pruned_state and
+# reconstruct_state carry any source key through untouched, so a
+# three-source state file loads fine and simply gains "wiki"/"edgar"
+# keys on its first sync. Bumping the version would discard the cached
+# GDELT/HN/arXiv months and restart the ~960-cell HN backfill from
+# zero; only bump it when the state SHAPE becomes incompatible.
 STATE_VERSION = 1
 STATE_FILENAME = "market_state.json"
 ARXIV_PAGE_SIZE = 2000
 
 _HEADERS = {"User-Agent": USER_AGENT}
+_EDGAR_HEADERS = {"User-Agent": EDGAR_USER_AGENT}
 _TIMEOUT = 60.0
 _GDELT_TIMEOUT = 90.0          # measured: normal responses take 8-55s
 _GDELT_TERM_DELAY = 10.0       # politeness gap between term curves
@@ -80,6 +122,9 @@ _GDELT_RETRY_DELAY = 75.0      # penalty windows outlast 60s; wait them out
 _HN_DELAY = 1.0
 _ARXIV_DELAY = 3.1             # arXiv ToS: >= 3s between API requests
 _ARXIV_MAX_PAGES = 3
+_WIKI_DELAY = 0.5              # politeness gap between term curves
+_EDGAR_DELAY = 0.25            # + 0.5-2s response time ≈ well under 10/s
+_EDGAR_ABORT_AFTER = 5         # consecutive failures = SEC said stop
 _RETRY_STATUSES = {429, 500, 502, 503, 504}
 _MAX_ATTEMPTS = 4
 _ATOM = "{http://www.w3.org/2005/Atom}"
@@ -116,6 +161,15 @@ def _month_epochs(month: str) -> tuple[int, int]:
     ny, nm = (year + 1, 1) if mon == 12 else (year, mon + 1)
     end = datetime(ny, nm, 1, tzinfo=timezone.utc)
     return int(start.timestamp()), int(end.timestamp())
+
+
+def _month_bounds_iso(month: str) -> tuple[str, str]:
+    """First and last day of a calendar month as inclusive ISO dates
+    (``YYYY-MM-DD``), the format EDGAR's startdt/enddt expect."""
+    year, mon = int(month[:4]), int(month[5:7])
+    ny, nm = (year + 1, 1) if mon == 12 else (year, mon + 1)
+    last = date(ny, nm, 1) - timedelta(days=1)
+    return f"{month}-01", last.isoformat()
 
 
 # ---------------------------------------------------------------- state I/O
@@ -393,6 +447,114 @@ def _arxiv_pass(session, series: dict, terms: list[TermDef],
         f"re-bucketed, {kept} kept from cache")
 
 
+# ---------------------------------------------------------------- Wikipedia
+
+def _fetch_wiki(session, term: TermDef, window: list[str],
+                log: Callable[[str], None]) -> dict[str, int] | None:
+    """One term's whole monthly pageview curve as ``{YYYY-MM: views}``, or
+    None on failure (keep the cached months). Months the API omits —
+    the article did not exist yet — stay gaps: unknown, not zero. A 404
+    for a mapped article means the title was renamed or deleted and
+    market_terms.py needs fixing; logged loudly, cache kept."""
+    start = window[0].replace("-", "") + "0100"
+    end = window[-1].replace("-", "") + "0100"
+    url = f"{WIKI_URL}/{term.wiki_article}/monthly/{start}/{end}"
+    try:
+        resp = session.get(url, headers=_HEADERS, timeout=_TIMEOUT)
+        if resp.status_code == 404:
+            log(f"  market/wiki: HTTP 404 for article "
+                f"{term.wiki_article!r} ({term.id}) — renamed/deleted? "
+                f"fix market_terms.py; keeping cached months")
+            return None
+        if resp.status_code != 200:
+            raise ValueError(f"HTTP {resp.status_code}")
+        monthly: dict[str, int] = {}
+        for item in resp.json()["items"]:
+            ts = str(item["timestamp"])  # "2021080100"
+            monthly[f"{ts[:4]}-{ts[4:6]}"] = int(item["views"])
+        return monthly
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        log(f"  market/wiki: request failed ({term.id}): {exc!r}; "
+            f"keeping cached months")
+        return None
+
+
+def _wiki_pass(session, series: dict, terms: list[TermDef],
+               window_set: set[str], window: list[str],
+               sleep: Callable[[float], None],
+               log: Callable[[str], None]) -> None:
+    mapped = [t for t in terms if t.wiki_article]
+    refreshed = kept = 0
+    for i, term in enumerate(mapped):
+        if i:
+            sleep(_WIKI_DELAY)
+        monthly = _fetch_wiki(session, term, window, log)
+        if monthly is None:
+            kept += 1
+            continue
+        series.setdefault(term.id, {})["wiki"] = \
+            {m: n for m, n in monthly.items() if m in window_set}
+        refreshed += 1
+    log(f"  market/wiki: {refreshed}/{len(mapped)} term curve(s) refreshed, "
+        f"{kept} kept from cache "
+        f"({len(terms) - len(mapped)} term(s) have no article mapping)")
+
+
+# -------------------------------------------------------------------- EDGAR
+
+def _fetch_edgar_month(session, term: TermDef, month: str,
+                       log: Callable[[str], None]) -> int | None:
+    """``hits.total.value`` for one (term, calendar month) cell, or None
+    on failure (the caller keeps whatever it had). No in-cell retry loop:
+    the pass revisits every cell nightly anyway, and hammering SEC after
+    an error is how User-Agents get blocked."""
+    startdt, enddt = _month_bounds_iso(month)
+    params = {"q": term.edgar_query, "startdt": startdt, "enddt": enddt}
+    try:
+        resp = session.get(EDGAR_URL, params=params,
+                           headers=_EDGAR_HEADERS, timeout=_TIMEOUT)
+        if resp.status_code != 200:
+            raise ValueError(f"HTTP {resp.status_code}")
+        # block pages are HTML, so .json() raising is a failure signal too
+        return int(resp.json()["hits"]["total"]["value"])
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        log(f"  market/edgar: cell failed ({term.id} {month}): {exc!r}; "
+            f"keeping cached count")
+        return None
+
+
+def _edgar_pass(session, series: dict, terms: list[TermDef],
+                window: list[str],
+                sleep: Callable[[float], None],
+                log: Callable[[str], None]) -> None:
+    """Re-fetch every (term, month) cell in the window (per-cell healing:
+    a failure keeps the cached count). ``_EDGAR_ABORT_AFTER`` consecutive
+    failures abort the pass for the night — that pattern is SEC throttling
+    or a block page, and 800 more requests would only make it worse."""
+    tracked = [t for t in terms if t.edgar_query]
+    refreshed = failed = streak = 0
+    for term in tracked:
+        for month in window:
+            count = _fetch_edgar_month(session, term, month, log)
+            sleep(_EDGAR_DELAY)
+            if count is None:
+                failed += 1
+                streak += 1
+                if streak >= _EDGAR_ABORT_AFTER:
+                    log(f"  market/edgar: {streak} consecutive failures — "
+                        f"aborting the pass for tonight "
+                        f"({refreshed} cell(s) refreshed, cached months "
+                        f"keep the rest)")
+                    return
+                continue
+            streak = 0
+            series.setdefault(term.id, {}) \
+                  .setdefault("edgar", {})[month] = count
+            refreshed += 1
+    log(f"  market/edgar: {refreshed} cell(s) refreshed across "
+        f"{len(tracked)} term(s), {failed} kept from cache")
+
+
 # ----------------------------------------------------------------------- HN
 
 def _fetch_hn_month(session, term: TermDef, month: str,
@@ -481,11 +643,11 @@ def sync_state(state: dict | None, terms: list[TermDef],
                log: Callable[[str], None] = print) -> dict:
     """Return up-to-date market sync state (``{version, last_sync, series,
     pending}``): prune the prior state to the rolling window, re-fetch the
-    whole GDELT and arXiv curves per term (GDELT in the starved-first,
-    day-rotated order of :func:`gdelt_term_order`), refresh the two most
-    recent HN months per term, and drain up to ``backfill_batch`` HN cells
-    from the pending queue (see the module docstring for the per-source
-    policy)."""
+    whole GDELT, arXiv, Wikipedia and EDGAR curves per term (GDELT in the
+    starved-first, day-rotated order of :func:`gdelt_term_order`; EDGAR
+    cell by cell), refresh the two most recent HN months per term, and
+    drain up to ``backfill_batch`` HN cells from the pending queue (see
+    the module docstring for the per-source policy)."""
     if session is None:
         import requests
 
@@ -496,6 +658,8 @@ def sync_state(state: dict | None, terms: list[TermDef],
     series, pending = _pruned_state(state, terms, window_set, log)
     _gdelt_pass(session, series, terms, window_set, now.date(), sleep, log)
     _arxiv_pass(session, series, terms, window, sleep, log)
+    _wiki_pass(session, series, terms, window_set, window, sleep, log)
+    _edgar_pass(session, series, terms, window, sleep, log)
     pending = _hn_pass(session, series, pending, terms, window,
                        backfill_batch, sleep, log)
     return {"version": STATE_VERSION, "last_sync": _iso(now),
