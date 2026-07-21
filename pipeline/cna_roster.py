@@ -310,7 +310,9 @@ def build_roster_mix(snapshot: RosterSnapshot) -> tuple[dict, dict]:
         "roster_total": total,
         "top_type": by_type[0]["label"],
         "top_type_n": by_type[0]["n"],
-        "country_count": len(by_country),
+        # real countries only: the "n/a" bucket (orgs listing none) stays
+        # visible in by_country but is not a country
+        "country_count": len([k for k in by_country if k != "n/a"]),
         "root_count": root_count,
         "mitre_n": mitre_n,
         "cisa_n": cisa_n,

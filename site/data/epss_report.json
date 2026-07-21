@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-21T05:37:09Z",
+ "generated_at": "2026-07-21T18:55:36Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,13 +96,13 @@
   },
   {
    "year": 2026,
-   "graded": 124,
+   "graded": 128,
    "n_below_1pct": 63,
-   "n_1_to_10pct": 23,
-   "n_above_10pct": 38,
-   "pct_below_1pct": 50.8,
-   "pct_1_to_10pct": 18.5,
-   "pct_above_10pct": 30.6,
+   "n_1_to_10pct": 26,
+   "n_above_10pct": 39,
+   "pct_below_1pct": 49.2,
+   "pct_1_to_10pct": 20.3,
+   "pct_above_10pct": 30.5,
    "ungradeable": 39,
    "pending": 0
   }
@@ -157,12 +157,12 @@
    },
    {
     "model": "v5",
-    "n": 21,
+    "n": 25,
     "counts": {
      "<0.1%": 0,
      "0.1-1%": 12,
-     "1-10%": 5,
-     ">10%": 4
+     "1-10%": 8,
+     ">10%": 5
     }
    }
   ]
@@ -172,7 +172,7 @@
    {
     "bucket": "0-25",
     "n": 191,
-    "pct": 14.1
+    "pct": 14.0
    },
    {
     "bucket": "25-50",
@@ -186,30 +186,30 @@
    },
    {
     "bucket": "75-90",
-    "n": 183,
+    "n": 184,
     "pct": 13.5
    },
    {
     "bucket": "90-99",
-    "n": 318,
-    "pct": 23.4
+    "n": 321,
+    "pct": 23.6
    },
    {
     "bucket": "99-100",
     "n": 274,
-    "pct": 20.2
+    "pct": 20.1
    }
   ],
-  "n": 1358,
+  "n": 1362,
   "bottom_half": {
    "n": 399,
-   "pct": 29.4
+   "pct": 29.3
   },
-  "median_percentile": 84.5
+  "median_percentile": 84.6
  },
  "catalog": {
-  "total": 1647,
-  "graded": 1358,
+  "total": 1651,
+  "graded": 1362,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 206,
@@ -218,8 +218,8 @@
   "pending_backfill": 0
  },
  "headline": {
-  "graded": 1358,
-  "pct_below_1pct": 31.7,
+  "graded": 1362,
+  "pct_below_1pct": 31.6,
   "latest_year": 2025,
   "graded_latest": 184,
   "pct_below_1pct_latest": 59.2
@@ -15045,6 +15045,42 @@
    "score_date": "2026-07-15",
    "epss": 0.01324,
    "percentile": 0.67697,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2021-27137",
+   "date_added": "2026-07-21",
+   "score_date": "2026-07-20",
+   "epss": 0.05447,
+   "percentile": 0.91854,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-0770",
+   "date_added": "2026-07-21",
+   "score_date": "2026-07-20",
+   "epss": 0.10371,
+   "percentile": 0.95223,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-60137",
+   "date_added": "2026-07-21",
+   "score_date": "2026-07-20",
+   "epss": 0.04026,
+   "percentile": 0.89467,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-63030",
+   "date_added": "2026-07-21",
+   "score_date": "2026-07-20",
+   "epss": 0.08946,
+   "percentile": 0.94675,
    "model": "v5",
    "reason": null
   }

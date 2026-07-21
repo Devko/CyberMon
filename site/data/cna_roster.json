@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-07-21T05:37:09Z",
+ "generated_at": "2026-07-21T18:55:36Z",
  "roster_size": {
   "min_n": 2,
-  "current": 530,
-  "net_change": 0,
+  "current": 533,
+  "net_change": 3,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -20,26 +20,33 @@
    },
    {
     "date": "2026-07-21",
-    "size": 530
+    "size": 533
    }
   ]
  },
  "roster_flux": {
-  "months": [],
+  "months": [
+   {
+    "month": "2026-07",
+    "onboarded": 3,
+    "departed": 0,
+    "scope_changed": 1
+   }
+  ],
   "totals": {
-   "onboarded": 0,
+   "onboarded": 3,
    "departed": 0,
-   "scope_changed": 0
+   "scope_changed": 1
   },
-  "events_total": 0,
-  "first_observed": null
+  "events_total": 4,
+  "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 530,
+  "total": 533,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 432
+    "n": 435
    },
    {
     "label": "Open Source",
@@ -51,7 +58,7 @@
    },
    {
     "label": "Hosted Service",
-    "n": 37
+    "n": 38
    },
    {
     "label": "CERT",
@@ -73,7 +80,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 443
+    "n": 446
    },
    {
     "label": "CISA",
@@ -94,12 +101,12 @@
     "n": 83
    },
    {
-    "label": "redhat",
-    "n": 18
+    "label": "ENISA",
+    "n": 19
    },
    {
-    "label": "ENISA",
-    "n": 16
+    "label": "redhat",
+    "n": 18
    },
    {
     "label": "jpcert",
@@ -140,12 +147,12 @@
     "n": 15
    },
    {
-    "label": "Australia",
-    "n": 13
+    "label": "France",
+    "n": 14
    },
    {
-    "label": "France",
-    "n": 12
+    "label": "Australia",
+    "n": 13
    },
    {
     "label": "Spain",
@@ -169,7 +176,7 @@
    },
    {
     "label": "Netherlands",
-    "n": 8
+    "n": 9
    },
    {
     "label": "Sweden",
@@ -298,12 +305,12 @@
   ]
  },
  "headline": {
-  "roster_total": 530,
+  "roster_total": 533,
   "top_type": "Vendor",
-  "top_type_n": 432,
+  "top_type_n": 435,
   "country_count": 44,
   "root_count": 7,
-  "mitre_n": 443,
+  "mitre_n": 446,
   "cisa_n": 85
  }
 }

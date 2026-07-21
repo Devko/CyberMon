@@ -1,1 +1,5 @@
 observed_date,short_name,change_type,org,country,type
+2026-07-21,AISLE,onboarded,AISLE Incorporated,Netherlands,Vendor
+2026-07-21,Scality,onboarded,Scality SA,France,Vendor
+2026-07-21,Tacit,onboarded,Tacit,France,Hosted Service + Vendor
+2026-07-21,NCSC.ch,scope_changed,Switzerland National Cyber Security Centre (NCSC),Switzerland,CERT

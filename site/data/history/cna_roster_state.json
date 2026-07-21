@@ -44,6 +44,12 @@
    "scope": "3643d7cf8cde",
    "type": "Researcher"
   },
+  "AISLE": {
+   "country": "Netherlands",
+   "org": "AISLE Incorporated",
+   "scope": "22c3e48cc22b",
+   "type": "Vendor"
+  },
   "AMD": {
    "country": "USA",
    "org": "Advanced Micro Devices Inc.",
@@ -1367,7 +1373,7 @@
   "NCSC.ch": {
    "country": "Switzerland",
    "org": "Switzerland National Cyber Security Centre (NCSC)",
-   "scope": "f6d9ee7be6eb",
+   "scope": "dd156e59bdf3",
    "type": "CERT"
   },
   "NEC": {
@@ -1886,6 +1892,12 @@
    "scope": "1cd599f00faa",
    "type": "Vendor"
   },
+  "Scality": {
+   "country": "France",
+   "org": "Scality SA",
+   "scope": "aaf8c51f71e4",
+   "type": "Vendor"
+  },
   "Seagate": {
    "country": "USA",
    "org": "Seagate Technology",
@@ -2101,6 +2113,12 @@
    "org": "TYPO3 Association",
    "scope": "3d0105c6d72d",
    "type": "Open Source"
+  },
+  "Tacit": {
+   "country": "France",
+   "org": "Tacit",
+   "scope": "ebb31664555e",
+   "type": "Hosted Service + Vendor"
   },
   "Tanium": {
    "country": "USA",
@@ -3198,7 +3216,7 @@
   ],
   [
    "2026-07-21",
-   530
+   533
   ]
  ],
  "version": 1

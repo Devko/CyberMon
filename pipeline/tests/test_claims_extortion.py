@@ -74,7 +74,26 @@ def check_unattributed_two_thirds(d: dict) -> None:
 
 
 # --------------------------------------------------------------------------
+def check_last_verified_payment_quarter(d: dict) -> None:
+    # editorial.js (extortion): "the ledger's last verified payment landed
+    # in Q3 2024" — a hard date one new crowdsourced report invalidates
+    # overnight. Failing here means a newer payment landed: update BOTH
+    # copy occurrences (revenue caption + payments methodology).
+    paid = [q for q in d["revenue_by_quarter"] if q["usd"] > 0]
+    assert paid, "no paid quarters on the ledger at all"
+    newest = (paid[-1]["year"], paid[-1]["quarter"])
+    assert newest == (2024, 3), (
+        f"'last verified payment landed in Q3 2024' vs newest paid quarter "
+        f"{newest[0]}Q{newest[1]}"
+    )
+
+
 CLAIMS = [
+    (
+        "the ledger's last verified payment landed in Q3 2024",
+        "extortion_ledger.json",
+        check_last_verified_payment_quarter,
+    ),
     (
         "Over a billion dollars, settled in public view.",
         "extortion_ledger.json",

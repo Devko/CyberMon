@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-21T05:37:09Z",
+ "generated_at": "2026-07-21T18:55:36Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -618,14 +618,14 @@
    },
    {
     "month": "2026-07",
-    "validating_pc": 38.9
+    "validating_pc": 38.8
    }
   ],
   "latest": {
-   "date": "2026-07-18",
-   "validating_pc": 38.9,
+   "date": "2026-07-19",
+   "validating_pc": 38.8,
    "partial_pc": 8.5,
-   "seen": 547626225
+   "seen": 550492165
   },
   "baseline": {
    "month": "2016-07",
@@ -636,7 +636,7 @@
   {
    "cc": "PH",
    "name": "Philippines",
-   "latest_pc": 93.4,
+   "latest_pc": 93.5,
    "series": [
     {
      "month": "2013-12",
@@ -844,14 +844,14 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 93.4
+     "validating_pc": 93.5
     }
    ]
   },
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 60.1,
+   "latest_pc": 60.0,
    "series": [
     {
      "month": "2013-12",
@@ -1059,7 +1059,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 60.1
+     "validating_pc": 60.0
     }
    ]
   },
@@ -1281,7 +1281,7 @@
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 51.3,
+   "latest_pc": 51.4,
    "series": [
     {
      "month": "2013-12",
@@ -1489,7 +1489,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 51.3
+     "validating_pc": 51.4
     }
    ]
   },
@@ -1711,7 +1711,7 @@
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 41.2,
+   "latest_pc": 41.0,
    "series": [
     {
      "month": "2013-12",
@@ -1919,14 +1919,14 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 41.2
+     "validating_pc": 41.0
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 39.1,
+   "latest_pc": 39.3,
    "series": [
     {
      "month": "2013-12",
@@ -2134,7 +2134,7 @@
     },
     {
      "month": "2026-07",
-     "validating_pc": 39.1
+     "validating_pc": 39.3
     }
    ]
   },

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-21T05:37:09Z",
+ "generated_at": "2026-07-21T18:55:36Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 163,
+   "total": 167,
    "security": 26,
-   "pct_security": 16.0
+   "pct_security": 15.6
   }
  ],
  "vendors": [
@@ -429,6 +429,15 @@
    "median_gap_days": 389.0
   },
   {
+   "vendor": "Langflow",
+   "entries": 5,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2025-05-05",
+   "last_added": "2026-07-21",
+   "median_gap_days": 52.0
+  },
+  {
    "vendor": "RARLAB",
    "entries": 5,
    "security_entries": 0,
@@ -436,22 +445,31 @@
    "first_added": "2022-02-15",
    "last_added": "2025-12-09",
    "median_gap_days": 277.5
+  },
+  {
+   "vendor": "WordPress",
+   "entries": 5,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-07-21",
+   "median_gap_days": 0.0
   }
  ],
  "ransomware": {
   "security": {
    "total": 196,
-   "known": 71,
-   "pct_known": 36.2
+   "known": 72,
+   "pct_known": 36.7
   },
   "other": {
-   "total": 1451,
+   "total": 1455,
    "known": 258,
-   "pct_known": 17.8
+   "pct_known": 17.7
   }
  },
  "catalog": {
-  "total": 1647,
+  "total": 1651,
   "security": 196,
   "pct_security": 11.9,
   "classifier_version": 2,
