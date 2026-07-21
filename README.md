@@ -306,6 +306,27 @@ same nightly commit. Roster data is CVE Program data; the program's terms
 permit reuse of the published data. New fetcher `pipeline/fetch_cna_roster.py`,
 stage `pipeline/cna_roster.py`; no shared upstream.
 
+### 19 · Time to PoC — [exploits.html](https://devko.github.io/CyberMon/exploits.html) (live)
+
+*The only deadline that matters is the gap between disclosure and public
+exploit code.* Three charts joining the public exploit trackers to the CVE
+corpus — the third leg of the exploitation trilogy (KEV Latency is the
+government's clock, EPSS Report Card the forecast's grade, this the
+attacker's): the gap from CVE publication to the first dated public PoC
+(median/IQR per publication year, negative gaps kept — since the mid-2000s
+the median hugs zero, and half the PoC'd cohort has code out before the
+record), the share of KEV listings whose exploit code predates the listing
+(seeding era split out, KEV-Latency style), and PoC coverage per CVSS
+bucket for the latest complete year — the one place severity predicts
+attention. Sources: the Exploit-DB index CSV (`date_published`),
+Metasploit's `modules_metadata_base.json` (`disclosure_date` — the
+disclosure, not the module merge; documented), and the Nuclei templates
+CVE index (undated upstream, so coverage only — no repo histories are
+cloned). All three publish full history, so the stage refetches
+statelessly every night (`pipeline/fetch_poc.py`, day-cached in
+`.cache/poc/`); honesty notes — public-tracker lower bound, self-selected
+cohort, right-censored recent years — live in the page methodology.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the
@@ -325,6 +346,7 @@ reads a few-KB JSON file; there are no runtime queries.
       │              ├─ APNIC DNSSEC series
       │              ├─ GDELT · HN · arXiv
       │              ├─ Wikipedia · SEC EDGAR
+      │              ├─ Exploit-DB · Metasploit · Nuclei
       │              └─ NVD API (status)
       └─ on failure: workflow fails, nothing is deployed
 ```
@@ -349,6 +371,9 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Internet Archive Wayback Machine](https://web.archive.org/) | Historical captures of the CISA KEV JSON (CDX index + snapshot bodies), fetched once for the KEV Changelog backfill — paced ~1 req/s, cached in `.cache/kev_wayback/`, never touched by CI | Archived US Government (CC0-style) content, served by the Internet Archive; capture metadata via the [CDX API](https://archive.org/developers/wayback-cdx-server.html) |
 | [MITRE CWE Top 25](https://cwe.mitre.org/top25/) | The published annual CWE Top 25 rankings (static, hand-transcribed per year into `pipeline/cwe_top25_data.py`), set against the corpus's own first-listed-CWE prevalence and the KEV-exploited cut | [CWE Terms of Use](https://cwe.mitre.org/about/termsofuse.html); CWE is a trademark of The MITRE Corporation |
 | [CVE.org organization roster](https://www.cve.org/PartnerInformation/ListofPartners) | The CVE Program's partner list (`CNAsList.json` from the [cve-website](https://github.com/CVEProject/cve-website) repo): org short names, type, scope, top-level/reporting roots and country — snapshotted nightly for the CNA Roster growth/churn record | [CVE terms of use](https://www.cve.org/Legal/TermsOfUse); same CVE Program data family as cvelistV5 |
+| [Exploit-DB](https://www.exploit-db.com/) (OffSec) | The exploit archive's index CSV (`files_exploits.csv` from the [exploitdb](https://gitlab.com/exploit-database/exploitdb) repo): per-exploit `date_published` and CVE references from the `codes` column — metadata only, no exploit code is fetched | Archive maintained by OffSec as a public service; index metadata used as facts with attribution (credited in the site footer); not affiliated |
+| [Metasploit Framework](https://github.com/rapid7/metasploit-framework) (Rapid7) | Module metadata (`db/modules_metadata_base.json`): `disclosure_date` and CVE `references` per module — the disclosure date, not the module merge date, documented as such | [BSD-3-Clause](https://github.com/rapid7/metasploit-framework/blob/master/LICENSE); Metasploit is a Rapid7 project (credited in the site footer) |
+| [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template — coverage only, the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and
@@ -448,6 +473,9 @@ CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
 CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, the Wikimedia
 Foundation, the U.S. Securities and Exchange Commission, Have I Been
 Pwned, Ransomwhere, or APNIC**. All upstream data is © its
+CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
+Pwned, Ransomwhere, APNIC, OffSec, Rapid7, or ProjectDiscovery**. All
+upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
 

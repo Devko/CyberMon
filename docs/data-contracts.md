@@ -1681,3 +1681,117 @@ roster_mix.total`, `top_type`/`top_type_n` mirror `by_type[0]`,
 `country_count == len(by_country)`, and `mitre_n + cisa_n <= total`.
 Validator: `pipeline/roster_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
+
+## site/data/time_to_poc.json  (Time to PoC module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "hero": {
+    "matched": {"dated_cves": 26182, "matched_cves": 26139,
+                "unmatched_cves": 43},
+    "years": [
+      {"year": 2025, "n": 502, "median_days": -12.0, "p25_days": -4452.0,
+       "p75_days": 6.8, "pct_negative": 55.4, "pct_within_week": 75.3}
+    ],
+    "headline": {"latest_year": 2025, "median_days_latest": -12.0,
+                 "pct_negative_latest": 55.4,
+                 "baseline_year": 2015, "median_days_baseline": -2.0}
+  },
+  "kev_preempt": {
+    "cutoff": "2023-01-01",
+    "total_kev": 1651,
+    "trend": {"with_poc_date": 228, "preempted": 184,
+              "pct_preempted": 80.7},
+    "seeding": {"with_poc_date": 412, "preempted": 407,
+                "pct_preempted": 98.8},
+    "years": [
+      {"year": 2024, "total_added": 186, "with_poc_date": 65,
+       "preempted": 51, "pct_preempted": 78.5}
+    ]
+  },
+  "coverage": {
+    "window_year": 2025,
+    "buckets": [
+      {"bucket": "9.0-10.0", "total": 3955, "with_poc": 328, "pct": 8.3}
+    ],
+    "unscored": {"total": 4398, "with_poc": 2, "pct": 0.0}
+  },
+  "catalog": {
+    "exploitdb": {"entries": 47108, "with_cve": 27384, "cves": 25041,
+                  "dated_cves": 25041},
+    "metasploit": {"modules": 7110, "with_cve": 3078, "cves": 3169,
+                   "dated_cves": 3007},
+    "nuclei": {"templates": 4222, "cves": 4222},
+    "union_cves": 29360, "dated_cves": 26182, "matched_in_corpus": 29293
+  }
+}
+```
+
+Sources (all public index files, all shipping their full history, so the
+stage refetches statelessly every night — the APNIC pattern; downloads are
+cached per UTC day in `.cache/poc/`, ~23 MB total; `pipeline/fetch_poc.py`):
+
+* **Exploit-DB index CSV**
+  (`gitlab.com/exploit-database/exploitdb` → raw `files_exploits.csv`,
+  ~10 MB, ~47k rows) — CVE ids extracted from the semicolon-separated
+  `codes` column (~58% of rows carry at least one). A PoC is dated by
+  `date_published` — the archive's record of when the exploit was
+  published, which can predate `date_added` (when it entered the
+  archive); the choice is stated in the page methodology.
+* **Metasploit module metadata**
+  (`raw.githubusercontent.com/rapid7/metasploit-framework/master/db/modules_metadata_base.json`,
+  ~11 MB, ~7.1k modules) — CVE ids from `references`;
+  `disclosure_date` dates the DISCLOSURE the module targets, not the
+  module's merge (module merge dates would need git history, which the
+  pipeline never clones) — a conservative dated lower bound on public
+  tooling, stated as such. Placeholder dates (`1900-01-01`, anything
+  before 1988-01-01) contribute coverage but never a date.
+* **Nuclei templates CVE index**
+  (`raw.githubusercontent.com/projectdiscovery/nuclei-templates/main/cves.json`,
+  ~2 MB JSONL, ~4.2k CVE-keyed templates) — NO dates published, so
+  Nuclei contributes to `coverage` only, never to dating; stated
+  honestly in the methodology.
+
+Parsing is lenient per row/line but a source yielding zero CVE-linked
+entries fails the run loudly (`ValueError`). Per CVE, the **first public
+PoC date** = the minimum over the dated sources. The corpus join reuses
+the shared streaming pass: `Aggregator.poc_published_dates` (ids
+referenced by any source → `datePublished`, the exact mirror of the KEV
+join) and `Aggregator.poc_flood` (per publication year, PoC-covered
+records per severity bucket — the same bucket assignment as `flood`, so
+coverage can never re-bucket).
+
+`hero`: gap = first PoC date − `datePublished`, in days, grouped by CVE
+publication year; **negative gaps are kept** (the KEV-latency rule — a
+PoC predating the record is real signal: advisories shipping with
+exploits, or old exploits assigned CVEs years later, which is why early
+p25 values run to thousands of negative days). A year plots only with
+`min_n` (production 10) matched CVEs. `matched_cves + unmatched_cves ==
+dated_cves` (enforced); the headline never leans on the partial current
+year and prefers a ten-year-lookback baseline. Honesty, owned in the
+copy: public PoC in three trackers is a lower bound on tooling; the
+cohort is self-selected (~8% of records ever match); recent years are
+right-censored.
+
+`kev_preempt`: a KEV entry is *preempted* when its first PoC date
+**strictly** predates `dateAdded` (same-day does not count). Denominator
+= entries with a dated PoC; entries without one say nothing about the
+race and are excluded rather than counted either way. The 2021-22
+seeding era (`dateAdded` before `kev_metrics.LAUNCH_CUTOFF`, the KEV
+Latency cutoff) is reported in `seeding`, kept out of the headline
+`trend` block; per-year rows plot all eras (seeding years render muted
+on the site) with the `min_n` gate on `with_poc_date`.
+
+`coverage`: for the latest complete calendar year (`window_year`),
+per-CVSS-bucket share of published records referenced by ANY source
+(dated or not). Buckets follow the Score-vs-Reality `CVSS_BUCKETS`
+order; a bucket below `min_n` records is withheld; `unscored` records
+get their own block rather than being hidden. `with_poc <= total` per
+row (enforced). `catalog` is the audit block: per-source totals,
+extraction counts (`with_cve <= entries/modules`, `dated_cves <= cves`),
+the three-source union, and the corpus join coverage;
+`catalog.dated_cves == hero.matched.dated_cves` (same join, enforced).
+No pace projection and no committed history: every number rebuilds from
+tonight's fetched corpora. Validator: `pipeline/poc_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).

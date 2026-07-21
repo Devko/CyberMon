@@ -1,0 +1,5 @@
+{"ID":"CVE-2025-0001","Info":{"Name":"Fixture template for an unscored record","Severity":"unknown"},"file_path":"http/cves/2025/CVE-2025-0001.yaml"}
+{"ID":"CVE-2024-0005","Info":{"Name":"Fixture template overlapping Exploit-DB","Severity":"high"},"file_path":"http/cves/2024/CVE-2024-0005.yaml"}
+{"ID":"CVE-2023-9001","Info":{"Name":"Fixture template for a KEV id outside the corpus","Severity":"critical"},"file_path":"http/cves/2023/CVE-2023-9001.yaml"}
+not json at all
+{"Info":{"Name":"line with no ID field"}}

@@ -32,7 +32,7 @@ from . import (adp_metrics, attack_metrics, breach_metrics, calendar_metrics,
                epss_report_metrics, epss_volatility, extortion_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
                kev_metrics, market_metrics, metrics, naming_metrics,
-               nvd_throughput, quality_metrics, rescore_tracker,
+               nvd_throughput, poc_metrics, quality_metrics, rescore_tracker,
                top25_metrics)
 from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -40,6 +40,7 @@ from .fetch_cvelist import (download_zip, iter_cve_records,
 from .fetch_epss import EpssData, fetch_epss, load_epss_file
 from .fetch_hibp import HibpData, fetch_hibp, load_hibp_file
 from .fetch_kev import KevData, fetch_kev, load_kev_file
+from .fetch_poc import fetch_poc, load_poc_files
 from .fetch_ransomwhere import fetch_ransomwhere, load_ransomwhere_file
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
@@ -277,6 +278,9 @@ def run(args: argparse.Namespace) -> int:
         hibp = load_hibp_file(FIXTURES_DIR / "hibp_breaches.json")
         ransomwhere = load_ransomwhere_file(FIXTURES_DIR / "ransomwhere.json")
         roster = load_roster_file(FIXTURES_DIR / "cna_roster.json")
+        poc = load_poc_files(FIXTURES_DIR / "exploitdb.csv",
+                             FIXTURES_DIR / "metasploit.json",
+                             FIXTURES_DIR / "nuclei_cves.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -295,11 +299,18 @@ def run(args: argparse.Namespace) -> int:
         print("fetching CVE.org organization roster ...")
         roster = fetch_roster()
         print(f"  CNA roster: {roster.org_count} organizations")
+        print("fetching public PoC corpora "
+              "(Exploit-DB / Metasploit / Nuclei) ...")
+        poc = fetch_poc(args.cache_dir)
+        print(f"  PoC corpora: {poc.edb_entries} Exploit-DB entries, "
+              f"{poc.msf_modules} Metasploit modules, "
+              f"{poc.nuclei_templates} Nuclei CVE templates "
+              f"({len(poc.all_ids)} CVEs referenced)")
     nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
-    agg = metrics.Aggregator(kev_ids=kev.cve_ids)
+    agg = metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.all_ids)
     agg.consume(records)
     print(f"  {agg.cve_count} CVE records aggregated")
     if agg.cve_count == 0:
@@ -382,6 +393,13 @@ def run(args: argparse.Namespace) -> int:
         "adp_coverage.json":
             adp_metrics.build_adp_coverage(
                 agg, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {})),
+        # Time to PoC: joins the three exploit corpora fetched above with
+        # the shared corpus pass (publication dates + severity buckets)
+        # and the KEV catalog — no extra pass, no accumulated state.
+        "time_to_poc.json":
+            poc_metrics.build_time_to_poc(
+                agg, poc, kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
     }
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
@@ -516,6 +534,16 @@ def run(args: argparse.Namespace) -> int:
         "fetched_at": generated_at, "cisa_records": agg.adp_cisa_total}
     outputs["meta.json"]["sources"]["epssvol"] = epssvol_source
     outputs["meta.json"]["sources"]["roster"] = roster_source
+    # Time to PoC rides three stateless nightly refetches — one source
+    # stamp per upstream corpus, all fetched at the run's generation time.
+    outputs["meta.json"]["sources"]["exploitdb"] = {
+        "fetched_at": generated_at, "entry_count": poc.edb_entries,
+        "cve_count": len(poc.edb_ids)}
+    outputs["meta.json"]["sources"]["metasploit"] = {
+        "fetched_at": generated_at, "module_count": poc.msf_modules,
+        "cve_count": len(poc.msf_ids)}
+    outputs["meta.json"]["sources"]["nuclei"] = {
+        "fetched_at": generated_at, "cve_count": len(poc.nuclei_ids)}
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

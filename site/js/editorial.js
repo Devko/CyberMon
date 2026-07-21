@@ -94,6 +94,25 @@ export const editorial = {
     { id: "adp", href: "adp.html", label: "Vulnrichment", group: "machine" },
     { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility", group: "exploitation" },
     { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
+    { id: "cve", href: "cve.html", label: "CVE Ecosystem" },
+    { id: "market", href: "market.html", label: "Security Market" },
+    { id: "kev", href: "kev.html", label: "KEV Latency" },
+    { id: "concentration", href: "concentration.html", label: "CNA Concentration" },
+    { id: "breaches", href: "breaches.html", label: "Breach Ledger" },
+    { id: "extortion", href: "extortion.html", label: "Extortion Ledger" },
+    { id: "attack", href: "attack.html", label: "ATT&CK Churn" },
+    { id: "hygiene", href: "hygiene.html", label: "Hygiene Index" },
+    { id: "guards", href: "guards.html", label: "Security Products" },
+    { id: "epss", href: "epss.html", label: "EPSS Report Card" },
+    { id: "calendar", href: "calendar.html", label: "CVE Calendar" },
+    { id: "changelog", href: "changelog.html", label: "KEV Changelog" },
+    { id: "rescores", href: "rescores.html", label: "Silent Rescores" },
+    { id: "naming", href: "naming.html", label: "Naming Chaos" },
+    { id: "top25", href: "top25.html", label: "CWE Top 25" },
+    { id: "adp", href: "adp.html", label: "Vulnrichment" },
+    { id: "epssvol", href: "epssvol.html", label: "EPSS Volatility" },
+    { id: "roster", href: "roster.html", label: "CNA Roster" },
+    { id: "exploits", href: "exploits.html", label: "Time to PoC" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -346,6 +365,21 @@ export const editorial = {
           "keeps the diff: onboardings, departures, scope changes, and the " +
           "current composition by type, root and country — a churn history that " +
           "starts at first deploy because no accreditation date is published.",
+        live: true,
+      },
+      {
+        id: "exploits",
+        href: "exploits.html",
+        num: "19",
+        label: "Time to PoC",
+        headline: "The exploit is usually public before the paperwork settles.",
+        blurb:
+          "Days from CVE publication to the first public exploit code in " +
+          "Exploit-DB or Metasploit — a clock that often starts in the " +
+          "negative — the share of CISA's exploited list the code beat to " +
+          "the announcement, and which severity buckets attract public " +
+          "PoCs at all, with Nuclei template coverage riding along. " +
+          "Rebuilt nightly from the trackers' published indexes.",
         live: true,
       },
     ],
@@ -2551,6 +2585,123 @@ export const editorial = {
         "— the trend is what the size and flux charts above are slowly " +
         "accumulating.",
     },
+
+    // --------------------------------- exploits.html · 1 · hero
+    poc_gap: {
+      num: "01",
+      kicker: "The attacker's clock",
+      source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE)",
+      headline: "The exploit rarely waits for the record.",
+      caption:
+        "For every CVE that a public exploit tracker references and dates, the gap from " +
+        "the CVE record's publication to the first public exploit code — median and " +
+        "interquartile range per publication year. In the program's first years the " +
+        "median ran deeply negative: early CVE records were cataloguing an arsenal that " +
+        "already existed. Since the mid-2000s the median has hugged zero, and in most " +
+        "years it is negative — for the CVEs that get public exploit code at all, the " +
+        "code tends to exist by the time the record lands. The gap is measured in days, " +
+        "not months, and the band below zero is disclosure culture in the raw: exploits " +
+        "that shipped with the advisory, or years before a CVE id was finally assigned.",
+      statLabel: "Median days from CVE publication to first public exploit code",
+      statLatest: "{latest_year}",
+      statAgo: "{ago_year}",
+      note:
+        "{dated} CVEs carry a dated public exploit across Exploit-DB and Metasploit; " +
+        "{matched} matched a CVE record in the corpus and are charted — {unmatched} " +
+        "found no record to join.",
+      methodology:
+        "For every CVE id referenced by the Exploit-DB index or Metasploit's module " +
+        "metadata, the first public PoC date is the earliest date either offers: " +
+        "Exploit-DB's date_published (the archive's record of when the exploit was " +
+        "published, which can predate its addition to the archive) and Metasploit's " +
+        "disclosure_date (the module author's record of when the vulnerability was " +
+        "publicly disclosed — module metadata does not publish the module's own merge " +
+        "date, so this is a conservative stand-in, stated as such). Nuclei templates " +
+        "carry no usable date and never contribute to dating — they count only toward " +
+        "coverage in the chart below. The gap is that first date minus the CVE record's " +
+        "datePublished, in days, grouped by the CVE's publication year; a year plots " +
+        "only with at least 10 matched CVEs. Negative gaps are kept as negative, the " +
+        "KEV-latency rule: exploit code published before the CVE record exists is a " +
+        "real event — an advisory shipping with its exploit, or an old exploit assigned " +
+        "a CVE years later — and flooring it would flatter the system. Placeholder " +
+        "dates (Metasploit's 1900-01-01) are treated as absent. Two honesty notes: " +
+        "this measures public PoC code in three trackers, a lower bound on tooling " +
+        "that undercounts private exploits and everything published elsewhere; and the " +
+        "cohort is self-selected — only a few percent of records ever get a tracked " +
+        "public exploit, so the chart describes the CVEs somebody bothered to arm, and " +
+        "recent years are additionally right-censored (a young CVE has had less time " +
+        "to attract code).",
+    },
+
+    // --------------------------------- exploits.html · 2
+    poc_preempt: {
+      num: "02",
+      kicker: "Before the government confirms",
+      source: "CISA KEV · Exploit-DB (OffSec) · Metasploit (Rapid7)",
+      headline: "The code was public before the confirmation.",
+      caption:
+        "CISA's Known Exploited Vulnerabilities catalog is the government's confirmation " +
+        "that a vulnerability is being used in the wild. For KEV entries whose CVE " +
+        "carries a dated public exploit, the bars show how often that exploit code was " +
+        "public before the day CISA listed it. The 2021–22 seeding years plot muted: a " +
+        "launch-era import of years-old CVEs is trivially beaten by equally old exploit " +
+        "code, so the figure that matters is the trend since — and even there, roughly " +
+        "four in five listings with a dated PoC were beaten to the announcement.",
+      note:
+        "Since {cutoff_year}: {trend_pct} of the {trend_n} KEV listings with a dated " +
+        "public PoC saw that code published before the listing day.",
+      methodology:
+        "Every KEV entry is joined to the first-public-PoC date built for the hero " +
+        "chart (Exploit-DB and Metasploit; Nuclei is undated and never used here). An " +
+        "entry counts as preempted when that date strictly predates the catalog's " +
+        "dateAdded — a same-day PoC does not count. The denominator is entries with a " +
+        "dated PoC, roughly four in ten of the catalog: an entry with no tracked public " +
+        "exploit says nothing about the race and is excluded rather than counted either " +
+        "way. The 2021–22 seeding era (entries added before 2023-01-01, the same cutoff " +
+        "the KEV Latency module uses) is split out of the headline figure because the " +
+        "launch backfill imported years-old CVEs whose exploits are as old as the " +
+        "backlog; those years chart muted for context. A year plots only with at least " +
+        "10 matched entries. The KEV side is the same feed the rest of the site " +
+        "fetches; the exploit side carries the hero chart's caveats — tracked public " +
+        "code only, so the share is a floor on how often defenders were actually " +
+        "behind.",
+    },
+
+    // --------------------------------- exploits.html · 3
+    poc_coverage: {
+      num: "03",
+      kicker: "Who gets weaponized",
+      source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei templates (ProjectDiscovery) · cvelistV5 (MITRE)",
+      headline: "Severity predicts attention, if nothing else.",
+      caption:
+        "Take the latest complete year of CVE records and ask which ones any of the " +
+        "three trackers touched — an Exploit-DB entry, a Metasploit module, a Nuclei " +
+        "template. Coverage is thin everywhere: the overwhelming majority of records " +
+        "never attract tracked public exploit code at all. But it climbs the scale " +
+        "steeply — criticals draw public exploit attention at several times the rate of " +
+        "the middle of the scale — which makes this the one place the score does what " +
+        "everyone assumes it does. The natural companion to Score vs. Reality: EPSS " +
+        "asks what will be exploited, this chart shows what already got a public tool.",
+      note:
+        "Records published in {window_year} — the latest complete year. A young record " +
+        "has had limited time to attract code and coverage can only grow, so every bar " +
+        "is a floor.",
+      methodology:
+        "For the latest complete calendar year, every published CVE record is bucketed " +
+        "by the same effective score the Score-vs-Reality grid uses (the newest-version " +
+        "base score anywhere in the record; records without one count as unscored) and " +
+        "marked covered when any of the three sources references its id: an Exploit-DB " +
+        "entry or Metasploit module with or without a usable date, or a Nuclei CVE " +
+        "template — which contributes coverage precisely because dating it would " +
+        "require the repository's git history, and this pipeline reads only published " +
+        "index files. Buckets with fewer than 10 records are withheld. Coverage is a " +
+        "share of that year's published records, so the chart inherits the corpus's own " +
+        "composition — the unscored bar is dominated by records nobody has touched, " +
+        "tracker or scorer. The window is one complete year, stated on the chart, and " +
+        "deliberately recent: it shows today's arming rate rather than the archive's " +
+        "decades-deep accumulation, at the price of right-censoring that the note " +
+        "above owns.",
+    },
   },
 
   footer: {
@@ -2566,13 +2717,19 @@ export const editorial = {
       "APNIC DNSSEC series fetched {apnic_fetched} · " +
       "EPSS history: {epss_graded} KEV entries graded · " +
       "rescore log: {rescore_events} events on record · " +
-      "KEV changelog: {kev_changelog_events} catalog events on record",
+      "KEV changelog: {kev_changelog_events} catalog events on record · " +
+      "Exploit-DB index ({exploitdb_entries} entries) · " +
+      "Metasploit metadata ({metasploit_modules} modules) · " +
+      "Nuclei CVE templates ({nuclei_cves})",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, or the Internet Archive. Charts aggregate public data; no " +
+      "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, Have I Been Pwned, " +
+      "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, or the Internet Archive. " +
+      "Charts aggregate public data; no " +
       "individual CVE is news here, and no victim is identified or identifiable anywhere " +
       "on this site.",
     reuseNote:
@@ -2595,6 +2752,9 @@ export const editorial = {
       "with the permission of The MITRE Corporation.), " +
       "DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
       "re-use with attribution permitted), " +
+      "the Exploit Database index (OffSec, exploit-db.com), " +
+      "Metasploit Framework module metadata (Rapid7, BSD-3-Clause), " +
+      "the Nuclei templates CVE index (ProjectDiscovery, MIT), " +
       "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
@@ -2635,6 +2795,7 @@ export const editorial = {
       adp: "CVE List V5 (MITRE)",
       epssvol: "EPSS (FIRST.org) · CyberMon nightly diffs",
       roster: "CVE.org organization roster · CyberMon nightly snapshots",
+      exploits: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei (ProjectDiscovery)",
     },
   },
 };
