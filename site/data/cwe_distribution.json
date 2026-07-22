@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-21T19:42:43Z",
+ "generated_at": "2026-07-22T05:35:47Z",
  "min_n": 500,
  "window": {
   "start_year": 2016,
@@ -162,8 +162,8 @@
   {
    "year": 2024,
    "n_tagged": 34558,
-   "n_published": 39929,
-   "pct_tagged": 86.5,
+   "n_published": 39928,
+   "pct_tagged": 86.6,
    "shares": {
     "CWE-79": 19.8,
     "CWE-89": 7.6,

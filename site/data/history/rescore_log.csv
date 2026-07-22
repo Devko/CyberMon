@@ -287,3 +287,4 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-07-21,CVE-2026-64176,Linux,first_score,,,v3,8.1
 2026-07-21,CVE-2026-64178,Linux,first_score,,,v3,8.8
 2026-07-21,CVE-2026-64181,Linux,first_score,,,v3,7.8
+2026-07-22,CVE-2026-48356,adobe,rescore,v3,9.6,v3,9.3
