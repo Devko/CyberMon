@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-22T05:35:47Z",
+ "generated_at": "2026-07-23T05:40:35Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,8 +12,8 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120167,
- "kev_total": 1431,
+ "measured_total": 120166,
+ "kev_total": 1433,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -47,7 +47,7 @@
    "name": "Missing authorization",
    "official_rank": 4,
    "measured_rank": 4,
-   "measured_n": 4774,
+   "measured_n": 4773,
    "measured_share": 4.0,
    "kev_n": 9
   },
@@ -148,7 +148,7 @@
    "measured_rank": 21,
    "measured_n": 1499,
    "measured_share": 1.2,
-   "kev_n": 65
+   "kev_n": 66
   },
   {
    "cwe": "CWE-122",

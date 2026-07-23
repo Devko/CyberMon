@@ -17221,6 +17221,17 @@
    "ransom": "Unknown",
    "vendor": "Ivanti"
   },
+  "CVE-2026-16232": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-22",
+   "desc": "545ec820b3e6",
+   "due": "2026-07-25",
+   "name": "Check Point SmartConsole Improper Authentication Vulnerability",
+   "notes": "78b4374a37be",
+   "product": "SmartConsole",
+   "ransom": "Unknown",
+   "vendor": "Check Point"
+  },
   "CVE-2026-1731": {
    "action": "f09df147152e",
    "added": "2026-02-13",
@@ -18002,6 +18013,17 @@
    "ransom": "Unknown",
    "vendor": "iCagenda"
   },
+  "CVE-2026-50522": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-22",
+   "desc": "401fc387cccb",
+   "due": "2026-07-25",
+   "name": "Microsoft SharePoint Deserialization of Untrusted Data Vulnerability",
+   "notes": "947d6d6ceab4",
+   "product": "SharePoint",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
   "CVE-2026-50751": {
    "action": "f09df147152e",
    "added": "2026-06-08",
@@ -18168,7 +18190,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-22",
+ "last_observed": "2026-07-23",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

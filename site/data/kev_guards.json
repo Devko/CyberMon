@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-22T05:35:47Z",
+ "generated_at": "2026-07-23T05:40:35Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,19 +35,19 @@
   },
   {
    "year": 2026,
-   "total": 167,
-   "security": 26,
-   "pct_security": 15.6
+   "total": 169,
+   "security": 27,
+   "pct_security": 16.0
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 381,
+   "entries": 382,
    "security_entries": 7,
    "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-16",
+   "last_added": "2026-07-22",
    "median_gap_days": 0.0
   },
   {
@@ -458,19 +458,19 @@
  ],
  "ransomware": {
   "security": {
-   "total": 196,
+   "total": 197,
    "known": 72,
-   "pct_known": 36.7
+   "pct_known": 36.5
   },
   "other": {
-   "total": 1455,
+   "total": 1456,
    "known": 258,
    "pct_known": 17.7
   }
  },
  "catalog": {
-  "total": 1651,
-  "security": 196,
+  "total": 1653,
+  "security": 197,
   "pct_security": 11.9,
   "classifier_version": 2,
   "classifier_rules": 35

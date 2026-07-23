@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-22T05:35:47Z",
+ "generated_at": "2026-07-23T05:40:35Z",
  "hero": {
   "matched": {
    "dated_cves": 26182,
@@ -270,7 +270,7 @@
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1651,
+  "total_kev": 1653,
   "trend": {
    "with_poc_date": 228,
    "preempted": 184,
@@ -319,7 +319,7 @@
    },
    {
     "year": 2026,
-    "total_added": 167,
+    "total_added": 169,
     "with_poc_date": 37,
     "preempted": 28,
     "pct_preempted": 75.7
@@ -349,13 +349,13 @@
    },
    {
     "bucket": "9.0-10.0",
-    "total": 3955,
+    "total": 3954,
     "with_poc": 328,
     "pct": 8.3
    }
   ],
   "unscored": {
-   "total": 4398,
+   "total": 4399,
    "with_poc": 2,
    "pct": 0.0
   }
@@ -374,11 +374,11 @@
    "dated_cves": 3007
   },
   "nuclei": {
-   "templates": 4222,
-   "cves": 4222
+   "templates": 4228,
+   "cves": 4228
   },
-  "union_cves": 29360,
+  "union_cves": 29365,
   "dated_cves": 26182,
-  "matched_in_corpus": 29293
+  "matched_in_corpus": 29298
  }
 }
