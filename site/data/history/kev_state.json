@@ -9705,7 +9705,7 @@
    "name": "Apache HTTP Server-Side Request Forgery (SSRF)",
    "notes": "7368de0f3356",
    "product": "Apache",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Apache"
   },
   "CVE-2021-40444": {
@@ -18190,7 +18190,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-23",
+ "last_observed": "2026-07-24",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

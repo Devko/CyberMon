@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-23T05:40:35Z",
+ "generated_at": "2026-07-24T05:37:03Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,7 +12,7 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120166,
+ "measured_total": 120167,
  "kev_total": 1433,
  "ranks": [
   {
@@ -182,7 +182,7 @@
    "name": "Improper access control",
    "official_rank": 19,
    "measured_rank": 11,
-   "measured_n": 2588,
+   "measured_n": 2589,
    "measured_share": 2.2,
    "kev_n": 32
   },

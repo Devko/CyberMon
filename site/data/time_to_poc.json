@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-23T05:40:35Z",
+ "generated_at": "2026-07-24T05:37:03Z",
  "hero": {
   "matched": {
    "dated_cves": 26182,
@@ -349,13 +349,13 @@
    },
    {
     "bucket": "9.0-10.0",
-    "total": 3954,
-    "with_poc": 328,
+    "total": 3955,
+    "with_poc": 330,
     "pct": 8.3
    }
   ],
   "unscored": {
-   "total": 4399,
+   "total": 4398,
    "with_poc": 2,
    "pct": 0.0
   }
@@ -374,11 +374,11 @@
    "dated_cves": 3007
   },
   "nuclei": {
-   "templates": 4228,
-   "cves": 4228
+   "templates": 4236,
+   "cves": 4236
   },
-  "union_cves": 29365,
+  "union_cves": 29373,
   "dated_cves": 26182,
-  "matched_in_corpus": 29298
+  "matched_in_corpus": 29308
  }
 }

@@ -1,12 +1,12 @@
 {
- "generated_at": "2026-07-23T05:40:35Z",
+ "generated_at": "2026-07-24T05:37:03Z",
  "min_n": 10,
  "years": [
   {
    "year": 2021,
    "total": 311,
-   "known": 76,
-   "pct_known": 24.4
+   "known": 77,
+   "pct_known": 24.8
   },
   {
    "year": 2022,
@@ -41,7 +41,7 @@
  ],
  "catalog": {
   "total": 1653,
-  "known": 330,
+  "known": 331,
   "pct_known": 20.0
  }
 }
