@@ -1,101 +1,101 @@
 {
- "generated_at": "2026-07-24T05:37:03Z",
+ "generated_at": "2026-07-25T05:31:53Z",
  "sample": false,
  "sources": {
   "cvelist": {
-   "release": "cve_2026-07-24_0500Z",
-   "cve_count": 369943
+   "release": "cve_2026-07-25_0500Z",
+   "cve_count": 370129
   },
   "epss": {
    "model_version": "v2026.06.15",
-   "score_date": "2026-07-23",
-   "row_count": 351912
+   "score_date": "2026-07-24",
+   "row_count": 352290
   },
   "kev": {
-   "catalog_version": "2026.07.23",
+   "catalog_version": "2026.07.24",
    "count": 1653
   },
   "nvd": {
-   "fetched_at": "2026-07-24T05:37:03Z",
-   "throughput_events": 15
+   "fetched_at": "2026-07-25T05:31:53Z",
+   "throughput_events": 1035
   },
   "market": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "term_count": 14,
    "backfill_remaining": 0
   },
   "hibp": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "breach_count": 1020
   },
   "ransomwhere": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "address_count": 11186,
    "tx_count": 21802
   },
   "attack": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "latest_version": "19.1",
    "version_count": 40
   },
   "epss_history": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "graded": 1363,
    "pending_backfill": 0
   },
   "apnic": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "economy_count": 10,
    "spread_economy_count": 205
   },
   "rescores": {
-   "events_total": 291,
-   "state_release": "cve_2026-07-24_0500Z"
+   "events_total": 292,
+   "state_release": "cve_2026-07-25_0500Z"
   },
   "kev_changelog": {
-   "fetched_at": "2026-07-24T05:37:03Z",
-   "events_total": 4259,
-   "last_observed": "2026-07-24"
+   "fetched_at": "2026-07-25T05:31:53Z",
+   "events_total": 4260,
+   "last_observed": "2026-07-25"
   },
   "naming": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "version": "19.1",
    "group_count": 174
   },
   "top25": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "official_year": 2025,
    "list_count": 3
   },
   "adp": {
-   "fetched_at": "2026-07-24T05:37:03Z",
-   "cisa_records": 167473
+   "fetched_at": "2026-07-25T05:31:53Z",
+   "cisa_records": 168088
   },
   "epssvol": {
-   "score_date": "2026-07-23",
-   "days_observed": 6
+   "score_date": "2026-07-24",
+   "days_observed": 7
   },
   "roster": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "org_count": 533,
    "events_total": 4
   },
   "exploitdb": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "entry_count": 47108,
    "cve_count": 25041
   },
   "metasploit": {
-   "fetched_at": "2026-07-24T05:37:03Z",
-   "module_count": 7110,
-   "cve_count": 3169
+   "fetched_at": "2026-07-25T05:31:53Z",
+   "module_count": 7111,
+   "cve_count": 3170
   },
   "nuclei": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "cve_count": 4236
   },
   "feodo": {
-   "fetched_at": "2026-07-24T05:37:03Z",
+   "fetched_at": "2026-07-25T05:31:53Z",
    "listed": 5,
    "online": 1
   }

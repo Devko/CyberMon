@@ -17163,7 +17163,7 @@
    "name": "PTC Windchill and FlexPLM Improper Input Validation Vulnerability",
    "notes": "97d0f01a4154",
    "product": "Windchill and FlexPLM",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "PTC"
   },
   "CVE-2026-1281": {
@@ -18190,7 +18190,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-24",
+ "last_observed": "2026-07-25",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

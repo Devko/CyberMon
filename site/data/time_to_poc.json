@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-07-24T05:37:03Z",
+ "generated_at": "2026-07-25T05:31:53Z",
  "hero": {
   "matched": {
-   "dated_cves": 26182,
-   "matched_cves": 26139,
+   "dated_cves": 26183,
+   "matched_cves": 26140,
    "unmatched_cves": 43
   },
   "years": [
@@ -252,12 +252,12 @@
    },
    {
     "year": 2026,
-    "n": 124,
-    "median_days": 13.5,
+    "n": 125,
+    "median_days": 12.0,
     "p25_days": 0.0,
-    "p75_days": 62.0,
-    "pct_negative": 23.4,
-    "pct_within_week": 46.0
+    "p75_days": 61.0,
+    "pct_negative": 24.0,
+    "pct_within_week": 46.4
    }
   ],
   "headline": {
@@ -368,17 +368,17 @@
    "dated_cves": 25041
   },
   "metasploit": {
-   "modules": 7110,
-   "with_cve": 3078,
-   "cves": 3169,
-   "dated_cves": 3007
+   "modules": 7111,
+   "with_cve": 3079,
+   "cves": 3170,
+   "dated_cves": 3008
   },
   "nuclei": {
    "templates": 4236,
    "cves": 4236
   },
-  "union_cves": 29373,
-  "dated_cves": 26182,
-  "matched_in_corpus": 29308
+  "union_cves": 29374,
+  "dated_cves": 26183,
+  "matched_in_corpus": 29309
  }
 }
