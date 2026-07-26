@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-25T05:31:53Z",
+ "generated_at": "2026-07-26T05:47:00Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -177,10 +177,10 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 4979,
+   "n": 4982,
    "avg_cvss": 7.4,
    "median_cvss": 8.2,
-   "pct_geq_9": 14.6,
+   "pct_geq_9": 14.7,
    "pct_geq_7": 61.4
   },
   {
@@ -294,11 +294,11 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1382,
+   "n": 1384,
    "avg_cvss": 6.1,
    "median_cvss": 6.1,
    "pct_geq_9": 9.6,
-   "pct_geq_7": 36.9
+   "pct_geq_7": 37.0
   },
   {
    "cna": "eclipse",
@@ -411,7 +411,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9319,
+   "n": 9322,
    "avg_cvss": 6.3,
    "median_cvss": 6.4,
    "pct_geq_9": 6.2,
