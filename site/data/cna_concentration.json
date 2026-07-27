@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-26T05:47:00Z",
+ "generated_at": "2026-07-27T06:05:43Z",
  "years": [
   {
    "year": 1999,
@@ -304,7 +304,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 5708,
+    "total": 5709,
     "rejected": 694,
     "rejected_rate_pct": 12.2
    },
@@ -478,13 +478,13 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10640,
+    "total": 10641,
     "rejected": 269,
     "rejected_rate_pct": 2.5
    },
    {
     "cna": "Linux",
-    "total": 13654,
+    "total": 13656,
     "rejected": 323,
     "rejected_rate_pct": 2.4
    },
@@ -670,7 +670,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15446,
+    "total": 15452,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
@@ -796,7 +796,7 @@
    },
    {
     "cna": "microsoft",
-    "total": 5753,
+    "total": 5756,
     "rejected": 3,
     "rejected_rate_pct": 0.1
    },
@@ -1035,13 +1035,13 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "Hitachi Energy",
-    "total": 102,
+    "cna": "JFROG",
+    "total": 104,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "JFROG",
+    "cna": "Hitachi Energy",
     "total": 102,
     "rejected": 0,
     "rejected_rate_pct": 0.0
@@ -1347,7 +1347,7 @@
  },
  "projection": {
   "year": 2026,
-  "newcomers": 62,
-  "elapsed": 0.567
+  "newcomers": 61,
+  "elapsed": 0.57
  }
 }
