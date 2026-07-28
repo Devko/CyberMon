@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-27T06:05:43Z",
+ "generated_at": "2026-07-28T05:33:14Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 169,
-   "security": 27,
-   "pct_security": 16.0
+   "total": 171,
+   "security": 28,
+   "pct_security": 16.4
   }
  ],
  "vendors": [
@@ -115,11 +115,11 @@
   },
   {
    "vendor": "Fortinet",
-   "entries": 28,
-   "security_entries": 28,
+   "entries": 29,
+   "security_entries": 29,
    "pct_security": 100.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-16",
+   "last_added": "2026-07-27",
    "median_gap_days": 42.0
   },
   {
@@ -458,20 +458,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 197,
+   "total": 198,
    "known": 72,
-   "pct_known": 36.5
+   "pct_known": 36.4
   },
   "other": {
-   "total": 1456,
+   "total": 1457,
    "known": 260,
-   "pct_known": 17.9
+   "pct_known": 17.8
   }
  },
  "catalog": {
-  "total": 1653,
-  "security": 197,
-  "pct_security": 11.9,
+  "total": 1655,
+  "security": 198,
+  "pct_security": 12.0,
   "classifier_version": 2,
   "classifier_rules": 35
  }

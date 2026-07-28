@@ -17023,6 +17023,17 @@
    "ransom": "Unknown",
    "vendor": "Synacor"
   },
+  "CVE-2025-68686": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-27",
+   "desc": "21930c9ceda7",
+   "due": "2026-08-10",
+   "name": "Fortinet FortiOS Exposure of Sensitive Information to an Unauthorized Actor Vulnerability",
+   "notes": "54ac52910ce7",
+   "product": "FortiOS",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
+  },
   "CVE-2025-7775": {
    "action": "f09df147152e",
    "added": "2025-08-26",
@@ -17231,6 +17242,17 @@
    "product": "SmartConsole",
    "ransom": "Unknown",
    "vendor": "Check Point"
+  },
+  "CVE-2026-16812": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-27",
+   "desc": "397550d4620e",
+   "due": "2026-07-30",
+   "name": "Arista VeloCloud Orchestrator On-Prem OS Command Injection Vulnerability",
+   "notes": "2f759de4215e",
+   "product": "VeloCloud Orchestrator",
+   "ransom": "Unknown",
+   "vendor": "Arista"
   },
   "CVE-2026-1731": {
    "action": "f09df147152e",
@@ -18190,7 +18212,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-27",
+ "last_observed": "2026-07-28",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

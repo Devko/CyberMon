@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-27T06:05:43Z",
+ "generated_at": "2026-07-28T05:33:14Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -3330,18 +3330,18 @@
      },
      {
       "month": "2025-12",
-      "n": 150,
-      "index": 40.3
+      "n": 230,
+      "index": 61.8
      },
      {
       "month": "2026-01",
-      "n": 179,
-      "index": 48.1
+      "n": 235,
+      "index": 63.2
      },
      {
       "month": "2026-02",
-      "n": 119,
-      "index": 32.0
+      "n": 135,
+      "index": 36.3
      },
      {
       "month": "2026-03",
@@ -4543,21 +4543,21 @@
      },
      {
       "month": "2026-05",
-      "n": 41,
-      "index": 58.6
+      "n": 42,
+      "index": 60.0
      },
      {
       "month": "2026-06",
-      "n": 45,
-      "index": 64.3
+      "n": 47,
+      "index": 67.1
      }
     ]
    },
    "yoy": {
     "gdelt": {
      "latest_month": "2026-06",
-     "pct_change": 68.2,
-     "n_latest_12m": 2501,
+     "pct_change": 78.4,
+     "n_latest_12m": 2653,
      "n_prior_12m": 1487
     },
     "hn": {
@@ -4580,8 +4580,8 @@
     },
     "edgar": {
      "latest_month": "2026-06",
-     "pct_change": 323.0,
-     "n_latest_12m": 423,
+     "pct_change": 326.0,
+     "n_latest_12m": 426,
      "n_prior_12m": 100
     }
    },
@@ -11243,8 +11243,8 @@
      },
      {
       "month": "2026-06",
-      "n": 19,
-      "index": 95.0
+      "n": 20,
+      "index": 100.0
      }
     ],
     "wiki": [
@@ -11652,8 +11652,8 @@
     },
     "arxiv": {
      "latest_month": "2026-06",
-     "pct_change": 1272.7,
-     "n_latest_12m": 151,
+     "pct_change": 1281.8,
+     "n_latest_12m": 152,
      "n_prior_12m": 11
     },
     "wiki": null,
@@ -11666,8 +11666,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 92.0,
-    "arxiv_index_avg3m": 98.3,
-    "research_vs_media_index": 6.3,
+    "arxiv_index_avg3m": 100.0,
+    "research_vs_media_index": 8.0,
     "direction": "aligned"
    }
   },
@@ -14081,8 +14081,8 @@
      },
      {
       "month": "2026-04",
-      "n": 3,
-      "index": 50.0
+      "n": 2,
+      "index": 33.3
      },
      {
       "month": "2026-05",
@@ -14705,8 +14705,8 @@
     },
     "arxiv": {
      "latest_month": "2026-06",
-     "pct_change": 133.3,
-     "n_latest_12m": 35,
+     "pct_change": 126.7,
+     "n_latest_12m": 34,
      "n_prior_12m": 15
     },
     "wiki": {
@@ -20571,7 +20571,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "source": "arxiv",
-   "pct_change": 1272.7
+   "pct_change": 1281.8
   },
   "top_faller": {
    "term_id": "zero_trust",

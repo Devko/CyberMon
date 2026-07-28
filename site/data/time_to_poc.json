@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-27T06:05:43Z",
+ "generated_at": "2026-07-28T05:33:14Z",
  "hero": {
   "matched": {
    "dated_cves": 26183,
@@ -247,7 +247,7 @@
     "median_days": -12.0,
     "p25_days": -4452.0,
     "p75_days": 6.8,
-    "pct_negative": 55.4,
+    "pct_negative": 55.6,
     "pct_within_week": 75.3
    },
    {
@@ -263,14 +263,14 @@
   "headline": {
    "latest_year": 2025,
    "median_days_latest": -12.0,
-   "pct_negative_latest": 55.4,
+   "pct_negative_latest": 55.6,
    "baseline_year": 2015,
    "median_days_baseline": -2.0
   }
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1653,
+  "total_kev": 1655,
   "trend": {
    "with_poc_date": 228,
    "preempted": 184,
@@ -319,7 +319,7 @@
    },
    {
     "year": 2026,
-    "total_added": 169,
+    "total_added": 171,
     "with_poc_date": 37,
     "preempted": 28,
     "pct_preempted": 75.7
@@ -368,17 +368,17 @@
    "dated_cves": 25041
   },
   "metasploit": {
-   "modules": 7111,
-   "with_cve": 3079,
-   "cves": 3170,
-   "dated_cves": 3008
+   "modules": 7112,
+   "with_cve": 3080,
+   "cves": 3171,
+   "dated_cves": 3009
   },
   "nuclei": {
-   "templates": 4236,
-   "cves": 4236
+   "templates": 4237,
+   "cves": 4237
   },
-  "union_cves": 29374,
+  "union_cves": 29375,
   "dated_cves": 26183,
-  "matched_in_corpus": 29309
+  "matched_in_corpus": 29310
  }
 }
