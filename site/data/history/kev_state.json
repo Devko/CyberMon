@@ -18212,7 +18212,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-28",
+ "last_observed": "2026-07-29",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-28T05:33:14Z",
+ "generated_at": "2026-07-29T05:38:13Z",
  "hero": {
   "matched": {
    "dated_cves": 26183,
@@ -374,11 +374,11 @@
    "dated_cves": 3009
   },
   "nuclei": {
-   "templates": 4237,
-   "cves": 4237
+   "templates": 4244,
+   "cves": 4244
   },
-  "union_cves": 29375,
+  "union_cves": 29381,
   "dated_cves": 26183,
-  "matched_in_corpus": 29310
+  "matched_in_corpus": 29316
  }
 }
