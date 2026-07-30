@@ -46,10 +46,17 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: pipeline/requirements.txt
+          cache-dependency-path: |
+            pipeline/requirements.txt
+            pipeline/requirements-dev.txt
 
+      # requirements-dev carries pytest, needed by the post-pipeline
+      # validation gate below (the nightly's data commit is [skip ci], so
+      # this run is the only thing that ever tests the data it ships).
       - name: Install pipeline dependencies
-        run: pip install -r pipeline/requirements.txt
+        run: |
+          pip install -r pipeline/requirements.txt \
+                      -r pipeline/requirements-dev.txt
 
       # NVD incremental-sync state (per-CVE status map + the throughput
       # tracker's since-dates). A cache miss is mostly harmless: the
@@ -118,6 +125,20 @@ jobs:
           # back to slower keyless NVD paging.
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: python -m pipeline --out site/data
+
+      # The gate that stops a drifted claim from shipping. contracts.py
+      # already validates every output's structure in-pipeline, but the
+      # claims audits (editorial copy checked against the committed data)
+      # live only in pytest — and the data commit below carries
+      # "[skip ci]", so CI never re-runs on top of it. Without this step
+      # a headline whose number moved overnight deploys silently and
+      # stays live until someone happens to push to main.
+      #
+      # Same loud-failure policy as the fetchers: if the refreshed data
+      # contradicts the copy, the run fails and nothing is committed or
+      # deployed. Fix the copy or the pipeline, never the test.
+      - name: Validate refreshed data against editorial claims
+        run: python -m pytest pipeline/tests -q
 
       - name: Commit and push refreshed data
         run: |
