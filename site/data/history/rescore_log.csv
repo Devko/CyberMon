@@ -440,3 +440,6 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-07-29,CVE-2022-3534,VulDB,version_shift,v3,5.5,v4,5.1
 2026-07-29,CVE-2022-3636,VulDB,version_shift,v3,5.5,v4,5.1
 2026-07-29,CVE-2026-12495,INCIBE,rescore,v4,9.2,v4,5.3
+2026-07-30,CVE-2024-21537,snyk,version_shift,v3,8.8,v4,9.3
+2026-07-30,CVE-2024-4944,WatchGuard,version_shift,v3,7.8,v4,8.5
+2026-07-30,CVE-2025-4318,AMZN,rescore,v4,9.5,v4,9.0

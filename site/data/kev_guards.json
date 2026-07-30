@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-29T05:38:13Z",
+ "generated_at": "2026-07-30T05:49:32Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 171,
-   "security": 28,
-   "pct_security": 16.4
+   "total": 172,
+   "security": 29,
+   "pct_security": 16.9
   }
  ],
  "vendors": [
@@ -52,11 +52,11 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 94,
-   "security_entries": 19,
-   "pct_security": 20.2,
+   "entries": 95,
+   "security_entries": 20,
+   "pct_security": 21.1,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-13",
+   "last_added": "2026-07-29",
    "median_gap_days": 0.0
   },
   {
@@ -458,9 +458,9 @@
  ],
  "ransomware": {
   "security": {
-   "total": 198,
+   "total": 199,
    "known": 72,
-   "pct_known": 36.4
+   "pct_known": 36.2
   },
   "other": {
    "total": 1457,
@@ -469,8 +469,8 @@
   }
  },
  "catalog": {
-  "total": 1655,
-  "security": 198,
+  "total": 1656,
+  "security": 199,
   "pct_security": 12.0,
   "classifier_version": 2,
   "classifier_rules": 35

@@ -17386,6 +17386,17 @@
    "ransom": "Unknown",
    "vendor": "Cisco"
   },
+  "CVE-2026-20316": {
+   "action": "ba0d649eb29b",
+   "added": "2026-07-29",
+   "desc": "6d9996c60081",
+   "due": "2026-08-01",
+   "name": "Cisco Secure Firewall Management Center Use of Hard-coded Password Vulnerability",
+   "notes": "46d478666c6f",
+   "product": "Secure Firewall Management Center (FMC)",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2026-20700": {
    "action": "f09df147152e",
    "added": "2026-02-12",
@@ -18212,7 +18223,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-07-29",
+ "last_observed": "2026-07-30",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
