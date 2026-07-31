@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-30T05:49:32Z",
+ "generated_at": "2026-07-31T05:52:04Z",
  "hero": {
   "matched": {
    "dated_cves": 26185,
@@ -331,32 +331,32 @@
   "buckets": [
    {
     "bucket": "0.1-3.9",
-    "total": 1604,
+    "total": 1603,
     "with_poc": 11,
     "pct": 0.7
    },
    {
     "bucket": "4.0-6.9",
-    "total": 23828,
+    "total": 23793,
     "with_poc": 247,
     "pct": 1.0
    },
    {
     "bucket": "7.0-8.9",
-    "total": 14378,
-    "with_poc": 334,
-    "pct": 2.3
+    "total": 15179,
+    "with_poc": 336,
+    "pct": 2.2
    },
    {
     "bucket": "9.0-10.0",
-    "total": 3955,
+    "total": 4042,
     "with_poc": 330,
-    "pct": 8.3
+    "pct": 8.2
    }
   ],
   "unscored": {
-   "total": 4398,
-   "with_poc": 2,
+   "total": 3546,
+   "with_poc": 1,
    "pct": 0.0
   }
  },
@@ -368,17 +368,17 @@
    "dated_cves": 25041
   },
   "metasploit": {
-   "modules": 7115,
+   "modules": 7131,
    "with_cve": 3083,
    "cves": 3174,
    "dated_cves": 3012
   },
   "nuclei": {
-   "templates": 4247,
-   "cves": 4247
+   "templates": 4250,
+   "cves": 4250
   },
-  "union_cves": 29383,
+  "union_cves": 29386,
   "dated_cves": 26185,
-  "matched_in_corpus": 29318
+  "matched_in_corpus": 29321
  }
 }

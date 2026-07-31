@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-30T05:49:32Z",
+ "generated_at": "2026-07-31T05:52:04Z",
  "series": {
   "v2": [
    {
@@ -90,14 +90,14 @@
    },
    {
     "year": 2025,
-    "n": 30297,
+    "n": 31261,
     "median": 6.5,
-    "p25": 5.3,
-    "p75": 7.5
+    "p25": 5.4,
+    "p75": 7.6
    },
    {
     "year": 2026,
-    "n": 30032,
+    "n": 30308,
     "median": 7.1,
     "p25": 5.5,
     "p75": 8.1
@@ -120,7 +120,7 @@
    },
    {
     "year": 2026,
-    "n": 14882,
+    "n": 14986,
     "median": 6.9,
     "p25": 5.3,
     "p75": 8.6
@@ -160,15 +160,15 @@
   },
   {
    "year": 2025,
-   "n": 34820,
-   "median": 6.5,
-   "pct_high_critical": 40.6
+   "n": 35784,
+   "median": 6.8,
+   "pct_high_critical": 42.2
   },
   {
    "year": 2026,
-   "n": 36123,
+   "n": 36440,
    "median": 7.1,
-   "pct_high_critical": 51.1
+   "pct_high_critical": 51.3
   }
  ],
  "annotations": [
@@ -183,7 +183,7 @@
  ],
  "headline": {
   "latest_year": 2025,
-  "pct_high_critical_latest": 40.6,
+  "pct_high_critical_latest": 42.2,
   "baseline_year": 2020,
   "pct_high_critical_baseline": 46.1
  }

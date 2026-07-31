@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-07-30T05:49:32Z",
+ "generated_at": "2026-07-31T05:52:04Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -11678,8 +11678,8 @@
     "gdelt": [
      {
       "month": "2021-08",
-      "n": 4230,
-      "index": 60.5
+      "n": 4188,
+      "index": 59.9
      },
      {
       "month": "2021-09",
