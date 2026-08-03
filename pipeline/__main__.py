@@ -16,6 +16,17 @@ produced), mark them and ``meta.sources.nvd`` with ``"stale": true``, and
 keep ``fetched_at`` at its old value. If no previous file exists, the file
 is omitted for this run and ``meta.json`` omits ``sources.nvd``
 (contracts.py allows that).
+
+Single-module upstreams degrade instead of aborting (documented choice):
+HIBP, Ransomwhere and APNIC each feed exactly one module, so a sustained
+outage there carries that module's previous edition forward marked
+``"stale": true`` — the site renders "(carried forward)" — while the run
+continues. Core sources (the cvelistV5 corpus, EPSS, KEV) still fail the
+run: they feed almost every module, and half a dashboard is worse than a
+loud workflow. The reason single-module failures cannot be fatal is the
+append-only history files (NVD backlog, KEV changelog, rescore log, CNA
+roster): a missed night can never be reconstructed, and in August 2026 a
+Ransomwhere 502 cost two of them before this rule existed.
 """
 from __future__ import annotations
 
@@ -268,11 +279,74 @@ def _nvd_throughput_outputs(args: argparse.Namespace,
     return carried, None
 
 
+def _warn(message: str) -> None:
+    """Loud but non-fatal: plain stderr locally, plus a GitHub annotation
+    in CI so a degraded module is visible on the run page even though the
+    workflow (deliberately) still succeeds."""
+    print(f"warning: {message}", file=sys.stderr)
+    if os.environ.get("GITHUB_ACTIONS"):
+        print(f"::warning::{message}")
+
+
+def _carry_forward(out_dir: Path, filename: str, generated_at: str,
+                   reason: str) -> dict | None:
+    """The previous run's output for a module whose own upstream failed.
+
+    A source that feeds exactly ONE module must not take the other twelve
+    modules' nightly refresh down with it — and with it the append-only
+    history files (NVD backlog, KEV changelog, rescore log, roster) that
+    can never be reconstructed for a missed date. The carried object is
+    marked ``"stale": true``, which the site renders as "(carried
+    forward)", so yesterday's numbers are never passed off as tonight's.
+    Returns None when there is no readable prior file: nothing is
+    invented.
+    """
+    prior_path = out_dir / filename
+    if not prior_path.exists():
+        _warn(f"{reason}; no previous {filename} to carry forward — "
+              f"omitting it and its meta source this run")
+        return None
+    try:
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
+    except ValueError as exc:
+        _warn(f"{reason}; previous {filename} is unreadable ({exc!r}) — "
+              f"omitting it this run")
+        return None
+    carried = dict(prior)
+    carried["generated_at"] = generated_at
+    carried["stale"] = True
+    _warn(f"{reason}; carrying {filename} forward from "
+          f"{prior.get('generated_at', 'an unknown edition')} (marked stale)")
+    return carried
+
+
+def _carry_forward_source(out_dir: Path, key: str) -> dict | None:
+    """The previous run's ``meta.sources[key]`` block, marked stale.
+
+    Reused verbatim (it validated last night) rather than rebuilt from the
+    carried output, so the meta contract cannot drift out from under a
+    degraded stage.
+    """
+    prior_path = out_dir / "meta.json"
+    if not prior_path.exists():
+        return None
+    try:
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+    block = prior.get("sources", {}).get(key)
+    if not isinstance(block, dict):
+        return None
+    return {**block, "stale": True}
+
+
 def run(args: argparse.Namespace) -> int:
     generated_at = _now_iso()
 
     # ---- gather ----------------------------------------------------------
     release, records = _gather_records(args)
+    # Set when a single-module upstream fails; drives the carry-forward.
+    hibp_failure = ransomwhere_failure = apnic_failure = None
     if args.offline_fixtures:
         epss = load_epss_file(FIXTURES_DIR / "epss_scores.csv")
         kev = load_kev_file(FIXTURES_DIR / "kev.json")
@@ -291,13 +365,26 @@ def run(args: argparse.Namespace) -> int:
         print("fetching CISA KEV catalog ...")
         kev = fetch_kev()
         print(f"  KEV {kev.catalog_version}: {kev.count} entries")
+        # HIBP and Ransomwhere each feed exactly one module. Their bounded
+        # retries absorb a blip; a sustained outage (Ransomwhere 502'd
+        # through two entire nightly windows in August 2026) must degrade
+        # that one module, not abort the corpus pass and the history
+        # appends every other module depends on.
         print("fetching HIBP breach catalog ...")
-        hibp = fetch_hibp()
-        print(f"  HIBP: {hibp.breach_count} breaches")
+        try:
+            hibp = fetch_hibp()
+            print(f"  HIBP: {hibp.breach_count} breaches")
+        except (OSError, ValueError) as exc:
+            hibp = None
+            hibp_failure = f"HIBP fetch failed ({exc!r})"
         print("fetching Ransomwhere export ...")
-        ransomwhere = fetch_ransomwhere()
-        print(f"  Ransomwhere: {ransomwhere.address_count} addresses, "
-              f"{ransomwhere.tx_count} transactions")
+        try:
+            ransomwhere = fetch_ransomwhere()
+            print(f"  Ransomwhere: {ransomwhere.address_count} addresses, "
+                  f"{ransomwhere.tx_count} transactions")
+        except (OSError, ValueError) as exc:
+            ransomwhere = None
+            ransomwhere_failure = f"Ransomwhere fetch failed ({exc!r})"
         print("fetching CVE.org organization roster ...")
         roster = fetch_roster()
         print(f"  CNA roster: {roster.org_count} organizations")
@@ -381,14 +468,6 @@ def run(args: argparse.Namespace) -> int:
                 kev.entries, generated_at,
                 **({"min_n": 1, "min_vendor_entries": 1}
                    if args.offline_fixtures else {})),
-        "breach_ledger.json":
-            breach_metrics.build_breach_ledger(
-                hibp.breaches, generated_at,
-                **({"min_n": 1} if args.offline_fixtures else {})),
-        "extortion_ledger.json":
-            extortion_metrics.build_extortion_ledger(
-                ransomwhere, generated_at,
-                **({"min_n": 1} if args.offline_fixtures else {})),
         "cve_calendar.json":
             calendar_metrics.build_cve_calendar(
                 agg, generated_at,
@@ -408,6 +487,27 @@ def run(args: argparse.Namespace) -> int:
                 agg, poc, kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
     }
+    # Single-upstream modules: build from tonight's fetch, or carry the
+    # previous edition forward marked stale when that upstream is down.
+    if hibp is not None:
+        outputs["breach_ledger.json"] = breach_metrics.build_breach_ledger(
+            hibp.breaches, generated_at,
+            **({"min_n": 1} if args.offline_fixtures else {}))
+    else:
+        carried = _carry_forward(args.out, "breach_ledger.json",
+                                 generated_at, hibp_failure)
+        if carried is not None:
+            outputs["breach_ledger.json"] = carried
+    if ransomwhere is not None:
+        outputs["extortion_ledger.json"] = \
+            extortion_metrics.build_extortion_ledger(
+                ransomwhere, generated_at,
+                **({"min_n": 1} if args.offline_fixtures else {}))
+    else:
+        carried = _carry_forward(args.out, "extortion_ledger.json",
+                                 generated_at, ransomwhere_failure)
+        if carried is not None:
+            outputs["extortion_ledger.json"] = carried
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
         args, nvd_statuses, generated_at)
     if nvd_decay is not None:
@@ -451,11 +551,20 @@ def run(args: argparse.Namespace) -> int:
         backfill_batch=args.epss_backfill_batch)
     if epss_report is not None:
         outputs["epss_report.json"] = epss_report
-    # No skip flag and no carried-forward staleness: upstream publishes
-    # its full history, so this stage is a cheap stateless refetch.
-    dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
-        generated_at, offline_fixtures=args.offline_fixtures)
-    outputs["dnssec_adoption.json"] = dnssec_adoption
+    # No skip flag and no cache: upstream publishes its full history, so
+    # this stage is a cheap stateless refetch — but APNIC is one more
+    # single-module upstream, so an outage degrades Hygiene alone.
+    apnic_source = None
+    try:
+        dnssec_adoption, apnic_source = hygiene_metrics.run_stage(
+            generated_at, offline_fixtures=args.offline_fixtures)
+        outputs["dnssec_adoption.json"] = dnssec_adoption
+    except (OSError, ValueError) as exc:
+        apnic_failure = f"APNIC DNSSEC fetch failed ({exc!r})"
+        carried = _carry_forward(args.out, "dnssec_adoption.json",
+                                 generated_at, apnic_failure)
+        if carried is not None:
+            outputs["dnssec_adoption.json"] = carried
     # Silent Rescores: diff tonight's per-CVE CNA score fingerprints (from
     # the same streaming pass) against the committed state (which lives
     # next to the log in site/data/history, the kev_changelog pattern).
@@ -521,19 +630,37 @@ def run(args: argparse.Namespace) -> int:
         nvd_source=nvd_source)
     if market_source is not None:
         outputs["meta.json"]["sources"]["market"] = market_source
-    outputs["meta.json"]["sources"]["hibp"] = {
-        "fetched_at": generated_at, "breach_count": hibp.breach_count}
-    outputs["meta.json"]["sources"]["ransomwhere"] = {
-        "fetched_at": generated_at,
-        "address_count": ransomwhere.address_count,
-        "tx_count": ransomwhere.tx_count,
-    }
+    # A degraded module keeps last night's source block, marked stale, so
+    # the footer says "(carried forward)" instead of stamping tonight's
+    # timestamp on numbers that did not come from tonight.
+    if hibp is not None:
+        outputs["meta.json"]["sources"]["hibp"] = {
+            "fetched_at": generated_at, "breach_count": hibp.breach_count}
+    elif "breach_ledger.json" in outputs:
+        carried_hibp = _carry_forward_source(args.out, "hibp")
+        if carried_hibp is not None:
+            outputs["meta.json"]["sources"]["hibp"] = carried_hibp
+    if ransomwhere is not None:
+        outputs["meta.json"]["sources"]["ransomwhere"] = {
+            "fetched_at": generated_at,
+            "address_count": ransomwhere.address_count,
+            "tx_count": ransomwhere.tx_count,
+        }
+    elif "extortion_ledger.json" in outputs:
+        carried_rw = _carry_forward_source(args.out, "ransomwhere")
+        if carried_rw is not None:
+            outputs["meta.json"]["sources"]["ransomwhere"] = carried_rw
     if attack_source is not None:
         outputs["meta.json"]["sources"]["attack"] = attack_source
     if epss_history_source is not None:
         outputs["meta.json"]["sources"]["epss_history"] = \
             epss_history_source
-    outputs["meta.json"]["sources"]["apnic"] = apnic_source
+    if apnic_source is not None:
+        outputs["meta.json"]["sources"]["apnic"] = apnic_source
+    elif "dnssec_adoption.json" in outputs:
+        carried_apnic = _carry_forward_source(args.out, "apnic")
+        if carried_apnic is not None:
+            outputs["meta.json"]["sources"]["apnic"] = carried_apnic
     outputs["meta.json"]["sources"]["rescores"] = rescore_source
     outputs["meta.json"]["sources"]["kev_changelog"] = changelog_source
     outputs["meta.json"]["sources"]["naming"] = naming_source
