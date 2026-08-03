@@ -1514,3 +1514,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-07-31,CVE-2026-64560,Linux,first_score,,,v3,7.8
 2026-08-01,CVE-2013-0335,redhat,first_score,,,v3,7.6
 2026-08-01,CVE-2024-4944,WatchGuard,rescore,v4,8.5,v4,8.6
+2026-08-03,CVE-2024-21536,snyk,version_shift,v3,7.5,v4,8.7
+2026-08-03,CVE-2026-16232,checkpoint,first_score,,,v4,9.3

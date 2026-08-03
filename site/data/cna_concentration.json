@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-01T05:42:10Z",
+ "generated_at": "2026-08-03T12:36:13Z",
  "years": [
   {
    "year": 1999,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "cna_count": 355,
+   "cna_count": 356,
    "newcomer_count": 36,
    "top5_share": 49.1,
-   "top10_share": 70.8,
-   "hhi": 672.7
+   "top10_share": 70.7,
+   "hhi": 671.1
   }
  ],
  "rejection_leaderboard": {
@@ -268,9 +268,9 @@
    },
    {
     "cna": "GitLab",
-    "total": 1271,
-    "rejected": 286,
-    "rejected_rate_pct": 22.5
+    "total": 1272,
+    "rejected": 287,
+    "rejected_rate_pct": 22.6
    },
    {
     "cna": "Sophos",
@@ -304,9 +304,9 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 5792,
+    "total": 5870,
     "rejected": 698,
-    "rejected_rate_pct": 12.1
+    "rejected_rate_pct": 11.9
    },
    {
     "cna": "f5",
@@ -334,7 +334,7 @@
    },
    {
     "cna": "redhat",
-    "total": 2469,
+    "total": 2473,
     "rejected": 243,
     "rejected_rate_pct": 9.8
    },
@@ -352,9 +352,9 @@
    },
    {
     "cna": "@huntr_ai",
-    "total": 879,
+    "total": 881,
     "rejected": 70,
-    "rejected_rate_pct": 8.0
+    "rejected_rate_pct": 7.9
    },
    {
     "cna": "freebsd",
@@ -435,6 +435,12 @@
     "rejected_rate_pct": 3.6
    },
    {
+    "cna": "zephyr",
+    "total": 149,
+    "rejected": 5,
+    "rejected_rate_pct": 3.4
+   },
+   {
     "cna": "Mitsubishi",
     "total": 118,
     "rejected": 4,
@@ -445,12 +451,6 @@
     "total": 136,
     "rejected": 4,
     "rejected_rate_pct": 2.9
-   },
-   {
-    "cna": "zephyr",
-    "total": 144,
-    "rejected": 4,
-    "rejected_rate_pct": 2.8
    },
    {
     "cna": "hpe",
@@ -466,7 +466,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10717,
+    "total": 10762,
     "rejected": 272,
     "rejected_rate_pct": 2.5
    },
@@ -724,7 +724,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 264,
+    "total": 265,
     "rejected": 1,
     "rejected_rate_pct": 0.4
    },
@@ -754,7 +754,7 @@
    },
    {
     "cna": "jpcert",
-    "total": 1235,
+    "total": 1236,
     "rejected": 4,
     "rejected_rate_pct": 0.3
    },
@@ -808,7 +808,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 3810,
+    "total": 3867,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -964,7 +964,7 @@
    },
    {
     "cna": "EEF",
-    "total": 147,
+    "total": 151,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1353,7 +1353,7 @@
  },
  "projection": {
   "year": 2026,
-  "newcomers": 62,
-  "elapsed": 0.584
+  "newcomers": 61,
+  "elapsed": 0.589
  }
 }
