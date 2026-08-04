@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-03T12:36:13Z",
+ "generated_at": "2026-08-04T05:33:39Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -901,8 +901,8 @@
      },
      {
       "month": "2026-07",
-      "n": 8,
-      "index": 88.9
+      "n": 9,
+      "index": 100.0
      }
     ],
     "wiki": [
@@ -1515,8 +1515,8 @@
     },
     "arxiv": {
      "latest_month": "2026-07",
-     "pct_change": 64.7,
-     "n_latest_12m": 84,
+     "pct_change": 66.7,
+     "n_latest_12m": 85,
      "n_prior_12m": 51
     },
     "wiki": {
@@ -1534,8 +1534,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 29.2,
-    "arxiv_index_avg3m": 74.1,
-    "research_vs_media_index": 44.9,
+    "arxiv_index_avg3m": 77.8,
+    "research_vs_media_index": 48.6,
     "direction": "research_leads"
    }
   },
@@ -2350,8 +2350,8 @@
      },
      {
       "month": "2025-03",
-      "n": 4,
-      "index": 100.0
+      "n": 3,
+      "index": 75.0
      },
      {
       "month": "2025-04",
@@ -3044,9 +3044,9 @@
     },
     "arxiv": {
      "latest_month": "2026-07",
-     "pct_change": 84.6,
+     "pct_change": 100.0,
      "n_latest_12m": 24,
-     "n_prior_12m": 13
+     "n_prior_12m": 12
     },
     "wiki": {
      "latest_month": "2026-07",
@@ -3789,8 +3789,8 @@
      },
      {
       "month": "2023-10",
-      "n": 5,
-      "index": 17.9
+      "n": 4,
+      "index": 14.3
      },
      {
       "month": "2023-11",
@@ -6403,8 +6403,8 @@
      },
      {
       "month": "2026-07",
-      "n": 20,
-      "index": 14.0
+      "n": 22,
+      "index": 15.4
      }
     ],
     "hn": [
@@ -7594,8 +7594,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": -5.0,
-     "n_latest_12m": 383,
+     "pct_change": -4.5,
+     "n_latest_12m": 385,
      "n_prior_12m": 403
     },
     "hn": null,
@@ -11248,8 +11248,8 @@
      },
      {
       "month": "2026-07",
-      "n": 14,
-      "index": 66.7
+      "n": 15,
+      "index": 71.4
      }
     ],
     "wiki": [
@@ -11662,8 +11662,8 @@
     },
     "arxiv": {
      "latest_month": "2026-07",
-     "pct_change": 912.5,
-     "n_latest_12m": 162,
+     "pct_change": 918.8,
+     "n_latest_12m": 163,
      "n_prior_12m": 16
     },
     "wiki": null,
@@ -11676,8 +11676,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 87.4,
-    "arxiv_index_avg3m": 87.3,
-    "research_vs_media_index": -0.1,
+    "arxiv_index_avg3m": 88.9,
+    "research_vs_media_index": 1.5,
     "direction": "aligned"
    }
   },
@@ -13136,7 +13136,7 @@
      },
      {
       "month": "2026-01",
-      "n": 737,
+      "n": 738,
       "index": 31.9
      },
      {
@@ -13146,7 +13146,7 @@
      },
      {
       "month": "2026-03",
-      "n": 2250,
+      "n": 2251,
       "index": 97.4
      },
      {
@@ -13161,7 +13161,7 @@
      },
      {
       "month": "2026-06",
-      "n": 728,
+      "n": 729,
       "index": 31.5
      },
      {
@@ -13199,7 +13199,7 @@
     "edgar": {
      "latest_month": "2026-07",
      "pct_change": 15.6,
-     "n_latest_12m": 14162,
+     "n_latest_12m": 14165,
      "n_prior_12m": 12253
     }
    },
@@ -13507,8 +13507,8 @@
      },
      {
       "month": "2026-07",
-      "n": 724,
-      "index": 28.0
+      "n": 988,
+      "index": 38.2
      }
     ],
     "hn": [
@@ -14411,12 +14411,12 @@
      {
       "month": "2021-10",
       "n": 31,
-      "index": 16.0
+      "index": 15.9
      },
      {
       "month": "2021-11",
       "n": 43,
-      "index": 22.2
+      "index": 22.1
      },
      {
       "month": "2021-12",
@@ -14431,97 +14431,97 @@
      {
       "month": "2022-02",
       "n": 54,
-      "index": 27.8
+      "index": 27.7
      },
      {
       "month": "2022-03",
       "n": 122,
-      "index": 62.9
+      "index": 62.6
      },
      {
       "month": "2022-04",
       "n": 52,
-      "index": 26.8
+      "index": 26.7
      },
      {
       "month": "2022-05",
       "n": 44,
-      "index": 22.7
+      "index": 22.6
      },
      {
       "month": "2022-06",
       "n": 24,
-      "index": 12.4
+      "index": 12.3
      },
      {
       "month": "2022-07",
       "n": 23,
-      "index": 11.9
+      "index": 11.8
      },
      {
       "month": "2022-08",
       "n": 59,
-      "index": 30.4
+      "index": 30.3
      },
      {
       "month": "2022-09",
       "n": 17,
-      "index": 8.8
+      "index": 8.7
      },
      {
       "month": "2022-10",
       "n": 23,
-      "index": 11.9
+      "index": 11.8
      },
      {
       "month": "2022-11",
       "n": 39,
-      "index": 20.1
+      "index": 20.0
      },
      {
       "month": "2022-12",
       "n": 32,
-      "index": 16.5
+      "index": 16.4
      },
      {
       "month": "2023-01",
       "n": 18,
-      "index": 9.3
+      "index": 9.2
      },
      {
       "month": "2023-02",
       "n": 72,
-      "index": 37.1
+      "index": 36.9
      },
      {
       "month": "2023-03",
       "n": 143,
-      "index": 73.7
+      "index": 73.3
      },
      {
       "month": "2023-04",
       "n": 85,
-      "index": 43.8
+      "index": 43.6
      },
      {
       "month": "2023-05",
       "n": 70,
-      "index": 36.1
+      "index": 35.9
      },
      {
       "month": "2023-06",
       "n": 39,
-      "index": 20.1
+      "index": 20.0
      },
      {
       "month": "2023-07",
       "n": 19,
-      "index": 9.8
+      "index": 9.7
      },
      {
       "month": "2023-08",
       "n": 56,
-      "index": 28.9
+      "index": 28.7
      },
      {
       "month": "2023-09",
@@ -14531,47 +14531,47 @@
      {
       "month": "2023-10",
       "n": 17,
-      "index": 8.8
+      "index": 8.7
      },
      {
       "month": "2023-11",
       "n": 38,
-      "index": 19.6
+      "index": 19.5
      },
      {
       "month": "2023-12",
       "n": 30,
-      "index": 15.5
+      "index": 15.4
      },
      {
       "month": "2024-01",
       "n": 41,
-      "index": 21.1
+      "index": 21.0
      },
      {
       "month": "2024-02",
       "n": 105,
-      "index": 54.1
+      "index": 53.8
      },
      {
       "month": "2024-03",
       "n": 119,
-      "index": 61.3
+      "index": 61.0
      },
      {
       "month": "2024-04",
       "n": 111,
-      "index": 57.2
+      "index": 56.9
      },
      {
       "month": "2024-05",
       "n": 61,
-      "index": 31.4
+      "index": 31.3
      },
      {
       "month": "2024-06",
       "n": 36,
-      "index": 18.6
+      "index": 18.5
      },
      {
       "month": "2024-07",
@@ -14581,130 +14581,130 @@
      {
       "month": "2024-08",
       "n": 37,
-      "index": 19.1
+      "index": 19.0
      },
      {
       "month": "2024-09",
       "n": 26,
-      "index": 13.4
+      "index": 13.3
      },
      {
       "month": "2024-10",
       "n": 25,
-      "index": 12.9
+      "index": 12.8
      },
      {
       "month": "2024-11",
       "n": 37,
-      "index": 19.1
+      "index": 19.0
      },
      {
       "month": "2024-12",
       "n": 19,
-      "index": 9.8
+      "index": 9.7
      },
      {
       "month": "2025-01",
       "n": 30,
-      "index": 15.5
+      "index": 15.4
      },
      {
       "month": "2025-02",
       "n": 104,
-      "index": 53.6
+      "index": 53.3
      },
      {
       "month": "2025-03",
       "n": 152,
-      "index": 78.4
+      "index": 77.9
      },
      {
       "month": "2025-04",
       "n": 140,
-      "index": 72.2
+      "index": 71.8
      },
      {
       "month": "2025-05",
       "n": 70,
-      "index": 36.1
+      "index": 35.9
      },
      {
       "month": "2025-06",
       "n": 38,
-      "index": 19.6
+      "index": 19.5
      },
      {
       "month": "2025-07",
       "n": 36,
-      "index": 18.6
+      "index": 18.5
      },
      {
       "month": "2025-08",
       "n": 54,
-      "index": 27.8
+      "index": 27.7
      },
      {
       "month": "2025-09",
       "n": 33,
-      "index": 17.0
+      "index": 16.9
      },
      {
       "month": "2025-10",
       "n": 38,
-      "index": 19.6
+      "index": 19.5
      },
      {
       "month": "2025-11",
       "n": 62,
-      "index": 32.0
+      "index": 31.8
      },
      {
       "month": "2025-12",
       "n": 39,
-      "index": 20.1
+      "index": 20.0
      },
      {
       "month": "2026-01",
-      "n": 26,
-      "index": 13.4
+      "n": 27,
+      "index": 13.8
      },
      {
       "month": "2026-02",
       "n": 129,
-      "index": 66.5
+      "index": 66.2
      },
      {
       "month": "2026-03",
-      "n": 194,
+      "n": 195,
       "index": 100.0
      },
      {
       "month": "2026-04",
       "n": 167,
-      "index": 86.1
+      "index": 85.6
      },
      {
       "month": "2026-05",
       "n": 94,
-      "index": 48.5
+      "index": 48.2
      },
      {
       "month": "2026-06",
-      "n": 55,
-      "index": 28.4
+      "n": 56,
+      "index": 28.7
      },
      {
       "month": "2026-07",
       "n": 61,
-      "index": 31.4
+      "index": 31.3
      }
     ]
    },
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 80.5,
-     "n_latest_12m": 9921,
+     "pct_change": 85.4,
+     "n_latest_12m": 10185,
      "n_prior_12m": 5495
     },
     "hn": {
@@ -14727,8 +14727,8 @@
     },
     "edgar": {
      "latest_month": "2026-07",
-     "pct_change": 33.3,
-     "n_latest_12m": 952,
+     "pct_change": 33.8,
+     "n_latest_12m": 955,
      "n_prior_12m": 714
     }
    },
@@ -20591,7 +20591,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "source": "arxiv",
-   "pct_change": 912.5
+   "pct_change": 918.8
   },
   "top_faller": {
    "term_id": "zero_trust",
@@ -20602,7 +20602,7 @@
   "top_divergence": {
    "term_id": "zero_trust",
    "label": "Zero Trust",
-   "research_vs_media_index": 44.9,
+   "research_vs_media_index": 48.6,
    "direction": "research_leads"
   }
  }

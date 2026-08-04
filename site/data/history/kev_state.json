@@ -17207,7 +17207,7 @@
    "name": "SonicWall SMA1000 Appliances Server-Side Request Forgery Vulnerability",
    "notes": "5e0963924c6d",
    "product": "SMA1000 Appliances",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "SonicWall"
   },
   "CVE-2026-15410": {
@@ -17218,7 +17218,7 @@
    "name": "SonicWall SMA1000 Appliances Code Injection Vulnerability",
    "notes": "4cd69cb7cea0",
    "product": "SMA1000 Appliances",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "SonicWall"
   },
   "CVE-2026-1603": {
@@ -17264,6 +17264,17 @@
    "product": "Remote Support (RS) and Privileged Remote Access (PRA)",
    "ransom": "Known",
    "vendor": "BeyondTrust"
+  },
+  "CVE-2026-18577": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-03",
+   "desc": "6e03def64458",
+   "due": "2026-08-06",
+   "name": "N-able N-central Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+   "notes": "c02105c12eb7",
+   "product": "N-central",
+   "ransom": "Unknown",
+   "vendor": "N-able"
   },
   "CVE-2026-20045": {
    "action": "f09df147152e",
@@ -18223,7 +18234,7 @@
    "vendor": "Drupal"
   }
  },
- "last_observed": "2026-08-03",
+ "last_observed": "2026-08-04",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

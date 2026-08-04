@@ -1516,3 +1516,6 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-08-01,CVE-2024-4944,WatchGuard,rescore,v4,8.5,v4,8.6
 2026-08-03,CVE-2024-21536,snyk,version_shift,v3,7.5,v4,8.7
 2026-08-03,CVE-2026-16232,checkpoint,first_score,,,v4,9.3
+2026-08-04,CVE-2024-21539,snyk,version_shift,v3,7.5,v4,8.7
+2026-08-04,CVE-2026-47296,microsoft,rescore,v3,7.8,v3,7.5
+2026-08-04,CVE-2026-55002,microsoft,rescore,v3,7.8,v3,8.8
