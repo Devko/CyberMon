@@ -187,8 +187,8 @@ def check_every_milestone_is_sourced(d: dict) -> None:
 
 
 def check_newest_milestones_sit_past_the_testable_edge(d: dict) -> None:
-    # editorial.js (ai.html hero): "sit past the edge of anything this page
-    # can test". The claim is structural — the timeline must actually run
+    # editorial.js (ai.html hero): "sit beyond what this page can test".
+    # The claim is structural — the timeline must actually run
     # past the clock's last complete year, or the sentence describes a gap
     # that isn't there. (Committed edition 2026-08: the clock ends 2025 and
     # four 2026 rows sit beyond it.)
@@ -198,6 +198,30 @@ def check_newest_milestones_sit_past_the_testable_edge(d: dict) -> None:
         f"'sit past the edge of anything this page can test' needs at least "
         f"one milestone after the clock's last complete year ({last_year}); "
         f"the timeline ends at {d['milestones'][-1]['date']}"
+    )
+
+
+def check_like_for_like_holds_a_narrow_band(d: dict) -> None:
+    # editorial.js (ai.html hero): "it has sat inside a fortnight-wide
+    # band since 2005". The like-for-like clock is the page's strongest
+    # evidence, so its headline description gets a hard check.
+    # (Committed edition 2026-08: every annual median from 2005 on sits
+    # between -8d and +14.5d, a 22.5-day spread.)
+    rows = [r for r in d.get("like_for_like", {}).get("years", [])
+            if r["year"] >= 2005]
+    if len(rows) < 5:
+        pytest.skip("like-for-like series too short to judge")
+    lo = min(r["value"] for r in rows)
+    hi = max(r["value"] for r in rows)
+    assert hi - lo <= 30.0, (
+        f"'inside a fortnight-wide band since 2005' needs the like-for-like "
+        f"medians to stay in a narrow band; they span {lo:+.0f}d to "
+        f"{hi:+.0f}d ({hi - lo:.0f} days)"
+    )
+    # And the band must straddle zero — "arming happens at disclosure" is
+    # the claim, not "arming happens two weeks late".
+    assert lo <= 0.0 <= hi, (
+        f"the band should contain zero; it runs {lo:+.0f}d to {hi:+.0f}d"
     )
 
 
@@ -235,9 +259,14 @@ CLAIMS = [
         check_every_milestone_is_sourced,
     ),
     (
-        "sit past the edge of anything this page can test",
+        "sit beyond what this page can test",
         "ai_alibi.json",
         check_newest_milestones_sit_past_the_testable_edge,
+    ),
+    (
+        "it has sat inside a fortnight-wide band since 2005",
+        "ai_alibi.json",
+        check_like_for_like_holds_a_narrow_band,
     ),
 ]
 

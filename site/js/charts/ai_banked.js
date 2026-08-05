@@ -138,9 +138,14 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
     table.replaceChildren();
     table.append(el("p", "verdict-caption", tpl(ed.tableCaption, { era: era.label, date: era.date })));
     for (const { metric, block } of [...cells].reverse()) {
-      const rowEl = el("div", "verdict-row");
+      const rowEl = el("div", "verdict-row" + (metric.primary ? " is-primary" : ""));
       const badge = el("span", `verdict-badge verdict-${block.verdict}`, ed.verdicts[block.verdict]);
-      rowEl.append(badge, el("span", "verdict-metric", metric.label));
+      const name = el("span", "verdict-metric", metric.label);
+      // The strongest evidence is named as such, not just placed first —
+      // row order is invisible to a screen reader and to anyone who
+      // quotes a single line out of the table.
+      if (metric.primary) name.append(el("span", "verdict-primary-tag", ed.primaryTag));
+      rowEl.append(badge, name);
       const levels = block.verdict === "insufficient"
         ? tpl(ed.rowInsufficient, { years: block.post.years })
         : tpl(ed.rowLevels, {

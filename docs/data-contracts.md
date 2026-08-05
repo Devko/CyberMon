@@ -1691,6 +1691,43 @@ Validator: `pipeline/roster_contracts.py` (registered into
 
 ## site/data/time_to_poc.json  (Time to PoC module, all 3 charts)
 
+### `arming` — the like-for-like clock (added for module 21)
+
+```json
+"arming": {"horizon_days": 90, "observed_through": "2026-05-07",
+           "years": [{"year": 2005, "n": 1173, "median_days": -2.0,
+                      "pct_within_week": 97.0, "pct_negative": 85.8}]}
+```
+
+The `hero` series is the honest raw record but is NOT comparable across
+years. This section makes it comparable, by fixing two distinct things:
+
+* **Cohort maturity (right-censoring).** The hero cohort is "CVEs that
+  have a public PoC", so a 2019 record has had years to qualify and one
+  published last month has had weeks. Here every cohort is cut at
+  `generated_at - horizon_days`, so all of them have had exactly the
+  same time to arm — which is what lets a part-finished current year
+  appear at all.
+* **Back-catalogued exploits.** The window is bounded BELOW as well as
+  above. A gap of -4,452 days is an old exploit finally receiving a CVE
+  id — a cataloguing event, not a fast one — and it drags a one-sided
+  median arbitrarily negative (it is why the raw 2025 median reads -12d
+  off a p25 of -4,452). The validator enforces `|median_days| <=
+  horizon_days`: a value outside the window means the lower bound was
+  lost and the drag is back.
+
+**Deliberately not a rate over all published CVEs.** That figure falls
+from ~45% to under 1% across the record, almost entirely because annual
+volume grew from ~5,700 to ~40,000 — a coverage story (which the
+`coverage` section already tells) masquerading as a speed one.
+
+**Bias it does NOT fix**, carried in the page copy: tracker INGESTION
+lag. Exploit-DB and Metasploit add entries for older disclosures over
+time, so the newest cohort is missing arming that will surface later and
+reads slightly slow. The newest cutoff's verdict is provisional for this
+reason. `pct_negative <= pct_within_week` is enforced here as on the
+hero cohort (every negative gap is also under seven days).
+
 ## site/data/botnet_weather.json  (Botnet Weather module, all 3 charts)
 
 ```json
@@ -2012,6 +2049,25 @@ is the ONLY verdict allowed to carry a missing level or a thin
 post-window, an unjudged cell may carry no share at all, `era_shift` must
 equal `post - pre`, and `shift_share_pct`'s sign may never contradict the
 verdict that names that direction in words.
+
+`like_for_like`: the censoring-free clock, lifted from `time_to_poc`'s
+`arming` section. Kept OUT of `clock.metrics` on purpose — those three
+share one cohort and one span and the contract enforces it, while this
+is a different instrument on a different span: it starts later (the
+window needs a populated cohort) and ends LATER, because a like-for-like
+statistic can measure a part-finished year the raw series cannot.
+Structuring that difference rather than hiding it is what stops a reader
+treating four numbers as four equal numbers. Values are bounded by
+`horizon_days` in both directions, re-checked by the validator. An empty
+series is a legal degraded state (a thin fixture corpus, or a
+`time_to_poc` payload predating the section); the board then falls back
+to the raw metrics.
+
+In `banked.metrics`, the like-for-like metric carries `primary: true`
+and MUST lead the list — the page presents it as the strongest evidence
+and reads order as rank, so the contract rejects a board that buries it.
+At most one metric may be primary, and if a like-for-like series exists
+then one must be.
 
 **Editorial knob:** `INFLECTION_THRESHOLD_PCT` in `pipeline/ai_metrics.py`
 (10.0) is the one tuned number in this module. It is set generous to the

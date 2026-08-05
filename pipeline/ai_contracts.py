@@ -208,6 +208,53 @@ def _validate_ai_alibi(obj: Any) -> None:
                       f"({week[year]}%), but every negative gap is also "
                       f"<= 7 days — the two fields have drifted apart")
 
+    # ---- like_for_like (the censoring-free clock) -------------------------
+    # Its own section, NOT a fourth entry in clock.metrics: those three
+    # share one cohort and one span by contract, and this one legitimately
+    # spans differently — later start, later end, because a like-for-like
+    # statistic can measure a part-finished year the raw series cannot.
+    lfl = _get(obj, "like_for_like", "ai_alibi")
+    lfl_id = _get(lfl, "id", "ai_alibi.like_for_like")
+    _check_str(lfl_id, "ai_alibi.like_for_like.id")
+    _check_str(_get(lfl, "label", "ai_alibi.like_for_like"),
+               "ai_alibi.like_for_like.label")
+    if _get(lfl, "unit", "ai_alibi.like_for_like") not in _UNITS:
+        _fail("ai_alibi.like_for_like.unit", f"unknown unit {lfl['unit']!r}")
+    if _get(lfl, "faster", "ai_alibi.like_for_like") not in _FASTER:
+        _fail("ai_alibi.like_for_like.faster",
+              f"unknown direction {lfl['faster']!r}")
+    lfl_horizon = _get(lfl, "horizon_days", "ai_alibi.like_for_like")
+    _check_int(lfl_horizon, "ai_alibi.like_for_like.horizon_days", minimum=0)
+    lfl_rows = _check_list(_get(lfl, "years", "ai_alibi.like_for_like"),
+                           "ai_alibi.like_for_like.years")
+    # An upstream without an `arming` section (thin fixture corpora, or a
+    # time_to_poc payload predating it) yields an empty series. That is a
+    # legal degraded state — the board simply falls back to the raw
+    # metrics — but a POPULATED series must carry its provenance.
+    if lfl_rows:
+        _check_str(_get(lfl, "observed_through", "ai_alibi.like_for_like"),
+                   "ai_alibi.like_for_like.observed_through")
+        if lfl_horizon < 1:
+            _fail("ai_alibi.like_for_like.horizon_days",
+                  "a populated like-for-like series needs its window width")
+    lfl_seen = []
+    for i, r in enumerate(lfl_rows):
+        path = f"ai_alibi.like_for_like.years[{i}]"
+        year = _get(r, "year", path)
+        _check_int(year, f"{path}.year", minimum=1988)
+        lfl_seen.append(year)
+        _check_int(_get(r, "n", path), f"{path}.n", minimum=1)
+        # Bounded by the symmetric window, same rule the upstream
+        # contract enforces — a value outside it means the lower bound
+        # was lost and the back-catalogue drag is back.
+        _check_num(_get(r, "value", path), f"{path}.value",
+                   float(-lfl_horizon), float(lfl_horizon))
+    _check_sorted(lfl_seen, "ai_alibi.like_for_like.years")
+    if len(set(lfl_seen)) != len(lfl_seen):
+        _fail("ai_alibi.like_for_like.years", "duplicate years")
+    if lfl_rows:
+        units[lfl_id] = lfl["unit"]
+
     # ---- banked -----------------------------------------------------------
     banked = _get(obj, "banked", "ai_alibi")
     _check_int(_get(banked, "window_years", "ai_alibi.banked"),
@@ -216,6 +263,17 @@ def _validate_ai_alibi(obj: Any) -> None:
                "ai_alibi.banked.inflection_threshold_pct", 0.0, 100.0)
     bmetrics = _check_list(_get(banked, "metrics", "ai_alibi.banked"),
                            "ai_alibi.banked.metrics")
+    primaries = [m for m in bmetrics if m.get("primary")]
+    if len(primaries) > 1:
+        _fail("ai_alibi.banked.metrics",
+              f"at most one metric may be primary, found {len(primaries)}")
+    if primaries and bmetrics[0] is not primaries[0]:
+        _fail("ai_alibi.banked.metrics",
+              "the primary metric must lead the board — the page presents "
+              "it as the strongest evidence and reads order as rank")
+    if lfl_rows and not primaries:
+        _fail("ai_alibi.banked.metrics",
+              "a like-for-like series exists but no metric is primary")
     for i, m in enumerate(bmetrics):
         path = f"ai_alibi.banked.metrics[{i}]"
         mid = _get(m, "id", path)

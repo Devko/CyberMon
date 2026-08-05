@@ -2840,14 +2840,22 @@ export const editorial = {
         "is dated, categorised and linked below the chart. The shaded band is the " +
         "AI era on whichever start date you pick. What the picture shows is a " +
         "collapse that finished a decade to the left of that band, and a line that " +
-        "does nothing in particular once it enters. Then note where the line " +
-        "stops. The clock plots complete years only, so the newest milestones — " +
-        "the 2026 wave of models built specifically to find vulnerabilities — " +
-        "sit past the edge of anything this page can test. That gap is the honest " +
-        "limit of the argument: what you are reading is the record through the " +
-        "last complete year, not a forecast.",
+        "does nothing in particular once it enters. The pale line is the same " +
+        "question asked so that every year answers it on equal terms: only " +
+        "exploits landing within 90 days either side of publication, and only " +
+        "cohorts old enough to have had all 90 days. That version reaches the " +
+        "current year, because a like-for-like measure can read a part-finished " +
+        "one — and it has sat inside a fortnight-wide band since 2005. Where the " +
+        "two lines part company is where the raw record is being pulled by old " +
+        "exploits receiving CVE ids, not by anything getting faster. Past the " +
+        "marked edge there is no complete-year evidence at all: the 2026 " +
+        "milestones — models built specifically to find vulnerabilities — sit " +
+        "beyond what this page can test, which is the honest limit of the " +
+        "argument rather than a forecast.",
       selectLabel: "AI era begins",
       evidenceEdge: "complete-year evidence ends {year}",
+      rawLabel: "As recorded (all gaps)",
+      lflLabel: "Like-for-like (±90d window)",
       statLabel: "Speed metrics that accelerated in the AI era",
       statOf: "of {judged} tested",
       statUplift: "vendor reports that looked for offensive uplift and found none",
@@ -2912,7 +2920,11 @@ export const editorial = {
       source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE)",
       headline: "Nothing bends at the cutoff.",
       caption:
-        "The eyeball test made arithmetic. For each of three speed metrics, take " +
+        "The eyeball test made arithmetic. The top bar is the like-for-like " +
+        "clock — the one measure here immune to the bias that recent cohorts " +
+        "have had less time to attract exploit code — and it leads because it is " +
+        "the strongest evidence, not because it is the friendliest. The three " +
+        "below corroborate it. For each metric, take " +
         "the level at the start of the record, the level in the five years before " +
         "the cutoff, and the level since — then ask how much of the total distance " +
         "the metric ever travelled the AI era accounts for, and in which " +
@@ -2921,6 +2933,7 @@ export const editorial = {
         "carry the accent. Bars to the left mean it moved the other way. Change " +
         "the cutoff at the top of the page and the bars redraw.",
       axisLabel: "share of the metric's total movement, since the cutoff (→ faster)",
+      primaryTag: "strongest evidence — no maturity bias",
       tableCaption: "Levels behind each bar — {era} cutoff ({date}):",
       tipEarly: "start of record:",
       tipPre: "5 years to {cut_year}:",
@@ -2947,7 +2960,23 @@ export const editorial = {
         "than two complete years after {cut_year}, and one year is not an era. " +
         "This section fills itself in as the years land.",
       methodology:
-        "Three speed metrics, all read from the same matched cohort so they share " +
+        "Four metrics, and the first is not like the other three. The " +
+        "like-for-like clock takes only exploits dated within 90 days either " +
+        "side of publication, and only cohorts already 90 days old, so every " +
+        "year — including a part-finished current one — has had exactly the same " +
+        "window to arm. Bounding the window BELOW matters as much as above: a " +
+        "gap of -4,452 days is an old exploit finally receiving a CVE id, a " +
+        "cataloguing event rather than a fast one, and one-sided medians get " +
+        "dragged arbitrarily negative by them. What it deliberately is not is a " +
+        "rate over all published CVEs — that figure falls from about 45% to " +
+        "under 1% across the record, almost entirely because annual CVE volume " +
+        "grew from roughly 5,700 to 40,000, which is a coverage story the " +
+        "coverage chart already tells. One bias it does NOT fix, stated plainly: " +
+        "the exploit trackers add entries for older disclosures over time, so " +
+        "the newest cohort is still missing arming that will surface later and " +
+        "reads slightly slow — which is why the newest cutoff's verdict should " +
+        "be read as provisional. The remaining three are read from the same " +
+        "matched cohort and share " +
         "one denominator: the median publication-to-first-public-exploit gap in " +
         "days, the share of that cohort whose public code arrived no later than a " +
         "week after publication, and the share whose exploit code predates the " +

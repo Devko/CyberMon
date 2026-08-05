@@ -100,6 +100,39 @@ def _validate_time_to_poc(obj: Any) -> None:
                     "time_to_poc.hero.headline"),
                "time_to_poc.hero.headline.pct_negative_latest", 0.0, 100.0)
 
+    # ---- arming (the like-for-like clock) ---------------------------------
+    arming = _get(obj, "arming", "time_to_poc")
+    horizon = _get(arming, "horizon_days", "time_to_poc.arming")
+    _check_int(horizon, "time_to_poc.arming.horizon_days", minimum=1)
+    _check_str(_get(arming, "observed_through", "time_to_poc.arming"),
+               "time_to_poc.arming.observed_through")
+    arows = _check_list(_get(arming, "years", "time_to_poc.arming"),
+                        "time_to_poc.arming.years")
+    aseen = []
+    for i, row in enumerate(arows):
+        path = f"time_to_poc.arming.years[{i}]"
+        year = _get(row, "year", path)
+        _check_int(year, f"{path}.year", minimum=1988)
+        aseen.append(year)
+        _check_int(_get(row, "n", path), f"{path}.n", minimum=1)
+        # The window is SYMMETRIC and bounded, and that is the whole
+        # point of this section: a median outside it means the bound was
+        # not applied and the statistic is the one-sided one again,
+        # which would silently reintroduce the back-catalogue drag.
+        _check_num(_get(row, "median_days", path), f"{path}.median_days",
+                   float(-horizon), float(horizon))
+        for key in ("pct_within_week", "pct_negative"):
+            _check_num(_get(row, key, path), f"{path}.{key}", 0.0, 100.0)
+        # Every negative gap is also <= 7 days, so this nesting holds
+        # here exactly as it does on the hero cohort.
+        if row["pct_negative"] > row["pct_within_week"] + 0.05:
+            _fail(f"{path}.pct_negative",
+                  f"pct_negative ({row['pct_negative']}) exceeds "
+                  f"pct_within_week ({row['pct_within_week']})")
+    _check_sorted(aseen, "time_to_poc.arming.years")
+    if len(set(aseen)) != len(aseen):
+        _fail("time_to_poc.arming.years", "duplicate years")
+
     # ---- kev_preempt ------------------------------------------------------
     kp = _get(obj, "kev_preempt", "time_to_poc")
     _check_str(_get(kp, "cutoff", "time_to_poc.kev_preempt"),

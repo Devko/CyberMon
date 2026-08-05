@@ -16,7 +16,7 @@
 //    thicket; the dots stay legible and the full dated, sourced,
 //    categorised list renders as a rail below the chart — which is also
 //    what makes each claim auditable, since every row carries its link.
-import { C, mkChart, valAxis, baseTooltip, baseGrid, fmtInt, escapeHtml, MONO } from "../theme.js";
+import { C, mkChart, valAxis, baseTooltip, baseGrid, baseLegend, fmtInt, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el, link } from "../dom.js";
 import { makeEraStore } from "./ai_era.js";
@@ -138,6 +138,16 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
   const lastYear = rows[rows.length - 1].year;
   const byYear = new Map(rows.map((r) => [r.year, r]));
 
+  // The like-for-like clock, if the upstream carries one. It reaches a
+  // year further than the raw series by construction: every cohort is
+  // cut at the same age, so a part-finished year is as measurable as a
+  // finished one. Drawing both is the point — where they diverge is
+  // where the raw series is being moved by back-catalogued exploits
+  // rather than by anything getting faster.
+  const lfl = data.like_for_like || {};
+  const lflRows = lfl.years || [];
+  const lflByYear = new Map(lflRows.map((r) => [r.year, r]));
+
   // The axis spans the union of the clock and the timeline, not just the
   // clock. The two legitimately end at different times — the clock stops
   // at the last COMPLETE year while milestones keep landing — and binding
@@ -148,11 +158,12 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
   const lastMilestoneYear = milestones.length
     ? Math.floor(yearPos(milestones[milestones.length - 1].plot_date))
     : lastYear;
-  const axisMax = Math.max(lastYear, lastMilestoneYear) + 0.5;
+  const lastLflYear = lflRows.length ? lflRows[lflRows.length - 1].year : lastYear;
+  const axisMax = Math.max(lastYear, lastMilestoneYear, lastLflYear) + 0.5;
 
   // Axis bounds in transformed space, padded so the extremes aren't drawn
   // on the frame; ticks are the round day values that fall inside them.
-  const symValues = rows.map((r) => toSym(r.value));
+  const symValues = [...rows, ...lflRows].map((r) => toSym(r.value));
   const symMin = Math.min(...symValues, 0) - 0.25;
   const symMax = Math.max(...symValues, 0) + 0.25;
   const symTicks = SYM_TICK_DAYS.map(toSym)
@@ -168,7 +179,10 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
     const bandStart = yearPos(era.date.length === 10 ? era.date : `${era.date}-15`);
 
     chart.setOption({
-      grid: { ...baseGrid, left: 56, top: 30, right: 24 },
+      grid: { ...baseGrid, left: 56, top: 42, right: 24 },
+      legend: lflRows.length
+        ? { ...baseLegend, data: [ed.rawLabel, ed.lflLabel] }
+        : { show: false },
       tooltip: {
         ...baseTooltip,
         trigger: "item",
@@ -184,11 +198,15 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
               `<span style="color:${C.muted};">${escapeHtml(m.note)}</span>`
             );
           }
-          const r = byYear.get(Math.round(p.value[0]));
+          const year = Math.round(p.value[0]);
+          // Each line reports from its OWN cohort — they have different
+          // denominators and mixing them up would misstate both.
+          const src = p.seriesName === ed.lflLabel ? lflByYear : byYear;
+          const r = src.get(year);
           if (!r) return "";
           return (
-            `<div style="color:${C.muted};margin-bottom:4px;">${r.year}</div>` +
-            `median <strong>${fmtDays(r.value)}</strong> · ${fmtInt(r.n)} matched CVEs`
+            `<div style="color:${C.muted};margin-bottom:4px;">${year} · ${escapeHtml(p.seriesName)}</div>` +
+            `median <strong>${fmtDays(r.value)}</strong> · ${fmtInt(r.n)} CVEs`
           );
         },
       },
@@ -227,7 +245,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       ],
       series: [
         {
-          name: "Median gap",
+          name: ed.rawLabel,
           type: "line",
           // Plotted transformed, reported raw — the tooltip below reads
           // `byYear`, never the plotted y.
@@ -274,6 +292,16 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
             data: [[{ xAxis: bandStart }, { xAxis: axisMax }]],
           },
         },
+        ...(lflRows.length ? [{
+          name: ed.lflLabel,
+          type: "line",
+          data: lflRows.map((r) => [r.year, toSym(r.value)]),
+          color: "#ded7c2",
+          symbol: "circle",
+          symbolSize: 4,
+          lineStyle: { width: 2 },
+          z: 6,
+        }] : []),
         {
           name: "_milestones",
           type: "scatter",

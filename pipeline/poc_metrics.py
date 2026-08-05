@@ -40,7 +40,16 @@ from typing import Iterable
 from .fetch_kev import KevEntry
 from .fetch_poc import PocData
 from .kev_metrics import LAUNCH_CUTOFF, _parse_date
+from datetime import timedelta
+
 from .metrics import Aggregator, _pct, _quartiles, _r1
+
+# Half-width, in days, of the like-for-like arming window (see
+# _build_arming). A quarter: long enough that almost all arming that
+# happens near disclosure is inside it, short enough that every cohort
+# in the corpus — including a part-finished current year — has had the
+# full window to produce it.
+ARMING_HORIZON_DAYS = 90
 
 # Severity-bucket key (Aggregator.flood) -> grid CVSS bucket label, in
 # chart order (metrics.cvss_bucket's mapping, spelled once here).
@@ -51,6 +60,77 @@ _SEVERITY_TO_BUCKET = (("low", "0.1-3.9"), ("medium", "4.0-6.9"),
 def _share_block(with_poc: int, preempted: int) -> dict:
     return {"with_poc_date": with_poc, "preempted": preempted,
             "pct_preempted": _pct(preempted, with_poc)}
+
+
+def _build_arming(agg: Aggregator, first_poc: dict[str, str],
+                  generated_at: str, min_n: int) -> dict:
+    """The like-for-like clock: median gap inside a SYMMETRIC +/-horizon
+    window, over cohorts old enough to have had the whole window.
+
+    The hero series above is the honest raw record, but it is not
+    comparable across years, for two reasons this section removes:
+
+    * **Cohort maturity (right-censoring).** The hero's cohort is "CVEs
+      that have a public PoC", so a 2019 record has had years to qualify
+      and a record published last month has had weeks. Here every cohort
+      is cut at ``generated_at - horizon``, so all of them have had
+      exactly the same time to arm, and a part-finished current year is
+      as comparable as a finished one. This is what lets the current
+      year appear at all.
+    * **Back-catalogued exploits.** Bounding the window BELOW as well as
+      above is the other half. A gap of -4,452 days is an old exploit
+      finally receiving a CVE id — a cataloguing event, not a fast one —
+      and it drags a one-sided median arbitrarily negative (it is why
+      the raw 2025 median reads -12d off a p25 of -4,452). Inside
+      +/-horizon the statistic measures arming near disclosure, which is
+      the thing the word "window" is supposed to mean.
+
+    What it deliberately does NOT do is divide by all published CVEs.
+    That rate collapses from ~45% to under 1% across the record, but
+    almost entirely because annual CVE volume grew from ~5,700 to
+    ~40,000 — a coverage story (which the coverage chart already tells)
+    masquerading as a speed one.
+
+    Remaining honesty note, carried in the page copy: this fixes cohort
+    maturity, not tracker INGESTION lag. Exploit-DB and Metasploit add
+    entries for older disclosures over time, so the newest cohort is
+    still missing arming that will appear later, and reads slightly slow.
+    """
+    horizon = ARMING_HORIZON_DAYS
+    observed_through = date.fromisoformat(generated_at[:10]) - \
+        timedelta(days=horizon)
+
+    gaps_by_year: dict[int, list[int]] = defaultdict(list)
+    for cve, poc_date_s in first_poc.items():
+        published = _parse_date(agg.poc_published_dates.get(cve))
+        poc_date = _parse_date(poc_date_s)
+        if published is None or poc_date is None:
+            continue
+        if published > observed_through:
+            continue  # cohort has not had the full window yet
+        gap = (poc_date - published).days
+        if -horizon <= gap <= horizon:
+            gaps_by_year[published.year].append(gap)
+
+    years = []
+    for year in sorted(gaps_by_year):
+        gaps = gaps_by_year[year]
+        n = len(gaps)
+        if n < min_n:
+            continue
+        _p25, median, _p75 = _quartiles([float(v) for v in gaps])
+        years.append({
+            "year": year, "n": n,
+            "median_days": _r1(median),
+            "pct_within_week": _pct(sum(1 for v in gaps if v <= 7), n),
+            "pct_negative": _pct(sum(1 for v in gaps if v < 0), n),
+        })
+
+    return {
+        "horizon_days": horizon,
+        "observed_through": observed_through.isoformat(),
+        "years": years,
+    }
 
 
 def build_time_to_poc(agg: Aggregator, poc: PocData,
@@ -199,6 +279,8 @@ def build_time_to_poc(agg: Aggregator, poc: PocData,
     return {
         "generated_at": generated_at,
         "hero": hero,
+        "arming": _build_arming(agg, first_poc, generated_at,
+                                max(min_n, 1) if min_n < 10 else 30),
         "kev_preempt": kev_preempt,
         "coverage": coverage,
         "catalog": catalog,

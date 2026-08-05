@@ -202,6 +202,34 @@ def _verdict(early: float | None, pre: float | None, post: float | None,
         pct_banked, shift_share
 
 
+def _build_like_for_like(poc: dict) -> dict:
+    """The censoring-free clock, lifted from time_to_poc's `arming`.
+
+    Kept OUT of ``clock.metrics`` deliberately. Those three share one
+    cohort and one span, and the contract enforces that. This is a
+    different instrument on a different span — it starts later (the
+    window needs a populated cohort) and ends LATER, because a
+    like-for-like statistic can measure a part-finished year that the
+    raw series cannot. Structuring the difference rather than hiding it
+    is what stops a reader treating four numbers as four equal numbers:
+    this one is immune to the bias the other three carry, and the page
+    says which is which.
+    """
+    arming = poc.get("arming") or {}
+    rows = arming.get("years") or []
+    return {
+        "id": "poc_like_for_like",
+        "label": "Median days to first public exploit, like-for-like",
+        "unit": "days", "faster": "down",
+        "horizon_days": arming.get("horizon_days", 0),
+        "observed_through": arming.get("observed_through", ""),
+        "first_year": rows[0]["year"] if rows else 0,
+        "last_year": rows[-1]["year"] if rows else 0,
+        "years": [{"year": r["year"], "value": _r1(float(r["median_days"])),
+                   "n": int(r["n"])} for r in rows],
+    }
+
+
 def _build_clock(poc: dict, current_year: int) -> dict:
     """The three annual speed metrics, complete years only.
 
@@ -225,10 +253,19 @@ def _build_clock(poc: dict, current_year: int) -> dict:
             "metrics": metrics}
 
 
-def _build_banked(clock: dict, eras: list[dict]) -> dict:
-    """The inflection test: three levels per metric per era cutoff."""
+def _build_banked(clock: dict, eras: list[dict],
+                  like_for_like: dict) -> dict:
+    """The inflection test: three levels per metric per era cutoff.
+
+    The like-for-like metric goes FIRST and is flagged ``primary`` — it
+    is the only one of the four immune to cohort-maturity bias, so the
+    page leads with it and keeps the other three as corroboration rather
+    than presenting four equal votes.
+    """
     metrics = []
-    for m in clock["metrics"]:
+    candidates = ([like_for_like] if like_for_like["years"] else []) \
+        + list(clock["metrics"])
+    for m in candidates:
         rows = m["years"]
         if not rows:
             continue
@@ -259,7 +296,9 @@ def _build_banked(clock: dict, eras: list[dict]) -> dict:
                 "verdict": verdict,
             })
         metrics.append({"id": m["id"], "label": m["label"], "unit": m["unit"],
-                        "faster": m["faster"], "eras": era_blocks})
+                        "faster": m["faster"],
+                        "primary": m["id"] == like_for_like["id"],
+                        "eras": era_blocks})
 
     return {"window_years": WINDOW_YEARS,
             "inflection_threshold_pct": INFLECTION_THRESHOLD_PCT,
@@ -361,7 +400,8 @@ def build_ai_alibi(poc: dict, generated_at: str,
                   for m in sorted(MILESTONES, key=_plot_date)]
 
     clock = _build_clock(poc, current_year)
-    banked = _build_banked(clock, eras)
+    like_for_like = _build_like_for_like(poc)
+    banked = _build_banked(clock, eras, like_for_like)
     attention = _build_attention(market, clock)
 
     # Headline: the default era's verdict on the headline metric, plus
@@ -370,8 +410,12 @@ def build_ai_alibi(poc: dict, generated_at: str,
     # a statement about all of them, not a cherry-picked one — and
     # ``judged`` is reported alongside so a reader can see how much of
     # the grid was thin enough to withhold.
+    # The headline quotes the PRIMARY metric when there is one — the
+    # censoring-free clock — falling back to the raw median otherwise.
     default_era = next(e for e in eras if e["default"])
-    gap = next((m for m in banked["metrics"] if m["id"] == "poc_gap"), None)
+    gap = next((m for m in banked["metrics"] if m.get("primary")),
+               next((m for m in banked["metrics"] if m["id"] == "poc_gap"),
+                    None))
     block = None if gap is None else next(
         (b for b in gap["eras"] if b["era"] == default_era["id"]), None)
     cells = [b for m in banked["metrics"] for b in m["eras"]]
@@ -401,6 +445,7 @@ def build_ai_alibi(poc: dict, generated_at: str,
         "eras": eras,
         "milestones": milestones,
         "clock": clock,
+        "like_for_like": like_for_like,
         "banked": banked,
         "attention": attention,
         "headline": headline,
