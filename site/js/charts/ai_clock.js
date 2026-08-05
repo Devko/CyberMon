@@ -179,7 +179,20 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
     const bandStart = yearPos(era.date.length === 10 ? era.date : `${era.date}-15`);
 
     chart.setOption({
-      grid: { ...baseGrid, left: 56, top: 42, right: 24 },
+      grid: { ...baseGrid, left: 76, top: 42, right: 24 },
+      // Which way is bad. Without this the axis reads "days (log)" and a
+      // rising line looks like escalation, when on this metric UP means
+      // the exploit arrived LATER — the opposite. An unlabelled axis
+      // direction was letting the hero appear to show an acceleration
+      // the page spends three charts demonstrating did not happen.
+      graphic: [
+        { type: "text", left: 4, top: "18%", silent: true,
+          style: { text: ed.axisSlower, fill: C.faint, fontFamily: MONO,
+                   fontSize: 9 } },
+        { type: "text", left: 4, top: "62%", silent: true,
+          style: { text: ed.axisFaster, fill: C.accent, fontFamily: MONO,
+                   fontSize: 9, opacity: 0.75 } },
+      ],
       legend: lflRows.length
         ? { ...baseLegend, data: [ed.rawLabel, ed.lflLabel] }
         : { show: false },
@@ -295,12 +308,32 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
         ...(lflRows.length ? [{
           name: ed.lflLabel,
           type: "line",
-          data: lflRows.map((r) => [r.year, toSym(r.value)]),
+          // Provisional cohorts — the trackers have not finished indexing
+          // them — draw hollow and join with a dashed segment. They read
+          // SLOWER than they will finally prove to be, and an undrawn
+          // distinction at the right-hand edge of this particular chart
+          // is the one most likely to be read as a trend.
+          data: lflRows.map((r) => ({
+            value: [r.year, toSym(r.value)],
+            symbol: r.provisional ? "emptyCircle" : "circle",
+            symbolSize: r.provisional ? 7 : 4,
+          })),
           color: "#ded7c2",
-          symbol: "circle",
-          symbolSize: 4,
           lineStyle: { width: 2 },
           z: 6,
+          // Dash only the tail that enters provisional territory.
+          ...(lflRows.some((r) => r.provisional) ? {
+            markLine: {
+              silent: true, symbol: "none",
+              lineStyle: { color: "#ded7c2", type: "dotted", width: 1, opacity: 0.6 },
+              label: {
+                show: true, position: "insideEndBottom", color: C.muted,
+                fontFamily: MONO, fontSize: 9,
+                formatter: ed.provisionalFrom,
+              },
+              data: [{ xAxis: lflRows.find((r) => r.provisional).year - 0.5 }],
+            },
+          } : {}),
         }] : []),
         {
           name: "_milestones",

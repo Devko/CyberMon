@@ -51,6 +51,17 @@ from .metrics import Aggregator, _pct, _quartiles, _r1
 # full window to produce it.
 ARMING_HORIZON_DAYS = 90
 
+# How long the public trackers are allowed to finish indexing before a
+# cohort year counts as settled. Exploit-DB and Metasploit add entries
+# for older disclosures continuously, so a cohort whose arming window
+# only just closed is still missing exploits that will appear later and
+# reads SLOWER than it will finally prove to be. A year stays flagged
+# ``provisional`` until its window has been closed for this long — the
+# page draws those points differently and no verdict may rest on them
+# alone, because the bias points in the direction most likely to be
+# misread as a trend.
+ARMING_INGESTION_ALLOWANCE_DAYS = 365
+
 # Severity-bucket key (Aggregator.flood) -> grid CVSS bucket label, in
 # chart order (metrics.cvss_bucket's mapping, spelled once here).
 _SEVERITY_TO_BUCKET = (("low", "0.1-3.9"), ("medium", "4.0-6.9"),
@@ -112,6 +123,7 @@ def _build_arming(agg: Aggregator, first_poc: dict[str, str],
         if -horizon <= gap <= horizon:
             gaps_by_year[published.year].append(gap)
 
+    observed_on = date.fromisoformat(generated_at[:10])
     years = []
     for year in sorted(gaps_by_year):
         gaps = gaps_by_year[year]
@@ -119,15 +131,22 @@ def _build_arming(agg: Aggregator, first_poc: dict[str, str],
         if n < min_n:
             continue
         _p25, median, _p75 = _quartiles([float(v) for v in gaps])
+        # A cohort's arming window closes `horizon` days after the year's
+        # last day; it is settled once the trackers have had the
+        # ingestion allowance on top of that to finish indexing it.
+        settled_on = date(year, 12, 31) + timedelta(
+            days=horizon + ARMING_INGESTION_ALLOWANCE_DAYS)
         years.append({
             "year": year, "n": n,
             "median_days": _r1(median),
             "pct_within_week": _pct(sum(1 for v in gaps if v <= 7), n),
             "pct_negative": _pct(sum(1 for v in gaps if v < 0), n),
+            "provisional": observed_on < settled_on,
         })
 
     return {
         "horizon_days": horizon,
+        "ingestion_allowance_days": ARMING_INGESTION_ALLOWANCE_DAYS,
         "observed_through": observed_through.isoformat(),
         "years": years,
     }

@@ -249,6 +249,10 @@ def _validate_ai_alibi(obj: Any) -> None:
         # was lost and the back-catalogue drag is back.
         _check_num(_get(r, "value", path), f"{path}.value",
                    float(-lfl_horizon), float(lfl_horizon))
+        # Drives how the point is DRAWN (hollow, dashed) and whether a
+        # verdict may rest on it — so it is required, not optional.
+        if not isinstance(_get(r, "provisional", path), bool):
+            _fail(f"{path}.provisional", "must be a bool")
     _check_sorted(lfl_seen, "ai_alibi.like_for_like.years")
     if len(set(lfl_seen)) != len(lfl_seen):
         _fail("ai_alibi.like_for_like.years", "duplicate years")
@@ -320,11 +324,11 @@ def _validate_ai_alibi(obj: Any) -> None:
             thin = int(post_obj["years"]) < MIN_POST_YEARS
 
             if verdict == "insufficient":
-                if not (missing or thin):
-                    _fail(f"{bpath}.verdict",
-                          f"'insufficient' needs a missing level or a "
-                          f"post window under {MIN_POST_YEARS} years; this "
-                          f"cell has neither")
+                # Withholding is always permitted — a cell may also be
+                # withheld because every post-cutoff cohort is still
+                # provisional, which this validator cannot see from here.
+                # The safety-critical direction is the other one: a cell
+                # that DOES publish a verdict must be able to back it.
                 if pct is not None or share is not None:
                     _fail(f"{bpath}.pct_banked",
                           "an unjudged cell may not carry a banked share")

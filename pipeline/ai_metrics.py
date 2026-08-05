@@ -226,7 +226,9 @@ def _build_like_for_like(poc: dict) -> dict:
         "first_year": rows[0]["year"] if rows else 0,
         "last_year": rows[-1]["year"] if rows else 0,
         "years": [{"year": r["year"], "value": _r1(float(r["median_days"])),
-                   "n": int(r["n"])} for r in rows],
+                   "n": int(r["n"]),
+                   "provisional": bool(r.get("provisional", False))}
+                  for r in rows],
     }
 
 
@@ -281,9 +283,21 @@ def _build_banked(clock: dict, eras: list[dict],
                 rows, "value", start=cut - WINDOW_YEARS + 1, end=cut)
             post_v, post_y, post_n = _window(
                 rows, "value", start=cut + 1, end=last_year)
-            verdict, pct_banked, shift_share = _verdict(
-                early_v, pre_v, post_v, unit=m["unit"], faster=m["faster"],
-                post_years=post_y)
+            # A verdict standing entirely on cohorts the trackers have
+            # not finished indexing is not a verdict. Those years read
+            # slower than they will finally prove to be, so publishing
+            # one would print a "slowdown" that is an artifact — and on
+            # this page, any spurious movement inside the AI band is the
+            # single most likely thing to be misread.
+            settled_post = [r for r in rows
+                            if cut < r["year"] <= last_year
+                            and not r.get("provisional")]
+            if post_y and not settled_post:
+                verdict, pct_banked, shift_share = "insufficient", None, None
+            else:
+                verdict, pct_banked, shift_share = _verdict(
+                    early_v, pre_v, post_v, unit=m["unit"],
+                    faster=m["faster"], post_years=post_y)
             era_blocks.append({
                 "era": era["id"], "cut_year": cut,
                 "early": _level(early_v, early_y, early_n),

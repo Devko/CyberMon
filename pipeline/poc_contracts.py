@@ -123,6 +123,8 @@ def _validate_time_to_poc(obj: Any) -> None:
                    float(-horizon), float(horizon))
         for key in ("pct_within_week", "pct_negative"):
             _check_num(_get(row, key, path), f"{path}.{key}", 0.0, 100.0)
+        if not isinstance(_get(row, "provisional", path), bool):
+            _fail(f"{path}.provisional", "must be a bool")
         # Every negative gap is also <= 7 days, so this nesting holds
         # here exactly as it does on the hero cohort.
         if row["pct_negative"] > row["pct_within_week"] + 0.05:

@@ -2845,7 +2845,14 @@ export const editorial = {
         "exploits landing within 90 days either side of publication, and only " +
         "cohorts old enough to have had all 90 days. That version reaches the " +
         "current year, because a like-for-like measure can read a part-finished " +
-        "one — and it has sat inside a fortnight-wide band since 2005. Where the " +
+        "one — and it has sat inside a fortnight-wide band since 2005. Read the " +
+        "vertical axis before drawing anything from the right-hand edge: UP here " +
+        "means the exploit arrived LATER, so the small rise into the current " +
+        "year is the window getting WIDER, not narrower. That point is also " +
+        "drawn hollow, because a cohort the exploit trackers have not finished " +
+        "indexing is always missing some of its fastest arming and reads slow — " +
+        "it is the most likely artifact on this page, not its most interesting " +
+        "finding, and no verdict rests on it. Where the " +
         "two lines part company is where the raw record is being pulled by old " +
         "exploits receiving CVE ids, not by anything getting faster. Past the " +
         "marked edge there is no complete-year evidence at all: the 2026 " +
@@ -2856,6 +2863,9 @@ export const editorial = {
       evidenceEdge: "complete-year evidence ends {year}",
       rawLabel: "As recorded (all gaps)",
       lflLabel: "Like-for-like (±90d window)",
+      axisSlower: "↑ exploit\n  arrives\n  LATER",
+      axisFaster: "↓ exploit\n  arrives\n  SOONER",
+      provisionalFrom: "provisional →",
       statLabel: "Speed metrics that accelerated in the AI era",
       statOf: "of {judged} tested",
       statUplift: "vendor reports that looked for offensive uplift and found none",
