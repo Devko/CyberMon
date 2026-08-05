@@ -186,6 +186,21 @@ def check_every_milestone_is_sourced(d: dict) -> None:
     )
 
 
+def check_newest_milestones_sit_past_the_testable_edge(d: dict) -> None:
+    # editorial.js (ai.html hero): "sit past the edge of anything this page
+    # can test". The claim is structural — the timeline must actually run
+    # past the clock's last complete year, or the sentence describes a gap
+    # that isn't there. (Committed edition 2026-08: the clock ends 2025 and
+    # four 2026 rows sit beyond it.)
+    last_year = d["clock"]["last_year"]
+    beyond = [m for m in d["milestones"] if int(m["date"][:4]) > last_year]
+    assert beyond, (
+        f"'sit past the edge of anything this page can test' needs at least "
+        f"one milestone after the clock's last complete year ({last_year}); "
+        f"the timeline ends at {d['milestones'][-1]['date']}"
+    )
+
+
 CLAIMS = [
     (
         "a collapse that finished a decade to the left of that band",
@@ -218,6 +233,11 @@ CLAIMS = [
         "Every dot is dated, categorised and linked below the chart.",
         "ai_alibi.json",
         check_every_milestone_is_sourced,
+    ),
+    (
+        "sit past the edge of anything this page can test",
+        "ai_alibi.json",
+        check_newest_milestones_sit_past_the_testable_edge,
     ),
 ]
 

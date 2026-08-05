@@ -138,6 +138,18 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
   const lastYear = rows[rows.length - 1].year;
   const byYear = new Map(rows.map((r) => [r.year, r]));
 
+  // The axis spans the union of the clock and the timeline, not just the
+  // clock. The two legitimately end at different times — the clock stops
+  // at the last COMPLETE year while milestones keep landing — and binding
+  // the axis to the clock alone silently clipped anything newer off the
+  // chart. The resulting gap is not a blemish to hide: it is the honest
+  // statement that the newest events are real and this page cannot judge
+  // them yet, which is why the boundary below is drawn and labelled.
+  const lastMilestoneYear = milestones.length
+    ? Math.floor(yearPos(milestones[milestones.length - 1].plot_date))
+    : lastYear;
+  const axisMax = Math.max(lastYear, lastMilestoneYear) + 0.5;
+
   // Axis bounds in transformed space, padded so the extremes aren't drawn
   // on the frame; ticks are the round day values that fall inside them.
   const symValues = rows.map((r) => toSym(r.value));
@@ -183,7 +195,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       xAxis: {
         type: "value",
         min: firstYear - 0.5,
-        max: lastYear + 0.5,
+        max: axisMax,
         minInterval: 1,
         axisLabel: { ...{ color: C.muted, fontFamily: MONO, fontSize: 11 }, formatter: (v) => String(Math.round(v)) },
         axisLine: { lineStyle: { color: C.rule } },
@@ -230,7 +242,21 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
             symbol: "none",
             lineStyle: { color: C.faint, type: "dashed", width: 1 },
             label: { show: false },
-            data: [{ yAxis: 0 }],
+            data: [
+              { yAxis: 0 },
+              // Where testable evidence stops. Everything to the right is
+              // timeline only — the clock has no complete year there yet,
+              // and no verdict on this page rests on it.
+              {
+                xAxis: lastYear + 0.5,
+                lineStyle: { color: C.muted, type: "solid", width: 1, opacity: 0.5 },
+                label: {
+                  show: true, position: "insideEndTop", color: C.muted,
+                  fontFamily: MONO, fontSize: 9,
+                  formatter: tpl(ed.evidenceEdge, { year: lastYear }),
+                },
+              },
+            ],
           },
           markArea: {
             silent: true,
@@ -245,7 +271,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
               fontSize: 10,
               formatter: tpl(ed.bandLabel, { label: era.label }),
             },
-            data: [[{ xAxis: bandStart }, { xAxis: lastYear + 0.5 }]],
+            data: [[{ xAxis: bandStart }, { xAxis: axisMax }]],
           },
         },
         {

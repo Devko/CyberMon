@@ -2840,8 +2840,14 @@ export const editorial = {
         "is dated, categorised and linked below the chart. The shaded band is the " +
         "AI era on whichever start date you pick. What the picture shows is a " +
         "collapse that finished a decade to the left of that band, and a line that " +
-        "does nothing in particular once it enters.",
+        "does nothing in particular once it enters. Then note where the line " +
+        "stops. The clock plots complete years only, so the newest milestones — " +
+        "the 2026 wave of models built specifically to find vulnerabilities — " +
+        "sit past the edge of anything this page can test. That gap is the honest " +
+        "limit of the argument: what you are reading is the record through the " +
+        "last complete year, not a forecast.",
       selectLabel: "AI era begins",
+      evidenceEdge: "complete-year evidence ends {year}",
       statLabel: "Speed metrics that accelerated in the AI era",
       statOf: "of {judged} tested",
       statUplift: "vendor reports that looked for offensive uplift and found none",
@@ -2864,7 +2870,11 @@ export const editorial = {
         "unambiguous date are marked month-precision and plot at mid-month, which " +
         "the tooltip discloses. Rows are categorised as capability releases, " +
         "no-uplift findings, offensive-use reports, defensive milestones and lab " +
-        "research, because the categories carry the argument: the two largest " +
+        "research. An event earns a row by being security-relevant — which " +
+        "explicitly includes getting better at FINDING vulnerabilities, not only " +
+        "at exploiting them — so a frontier model release with no security claim " +
+        "attached does not qualify. This is an argument, not a launch feed. The " +
+        "categories carry it: the two largest " +
         "vendor threat-intel shops looked specifically for offensive capability " +
         "uplift in 2024 and early 2025 and reported finding none, which is why a " +
         "2018–2023 trend cannot be attributed to a 2025 capability. The vertical " +

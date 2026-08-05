@@ -22,13 +22,23 @@ timeline is the overlay that lets a reader check whether those series
 bend at any of these dates. That is why ``kind`` matters more than the
 row count:
 
-* ``capability`` — a model or tool became publicly available;
+* ``capability`` — a model or tool with a security-relevant capability
+  became available, or was deliberately withheld because of one;
 * ``no_uplift`` — a threat-intel shop looked specifically for offensive
   capability uplift in the wild and reported finding none;
 * ``offensive`` — a documented case of AI used in a real intrusion or
   extortion operation;
 * ``defensive`` — AI finding or fixing bugs on the defenders' side;
 * ``research`` — lab-feasibility work, not in-the-wild evidence.
+
+**Inclusion rule.** An event earns a row when it is security-relevant —
+which explicitly includes getting better at FINDING vulnerabilities, not
+only at exploiting them. A frontier model release with no security claim
+attached does not qualify: this is an argument, not a launch feed, and
+every generic row buried here dilutes the ``no_uplift`` rows that carry
+the actual reasoning. A release with a measured vulnerability-discovery
+or exploit-conversion result does qualify, because that is the mechanism
+by which the clock this module tracks could actually start moving.
 
 The ``no_uplift`` rows are the load-bearing ones: they are the reason a
 2018-2023 trend cannot be attributed to a 2025 capability, and they come
@@ -176,6 +186,50 @@ MILESTONES: list[Milestone] = [
         "— genuinely new, and three years downstream of the trend this "
         "module measures.",
         "https://www.anthropic.com/news/disrupting-AI-espionage",
+    ),
+    # ---- 2026: the capability turn ------------------------------------
+    # These rows sit beyond the clock's last COMPLETE year, so this module
+    # cannot yet test them. That is the point of carrying them: they are
+    # the first events on this timeline whose stated purpose is finding
+    # vulnerabilities at scale, and they are exactly what a reader should
+    # watch if they expect the historical finding to stop holding.
+    Milestone(
+        "2026-04-07", "day", "capability",
+        "Anthropic withholds Claude Mythos, citing vulnerability discovery",
+        "A frontier model is kept from public release specifically because "
+        "of its ability to find software vulnerabilities — the first time "
+        "cyber capability, rather than any other risk, gates a launch. It "
+        "goes instead to roughly 50 defensive-security organisations under "
+        "Project Glasswing.",
+        "https://www.anthropic.com/glasswing",
+    ),
+    Milestone(
+        "2026-05-11", "day", "defensive",
+        "OpenAI launches Daybreak",
+        "A cyber programme built the same way: vulnerability-finding "
+        "capability released through vetted-defender access rather than "
+        "generally, alongside tooling to patch what it finds.",
+        "https://openai.com/index/daybreak-securing-the-world/",
+    ),
+    Milestone(
+        "2026-05-22", "day", "defensive",
+        "Glasswing reports 10,000+ high/critical vulnerabilities in a month",
+        "Partners report more than ten thousand high- or critical-severity "
+        "findings in systemically important software within a month; of "
+        "1,752 independently assessed, 90.6% were valid true positives. "
+        "Discovery volume, not exploitation speed — which is the shift this "
+        "module's own charts cannot yet see.",
+        "https://www.anthropic.com/research/glasswing-initial-update",
+    ),
+    Milestone(
+        "2026-06-22", "day", "capability",
+        "GPT-5.5-Cyber: measured gain in turning bugs into exploits",
+        "A model purpose-built for finding and patching vulnerabilities. "
+        "OpenAI reports 85.6% on CyberGym (from 81.8%) and, more relevant "
+        "here, 39.5% against 25.95% on ExploitGym — converting a known "
+        "vulnerability into a working exploit. That is the one mechanism "
+        "that would compress the gap this page measures.",
+        "https://openai.com/index/daybreak-securing-the-world/",
     ),
 ]
 
