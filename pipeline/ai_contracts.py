@@ -159,6 +159,7 @@ def _validate_ai_alibi(obj: Any) -> None:
     if not metrics:
         _fail("ai_alibi.clock.metrics", "no clock metric survived")
     units: dict[str, str] = {}
+    by_metric: dict[str, dict[int, float]] = {}
     for i, m in enumerate(metrics):
         path = f"ai_alibi.clock.metrics[{i}]"
         mid = _get(m, "id", path)
@@ -191,6 +192,21 @@ def _validate_ai_alibi(obj: Any) -> None:
                   f"metric {mid!r} spans {seen[0]}-{seen[-1]}, but the clock "
                   f"declares {first_year}-{last_year} — every metric shares "
                   f"one cohort and must share one span")
+        by_metric[mid] = {r["year"]: r["value"] for r in rows}
+
+    # poc_negative (gap < 0) is a strict SUBSET of poc_week (gap <= 7), so
+    # its share can never exceed poc_week's in any year. The page leans on
+    # that nesting when it tells readers these are not independent tests;
+    # a violation means the upstream fields drifted apart and the claim
+    # would silently become false.
+    neg, week = by_metric.get("poc_negative"), by_metric.get("poc_week")
+    if neg and week:
+        for year in sorted(set(neg) & set(week)):
+            if neg[year] > week[year] + 0.05:
+                _fail("ai_alibi.clock.metrics",
+                      f"{year}: poc_negative ({neg[year]}%) exceeds poc_week "
+                      f"({week[year]}%), but every negative gap is also "
+                      f"<= 7 days — the two fields have drifted apart")
 
     # ---- banked -----------------------------------------------------------
     banked = _get(obj, "banked", "ai_alibi")

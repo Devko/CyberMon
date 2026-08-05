@@ -2867,15 +2867,32 @@ export const editorial = {
         "research, because the categories carry the argument: the two largest " +
         "vendor threat-intel shops looked specifically for offensive capability " +
         "uplift in 2024 and early 2025 and reported finding none, which is why a " +
-        "2018–2023 trend cannot be attributed to a 2025 capability. Widely cited " +
+        "2018–2023 trend cannot be attributed to a 2025 capability. The vertical " +
+        "axis is logarithmic in both directions, because the series spans -800 days " +
+        "to single digits: on a linear axis the 1999 cohort sets the scale and " +
+        "everything from 2004 on — the whole period this module is about — " +
+        "collapses into a flat line about three percent of the chart tall. The " +
+        "transform is a rendering choice that changes no number, and every tooltip " +
+        "quotes the real value in days. Widely cited " +
         "vendor figures that point the other way — Mandiant's 63-to-5-day " +
         "time-to-exploit series, the DBIR's edge-device share — are deliberately " +
         "NOT plotted: they come from private incident corpora and cannot be " +
         "reproduced from this pipeline, so they appear as attributed prose in the " +
         "repo (pipeline/ai_timeline_data.EXTERNAL_CONTEXT) and never on an axis " +
-        "here. One caveat this module inherits wholesale and does not fix: the " +
+        "here. Three caveats this module inherits and does not fix. First, the " +
         "clock measures public exploit code in three trackers over a " +
-        "self-selected cohort, a floor rather than a census.",
+        "self-selected cohort — a floor rather than a census. Second, recent " +
+        "years are right-censored: a CVE only enters the cohort once it HAS a " +
+        "public exploit, so a 2024 record whose exploit lands in 2027 is missing " +
+        "entirely, and recent cohorts systematically drop their slowest arming " +
+        "cases. That bias runs toward making recent years look FASTER, which is " +
+        "worth stating plainly because it cuts in favour of this page's " +
+        "conclusion: censoring should have manufactured exactly the acceleration " +
+        "we report not finding, and it still isn't there. Third, the 2025 cohort " +
+        "is anomalous — it is twice the size of 2024's and its lower quartile " +
+        "sits years in the negative, the signature of old vulnerabilities finally " +
+        "receiving CVE ids rather than of anything getting faster. It is the " +
+        "reason the 2025-cutoff era is withheld rather than judged.",
     },
 
     // --------------------------------- ai.html · 2
@@ -2922,8 +2939,19 @@ export const editorial = {
       methodology:
         "Three speed metrics, all read from the same matched cohort so they share " +
         "one denominator: the median publication-to-first-public-exploit gap in " +
-        "days, the share of that cohort armed within a week of publication, and " +
-        "the share whose exploit code predates the CVE record. KEV latency is " +
+        "days, the share of that cohort whose public code arrived no later than a " +
+        "week after publication, and the share whose exploit code predates the " +
+        "CVE record. Note what that second metric is and isn't — the underlying " +
+        "field is “gap at most 7 days”, which counts every negative gap too, so a " +
+        "PoC published a year before its CVE is in it. That is why the early " +
+        "years read near 98%: not speed, but a catalogue recording exploits that " +
+        "already existed. These three are emphatically NOT independent tests. " +
+        "They are three summary statistics of one distribution over one cohort, " +
+        "and the third is a strict subset of the second (every negative gap is " +
+        "also under seven days). Three views are still worth having — a median " +
+        "can hold still while a tail moves — but a reader tallying them as " +
+        "separate evidence is counting the same data three times, and the same " +
+        "goes for the two era cutoffs, which share most of their years. KEV latency is " +
         "deliberately absent — its series is quarantined to begin in 2023, after " +
         "two of the three cutoffs, and a metric whose history starts inside the " +
         "era under test cannot test that era. Each metric gets three levels, all " +
@@ -2982,7 +3010,16 @@ export const editorial = {
         "would draw values nobody measured and a slope that reads as motion. The " +
         "two series share no unit and no sampling rate, so they are on separate " +
         "axes and this chart asserts no correlation — it shows one line climbing " +
-        "while the other sits still. The window is the market module's own 60 " +
+        "while the other sits still. The clock's axis is pinned to at least plus " +
+        "or minus 90 days rather than fitted to the data, a disclosed editorial " +
+        "choice with a reason: the clock's whole range over this window is about " +
+        "16 days, and an auto-fitted axis would stretch that wobble to full height " +
+        "and draw a cliff — the chart would then argue the opposite of what it " +
+        "measures. A quarter is the reference because a clock that moved less " +
+        "than one did not move in any sense a defender would feel; the axis still " +
+        "grows if the data ever does. The single deepest point, 2025, is the " +
+        "anomalous cohort described in the first chart's methodology, not a " +
+        "collapse. The window is the market module's own 60 " +
         "months, which means it opens roughly a year before ChatGPT: enough of a " +
         "pre-release baseline to see a step change, not enough to carry the " +
         "long-run argument, which is what the two charts above are for.",

@@ -44,6 +44,44 @@ function yearPos(plotDate) {
   return year + (month - 0.5) / 12;
 }
 
+// ---- symmetric log scale ----------------------------------------------------
+// The gap series spans -800 days (1999) to single digits (every year since
+// ~2005). On a linear axis the 1999 outlier sets the scale and the entire
+// period this module is ABOUT — 2004 onward, including the AI era — renders
+// inside ~3% of the axis height, as a flat line nobody can read. The caption
+// promises "a line that does nothing in particular once it enters"; a reader
+// has to be able to SEE it doing nothing.
+//
+// A sign-preserving log keeps every year on one chart and makes both halves
+// legible: the collapse on the left, the flat stretch on the right.
+//
+// It needs a LINEAR REGION around zero, or it trades one distortion for
+// another. A pure log magnifies small values — the modern series sits at
+// +1, +4, +2, -12 days, and log-scaling that turns a few days of noise into
+// a cliff inside the AI band, which is exactly the misreading this chart
+// exists to prevent. Below the threshold the scale is linear, above it
+// logarithmic (the matplotlib symlog construction).
+//
+// The threshold is a month: a clock that moved inside 30 days did not move
+// in any sense a defender schedules around, so a month of drift should look
+// like drift, not like an event. Ticks are pinned to round day values so
+// the axis still reads in days — the transform is a rendering device, never
+// a change to the numbers, and the tooltip always quotes the real value.
+const SYM_LINEAR_DAYS = 30;
+const toSym = (v) => {
+  const a = Math.abs(v);
+  return Math.sign(v) * (a <= SYM_LINEAR_DAYS
+    ? a / SYM_LINEAR_DAYS
+    : 1 + Math.log10(a / SYM_LINEAR_DAYS));
+};
+const fromSym = (t) => {
+  const a = Math.abs(t);
+  return Math.sign(t) * (a <= 1
+    ? a * SYM_LINEAR_DAYS
+    : SYM_LINEAR_DAYS * Math.pow(10, a - 1));
+};
+const SYM_TICK_DAYS = [-3000, -300, -30, 0, 30, 300];
+
 // `eraStore` is optional: ai.js passes a live one, the carousel generator
 // passes nothing and gets an inert store pinned to the default era.
 export function render(slots, data, eraStore = makeEraStore(data)) {
@@ -100,6 +138,14 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
   const lastYear = rows[rows.length - 1].year;
   const byYear = new Map(rows.map((r) => [r.year, r]));
 
+  // Axis bounds in transformed space, padded so the extremes aren't drawn
+  // on the frame; ticks are the round day values that fall inside them.
+  const symValues = rows.map((r) => toSym(r.value));
+  const symMin = Math.min(...symValues, 0) - 0.25;
+  const symMax = Math.max(...symValues, 0) + 0.25;
+  const symTicks = SYM_TICK_DAYS.map(toSym)
+    .filter((t) => t >= symMin && t <= symMax);
+
   const chart = mkChart(slots.chart);
 
   const build = (eraId) => {
@@ -146,8 +192,23 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       },
       yAxis: [
         valAxis({
-          name: "days",
+          name: "days (log)",
           nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
+          min: symMin,
+          max: symMax,
+          // Ticks at round DAY values, placed at their transformed
+          // positions — the axis reads in days even though it is spaced
+          // logarithmically. customValues needs ECharts >= 5.5 (the site
+          // pins 5.5.1); without it the axis degrades to default ticks,
+          // which the formatter still labels correctly.
+          interval: 1,
+          axisLabel: {
+            color: C.muted, fontFamily: MONO, fontSize: 11,
+            customValues: symTicks,
+            formatter: (t) => fmtDays(fromSym(t)),
+          },
+          axisTick: { customValues: symTicks },
+          splitLine: { customValues: symTicks, lineStyle: { color: C.rule, type: [2, 4] } },
         }),
         // Hidden rail for the milestone dots: 0-1, drawn near the top.
         { type: "value", min: 0, max: 1, show: false },
@@ -156,7 +217,9 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
         {
           name: "Median gap",
           type: "line",
-          data: rows.map((r) => [r.year, r.value]),
+          // Plotted transformed, reported raw — the tooltip below reads
+          // `byYear`, never the plotted y.
+          data: rows.map((r) => [r.year, toSym(r.value)]),
           color: C.accent,
           symbol: "circle",
           symbolSize: 4,
@@ -174,7 +237,9 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
             itemStyle: { color: C.accentSoft },
             label: {
               show: true,
-              position: "insideTop",
+              // Bottom, not top: the milestone dots ride the top of the
+              // plot and the two collide there.
+              position: "insideBottom",
               color: C.muted,
               fontFamily: MONO,
               fontSize: 10,

@@ -79,12 +79,26 @@ MIN_TRAVEL = {"days": 5.0, "percent": 5.0}
 # The three clock metrics, all read from time_to_poc.hero.years. `faster`
 # names the direction that means "the attacker's window got tighter", so
 # the verdict copy never has to hard-code which way is bad per metric.
+#
+# These are NOT three independent tests, and the page says so: all three
+# are summary statistics of the SAME gap distribution over the SAME
+# cohort, and `poc_negative` is a strict subset of `poc_week` (every
+# negative gap is also <= 7 days). They are three views of one
+# distribution, which is worth having — a median can hold still while a
+# tail moves — but a reader who counts them as independent evidence is
+# counting wrong.
+#
+# `poc_week`'s label is deliberately one-sided. The upstream field is
+# `gap <= 7`, which includes every NEGATIVE gap, so a PoC published 800
+# days before its CVE counts. "Within a week of publication" would imply
+# a +/-7 day window and badly misdescribe the early years, where the
+# figure is ~98% because code predated the records entirely.
 CLOCK_METRICS = (
     {"id": "poc_gap", "field": "median_days", "unit": "days",
      "label": "Median days, CVE publication to first public exploit",
      "faster": "down"},
     {"id": "poc_week", "field": "pct_within_week", "unit": "percent",
-     "label": "Share armed within a week of publication",
+     "label": "Share with public code no later than a week after publication",
      "faster": "up"},
     {"id": "poc_negative", "field": "pct_negative", "unit": "percent",
      "label": "Share whose exploit code predates the CVE record",

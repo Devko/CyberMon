@@ -17,6 +17,22 @@ import { el } from "../dom.js";
 
 const TERM_COLOR = [C.accent, "#ded7c2"];
 
+// The clock axis NEVER zooms tighter than +/- this many days.
+//
+// Left to auto-scale, ECharts fits the axis to the clock's own range —
+// which over this window is about 16 days across four distinct annual
+// values. A 16-day wobble then fills the full plot height and renders as
+// a cliff, so the chart draws the opposite of what it says: a reader sees
+// attention climbing and exploitation time collapsing, which is evidence
+// FOR the story this section exists to refute. Auto-scaling a
+// deliberately-flat series manufactures signal out of noise.
+//
+// A quarter is the reference: if the clock moved by less than a business
+// quarter it did not move in any sense a defender would feel. Pinning the
+// floor here is a disclosed editorial choice (it is stated in the
+// methodology), and the axis still grows if the data ever does.
+const MIN_CLOCK_AXIS_DAYS = 90;
+
 export function render(slots, data) {
   const ed = editorial.sections.ai_attention;
   const att = data.attention || {};
@@ -57,6 +73,14 @@ export function render(slots, data) {
     return clockByYear.has(year) ? clockByYear.get(year) : null;
   });
 
+  // Symmetric around zero at the disclosed floor, widening only if the
+  // clock genuinely outgrows it — so "flat" looks flat and a real swing
+  // would still be visible.
+  const clockBound = Math.max(
+    MIN_CLOCK_AXIS_DAYS,
+    ...clockRows.map((r) => Math.abs(r.value) * 1.2)
+  );
+
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 50, right: 56, top: 40 },
@@ -95,6 +119,8 @@ export function render(slots, data) {
         name: ed.axisClock,
         nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
         splitLine: { show: false },
+        min: -clockBound,
+        max: clockBound,
         axisLabel: { color: C.faint, fontFamily: MONO, fontSize: 11, formatter: (v) => `${Math.round(v)}d` },
       }),
     ],
