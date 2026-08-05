@@ -15722,7 +15722,7 @@
    "name": "SolarWinds Web Help Desk Deserialization of Untrusted Data Vulnerability",
    "notes": "40a123896601",
    "product": "Web Help Desk",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "SolarWinds"
   },
   "CVE-2025-26633": {
@@ -17265,6 +17265,17 @@
    "ransom": "Known",
    "vendor": "BeyondTrust"
   },
+  "CVE-2026-18556": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-04",
+   "desc": "72f00b93b039",
+   "due": "2026-08-07",
+   "name": "N-able N-central Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+   "notes": "392a39dd12bb",
+   "product": "N-central",
+   "ransom": "Unknown",
+   "vendor": "N-able"
+  },
   "CVE-2026-18577": {
    "action": "ba0d649eb29b",
    "added": "2026-08-03",
@@ -17735,6 +17746,17 @@
    "name": "Apache ActiveMQ Improper Input Validation Vulnerability",
    "notes": "fe4e03aae288",
    "product": "ActiveMQ",
+   "ransom": "Unknown",
+   "vendor": "Apache"
+  },
+  "CVE-2026-34486": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-04",
+   "desc": "8ec162a43b95",
+   "due": "2026-08-07",
+   "name": "Apache Tomcat Missing Encryption of Sensitive Data Vulnerability",
+   "notes": "1e13611df3d4",
+   "product": "Tomcat",
    "ransom": "Unknown",
    "vendor": "Apache"
   },
@@ -18232,9 +18254,20 @@
    "product": "Core",
    "ransom": "Unknown",
    "vendor": "Drupal"
+  },
+  "CVE-2026-9198": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-04",
+   "desc": "7be96e944418",
+   "due": "2026-08-07",
+   "name": "IBM Langflow Code Injection Vulnerability",
+   "notes": "2b2f0c8a5759",
+   "product": "Langflow",
+   "ransom": "Unknown",
+   "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-04",
+ "last_observed": "2026-08-05",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-08-04",
+ "last_observed": "2026-08-05",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -175,6 +175,12 @@
    "org": "Antenna",
    "scope": "77c74867ab56",
    "type": "Open Source"
+  },
+  "Anthropic": {
+   "country": "USA",
+   "org": "Anthropic, PBC",
+   "scope": "d900b630b0a9",
+   "type": "AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor"
   },
   "AppCheck": {
    "country": "UK",
@@ -1358,6 +1364,12 @@
    "scope": "b7ac05ab1799",
    "type": "Vendor"
   },
+  "NCSC": {
+   "country": "Belgium",
+   "org": "NATO Cyber Security Centre",
+   "scope": "0bb32070667c",
+   "type": "Researcher"
+  },
   "NCSC-FI": {
    "country": "Finland",
    "org": "National Cyber Security Centre Finland (NCSC-FI)",
@@ -1463,8 +1475,8 @@
   "OAI": {
    "country": "USA",
    "org": "OpenAI",
-   "scope": "487de5d6845c",
-   "type": "Vendor"
+   "scope": "308118b337e7",
+   "type": "AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor"
   },
   "OB": {
    "country": "China",
@@ -1740,6 +1752,12 @@
    "country": "Taiwan",
    "org": "Quanta Computer, Inc.",
    "scope": "942f15cf78a6",
+   "type": "Vendor"
+  },
+  "Qt": {
+   "country": "Finland",
+   "org": "Qt Group",
+   "scope": "1cc276a17a32",
    "type": "Vendor"
   },
   "Qualys": {
@@ -2042,6 +2060,12 @@
    "scope": "106dd76467b0",
    "type": "Vendor"
   },
+  "Syncro": {
+   "country": "Romania",
+   "org": "Syncro Soft SRL",
+   "scope": "8a8757873da5",
+   "type": "Vendor"
+  },
   "Synopsys": {
    "country": "USA",
    "org": "Synopsys, Inc.",
@@ -2083,12 +2107,6 @@
    "org": "TP-Link Systems Inc.",
    "scope": "fee10266e050",
    "type": "Hosted Service + Vendor"
-  },
-  "TQtC": {
-   "country": "Finland",
-   "org": "The Qt Company",
-   "scope": "ba951e28bcd5",
-   "type": "Vendor"
   },
   "TR-CERT": {
    "country": "T\u00fcrkiye",
@@ -2720,6 +2738,12 @@
    "scope": "b19e64d30616",
    "type": "Vendor"
   },
+  "hsi": {
+   "country": "USA",
+   "org": "Haverford Systems, Inc.",
+   "scope": "81a10cd6a9b0",
+   "type": "Researcher + Vendor"
+  },
   "huawei": {
    "country": "China",
    "org": "Huawei Technologies",
@@ -2953,6 +2977,12 @@
    "org": "PHP Group",
    "scope": "c3a79533bf03",
    "type": "Open Source + Vendor"
+  },
+  "postiz": {
+   "country": "Israel",
+   "org": "Postiz",
+   "scope": "0dfa36939001",
+   "type": "Hosted Service + Open Source + Vendor"
   },
   "qnap": {
    "country": "Taiwan",
@@ -3269,6 +3299,10 @@
   [
    "2026-08-04",
    533
+  ],
+  [
+   "2026-08-05",
+   538
   ]
  ],
  "version": 1

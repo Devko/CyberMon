@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-08-04T05:33:39Z",
+ "generated_at": "2026-08-05T05:32:47Z",
  "roster_size": {
   "min_n": 2,
-  "current": 533,
-  "net_change": 3,
+  "current": 538,
+  "net_change": 8,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -73,6 +73,10 @@
    {
     "date": "2026-08-04",
     "size": 533
+   },
+   {
+    "date": "2026-08-05",
+    "size": 538
    }
   ]
  },
@@ -83,34 +87,40 @@
     "onboarded": 3,
     "departed": 0,
     "scope_changed": 1
+   },
+   {
+    "month": "2026-08",
+    "onboarded": 6,
+    "departed": 1,
+    "scope_changed": 1
    }
   ],
   "totals": {
-   "onboarded": 3,
-   "departed": 0,
-   "scope_changed": 1
+   "onboarded": 9,
+   "departed": 1,
+   "scope_changed": 2
   },
-  "events_total": 4,
+  "events_total": 12,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 533,
+  "total": 538,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 435
+    "n": 439
    },
    {
     "label": "Open Source",
-    "n": 142
+    "n": 143
    },
    {
     "label": "Researcher",
-    "n": 119
+    "n": 121
    },
    {
     "label": "Hosted Service",
-    "n": 38
+    "n": 39
    },
    {
     "label": "CERT",
@@ -125,6 +135,10 @@
     "n": 3
    },
    {
+    "label": "AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot)",
+    "n": 2
+   },
+   {
     "label": "N/A",
     "n": 2
    }
@@ -132,11 +146,11 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 446
+    "n": 450
    },
    {
     "label": "CISA",
-    "n": 85
+    "n": 86
    },
    {
     "label": "n/a",
@@ -146,15 +160,15 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 382
+    "n": 385
    },
    {
     "label": "icscert",
-    "n": 83
+    "n": 84
    },
    {
     "label": "ENISA",
-    "n": 19
+    "n": 20
    },
    {
     "label": "redhat",
@@ -180,7 +194,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 281
+    "n": 283
    },
    {
     "label": "Germany",
@@ -219,11 +233,11 @@
     "n": 11
    },
    {
-    "label": "Canada",
-    "n": 9
+    "label": "Israel",
+    "n": 10
    },
    {
-    "label": "Israel",
+    "label": "Canada",
     "n": 9
    },
    {
@@ -243,11 +257,11 @@
     "n": 7
    },
    {
-    "label": "Austria",
-    "n": 5
+    "label": "Belgium",
+    "n": 6
    },
    {
-    "label": "Belgium",
+    "label": "Austria",
     "n": 5
    },
    {
@@ -288,6 +302,10 @@
    },
    {
     "label": "Norway",
+    "n": 2
+   },
+   {
+    "label": "Romania",
     "n": 2
    },
    {
@@ -339,10 +357,6 @@
     "n": 1
    },
    {
-    "label": "Romania",
-    "n": 1
-   },
-   {
     "label": "Uzbekistan",
     "n": 1
    },
@@ -357,12 +371,12 @@
   ]
  },
  "headline": {
-  "roster_total": 533,
+  "roster_total": 538,
   "top_type": "Vendor",
-  "top_type_n": 435,
+  "top_type_n": 439,
   "country_count": 44,
   "root_count": 7,
-  "mitre_n": 446,
-  "cisa_n": 85
+  "mitre_n": 450,
+  "cisa_n": 86
  }
 }

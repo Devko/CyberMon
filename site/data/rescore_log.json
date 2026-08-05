@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-04T05:33:39Z",
+ "generated_at": "2026-08-05T05:32:47Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -27,35 +27,42 @@
   },
   {
    "week": "2026-W32",
-   "rescore_up": 1,
-   "rescore_down": 1,
-   "first_score": 1,
+   "rescore_up": 2,
+   "rescore_down": 4,
+   "first_score": 2353,
    "version_shift": 2,
-   "score_removed": 0
+   "score_removed": 1
   }
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 13,
-  "up": 5,
-  "down": 8,
+  "n": 17,
+  "up": 6,
+  "down": 11,
   "buckets": null,
   "median_delta": null
  },
  "cna_board": {
   "min_events": 3,
-  "cnas": []
+  "cnas": [
+   {
+    "cna": "adobe",
+    "rescores": 5,
+    "up": 2,
+    "down": 3
+   }
+  ]
  },
  "catalog": {
-  "state_size": 355030,
-  "corpus_release": "cve_2026-08-04_0500Z",
+  "state_size": 355299,
+  "corpus_release": "cve_2026-08-05_0500Z",
   "totals": {
-   "rescore": 13,
+   "rescore": 17,
    "version_shift": 8,
-   "first_score": 1499,
-   "score_removed": 0
+   "first_score": 3851,
+   "score_removed": 1
   },
-  "events_total": 1520,
+  "events_total": 3877,
   "first_observed": "2026-07-15"
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-04T05:33:39Z",
+ "generated_at": "2026-08-05T05:32:47Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 173,
+   "total": 176,
    "security": 29,
-   "pct_security": 16.8
+   "pct_security": 16.5
   }
  ],
  "vendors": [
@@ -97,12 +97,12 @@
   },
   {
    "vendor": "Apache",
-   "entries": 39,
+   "entries": 40,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-04-16",
-   "median_gap_days": 15.5
+   "last_added": "2026-08-04",
+   "median_gap_days": 20.0
   },
   {
    "vendor": "Ivanti",
@@ -303,6 +303,15 @@
    "median_gap_days": 18.5
   },
   {
+   "vendor": "IBM",
+   "entries": 8,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-08-04",
+   "median_gap_days": 68.0
+  },
+  {
    "vendor": "Juniper",
    "entries": 8,
    "security_entries": 1,
@@ -337,15 +346,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-03-27",
    "median_gap_days": 94.0
-  },
-  {
-   "vendor": "IBM",
-   "entries": 7,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2023-02-21",
-   "median_gap_days": 34.0
   },
   {
    "vendor": "Mitel",
@@ -463,13 +463,13 @@
    "pct_known": 37.2
   },
   "other": {
-   "total": 1458,
-   "known": 260,
-   "pct_known": 17.8
+   "total": 1461,
+   "known": 261,
+   "pct_known": 17.9
   }
  },
  "catalog": {
-  "total": 1657,
+  "total": 1660,
   "security": 199,
   "pct_security": 12.0,
   "classifier_version": 2,

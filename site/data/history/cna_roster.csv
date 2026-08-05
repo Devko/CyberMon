@@ -3,3 +3,11 @@ observed_date,short_name,change_type,org,country,type
 2026-07-21,Scality,onboarded,Scality SA,France,Vendor
 2026-07-21,Tacit,onboarded,Tacit,France,Hosted Service + Vendor
 2026-07-21,NCSC.ch,scope_changed,Switzerland National Cyber Security Centre (NCSC),Switzerland,CERT
+2026-08-05,Anthropic,onboarded,"Anthropic, PBC",USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor
+2026-08-05,NCSC,onboarded,NATO Cyber Security Centre,Belgium,Researcher
+2026-08-05,Qt,onboarded,Qt Group,Finland,Vendor
+2026-08-05,Syncro,onboarded,Syncro Soft SRL,Romania,Vendor
+2026-08-05,hsi,onboarded,"Haverford Systems, Inc.",USA,Researcher + Vendor
+2026-08-05,postiz,onboarded,Postiz,Israel,Hosted Service + Open Source + Vendor
+2026-08-05,TQtC,departed,The Qt Company,Finland,Vendor
+2026-08-05,OAI,scope_changed,OpenAI,USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor

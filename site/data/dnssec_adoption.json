@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-04T05:33:39Z",
+ "generated_at": "2026-08-05T05:32:47Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -622,14 +622,14 @@
    },
    {
     "month": "2026-08",
-    "validating_pc": 38.8
+    "validating_pc": 38.7
    }
   ],
   "latest": {
-   "date": "2026-08-01",
-   "validating_pc": 38.8,
+   "date": "2026-08-02",
+   "validating_pc": 38.7,
    "partial_pc": 8.4,
-   "seen": 574411951
+   "seen": 577622913
   },
   "baseline": {
    "month": "2016-08",
@@ -1500,7 +1500,7 @@
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 50.3,
+   "latest_pc": 50.5,
    "series": [
     {
      "month": "2013-12",
@@ -1708,14 +1708,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 50.3
+     "validating_pc": 50.5
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 40.8,
+   "latest_pc": 40.9,
    "series": [
     {
      "month": "2013-12",
@@ -1923,7 +1923,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 40.8
+     "validating_pc": 40.9
     }
    ]
   },
@@ -2790,7 +2790,7 @@
  ],
  "spread": {
   "min_seen": 10000,
-  "n_economies": 202,
+  "n_economies": 201,
   "buckets": [
    {
     "bucket": "<10%",
@@ -2798,11 +2798,11 @@
    },
    {
     "bucket": "10-25%",
-    "n": 31
+    "n": 30
    },
    {
     "bucket": "25-50%",
-    "n": 40
+    "n": 41
    },
    {
     "bucket": "50-75%",
@@ -2810,7 +2810,7 @@
    },
    {
     "bucket": "75%+",
-    "n": 61
+    "n": 60
    }
   ]
  }
