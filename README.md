@@ -347,6 +347,42 @@ port or hostname ever reaches the site, a red line the output contract
 enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
 `pipeline/botnet_metrics.py`; no shared upstream.
 
+### 21 · The AI Alibi — [ai.html](https://devko.github.io/CyberMon/ai.html) (live)
+
+*The industry blames AI for a clock that stopped moving a decade ago.*
+Exploitation got fast long before the models did, and this module tests
+that claim instead of asserting it. Three charts: the whole
+publication-to-first-public-exploit record (1999 onward) with the AI
+timeline marked and the AI era shaded — the collapse finishes a decade
+left of the band; the **inflection test**, which for three speed metrics
+compares the record's opening level, the five years before a cutoff and
+everything since, and reports how much of the total movement the AI era
+accounts for **and in which direction**; and AI-security attention (module
+02's five lanes for *AI Security* and *Agentic AI*) plotted against the
+clock it is supposed to have broken. The era cutoff is a **reader-facing
+control** — ChatGPT, GPT-4, or the first documented in-the-wild uplift — so
+anyone who suspects the default date was chosen to flatter the thesis can
+move it; on the committed edition, 0 of 6 judged metric-era cells
+accelerated and 3 moved the other way.
+
+No fetch of its own: the clock is lifted verbatim from `time_to_poc.json`
+and the attention lanes from `market_hype.json`, so this page and the
+modules it quotes can never disagree. The one new input is
+`pipeline/ai_timeline_data.py`, a hand-committed milestone table (the CWE
+Top 25 precedent) where **every row carries a source URL and a date
+precision** and renders in an on-page, linked timeline rail. Landmines
+defused in writing: KEV latency is excluded because its series starts in
+2023, inside the era under test; levels are 5-year means, never single
+years (the 1999 cohort is 109 CVEs at a −800-day median); a cutoff's cut
+year is the last year ending entirely *before* it, so no year straddles;
+and an era with under two complete years behind it is **withheld, not
+judged**. Widely cited vendor figures that point the other way — Mandiant's
+63→5-day time-to-exploit series, the DBIR's edge-device share — are
+deliberately **never plotted**: they come from private incident corpora and
+are not reproducible here, so they live in the repo as attributed prose
+(`ai_timeline_data.EXTERNAL_CONTEXT`) and a unit test asserts they never
+reach the payload. Stage `pipeline/ai_metrics.py`; no new upstream.
+
 ## Architecture
 
 Zero servers. A nightly GitHub Action runs the Python pipeline, commits the

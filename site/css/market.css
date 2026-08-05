@@ -164,10 +164,112 @@
 /* stat card with nothing to report yet: drop the accent flag */
 .stat-card.is-empty { border-left-color: var(--rule-strong); }
 
+/* -------------------------------- ai.html · 1: the timeline rail ---------- */
+/* Every dot on the hero chart appears here dated, categorised and linked.
+   The rail is not decoration: a marker a reader cannot trace back to a
+   primary source is an assertion, and this module's whole argument is
+   that assertions should be checkable. */
+
+.timeline-rail { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 14px; }
+
+.timeline-rail-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.timeline-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 10px 78px 1fr;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  align-self: center;
+}
+
+.timeline-date { font-size: 11px; color: var(--faint); white-space: nowrap; }
+
+.timeline-body { font-size: 13px; line-height: 1.55; color: var(--ink); }
+
+.timeline-label { font-weight: 500; }
+
+.timeline-src {
+  font-size: 10px;
+  color: var(--faint);
+  margin-left: 8px;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--rule-strong);
+}
+
+.timeline-src:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.timeline-note { display: block; color: var(--muted); font-size: 12.5px; }
+
+/* -------------------------------- ai.html · 2: the verdict table ---------- */
+
+.verdict-table { margin-top: 16px; border-top: 1px solid var(--rule); padding-top: 12px; }
+
+.verdict-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.verdict-row {
+  display: grid;
+  grid-template-columns: 104px 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.verdict-row:last-child { border-bottom: none; }
+
+.verdict-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 3px 6px;
+  border: 1px solid var(--rule-strong);
+  color: var(--muted);
+}
+
+/* Only an acceleration supports the AI story — it is the one verdict
+   that gets the accent, everywhere it appears. */
+.verdict-badge.verdict-accelerated { border-color: var(--accent); color: var(--accent); }
+.verdict-badge.verdict-insufficient { border-style: dashed; color: var(--faint); }
+
+.verdict-metric { font-size: 13px; color: var(--ink); }
+
+.verdict-levels { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+
 /* ---------------------------------------------------------------- mobile -- */
 
 @media (max-width: 720px) {
   .sparkline-strip { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
   .sparkline-chart { height: 36px; }
   .cellbar-diverging { width: 96px; }
+
+  /* The rail and the board both stack: a 3-column grid at 360px turns the
+     date column into one character per line. */
+  .timeline-item { grid-template-columns: 10px 1fr; }
+  .timeline-date { grid-column: 2; }
+  .timeline-body { grid-column: 2; }
+  .verdict-row { grid-template-columns: 1fr; gap: 4px; }
+  .verdict-badge { justify-self: start; }
+  .verdict-levels { white-space: normal; }
 }

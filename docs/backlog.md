@@ -1,12 +1,45 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the eighteen that exist today
+Candidate monitoring modules, beyond the twenty-one that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
-15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster —
-all live).
+15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster,
+19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi — all live).
+
+## Shipped outside the backlog
+
+### The AI Alibi — SHIPPED as module 21
+Live as **21 · The AI Alibi** ([ai.html](../site/ai.html)). Not a backlog
+candidate — it started as a reader's argument that the exploitation-speed
+collapse is mostly a pre-AI phenomenon, and survived the house rules
+because it adds computation rather than framing: a committed, per-row
+sourced AI milestone table, an inflection test (three levels per metric
+per cutoff, with the direction signed in the pipeline), and a cross-module
+join of module 02's attention lanes against module 19's clock that no
+existing page performs. That last point is what kept it clear of the
+one-page-one-thesis rule the "KEV vintage" candidate below died on: a
+milestone overlay alone would have been module 19 with annotations.
+- **Thesis:** the industry blames AI for a clock that stopped moving a
+  decade ago — and CyberMon's own series say so, at every cutoff a critic
+  might prefer.
+- **Findings on the launch edition:** 0 of 6 judged metric-era cells
+  accelerated; 3 decelerated; ~100% of the gap metric's total travel was
+  banked before ChatGPT, and 92% of it before 2013.
+- **Landmines defused:** KEV latency excluded (its series starts 2023,
+  inside the era under test); 5-year window means instead of endpoint
+  years (1999 is 109 CVEs at a -800-day median); cut years never straddle
+  a cutoff; eras under two complete years are withheld rather than judged
+  off one anomalous cohort. Vendor figures that cannot be reproduced from
+  the pipeline (Mandiant TTE, DBIR edge-device share) are prose-only and
+  a test asserts they never reach the payload.
+- **Open follow-up:** the timeline's month-precision rows could be
+  tightened to day precision against their primary documents; and "AI as
+  attack surface" (CVEs in AI/ML products per year) was scoped out — it
+  needs `CveFacts` extended with vendor/product strings plus a curated
+  classifier, and keyword-matching product names is a real landmine, so
+  it belongs in its own pass. See the Tier 1 candidate note below.
 
 ## Fresh candidates — probed 2026-07-18
 
@@ -354,6 +387,24 @@ rate-limited, paid, or legally delicate.
 ---
 
 ## Tier 1 — near-term (mostly reuses data we already ingest)
+
+### AI as attack surface (scoped out of module 21)
+- **Thesis:** AI is becoming attack surface far faster than it is becoming
+  attack capability — the inverse of the story the industry tells. Module
+  21 shows exploitation speed didn't move; this would show what did.
+- **Signals:** CVEs in AI/ML products and frameworks per year; their CWE
+  mix against the corpus baseline (are these new bug classes or the same
+  old injection and deserialization?); KEV membership rate.
+- **Source:** the cvelistV5 corpus already ingested nightly — no new
+  fetch. The work is an extractor change plus a classifier.
+- **Feasibility:** medium. Two real costs: `CveFacts` currently carries no
+  vendor/product/description strings (it deliberately stores only what the
+  metrics need, and never whole records), so the streaming pass needs
+  extending; and deciding what counts as an "AI product" is a curation
+  problem exactly like `security_products.py`. Landmine: keyword-matching
+  descriptions will over-match ("machine learning" in a changelog) — the
+  defensible version classifies on vendor/product strings with a
+  reviewable, commented list in-repo, and states its own recall limits.
 
 ### KEV latency ledger — SHIPPED as module 03
 - **Thesis:** "By the time the government confirms it's exploited, you've

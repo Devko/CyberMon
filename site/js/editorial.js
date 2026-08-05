@@ -96,6 +96,7 @@ export const editorial = {
     { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
     { id: "exploits", href: "exploits.html", label: "Time to PoC", group: "exploitation" },
     { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackmap" },
+    { id: "ai", href: "ai.html", label: "The AI Alibi", group: "exploitation" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -377,6 +378,21 @@ export const editorial = {
           "keeps the count by malware family, so takedowns show as cliffs and " +
           "the quiet stretches stay on the record. Tonight's composition and " +
           "the age of the surviving infrastructure are real from day one.",
+        live: true,
+      },
+      {
+        id: "ai",
+        href: "ai.html",
+        num: "21",
+        label: "The AI Alibi",
+        headline: "The industry blames AI for a clock that stopped moving a decade ago.",
+        blurb:
+          "Exploitation got fast long before the models did. This module puts " +
+          "the AI timeline on top of CyberMon's own exploitation-speed series " +
+          "and tests every one of them for an inflection at three candidate " +
+          "“AI era” start dates — pick your own cutoff and watch the " +
+          "answer hold. Then it plots AI-security attention against the clock " +
+          "it is supposed to have broken.",
         live: true,
       },
     ],
@@ -2807,6 +2823,170 @@ export const editorial = {
         "reads entirely from tonight's snapshot and is meaningful from the " +
         "first run; it needs no accumulated history.",
     },
+
+    // --------------------------------- ai.html · 1 · hero
+    ai_clock: {
+      num: "01",
+      kicker: "The alibi",
+      source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE) · CyberMon AI timeline",
+      headline: "The clock stopped moving before the models arrived.",
+      caption:
+        "The red line is CyberMon's own exploitation clock — for every CVE that a " +
+        "public exploit tracker dates, the median gap from the CVE record's " +
+        "publication to the first public exploit code, per publication year. The " +
+        "dots along the top are the AI timeline: model releases, the threat-intel " +
+        "reports that went looking for offensive uplift, the defensive milestones, " +
+        "and the first documented cases of AI running real operations. Every dot " +
+        "is dated, categorised and linked below the chart. The shaded band is the " +
+        "AI era on whichever start date you pick. What the picture shows is a " +
+        "collapse that finished a decade to the left of that band, and a line that " +
+        "does nothing in particular once it enters.",
+      selectLabel: "AI era begins",
+      statLabel: "Speed metrics that accelerated in the AI era",
+      statOf: "of {judged} tested",
+      statUplift: "vendor reports that looked for offensive uplift and found none",
+      bandLabel: "AI era · from {label}",
+      tipMonth: "{date} · month precision",
+      railTitle: "The timeline, dated and sourced",
+      railSourceLabel: "source",
+      note:
+        "The clock covers {first_year}–{last_year} — {n} matched CVEs across every " +
+        "complete year — against {milestones} dated AI milestones.",
+      methodology:
+        "The clock series is lifted verbatim from the Time to PoC module " +
+        "(time_to_poc.json), not recomputed: the same median, the same matched " +
+        "cohort, the same caveats, so the two pages can never disagree. The " +
+        "generation year is dropped entirely rather than marked partial — this " +
+        "module's whole subject is where a series bends, and a half-finished year " +
+        "is a fake bend at the right-hand edge. The AI timeline is a small " +
+        "hand-committed table (pipeline/ai_timeline_data.py); every row carries a " +
+        "source URL and a date precision, and rows that have no single " +
+        "unambiguous date are marked month-precision and plot at mid-month, which " +
+        "the tooltip discloses. Rows are categorised as capability releases, " +
+        "no-uplift findings, offensive-use reports, defensive milestones and lab " +
+        "research, because the categories carry the argument: the two largest " +
+        "vendor threat-intel shops looked specifically for offensive capability " +
+        "uplift in 2024 and early 2025 and reported finding none, which is why a " +
+        "2018–2023 trend cannot be attributed to a 2025 capability. Widely cited " +
+        "vendor figures that point the other way — Mandiant's 63-to-5-day " +
+        "time-to-exploit series, the DBIR's edge-device share — are deliberately " +
+        "NOT plotted: they come from private incident corpora and cannot be " +
+        "reproduced from this pipeline, so they appear as attributed prose in the " +
+        "repo (pipeline/ai_timeline_data.EXTERNAL_CONTEXT) and never on an axis " +
+        "here. One caveat this module inherits wholesale and does not fix: the " +
+        "clock measures public exploit code in three trackers over a " +
+        "self-selected cohort, a floor rather than a census.",
+    },
+
+    // --------------------------------- ai.html · 2
+    ai_banked: {
+      num: "02",
+      kicker: "The inflection test",
+      source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE)",
+      headline: "Nothing bends at the cutoff.",
+      caption:
+        "The eyeball test made arithmetic. For each of three speed metrics, take " +
+        "the level at the start of the record, the level in the five years before " +
+        "the cutoff, and the level since — then ask how much of the total distance " +
+        "the metric ever travelled the AI era accounts for, and in which " +
+        "direction. Bars to the right mean the era moved that metric toward faster " +
+        "exploitation; those are the only bars that support the AI story, and they " +
+        "carry the accent. Bars to the left mean it moved the other way. Change " +
+        "the cutoff at the top of the page and the bars redraw.",
+      axisLabel: "share of the metric's total movement, since the cutoff (→ faster)",
+      tableCaption: "Levels behind each bar — {era} cutoff ({date}):",
+      tipEarly: "start of record:",
+      tipPre: "5 years to {cut_year}:",
+      tipPost: "since the cutoff:",
+      tipBanked: "banked before the cutoff: {pct}% of all movement",
+      tipInsufficient:
+        "Withheld — only {years} complete year(s) since this cutoff. One year is not an era.",
+      rowLevels: "{early} → {pre} → {post}   ({share})",
+      rowInsufficient: "withheld — {years} complete year(s) since the cutoff",
+      verdicts: {
+        accelerated: "accelerated",
+        decelerated: "slowed",
+        no_inflection: "no inflection",
+        insufficient: "withheld",
+      },
+      allWithheld: "Withheld — {years} complete year(s) since {cut_year}.",
+      note:
+        "{accelerated} of {judged} judged metrics accelerated in the AI era " +
+        "({total} tested; the rest are withheld for thin data). Levels are " +
+        "{window}-year means; a shift under {threshold}% of a metric's total " +
+        "movement is called noise, not inflection.",
+      noteWithheld:
+        "All {total} metrics are withheld at this cutoff: the record holds fewer " +
+        "than two complete years after {cut_year}, and one year is not an era. " +
+        "This section fills itself in as the years land.",
+      methodology:
+        "Three speed metrics, all read from the same matched cohort so they share " +
+        "one denominator: the median publication-to-first-public-exploit gap in " +
+        "days, the share of that cohort armed within a week of publication, and " +
+        "the share whose exploit code predates the CVE record. KEV latency is " +
+        "deliberately absent — its series is quarantined to begin in 2023, after " +
+        "two of the three cutoffs, and a metric whose history starts inside the " +
+        "era under test cannot test that era. Each metric gets three levels, all " +
+        "5-year means of complete years rather than single-year endpoints: the " +
+        "start of the record, the five years ending at the cutoff, and everything " +
+        "since. Single years would be indefensible here — the 1999 cohort is 109 " +
+        "CVEs at a -800-day median, and anchoring a ratio on it is exactly the " +
+        "cherry-pick this module exists to refute. A cutoff's cut year is always " +
+        "the last year ending entirely BEFORE its date, so no charted year " +
+        "straddles a cutoff and lands on both sides. A shift smaller than 10% of " +
+        "the metric's total travelled distance is reported as no inflection rather " +
+        "than a trend, and an era with fewer than 2 complete years behind it is " +
+        "not judged at all — a verdict this module earns back as the record " +
+        "accumulates rather than faking now. The direction sign is computed in " +
+        "the pipeline, not the chart, because a falling gap and a rising " +
+        "within-a-week share both mean faster and a chart file that has to know " +
+        "that is a chart file that will eventually get it wrong.",
+    },
+
+    // --------------------------------- ai.html · 3
+    ai_attention: {
+      num: "03",
+      kicker: "Narrative vs. physics",
+      source: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR · Exploit-DB · Metasploit",
+      headline: "Attention multiplied. The clock did not.",
+      caption:
+        "The solid lines are how loudly the industry has been talking about AI " +
+        "security — the same five attention lanes the Security Market module " +
+        "tracks, averaged per term and indexed to each lane's own peak. The dashed " +
+        "line is the exploitation clock over the same window, held flat across " +
+        "each year because it is measured annually. One of these multiplied. The " +
+        "other stayed inside a band of days. If the models had rewritten the " +
+        "physics of attack, this is the chart where it would show, and it is the " +
+        "chart where it doesn't.",
+      clockLabel: "Exploitation clock (median gap)",
+      axisAttention: "attention index",
+      axisClock: "median gap",
+      unavailable:
+        "The attention lanes are unavailable in this edition — the market upstream " +
+        "did not land. The two sections above are unaffected.",
+      note:
+        "{label} ran from an index of {index_first} in {month_first} to " +
+        "{index_last} in {month_last}. Over the same window the clock's annual " +
+        "median stayed between {clock_min}d and {clock_max}d ({year_first}–{year_last}).",
+      methodology:
+        "The attention lanes are lifted from the Security Market module " +
+        "(market_hype.json) — the curated terms “AI Security” and “Agentic AI”, " +
+        "selected from that module's reviewable watchlist, never invented here. " +
+        "Each term's monthly value is the mean of its per-source indexes for that " +
+        "month over the sources that have one; because module 02 already " +
+        "normalizes every lane to its own peak, that mean is a mean of comparable " +
+        "0-100 series, and a term whose Wikipedia lane starts late is not punished " +
+        "for the gap. The month count behind every point travels in the payload. " +
+        "The clock is the same annual median as the hero chart, drawn as a step " +
+        "rather than interpolated: spreading an annual median across twelve months " +
+        "would draw values nobody measured and a slope that reads as motion. The " +
+        "two series share no unit and no sampling rate, so they are on separate " +
+        "axes and this chart asserts no correlation — it shows one line climbing " +
+        "while the other sits still. The window is the market module's own 60 " +
+        "months, which means it opens roughly a year before ChatGPT: enough of a " +
+        "pre-release baseline to see a step change, not enough to carry the " +
+        "long-run argument, which is what the two charts above are for.",
+    },
   },
 
   footer: {
@@ -2905,6 +3085,7 @@ export const editorial = {
       roster: "CVE.org organization roster · CyberMon nightly snapshots",
       exploits: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei (ProjectDiscovery)",
       c2: "abuse.ch Feodo Tracker (CC0) · CyberMon nightly snapshots",
+      ai: "Exploit-DB · Metasploit · cvelistV5 (MITRE) · CyberMon AI timeline",
     },
   },
 };

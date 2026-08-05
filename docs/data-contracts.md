@@ -1901,3 +1901,140 @@ NO per-server data — no `ip_address`/`hostname`/`ip`/`port` key anywhere,
 and no string value shaped like an IPv4 address. The module renders the
 weather, never the blocklist. Validator: `pipeline/botnet_contracts.py`
 (registered into `pipeline/contracts.py`'s dispatch).
+
+## site/data/ai_alibi.json  (The AI Alibi module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "eras": [{"id": "chatgpt", "label": "ChatGPT", "date": "2022-11-30",
+            "caption": "...", "cut_year": 2021, "default": true}],
+  "milestones": [{"date": "2024-11", "plot_date": "2024-11-15",
+                  "precision": "month", "kind": "defensive",
+                  "label": "...", "note": "...", "source": "https://..."}],
+  "clock": {
+    "source_file": "time_to_poc.json", "first_year": 1999, "last_year": 2025,
+    "metrics": [{"id": "poc_gap", "label": "...", "unit": "days",
+                 "faster": "down",
+                 "years": [{"year": 1999, "value": -800.0, "n": 109}]}]
+  },
+  "banked": {
+    "window_years": 5, "inflection_threshold_pct": 10.0,
+    "metrics": [{"id": "poc_gap", "label": "...", "unit": "days",
+                 "faster": "down",
+                 "eras": [{"era": "chatgpt", "cut_year": 2021,
+                           "early": {"value": -224.2, "years": 5, "n": 2109},
+                           "pre": {"value": -1.0, "years": 5, "n": 1543},
+                           "post": {"value": -1.2, "years": 4, "n": 1464},
+                           "era_shift": -0.2, "pct_banked": 100.1,
+                           "shift_share_pct": 0.1,
+                           "verdict": "no_inflection"}]}]
+  },
+  "attention": {
+    "available": true, "window_months": 60, "clock_unit": "days",
+    "terms": [{"id": "agentic_ai", "label": "Agentic AI",
+               "months": [{"month": "2021-09", "index": 0.0, "sources": 4}]}],
+    "clock": [{"year": 2021, "value": 1.0}],
+    "headline": {"term_id": "agentic_ai", "label": "Agentic AI",
+                 "index_first": 0.0, "index_last": 53.4,
+                 "month_first": "2021-09", "month_last": "2026-07",
+                 "clock_min": -12.0, "clock_max": 4.0, "clock_mean": -0.8,
+                 "clock_year_first": 2021, "clock_year_last": 2025}
+  },
+  "headline": {"era": "chatgpt", "era_label": "ChatGPT", "cut_year": 2021,
+               "verdict": "no_inflection", "pct_banked": 100.1,
+               "pre": -1.0, "post": -1.2, "milestones": 10,
+               "no_uplift_reports": 2, "cells": 9, "judged": 6,
+               "accelerated": 0, "decelerated": 3, "no_inflection": 3,
+               "pct_accelerated": 0.0}
+}
+```
+
+**No fetch, and no recomputation.** Every number is lifted from payloads
+other stages built and validated in the same run — the clock from
+`time_to_poc.json` (module 19), the attention lanes from
+`market_hype.json` (module 02). Lifting rather than recomputing is the
+point: it is structurally impossible for this page to disagree with the
+module it quotes. The only new input is `pipeline/ai_timeline_data.py`, a
+small hand-committed milestone table (the `cwe_top25_data.py` precedent)
+where every row carries a source URL.
+
+`eras`: the three candidate "the AI era started here" cutoffs, offered as
+a chart control rather than picked for the reader. **`cut_year` is derived
+and re-derived by the validator** — it must be exactly the last calendar
+year ending entirely BEFORE the era date, so no charted year ever
+straddles a cutoff and lands on both sides of the arithmetic.
+Chronological, exactly one `default`.
+
+`milestones`: chronological by `plot_date`, which is itself **derived and
+re-checked** — day-precision rows plot on their own date, month-precision
+rows at mid-month (`YYYY-MM-15`), so a hand-edit to the committed table
+can never silently move a marker. `kind` is one of `capability`,
+`no_uplift`, `offensive`, `defensive`, `research`; the `no_uplift` rows
+carry the argument (two vendor threat-intel shops looked specifically for
+offensive capability uplift and reported finding none). Every row needs an
+`https://` source: the on-page timeline rail is the module's audit trail,
+and an unsourced marker would make it decoration.
+
+`clock`: three speed metrics from ONE matched cohort, so they share a
+denominator and a caveat set — the median publication-to-first-public-PoC
+gap (`days`, faster is `down`), the share armed within a week, and the
+share whose exploit code predates the record (both `percent`, faster is
+`up`). All three must span the same years; a mismatch means the builder
+dropped rows from one. KEV latency is deliberately absent — its series is
+quarantined to start in 2023, after two of the three cutoffs, and a metric
+whose history begins inside the era under test cannot test it. The
+generation year is dropped entirely rather than marked partial: this
+module's subject is where a series bends, and a half-finished year is a
+fake bend at the right-hand edge.
+
+`banked` (the inflection test): three levels per metric per era, each a
+`window_years`-year **mean of complete years**, never a single-year
+endpoint — the 1999 cohort is 109 CVEs at a -800-day median, and anchoring
+a ratio there is exactly the cherry-pick the module exists to refute.
+`pct_banked` is the share of total travel (early to post) already
+travelled by the pre-era level; **values above 100 are legal and
+meaningful** (the pre-era level had gone further than the era ever did),
+and it is `null` when total travel is under the unit's floor
+(`MIN_TRAVEL`) rather than dividing by noise. `shift_share_pct` is the
+same movement signed so that **positive means toward faster
+exploitation** — that sign is computed once in the pipeline precisely so
+no chart file has to know that a falling gap and a rising within-a-week
+share both mean "faster".
+
+`verdict` is `no_inflection` when the era moved the level by less than
+`inflection_threshold_pct` of total travel, `accelerated`/`decelerated`
+otherwise, and `insufficient` when a level is missing or the era has fewer
+than `ai_metrics.MIN_POST_YEARS` (2) complete years behind it — one year
+is not an era, and the 2025 cohort alone swings the gap median by double
+digits. The validator enforces that arithmetic both ways: `insufficient`
+is the ONLY verdict allowed to carry a missing level or a thin
+post-window, an unjudged cell may carry no share at all, `era_shift` must
+equal `post - pre`, and `shift_share_pct`'s sign may never contradict the
+verdict that names that direction in words.
+
+**Editorial knob:** `INFLECTION_THRESHOLD_PCT` in `pipeline/ai_metrics.py`
+(10.0) is the one tuned number in this module. It is set generous to the
+AI-caused thesis on purpose — a real acceleration is easy to clear at 10%,
+and the finding still comes back flat. Changing it changes what the page
+claims, so re-run `pipeline/tests/test_claims_ai.py` after you do.
+
+`attention`: the curated `ai_security` and `agentic_ai` terms selected
+from module 02's reviewable watchlist (never invented here). A term's
+monthly `index` is the mean of its per-source indexes over the sources
+that have one that month — module 02 already normalizes each lane to its
+own peak, so that mean is a mean of comparable 0-100 series and a
+late-starting lane is not penalised for the gap; `sources` travels with
+every point. `available: false` is the honest degraded state when the
+market upstream did not land, and it must then carry no terms — that costs
+this module one section, never the page.
+
+**Never emitted:** `ai_timeline_data.EXTERNAL_CONTEXT` — widely cited
+vendor figures (Mandiant's 63-to-5-day time-to-exploit series, the DBIR's
+edge-device share, RAND's exploit-development median) that point the other
+way but come from private incident corpora and **cannot be reproduced from
+this pipeline**. They live in the repo as attributed prose with the reason
+they are not plotted, the contract has no field for them, and a unit test
+asserts they never reach the payload. The charts stay 100%
+CyberMon-computed. Validator: `pipeline/ai_contracts.py` (registered into
+`pipeline/contracts.py`'s dispatch).

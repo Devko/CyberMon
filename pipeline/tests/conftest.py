@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import (breach_metrics, calendar_metrics,
+from pipeline import (ai_metrics, breach_metrics, calendar_metrics,
                       concentration_metrics, epss_report_metrics,
                       extortion_metrics, guards_metrics, kev_metrics,
                       metrics, poc_metrics, quality_metrics, rescore_tracker)
@@ -126,6 +126,12 @@ def outputs(agg, epss, kev, hibp, ransomwhere, poc) -> dict[str, dict]:
         current_model_version=epss.model_version,
         skip=False, offline_fixtures=True, min_n=1,
         log=lambda _msg: None)
+    # The AI Alibi reads the built time_to_poc payload (no fetch, no
+    # second pass). The market payload needs a live/fixture market state
+    # the offline fixture set doesn't carry, so this exercises the
+    # degraded path — which is exactly the path that must stay contracted.
+    out["ai_alibi.json"] = ai_metrics.build_ai_alibi(
+        out["time_to_poc.json"], GENERATED_AT, market=None)
     out["epss_report.json"] = epss_report
     out["meta.json"]["sources"]["epss_history"] = epss_history_source
     out["meta.json"]["sources"]["rescores"] = {

@@ -166,6 +166,13 @@ body.carousel {
 .slide .sparkline-strip,
 .slide .strip-note { display: none; }
 
+/* AI Alibi: the inflection board's level table is the audit trail behind
+   the bars, and the bars are what the slide is for. Printed, it adds a
+   third of a sheet and overflows — the numbers live on the page it links
+   back to. (The timeline rail is skipped in the renderer, not here: it
+   carries links, which are dead on paper.) */
+.slide .verdict-table { display: none; }
+
 /* hero stats: the vw-clamped site sizes are tuned for a browser column,
    not a doubled 1080px sheet */
 .slide-scale .hero-stat { padding: 12px 0 14px; }

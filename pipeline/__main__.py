@@ -38,13 +38,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from . import (adp_metrics, attack_metrics, botnet_metrics, breach_metrics,
-               calendar_metrics, cna_roster, concentration_metrics, contracts,
-               cwe_top25_data, epss_report_metrics, epss_volatility,
-               extortion_metrics, guards_metrics, history, hygiene_metrics,
-               kev_changelog, kev_metrics, market_metrics, metrics,
-               naming_metrics, nvd_throughput, poc_metrics, quality_metrics,
-               rescore_tracker, top25_metrics)
+from . import (adp_metrics, ai_metrics, attack_metrics, botnet_metrics,
+               breach_metrics, calendar_metrics, cna_roster,
+               concentration_metrics, contracts, cwe_top25_data,
+               epss_report_metrics, epss_volatility, extortion_metrics,
+               guards_metrics, history, hygiene_metrics, kev_changelog,
+               kev_metrics, market_metrics, metrics, naming_metrics,
+               nvd_throughput, poc_metrics, quality_metrics, rescore_tracker,
+               top25_metrics)
 from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_feodo import fetch_blocklist, load_blocklist_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -528,6 +529,13 @@ def run(args: argparse.Namespace) -> int:
         backfill_batch=args.market_backfill_batch)
     if market_hype is not None:
         outputs["market_hype.json"] = market_hype
+    # The AI Alibi: no fetch of its own. It reads the time_to_poc payload
+    # built above and the market payload built just now, so its numbers
+    # are the SAME objects modules 19 and 02 publish — the two pages can
+    # never disagree. A degraded market upstream costs it one section
+    # (attention reports itself unavailable), never the module.
+    outputs["ai_alibi.json"] = ai_metrics.build_ai_alibi(
+        outputs["time_to_poc.json"], generated_at, market=market_hype)
     attack_churn, attack_source = attack_metrics.run_stage(
         args.out, args.cache_dir, generated_at,
         skip=args.skip_attack, offline_fixtures=args.offline_fixtures)

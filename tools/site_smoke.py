@@ -58,6 +58,7 @@ PAGES = [
     "roster.html",
     "exploits.html",
     "c2.html",
+    "ai.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

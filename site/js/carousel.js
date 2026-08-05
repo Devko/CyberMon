@@ -79,6 +79,9 @@ import { render as renderPocPreempt } from "./charts/poc_preempt.js";
 import { render as renderPocCoverage } from "./charts/poc_coverage.js";
 import { render as renderC2Weather } from "./charts/c2_weather.js";
 import { render as renderC2Today } from "./charts/c2_today.js";
+import { render as renderAiClock } from "./charts/ai_clock.js";
+import { render as renderAiBanked } from "./charts/ai_banked.js";
+import { render as renderAiAttention } from "./charts/ai_attention.js";
 import { render as renderC2Age } from "./charts/c2_age.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
@@ -250,6 +253,17 @@ const MODULES = {
       { id: "c2_weather", render: renderC2Weather },
       { id: "c2_today", render: renderC2Today },
       { id: "c2_age", render: renderC2Age },
+    ],
+  },
+  // These renderers take an optional era store (charts/ai_era.js). No
+  // store is passed here on purpose: a printed slide has no controls, so
+  // the deck shows the default cutoff and the live page keeps the picker.
+  ai: {
+    file: "data/ai_alibi.json",
+    sections: [
+      { id: "ai_clock", render: renderAiClock },
+      { id: "ai_banked", render: renderAiBanked },
+      { id: "ai_attention", render: renderAiAttention },
     ],
   },
 };
