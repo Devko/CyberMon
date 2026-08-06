@@ -21,16 +21,14 @@ export const lerp = (a, b, t) => a + (b - a) * t;
 
 // Hold, swap, hold: travel is confined to the middle SWAP_WINDOW of a step.
 // Used where a value crossing must read as a deliberate move rather than a
-// slow drift through ambiguity (the race's rank swaps, above all).
-export const SWAP_WINDOW = 0.4;
+// slow drift through ambiguity (the race's rank swaps, above all). The chart
+// scenes need no easing at all — their motion is a continuous draw, so their
+// positions stay linear.
+const SWAP_WINDOW = 0.4;
 export const easeSwap = (t) => {
   const u = Math.min(1, Math.max(0, (t - (1 - SWAP_WINDOW) / 2) / SWAP_WINDOW));
   return u * u * (3 - 2 * u);
 };
-
-// Plain smoothstep, for scenes whose motion is a continuous draw rather than a
-// discrete swap.
-export const easeSmooth = (t) => t * t * (3 - 2 * t);
 
 /**
  * Frame plan shared by every scene.
