@@ -1,0 +1,226 @@
+/* ============================================================================
+   CyberMon — motion.html-only styles (animated social-clip capture template).
+   The stage is exactly 1080×1350 CSS px (portrait, same sheet as the LinkedIn
+   carousel) and tools/make_motion.py screenshots it once per frame.
+
+   No new colors — every value comes from the shared.css custom properties.
+
+   NOTHING here may animate on its own. No transition, no @keyframes, no
+   animation. Every moving value is written as an inline style by the scene's
+   seek(frame), so a captured frame depends only on its frame index and never
+   on wall-clock time. A stray CSS transition would make capture racy and the
+   output non-reproducible.
+   ========================================================================== */
+
+body.motion {
+  /* flat ink on flat ground — the body gradients would band under video
+     compression, which quantizes smooth dark ramps into visible steps */
+  background: var(--bg);
+  margin: 0;
+}
+
+.stage {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 64px 64px 56px;
+  background: var(--bg);
+}
+
+/* ------------------------------------------------------------------ head -- */
+
+.m-wordmark {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+}
+
+.m-rule {
+  height: 1px;
+  background: var(--rule);
+  margin: 20px 0 0;
+}
+
+.m-kicker {
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 18px 0 0;
+}
+
+.m-headline {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 14px 0 0;
+  max-width: 21ch;
+}
+
+/* ------------------------------------------------------------------ body -- */
+
+/* The one flexible band between head and footer. Every scene fills it: the
+   race with absolutely-positioned rows, the chart scenes with a canvas. */
+.m-body {
+  position: relative;
+  flex: 1;
+  margin: 30px 0 0;
+  min-height: 0;
+}
+
+.m-chart {
+  width: 100%;
+  height: 100%;
+}
+
+/* ------------------------------------------------------------------ race -- */
+
+/* Rows are absolutely positioned and moved by an inline translateY the scene
+   computes from a FRACTIONAL rank, so two bars swapping glide past each other
+   instead of snapping between slots. */
+.m-race {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Opaque on purpose: mid-swap two rows overlap, and an opaque band lets the
+   one with the higher z-index (written per frame by seek()) occlude the other.
+   Transparent rows blend two labels into unreadable mush. The per-rank fade is
+   therefore applied to the row's CHILDREN, never to the row itself. */
+.m-row {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  will-change: transform;
+}
+
+.m-label {
+  width: 250px;
+  flex: none;
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  text-align: right;
+  padding-right: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.m-row.is-leader .m-label { color: var(--ink); }
+
+.m-track {
+  width: 580px;
+  flex: none;
+  height: 100%;
+  position: relative;
+}
+
+.m-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--ink);
+  /* width is written per frame by seek() */
+}
+
+.m-row.is-leader .m-bar {
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-dim), 0 0 24px var(--accent-dim);
+}
+
+.m-value {
+  flex: none;
+  width: 96px;
+  padding-left: 12px;
+  font-family: var(--mono);
+  font-size: 17px;
+  line-height: 1;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.m-row.is-leader .m-value { color: var(--accent); }
+
+/* ---------------------------------------------------------------- footer -- */
+
+.m-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.m-meta {
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--faint);
+  margin: 0;
+  max-width: 620px;
+}
+
+.m-meta strong { color: var(--muted); font-weight: 400; }
+
+.m-clock-block { text-align: right; flex: none; }
+
+.m-clock {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Optional second readout under the clock. Empty unless a scene sets it, and
+   an empty box must not push the layout around — hence the fixed line box. */
+.m-sub {
+  font-family: var(--mono);
+  font-size: 20px;
+  line-height: 1.4;
+  height: 28px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Race position: a hairline that fills left-to-right across the clip. */
+.m-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--rule);
+}
+
+.m-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  /* width is written per frame by seek() */
+}

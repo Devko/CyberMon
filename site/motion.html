@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Capture template, not a reader page: js/motion.js renders one animated
+       scene (?scene=<id>) into a fixed 1080×1350 stage and tools/make_motion.py
+       screenshots it frame by frame into an MP4/GIF at build time. -->
+  <title>CyberMon — motion capture template</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0e0f11">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/motion.css">
+</head>
+<body class="motion">
+
+  <main id="stage" class="stage"></main>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script type="module" src="js/motion.js"></script>
+</body>
+</html>

@@ -18,8 +18,9 @@ htmlcov/
 .cache/
 
 # Deploy-time build products (built into the Pages artifact by
-# tools/make_carousels.py; never committed)
+# tools/make_carousels.py and tools/make_motion.py; never committed)
 site/carousels/
+site/motion/
 
 # OS junk
 .DS_Store

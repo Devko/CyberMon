@@ -2,3 +2,8 @@
 pytest>=7        # pipeline test suite (pipeline/tests/)
 playwright       # headless-browser site smoke test (tools/site_smoke.py);
                  # browsers install separately: playwright install chromium
+imageio-ffmpeg   # bundles a STATIC ffmpeg binary for tools/make_motion.py.
+                 # Deliberately not `apt install ffmpeg`: the wheel pins one
+                 # encoder across local machines and CI, so a clip renders the
+                 # same everywhere instead of tracking whatever the runner
+                 # image happens to ship.
