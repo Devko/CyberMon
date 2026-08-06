@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-05T05:32:47Z",
+ "generated_at": "2026-08-06T03:50:13Z",
  "versions": [
   {
    "version": "1.0",
@@ -516,11 +516,24 @@
     "deprecated": 0,
     "revoked": 0
    }
+  },
+  {
+   "version": "19.2",
+   "released": "2026-08-05",
+   "techniques": 222,
+   "subtechniques": 475,
+   "groups": 176,
+   "software": 825,
+   "churn": {
+    "added": 0,
+    "deprecated": 0,
+    "revoked": 0
+   }
   }
  ],
  "headline": {
-  "latest_version": "19.1",
-  "released_latest": "2026-05-12",
+  "latest_version": "19.2",
+  "released_latest": "2026-08-05",
   "techniques_latest": 222,
   "subtechniques_latest": 475,
   "first_version": "1.0",

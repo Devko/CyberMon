@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-05T05:32:47Z",
+ "generated_at": "2026-08-06T03:50:13Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -307,8 +307,8 @@
      },
      {
       "month": "2026-07",
-      "n": 264,
-      "index": 22.3
+      "n": 355,
+      "index": 29.9
      }
     ],
     "hn": [
@@ -1503,8 +1503,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": 22.9,
-     "n_latest_12m": 5005,
+     "pct_change": 25.1,
+     "n_latest_12m": 5096,
      "n_prior_12m": 4073
     },
     "hn": {
@@ -1533,9 +1533,9 @@
     }
    },
    "divergence": {
-    "gdelt_index_avg3m": 29.2,
+    "gdelt_index_avg3m": 31.7,
     "arxiv_index_avg3m": 73.3,
-    "research_vs_media_index": 44.1,
+    "research_vs_media_index": 41.6,
     "direction": "research_leads"
    }
   },
@@ -4889,8 +4889,8 @@
      },
      {
       "month": "2026-07",
-      "n": 10,
-      "index": 6.4
+      "n": 11,
+      "index": 7.1
      }
     ],
     "hn": [
@@ -6085,8 +6085,8 @@
    "yoy": {
     "gdelt": {
      "latest_month": "2026-07",
-     "pct_change": -25.5,
-     "n_latest_12m": 366,
+     "pct_change": -25.3,
+     "n_latest_12m": 367,
      "n_prior_12m": 491
     },
     "hn": null,
@@ -20602,7 +20602,7 @@
   "top_divergence": {
    "term_id": "zero_trust",
    "label": "Zero Trust",
-   "research_vs_media_index": 44.1,
+   "research_vs_media_index": 41.6,
    "direction": "research_leads"
   }
  }

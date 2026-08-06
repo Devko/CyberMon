@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-05T05:32:47Z",
+ "generated_at": "2026-08-06T03:50:13Z",
  "min_n": 50,
  "months": [
   {
@@ -148,28 +148,28 @@
   },
   {
    "month": "2025-10",
-   "enriched": 5234,
-   "ssvc": 5234,
-   "cvss": 2452,
-   "cwe": 2135,
-   "legacy": 1606,
+   "enriched": 5218,
+   "ssvc": 5218,
+   "cvss": 2445,
+   "cwe": 2124,
+   "legacy": 1599,
    "backfill": false
   },
   {
    "month": "2025-11",
-   "enriched": 2368,
-   "ssvc": 2368,
-   "cvss": 668,
-   "cwe": 583,
+   "enriched": 2365,
+   "ssvc": 2365,
+   "cvss": 666,
+   "cwe": 581,
    "legacy": 76,
    "backfill": false
   },
   {
    "month": "2025-12",
-   "enriched": 3807,
-   "ssvc": 3807,
-   "cvss": 874,
-   "cwe": 838,
+   "enriched": 3800,
+   "ssvc": 3800,
+   "cvss": 868,
+   "cwe": 832,
    "legacy": 568,
    "backfill": false
   },
@@ -184,11 +184,11 @@
   },
   {
    "month": "2026-02",
-   "enriched": 6998,
-   "ssvc": 6998,
+   "enriched": 6996,
+   "ssvc": 6996,
    "cvss": 1092,
    "cwe": 873,
-   "legacy": 802,
+   "legacy": 801,
    "backfill": false
   },
   {
@@ -229,37 +229,37 @@
   },
   {
    "month": "2026-07",
-   "enriched": 9538,
-   "ssvc": 9538,
-   "cvss": 2078,
-   "cwe": 2350,
+   "enriched": 9534,
+   "ssvc": 9534,
+   "cvss": 2077,
+   "cwe": 2348,
    "legacy": 109,
    "backfill": false
   },
   {
    "month": "2026-08",
-   "enriched": 822,
-   "ssvc": 822,
-   "cvss": 205,
-   "cwe": 221,
-   "legacy": 40,
+   "enriched": 1295,
+   "ssvc": 1295,
+   "cvss": 315,
+   "cwe": 329,
+   "legacy": 53,
    "backfill": false
   }
  ],
  "adds": {
-  "total": 170718,
-  "ssvc": 170717,
+  "total": 171159,
+  "ssvc": 171158,
   "pct_ssvc": 100.0,
-  "cvss": 38952,
+  "cvss": 39046,
   "pct_cvss": 22.8,
-  "cwe": 34598,
+  "cwe": 34685,
   "pct_cwe": 20.3
  },
  "providers": [
   {
    "provider": "CISA-ADP",
-   "n": 170718,
-   "pct": 48.0
+   "n": 171159,
+   "pct": 48.1
   },
   {
    "provider": "redhat-SADP",
@@ -268,9 +268,9 @@
   }
  ],
  "headline": {
-  "total_published": 355299,
-  "total_cisa": 170718,
-  "pct_cisa": 48.0,
+  "total_published": 355730,
+  "total_cisa": 171159,
+  "pct_cisa": 48.1,
   "first_month": "2024-06",
   "last_month": "2026-08",
   "peak_month": "2025-04",

@@ -3876,3 +3876,8 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-08-05,CVE-2026-36214,mitre,first_score,,,v3,6.4
 2026-08-05,CVE-2026-47996,adobe,rescore,v3,7.6,v3,6.8
 2026-08-05,CVE-2026-48322,adobe,rescore,v3,9.6,v3,9.9
+2026-08-06,CVE-2026-70369,TuranSec,first_score,,,v3,8.8
+2026-08-06,CVE-2026-70370,TuranSec,first_score,,,v3,8.8
+2026-08-06,CVE-2026-70371,TuranSec,first_score,,,v3,8.8
+2026-08-06,CVE-2026-70372,TuranSec,first_score,,,v3,8.8
+2026-08-06,CVE-2026-70373,TuranSec,first_score,,,v3,8.8

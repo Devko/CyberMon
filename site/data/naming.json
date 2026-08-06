@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-08-05T05:32:47Z",
- "version": "19.1",
- "released": "2026-05-12",
+ "generated_at": "2026-08-06T03:50:13Z",
+ "version": "19.2",
+ "released": "2026-08-05",
  "groups": [
   {
    "name": "APT28",
@@ -469,6 +469,17 @@
    "alt_count": 5
   },
   {
+   "name": "TeamPCP",
+   "aliases": [
+    "PCPCat",
+    "ShellForce",
+    "DeadCatx3",
+    "SHADOW-WATER-058",
+    "UNC6780"
+   ],
+   "alt_count": 5
+  },
+  {
    "name": "APT-C-36",
    "aliases": [
     "Blind Eagle",
@@ -815,6 +826,14 @@
    "alt_count": 2
   },
   {
+   "name": "ShinyHunters",
+   "aliases": [
+    "UNC6240",
+    "Bling Libra"
+   ],
+   "alt_count": 2
+  },
+  {
    "name": "Sidewinder",
    "aliases": [
     "T-APT-04",
@@ -1063,7 +1082,7 @@
   },
   {
    "alt_count": 2,
-   "n": 17
+   "n": 18
   },
   {
    "alt_count": 3,
@@ -1075,7 +1094,7 @@
   },
   {
    "alt_count": 5,
-   "n": 8
+   "n": 9
   },
   {
    "alt_count": 6,
@@ -1119,10 +1138,10 @@
   }
  ],
  "headline": {
-  "total_groups": 174,
-  "groups_with_aliases": 105,
-  "total_alias_strings": 418,
-  "distinct_alias_strings": 417,
+  "total_groups": 176,
+  "groups_with_aliases": 107,
+  "total_alias_strings": 425,
+  "distinct_alias_strings": 424,
   "most_renamed": "APT28",
   "most_renamed_alt_count": 15
  }

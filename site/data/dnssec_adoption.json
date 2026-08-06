@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-05T05:32:47Z",
+ "generated_at": "2026-08-06T03:50:13Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -626,10 +626,10 @@
    }
   ],
   "latest": {
-   "date": "2026-08-02",
+   "date": "2026-08-03",
    "validating_pc": 38.7,
    "partial_pc": 8.4,
-   "seen": 577622913
+   "seen": 580843553
   },
   "baseline": {
    "month": "2016-08",
@@ -1285,7 +1285,7 @@
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 50.6,
+   "latest_pc": 50.5,
    "series": [
     {
      "month": "2013-12",
@@ -1493,7 +1493,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 50.6
+     "validating_pc": 50.5
     }
    ]
   },
@@ -1930,7 +1930,7 @@
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 39.1,
+   "latest_pc": 39.0,
    "series": [
     {
      "month": "2013-12",
@@ -2138,7 +2138,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 39.1
+     "validating_pc": 39.0
     }
    ]
   },
@@ -2790,7 +2790,7 @@
  ],
  "spread": {
   "min_seen": 10000,
-  "n_economies": 201,
+  "n_economies": 202,
   "buckets": [
    {
     "bucket": "<10%",
@@ -2802,11 +2802,11 @@
    },
    {
     "bucket": "25-50%",
-    "n": 41
+    "n": 43
    },
    {
     "bucket": "50-75%",
-    "n": 57
+    "n": 56
    },
    {
     "bucket": "75%+",

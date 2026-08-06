@@ -18211,6 +18211,17 @@
    "ransom": "Unknown",
    "vendor": "WordPress"
   },
+  "CVE-2026-63077": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-05",
+   "desc": "ab08ae615cc1",
+   "due": "2026-08-08",
+   "name": "JetBrains TeamCity Deserialization of Untrusted Data Vulnerability",
+   "notes": "7a2e986ca08a",
+   "product": "TeamCity",
+   "ransom": "Unknown",
+   "vendor": "JetBrains"
+  },
   "CVE-2026-6973": {
    "action": "f09df147152e",
    "added": "2026-05-07",
@@ -18267,7 +18278,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-05",
+ "last_observed": "2026-08-06",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
