@@ -490,7 +490,17 @@ cd site && python3 -m http.server 8000
 # Browser smoke test against the committed site (one-time browser install)
 playwright install chromium
 python3 tools/site_smoke.py
+
+# Animated social clips (1080×1350 MP4 + GIF, one per scene)
+python3 tools/make_motion.py --check          # fast pre-flight, no encode
+python3 tools/make_motion.py --out site/motion # full render (~1 min/scene)
+python3 tools/make_motion.py --scene hype-race --keep-frames  # one scene, keep PNGs
 ```
+
+Both `site/carousels/` (LinkedIn PDFs) and `site/motion/` (animated clips) are
+deploy-time build products: gitignored, rebuilt into the Pages artifact on
+every deploy, never committed. Their build steps are `continue-on-error` in
+both workflows — a broken social asset must never hold the site on stale data.
 
 A real (networked) run is `python3 -m pipeline --out site/data`; set
 `NVD_API_KEY` in the environment for faster NVD paging, or pass `--skip-nvd`

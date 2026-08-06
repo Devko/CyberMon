@@ -73,6 +73,15 @@ jobs:
       - name: Run site smoke test
         run: python tools/site_smoke.py
 
+      # Pre-flight only (~4s): loads each motion scene, checks it reports no
+      # failures and a sane frame count, then samples three frames and asserts
+      # they are non-blank and actually differ. NOT a full render — capturing
+      # and encoding ~1,360 frames belongs in the deploy job, not on every PR.
+      # This is a HARD gate: a scene that cannot render is a code bug, and
+      # unlike the clips themselves it costs nothing to catch here.
+      - name: Check motion scenes render
+        run: python tools/make_motion.py --check
+
   deploy:
     name: Deploy to GitHub Pages
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -123,6 +132,14 @@ jobs:
       - name: Build carousel PDFs
         continue-on-error: true
         run: python3 tools/make_carousels.py --out site/carousels
+
+      # Animated social clips, same deal as the PDFs: deploy-time build
+      # products, gitignored, and non-blocking. ci.yml's site-smoke job already
+      # ran --check on this commit, so a failure here is an encode/runner
+      # problem rather than a broken scene.
+      - name: Build motion clips
+        continue-on-error: true
+        run: python3 tools/make_motion.py --out site/motion
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

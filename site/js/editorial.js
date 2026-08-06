@@ -3140,6 +3140,56 @@ export const editorial = {
   // ------------------------------------------- carousel.html (print template)
   // Strings for the per-module slide decks (LinkedIn document-post PDFs).
   // Rendered by js/carousel.js, printed by tools/make_carousels.py.
+  // Copy for the animated social clips (site/motion.html, rendered by
+  // tools/make_motion.py). Same rule as everywhere else: no user-facing string
+  // lives in a scene file, so pipeline/tests/test_claims_motion.py can audit
+  // every claim here against the committed data.
+  //
+  // Headlines deliberately carry NO span figure. A clip's window grows every
+  // night, so "four years of…" would quietly go stale; where a span or a count
+  // belongs on the sheet it is rendered from the data as a {placeholder}.
+  motion: {
+    wordmark: "CYBERMON",
+    scenes: {
+      "hype-race": {
+        kicker: "Hype curves",
+        headline: "Ransomware ran security's news cycle. Then it didn't.",
+        source: "GDELT 2.0 news mentions",
+        meta:
+          "trailing 12 months, by month. All {terms} tracked terms shown; raw " +
+          "article counts, not the site's per-term index.",
+      },
+      "severity-flood": {
+        kicker: "The 9.8 flood",
+        headline: "“Critical” was an exception. Now it's a product line.",
+        source: "CVE List V5 (MITRE)",
+        // The era caveat is not optional garnish: without it the growing stack
+        // reads as "vulnerabilities got worse" when what changed is where the
+        // score is written down.
+        // The clip ends holding on a year that is only part-written, so its
+        // stack drops off a cliff. Left unexplained, that closing frame reads as
+        // "publishing collapsed" — the most likely misread of the whole scene,
+        // and the one a shared clip carries furthest. Hence the asterisk, which
+        // this line defines on screen.
+        meta:
+          "published CVEs per year by the score in the CVE record. Left of {era}, " +
+          "severity lived in NVD's database, which this chart does not read — the " +
+          "gray band is the record format, not the era. {gen}* is still filling in.",
+        eraMarker: "scored in NVD, not in the record",
+      },
+      "cna-concentration": {
+        kicker: "Who numbers the world",
+        headline: "The gatekeepers multiplied. The gate did not.",
+        source: "CVE List V5 (MITRE)",
+        meta:
+          "share of the year's CVEs issued by the five largest CNAs, against the " +
+          "number of CNAs publishing at all. {gen}* is still filling in.",
+        shareLabel: "Top-5 share",
+        countLabel: "Active CNAs",
+      },
+    },
+  },
+
   carousel: {
     edition: "Edition {generated_at}",
     slideFooter: "CyberMon · devko.github.io/CyberMon · data: {sources}",

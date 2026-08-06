@@ -214,8 +214,16 @@ jobs:
         continue-on-error: true
         run: python3 tools/make_carousels.py --out site/carousels
 
-      - name: Report carousel failure (non-blocking)
-        if: steps.carousels.outcome == 'failure' || steps.carousel-deps.outcome == 'failure' || steps.carousel-browser.outcome == 'failure'
+      # Animated social clips from the same freshly committed data, under the
+      # same non-blocking rule as the PDFs above: a broken clip must never keep
+      # the site on stale data.
+      - name: Build motion clips
+        id: motion
+        continue-on-error: true
+        run: python3 tools/make_motion.py --out site/motion
+
+      - name: Report social build-product failure (non-blocking)
+        if: steps.carousels.outcome == 'failure' || steps.carousel-deps.outcome == 'failure' || steps.carousel-browser.outcome == 'failure' || steps.motion.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -223,12 +231,12 @@ jobs:
         run: |
           issue="$(gh issue list --label nightly-failure --state open \
             --json number --jq '.[0].number // empty')"
-          body="Carousel build failed (deploy proceeded without PDFs): $RUN_URL"
+          body="Social build product failed — carousels=${{ steps.carousels.outcome }}, motion=${{ steps.motion.outcome }} (deploy proceeded without them): $RUN_URL"
           if [ -n "$issue" ]; then
             gh issue comment "$issue" --body "$body"
           else
             gh issue create \
-              --title "Nightly carousel build is failing" \
+              --title "Nightly social build products are failing" \
               --label nightly-failure \
               --body "$body"
           fi
