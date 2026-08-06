@@ -3150,6 +3150,17 @@ export const editorial = {
   // belongs on the sheet it is rendered from the data as a {placeholder}.
   motion: {
     wordmark: "CYBERMON",
+    // Module page id -> scene id, for the footer link common.js renders.
+    // Only pages whose data a scene actually animates appear here; a module
+    // without a clip simply gets no link. Without this the clips ship inside
+    // the Pages artifact with nothing on the site pointing at them — built,
+    // deployed and undiscoverable.
+    byModule: {
+      cve: "severity-flood",
+      market: "hype-race",
+      concentration: "cna-concentration",
+    },
+    linkTemplate: "This module as an animated clip (MP4) → motion/{scene}.mp4",
     scenes: {
       "hype-race": {
         kicker: "Hype curves",
