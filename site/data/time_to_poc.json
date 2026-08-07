@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-06T03:50:13Z",
+ "generated_at": "2026-08-07T03:40:29Z",
  "hero": {
   "matched": {
    "dated_cves": 26186,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-05-08",
+  "observed_through": "2026-05-09",
   "years": [
    {
     "year": 2000,
@@ -573,7 +573,7 @@
    {
     "bucket": "9.0-10.0",
     "total": 4111,
-    "with_poc": 333,
+    "with_poc": 334,
     "pct": 8.1
    }
   ],
@@ -597,11 +597,11 @@
    "dated_cves": 3013
   },
   "nuclei": {
-   "templates": 4259,
-   "cves": 4259
+   "templates": 4263,
+   "cves": 4263
   },
-  "union_cves": 29395,
+  "union_cves": 29399,
   "dated_cves": 26186,
-  "matched_in_corpus": 29329
+  "matched_in_corpus": 29333
  }
 }

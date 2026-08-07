@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-06T03:50:13Z",
+ "generated_at": "2026-08-07T03:40:29Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -464,8 +464,8 @@
   },
   "other": {
    "total": 1462,
-   "known": 261,
-   "pct_known": 17.9
+   "known": 264,
+   "pct_known": 18.1
   }
  },
  "catalog": {

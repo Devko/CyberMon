@@ -13709,7 +13709,7 @@
    "name": "Rejetto HTTP File Server Improper Neutralization of Special Elements Used in a Template Engine Vulnerability",
    "notes": "942aafd0394a",
    "product": "HTTP File Server",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Rejetto"
   },
   "CVE-2024-23897": {
@@ -15596,7 +15596,7 @@
   "CVE-2025-24813": {
    "action": "f09df147152e",
    "added": "2025-04-01",
-   "desc": "12b9eb8bc26e",
+   "desc": "223c09a5d638",
    "due": "2025-04-22",
    "name": "Apache Tomcat Path Equivalence Vulnerability",
    "notes": "1a61d49bd925",
@@ -16272,7 +16272,7 @@
    "name": "SAP NetWeaver Deserialization Vulnerability",
    "notes": "a32e2982e3f4",
    "product": "NetWeaver",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "SAP"
   },
   "CVE-2025-43200": {
@@ -17053,7 +17053,7 @@
    "name": "RARLAB WinRAR Path Traversal Vulnerability",
    "notes": "51dc61b44aa1",
    "product": "WinRAR",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "RARLAB"
   },
   "CVE-2025-8110": {
@@ -17752,7 +17752,7 @@
   "CVE-2026-34486": {
    "action": "ba0d649eb29b",
    "added": "2026-08-04",
-   "desc": "8ec162a43b95",
+   "desc": "47c05c83ccfa",
    "due": "2026-08-07",
    "name": "Apache Tomcat Missing Encryption of Sensitive Data Vulnerability",
    "notes": "1e13611df3d4",
@@ -18278,7 +18278,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-06",
+ "last_observed": "2026-08-07",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

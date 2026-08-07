@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-06T03:50:13Z",
+ "generated_at": "2026-08-07T03:40:29Z",
  "min_n": 50,
  "months": [
   {
@@ -148,11 +148,11 @@
   },
   {
    "month": "2025-10",
-   "enriched": 5218,
-   "ssvc": 5218,
-   "cvss": 2445,
-   "cwe": 2124,
-   "legacy": 1599,
+   "enriched": 5213,
+   "ssvc": 5213,
+   "cvss": 2442,
+   "cwe": 2122,
+   "legacy": 1594,
    "backfill": false
   },
   {
@@ -175,11 +175,11 @@
   },
   {
    "month": "2026-01",
-   "enriched": 3817,
-   "ssvc": 3817,
+   "enriched": 3815,
+   "ssvc": 3815,
    "cvss": 926,
-   "cwe": 762,
-   "legacy": 880,
+   "cwe": 761,
+   "legacy": 878,
    "backfill": false
   },
   {
@@ -229,36 +229,36 @@
   },
   {
    "month": "2026-07",
-   "enriched": 9534,
-   "ssvc": 9534,
-   "cvss": 2077,
-   "cwe": 2348,
+   "enriched": 9532,
+   "ssvc": 9532,
+   "cvss": 2076,
+   "cwe": 2347,
    "legacy": 109,
    "backfill": false
   },
   {
    "month": "2026-08",
-   "enriched": 1295,
-   "ssvc": 1295,
-   "cvss": 315,
-   "cwe": 329,
-   "legacy": 53,
+   "enriched": 1655,
+   "ssvc": 1655,
+   "cvss": 414,
+   "cwe": 392,
+   "legacy": 63,
    "backfill": false
   }
  ],
  "adds": {
-  "total": 171159,
-  "ssvc": 171158,
+  "total": 171510,
+  "ssvc": 171509,
   "pct_ssvc": 100.0,
-  "cvss": 39046,
+  "cvss": 39141,
   "pct_cvss": 22.8,
-  "cwe": 34685,
+  "cwe": 34744,
   "pct_cwe": 20.3
  },
  "providers": [
   {
    "provider": "CISA-ADP",
-   "n": 171159,
+   "n": 171510,
    "pct": 48.1
   },
   {
@@ -268,8 +268,8 @@
   }
  ],
  "headline": {
-  "total_published": 355730,
-  "total_cisa": 171159,
+  "total_published": 356211,
+  "total_cisa": 171510,
   "pct_cisa": 48.1,
   "first_month": "2024-06",
   "last_month": "2026-08",

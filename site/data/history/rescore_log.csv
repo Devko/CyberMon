@@ -3881,3 +3881,6 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-08-06,CVE-2026-70371,TuranSec,first_score,,,v3,8.8
 2026-08-06,CVE-2026-70372,TuranSec,first_score,,,v3,8.8
 2026-08-06,CVE-2026-70373,TuranSec,first_score,,,v3,8.8
+2026-08-07,CVE-2026-19023,HDFG,rescore,v4,0.0,v4,6.8
+2026-08-07,CVE-2026-47991,adobe,rescore,v3,4.3,v3,6.1
+2026-08-07,CVE-2026-48000,adobe,rescore,v3,4.3,v3,6.1
