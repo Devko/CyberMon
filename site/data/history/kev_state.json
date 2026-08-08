@@ -18244,6 +18244,17 @@
    "ransom": "Unknown",
    "vendor": "Arista"
   },
+  "CVE-2026-8037": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-07",
+   "desc": "6364c014ab42",
+   "due": "2026-08-10",
+   "name": "Progress LoadMaster Command Injection Vulnerability",
+   "notes": "23d76c3a083b",
+   "product": "LoadMaster",
+   "ransom": "Unknown",
+   "vendor": "Progress"
+  },
   "CVE-2026-8398": {
    "action": "f09df147152e",
    "added": "2026-05-27",
@@ -18278,7 +18289,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-07",
+ "last_observed": "2026-08-08",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

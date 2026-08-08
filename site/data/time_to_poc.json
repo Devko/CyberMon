@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-08-07T03:40:29Z",
+ "generated_at": "2026-08-08T03:13:07Z",
  "hero": {
   "matched": {
-   "dated_cves": 26186,
-   "matched_cves": 26143,
+   "dated_cves": 26190,
+   "matched_cves": 26147,
    "unmatched_cves": 43
   },
   "years": [
@@ -252,12 +252,12 @@
    },
    {
     "year": 2026,
-    "n": 128,
-    "median_days": 12.0,
+    "n": 132,
+    "median_days": 10.5,
     "p25_days": -0.2,
-    "p75_days": 60.2,
+    "p75_days": 56.2,
     "pct_negative": 25.0,
-    "pct_within_week": 47.7
+    "pct_within_week": 48.5
    }
   ],
   "headline": {
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-05-09",
+  "observed_through": "2026-05-10",
   "years": [
    {
     "year": 2000,
@@ -483,21 +483,21 @@
    },
    {
     "year": 2026,
-    "n": 75,
+    "n": 77,
     "median_days": 5.0,
-    "pct_within_week": 52.0,
-    "pct_negative": 17.3,
+    "pct_within_week": 51.9,
+    "pct_negative": 18.2,
     "provisional": true
    }
   ]
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1661,
+  "total_kev": 1662,
   "trend": {
-   "with_poc_date": 229,
-   "preempted": 185,
-   "pct_preempted": 80.8
+   "with_poc_date": 231,
+   "preempted": 187,
+   "pct_preempted": 81.0
   },
   "seeding": {
    "with_poc_date": 412,
@@ -542,10 +542,10 @@
    },
    {
     "year": 2026,
-    "total_added": 177,
-    "with_poc_date": 38,
-    "preempted": 29,
-    "pct_preempted": 76.3
+    "total_added": 178,
+    "with_poc_date": 40,
+    "preempted": 31,
+    "pct_preempted": 77.5
    }
   ]
  },
@@ -591,17 +591,17 @@
    "dated_cves": 25041
   },
   "metasploit": {
-   "modules": 7133,
-   "with_cve": 3084,
-   "cves": 3175,
-   "dated_cves": 3013
+   "modules": 7135,
+   "with_cve": 3086,
+   "cves": 3179,
+   "dated_cves": 3017
   },
   "nuclei": {
    "templates": 4263,
    "cves": 4263
   },
-  "union_cves": 29399,
-  "dated_cves": 26186,
-  "matched_in_corpus": 29333
+  "union_cves": 29402,
+  "dated_cves": 26190,
+  "matched_in_corpus": 29336
  }
 }

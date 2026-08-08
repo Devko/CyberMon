@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-07T03:40:29Z",
+ "generated_at": "2026-08-08T03:13:07Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 177,
+   "total": 178,
    "security": 29,
-   "pct_security": 16.4
+   "pct_security": 16.3
   }
  ],
  "vendors": [
@@ -294,6 +294,15 @@
    "median_gap_days": 48.0
   },
   {
+   "vendor": "Progress",
+   "entries": 9,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-08-07",
+   "median_gap_days": 115.0
+  },
+  {
    "vendor": "Zoho",
    "entries": 9,
    "security_entries": 0,
@@ -328,15 +337,6 @@
    "first_added": "2021-11-03",
    "last_added": "2022-09-08",
    "median_gap_days": 18.0
-  },
-  {
-   "vendor": "Progress",
-   "entries": 8,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2025-03-03",
-   "median_gap_days": 105.0
   },
   {
    "vendor": "F5",
@@ -463,13 +463,13 @@
    "pct_known": 37.2
   },
   "other": {
-   "total": 1462,
+   "total": 1463,
    "known": 264,
-   "pct_known": 18.1
+   "pct_known": 18.0
   }
  },
  "catalog": {
-  "total": 1661,
+  "total": 1662,
   "security": 199,
   "pct_security": 12.0,
   "classifier_version": 2,
