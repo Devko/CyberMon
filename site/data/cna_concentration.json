@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-08T03:13:07Z",
+ "generated_at": "2026-08-09T03:19:24Z",
  "years": [
   {
    "year": 1999,
@@ -223,7 +223,7 @@
    "newcomer_count": 39,
    "top5_share": 48.7,
    "top10_share": 70.0,
-   "hhi": 660.8
+   "hhi": 660.6
   }
  ],
  "rejection_leaderboard": {
@@ -268,8 +268,8 @@
    },
    {
     "cna": "GitLab",
-    "total": 1279,
-    "rejected": 290,
+    "total": 1280,
+    "rejected": 291,
     "rejected_rate_pct": 22.7
    },
    {
@@ -304,7 +304,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 5989,
+    "total": 6016,
     "rejected": 702,
     "rejected_rate_pct": 11.7
    },
@@ -340,7 +340,7 @@
    },
    {
     "cna": "redhat",
-    "total": 2510,
+    "total": 2511,
     "rejected": 244,
     "rejected_rate_pct": 9.7
    },
@@ -466,7 +466,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10820,
+    "total": 10822,
     "rejected": 272,
     "rejected_rate_pct": 2.5
    },
@@ -478,7 +478,7 @@
    },
    {
     "cna": "Linux",
-    "total": 13731,
+    "total": 13733,
     "rejected": 323,
     "rejected_rate_pct": 2.4
    },
@@ -694,7 +694,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15617,
+    "total": 15630,
     "rejected": 86,
     "rejected_rate_pct": 0.6
    },
@@ -814,7 +814,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4012,
+    "total": 4029,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -1359,7 +1359,7 @@
  },
  "projection": {
   "year": 2026,
-  "newcomers": 65,
-  "elapsed": 0.603
+  "newcomers": 64,
+  "elapsed": 0.605
  }
 }

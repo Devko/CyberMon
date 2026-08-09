@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-08T03:13:07Z",
+ "generated_at": "2026-08-09T03:19:24Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -166,6 +166,15 @@
    "pct_geq_7": 53.8
   },
   {
+   "cna": "VulnCheck",
+   "org": "VulnCheck",
+   "n": 5282,
+   "avg_cvss": 7.4,
+   "median_cvss": 8.3,
+   "pct_geq_9": 15.5,
+   "pct_geq_7": 62.2
+  },
+  {
    "cna": "CERT-PL",
    "org": "CERT-PL",
    "n": 439,
@@ -173,15 +182,6 @@
    "median_cvss": 6.9,
    "pct_geq_9": 15.5,
    "pct_geq_7": 44.2
-  },
-  {
-   "cna": "VulnCheck",
-   "org": "VulnCheck",
-   "n": 5255,
-   "avg_cvss": 7.4,
-   "median_cvss": 8.2,
-   "pct_geq_9": 15.1,
-   "pct_geq_7": 62.1
   },
   {
    "cna": "ivanti",
@@ -258,7 +258,7 @@
   {
    "cna": "Linux",
    "org": "Linux",
-   "n": 4669,
+   "n": 4695,
    "avg_cvss": 8.0,
    "median_cvss": 7.8,
    "pct_geq_9": 11.1,
@@ -420,7 +420,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9499,
+   "n": 9501,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.2,
@@ -564,7 +564,7 @@
   {
    "cna": "redhat",
    "org": "redhat",
-   "n": 1184,
+   "n": 1185,
    "avg_cvss": 6.3,
    "median_cvss": 6.5,
    "pct_geq_9": 3.5,
@@ -627,7 +627,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 12746,
+   "n": 12759,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.5,
