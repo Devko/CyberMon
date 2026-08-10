@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-09T03:19:24Z",
+ "generated_at": "2026-08-10T03:22:25Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 361,
    "newcomer_count": 39,
-   "top5_share": 48.7,
+   "top5_share": 48.8,
    "top10_share": 70.0,
-   "hhi": 660.6
+   "hhi": 660.5
   }
  ],
  "rejection_leaderboard": {
@@ -352,7 +352,7 @@
    },
    {
     "cna": "@huntr_ai",
-    "total": 883,
+    "total": 885,
     "rejected": 70,
     "rejected_rate_pct": 7.9
    },
@@ -693,16 +693,16 @@
     "rejected_rate_pct": 0.7
    },
    {
-    "cna": "VulDB",
-    "total": 15630,
-    "rejected": 86,
-    "rejected_rate_pct": 0.6
-   },
-   {
     "cna": "OpenHarmony",
     "total": 178,
     "rejected": 1,
     "rejected_rate_pct": 0.6
+   },
+   {
+    "cna": "VulDB",
+    "total": 15683,
+    "rejected": 86,
+    "rejected_rate_pct": 0.5
    },
    {
     "cna": "google_android",
@@ -736,7 +736,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 275,
+    "total": 277,
     "rejected": 1,
     "rejected_rate_pct": 0.4
    },
@@ -814,7 +814,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4029,
+    "total": 4046,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -951,14 +951,14 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "DEVOLUTIONS",
-    "total": 168,
+    "cna": "EEF",
+    "total": 169,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "EEF",
-    "total": 167,
+    "cna": "DEVOLUTIONS",
+    "total": 168,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1360,6 +1360,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 64,
-  "elapsed": 0.605
+  "elapsed": 0.608
  }
 }

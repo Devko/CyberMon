@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-09T03:19:24Z",
+ "generated_at": "2026-08-10T03:22:25Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -114,10 +114,10 @@
   {
    "cna": "@huntr_ai",
    "org": "@huntr_ai",
-   "n": 764,
+   "n": 766,
    "avg_cvss": 7.3,
    "median_cvss": 7.5,
-   "pct_geq_9": 18.2,
+   "pct_geq_9": 18.1,
    "pct_geq_7": 66.2
   },
   {
@@ -501,11 +501,11 @@
   {
    "cna": "EEF",
    "org": "EEF",
-   "n": 167,
+   "n": 169,
    "avg_cvss": 6.7,
-   "median_cvss": 7.0,
-   "pct_geq_9": 4.8,
-   "pct_geq_7": 50.3
+   "median_cvss": 6.9,
+   "pct_geq_9": 4.7,
+   "pct_geq_7": 49.7
   },
   {
    "cna": "zdi",
@@ -627,11 +627,11 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 12759,
+   "n": 12812,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.5,
-   "pct_geq_7": 14.6
+   "pct_geq_7": 14.5
   },
   {
    "cna": "huawei",

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-09T03:19:24Z",
+ "generated_at": "2026-08-10T03:22:25Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -622,14 +622,14 @@
    },
    {
     "month": "2026-08",
-    "validating_pc": 38.7
+    "validating_pc": 38.6
    }
   ],
   "latest": {
-   "date": "2026-08-06",
-   "validating_pc": 38.7,
+   "date": "2026-08-07",
+   "validating_pc": 38.6,
    "partial_pc": 8.3,
-   "seen": 589347365
+   "seen": 591898777
   },
   "baseline": {
    "month": "2016-08",
@@ -640,7 +640,7 @@
   {
    "cc": "PH",
    "name": "Philippines",
-   "latest_pc": 93.7,
+   "latest_pc": 93.8,
    "series": [
     {
      "month": "2013-12",
@@ -848,14 +848,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 93.7
+     "validating_pc": 93.8
     }
    ]
   },
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 59.1,
+   "latest_pc": 59.0,
    "series": [
     {
      "month": "2013-12",
@@ -1063,14 +1063,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 59.1
+     "validating_pc": 59.0
     }
    ]
   },
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 55.3,
+   "latest_pc": 55.2,
    "series": [
     {
      "month": "2013-12",
@@ -1278,14 +1278,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 55.3
+     "validating_pc": 55.2
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 50.8,
+   "latest_pc": 50.6,
    "series": [
     {
      "month": "2013-12",
@@ -1493,7 +1493,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 50.8
+     "validating_pc": 50.6
     }
    ]
   },
@@ -1715,7 +1715,7 @@
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 41.1,
+   "latest_pc": 41.3,
    "series": [
     {
      "month": "2013-12",
@@ -1923,7 +1923,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 41.1
+     "validating_pc": 41.3
     }
    ]
   },
@@ -2806,11 +2806,11 @@
    },
    {
     "bucket": "50-75%",
-    "n": 56
+    "n": 57
    },
    {
     "bucket": "75%+",
-    "n": 61
+    "n": 60
    }
   ]
  }
