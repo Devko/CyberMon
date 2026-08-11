@@ -17988,7 +17988,7 @@
    "name": "Microsoft SharePoint Server Deserialization of Untrusted Data Vulnerability",
    "notes": "75e570fc77e8",
    "product": "SharePoint Server",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2026-46817": {
@@ -18289,7 +18289,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-10",
+ "last_observed": "2026-08-11",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

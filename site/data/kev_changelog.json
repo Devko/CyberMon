@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-10T03:22:25Z",
+ "generated_at": "2026-08-11T03:20:11Z",
  "min_n": 10,
  "months": [
   {
@@ -421,14 +421,14 @@
   {
    "month": "2026-08",
    "due_date": 0,
-   "ransomware_flag": 6,
+   "ransomware_flag": 7,
    "text": 2,
    "removed": 0,
-   "total": 8
+   "total": 9
   }
  ],
  "flips": {
-  "total": 294,
+  "total": 295,
   "reversals": 0,
   "by_month": [
    {
@@ -593,14 +593,14 @@
    },
    {
     "month": "2026-08",
-    "flips": 6,
-    "cumulative": 294
+    "flips": 7,
+    "cumulative": 295
    }
   ],
   "lag": {
-   "n": 294,
-   "median_days": 623.5,
-   "p25_days": 371.0,
+   "n": 295,
+   "median_days": 623.0,
+   "p25_days": 365.5,
    "p75_days": 768.0
   }
  },
@@ -760,16 +760,16 @@
  "catalog": {
   "entries": 1662,
   "removed_total": 9,
-  "events_total": 4277,
-  "edits_total": 2917,
+  "events_total": 4278,
+  "edits_total": 2918,
   "additions_excluded": 1360,
   "first_observed": "2021-12-23",
-  "last_observed": "2026-08-10",
+  "last_observed": "2026-08-11",
   "backfill_captures": 53
  },
  "headline": {
-  "edits_total": 2917,
-  "edits_per_100_entries": 175.5,
+  "edits_total": 2918,
+  "edits_per_100_entries": 175.6,
   "pct_flag_flips": 10.1
  }
 }

@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-08-10T03:22:25Z",
+ "generated_at": "2026-08-11T03:20:11Z",
  "hero": {
   "matched": {
-   "dated_cves": 26190,
-   "matched_cves": 26147,
+   "dated_cves": 26194,
+   "matched_cves": 26151,
    "unmatched_cves": 43
   },
   "years": [
@@ -252,11 +252,11 @@
    },
    {
     "year": 2026,
-    "n": 132,
+    "n": 136,
     "median_days": 10.5,
-    "p25_days": -0.2,
-    "p75_days": 56.2,
-    "pct_negative": 25.0,
+    "p25_days": 0.0,
+    "p75_days": 55.0,
+    "pct_negative": 24.3,
     "pct_within_week": 48.5
    }
   ],
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-05-12",
+  "observed_through": "2026-05-13",
   "years": [
    {
     "year": 2000,
@@ -483,10 +483,10 @@
    },
    {
     "year": 2026,
-    "n": 83,
+    "n": 84,
     "median_days": 15.0,
-    "pct_within_week": 49.4,
-    "pct_negative": 18.1,
+    "pct_within_week": 48.8,
+    "pct_negative": 17.9,
     "provisional": true
    }
   ]
@@ -495,9 +495,9 @@
   "cutoff": "2023-01-01",
   "total_kev": 1662,
   "trend": {
-   "with_poc_date": 231,
+   "with_poc_date": 233,
    "preempted": 187,
-   "pct_preempted": 81.0
+   "pct_preempted": 80.3
   },
   "seeding": {
    "with_poc_date": 412,
@@ -543,9 +543,9 @@
    {
     "year": 2026,
     "total_added": 178,
-    "with_poc_date": 40,
+    "with_poc_date": 42,
     "preempted": 31,
-    "pct_preempted": 77.5
+    "pct_preempted": 73.8
    }
   ]
  },
@@ -585,23 +585,23 @@
  },
  "catalog": {
   "exploitdb": {
-   "entries": 47108,
-   "with_cve": 27384,
-   "cves": 25041,
-   "dated_cves": 25041
+   "entries": 47112,
+   "with_cve": 27387,
+   "cves": 25044,
+   "dated_cves": 25044
   },
   "metasploit": {
-   "modules": 7135,
-   "with_cve": 3086,
-   "cves": 3179,
-   "dated_cves": 3017
+   "modules": 7136,
+   "with_cve": 3087,
+   "cves": 3181,
+   "dated_cves": 3019
   },
   "nuclei": {
-   "templates": 4270,
-   "cves": 4270
+   "templates": 4271,
+   "cves": 4271
   },
-  "union_cves": 29409,
-  "dated_cves": 26190,
-  "matched_in_corpus": 29343
+  "union_cves": 29413,
+  "dated_cves": 26194,
+  "matched_in_corpus": 29347
  }
 }
