@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-11T03:20:11Z",
+ "generated_at": "2026-08-12T03:28:58Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,28 +35,28 @@
   },
   {
    "year": 2026,
-   "total": 178,
-   "security": 29,
-   "pct_security": 16.3
+   "total": 181,
+   "security": 30,
+   "pct_security": 16.6
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 382,
+   "entries": 383,
    "security_entries": 7,
    "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-22",
+   "last_added": "2026-08-11",
    "median_gap_days": 0.0
   },
   {
    "vendor": "Cisco",
-   "entries": 95,
-   "security_entries": 20,
-   "pct_security": 21.1,
+   "entries": 96,
+   "security_entries": 21,
+   "pct_security": 21.9,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-29",
+   "last_added": "2026-08-11",
    "median_gap_days": 0.0
   },
   {
@@ -458,19 +458,19 @@
  ],
  "ransomware": {
   "security": {
-   "total": 199,
+   "total": 200,
    "known": 74,
-   "pct_known": 37.2
+   "pct_known": 37.0
   },
   "other": {
-   "total": 1463,
+   "total": 1465,
    "known": 265,
    "pct_known": 18.1
   }
  },
  "catalog": {
-  "total": 1662,
-  "security": 199,
+  "total": 1665,
+  "security": 200,
   "pct_security": 12.0,
   "classifier_version": 2,
   "classifier_rules": 35

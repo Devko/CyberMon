@@ -11,3 +11,4 @@ observed_date,short_name,change_type,org,country,type
 2026-08-05,postiz,onboarded,Postiz,Israel,Hosted Service + Open Source + Vendor
 2026-08-05,TQtC,departed,The Qt Company,Finland,Vendor
 2026-08-05,OAI,scope_changed,OpenAI,USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor
+2026-08-12,NCSC,scope_changed,NATO Cyber Security Centre,Belgium,Researcher
