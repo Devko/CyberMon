@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-12T03:28:58Z",
+ "generated_at": "2026-08-13T03:31:53Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -626,10 +626,10 @@
    }
   ],
   "latest": {
-   "date": "2026-08-09",
+   "date": "2026-08-10",
    "validating_pc": 38.4,
    "partial_pc": 8.3,
-   "seen": 593310403
+   "seen": 595738818
   },
   "baseline": {
    "month": "2016-08",
@@ -640,7 +640,7 @@
   {
    "cc": "PH",
    "name": "Philippines",
-   "latest_pc": 93.8,
+   "latest_pc": 93.9,
    "series": [
     {
      "month": "2013-12",
@@ -848,14 +848,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 93.8
+     "validating_pc": 93.9
     }
    ]
   },
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 59.0,
+   "latest_pc": 58.9,
    "series": [
     {
      "month": "2013-12",
@@ -1063,7 +1063,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 59.0
+     "validating_pc": 58.9
     }
    ]
   },
@@ -1283,224 +1283,9 @@
    ]
   },
   {
-   "cc": "RU",
-   "name": "Russia",
-   "latest_pc": 50.6,
-   "series": [
-    {
-     "month": "2013-12",
-     "validating_pc": 5.9
-    },
-    {
-     "month": "2014-03",
-     "validating_pc": 8.6
-    },
-    {
-     "month": "2014-06",
-     "validating_pc": 11.0
-    },
-    {
-     "month": "2014-09",
-     "validating_pc": 11.4
-    },
-    {
-     "month": "2014-12",
-     "validating_pc": 11.8
-    },
-    {
-     "month": "2015-03",
-     "validating_pc": 14.1
-    },
-    {
-     "month": "2015-06",
-     "validating_pc": 16.1
-    },
-    {
-     "month": "2015-09",
-     "validating_pc": 13.7
-    },
-    {
-     "month": "2015-12",
-     "validating_pc": 19.6
-    },
-    {
-     "month": "2016-03",
-     "validating_pc": 8.6
-    },
-    {
-     "month": "2016-06",
-     "validating_pc": 16.0
-    },
-    {
-     "month": "2016-09",
-     "validating_pc": 15.5
-    },
-    {
-     "month": "2016-12",
-     "validating_pc": 18.3
-    },
-    {
-     "month": "2017-03",
-     "validating_pc": 16.3
-    },
-    {
-     "month": "2017-06",
-     "validating_pc": 19.0
-    },
-    {
-     "month": "2017-09",
-     "validating_pc": 14.8
-    },
-    {
-     "month": "2017-12",
-     "validating_pc": 15.4
-    },
-    {
-     "month": "2018-03",
-     "validating_pc": 15.7
-    },
-    {
-     "month": "2018-06",
-     "validating_pc": 19.0
-    },
-    {
-     "month": "2018-09",
-     "validating_pc": 20.9
-    },
-    {
-     "month": "2018-12",
-     "validating_pc": 14.2
-    },
-    {
-     "month": "2019-03",
-     "validating_pc": 13.7
-    },
-    {
-     "month": "2019-06",
-     "validating_pc": 14.0
-    },
-    {
-     "month": "2019-09",
-     "validating_pc": 14.0
-    },
-    {
-     "month": "2019-12",
-     "validating_pc": 17.9
-    },
-    {
-     "month": "2020-03",
-     "validating_pc": 18.1
-    },
-    {
-     "month": "2020-06",
-     "validating_pc": 18.7
-    },
-    {
-     "month": "2020-09",
-     "validating_pc": 19.6
-    },
-    {
-     "month": "2020-12",
-     "validating_pc": 18.6
-    },
-    {
-     "month": "2021-03",
-     "validating_pc": 26.7
-    },
-    {
-     "month": "2021-06",
-     "validating_pc": 30.2
-    },
-    {
-     "month": "2021-09",
-     "validating_pc": 33.6
-    },
-    {
-     "month": "2021-12",
-     "validating_pc": 39.1
-    },
-    {
-     "month": "2022-03",
-     "validating_pc": 48.0
-    },
-    {
-     "month": "2022-06",
-     "validating_pc": 54.7
-    },
-    {
-     "month": "2022-09",
-     "validating_pc": 47.5
-    },
-    {
-     "month": "2022-12",
-     "validating_pc": 43.5
-    },
-    {
-     "month": "2023-03",
-     "validating_pc": 72.2
-    },
-    {
-     "month": "2023-06",
-     "validating_pc": 47.0
-    },
-    {
-     "month": "2023-09",
-     "validating_pc": 36.0
-    },
-    {
-     "month": "2023-12",
-     "validating_pc": 48.0
-    },
-    {
-     "month": "2024-03",
-     "validating_pc": 26.2
-    },
-    {
-     "month": "2024-06",
-     "validating_pc": 33.6
-    },
-    {
-     "month": "2024-09",
-     "validating_pc": 40.7
-    },
-    {
-     "month": "2024-12",
-     "validating_pc": 51.4
-    },
-    {
-     "month": "2025-03",
-     "validating_pc": 53.1
-    },
-    {
-     "month": "2025-06",
-     "validating_pc": 53.5
-    },
-    {
-     "month": "2025-09",
-     "validating_pc": 53.0
-    },
-    {
-     "month": "2025-12",
-     "validating_pc": 61.8
-    },
-    {
-     "month": "2026-03",
-     "validating_pc": 44.1
-    },
-    {
-     "month": "2026-06",
-     "validating_pc": 46.7
-    },
-    {
-     "month": "2026-08",
-     "validating_pc": 50.6
-    }
-   ]
-  },
-  {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 50.4,
+   "latest_pc": 50.3,
    "series": [
     {
      "month": "2013-12",
@@ -1708,14 +1493,229 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 50.4
+     "validating_pc": 50.3
+    }
+   ]
+  },
+  {
+   "cc": "RU",
+   "name": "Russia",
+   "latest_pc": 50.3,
+   "series": [
+    {
+     "month": "2013-12",
+     "validating_pc": 5.9
+    },
+    {
+     "month": "2014-03",
+     "validating_pc": 8.6
+    },
+    {
+     "month": "2014-06",
+     "validating_pc": 11.0
+    },
+    {
+     "month": "2014-09",
+     "validating_pc": 11.4
+    },
+    {
+     "month": "2014-12",
+     "validating_pc": 11.8
+    },
+    {
+     "month": "2015-03",
+     "validating_pc": 14.1
+    },
+    {
+     "month": "2015-06",
+     "validating_pc": 16.1
+    },
+    {
+     "month": "2015-09",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2015-12",
+     "validating_pc": 19.6
+    },
+    {
+     "month": "2016-03",
+     "validating_pc": 8.6
+    },
+    {
+     "month": "2016-06",
+     "validating_pc": 16.0
+    },
+    {
+     "month": "2016-09",
+     "validating_pc": 15.5
+    },
+    {
+     "month": "2016-12",
+     "validating_pc": 18.3
+    },
+    {
+     "month": "2017-03",
+     "validating_pc": 16.3
+    },
+    {
+     "month": "2017-06",
+     "validating_pc": 19.0
+    },
+    {
+     "month": "2017-09",
+     "validating_pc": 14.8
+    },
+    {
+     "month": "2017-12",
+     "validating_pc": 15.4
+    },
+    {
+     "month": "2018-03",
+     "validating_pc": 15.7
+    },
+    {
+     "month": "2018-06",
+     "validating_pc": 19.0
+    },
+    {
+     "month": "2018-09",
+     "validating_pc": 20.9
+    },
+    {
+     "month": "2018-12",
+     "validating_pc": 14.2
+    },
+    {
+     "month": "2019-03",
+     "validating_pc": 13.7
+    },
+    {
+     "month": "2019-06",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2019-09",
+     "validating_pc": 14.0
+    },
+    {
+     "month": "2019-12",
+     "validating_pc": 17.9
+    },
+    {
+     "month": "2020-03",
+     "validating_pc": 18.1
+    },
+    {
+     "month": "2020-06",
+     "validating_pc": 18.7
+    },
+    {
+     "month": "2020-09",
+     "validating_pc": 19.6
+    },
+    {
+     "month": "2020-12",
+     "validating_pc": 18.6
+    },
+    {
+     "month": "2021-03",
+     "validating_pc": 26.7
+    },
+    {
+     "month": "2021-06",
+     "validating_pc": 30.2
+    },
+    {
+     "month": "2021-09",
+     "validating_pc": 33.6
+    },
+    {
+     "month": "2021-12",
+     "validating_pc": 39.1
+    },
+    {
+     "month": "2022-03",
+     "validating_pc": 48.0
+    },
+    {
+     "month": "2022-06",
+     "validating_pc": 54.7
+    },
+    {
+     "month": "2022-09",
+     "validating_pc": 47.5
+    },
+    {
+     "month": "2022-12",
+     "validating_pc": 43.5
+    },
+    {
+     "month": "2023-03",
+     "validating_pc": 72.2
+    },
+    {
+     "month": "2023-06",
+     "validating_pc": 47.0
+    },
+    {
+     "month": "2023-09",
+     "validating_pc": 36.0
+    },
+    {
+     "month": "2023-12",
+     "validating_pc": 48.0
+    },
+    {
+     "month": "2024-03",
+     "validating_pc": 26.2
+    },
+    {
+     "month": "2024-06",
+     "validating_pc": 33.6
+    },
+    {
+     "month": "2024-09",
+     "validating_pc": 40.7
+    },
+    {
+     "month": "2024-12",
+     "validating_pc": 51.4
+    },
+    {
+     "month": "2025-03",
+     "validating_pc": 53.1
+    },
+    {
+     "month": "2025-06",
+     "validating_pc": 53.5
+    },
+    {
+     "month": "2025-09",
+     "validating_pc": 53.0
+    },
+    {
+     "month": "2025-12",
+     "validating_pc": 61.8
+    },
+    {
+     "month": "2026-03",
+     "validating_pc": 44.1
+    },
+    {
+     "month": "2026-06",
+     "validating_pc": 46.7
+    },
+    {
+     "month": "2026-08",
+     "validating_pc": 50.3
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 41.6,
+   "latest_pc": 41.8,
    "series": [
     {
      "month": "2013-12",
@@ -1923,7 +1923,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 41.6
+     "validating_pc": 41.8
     }
    ]
   },

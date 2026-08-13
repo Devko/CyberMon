@@ -3921,3 +3921,4 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-08-12,CVE-2025-61848,fortinet,rescore,v3,6.8,v3,6.5
 2026-08-12,CVE-2026-18772,samsung.tv_appliance,rescore,v3,5.5,v3,6.5
 2026-08-12,CVE-2026-19429,TuranSec,rescore,v4,8.1,v4,9.4
+2026-08-13,CVE-2026-10090,redhat,rescore,v3,9.9,v3,9.0

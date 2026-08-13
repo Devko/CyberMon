@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-12T03:28:58Z",
+ "generated_at": "2026-08-13T03:31:53Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -119,7 +119,7 @@
    "name": "Unrestricted file upload",
    "official_rank": 12,
    "measured_rank": 15,
-   "measured_n": 2221,
+   "measured_n": 2220,
    "measured_share": 1.8,
    "kev_n": 25
   },

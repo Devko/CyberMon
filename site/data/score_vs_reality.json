@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-08-12T03:28:58Z",
+ "generated_at": "2026-08-13T03:31:53Z",
  "grid": [
   {
    "cvss_bucket": "0.1-3.9",
    "epss_bucket": "<0.1%",
-   "n": 203
+   "n": 202
   },
   {
    "cvss_bucket": "0.1-3.9",
    "epss_bucket": "0.1-1%",
-   "n": 7421
+   "n": 7436
   },
   {
    "cvss_bucket": "0.1-3.9",
@@ -24,17 +24,17 @@
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "<0.1%",
-   "n": 1553
+   "n": 1555
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "0.1-1%",
-   "n": 78638
+   "n": 78951
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "1-10%",
-   "n": 7659
+   "n": 7669
   },
   {
    "cvss_bucket": "4.0-6.9",
@@ -44,42 +44,42 @@
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "<0.1%",
-   "n": 873
+   "n": 877
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "0.1-1%",
-   "n": 54007
+   "n": 54478
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "1-10%",
-   "n": 13422
+   "n": 13472
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": ">10%",
-   "n": 2174
+   "n": 2175
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "<0.1%",
-   "n": 14
+   "n": 15
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "0.1-1%",
-   "n": 11920
+   "n": 11969
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "1-10%",
-   "n": 5617
+   "n": 5636
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": ">10%",
-   "n": 1693
+   "n": 1692
   }
  ],
  "cvss_buckets": [
@@ -95,8 +95,8 @@
   ">10%"
  ],
  "headline": {
-  "pct_critical_epss_below_1pct": 62.0,
-  "n_critical_with_epss": 19244
+  "pct_critical_epss_below_1pct": 62.1,
+  "n_critical_with_epss": 19312
  },
  "kev": {
   "total": 1665,
