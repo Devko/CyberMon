@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-13T03:31:53Z",
+ "generated_at": "2026-08-14T03:29:16Z",
  "min_n": 500,
  "window": {
   "start_year": 2016,
@@ -161,8 +161,8 @@
   },
   {
    "year": 2024,
-   "n_tagged": 34559,
-   "n_published": 39927,
+   "n_tagged": 34558,
+   "n_published": 39926,
    "pct_tagged": 86.6,
    "shares": {
     "CWE-79": 19.8,
@@ -178,8 +178,8 @@
   },
   {
    "year": 2025,
-   "n_tagged": 42525,
-   "n_published": 48162,
+   "n_tagged": 42517,
+   "n_published": 48154,
    "pct_tagged": 88.3,
    "shares": {
     "CWE-79": 18.4,
