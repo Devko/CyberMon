@@ -4280,3 +4280,13 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-08-12,CVE-2026-20349,added,,,,daily
 2026-08-12,CVE-2026-68820,added,,,,daily
 2026-08-12,CVE-2026-72898,added,,,,daily
+2026-08-15,CVE-2016-0189,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2018-0802,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2019-0803,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2019-5591,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2020-0618,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2020-0968,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2020-29574,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2021-4034,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2022-21882,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-08-15,CVE-2025-60710,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-14T03:29:16Z",
+ "generated_at": "2026-08-15T03:01:08Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -459,13 +459,13 @@
  "ransomware": {
   "security": {
    "total": 200,
-   "known": 74,
-   "pct_known": 37.0
+   "known": 76,
+   "pct_known": 38.0
   },
   "other": {
    "total": 1465,
-   "known": 265,
-   "pct_known": 18.1
+   "known": 273,
+   "pct_known": 18.6
   }
  },
  "catalog": {

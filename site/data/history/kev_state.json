@@ -2302,7 +2302,7 @@
    "name": "Microsoft Internet Explorer Memory Corruption Vulnerability",
    "notes": "cbf8ac083d80",
    "product": "Internet Explorer",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2016-0752": {
@@ -4018,7 +4018,7 @@
    "name": "Microsoft Office Memory Corruption Vulnerability",
    "notes": "6239c388eb71",
    "product": "Office",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2018-0824": {
@@ -4909,7 +4909,7 @@
    "name": "Microsoft Win32k Privilege Escalation Vulnerability",
    "notes": "1402707651c5",
    "product": "Win32k",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2019-0808": {
@@ -5778,7 +5778,7 @@
    "name": "Fortinet FortiOS Default Configuration Vulnerability",
    "notes": "f73d463244ee",
    "product": "FortiOS",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Fortinet"
   },
   "CVE-2019-5786": {
@@ -6119,7 +6119,7 @@
    "name": "Microsoft SQL Server Reporting Services Remote Code Execution Vulnerability",
    "notes": "59943730f457",
    "product": "SQL Server",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2020-0638": {
@@ -6229,7 +6229,7 @@
    "name": "Microsoft Internet Explorer Scripting Engine Memory Corruption Vulnerability",
    "notes": "0df6007fad9d",
    "product": "Internet Explorer",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2020-0986": {
@@ -7032,7 +7032,7 @@
    "name": "CyberoamOS (CROS) SQL Injection Vulnerability",
    "notes": "6af4a34c8ca2",
    "product": "CyberoamOS",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Sophos"
   },
   "CVE-2020-29583": {
@@ -9683,7 +9683,7 @@
    "name": "Red Hat Polkit Out-of-Bounds Read and Write Vulnerability",
    "notes": "6edb91c36b3d",
    "product": "Polkit",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Red Hat"
   },
   "CVE-2021-40407": {
@@ -10255,7 +10255,7 @@
    "name": "Microsoft Win32k Privilege Escalation Vulnerability",
    "notes": "05379257f070",
    "product": "Win32k",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2022-21919": {
@@ -16800,7 +16800,7 @@
    "name": "Microsoft Windows Link Following Vulnerability",
    "notes": "8b6f7d423503",
    "product": "Windows",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2025-61757": {
@@ -18322,7 +18322,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-14",
+ "last_observed": "2026-08-15",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

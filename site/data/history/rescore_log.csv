@@ -4088,3 +4088,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-08-14,CVE-2026-68445,Linux,first_score,,,v3,7.8
 2026-08-14,CVE-2026-68446,Linux,first_score,,,v3,7.8
 2026-08-14,CVE-2026-68447,Linux,first_score,,,v3,7.1
+2026-08-15,CVE-2026-44962,hackerone,rescore,v3,10.0,v3,9.9
+2026-08-15,CVE-2026-65796,microsoft,rescore,v3,5.9,v3,8.1
