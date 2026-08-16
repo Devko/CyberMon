@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-15T03:01:08Z",
+ "generated_at": "2026-08-16T03:04:43Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -168,10 +168,10 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 5536,
+   "n": 5548,
    "avg_cvss": 7.4,
-   "median_cvss": 8.2,
-   "pct_geq_9": 15.6,
+   "median_cvss": 8.3,
+   "pct_geq_9": 15.8,
    "pct_geq_7": 62.4
   },
   {
@@ -447,11 +447,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9517,
+   "n": 9546,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
-   "pct_geq_9": 6.2,
-   "pct_geq_7": 25.4
+   "pct_geq_9": 6.3,
+   "pct_geq_7": 25.5
   },
   {
    "cna": "cisco",
@@ -645,7 +645,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 12881,
+   "n": 12901,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.6,

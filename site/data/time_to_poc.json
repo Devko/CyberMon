@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-15T03:01:08Z",
+ "generated_at": "2026-08-16T03:04:43Z",
  "hero": {
   "matched": {
    "dated_cves": 26199,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-05-17",
+  "observed_through": "2026-05-18",
   "years": [
    {
     "year": 2000,
