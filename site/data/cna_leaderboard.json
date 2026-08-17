@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-16T03:04:43Z",
+ "generated_at": "2026-08-17T03:04:59Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -15,11 +15,11 @@
   {
    "cna": "Joomla",
    "org": "Joomla",
-   "n": 141,
+   "n": 142,
    "avg_cvss": 7.8,
    "median_cvss": 8.5,
-   "pct_geq_9": 31.9,
-   "pct_geq_7": 61.0
+   "pct_geq_9": 32.4,
+   "pct_geq_7": 61.3
   },
   {
    "cna": "twcert",
@@ -168,11 +168,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 5548,
+   "n": 5570,
    "avg_cvss": 7.4,
    "median_cvss": 8.3,
    "pct_geq_9": 15.8,
-   "pct_geq_7": 62.4
+   "pct_geq_7": 62.5
   },
   {
    "cna": "CERT-PL",
@@ -447,7 +447,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9546,
+   "n": 9593,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.3,
@@ -645,7 +645,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 12901,
+   "n": 12924,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.6,

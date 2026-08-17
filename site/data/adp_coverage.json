@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-16T03:04:43Z",
+ "generated_at": "2026-08-17T03:04:59Z",
  "min_n": 50,
  "months": [
   {
@@ -268,7 +268,7 @@
   }
  ],
  "headline": {
-  "total_published": 360327,
+  "total_published": 360436,
   "total_cisa": 174409,
   "pct_cisa": 48.4,
   "first_month": "2024-06",

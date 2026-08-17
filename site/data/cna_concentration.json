@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-16T03:04:43Z",
+ "generated_at": "2026-08-17T03:04:59Z",
  "years": [
   {
    "year": 1999,
@@ -223,7 +223,7 @@
    "newcomer_count": 40,
    "top5_share": 49.1,
    "top10_share": 69.7,
-   "hhi": 648.9
+   "hhi": 648.6
   }
  ],
  "rejection_leaderboard": {
@@ -304,7 +304,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 6342,
+    "total": 6364,
     "rejected": 762,
     "rejected_rate_pct": 12.0
    },
@@ -328,7 +328,7 @@
    },
    {
     "cna": "Joomla",
-    "total": 323,
+    "total": 324,
     "rejected": 31,
     "rejected_rate_pct": 9.6
    },
@@ -466,7 +466,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10868,
+    "total": 10915,
     "rejected": 273,
     "rejected_rate_pct": 2.5
    },
@@ -484,7 +484,7 @@
    },
    {
     "cna": "Linux",
-    "total": 14953,
+    "total": 14954,
     "rejected": 329,
     "rejected_rate_pct": 2.2
    },
@@ -700,7 +700,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15772,
+    "total": 15795,
     "rejected": 86,
     "rejected_rate_pct": 0.5
    },
@@ -778,7 +778,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 287,
+    "total": 290,
     "rejected": 1,
     "rejected_rate_pct": 0.3
    },
@@ -808,7 +808,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4158,
+    "total": 4170,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -1360,6 +1360,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 64,
-  "elapsed": 0.625
+  "elapsed": 0.627
  }
 }
