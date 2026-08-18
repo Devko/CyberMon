@@ -16902,6 +16902,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2025-62593": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-17",
+   "desc": "9347e89ed45a",
+   "due": "2026-08-20",
+   "name": "Ray-Project Ray Code Injection Vulnerability",
+   "notes": "9a10b8eed56b",
+   "product": "Ray",
+   "ransom": "Unknown",
+   "vendor": "Ray-Project"
+  },
   "CVE-2025-64328": {
    "action": "f09df147152e",
    "added": "2026-02-03",
@@ -18322,7 +18333,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-17",
+ "last_observed": "2026-08-18",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

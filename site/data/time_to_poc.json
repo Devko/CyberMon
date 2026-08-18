@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-08-17T03:04:59Z",
+ "generated_at": "2026-08-18T03:03:21Z",
  "hero": {
   "matched": {
-   "dated_cves": 26199,
-   "matched_cves": 26156,
-   "unmatched_cves": 43
+   "dated_cves": 26205,
+   "matched_cves": 26160,
+   "unmatched_cves": 45
   },
   "years": [
    {
@@ -234,12 +234,12 @@
    },
    {
     "year": 2024,
-    "n": 261,
-    "median_days": 2.0,
-    "p25_days": -2.0,
-    "p75_days": 163.0,
-    "pct_negative": 30.3,
-    "pct_within_week": 51.7
+    "n": 262,
+    "median_days": 2.5,
+    "p25_days": -1.8,
+    "p75_days": 163.8,
+    "pct_negative": 30.2,
+    "pct_within_week": 51.5
    },
    {
     "year": 2025,
@@ -252,12 +252,12 @@
    },
    {
     "year": 2026,
-    "n": 141,
-    "median_days": 12.0,
+    "n": 144,
+    "median_days": 13.5,
     "p25_days": 0.0,
     "p75_days": 50.0,
-    "pct_negative": 23.4,
-    "pct_within_week": 47.5
+    "pct_negative": 22.9,
+    "pct_within_week": 46.5
    }
   ],
   "headline": {
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-05-19",
+  "observed_through": "2026-05-20",
   "years": [
    {
     "year": 2000,
@@ -483,17 +483,17 @@
    },
    {
     "year": 2026,
-    "n": 87,
-    "median_days": 7.0,
-    "pct_within_week": 50.6,
-    "pct_negative": 19.5,
+    "n": 88,
+    "median_days": 9.5,
+    "pct_within_week": 50.0,
+    "pct_negative": 19.3,
     "provisional": true
    }
   ]
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1665,
+  "total_kev": 1666,
   "trend": {
    "with_poc_date": 233,
    "preempted": 188,
@@ -542,7 +542,7 @@
    },
    {
     "year": 2026,
-    "total_added": 181,
+    "total_added": 182,
     "with_poc_date": 42,
     "preempted": 32,
     "pct_preempted": 76.2
@@ -573,7 +573,7 @@
    {
     "bucket": "9.0-10.0",
     "total": 4110,
-    "with_poc": 337,
+    "with_poc": 339,
     "pct": 8.2
    }
   ],
@@ -585,10 +585,10 @@
  },
  "catalog": {
   "exploitdb": {
-   "entries": 47119,
-   "with_cve": 27392,
-   "cves": 25049,
-   "dated_cves": 25049
+   "entries": 47130,
+   "with_cve": 27400,
+   "cves": 25056,
+   "dated_cves": 25056
   },
   "metasploit": {
    "modules": 7138,
@@ -597,11 +597,11 @@
    "dated_cves": 3020
   },
   "nuclei": {
-   "templates": 4289,
-   "cves": 4289
+   "templates": 4298,
+   "cves": 4298
   },
-  "union_cves": 29437,
-  "dated_cves": 26199,
-  "matched_in_corpus": 29387
+  "union_cves": 29449,
+  "dated_cves": 26205,
+  "matched_in_corpus": 29397
  }
 }

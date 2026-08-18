@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-17T03:04:59Z",
+ "generated_at": "2026-08-18T03:03:21Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -622,14 +622,14 @@
    },
    {
     "month": "2026-08",
-    "validating_pc": 38.3
+    "validating_pc": 38.2
    }
   ],
   "latest": {
-   "date": "2026-08-14",
-   "validating_pc": 38.3,
+   "date": "2026-08-15",
+   "validating_pc": 38.2,
    "partial_pc": 8.2,
-   "seen": 607430988
+   "seen": 610379769
   },
   "baseline": {
    "month": "2016-08",
@@ -1500,7 +1500,7 @@
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 49.6,
+   "latest_pc": 49.5,
    "series": [
     {
      "month": "2013-12",
@@ -1708,7 +1708,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 49.6
+     "validating_pc": 49.5
     }
    ]
   },
@@ -1930,7 +1930,7 @@
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 38.6,
+   "latest_pc": 38.5,
    "series": [
     {
      "month": "2013-12",
@@ -2138,7 +2138,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 38.6
+     "validating_pc": 38.5
     }
    ]
   },
@@ -2806,11 +2806,11 @@
    },
    {
     "bucket": "50-75%",
-    "n": 53
+    "n": 51
    },
    {
     "bucket": "75%+",
-    "n": 59
+    "n": 61
    }
   ]
  }
