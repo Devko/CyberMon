@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-18T03:03:21Z",
+ "generated_at": "2026-08-19T03:04:31Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -298,7 +298,7 @@
      {
       "year": 2025,
       "value": -12.0,
-      "n": 502
+      "n": 503
      }
     ]
    },
@@ -440,8 +440,8 @@
      },
      {
       "year": 2025,
-      "value": 75.3,
-      "n": 502
+      "value": 75.1,
+      "n": 503
      }
     ]
    },
@@ -583,8 +583,8 @@
      },
      {
       "year": 2025,
-      "value": 55.6,
-      "n": 502
+      "value": 55.5,
+      "n": 503
      }
     ]
    }
@@ -596,7 +596,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-05-20",
+  "observed_through": "2026-05-21",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -869,7 +869,7 @@
       "post": {
        "value": -1.1,
        "years": 4,
-       "n": 1465
+       "n": 1466
       },
       "era_shift": -0.1,
       "pct_banked": 100.0,
@@ -892,7 +892,7 @@
       "post": {
        "value": -2.8,
        "years": 3,
-       "n": 1157
+       "n": 1158
       },
       "era_shift": -3.0,
       "pct_banked": 101.4,
@@ -915,7 +915,7 @@
       "post": {
        "value": -12.0,
        "years": 1,
-       "n": 502
+       "n": 503
       },
       "era_shift": -13.3,
       "pct_banked": null,
@@ -947,7 +947,7 @@
       "post": {
        "value": 61.4,
        "years": 4,
-       "n": 1465
+       "n": 1466
       },
       "era_shift": -15.4,
       "pct_banked": 57.1,
@@ -968,13 +968,13 @@
        "n": 3217
       },
       "post": {
-       "value": 63.0,
+       "value": 62.9,
        "years": 3,
-       "n": 1157
+       "n": 1158
       },
-      "era_shift": -8.4,
-      "pct_banked": 75.5,
-      "shift_share_pct": -24.5,
+      "era_shift": -8.5,
+      "pct_banked": 75.3,
+      "shift_share_pct": -24.7,
       "verdict": "decelerated"
      },
      {
@@ -991,11 +991,11 @@
        "n": 1944
       },
       "post": {
-       "value": 75.3,
+       "value": 75.1,
        "years": 1,
-       "n": 502
+       "n": 503
       },
-      "era_shift": 12.9,
+      "era_shift": 12.7,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1023,13 +1023,13 @@
        "n": 4255
       },
       "post": {
-       "value": 39.8,
+       "value": 39.7,
        "years": 4,
-       "n": 1465
+       "n": 1466
       },
-      "era_shift": -8.6,
-      "pct_banked": 84.8,
-      "shift_share_pct": -15.2,
+      "era_shift": -8.7,
+      "pct_banked": 84.7,
+      "shift_share_pct": -15.3,
       "verdict": "decelerated"
      },
      {
@@ -1048,7 +1048,7 @@
       "post": {
        "value": 40.2,
        "years": 3,
-       "n": 1157
+       "n": 1158
       },
       "era_shift": -4.7,
       "pct_banked": 91.6,
@@ -1069,11 +1069,11 @@
        "n": 1944
       },
       "post": {
-       "value": 55.6,
+       "value": 55.5,
        "years": 1,
-       "n": 502
+       "n": 503
       },
-      "era_shift": 17.6,
+      "era_shift": 17.5,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1673,7 +1673,7 @@
      },
      {
       "month": "2026-05",
-      "index": 75.6,
+      "index": 76.6,
       "sources": 5
      },
      {

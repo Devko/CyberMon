@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-08-18T03:03:21Z",
+ "generated_at": "2026-08-19T03:04:31Z",
  "roster_size": {
   "min_n": 2,
-  "current": 538,
-  "net_change": 8,
+  "current": 539,
+  "net_change": 9,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -129,6 +129,10 @@
    {
     "date": "2026-08-18",
     "size": 538
+   },
+   {
+    "date": "2026-08-19",
+    "size": 539
    }
   ]
  },
@@ -142,25 +146,25 @@
    },
    {
     "month": "2026-08",
-    "onboarded": 6,
+    "onboarded": 7,
     "departed": 1,
     "scope_changed": 2
    }
   ],
   "totals": {
-   "onboarded": 9,
+   "onboarded": 10,
    "departed": 1,
    "scope_changed": 3
   },
-  "events_total": 13,
+  "events_total": 14,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 538,
+  "total": 539,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 439
+    "n": 440
    },
    {
     "label": "Open Source",
@@ -198,7 +202,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 450
+    "n": 451
    },
    {
     "label": "CISA",
@@ -212,7 +216,7 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 385
+    "n": 386
    },
    {
     "label": "icscert",
@@ -246,7 +250,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 283
+    "n": 285
    },
    {
     "label": "Germany",
@@ -285,11 +289,11 @@
     "n": 11
    },
    {
-    "label": "Israel",
-    "n": 10
+    "label": "Canada",
+    "n": 9
    },
    {
-    "label": "Canada",
+    "label": "Israel",
     "n": 9
    },
    {
@@ -423,12 +427,12 @@
   ]
  },
  "headline": {
-  "roster_total": 538,
+  "roster_total": 539,
   "top_type": "Vendor",
-  "top_type_n": 439,
+  "top_type_n": 440,
   "country_count": 44,
   "root_count": 7,
-  "mitre_n": 450,
+  "mitre_n": 451,
   "cisa_n": 86
  }
 }

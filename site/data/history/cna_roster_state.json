@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-08-18",
+ "last_observed": "2026-08-19",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -2216,6 +2216,12 @@
    "scope": "db3f31694962",
    "type": "Researcher"
   },
+  "Ubiquiti": {
+   "country": "USA",
+   "org": "Ubiquiti, Inc.",
+   "scope": "abcb3494bc43",
+   "type": "Vendor"
+  },
   "Unisoc": {
    "country": "China",
    "org": "Unisoc (Shanghai) Technologies Co., Ltd.",
@@ -2979,7 +2985,7 @@
    "type": "Open Source + Vendor"
   },
   "postiz": {
-   "country": "Israel",
+   "country": "USA",
    "org": "Postiz",
    "scope": "0dfa36939001",
    "type": "Hosted Service + Open Source + Vendor"
@@ -3355,6 +3361,10 @@
   [
    "2026-08-18",
    538
+  ],
+  [
+   "2026-08-19",
+   539
   ]
  ],
  "version": 1

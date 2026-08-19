@@ -17749,6 +17749,17 @@
    "ransom": "Unknown",
    "vendor": "Aquasecurity"
   },
+  "CVE-2026-33824": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-18",
+   "desc": "6e4558e49873",
+   "due": "2026-08-21",
+   "name": "Microsoft Internet Key Exchange (IKE) Service Extensions Double Free Vulnerability",
+   "notes": "1d07e21f000f",
+   "product": "Internet Key Exchange (IKE) Service Extensions",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
   "CVE-2026-33825": {
    "action": "f09df147152e",
    "added": "2026-04-22",
@@ -18145,6 +18156,17 @@
    "ransom": "Unknown",
    "vendor": "LiteSpeed"
   },
+  "CVE-2026-55040": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-18",
+   "desc": "056996eee655",
+   "due": "2026-08-21",
+   "name": "Microsoft SharePoint Weak Authentication Vulnerability",
+   "notes": "d8814c41c62c",
+   "product": "SharePoint",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
   "CVE-2026-55255": {
    "action": "ba0d649eb29b",
    "added": "2026-07-07",
@@ -18211,6 +18233,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2026-59310": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-18",
+   "desc": "860ea75713bc",
+   "due": "2026-08-21",
+   "name": "Broadcom VMware vCenter Path Traversal Vulnerability",
+   "notes": "61277ac66cdc",
+   "product": "VMware vCenter",
+   "ransom": "Unknown",
+   "vendor": "Broadcom"
+  },
   "CVE-2026-60137": {
    "action": "ba0d649eb29b",
    "added": "2026-07-21",
@@ -18243,6 +18276,17 @@
    "product": "TeamCity",
    "ransom": "Unknown",
    "vendor": "JetBrains"
+  },
+  "CVE-2026-65400": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-18",
+   "desc": "312c18b89aa3",
+   "due": "2026-08-21",
+   "name": "Apple macOS Improper Authentication Vulnerability",
+   "notes": "c722be5d5108",
+   "product": "macOS",
+   "ransom": "Unknown",
+   "vendor": "Apple"
   },
   "CVE-2026-68820": {
    "action": "ba0d649eb29b",
@@ -18333,7 +18377,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-18",
+ "last_observed": "2026-08-19",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
