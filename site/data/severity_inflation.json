@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-19T03:04:31Z",
+ "generated_at": "2026-08-20T03:04:16Z",
  "series": {
   "v2": [
    {
@@ -25,7 +25,7 @@
    },
    {
     "year": 2026,
-    "n": 4167,
+    "n": 4193,
     "median": 6.5,
     "p25": 5.0,
     "p75": 7.5
@@ -55,8 +55,8 @@
    },
    {
     "year": 2020,
-    "n": 5732,
-    "median": 6.7,
+    "n": 5823,
+    "median": 6.8,
     "p25": 5.4,
     "p75": 7.8
    },
@@ -97,7 +97,7 @@
    },
    {
     "year": 2026,
-    "n": 35877,
+    "n": 36372,
     "median": 7.2,
     "p25": 5.7,
     "p75": 8.1
@@ -120,7 +120,7 @@
    },
    {
     "year": 2026,
-    "n": 16942,
+    "n": 17133,
     "median": 6.9,
     "p25": 5.3,
     "p75": 8.6
@@ -130,9 +130,9 @@
  "blended": [
   {
    "year": 2020,
-   "n": 5736,
-   "median": 6.7,
-   "pct_high_critical": 46.1
+   "n": 5827,
+   "median": 6.8,
+   "pct_high_critical": 46.7
   },
   {
    "year": 2021,
@@ -166,9 +166,9 @@
   },
   {
    "year": 2026,
-   "n": 42814,
+   "n": 43410,
    "median": 7.1,
-   "pct_high_critical": 53.0
+   "pct_high_critical": 53.1
   }
  ],
  "annotations": [
@@ -185,6 +185,6 @@
   "latest_year": 2025,
   "pct_high_critical_latest": 43.5,
   "baseline_year": 2020,
-  "pct_high_critical_baseline": 46.1
+  "pct_high_critical_baseline": 46.7
  }
 }

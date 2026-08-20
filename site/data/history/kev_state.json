@@ -18277,6 +18277,17 @@
    "ransom": "Unknown",
    "vendor": "JetBrains"
   },
+  "CVE-2026-64849": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-19",
+   "desc": "f37ea76cd980",
+   "due": "2026-09-02",
+   "name": "MLflow Server-Side Request Forgery Vulnerability",
+   "notes": "7dead52c3e12",
+   "product": "MLflow",
+   "ransom": "Unknown",
+   "vendor": "MLflow"
+  },
   "CVE-2026-65400": {
    "action": "ba0d649eb29b",
    "added": "2026-08-18",
@@ -18377,7 +18388,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-19",
+ "last_observed": "2026-08-20",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

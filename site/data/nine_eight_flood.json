@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-19T03:04:31Z",
+ "generated_at": "2026-08-20T03:04:16Z",
  "years": [
   {
    "year": 1999,
@@ -172,10 +172,10 @@
   {
    "year": 2020,
    "critical": 504,
-   "high": 2321,
-   "medium": 2846,
-   "low": 312,
-   "unscored": 12380
+   "high": 2392,
+   "medium": 2863,
+   "low": 313,
+   "unscored": 12291
   },
   {
    "year": 2021,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "critical": 6068,
-   "high": 21167,
-   "medium": 21287,
-   "low": 2110,
-   "unscored": 2656
+   "critical": 6179,
+   "high": 21450,
+   "medium": 21533,
+   "low": 2138,
+   "unscored": 2659
   }
  ],
  "record_era": {
@@ -232,7 +232,7 @@
  },
  "projection": {
   "year": 2026,
-  "total": 84200,
-  "elapsed": 0.633
+  "total": 84892,
+  "elapsed": 0.636
  }
 }

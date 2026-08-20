@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-19T03:04:31Z",
+ "generated_at": "2026-08-20T03:04:16Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,8 +12,8 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120159,
- "kev_total": 1450,
+ "measured_total": 120160,
+ "kev_total": 1451,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -211,7 +211,7 @@
    "measured_rank": 24,
    "measured_n": 1258,
    "measured_share": 1.0,
-   "kev_n": 20
+   "kev_n": 21
   },
   {
    "cwe": "CWE-77",
