@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-20T03:04:16Z",
+ "generated_at": "2026-08-21T03:05:00Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -43,7 +43,7 @@
   },
   {
    "week": "2026-W34",
-   "rescore_up": 1,
+   "rescore_up": 4,
    "rescore_down": 0,
    "first_score": 602,
    "version_shift": 0,
@@ -52,11 +52,36 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 27,
-  "up": 13,
+  "n": 30,
+  "up": 16,
   "down": 14,
-  "buckets": null,
-  "median_delta": null
+  "buckets": [
+   {
+    "bucket": "<=-4.0",
+    "n": 0
+   },
+   {
+    "bucket": "-3.9..-2.0",
+    "n": 2
+   },
+   {
+    "bucket": "-1.9..-0.1",
+    "n": 12
+   },
+   {
+    "bucket": "+0.1..+1.9",
+    "n": 13
+   },
+   {
+    "bucket": "+2.0..+3.9",
+    "n": 2
+   },
+   {
+    "bucket": ">=+4.0",
+    "n": 1
+   }
+  ],
+  "median_delta": 0.2
  },
  "cna_board": {
   "min_events": 3,
@@ -69,22 +94,28 @@
    },
    {
     "cna": "microsoft",
-    "rescores": 3,
-    "up": 2,
+    "rescores": 5,
+    "up": 4,
     "down": 1
+   },
+   {
+    "cna": "redhat",
+    "rescores": 3,
+    "up": 1,
+    "down": 2
    }
   ]
  },
  "catalog": {
-  "state_size": 362843,
-  "corpus_release": "cve_2026-08-20_0200Z",
+  "state_size": 363310,
+  "corpus_release": "cve_2026-08-21_0200Z",
   "totals": {
-   "rescore": 27,
+   "rescore": 30,
    "version_shift": 14,
    "first_score": 4652,
    "score_removed": 1
   },
-  "events_total": 4694,
+  "events_total": 4697,
   "first_observed": "2026-07-15"
  }
 }

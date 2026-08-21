@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-20T03:04:16Z",
+ "generated_at": "2026-08-21T03:05:00Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -626,10 +626,10 @@
    }
   ],
   "latest": {
-   "date": "2026-08-17",
+   "date": "2026-08-18",
    "validating_pc": 38.2,
    "partial_pc": 8.2,
-   "seen": 612793965
+   "seen": 612875712
   },
   "baseline": {
    "month": "2016-08",
@@ -1500,7 +1500,7 @@
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 49.1,
+   "latest_pc": 49.0,
    "series": [
     {
      "month": "2013-12",
@@ -1708,7 +1708,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 49.1
+     "validating_pc": 49.0
     }
    ]
   },
@@ -2790,7 +2790,7 @@
  ],
  "spread": {
   "min_seen": 10000,
-  "n_economies": 202,
+  "n_economies": 201,
   "buckets": [
    {
     "bucket": "<10%",
@@ -2798,11 +2798,11 @@
    },
    {
     "bucket": "10-25%",
-    "n": 31
+    "n": 33
    },
    {
     "bucket": "25-50%",
-    "n": 46
+    "n": 44
    },
    {
     "bucket": "50-75%",
@@ -2810,7 +2810,7 @@
    },
    {
     "bucket": "75%+",
-    "n": 62
+    "n": 61
    }
   ]
  }
