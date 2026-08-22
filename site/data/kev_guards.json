@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-21T03:05:00Z",
+ "generated_at": "2026-08-22T03:02:32Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 189,
+   "total": 190,
    "security": 30,
-   "pct_security": 15.9
+   "pct_security": 15.8
   }
  ],
  "vendors": [
@@ -160,12 +160,12 @@
   },
   {
    "vendor": "Synacor",
-   "entries": 18,
+   "entries": 19,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2022-01-10",
-   "last_added": "2026-04-20",
-   "median_gap_days": 70.0
+   "last_added": "2026-08-21",
+   "median_gap_days": 76.5
   },
   {
    "vendor": "Android",
@@ -468,19 +468,19 @@
  "ransomware": {
   "security": {
    "total": 200,
-   "known": 76,
-   "pct_known": 38.0
+   "known": 77,
+   "pct_known": 38.5
   },
   "other": {
-   "total": 1473,
-   "known": 273,
-   "pct_known": 18.5
+   "total": 1474,
+   "known": 275,
+   "pct_known": 18.7
   }
  },
  "catalog": {
-  "total": 1673,
+  "total": 1674,
   "security": 200,
-  "pct_security": 12.0,
+  "pct_security": 11.9,
   "classifier_version": 2,
   "classifier_rules": 35
  }

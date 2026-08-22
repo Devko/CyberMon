@@ -707,7 +707,7 @@
    "name": "Microsoft MSCOMCTL.OCX Remote Code Execution Vulnerability",
    "notes": "f631cacf77c9",
    "product": "MSCOMCTL.OCX",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2012-0391": {
@@ -7263,7 +7263,7 @@
    "name": "SonicWall SonicOS Buffer Overflow Vulnerability",
    "notes": "62cbbaacc8a6",
    "product": "SonicOS",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "SonicWall"
   },
   "CVE-2020-5410": {
@@ -9914,7 +9914,7 @@
    "name": "Microsoft Windows Privilege Escalation Vulnerability",
    "notes": "c1111d73d916",
    "product": "Windows",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2021-43798": {
@@ -18354,6 +18354,17 @@
    "ransom": "Unknown",
    "vendor": "Metabase"
   },
+  "CVE-2026-73570": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-21",
+   "desc": "7f106a0ae2b2",
+   "due": "2026-08-24",
+   "name": "Zimbra Collaboration Suite (ZCS) OS Command Injection Vulnerability",
+   "notes": "14cf5646ecf1",
+   "product": "Zimbra Collaboration Suite (ZCS)",
+   "ransom": "Unknown",
+   "vendor": "Synacor"
+  },
   "CVE-2026-7473": {
    "action": "f09df147152e",
    "added": "2026-06-09",
@@ -18410,7 +18421,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-21",
+ "last_observed": "2026-08-22",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

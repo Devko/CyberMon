@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-21T03:05:00Z",
+ "generated_at": "2026-08-22T03:02:32Z",
  "years": [
   {
    "year": 1999,
@@ -94,7 +94,7 @@
   {
    "year": 2017,
    "published": 14642,
-   "rejected": 3653
+   "rejected": 3654
   },
   {
    "year": 2018,
@@ -104,7 +104,7 @@
   {
    "year": 2019,
    "published": 17308,
-   "rejected": 1921
+   "rejected": 1923
   },
   {
    "year": 2020,
@@ -114,7 +114,7 @@
   {
    "year": 2021,
    "published": 20177,
-   "rejected": 2209
+   "rejected": 2212
   },
   {
    "year": 2022,
@@ -124,7 +124,7 @@
   {
    "year": 2023,
    "published": 28848,
-   "rejected": 573
+   "rejected": 576
   },
   {
    "year": 2024,
@@ -134,18 +134,18 @@
   {
    "year": 2025,
    "published": 48154,
-   "rejected": 1892
+   "rejected": 1894
   },
   {
    "year": 2026,
-   "published": 54426,
-   "rejected": 760
+   "published": 54685,
+   "rejected": 784
   }
  ],
  "projection": {
   "year": 2026,
-  "published": 85260,
-  "rejected": 1191,
-  "elapsed": 0.638
+  "published": 85299,
+  "rejected": 1223,
+  "elapsed": 0.641
  }
 }

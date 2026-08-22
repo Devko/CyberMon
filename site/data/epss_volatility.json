@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-21T03:05:00Z",
+ "generated_at": "2026-08-22T03:02:32Z",
  "thresholds": {
   "lo": 0.001,
   "mid": 0.01,
@@ -44,18 +44,18 @@
    },
    {
     "week": "2026-W34",
-    "crossed_lo": 39,
-    "crossed_mid": 162,
-    "crossed_hi": 65,
-    "days": 4
+    "crossed_lo": 45,
+    "crossed_mid": 189,
+    "crossed_hi": 70,
+    "days": 5
    }
   ]
  },
  "gap": {
   "min_days": 3,
-  "trend_days": 33,
+  "trend_days": 34,
   "prob_moved_pct": 1.1,
-  "pct_moved_pct": 97.1,
+  "pct_moved_pct": 97.2,
   "days": [
    {
     "date": "2026-07-18",
@@ -221,6 +221,11 @@
     "date": "2026-08-20",
     "prob_moved": 1.0,
     "pct_moved": 98.8
+   },
+   {
+    "date": "2026-08-21",
+    "prob_moved": 1.0,
+    "pct_moved": 98.8
    }
   ]
  },
@@ -371,15 +376,15 @@
  },
  "catalog": {
   "state_model_version": "v2026.06.15",
-  "state_score_date": "2026-08-20",
-  "state_size": 362881,
-  "days_observed": 33,
-  "trend_days": 33,
+  "state_score_date": "2026-08-21",
+  "state_size": 363376,
+  "days_observed": 34,
+  "trend_days": 34,
   "resets_quarantined": 0,
   "crossed_totals": {
-   "lo": 475,
-   "mid": 1294,
-   "hi": 356
+   "lo": 481,
+   "mid": 1321,
+   "hi": 361
   },
   "first_observed": "2026-07-18"
  }

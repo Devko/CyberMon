@@ -1,18 +1,18 @@
 {
- "generated_at": "2026-08-21T03:05:00Z",
+ "generated_at": "2026-08-22T03:02:32Z",
  "min_n": 10,
  "years": [
   {
    "year": 2021,
    "total": 311,
-   "known": 81,
-   "pct_known": 26.0
+   "known": 82,
+   "pct_known": 26.4
   },
   {
    "year": 2022,
    "total": 555,
-   "known": 128,
-   "pct_known": 23.1
+   "known": 129,
+   "pct_known": 23.2
   },
   {
    "year": 2023,
@@ -29,19 +29,19 @@
   {
    "year": 2025,
    "total": 245,
-   "known": 29,
-   "pct_known": 11.8
+   "known": 30,
+   "pct_known": 12.2
   },
   {
    "year": 2026,
-   "total": 189,
+   "total": 190,
    "known": 24,
-   "pct_known": 12.7
+   "pct_known": 12.6
   }
  ],
  "catalog": {
-  "total": 1673,
-  "known": 349,
-  "pct_known": 20.9
+  "total": 1674,
+  "known": 352,
+  "pct_known": 21.0
  }
 }
