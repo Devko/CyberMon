@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-22T03:02:32Z",
+ "generated_at": "2026-08-23T03:04:59Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 363,
    "newcomer_count": 40,
-   "top5_share": 48.2,
-   "top10_share": 69.6,
-   "hhi": 640.3
+   "top5_share": 48.4,
+   "top10_share": 69.7,
+   "hhi": 641.0
   }
  ],
  "rejection_leaderboard": {
@@ -268,9 +268,9 @@
    },
    {
     "cna": "GitLab",
-    "total": 1333,
-    "rejected": 300,
-    "rejected_rate_pct": 22.5
+    "total": 1334,
+    "rejected": 301,
+    "rejected_rate_pct": 22.6
    },
    {
     "cna": "Sophos",
@@ -310,8 +310,8 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 6660,
-    "rejected": 817,
+    "total": 6697,
+    "rejected": 822,
     "rejected_rate_pct": 12.3
    },
    {
@@ -352,9 +352,9 @@
    },
    {
     "cna": "Joomla",
-    "total": 367,
+    "total": 386,
     "rejected": 31,
-    "rejected_rate_pct": 8.4
+    "rejected_rate_pct": 8.0
    },
    {
     "cna": "MediaTek",
@@ -454,7 +454,7 @@
    },
    {
     "cna": "zephyr",
-    "total": 182,
+    "total": 183,
     "rejected": 5,
     "rejected_rate_pct": 2.7
    },
@@ -472,7 +472,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10931,
+    "total": 10947,
     "rejected": 275,
     "rejected_rate_pct": 2.5
    },
@@ -490,7 +490,7 @@
    },
    {
     "cna": "Linux",
-    "total": 14959,
+    "total": 15109,
     "rejected": 334,
     "rejected_rate_pct": 2.2
    },
@@ -514,7 +514,7 @@
    },
    {
     "cna": "mitre",
-    "total": 28018,
+    "total": 28019,
     "rejected": 543,
     "rejected_rate_pct": 1.9
    },
@@ -700,7 +700,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15915,
+    "total": 15921,
     "rejected": 86,
     "rejected_rate_pct": 0.5
    },
@@ -778,7 +778,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 295,
+    "total": 297,
     "rejected": 1,
     "rejected_rate_pct": 0.3
    },
@@ -802,7 +802,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4237,
+    "total": 4250,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -1360,6 +1360,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 62,
-  "elapsed": 0.641
+  "elapsed": 0.644
  }
 }
