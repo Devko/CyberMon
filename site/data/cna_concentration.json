@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-23T03:04:59Z",
+ "generated_at": "2026-08-24T03:05:19Z",
  "years": [
   {
    "year": 1999,
@@ -268,9 +268,9 @@
    },
    {
     "cna": "GitLab",
-    "total": 1334,
+    "total": 1336,
     "rejected": 301,
-    "rejected_rate_pct": 22.6
+    "rejected_rate_pct": 22.5
    },
    {
     "cna": "Sophos",
@@ -310,7 +310,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 6697,
+    "total": 6708,
     "rejected": 822,
     "rejected_rate_pct": 12.3
    },
@@ -514,7 +514,7 @@
    },
    {
     "cna": "mitre",
-    "total": 28019,
+    "total": 28020,
     "rejected": 543,
     "rejected_rate_pct": 1.9
    },
@@ -700,7 +700,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15921,
+    "total": 15944,
     "rejected": 86,
     "rejected_rate_pct": 0.5
    },
@@ -778,7 +778,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 297,
+    "total": 300,
     "rejected": 1,
     "rejected_rate_pct": 0.3
    },
@@ -802,7 +802,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4250,
+    "total": 4255,
     "rejected": 4,
     "rejected_rate_pct": 0.1
    },
@@ -1360,6 +1360,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 62,
-  "elapsed": 0.644
+  "elapsed": 0.647
  }
 }
