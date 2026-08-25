@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-24T03:05:19Z",
+ "generated_at": "2026-08-25T03:04:23Z",
  "years": [
   {
    "year": 1999,
@@ -138,14 +138,14 @@
   },
   {
    "year": 2026,
-   "published": 54971,
-   "rejected": 790
+   "published": 55279,
+   "rejected": 797
   }
  ],
  "projection": {
   "year": 2026,
-  "published": 85019,
-  "rejected": 1222,
-  "elapsed": 0.647
+  "published": 85134,
+  "rejected": 1227,
+  "elapsed": 0.649
  }
 }

@@ -17573,6 +17573,17 @@
    "ransom": "Unknown",
    "vendor": "Fortinet"
   },
+  "CVE-2026-21962": {
+   "action": "f09df147152e",
+   "added": "2026-08-24",
+   "desc": "4485b78c6927",
+   "due": "2026-08-27",
+   "name": "Oracle HTTP Server and Oracle Weblogic Server Proxy Plug-in Improper Access Control Vulnerability",
+   "notes": "eb3b031979f1",
+   "product": "HTTP Server and Oracle Weblogic Server Proxy Plug-in",
+   "ransom": "Unknown",
+   "vendor": "Oracle"
+  },
   "CVE-2026-22719": {
    "action": "f09df147152e",
    "added": "2026-03-03",
@@ -18421,7 +18432,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-24",
+ "last_observed": "2026-08-25",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
