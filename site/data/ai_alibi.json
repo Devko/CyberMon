@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-25T03:04:23Z",
+ "generated_at": "2026-08-26T03:05:22Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -596,7 +596,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-05-27",
+  "observed_through": "2026-05-28",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -758,8 +758,8 @@
    },
    {
     "year": 2026,
-    "value": 4.0,
-    "n": 93,
+    "value": 3.5,
+    "n": 94,
     "provisional": true
    }
   ]
@@ -789,13 +789,13 @@
        "n": 3149
       },
       "post": {
-       "value": 1.2,
+       "value": 1.1,
        "years": 5,
-       "n": 990
+       "n": 991
       },
-      "era_shift": 0.8,
-      "pct_banked": 97.6,
-      "shift_share_pct": -2.4,
+      "era_shift": 0.7,
+      "pct_banked": 97.9,
+      "shift_share_pct": -2.1,
       "verdict": "no_inflection"
      },
      {
@@ -812,13 +812,13 @@
        "n": 2335
       },
       "post": {
-       "value": 1.2,
+       "value": 1.1,
        "years": 4,
-       "n": 785
+       "n": 786
       },
-      "era_shift": 0.6,
-      "pct_banked": 98.2,
-      "shift_share_pct": -1.8,
+      "era_shift": 0.5,
+      "pct_banked": 98.5,
+      "shift_share_pct": -1.5,
       "verdict": "no_inflection"
      },
      {
@@ -835,11 +835,11 @@
        "n": 1298
       },
       "post": {
-       "value": 2.5,
+       "value": 2.2,
        "years": 2,
-       "n": 313
+       "n": 314
       },
-      "era_shift": 1.9,
+      "era_shift": 1.6,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1731,9 +1731,9 @@
   "era_label": "ChatGPT",
   "cut_year": 2021,
   "verdict": "no_inflection",
-  "pct_banked": 97.6,
+  "pct_banked": 97.9,
   "pre": 0.4,
-  "post": 1.2,
+  "post": 1.1,
   "milestones": 14,
   "no_uplift_reports": 2,
   "cells": 12,

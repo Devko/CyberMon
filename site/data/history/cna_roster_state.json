@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-08-25",
+ "last_observed": "2026-08-26",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -47,8 +47,8 @@
   "AISLE": {
    "country": "Netherlands",
    "org": "AISLE Incorporated",
-   "scope": "22c3e48cc22b",
-   "type": "Vendor"
+   "scope": "d5a575cfc8a5",
+   "type": "Researcher + Vendor"
   },
   "AMD": {
    "country": "USA",
@@ -488,6 +488,12 @@
    "scope": "c5bacd99c3a1",
    "type": "Vendor"
   },
+  "Circutor": {
+   "country": "Spain",
+   "org": "Circutor",
+   "scope": "d1f1ef7e2ea1",
+   "type": "Vendor"
+  },
   "Citrix": {
    "country": "USA",
    "org": "Citrix Systems, Inc.",
@@ -701,7 +707,7 @@
   "ENISA": {
    "country": "Greece",
    "org": "EU Agency for Cybersecurity (ENISA)",
-   "scope": "24c338892a35",
+   "scope": "aeeef3808cf1",
    "type": "Consortium"
   },
   "ERIC": {
@@ -925,6 +931,12 @@
    "org": "Google Devices",
    "scope": "c17dd4e60354",
    "type": "Vendor"
+  },
+  "Grayback": {
+   "country": "Spain",
+   "org": "Grayback Security",
+   "scope": "b3e415a3cf7e",
+   "type": "Bug Bounty Provider"
   },
   "GreenRocketSecurity": {
    "country": "USA",
@@ -2252,6 +2264,12 @@
    "scope": "0a5459fb2b86",
    "type": "Vendor"
   },
+  "Velneo": {
+   "country": "Spain",
+   "org": "Velneo",
+   "scope": "e561fb63b95a",
+   "type": "Vendor"
+  },
   "Verizon": {
    "country": "USA",
    "org": "Verizon",
@@ -3206,6 +3224,12 @@
    "scope": "c438e4257663",
    "type": "Vendor"
   },
+  "wibu": {
+   "country": "Germany",
+   "org": "WIBU-SYSTEMS AG",
+   "scope": "076daf5bdb40",
+   "type": "Vendor"
+  },
   "wikimedia-foundation": {
    "country": "USA",
    "org": "The Wikimedia Foundation",
@@ -3389,6 +3413,10 @@
   [
    "2026-08-25",
    539
+  ],
+  [
+   "2026-08-26",
+   543
   ]
  ],
  "version": 1

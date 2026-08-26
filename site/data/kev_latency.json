@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-08-25T03:04:23Z",
+ "generated_at": "2026-08-26T03:05:22Z",
  "matched": {
-  "total_kev": 1675,
+  "total_kev": 1676,
   "matched_cve": 1675,
-  "unmatched_cve": 0
+  "unmatched_cve": 1
  },
  "launch_backfill": {
   "date_added_before": "2023-01-01",

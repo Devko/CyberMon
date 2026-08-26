@@ -18255,6 +18255,17 @@
    "ransom": "Unknown",
    "vendor": "Broadcom"
   },
+  "CVE-2026-60004": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-25",
+   "desc": "ac0afb423f67",
+   "due": "2026-08-28",
+   "name": "Gitea Code Injection Vulnerability",
+   "notes": "73b08ddc7207",
+   "product": "Gitea",
+   "ransom": "Unknown",
+   "vendor": "Gitea"
+  },
   "CVE-2026-60137": {
    "action": "ba0d649eb29b",
    "added": "2026-07-21",
@@ -18432,7 +18443,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-25",
+ "last_observed": "2026-08-26",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

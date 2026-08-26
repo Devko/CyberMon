@@ -13,3 +13,9 @@ observed_date,short_name,change_type,org,country,type
 2026-08-05,OAI,scope_changed,OpenAI,USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor
 2026-08-12,NCSC,scope_changed,NATO Cyber Security Centre,Belgium,Researcher
 2026-08-19,Ubiquiti,onboarded,"Ubiquiti, Inc.",USA,Vendor
+2026-08-26,Circutor,onboarded,Circutor,Spain,Vendor
+2026-08-26,Grayback,onboarded,Grayback Security,Spain,Bug Bounty Provider
+2026-08-26,Velneo,onboarded,Velneo,Spain,Vendor
+2026-08-26,wibu,onboarded,WIBU-SYSTEMS AG,Germany,Vendor
+2026-08-26,AISLE,scope_changed,AISLE Incorporated,Netherlands,Researcher + Vendor
+2026-08-26,ENISA,scope_changed,EU Agency for Cybersecurity (ENISA),Greece,Consortium

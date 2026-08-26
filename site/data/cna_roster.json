@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-08-25T03:04:23Z",
+ "generated_at": "2026-08-26T03:05:22Z",
  "roster_size": {
   "min_n": 2,
-  "current": 539,
-  "net_change": 9,
+  "current": 543,
+  "net_change": 13,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -157,6 +157,10 @@
    {
     "date": "2026-08-25",
     "size": 539
+   },
+   {
+    "date": "2026-08-26",
+    "size": 543
    }
   ]
  },
@@ -170,25 +174,25 @@
    },
    {
     "month": "2026-08",
-    "onboarded": 7,
+    "onboarded": 11,
     "departed": 1,
-    "scope_changed": 2
+    "scope_changed": 4
    }
   ],
   "totals": {
-   "onboarded": 10,
+   "onboarded": 14,
    "departed": 1,
-   "scope_changed": 3
+   "scope_changed": 5
   },
-  "events_total": 14,
+  "events_total": 20,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 539,
+  "total": 543,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 440
+    "n": 443
    },
    {
     "label": "Open Source",
@@ -196,7 +200,7 @@
    },
    {
     "label": "Researcher",
-    "n": 121
+    "n": 122
    },
    {
     "label": "Hosted Service",
@@ -208,7 +212,7 @@
    },
    {
     "label": "Bug Bounty Provider",
-    "n": 19
+    "n": 20
    },
    {
     "label": "Consortium",
@@ -226,7 +230,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 451
+    "n": 455
    },
    {
     "label": "CISA",
@@ -248,19 +252,19 @@
    },
    {
     "label": "ENISA",
-    "n": 20
+    "n": 21
    },
    {
     "label": "redhat",
     "n": 18
    },
    {
-    "label": "jpcert",
-    "n": 12
+    "label": "INCIBE",
+    "n": 13
    },
    {
-    "label": "INCIBE",
-    "n": 10
+    "label": "jpcert",
+    "n": 12
    },
    {
     "label": "Google",
@@ -278,7 +282,7 @@
    },
    {
     "label": "Germany",
-    "n": 26
+    "n": 27
    },
    {
     "label": "China",
@@ -293,16 +297,16 @@
     "n": 15
    },
    {
+    "label": "Spain",
+    "n": 15
+   },
+   {
     "label": "France",
     "n": 14
    },
    {
     "label": "Australia",
     "n": 13
-   },
-   {
-    "label": "Spain",
-    "n": 12
    },
    {
     "label": "Switzerland",
@@ -451,12 +455,12 @@
   ]
  },
  "headline": {
-  "roster_total": 539,
+  "roster_total": 543,
   "top_type": "Vendor",
-  "top_type_n": 440,
+  "top_type_n": 443,
   "country_count": 44,
   "root_count": 7,
-  "mitre_n": 451,
+  "mitre_n": 455,
   "cisa_n": 86
  }
 }

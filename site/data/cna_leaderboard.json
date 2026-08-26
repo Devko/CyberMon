@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-25T03:04:23Z",
+ "generated_at": "2026-08-26T03:05:22Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -15,7 +15,7 @@
   {
    "cna": "twcert",
    "org": "twcert",
-   "n": 427,
+   "n": 428,
    "avg_cvss": 8.0,
    "median_cvss": 8.7,
    "pct_geq_9": 31.1,
@@ -24,20 +24,20 @@
   {
    "cna": "Joomla",
    "org": "Joomla",
-   "n": 206,
+   "n": 209,
    "avg_cvss": 7.8,
    "median_cvss": 8.5,
    "pct_geq_9": 30.1,
-   "pct_geq_7": 58.7
+   "pct_geq_7": 58.9
   },
   {
    "cna": "TR-CERT",
    "org": "TR-CERT",
-   "n": 553,
+   "n": 554,
    "avg_cvss": 7.7,
    "median_cvss": 7.8,
-   "pct_geq_9": 28.8,
-   "pct_geq_7": 65.8
+   "pct_geq_9": 28.9,
+   "pct_geq_7": 65.9
   },
   {
    "cna": "tenable",
@@ -78,10 +78,10 @@
   {
    "cna": "INCIBE",
    "org": "INCIBE",
-   "n": 888,
+   "n": 889,
    "avg_cvss": 7.1,
    "median_cvss": 7.1,
-   "pct_geq_9": 21.1,
+   "pct_geq_9": 21.0,
    "pct_geq_7": 54.1
   },
   {
@@ -94,15 +94,6 @@
    "pct_geq_7": 77.5
   },
   {
-   "cna": "cisa-cg",
-   "org": "cisa-cg",
-   "n": 166,
-   "avg_cvss": 7.0,
-   "median_cvss": 7.0,
-   "pct_geq_9": 20.5,
-   "pct_geq_7": 50.6
-  },
-  {
    "cna": "INCD",
    "org": "INCD",
    "n": 122,
@@ -110,6 +101,15 @@
    "median_cvss": 7.5,
    "pct_geq_9": 20.5,
    "pct_geq_7": 57.4
+  },
+  {
+   "cna": "cisa-cg",
+   "org": "cisa-cg",
+   "n": 169,
+   "avg_cvss": 7.1,
+   "median_cvss": 7.0,
+   "pct_geq_9": 20.1,
+   "pct_geq_7": 51.5
   },
   {
    "cna": "NCSC.ch",
@@ -168,20 +168,29 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 5942,
+   "n": 6047,
    "avg_cvss": 7.5,
    "median_cvss": 8.3,
-   "pct_geq_9": 15.6,
-   "pct_geq_7": 63.2
+   "pct_geq_9": 15.7,
+   "pct_geq_7": 63.4
   },
   {
    "cna": "CERT-PL",
    "org": "CERT-PL",
-   "n": 469,
+   "n": 470,
    "avg_cvss": 6.6,
    "median_cvss": 6.9,
    "pct_geq_9": 14.5,
-   "pct_geq_7": 42.2
+   "pct_geq_7": 42.1
+  },
+  {
+   "cna": "CERTVDE",
+   "org": "CERTVDE",
+   "n": 397,
+   "avg_cvss": 7.6,
+   "median_cvss": 7.5,
+   "pct_geq_9": 14.4,
+   "pct_geq_7": 74.3
   },
   {
    "cna": "ivanti",
@@ -193,15 +202,6 @@
    "pct_geq_7": 73.8
   },
   {
-   "cna": "CERTVDE",
-   "org": "CERTVDE",
-   "n": 395,
-   "avg_cvss": 7.6,
-   "median_cvss": 7.5,
-   "pct_geq_9": 14.2,
-   "pct_geq_7": 74.2
-  },
-  {
    "cna": "snyk",
    "org": "snyk",
    "n": 142,
@@ -211,22 +211,13 @@
    "pct_geq_7": 55.6
   },
   {
-   "cna": "JFROG",
-   "org": "JFROG",
-   "n": 101,
-   "avg_cvss": 7.1,
-   "median_cvss": 7.2,
-   "pct_geq_9": 13.9,
-   "pct_geq_7": 56.4
-  },
-  {
    "cna": "suse",
    "org": "suse",
-   "n": 131,
+   "n": 133,
    "avg_cvss": 7.3,
    "median_cvss": 7.5,
-   "pct_geq_9": 13.7,
-   "pct_geq_7": 62.6
+   "pct_geq_9": 13.5,
+   "pct_geq_7": 62.4
   },
   {
    "cna": "CIRCL",
@@ -238,6 +229,24 @@
    "pct_geq_7": 48.2
   },
   {
+   "cna": "JFROG",
+   "org": "JFROG",
+   "n": 105,
+   "avg_cvss": 7.1,
+   "median_cvss": 7.2,
+   "pct_geq_9": 13.3,
+   "pct_geq_7": 56.2
+  },
+  {
+   "cna": "Linux",
+   "org": "Linux",
+   "n": 5476,
+   "avg_cvss": 8.1,
+   "median_cvss": 7.8,
+   "pct_geq_9": 12.7,
+   "pct_geq_7": 100.0
+  },
+  {
    "cna": "apache",
    "org": "apache",
    "n": 222,
@@ -245,15 +254,6 @@
    "median_cvss": 7.0,
    "pct_geq_9": 12.6,
    "pct_geq_7": 50.5
-  },
-  {
-   "cna": "Linux",
-   "org": "Linux",
-   "n": 5372,
-   "avg_cvss": 8.1,
-   "median_cvss": 7.8,
-   "pct_geq_9": 12.5,
-   "pct_geq_7": 100.0
   },
   {
    "cna": "PostgreSQL",
@@ -267,11 +267,11 @@
   {
    "cna": "GitHub_M",
    "org": "GitHub_M",
-   "n": 14207,
+   "n": 14280,
    "avg_cvss": 6.8,
    "median_cvss": 7.1,
    "pct_geq_9": 12.2,
-   "pct_geq_7": 51.6
+   "pct_geq_7": 51.7
   },
   {
    "cna": "Rockwell",
@@ -321,7 +321,7 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1442,
+   "n": 1445,
    "avg_cvss": 6.1,
    "median_cvss": 6.2,
    "pct_geq_9": 9.6,
@@ -330,11 +330,11 @@
   {
    "cna": "sap",
    "org": "sap",
-   "n": 508,
+   "n": 509,
    "avg_cvss": 6.0,
    "median_cvss": 5.8,
    "pct_geq_9": 9.6,
-   "pct_geq_7": 25.4
+   "pct_geq_7": 25.5
   },
   {
    "cna": "Nozomi",
@@ -357,11 +357,11 @@
   {
    "cna": "vmware",
    "org": "vmware",
-   "n": 341,
+   "n": 343,
    "avg_cvss": 6.8,
    "median_cvss": 7.1,
-   "pct_geq_9": 9.4,
-   "pct_geq_7": 52.8
+   "pct_geq_9": 9.3,
+   "pct_geq_7": 53.1
   },
   {
    "cna": "Esri",
@@ -373,22 +373,22 @@
    "pct_geq_7": 18.0
   },
   {
+   "cna": "AMZN",
+   "org": "AMZN",
+   "n": 157,
+   "avg_cvss": 7.5,
+   "median_cvss": 7.5,
+   "pct_geq_9": 8.9,
+   "pct_geq_7": 63.1
+  },
+  {
    "cna": "Patchstack",
    "org": "Patchstack",
-   "n": 15194,
+   "n": 15193,
    "avg_cvss": 6.7,
    "median_cvss": 6.5,
    "pct_geq_9": 8.3,
    "pct_geq_7": 47.2
-  },
-  {
-   "cna": "AMZN",
-   "org": "AMZN",
-   "n": 156,
-   "avg_cvss": 7.5,
-   "median_cvss": 7.5,
-   "pct_geq_9": 8.3,
-   "pct_geq_7": 62.8
   },
   {
    "cna": "Liferay",
@@ -402,11 +402,11 @@
   {
    "cna": "jpcert",
    "org": "jpcert",
-   "n": 520,
+   "n": 527,
    "avg_cvss": 6.9,
    "median_cvss": 6.9,
-   "pct_geq_9": 8.1,
-   "pct_geq_7": 49.8
+   "pct_geq_9": 8.0,
+   "pct_geq_7": 49.9
   },
   {
    "cna": "CERT-In",
@@ -474,11 +474,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9623,
+   "n": 9662,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.3,
-   "pct_geq_7": 25.6
+   "pct_geq_7": 25.7
   },
   {
    "cna": "cisco",
@@ -501,11 +501,11 @@
   {
    "cna": "nvidia",
    "org": "nvidia",
-   "n": 430,
+   "n": 458,
    "avg_cvss": 6.9,
    "median_cvss": 7.5,
-   "pct_geq_9": 5.6,
-   "pct_geq_7": 63.5
+   "pct_geq_9": 5.7,
+   "pct_geq_7": 63.8
   },
   {
    "cna": "microsoft",
@@ -526,22 +526,22 @@
    "pct_geq_7": 26.4
   },
   {
-   "cna": "EEF",
-   "org": "EEF",
-   "n": 185,
-   "avg_cvss": 6.6,
-   "median_cvss": 6.9,
-   "pct_geq_9": 4.9,
-   "pct_geq_7": 49.7
-  },
-  {
    "cna": "redhat",
    "org": "redhat",
-   "n": 1342,
+   "n": 1351,
    "avg_cvss": 6.4,
    "median_cvss": 6.5,
    "pct_geq_9": 4.8,
-   "pct_geq_7": 41.0
+   "pct_geq_7": 40.9
+  },
+  {
+   "cna": "EEF",
+   "org": "EEF",
+   "n": 187,
+   "avg_cvss": 6.6,
+   "median_cvss": 6.9,
+   "pct_geq_9": 4.8,
+   "pct_geq_7": 49.7
   },
   {
    "cna": "zdi",
@@ -564,11 +564,11 @@
   {
    "cna": "adobe",
    "org": "adobe",
-   "n": 2147,
-   "avg_cvss": 6.4,
+   "n": 2185,
+   "avg_cvss": 6.5,
    "median_cvss": 5.5,
-   "pct_geq_9": 4.0,
-   "pct_geq_7": 40.4
+   "pct_geq_9": 4.1,
+   "pct_geq_7": 41.2
   },
   {
    "cna": "dell",
@@ -591,11 +591,11 @@
   {
    "cna": "elastic",
    "org": "elastic",
-   "n": 179,
+   "n": 180,
    "avg_cvss": 6.3,
    "median_cvss": 6.5,
    "pct_geq_9": 3.9,
-   "pct_geq_7": 22.3
+   "pct_geq_7": 22.2
   },
   {
    "cna": "f5",
@@ -625,6 +625,15 @@
    "pct_geq_7": 62.7
   },
   {
+   "cna": "zephyr",
+   "org": "zephyr",
+   "n": 147,
+   "avg_cvss": 6.4,
+   "median_cvss": 6.5,
+   "pct_geq_9": 2.7,
+   "pct_geq_7": 39.5
+  },
+  {
    "cna": "mongodb",
    "org": "mongodb",
    "n": 160,
@@ -643,18 +652,9 @@
    "pct_geq_7": 28.0
   },
   {
-   "cna": "zephyr",
-   "org": "zephyr",
-   "n": 142,
-   "avg_cvss": 6.4,
-   "median_cvss": 6.5,
-   "pct_geq_9": 2.1,
-   "pct_geq_7": 40.1
-  },
-  {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13106,
+   "n": 13123,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.7,
@@ -717,7 +717,7 @@
   {
    "cna": "HCL",
    "org": "HCL",
-   "n": 416,
+   "n": 419,
    "avg_cvss": 4.8,
    "median_cvss": 4.6,
    "pct_geq_9": 0.5,
