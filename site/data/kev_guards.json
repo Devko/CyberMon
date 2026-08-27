@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-26T03:05:22Z",
+ "generated_at": "2026-08-27T04:29:47Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,19 +35,19 @@
   },
   {
    "year": 2026,
-   "total": 192,
-   "security": 30,
-   "pct_security": 15.6
+   "total": 198,
+   "security": 31,
+   "pct_security": 15.7
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 385,
+   "entries": 386,
    "security_entries": 7,
    "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-08-18",
+   "last_added": "2026-08-26",
    "median_gap_days": 0.0
   },
   {
@@ -123,6 +123,15 @@
    "median_gap_days": 42.0
   },
   {
+   "vendor": "Linux",
+   "entries": 27,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-12-10",
+   "last_added": "2026-08-26",
+   "median_gap_days": 37.5
+  },
+  {
    "vendor": "D-Link",
    "entries": 26,
    "security_entries": 0,
@@ -130,15 +139,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-04-24",
    "median_gap_days": 11.0
-  },
-  {
-   "vendor": "Linux",
-   "entries": 26,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-12-10",
-   "last_added": "2026-06-02",
-   "median_gap_days": 36.0
   },
   {
    "vendor": "VMware",
@@ -151,12 +151,12 @@
   },
   {
    "vendor": "Citrix",
-   "entries": 22,
-   "security_entries": 16,
-   "pct_security": 72.7,
+   "entries": 23,
+   "security_entries": 17,
+   "pct_security": 73.9,
    "first_added": "2021-11-03",
-   "last_added": "2026-03-30",
-   "median_gap_days": 1.0
+   "last_added": "2026-08-26",
+   "median_gap_days": 5.5
   },
   {
    "vendor": "Synacor",
@@ -303,6 +303,15 @@
    "median_gap_days": 115.0
   },
   {
+   "vendor": "Red Hat",
+   "entries": 9,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-12-10",
+   "last_added": "2026-08-26",
+   "median_gap_days": 86.0
+  },
+  {
    "vendor": "Zoho",
    "entries": 9,
    "security_entries": 0,
@@ -355,15 +364,6 @@
    "first_added": "2022-03-25",
    "last_added": "2025-02-12",
    "median_gap_days": 65.0
-  },
-  {
-   "vendor": "Red Hat",
-   "entries": 7,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-12-10",
-   "last_added": "2023-09-28",
-   "median_gap_days": 86.0
   },
   {
    "vendor": "Sophos",
@@ -467,20 +467,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 200,
+   "total": 201,
    "known": 77,
-   "pct_known": 38.5
+   "pct_known": 38.3
   },
   "other": {
-   "total": 1476,
+   "total": 1481,
    "known": 275,
    "pct_known": 18.6
   }
  },
  "catalog": {
-  "total": 1676,
-  "security": 200,
-  "pct_security": 11.9,
+  "total": 1682,
+  "security": 201,
+  "pct_security": 12.0,
   "classifier_version": 2,
   "classifier_rules": 35
  }

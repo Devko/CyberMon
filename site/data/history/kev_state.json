@@ -2063,6 +2063,17 @@
    "ransom": "Unknown",
    "vendor": "Adobe"
   },
+  "CVE-2015-3246": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-26",
+   "desc": "1c6716a0f100",
+   "due": "2026-09-09",
+   "name": "Red Hat Libuser Race Condition Vulnerability",
+   "notes": "0ef955bf5113",
+   "product": "Libuser",
+   "ransom": "Unknown",
+   "vendor": "Red Hat"
+  },
   "CVE-2015-4068": {
    "action": "975dbe03c141",
    "added": "2022-03-25",
@@ -2139,6 +2150,17 @@
    "product": "Flash Player",
    "ransom": "Unknown",
    "vendor": "Adobe"
+  },
+  "CVE-2015-5287": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-26",
+   "desc": "e0d6bb035b91",
+   "due": "2026-09-09",
+   "name": "Red Hat Automatic Bug Reporting Tool Privilege Escalation Vulnerability",
+   "notes": "ba227efc6f5f",
+   "product": "Automatic Bug Reporting Tool",
+   "ransom": "Unknown",
+   "vendor": "Red Hat"
   },
   "CVE-2015-5317": {
    "action": "975dbe03c141",
@@ -5031,6 +5053,17 @@
    "notes": "1fa4b2ec9d41",
    "product": "Windows",
    "ransom": "Known",
+   "vendor": "Microsoft"
+  },
+  "CVE-2019-1068": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-26",
+   "desc": "19f7f7561d1c",
+   "due": "2026-08-29",
+   "name": "Microsoft SQL Server Remote Code Execution Vulnerability",
+   "notes": "6db00d787f74",
+   "product": "SQL Server",
+   "ransom": "Unknown",
    "vendor": "Microsoft"
   },
   "CVE-2019-1069": {
@@ -8300,6 +8333,17 @@
    "ransom": "Unknown",
    "vendor": "F5"
   },
+  "CVE-2021-23758": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-26",
+   "desc": "7435cefe159c",
+   "due": "2026-09-09",
+   "name": "Ajax.NET Professional Deserialization of Untrusted Data Vulnerability",
+   "notes": "4b9316bd06c9",
+   "product": "Ajax.NET Professional",
+   "ransom": "Unknown",
+   "vendor": "Ajax.NET Professional"
+  },
   "CVE-2021-23874": {
    "action": "975dbe03c141",
    "added": "2021-11-03",
@@ -10100,6 +10144,17 @@
    "due": "2022-05-16",
    "name": "Linux Kernel Privilege Escalation Vulnerability",
    "notes": "ac1c2df2f38f",
+   "product": "Kernel",
+   "ransom": "Unknown",
+   "vendor": "Linux"
+  },
+  "CVE-2022-0995": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-26",
+   "desc": "f0822f5fb761",
+   "due": "2026-09-09",
+   "name": "Linux Kernel Out-of-Bounds Write Vulnerability",
+   "notes": "bc5e7b3b7729",
    "product": "Kernel",
    "ransom": "Unknown",
    "vendor": "Linux"
@@ -17574,7 +17629,7 @@
    "vendor": "Fortinet"
   },
   "CVE-2026-21962": {
-   "action": "f09df147152e",
+   "action": "ba0d649eb29b",
    "added": "2026-08-24",
    "desc": "4485b78c6927",
    "due": "2026-08-27",
@@ -18420,6 +18475,17 @@
    "ransom": "Unknown",
    "vendor": "Daemon"
   },
+  "CVE-2026-8452": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-26",
+   "desc": "7c05d635716c",
+   "due": "2026-08-29",
+   "name": "Citrix NetScaler ADC and NetScaler Gateway Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability",
+   "notes": "4f90141b2ae8",
+   "product": "NetScaler ADC and NetScaler Gateway",
+   "ransom": "Unknown",
+   "vendor": "Citrix"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -18443,7 +18509,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-26",
+ "last_observed": "2026-08-27",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
