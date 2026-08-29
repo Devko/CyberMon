@@ -272,6 +272,45 @@ def test_volume_curve_counts_rejected_by_publication_year(agg):
     assert by_year[2020] == {"year": 2020, "published": 0, "rejected": 0}
 
 
+def test_never_published_rejection_is_not_counted_under_its_id_year():
+    """A REJECTED record with no datePublished is a withdrawn RESERVATION.
+
+    It was never published, so it has no publication year to be counted
+    under, and its CVE-ID year is only the vintage the ID was reserved in —
+    usually years before the rejection. Counting it there made every closed
+    year ratchet upward forever as MITRE cleared stale reservations, which
+    is what broke the rejection-share claim on 2026-08-28. This path had no
+    test at all, which is how it shipped.
+    """
+    agg = _agg_2026(
+        # Shipped in 2023, later withdrawn: a real rejection, counts in 2023.
+        metrics.CveFacts("CVE-2023-0001", "REJECTED", 2023, "acme",
+                         date_published="2023-05-01"),
+        # A CVE-2023-* ID reserved and never used, withdrawn in 2026. Must
+        # NOT land on 2023 — or on any other year.
+        metrics.CveFacts("CVE-2023-0002", "REJECTED", 2023, "acme"),
+        # Untouched control.
+        metrics.CveFacts("CVE-2023-0003", "PUBLISHED", 2023, "acme",
+                         date_published="2023-06-01"),
+    )
+
+    # Counted in both places a rejection is read: the volume curve reads
+    # rejected_by_year, the rejection leaderboard reads cna_year_rejected.
+    # The original defect landed in BOTH, so pin BOTH.
+    assert agg.rejected_by_year[2023] == 1
+    assert agg.cna_year_rejected[2023]["acme"] == 1
+    # The reservation is not smuggled onto the published side either.
+    assert agg.published_by_year[2023] == 1
+
+    # Dropped, not lost: every REJECTED record is either counted under a
+    # publication year or tallied as a withdrawn reservation, never both and
+    # never neither. This is the assertion that fails on ANY future path
+    # that loses or double-counts a rejection — not just the ID-year
+    # fallback that caused the 2026-08-28 failure.
+    assert agg.withdrawn_reservations == 1
+    assert sum(agg.rejected_by_year.values()) + agg.withdrawn_reservations == 2
+
+
 # --------------------------------------------------------- pace projection
 
 def _agg_2026(*facts_list) -> metrics.Aggregator:
@@ -320,7 +359,8 @@ def test_volume_curve_projection_present_for_current_year():
     agg = _agg_2026(
         *[metrics.CveFacts(f"CVE-2026-{i:04d}", "PUBLISHED", 2026, "a")
           for i in range(10)],
-        metrics.CveFacts("CVE-2026-9999", "REJECTED", 2026, "a"))
+        metrics.CveFacts("CVE-2026-9999", "REJECTED", 2026, "a",
+                         date_published="2026-01-01"))
     out = metrics.build_volume_curve(agg, GENERATED_AT)
     # GENERATED_AT is 2026-07-09 = day 190 of 365 -> elapsed 0.521 (3 dp);
     # published 10 -> round(10 / (190/365)) = 19; rejected 1 -> 2.

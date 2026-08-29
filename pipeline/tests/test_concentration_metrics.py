@@ -14,8 +14,16 @@ def _agg(facts_list) -> metrics.Aggregator:
     return agg
 
 
-def _facts(cve_id, year, cna, state="PUBLISHED"):
-    return metrics.CveFacts(cve_id, state, year, cna)
+def _facts(cve_id, year, cna, state="PUBLISHED", date_published=None):
+    # A rejection only counts under a publication year when the record HAS
+    # one — metrics.Aggregator.add drops never-published reservations. Every
+    # REJECTED fixture here models a shipped-then-withdrawn record, so give
+    # it a date in `year` unless the caller supplies one. PUBLISHED fixtures
+    # keep date_published=None so the calendar/KEV joins are unaffected.
+    if date_published is None and state == "REJECTED":
+        date_published = f"{year}-01-01"
+    return metrics.CveFacts(cve_id, state, year, cna,
+                            date_published=date_published)
 
 
 # --------------------------------------------------------------------- HHI

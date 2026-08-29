@@ -19,6 +19,14 @@ Score-selection rules (per docs/data-contracts.md):
 Publication year = ``cveMetadata.datePublished`` year, falling back to the
 year embedded in the CVE ID. REJECTED records count only toward
 ``volume_curve.rejected``; they are excluded from every scoring chart.
+
+That ID-year fallback is a data-quality gap-fill for PUBLISHED records, and
+it does NOT apply to rejections: a REJECTED record with no datePublished was
+never published at all, so it has no publication year to be counted under
+and is dropped from ``rejected`` entirely (``Aggregator.withdrawn_reservations``
+tallies them). Those are withdrawn *reservations* — IDs minted and never
+used — and on the 2026-07-16 corpus they were 66% of CVE-2023-* rejections
+and 89% of CVE-2025-*, all filed under the year their ID was reserved.
 """
 from __future__ import annotations
 
@@ -458,6 +466,10 @@ class Aggregator:
         self.cve_count = 0
         self.published_by_year: Counter[int] = Counter()
         self.rejected_by_year: Counter[int] = Counter()
+        # REJECTED records with no datePublished: never published, so
+        # excluded from rejected_by_year. Counted only so the run can
+        # report how much of the corpus this silently drops.
+        self.withdrawn_reservations = 0
         # KEV latency join: KEV-listed ids -> day-precision publish date
         self.kev_ids: frozenset[str] = frozenset(kev_ids)
         self.kev_published_dates: dict[str, str] = {}
@@ -542,6 +554,18 @@ class Aggregator:
         if facts.date_published is not None and facts.cve_id in self.poc_ids:
             self.poc_published_dates[facts.cve_id] = facts.date_published
         if facts.state == "REJECTED":
+            # ``rejected`` counts by ORIGINAL PUBLICATION YEAR. A record
+            # with no datePublished was never published, so it has none —
+            # its CVE-ID year is just the vintage the ID was reserved under,
+            # often years before the rejection. Counting those made closed
+            # years ratchet upward forever as MITRE cleared stale
+            # reservations, which broke the rejection-share claim on
+            # 2026-08-28. ``date_published`` is the test: every datePublished
+            # in the corpus is a full timestamp, so it is never None where
+            # ``year`` came from one.
+            if facts.date_published is None:
+                self.withdrawn_reservations += 1
+                return
             self.rejected_by_year[facts.year] += 1
             self.cna_year_rejected[facts.year][facts.cna] += 1
             return

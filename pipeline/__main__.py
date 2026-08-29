@@ -407,6 +407,9 @@ def run(args: argparse.Namespace) -> int:
     agg = metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.all_ids)
     agg.consume(records)
     print(f"  {agg.cve_count} CVE records aggregated")
+    if agg.withdrawn_reservations:
+        print(f"  {agg.withdrawn_reservations} withdrawn reservations "
+              f"excluded from rejected counts (never published)")
     if agg.cve_count == 0:
         print("error: no CVE records found; refusing to emit empty charts",
               file=sys.stderr)

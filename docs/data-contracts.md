@@ -302,7 +302,16 @@ full org name where resolvable, else same as `cna`.
 }
 ```
 
-`rejected` = records with state REJECTED, counted by original publication year.
+`rejected` = records with state REJECTED, counted by original publication
+year. A REJECTED record with no `datePublished` was never published, so it
+has no publication year and is **excluded entirely** — it is a withdrawn
+*reservation* (an ID minted and never used), not a withdrawn record. Do not
+let it fall back to the CVE-ID year: that vintage is when the ID was
+reserved, often years before the rejection, and counting it made closed
+years ratchet upward forever as MITRE cleared stale reservations. On the
+2026-07-16 corpus that fallback accounted for 66% of CVE-2023-* and 89% of
+CVE-2025-* rejections, and it broke the rejection-share claim on 2026-08-28.
+The same rule governs the `rejection_leaderboard` in cna_concentration.json.
 `projection` (optional; see "Pace projections" above): the current year's
 published and rejected counts paced to a full year. Keyed off the
 published flow — it ships only when the current year has ≥ 1 published

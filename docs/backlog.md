@@ -8,6 +8,34 @@ Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
 15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster,
 19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi — all live).
 
+## Maintenance — claims guards facing the 2027-01-01 rollover
+
+Filed 2026-08-29 while fixing the rejection-share failure. `complete_years()` /
+`GENERATION_YEAR` in `pipeline/tests/test_claims_audit.py` make many guards read
+the latest *complete* year, so on 1 January the tested value steps to a new year
+with no data drift at all. Measured against the 2026-08-27 data, these are the
+2026 values that take over in 2027:
+
+| guard | 2026 value taking over | threshold | verdict |
+|---|---|---|---|
+| `check_kev_three_week_rule` | median 14.0d | band 14-28 | exactly on the floor |
+| `check_severity_headline` | 53.5% | band 33-55 | 1.5pp of ceiling left |
+| `check_concentration_reversal` | top5 48.1% | needs >56.6% and >50% | fails as it stands |
+| `check_entrants_top3_recruiting` | 2026 newcomers 41 | must beat 2023's 75 | cannot pass |
+| `check_volume_belongs_to_a_handful` | top5 48.1% | floor 40 | 8.1pp, drifting down |
+| `check_cna_nine_plus` | window slides off 2024 | floor 30 | max drops to ~30.9 |
+| `check_kev_getting_slower` | 2026 17.0d vs 2023 12.0d | strict > | margin 14d -> 5d |
+
+`check_flood_partial_year_mark` and `check_entrants_top3_recruiting` already
+document the January failure as intentional ("false every January ... reword the
+caption seasonally"). The other five do not — that exposure is unplanned.
+
+Also drifting on data rather than the calendar: `check_epss_disconnect`
+(~77 days of headroom) and `check_flood_critical_volume` (~92 days).
+
+**Do before year end:** decide per guard whether to reword the caption, widen the
+band, or pin the claim to a named year. Several fire on the same night otherwise.
+
 ## Shipped outside the backlog
 
 ### The AI Alibi — SHIPPED as module 21
