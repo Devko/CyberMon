@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-30T09:57:44Z",
+ "generated_at": "2026-08-30T10:55:56Z",
  "current": {
   "statuses": [
    {
@@ -20,7 +20,7 @@
    },
    {
     "status": "Received",
-    "n": 5106
+    "n": 5108
    },
    {
     "status": "Awaiting Analysis",
@@ -31,7 +31,7 @@
     "n": 510
    }
   ],
-  "backlog_total": 8829
+  "backlog_total": 8831
  },
  "history": [
   {
@@ -281,7 +281,7 @@
   },
   {
    "date": "2026-08-30",
-   "backlog_total": 8829,
+   "backlog_total": 8831,
    "awaiting_analysis": 3213
   }
  ]
