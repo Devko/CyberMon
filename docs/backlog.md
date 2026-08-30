@@ -8,6 +8,43 @@ Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
 15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster,
 19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi — all live).
 
+## Maintenance — one upstream outage costs the whole night
+
+Filed 2026-08-30 after abuse.ch served `503 certificate has expired` for
+`feodotracker.abuse.ch/downloads/ipblocklist.json` and took the entire refresh
+down 74 seconds in. All twenty-one modules went stale because one blocklist was
+unreachable; the endpoint was healthy again by morning.
+
+This is working as designed. `fetch_feodo.py`, `fetch_dnssec.py`,
+`fetch_epss.py` and `fetch_cna_roster.py` all state the rule — a broken source
+must break the run, no carry-forward, nothing stale ever deploys. GDELT is the
+one sanctioned exception ("keeping cached months"). **Not changing that on the
+evidence of a single transient outage**, and specifically not adding silent
+carry-forward for blocklists: the invariant is worth more than one night of
+freshness.
+
+What is genuinely unresolved is that the retry ladder cannot reach this class of
+failure. `_get_with_retry` allows 3 attempts at 15s/30s backoff — about 45
+seconds of patience, calibrated for a blip. An expired origin certificate is a
+multi-hour outage, so the retries were never going to win, and the run burned
+its one nightly attempt at 02:46 UTC.
+
+**Options, in rough order of appeal:**
+
+1. *Retry the whole nightly a few hours later.* A second `schedule:` entry, or a
+   re-dispatch on failure, guarded by the existing `cybermon-nightly`
+   concurrency group. Costs nothing on green nights, and would have recovered
+   this one unattended. Does not weaken any invariant.
+2. *Widen the ladder for blocklist-shaped sources* (say 5 attempts to ~5
+   minutes). Cheap, still loud, but only buys minutes against an outage measured
+   in hours — it would not have saved 2026-08-30.
+3. *Fail soft and mark the module stale on the site.* Honest and resilient, but
+   needs a staleness field in the data contract plus render support, and it
+   concedes the "never deploy stale" line. Largest change, least certain payoff.
+
+Option 1 looks strongest: it treats the real problem (one attempt per day
+against flaky third parties) without touching the freshness invariant at all.
+
 ## Maintenance — claims guards facing the 2027-01-01 rollover
 
 Filed 2026-08-29 while fixing the rejection-share failure. `complete_years()` /

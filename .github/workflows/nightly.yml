@@ -120,6 +120,7 @@ jobs:
       # skipped — stale/broken data is never deployed. Do NOT add
       # continue-on-error here.
       - name: Run pipeline
+        id: pipeline
         env:
           # Optional; the pipeline tolerates an empty value and falls
           # back to slower keyless NVD paging.
@@ -138,6 +139,7 @@ jobs:
       # contradicts the copy, the run fails and nothing is committed or
       # deployed. Fix the copy or the pipeline, never the test.
       - name: Validate refreshed data against editorial claims
+        id: claims
         run: python -m pytest pipeline/tests -q
 
       - name: Commit and push refreshed data
@@ -257,7 +259,23 @@ jobs:
           # Explicit repo so gh works even if the failure hit the checkout.
           GH_REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          # Which stage broke. The two classes have different owners and
+          # urgencies: a pipeline failure is usually an upstream outage that
+          # clears itself, while a claims failure means the refreshed data
+          # contradicts copy the site is already serving. Both used to
+          # comment the identical sentence, so a run of them read as one
+          # long outage rather than separate incidents.
+          PIPELINE_OUTCOME: ${{ steps.pipeline.outcome }}
+          CLAIMS_OUTCOME: ${{ steps.claims.outcome }}
         run: |
+          # A skipped stage means an earlier one already failed, so test
+          # the pipeline first; an empty pair means the job died before
+          # either ran (checkout, dependency install).
+          case "${PIPELINE_OUTCOME}/${CLAIMS_OUTCOME}" in
+            failure/*) stage="the pipeline run (fetch/build — often an upstream outage)" ;;
+            */failure) stage="the editorial claims audit (refreshed data contradicts site copy)" ;;
+            *)         stage="a step outside the pipeline and claims stages" ;;
+          esac
           # Make sure the label exists (first failure on a fresh fork);
           # --force makes this a no-op when it already does.
           gh label create nightly-failure \
@@ -266,12 +284,12 @@ jobs:
           issue="$(gh issue list --label nightly-failure --state open \
             --json number --jq '.[0].number // empty')"
           if [ -n "$issue" ]; then
-            gh issue comment "$issue" --body "Nightly refresh failed again: $RUN_URL"
+            gh issue comment "$issue" --body "Nightly refresh failed at ${stage}: $RUN_URL"
           else
             gh issue create \
               --title "Nightly data refresh is failing" \
               --label nightly-failure \
-              --body "The nightly data refresh failed — nothing was deployed. First failing run: $RUN_URL"
+              --body "The nightly data refresh failed at ${stage} — nothing was deployed. First failing run: $RUN_URL"
           fi
 
   deploy:
@@ -294,3 +312,36 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # A failure issue nobody closes stops being a signal. #25 was opened on
+  # 2026-07-30 and stayed open through eight consecutive green nights, so
+  # three unrelated outages (an early-August pair, the rejection-share
+  # claim, an abuse.ch certificate expiry) all threaded into it and read as
+  # one continuous outage. Close it when a full run — data committed AND
+  # site deployed — actually succeeds, so an open issue means "broken now".
+  resolve:
+    name: Close the failure issue on a green run
+    needs: [refresh, deploy]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Close any open nightly-failure issue
+        # Bookkeeping must never fail a run that already deployed — same
+        # rule as the backup tag and the social build products above.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          # Loop, not [0]: the social-build-product alert opens a second
+          # issue under the same label, and a green run resolves both.
+          gh issue list --label nightly-failure --state open \
+            --json number --jq '.[].number' \
+          | while read -r issue; do
+              [ -n "$issue" ] || continue
+              gh issue close "$issue" --reason completed \
+                --comment "Nightly refresh is green again — data committed and site deployed: $RUN_URL"
+            done
