@@ -16,6 +16,9 @@ on:
     # 02:43 UTC — off-peak, deliberately not on the hour (GitHub delays
     # and drops :00 cron jobs under load).
     - cron: "43 2 * * *"
+    # Catch-up attempt for a transient upstream outage; the gate job
+    # below turns this into a ~10s no-op once the night is green.
+    - cron: "43 8 * * *"
   workflow_dispatch:
 
 # Never let two nightly runs overlap (the data commit + history append
@@ -26,7 +29,60 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Third parties have bad mornings. On 2026-08-30 abuse.ch served an
+  # expired certificate at 02:46 UTC and was healthy again by 10:00, but
+  # the refresh gets exactly one attempt a night, so the site sat three
+  # days stale over an outage that fixed itself. The catch-up cron above
+  # buys a second attempt for that whole class of failure. It changes no
+  # invariant: a broken source still breaks the run, nothing stale ever
+  # deploys, and a night that is genuinely broken still ends red twice.
+  gate:
+    name: Decide whether this attempt is needed
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+    steps:
+      - name: Skip the catch-up attempt when tonight already succeeded
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          # Empty for workflow_dispatch; the cron string for schedules.
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          # Everything except the catch-up cron runs unconditionally: the
+          # primary 02:43 schedule, and every manual dispatch.
+          if [ "$SCHEDULE" != "43 8 * * *" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Primary attempt (schedule=${SCHEDULE:-dispatch}); running."
+            exit 0
+          fi
+          today="$(date -u +%Y-%m-%d)"
+          # This workflow's own successful runs started today. The run asking
+          # the question is in_progress, not success, so it can never match
+          # itself. grep exits 1 when there is no match, hence the || true.
+          green="$(gh run list --workflow=nightly.yml --status=success \
+            --limit 30 --json createdAt --jq '.[].createdAt' \
+            | grep -c "^$today" || true)"
+          if [ "${green:-0}" -gt 0 ]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "A nightly run already succeeded on $today; nothing to catch up."
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "No successful run yet on $today; retrying the refresh."
+          fi
+
   refresh:
+    needs: gate
+    # Fail-safe direction on purpose: skip ONLY on an explicit 'false'.
+    # A missing output or an outright gate failure must fall through to
+    # running the refresh -- the gate is an optimisation, never a
+    # gatekeeper that can silently retire the nightly. !cancelled() is
+    # what lets a failed gate still reach this job.
+    if: ${{ !cancelled() && needs.gate.outputs.should_run != 'false' }}
     name: Run pipeline and commit data
     runs-on: ubuntu-latest
     # Slow upstreams (GDELT pacing, keyless NVD paging); allow headroom.

@@ -8,42 +8,49 @@ Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
 15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster,
 19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi — all live).
 
-## Maintenance — one upstream outage costs the whole night
+## Maintenance — one upstream outage costs the whole night — RESOLVED
 
-Filed 2026-08-30 after abuse.ch served `503 certificate has expired` for
-`feodotracker.abuse.ch/downloads/ipblocklist.json` and took the entire refresh
-down 74 seconds in. All twenty-one modules went stale because one blocklist was
-unreachable; the endpoint was healthy again by morning.
+Filed and fixed 2026-08-30, after abuse.ch served `503 certificate has expired`
+for `feodotracker.abuse.ch/downloads/ipblocklist.json` and took the entire
+refresh down 74 seconds in. All twenty-one modules went stale because one
+blocklist was unreachable; the endpoint was healthy again by morning, and the
+site had sat three days behind over an outage that fixed itself.
 
-This is working as designed. `fetch_feodo.py`, `fetch_dnssec.py`,
-`fetch_epss.py` and `fetch_cna_roster.py` all state the rule — a broken source
-must break the run, no carry-forward, nothing stale ever deploys. GDELT is the
-one sanctioned exception ("keeping cached months"). **Not changing that on the
-evidence of a single transient outage**, and specifically not adding silent
-carry-forward for blocklists: the invariant is worth more than one night of
-freshness.
+The loud-failure policy is **unchanged and was never the problem**.
+`fetch_feodo.py`, `fetch_dnssec.py`, `fetch_epss.py` and `fetch_cna_roster.py`
+all state the rule — a broken source must break the run, no carry-forward,
+nothing stale ever deploys. GDELT remains the one sanctioned exception. Silent
+carry-forward for blocklists was considered and rejected: the invariant is worth
+more than one night of freshness.
 
-What is genuinely unresolved is that the retry ladder cannot reach this class of
-failure. `_get_with_retry` allows 3 attempts at 15s/30s backoff — about 45
-seconds of patience, calibrated for a blip. An expired origin certificate is a
-multi-hour outage, so the retries were never going to win, and the run burned
-its one nightly attempt at 02:46 UTC.
+The actual defect was arithmetic. `_get_with_retry` allows 3 attempts at 15s/30s
+backoff — about 45 seconds of patience — against an expired origin certificate,
+which is a multi-hour outage. The retries were never going to win, and the run
+burned its single daily attempt at 02:46 UTC. Widening the ladder to five
+minutes would still have lost.
 
-**Options, in rough order of appeal:**
+**Shipped:** a second `schedule:` entry at 08:43 UTC, in front of a `gate` job
+that decides whether the attempt is needed. On a night that already went green
+the gate is a ~10 second no-op; on a night that failed it runs the full refresh
+again, six hours later, by which time a transient upstream is usually back. No
+invariant moved: a broken source still breaks the run, nothing stale deploys,
+and a genuinely broken night still ends red — twice.
 
-1. *Retry the whole nightly a few hours later.* A second `schedule:` entry, or a
-   re-dispatch on failure, guarded by the existing `cybermon-nightly`
-   concurrency group. Costs nothing on green nights, and would have recovered
-   this one unattended. Does not weaken any invariant.
-2. *Widen the ladder for blocklist-shaped sources* (say 5 attempts to ~5
-   minutes). Cheap, still loud, but only buys minutes against an outage measured
-   in hours — it would not have saved 2026-08-30.
-3. *Fail soft and mark the module stale on the site.* Honest and resilient, but
-   needs a staleness field in the data contract plus render support, and it
-   concedes the "never deploy stale" line. Largest change, least certain payoff.
+Two design notes worth keeping:
 
-Option 1 looks strongest: it treats the real problem (one attempt per day
-against flaky third parties) without touching the freshness invariant at all.
+* The gate is **fail-safe toward running**. `refresh` skips only on an explicit
+  `should_run == 'false'`; a missing output or a failed gate falls through to
+  running, guarded by `!cancelled()`. The dangerous direction here is a silent
+  skip — a nightly that quietly stops refreshing raises no alert at all, which
+  would be strictly worse than the outage this fixes.
+* The gate counts *successful runs started today* rather than looking for
+  today's data commit, because a night with no upstream changes legitimately
+  commits nothing ("No data changes to commit") and would otherwise re-run the
+  whole pipeline for no reason.
+
+Rejected alternatives: widening the retry ladder (does not reach a multi-hour
+outage) and fail-soft with a staleness marker on the site (needs a contract
+field plus render support, and concedes the never-deploy-stale line).
 
 ## Maintenance — claims guards facing the 2027-01-01 rollover
 
