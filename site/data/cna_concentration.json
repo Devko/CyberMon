@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-30T10:55:56Z",
+ "generated_at": "2026-08-31T02:50:11Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 367,
    "newcomer_count": 43,
-   "top5_share": 48.0,
+   "top5_share": 48.1,
    "top10_share": 69.5,
-   "hhi": 632.5
+   "hhi": 632.3
   }
  ],
  "rejection_leaderboard": {
@@ -394,7 +394,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 6360,
+    "total": 6384,
     "rejected": 75,
     "rejected_rate_pct": 1.2
    },
@@ -424,7 +424,7 @@
    },
    {
     "cna": "mitre",
-    "total": 27979,
+    "total": 27980,
     "rejected": 275,
     "rejected_rate_pct": 1.0
    },
@@ -490,7 +490,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10785,
+    "total": 10786,
     "rejected": 41,
     "rejected_rate_pct": 0.4
    },
@@ -532,7 +532,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 15972,
+    "total": 16009,
     "rejected": 41,
     "rejected_rate_pct": 0.3
    },
@@ -652,7 +652,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4338,
+    "total": 4345,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -825,6 +825,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "EEF",
+    "total": 210,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "wikimedia-foundation",
     "total": 200,
     "rejected": 0,
@@ -845,12 +851,6 @@
    {
     "cna": "suse",
     "total": 193,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "EEF",
-    "total": 192,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -934,7 +934,7 @@
    },
    {
     "cna": "JFROG",
-    "total": 148,
+    "total": 150,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1366,6 +1366,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 65,
-  "elapsed": 0.663
+  "elapsed": 0.666
  }
 }

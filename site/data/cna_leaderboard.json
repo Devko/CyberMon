@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-30T10:55:56Z",
+ "generated_at": "2026-08-31T02:50:11Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -159,7 +159,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 6253,
+   "n": 6277,
    "avg_cvss": 7.5,
    "median_cvss": 8.4,
    "pct_geq_9": 15.7,
@@ -202,15 +202,6 @@
    "pct_geq_7": 74.4
   },
   {
-   "cna": "JFROG",
-   "org": "JFROG",
-   "n": 106,
-   "avg_cvss": 7.2,
-   "median_cvss": 7.2,
-   "pct_geq_9": 14.2,
-   "pct_geq_7": 56.6
-  },
-  {
    "cna": "snyk",
    "org": "snyk",
    "n": 142,
@@ -218,6 +209,15 @@
    "median_cvss": 7.5,
    "pct_geq_9": 14.1,
    "pct_geq_7": 55.6
+  },
+  {
+   "cna": "JFROG",
+   "org": "JFROG",
+   "n": 108,
+   "avg_cvss": 7.2,
+   "median_cvss": 7.3,
+   "pct_geq_9": 13.9,
+   "pct_geq_7": 57.4
   },
   {
    "cna": "suse",
@@ -330,7 +330,7 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1463,
+   "n": 1464,
    "avg_cvss": 6.1,
    "median_cvss": 6.3,
    "pct_geq_9": 9.6,
@@ -474,7 +474,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9695,
+   "n": 9696,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.4,
@@ -535,15 +535,6 @@
    "pct_geq_7": 40.5
   },
   {
-   "cna": "EEF",
-   "org": "EEF",
-   "n": 192,
-   "avg_cvss": 6.6,
-   "median_cvss": 6.9,
-   "pct_geq_9": 4.7,
-   "pct_geq_7": 48.4
-  },
-  {
    "cna": "zdi",
    "org": "zdi",
    "n": 1984,
@@ -551,6 +542,15 @@
    "median_cvss": 7.8,
    "pct_geq_9": 4.4,
    "pct_geq_7": 78.9
+  },
+  {
+   "cna": "EEF",
+   "org": "EEF",
+   "n": 210,
+   "avg_cvss": 6.4,
+   "median_cvss": 6.9,
+   "pct_geq_9": 4.3,
+   "pct_geq_7": 46.2
   },
   {
    "cna": "Zoom",
@@ -654,11 +654,11 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13146,
+   "n": 13183,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
-   "pct_geq_9": 1.7,
-   "pct_geq_7": 14.6
+   "pct_geq_9": 1.8,
+   "pct_geq_7": 14.5
   },
   {
    "cna": "Mattermost",
