@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-31T02:50:11Z",
+ "generated_at": "2026-09-01T02:50:10Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -626,10 +626,10 @@
    }
   ],
   "latest": {
-   "date": "2026-08-28",
+   "date": "2026-08-29",
    "validating_pc": 38.2,
    "partial_pc": 8.2,
-   "seen": 595021094
+   "seen": 595990865
   },
   "baseline": {
    "month": "2016-08",
@@ -855,7 +855,7 @@
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 58.9,
+   "latest_pc": 58.8,
    "series": [
     {
      "month": "2013-12",
@@ -1063,14 +1063,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 58.9
+     "validating_pc": 58.8
     }
    ]
   },
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 54.9,
+   "latest_pc": 54.8,
    "series": [
     {
      "month": "2013-12",
@@ -1278,14 +1278,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 54.9
+     "validating_pc": 54.8
     }
    ]
   },
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 51.1,
+   "latest_pc": 51.3,
    "series": [
     {
      "month": "2013-12",
@@ -1493,14 +1493,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 51.1
+     "validating_pc": 51.3
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 47.3,
+   "latest_pc": 47.2,
    "series": [
     {
      "month": "2013-12",
@@ -1708,7 +1708,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 47.3
+     "validating_pc": 47.2
     }
    ]
   },
@@ -2145,7 +2145,7 @@
   {
    "cc": "MX",
    "name": "Mexico",
-   "latest_pc": 21.1,
+   "latest_pc": 21.0,
    "series": [
     {
      "month": "2013-12",
@@ -2353,14 +2353,14 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 21.1
+     "validating_pc": 21.0
     }
    ]
   },
   {
    "cc": "JP",
    "name": "Japan",
-   "latest_pc": 14.8,
+   "latest_pc": 14.7,
    "series": [
     {
      "month": "2013-12",
@@ -2568,7 +2568,7 @@
     },
     {
      "month": "2026-08",
-     "validating_pc": 14.8
+     "validating_pc": 14.7
     }
    ]
   },
@@ -2802,15 +2802,15 @@
    },
    {
     "bucket": "25-50%",
-    "n": 44
+    "n": 43
    },
    {
     "bucket": "50-75%",
-    "n": 51
+    "n": 53
    },
    {
     "bucket": "75%+",
-    "n": 63
+    "n": 62
    }
   ]
  }

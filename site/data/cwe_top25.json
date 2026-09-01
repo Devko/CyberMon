@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-31T02:50:11Z",
+ "generated_at": "2026-09-01T02:50:10Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,8 +12,8 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120162,
- "kev_total": 1465,
+ "measured_total": 120161,
+ "kev_total": 1467,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -38,7 +38,7 @@
    "name": "Cross-site request forgery",
    "official_rank": 3,
    "measured_rank": 3,
-   "measured_n": 4857,
+   "measured_n": 4856,
    "measured_share": 4.0,
    "kev_n": 5
   },
@@ -250,6 +250,6 @@
   "in_measured_top25": 22,
   "outside_measured_top25": 3,
   "in_kev": 24,
-  "kev_coverage_pct": 65.3
+  "kev_coverage_pct": 65.2
  }
 }

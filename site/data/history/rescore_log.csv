@@ -4895,3 +4895,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-08-30,CVE-2026-80587,Linux,first_score,,,v3,9.8
 2026-08-30,CVE-2026-80588,Linux,first_score,,,v3,7.5
 2026-08-30,CVE-2026-80589,Linux,first_score,,,v3,9.8
+2026-09-01,CVE-2026-73055,VulnCheck,rescore,v4,9.3,v4,6.3
+2026-09-01,CVE-2026-81934,cisa-cg,rescore,v4,9.2,v4,7.5

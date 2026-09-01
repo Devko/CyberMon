@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-31T02:50:11Z",
+ "generated_at": "2026-09-01T02:50:10Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 201,
+   "total": 203,
    "security": 31,
-   "pct_security": 15.4
+   "pct_security": 15.3
   }
  ],
  "vendors": [
@@ -447,6 +447,15 @@
    "median_gap_days": 52.0
   },
   {
+   "vendor": "PaperCut",
+   "entries": 5,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2023-04-21",
+   "last_added": "2026-08-31",
+   "median_gap_days": 199.5
+  },
+  {
    "vendor": "RARLAB",
    "entries": 5,
    "security_entries": 0,
@@ -472,13 +481,13 @@
    "pct_known": 38.3
   },
   "other": {
-   "total": 1484,
+   "total": 1486,
    "known": 275,
    "pct_known": 18.5
   }
  },
  "catalog": {
-  "total": 1685,
+  "total": 1687,
   "security": 201,
   "pct_security": 11.9,
   "classifier_version": 2,

@@ -18497,6 +18497,28 @@
    "ransom": "Unknown",
    "vendor": "Progress"
   },
+  "CVE-2026-81578": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-31",
+   "desc": "4404bdeb0912",
+   "due": "2026-09-14",
+   "name": "PaperCut NG/MF Missing Authentication for Critical Function Vulnerability",
+   "notes": "6c78de782c61",
+   "product": "NG/MF",
+   "ransom": "Unknown",
+   "vendor": "PaperCut"
+  },
+  "CVE-2026-82078": {
+   "action": "ba0d649eb29b",
+   "added": "2026-08-31",
+   "desc": "c72ea5308c02",
+   "due": "2026-09-14",
+   "name": "PaperCut NG/MF Unsafe Reflection Vulnerability",
+   "notes": "151f76063b28",
+   "product": "NG/MF",
+   "ransom": "Unknown",
+   "vendor": "PaperCut"
+  },
   "CVE-2026-8398": {
    "action": "f09df147152e",
    "added": "2026-05-27",
@@ -18542,7 +18564,7 @@
    "vendor": "IBM"
   }
  },
- "last_observed": "2026-08-31",
+ "last_observed": "2026-09-01",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
