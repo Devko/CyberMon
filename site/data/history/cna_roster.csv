@@ -19,3 +19,4 @@ observed_date,short_name,change_type,org,country,type
 2026-08-26,wibu,onboarded,WIBU-SYSTEMS AG,Germany,Vendor
 2026-08-26,AISLE,scope_changed,AISLE Incorporated,Netherlands,Researcher + Vendor
 2026-08-26,ENISA,scope_changed,EU Agency for Cybersecurity (ENISA),Greece,Consortium
+2026-09-02,S4M,onboarded,Security4Media,Switzerland,Researcher

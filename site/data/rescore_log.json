@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-01T02:50:10Z",
+ "generated_at": "2026-09-02T02:58:14Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -59,8 +59,8 @@
   },
   {
    "week": "2026-W36",
-   "rescore_up": 0,
-   "rescore_down": 2,
+   "rescore_up": 2,
+   "rescore_down": 9,
    "first_score": 0,
    "version_shift": 0,
    "score_removed": 0
@@ -68,25 +68,25 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 58,
-  "up": 21,
-  "down": 37,
+  "n": 67,
+  "up": 23,
+  "down": 44,
   "buckets": [
    {
     "bucket": "<=-4.0",
-    "n": 0
+    "n": 2
    },
    {
     "bucket": "-3.9..-2.0",
-    "n": 7
+    "n": 11
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 30
+    "n": 31
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 14
+    "n": 16
    },
    {
     "bucket": "+2.0..+3.9",
@@ -109,6 +109,12 @@
     "down": 19
    },
    {
+    "cna": "redhat",
+    "rescores": 12,
+    "up": 2,
+    "down": 10
+   },
+   {
     "cna": "adobe",
     "rescores": 7,
     "up": 4,
@@ -119,25 +125,19 @@
     "rescores": 6,
     "up": 5,
     "down": 1
-   },
-   {
-    "cna": "redhat",
-    "rescores": 4,
-    "up": 1,
-    "down": 3
    }
   ]
  },
  "catalog": {
-  "state_size": 366786,
-  "corpus_release": "cve_2026-09-01_0200Z",
+  "state_size": 367251,
+  "corpus_release": "cve_2026-09-02_0200Z",
   "totals": {
-   "rescore": 58,
+   "rescore": 67,
    "version_shift": 14,
    "first_score": 4824,
    "score_removed": 2
   },
-  "events_total": 4898,
+  "events_total": 4907,
   "first_observed": "2026-07-15"
  }
 }

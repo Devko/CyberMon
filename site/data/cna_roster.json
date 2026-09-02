@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-09-01T02:50:10Z",
+ "generated_at": "2026-09-02T02:58:14Z",
  "roster_size": {
   "min_n": 2,
-  "current": 543,
-  "net_change": 13,
+  "current": 544,
+  "net_change": 14,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -177,6 +177,10 @@
    {
     "date": "2026-09-01",
     "size": 543
+   },
+   {
+    "date": "2026-09-02",
+    "size": 544
    }
   ]
  },
@@ -193,18 +197,24 @@
     "onboarded": 11,
     "departed": 1,
     "scope_changed": 4
+   },
+   {
+    "month": "2026-09",
+    "onboarded": 1,
+    "departed": 0,
+    "scope_changed": 0
    }
   ],
   "totals": {
-   "onboarded": 14,
+   "onboarded": 15,
    "departed": 1,
    "scope_changed": 5
   },
-  "events_total": 20,
+  "events_total": 21,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 543,
+  "total": 544,
   "by_type": [
    {
     "label": "Vendor",
@@ -216,7 +226,7 @@
    },
    {
     "label": "Researcher",
-    "n": 122
+    "n": 123
    },
    {
     "label": "Hosted Service",
@@ -246,7 +256,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 455
+    "n": 456
    },
    {
     "label": "CISA",
@@ -268,7 +278,7 @@
    },
    {
     "label": "ENISA",
-    "n": 21
+    "n": 22
    },
    {
     "label": "redhat",
@@ -326,7 +336,7 @@
    },
    {
     "label": "Switzerland",
-    "n": 12
+    "n": 13
    },
    {
     "label": "UK",
@@ -471,12 +481,12 @@
   ]
  },
  "headline": {
-  "roster_total": 543,
+  "roster_total": 544,
   "top_type": "Vendor",
   "top_type_n": 443,
   "country_count": 44,
   "root_count": 7,
-  "mitre_n": 455,
+  "mitre_n": 456,
   "cisa_n": 86
  }
 }

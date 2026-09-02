@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-09-01",
+ "last_observed": "2026-09-02",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -1826,6 +1826,12 @@
    "scope": "a4119615e869",
    "type": "Researcher"
   },
+  "S4M": {
+   "country": "Switzerland",
+   "org": "Security4Media",
+   "scope": "468c14055e6c",
+   "type": "Researcher"
+  },
   "SCHUTZWERK": {
    "country": "Germany",
    "org": "SCHUTZWERK GmbH",
@@ -3433,6 +3439,10 @@
   [
    "2026-09-01",
    543
+  ],
+  [
+   "2026-09-02",
+   544
   ]
  ],
  "version": 1
