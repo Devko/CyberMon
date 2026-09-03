@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-02T02:58:14Z",
+ "generated_at": "2026-09-03T03:55:46Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 203,
-   "security": 31,
-   "pct_security": 15.3
+   "total": 210,
+   "security": 33,
+   "pct_security": 15.7
   }
  ],
  "vendors": [
@@ -159,6 +159,15 @@
    "median_gap_days": 5.5
   },
   {
+   "vendor": "SonicWall",
+   "entries": 19,
+   "security_entries": 19,
+   "pct_security": 100.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-09-02",
+   "median_gap_days": 20.0
+  },
+  {
    "vendor": "Synacor",
    "entries": 19,
    "security_entries": 0,
@@ -175,15 +184,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-06-02",
    "median_gap_days": 90.5
-  },
-  {
-   "vendor": "SonicWall",
-   "entries": 17,
-   "security_entries": 17,
-   "pct_security": 100.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-07-14",
-   "median_gap_days": 20.0
   },
   {
    "vendor": "Palo Alto Networks",
@@ -476,20 +476,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 201,
+   "total": 203,
    "known": 77,
-   "pct_known": 38.3
+   "pct_known": 37.9
   },
   "other": {
-   "total": 1486,
+   "total": 1491,
    "known": 275,
-   "pct_known": 18.5
+   "pct_known": 18.4
   }
  },
  "catalog": {
-  "total": 1687,
-  "security": 201,
-  "pct_security": 11.9,
+  "total": 1694,
+  "security": 203,
+  "pct_security": 12.0,
   "classifier_version": 2,
   "classifier_rules": 35
  }

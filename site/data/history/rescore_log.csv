@@ -4906,3 +4906,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-09-02,CVE-2026-66788,redhat,rescore,v3,9.9,v3,3.7
 2026-09-02,CVE-2026-66795,redhat,rescore,v3,9.1,v3,9.9
 2026-09-02,CVE-2026-6876,SN,rescore,v4,8.7,v4,10.0
+2026-09-03,CVE-2026-71474,redhat,rescore,v3,6.3,v3,7.1
+2026-09-03,CVE-2026-71475,redhat,rescore,v3,5.0,v3,6.8

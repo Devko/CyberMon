@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-02T02:58:14Z",
+ "generated_at": "2026-09-03T03:55:46Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -596,7 +596,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-06-04",
+  "observed_through": "2026-06-05",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -758,8 +758,8 @@
    },
    {
     "year": 2026,
-    "value": 3.0,
-    "n": 95,
+    "value": 1.0,
+    "n": 97,
     "provisional": true
    }
   ]
@@ -789,13 +789,13 @@
        "n": 3149
       },
       "post": {
-       "value": 1.0,
+       "value": 0.6,
        "years": 5,
-       "n": 992
+       "n": 994
       },
-      "era_shift": 0.6,
-      "pct_banked": 98.2,
-      "shift_share_pct": -1.8,
+      "era_shift": 0.2,
+      "pct_banked": 99.4,
+      "shift_share_pct": -0.6,
       "verdict": "no_inflection"
      },
      {
@@ -812,13 +812,13 @@
        "n": 2335
       },
       "post": {
-       "value": 1.0,
+       "value": 0.5,
        "years": 4,
-       "n": 787
+       "n": 789
       },
-      "era_shift": 0.4,
-      "pct_banked": 98.8,
-      "shift_share_pct": -1.2,
+      "era_shift": -0.1,
+      "pct_banked": 100.3,
+      "shift_share_pct": 0.3,
       "verdict": "no_inflection"
      },
      {
@@ -835,11 +835,11 @@
        "n": 1298
       },
       "post": {
-       "value": 2.0,
+       "value": 1.0,
        "years": 2,
-       "n": 315
+       "n": 317
       },
-      "era_shift": 1.4,
+      "era_shift": 0.4,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1683,7 +1683,7 @@
      },
      {
       "month": "2026-08",
-      "index": 55.3,
+      "index": 56.2,
       "sources": 5
      }
     ]
@@ -1716,7 +1716,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "index_first": 0.0,
-   "index_last": 55.3,
+   "index_last": 56.2,
    "month_first": "2021-10",
    "month_last": "2026-08",
    "clock_min": -11.5,
@@ -1731,9 +1731,9 @@
   "era_label": "ChatGPT",
   "cut_year": 2021,
   "verdict": "no_inflection",
-  "pct_banked": 98.2,
+  "pct_banked": 99.4,
   "pre": 0.4,
-  "post": 1.0,
+  "post": 0.6,
   "milestones": 14,
   "no_uplift_reports": 2,
   "cells": 12,

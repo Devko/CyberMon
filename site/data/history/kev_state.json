@@ -18156,6 +18156,17 @@
    "ransom": "Unknown",
    "vendor": "SimpleHelp"
   },
+  "CVE-2026-48710": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "4ae236f19cd5",
+   "due": "2026-09-16",
+   "name": "Kludex Starlette HTTP Request/Response Smuggling Vulnerability",
+   "notes": "e79c9d7e9232",
+   "product": "Starlette",
+   "ransom": "Unknown",
+   "vendor": "Kludex"
+  },
   "CVE-2026-48907": {
    "action": "ba0d649eb29b",
    "added": "2026-06-16",
@@ -18188,6 +18199,17 @@
    "product": "iCagenda",
    "ransom": "Unknown",
    "vendor": "iCagenda"
+  },
+  "CVE-2026-49869": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "d9130d5f68cd",
+   "due": "2026-09-05",
+   "name": "Kestra OSS OS Command Injection Vulnerability",
+   "notes": "3280885327ff",
+   "product": "Kestra OSS",
+   "ransom": "Unknown",
+   "vendor": "Kestra"
   },
   "CVE-2026-50522": {
    "action": "ba0d649eb29b",
@@ -18331,6 +18353,17 @@
    "product": "VMware vCenter",
    "ransom": "Unknown",
    "vendor": "Broadcom"
+  },
+  "CVE-2026-59822": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "493ad871bae0",
+   "due": "2026-09-16",
+   "name": "BerriAI LiteLLM Improper Authentication Vulnerability",
+   "notes": "04cde6ec7b0f",
+   "product": "LiteLLM",
+   "ransom": "Unknown",
+   "vendor": "BerriAI"
   },
   "CVE-2026-60004": {
    "action": "ba0d649eb29b",
@@ -18519,6 +18552,39 @@
    "ransom": "Unknown",
    "vendor": "PaperCut"
   },
+  "CVE-2026-82329": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "a74391b3f818",
+   "due": "2026-09-05",
+   "name": "JFrog Artifactory Improper Authentication Vulnerability",
+   "notes": "1cc8448ae778",
+   "product": "Artifactory",
+   "ransom": "Unknown",
+   "vendor": "JFrog"
+  },
+  "CVE-2026-83548": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "e81e1e145290",
+   "due": "2026-09-05",
+   "name": "SonicWall SMA1000 Appliances Server-Side Request Forgery Vulnerability",
+   "notes": "9bdebb40a18c",
+   "product": "SMA1000 Appliances",
+   "ransom": "Unknown",
+   "vendor": "SonicWall"
+  },
+  "CVE-2026-83549": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "c9648b0ba263",
+   "due": "2026-09-05",
+   "name": "SonicWall SMA1000 Appliances OS Command Injection Vulnerability",
+   "notes": "8fd4546967f6",
+   "product": "SMA1000 Appliances",
+   "ransom": "Unknown",
+   "vendor": "SonicWall"
+  },
   "CVE-2026-8398": {
    "action": "f09df147152e",
    "added": "2026-05-27",
@@ -18562,9 +18628,20 @@
    "product": "Langflow",
    "ransom": "Unknown",
    "vendor": "IBM"
+  },
+  "CVE-2026-9586": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-02",
+   "desc": "9a515d2be043",
+   "due": "2026-09-05",
+   "name": "Sangoma Switchvox SQL Injection Vulnerability",
+   "notes": "1b799be28356",
+   "product": "Switchvox",
+   "ransom": "Unknown",
+   "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-02",
+ "last_observed": "2026-09-03",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
