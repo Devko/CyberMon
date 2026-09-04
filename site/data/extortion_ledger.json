@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-03T03:55:46Z",
+ "generated_at": "2026-09-04T02:48:37Z",
  "min_n": 10,
  "revenue_by_quarter": [
   {
@@ -422,6 +422,5 @@
   },
   "first_year": 2012,
   "last_year": 2024
- },
- "stale": true
+ }
 }
