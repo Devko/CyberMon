@@ -2599,7 +2599,7 @@
    "name": "Adobe Flash Player Arbitrary Code Execution Vulnerability",
    "notes": "8a5e92f1a063",
    "product": "Flash Player",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Adobe"
   },
   "CVE-2016-4171": {
@@ -11157,7 +11157,7 @@
    "name": "Microsoft Windows Common Log File System (CLFS) Driver Privilege Escalation Vulnerability",
    "notes": "204c5dea3e60",
    "product": "Windows",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2022-38028": {
@@ -18607,6 +18607,17 @@
    "ransom": "Unknown",
    "vendor": "Citrix"
   },
+  "CVE-2026-85046": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-04",
+   "desc": "a35dd57bd3c7",
+   "due": "2026-09-18",
+   "name": "Google Chromium V8 Type Confusion Vulnerability",
+   "notes": "69d60537c023",
+   "product": "Chromium V8",
+   "ransom": "Unknown",
+   "vendor": "Google"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -18641,7 +18652,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-04",
+ "last_observed": "2026-09-05",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

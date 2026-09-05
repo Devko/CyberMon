@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-04T02:48:37Z",
+ "generated_at": "2026-09-05T02:47:40Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -630,10 +630,10 @@
    }
   ],
   "latest": {
-   "date": "2026-09-01",
+   "date": "2026-09-02",
    "validating_pc": 38.2,
    "partial_pc": 8.3,
-   "seen": 593248206
+   "seen": 590937371
   },
   "baseline": {
    "month": "2016-09",
@@ -1289,7 +1289,7 @@
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 51.6,
+   "latest_pc": 51.7,
    "series": [
     {
      "month": "2013-12",
@@ -1497,14 +1497,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 51.6
+     "validating_pc": 51.7
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 46.8,
+   "latest_pc": 47.1,
    "series": [
     {
      "month": "2013-12",
@@ -1712,14 +1712,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 46.8
+     "validating_pc": 47.1
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 42.5,
+   "latest_pc": 42.6,
    "series": [
     {
      "month": "2013-12",
@@ -1927,14 +1927,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 42.5
+     "validating_pc": 42.6
     }
    ]
   },
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 37.9,
+   "latest_pc": 37.8,
    "series": [
     {
      "month": "2013-12",
@@ -2142,14 +2142,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 37.9
+     "validating_pc": 37.8
     }
    ]
   },
   {
    "cc": "MX",
    "name": "Mexico",
-   "latest_pc": 21.0,
+   "latest_pc": 20.9,
    "series": [
     {
      "month": "2013-12",
@@ -2357,7 +2357,7 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 21.0
+     "validating_pc": 20.9
     }
    ]
   },
@@ -2802,11 +2802,11 @@
    },
    {
     "bucket": "10-25%",
-    "n": 35
+    "n": 34
    },
    {
     "bucket": "25-50%",
-    "n": 41
+    "n": 42
    },
    {
     "bucket": "50-75%",

@@ -4323,3 +4323,6 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-09-03,CVE-2026-83548,added,,,,daily
 2026-09-03,CVE-2026-83549,added,,,,daily
 2026-09-03,CVE-2026-9586,added,,,,daily
+2026-09-05,CVE-2026-85046,added,,,,daily
+2026-09-05,CVE-2016-4117,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-09-05,CVE-2022-37969,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
