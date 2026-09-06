@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-05T02:47:40Z",
+ "generated_at": "2026-09-06T02:47:28Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -159,7 +159,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 6585,
+   "n": 6622,
    "avg_cvss": 7.5,
    "median_cvss": 8.3,
    "pct_geq_9": 15.7,
@@ -175,6 +175,15 @@
    "pct_geq_7": 46.8
   },
   {
+   "cna": "CERT-PL",
+   "org": "CERT-PL",
+   "n": 479,
+   "avg_cvss": 6.6,
+   "median_cvss": 6.9,
+   "pct_geq_9": 14.6,
+   "pct_geq_7": 42.2
+  },
+  {
    "cna": "CERTVDE",
    "org": "CERTVDE",
    "n": 399,
@@ -182,15 +191,6 @@
    "median_cvss": 7.5,
    "pct_geq_9": 14.5,
    "pct_geq_7": 74.4
-  },
-  {
-   "cna": "CERT-PL",
-   "org": "CERT-PL",
-   "n": 473,
-   "avg_cvss": 6.6,
-   "median_cvss": 6.9,
-   "pct_geq_9": 14.4,
-   "pct_geq_7": 41.9
   },
   {
    "cna": "ivanti",
@@ -303,11 +303,11 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1482,
+   "n": 1491,
    "avg_cvss": 6.2,
-   "median_cvss": 6.3,
+   "median_cvss": 6.4,
    "pct_geq_9": 10.1,
-   "pct_geq_7": 38.4
+   "pct_geq_7": 38.3
   },
   {
    "cna": "palo_alto",
@@ -492,11 +492,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9729,
+   "n": 9760,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.4,
-   "pct_geq_7": 25.8
+   "pct_geq_7": 25.9
   },
   {
    "cna": "OpenText",
@@ -600,11 +600,11 @@
   {
    "cna": "EEF",
    "org": "EEF",
-   "n": 268,
+   "n": 269,
    "avg_cvss": 6.3,
    "median_cvss": 6.9,
-   "pct_geq_9": 3.4,
-   "pct_geq_7": 45.1
+   "pct_geq_9": 3.3,
+   "pct_geq_7": 45.0
   },
   {
    "cna": "qualcomm",
@@ -663,7 +663,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13363,
+   "n": 13367,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.9,
