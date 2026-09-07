@@ -644,11 +644,18 @@ class Aggregator:
                 if facts.adp_cisa_legacy:
                     self.adp_month_legacy[month] += 1
 
-    def consume(self, records: Iterable[dict]) -> None:
+    def consume(self, records: Iterable[dict],
+                observer: Callable[[CveFacts, dict], None] | None = None
+                ) -> None:
+        """Fold every record. ``observer`` (the Field export) sees the
+        same facts and raw record, so a second per-CVE consumer never
+        needs a second pass over the corpus."""
         for record in records:
             facts = extract_facts(record)
             if facts is not None:
                 self.add(facts)
+                if observer is not None:
+                    observer(facts, record)
 
     def year_span(self) -> list[int]:
         """Every year from first to last publication, gap-filled."""

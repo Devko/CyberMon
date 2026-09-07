@@ -91,6 +91,8 @@ jobs:
     permissions:
       pages: write
       id-token: write
+      # For `gh run download` of the nightly's Field artifact (see below).
+      actions: read
     # Shared with nightly.yml's deploy job so the two workflows never
     # race a Pages deployment. Queue, don't cancel.
     concurrency:
@@ -140,6 +142,22 @@ jobs:
       - name: Build motion clips
         continue-on-error: true
         run: python3 tools/make_motion.py --out site/motion
+
+      # The Field (site/field.html) reads a per-CVE record stream that only
+      # the nightly can build (it needs the 550 MB cvelist corpus). Pull the
+      # newest one the nightly published so a site-only push does not
+      # deploy a page with a hole in it. Non-blocking: without it the page
+      # shows its own "not built here" notice instead of erroring.
+      - name: Fetch the latest Field from the nightly
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          run_id="$(gh run list --workflow=nightly.yml --status=success \n            --limit 10 --json databaseId --jq '.[0].databaseId')"
+          if [ -z "$run_id" ]; then echo 'No green nightly yet; skipping.'; exit 0; fi
+          gh run download "$run_id" --name field-latest --dir site/field
+          ls -la site/field
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

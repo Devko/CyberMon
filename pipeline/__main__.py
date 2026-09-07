@@ -38,6 +38,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
+from . import field_export
 from . import (adp_metrics, ai_metrics, attack_metrics, botnet_metrics,
                breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -99,6 +100,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                              "30 — a nightly needs a handful; the one-time "
                              "historical backfill is run manually with a "
                              "large value, e.g. 2000)")
+    parser.add_argument("--field-out", type=Path, default=None,
+                        help="also build the Field (site/field.html's "
+                             "per-CVE binary + field.json) into this "
+                             "directory — normally site/field, which is "
+                             "gitignored and ships only inside the Pages "
+                             "artifact; off by default")
     parser.add_argument("--window-years", type=int, default=3,
                         help="CNA leaderboard window (default: 3)")
     parser.add_argument("--min-cves", type=int, default=None,
@@ -405,7 +412,8 @@ def run(args: argparse.Namespace) -> int:
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
     agg = metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.all_ids)
-    agg.consume(records)
+    field = field_export.FieldCollector() if args.field_out else None
+    agg.consume(records, observer=field)
     print(f"  {agg.cve_count} CVE records aggregated")
     if agg.withdrawn_reservations:
         print(f"  {agg.withdrawn_reservations} withdrawn reservations "
@@ -732,7 +740,54 @@ def run(args: argparse.Namespace) -> int:
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")
         print(f"wrote {path}")
+    # The Field rides the same corpus pass (the observer above) and is
+    # written last, outside site/data: it is a build product for the Pages
+    # artifact, never a committed output, so nothing about it can undo the
+    # validated module outputs already on disk.
+    if field is not None:
+        _write_field(args, field, generated_at, release=release, epss=epss,
+                     kev=kev, poc_ids=poc.all_ids, nvd_source=nvd_source)
     return 0
+
+
+def _field_nvd_statuses(args: argparse.Namespace) -> dict[str, str] | None:
+    """Tonight's per-CVE NVD vulnStatus map, or None when the NVD stage was
+    skipped (every record then carries status code 0, "Unknown")."""
+    if args.offline_fixtures:
+        state = json.loads((FIXTURES_DIR / "nvd_state_now.json")
+                           .read_text(encoding="utf-8"))
+    else:
+        if args.skip_nvd:
+            return None
+        state = _load_nvd_state(args.cache_dir)
+    if not isinstance(state, dict):
+        return None
+    statuses = state.get("statuses")
+    return statuses if isinstance(statuses, dict) else None
+
+
+def _write_field(args: argparse.Namespace, field: field_export.FieldCollector,
+                 generated_at: str, *, release: str, epss: EpssData,
+                 kev: KevData, poc_ids, nvd_source: dict | None) -> None:
+    print("building the Field ...")
+    sources = {
+        "cvelist": {"release": release},
+        "kev": {"catalog_version": kev.catalog_version, "count": kev.count},
+        "epss": {"model_version": epss.model_version,
+                 "score_date": epss.score_date},
+        "nvd": ({"fetched_at": nvd_source.get("fetched_at")}
+                if nvd_source else None),
+        "poc": {"cve_count": len(poc_ids)},
+    }
+    packed, meta = field_export.build(
+        field, generated_at, epss_scores=epss.scores,
+        kev_entries=kev.entries, poc_ids=poc_ids,
+        nvd_statuses=_field_nvd_statuses(args), sources=sources)
+    contracts.validate(field_export.META_NAME, meta)
+    field_export.write(args.field_out, packed, meta)
+    print(f"  {meta['n']} CVEs placed ({meta['skipped']['rejected']} rejected"
+          f" + {meta['skipped']['undated']} undated skipped); "
+          f"{meta['bin_bytes']:,} bytes gzipped -> {args.field_out}")
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -36,3 +36,7 @@ desktop.ini
 *.swp
 *.swo
 *~
+
+# The Field (site/field.html): per-CVE binary + index built by the nightly
+# with --field-out; ships only inside the Pages artifact, never committed
+site/field/

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CyberMon — The Field. Every published CVE, one point each.</title>
+  <meta name="description" content="A WebGL instrument that places every published CVE in one space: by publication date, score and exploitation probability, by assigner, by weakness class, by NVD queue status, and on the score-vs-reality grid.">
+  <meta property="og:title" content="CyberMon — The Field. Every published CVE, one point each.">
+  <meta property="og:description" content="A WebGL instrument that places every published CVE in one space, arranged by the site's own theses.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CyberMon">
+  <meta property="og:url" content="https://devko.github.io/CyberMon/field.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#0e0f11">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/field.css">
+</head>
+<body class="field-body">
+
+  <header class="field-bar">
+    <div class="field-brand">
+      <a class="field-wordmark" href="index.html" aria-label="CyberMon overview">CYBER<span class="accent">MON</span></a>
+      <span class="field-kicker">Instrument</span>
+      <h1 class="field-title">The Field</h1>
+      <p class="field-thesis">Every published CVE, one point each. Arrange them by the site's own theses.</p>
+    </div>
+    <dl class="field-counters" aria-live="polite">
+      <div><dt>shown</dt><dd id="f-count">—</dd></div>
+      <div><dt>in KEV</dt><dd id="f-kev" class="accent">—</dd></div>
+      <div><dt>KEV share</dt><dd id="f-share">—</dd></div>
+    </dl>
+  </header>
+
+  <div class="field-body-grid">
+    <aside class="field-rail" aria-label="Field controls">
+      <section class="rail-group">
+        <h2 class="rail-k">Arrange</h2>
+        <div class="rail-btns" role="group" aria-label="Arrangement">
+          <button type="button" data-layout="time" aria-pressed="true">Timeline · date × score × EPSS</button>
+          <button type="button" data-layout="grid" aria-pressed="false">Score vs. reality grid</button>
+          <button type="button" data-layout="cna" aria-pressed="false">By assigner (top 48 CNAs)</button>
+          <button type="button" data-layout="cwe" aria-pressed="false">By weakness (top 30 CWEs)</button>
+          <button type="button" data-layout="status" aria-pressed="false">By NVD queue status</button>
+        </div>
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">Colour</h2>
+        <div class="rail-btns rail-row" role="group" aria-label="Colour">
+          <button type="button" data-color="expl" aria-pressed="true">Exploitation</button>
+          <button type="button" data-color="sev" aria-pressed="false">Severity</button>
+          <button type="button" data-color="ver" aria-pressed="false">CVSS version</button>
+          <button type="button" data-color="cna" aria-pressed="false">Assigner</button>
+        </div>
+        <p class="rail-legend" id="f-legend"></p>
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">Published <span class="rail-v" id="f-years">—</span></h2>
+        <div class="rail-range">
+          <input type="range" id="f-from" min="1999" max="2026" value="1999" aria-label="First publication year">
+          <input type="range" id="f-to" min="1999" max="2026" value="2026" aria-label="Last publication year">
+        </div>
+        <button type="button" class="rail-play" id="f-play">▶ Play the years</button>
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">CVSS base score <span class="rail-v" id="f-minv">any</span></h2>
+        <input type="range" id="f-min" min="0" max="10" step="0.5" value="0" aria-label="Minimum CVSS base score">
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">Filter</h2>
+        <label class="rail-check"><input type="checkbox" id="f-kevonly"> in KEV only</label>
+        <label class="rail-check"><input type="checkbox" id="f-poconly"> public PoC only</label>
+        <label class="rail-check"><input type="checkbox" id="f-ransom"> known ransomware use</label>
+        <input type="search" id="f-cna" placeholder="assigner contains…" aria-label="Filter by assigner">
+        <input type="search" id="f-vendor" placeholder="vendor contains…" aria-label="Filter by vendor">
+        <label class="rail-select">sort groups
+          <select id="f-sort" aria-label="Sort groups">
+            <option value="count">by CVE count</option>
+            <option value="kev">by KEV count</option>
+            <option value="name">by name</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">Point size</h2>
+        <input type="range" id="f-size" min="0.5" max="2.5" step="0.1" value="1" aria-label="Point size">
+        <button type="button" class="rail-reset" id="f-reset">Reset camera</button>
+        <p class="rail-help">Drag to orbit · wheel to zoom · shift-drag to pan · hover for the record · click opens it on cve.org.</p>
+      </section>
+
+      <section class="rail-group rail-sources" id="f-sources"></section>
+    </aside>
+
+    <main class="field-stage" id="f-stage">
+      <canvas id="f-canvas" aria-label="Three-dimensional field of every published CVE. The controls on the left arrange, colour and filter it; the counters above report what is shown."></canvas>
+      <div class="field-labels" id="f-labels" aria-hidden="true"></div>
+      <div class="field-tip" id="f-tip" role="status"></div>
+      <div class="field-hud">
+        <p class="hud-k" id="hud-k"></p>
+        <p class="hud-thesis" id="hud-thesis"></p>
+        <details class="hud-method">
+          <summary>how this is placed</summary>
+          <p id="hud-method"></p>
+        </details>
+      </div>
+      <div class="field-notice" id="f-notice" hidden></div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <script type="module" src="js/field.js"></script>
+  <noscript>
+    <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
+      The Field is a WebGL instrument and needs JavaScript. The same corpus is charted,
+      without scripts required to read the numbers, on <a href="cve.html" style="color:#e9e4d8">cve.html</a>.
+    </p>
+  </noscript>
+</body>
+</html>
