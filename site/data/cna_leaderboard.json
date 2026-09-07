@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-06T02:47:28Z",
+ "generated_at": "2026-09-07T02:50:23Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -159,7 +159,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 6622,
+   "n": 6638,
    "avg_cvss": 7.5,
    "median_cvss": 8.3,
    "pct_geq_9": 15.7,
@@ -213,11 +213,11 @@
   {
    "cna": "JFROG",
    "org": "JFROG",
-   "n": 108,
+   "n": 109,
    "avg_cvss": 7.2,
-   "median_cvss": 7.3,
-   "pct_geq_9": 13.9,
-   "pct_geq_7": 57.4
+   "median_cvss": 7.5,
+   "pct_geq_9": 13.8,
+   "pct_geq_7": 57.8
   },
   {
    "cna": "Linux",
@@ -238,24 +238,6 @@
    "pct_geq_7": 63.5
   },
   {
-   "cna": "PostgreSQL",
-   "org": "PostgreSQL",
-   "n": 113,
-   "avg_cvss": 7.2,
-   "median_cvss": 8.0,
-   "pct_geq_9": 12.4,
-   "pct_geq_7": 65.5
-  },
-  {
-   "cna": "CIRCL",
-   "org": "CIRCL",
-   "n": 138,
-   "avg_cvss": 7.1,
-   "median_cvss": 7.0,
-   "pct_geq_9": 12.3,
-   "pct_geq_7": 50.7
-  },
-  {
    "cna": "GitHub_M",
    "org": "GitHub_M",
    "n": 14585,
@@ -265,6 +247,15 @@
    "pct_geq_7": 51.8
   },
   {
+   "cna": "CIRCL",
+   "org": "CIRCL",
+   "n": 139,
+   "avg_cvss": 7.1,
+   "median_cvss": 7.0,
+   "pct_geq_9": 12.2,
+   "pct_geq_7": 51.1
+  },
+  {
    "cna": "apache",
    "org": "apache",
    "n": 232,
@@ -272,6 +263,15 @@
    "median_cvss": 6.9,
    "pct_geq_9": 12.1,
    "pct_geq_7": 49.6
+  },
+  {
+   "cna": "PostgreSQL",
+   "org": "PostgreSQL",
+   "n": 116,
+   "avg_cvss": 7.2,
+   "median_cvss": 8.0,
+   "pct_geq_9": 12.1,
+   "pct_geq_7": 64.7
   },
   {
    "cna": "Rockwell",
@@ -492,7 +492,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9760,
+   "n": 9763,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.4,
@@ -600,11 +600,11 @@
   {
    "cna": "EEF",
    "org": "EEF",
-   "n": 269,
+   "n": 271,
    "avg_cvss": 6.3,
    "median_cvss": 6.9,
    "pct_geq_9": 3.3,
-   "pct_geq_7": 45.0
+   "pct_geq_7": 45.4
   },
   {
    "cna": "qualcomm",
@@ -663,7 +663,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13367,
+   "n": 13414,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 1.9,
