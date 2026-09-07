@@ -127,24 +127,28 @@ def test_build_roster_mix_breakdowns_and_headline():
     s = snap(org("a", types=("Vendor",), country="USA"),
              org("b", types=("Vendor", "Open Source"), country="USA"),
              org("c", types=("Researcher",), tlr="CISA", root="icscert",
-                 country="Germany"))
+                 country="Germany"),
+             # lists no country: stays visible in by_country as "n/a" but
+             # is not a country (the live roster has exactly one such org)
+             org("d", types=("Vendor",), country="n/a"))
     state = cr.new_state("2026-07-18")
     cr.advance_state(state, cr.fingerprint_roster(s), "2026-07-18")
     obj = _built(state, [], s)
     mix = obj["roster_mix"]
-    assert mix["total"] == 3
-    # by_type is flattened (Vendor appears in two orgs) and sorted desc
-    assert mix["by_type"][0] == {"label": "Vendor", "n": 2}
+    assert mix["total"] == 4
+    # by_type is flattened (Vendor appears in three orgs) and sorted desc
+    assert mix["by_type"][0] == {"label": "Vendor", "n": 3}
     assert {d["label"] for d in mix["by_type"]} == {"Vendor", "Open Source",
                                                     "Researcher"}
     # partitions sum to the total
-    assert sum(d["n"] for d in mix["by_tlr"]) == 3
-    assert sum(d["n"] for d in mix["by_country"]) == 3
+    assert sum(d["n"] for d in mix["by_tlr"]) == 4
+    assert sum(d["n"] for d in mix["by_country"]) == 4
+    assert {"label": "n/a", "n": 1} in mix["by_country"]
     h = obj["headline"]
-    assert h["roster_total"] == 3
-    assert h["top_type"] == "Vendor" and h["top_type_n"] == 2
-    assert h["country_count"] == 2
-    assert h["mitre_n"] == 2 and h["cisa_n"] == 1
+    assert h["roster_total"] == 4
+    assert h["top_type"] == "Vendor" and h["top_type_n"] == 3
+    assert h["country_count"] == 2  # USA, Germany — never the n/a bucket
+    assert h["mitre_n"] == 3 and h["cisa_n"] == 1
     assert h["root_count"] == 1  # only icscert is a non-"n/a" reporting root
 
 

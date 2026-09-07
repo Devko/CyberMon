@@ -14,8 +14,9 @@ import pytest
 
 from pipeline import epss_volatility as ev
 from pipeline import contracts
-from pipeline.epss_volatility import (build_epss_volatility, diff_day,
-                                      load_state, make_state, merge_row,
+from pipeline.epss_volatility import (build_epss_volatility, classify,
+                                      diff_day, load_state, make_state,
+                                      merge_row,
                                       persist, read_events, run_stage,
                                       state_path, write_events, write_state)
 from pipeline.fetch_epss import EpssData
@@ -106,8 +107,7 @@ def test_state_round_trip(tmp_path):
                      "last_observed": "2026-07-08",
                      "fingerprints": {"CVE-A": [0.02, 0.88],
                                       "CVE-B": [0.5, None]}}
-    assert state_path(tmp_path) == tmp_path / "history" / \
-        "epss_volatility_state.json.gz"
+    assert state_path(tmp_path) == tmp_path / "epss_volatility_state.json.gz"
     write_state(state_path(tmp_path), state)
     assert load_state(tmp_path, log=lambda m: None) == state
 
@@ -115,7 +115,7 @@ def test_state_round_trip(tmp_path):
 def test_missing_unreadable_or_misshapen_state_is_none(tmp_path):
     assert load_state(tmp_path, log=lambda m: None) is None  # missing
     path = state_path(tmp_path)
-    path.parent.mkdir(parents=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(b"not json")  # not gzip -> unreadable
     assert load_state(tmp_path, log=lambda m: None) is None
     write_state(path, {"model_version": 42})  # valid gzip, wrong shape
@@ -159,8 +159,9 @@ def test_event_csv_missing_file_and_malformed_row(tmp_path):
 # ------------------------------------------------------------------ builder
 
 def _rows(*, min_days_worth=1):
-    """A few forward nights of the same shape, distinct dates/weeks."""
-    dates = ["2026-07-06", "2026-07-08", "2026-07-20"][:min_days_worth]
+    """A few CONSECUTIVE nights of the same shape (a skipped date would now
+    be a quarantined gap night), straddling an ISO-week boundary."""
+    dates = ["2026-07-11", "2026-07-12", "2026-07-13"][:min_days_worth]
     return [diff_day(_OLD, _NEW_SCORES, _NEW_PCTS, d, "v1", reset=False)
             for d in dates]
 
@@ -179,11 +180,11 @@ def test_build_gate_closed_reports_the_thin_record():
 def test_build_gate_open_weeks_gap_and_movers():
     obj = build_epss_volatility(_rows(min_days_worth=3), state=_STATE,
                                 generated_at=GEN, min_days=1, min_delta=0.0)
-    # weeks gap-filled across the two-week span (W28 empty W29 -> W30)
+    # Sat + Sun land in W28, Mon opens W29: two weeks, two days then one
     weeks = obj["churn"]["weeks"]
-    assert [w["week"] for w in weeks] == ["2026-W28", "2026-W29", "2026-W30"]
-    assert weeks[1] == {"week": "2026-W29", "crossed_lo": 0, "crossed_mid": 0,
-                        "crossed_hi": 0, "days": 0}   # gap-filled empty week
+    assert [w["week"] for w in weeks] == ["2026-W28", "2026-W29"]
+    assert (weeks[0]["days"], weeks[1]["days"]) == (2, 1)
+    assert weeks[1]["crossed_lo"] == 1
     assert sum(w["crossed_lo"] for w in weeks) == \
         obj["catalog"]["crossed_totals"]["lo"] == 3
     # gap: per-day shares + averages over 3 identical nights
@@ -225,6 +226,76 @@ def test_build_reset_night_is_quarantined_from_every_trend():
     contracts.validate("epss_volatility.json", obj)
 
 
+def _night(day, moved, n=1000, reset=False):
+    """A synthetic logged row: ``moved`` of ``n`` compared probabilities
+    moved, one small crossing, a modest top mover."""
+    return {"observed_date": day, "model_version": "v2" if reset else "v1",
+            "n_scored": n, "n_compared": n, "prob_moved": moved,
+            "pct_moved": n - 1, "crossed_lo": 1, "crossed_mid": 1,
+            "crossed_hi": 1, "top_cve": None if reset else "CVE-T",
+            "top_old": None if reset else 0.1, "top_new": None if reset else 0.3,
+            "reset": reset}
+
+
+def test_classify_gap_nights_pool_several_snapshots():
+    # 07-31 -> 08-02 skips a night: the 08-02 diff covers two snapshots and
+    # cannot sit in a per-night series. The first row has no predecessor.
+    rows = [_night("2026-07-30", 10), _night("2026-07-31", 10),
+            _night("2026-08-02", 20)]
+    assert classify(rows) == [None, None, "gap"]
+
+
+def test_classify_anomaly_needs_a_baseline_then_catches_the_lurch():
+    # four clean nights: no baseline yet, nothing is judged an anomaly
+    days = [f"2026-08-{d:02d}" for d in range(1, 5)]
+    rows = [_night(d, 10) for d in days] + [_night("2026-08-05", 150)]
+    assert classify(rows) == [None] * 5
+    # five clean nights (~1 %): a 15 % night is > 5x the median and > 5 %
+    rows = [_night(f"2026-08-{d:02d}", 10) for d in range(1, 6)] \
+        + [_night("2026-08-06", 150)]
+    assert classify(rows) == [None] * 5 + ["anomaly"]
+    # 4x the median but under the absolute floor is not an anomaly ...
+    rows = [_night(f"2026-08-{d:02d}", 10) for d in range(1, 6)] \
+        + [_night("2026-08-06", 40)]
+    assert classify(rows) == [None] * 6
+    # ... and the median is robust: three lurches cannot excuse themselves
+    rows = [_night(f"2026-08-{d:02d}", 10) for d in range(1, 8)] \
+        + [_night(f"2026-08-{d:02d}", 140) for d in range(8, 11)]
+    assert classify(rows) == [None] * 7 + ["anomaly"] * 3
+
+
+def test_classify_names_a_pooled_lurch_for_the_lurch_and_resets_first():
+    rows = [_night(f"2026-08-{d:02d}", 10) for d in range(1, 6)] \
+        + [_night("2026-08-08", 140), _night("2026-08-09", 5, reset=True)]
+    assert classify(rows) == [None] * 5 + ["anomaly", "reset"]
+
+
+def test_build_quarantines_gaps_and_anomalies_from_every_trend():
+    rows = [_night(f"2026-08-{d:02d}", 10) for d in range(1, 6)] \
+        + [_night("2026-08-06", 140), _night("2026-08-08", 10),
+           _night("2026-08-09", 3, reset=True)]
+    obj = build_epss_volatility(rows, state=_STATE, generated_at=GEN,
+                                min_days=1, min_delta=0.0)
+    cat = obj["catalog"]
+    assert cat["days_observed"] == 8 and cat["trend_days"] == 5
+    assert (cat["resets_quarantined"], cat["gaps_quarantined"],
+            cat["anomalies_quarantined"]) == (1, 1, 1)
+    assert [(q["date"], q["reason"]) for q in cat["quarantined"]] == [
+        ("2026-08-06", "anomaly"), ("2026-08-08", "gap"),
+        ("2026-08-09", "reset")]
+    assert cat["quarantined"][0]["prob_moved_pct"] == 14.0
+    assert cat["anomaly_rule"] == {"factor": 5.0, "min_share_pct": 5.0,
+                                   "min_nights": 5}
+    # the lurch is out of the gap series, the crossings and the movers
+    assert [d["date"] for d in obj["gap"]["days"]] == \
+        [f"2026-08-{d:02d}" for d in range(1, 6)]
+    assert obj["gap"]["prob_moved_pct"] == 1.0
+    assert cat["crossed_totals"] == {"lo": 5, "mid": 5, "hi": 5}
+    assert all(m["observed_date"] <= "2026-08-05"
+               for m in obj["movers"]["entries"])
+    contracts.validate("epss_volatility.json", obj)
+
+
 def test_build_empty_log_is_the_launch_shape():
     obj = build_epss_volatility([], state=_STATE, generated_at=GEN)
     assert obj["churn"]["weeks"] == []
@@ -238,10 +309,12 @@ def test_build_empty_log_is_the_launch_shape():
 # -------------------------------------------------------------------- stage
 
 def _run(out: Path, epss: EpssData, *, min_days=1, min_delta=0.0, log=None):
+    cache = out.parent / "cache"  # live runs keep the state in the cache dir
     obj, source, rows, state = run_stage(
-        out, epss, f"{epss.score_date}T02:43:00Z", offline_fixtures=False,
-        min_days=min_days, min_delta=min_delta, log=log or (lambda m: None))
-    persist(out, rows, state, log=lambda m: None)
+        out, epss, f"{epss.score_date}T02:43:00Z", state_dir=cache,
+        offline_fixtures=False, min_days=min_days, min_delta=min_delta,
+        log=log or (lambda m: None))
+    persist(out, rows, state, state_dir=cache, log=lambda m: None)
     return obj, source
 
 
@@ -257,7 +330,8 @@ def test_stage_baseline_then_diff_then_snapshot_guard(tmp_path):
     assert obj["catalog"]["days_observed"] == 0
     assert obj["catalog"]["state_size"] == 6
     assert source == {"score_date": "2026-07-07", "days_observed": 0}
-    assert state_path(out).exists()
+    assert state_path(out.parent / "cache").exists()
+    assert not (out / "history" / "epss_volatility_state.json.gz").exists()
 
     # Night 2: tonight's feed diffs against night 1 -> one row.
     n2 = _epss(_NEW_SCORES, _NEW_PCTS, model="v1", date="2026-07-08")
@@ -305,7 +379,8 @@ def test_stage_offline_seeds_prior_state_from_fixture(tmp_path):
          "CVE-2099-9999": 0.98},
         model="v2025.03.14", date="2026-07-08")
     obj, source, rows, state = run_stage(
-        out, epss, GEN, offline_fixtures=True, log=lambda m: None)
+        out, epss, GEN, state_dir=out / "history", offline_fixtures=True,
+        log=lambda m: None)
     assert obj["catalog"]["days_observed"] == 1
     assert obj["gap"]["prob_moved_pct"] == 50.0     # 3 of 6
     assert obj["movers"]["entries"][0]["cve"] == "CVE-2024-0001"

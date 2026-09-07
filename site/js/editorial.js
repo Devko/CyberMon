@@ -2355,6 +2355,10 @@ export const editorial = {
         "No upstream keeps a per-CVE EPSS change log — CyberMon's record " +
         "starts with tonight's feed. The gap appears once there are two nights " +
         "to compare.",
+      // Appended to the note when the catalog names quarantined nights.
+      noteQuarantined:
+        " {n} of {days} nights are quarantined from every trend on this " +
+        "page ({reasons}) and listed with their reason in the data file.",
       // Rendered instead of the chart while the log sits under the min-days
       // gate; both variants are filled from the data file, never hardcoded.
       placeholder:
@@ -2386,7 +2390,16 @@ export const editorial = {
         "model rescores the entire corpus overnight and everything moves for a " +
         "reason that has nothing to do with any one CVE; that night is logged " +
         "flagged and excluded from every trend here, the same quarantine " +
-        "Silent Rescores applies to its seeding. This is a stability " +
+        "Silent Rescores applies to its seeding. Two more kinds of night get " +
+        "the same treatment, judged from the log itself so the rule is " +
+        "reproducible: a night whose diff pools more than one snapshot because " +
+        "the nights between it and the previous row failed, and a night on " +
+        "which the share of probabilities that moved runs more than five times " +
+        "the clean-night median (and above five percent) with no model change " +
+        "— a whole-corpus lurch of the kind first seen in August 2026, when " +
+        "one CVE in eight moved and then moved straight back. Every " +
+        "quarantined night is listed with its reason in the data file's " +
+        "catalog block. This is a stability " +
         "measurement, not an accuracy one — the EPSS Report Card grades " +
         "whether the model was right; this asks how much it moves. Two honesty " +
         "notes: the record starts at first deploy, so it is thin by design and " +
@@ -2406,9 +2419,13 @@ export const editorial = {
         "model believes; a probability that crosses a decision line does. " +
         "These bars count only the second kind — CVEs whose raw probability " +
         "crossed 0.1%, 1%, or 5% in a week, in either direction. Set against " +
-        "the churn on the hero chart, material crossings are a rounding error, " +
+        "the churn on the hero chart, material crossings are vanishingly rare — " +
         "and that is the point: the number teams gate on moves constantly, " +
-        "while the number that should trigger action barely does.",
+        "while the number that should trigger action rarely does. The " +
+        "exceptions are the nights the feed itself lurches, moving a large " +
+        "slice of the corpus and then moving it back; those nights are " +
+        "quarantined from these bars and named in the data, because a feed " +
+        "glitch is not the model changing its mind.",
       note:
         "Thresholds are the probability lines triage policies actually gate on " +
         "(0.001 / 0.01 / 0.05); a crossing counts in either direction, and the " +
@@ -2431,8 +2448,9 @@ export const editorial = {
         "weeks between observed ones chart at zero so the axis never skips " +
         "time. The three series are counted independently, so a probability " +
         "that jumps from near zero to above 5% is counted under all three " +
-        "lines. Reset nights (a model_version change) are excluded, as " +
-        "everywhere on this page. The thresholds are the module's own, not " +
+        "lines. Reset nights, pooled nights and whole-corpus lurches are " +
+        "quarantined, as everywhere on this page (the three rules are in the " +
+        "hero methodology). The thresholds are the module's own, not " +
         "FIRST's — they stand in for the decision lines real triage policies " +
         "draw, and they are stated here so a reader can disagree with them.",
     },

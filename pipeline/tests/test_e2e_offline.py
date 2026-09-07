@@ -288,6 +288,9 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert evol["catalog"]["days_observed"] == 1
     assert evol["catalog"]["trend_days"] == 1
     assert evol["catalog"]["resets_quarantined"] == 0
+    assert evol["catalog"]["gaps_quarantined"] == 0
+    assert evol["catalog"]["anomalies_quarantined"] == 0
+    assert evol["catalog"]["quarantined"] == []
     assert evol["catalog"]["crossed_totals"] == {"lo": 1, "mid": 0, "hi": 1}
     assert evol["catalog"]["first_observed"] == "2026-07-08"
     assert evol["gap"]["prob_moved_pct"] == 50.0   # 3 of 6

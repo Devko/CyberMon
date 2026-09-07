@@ -251,8 +251,14 @@ first deploy).
 History is read from `site/data/history/nvd_throughput.csv` (append-only,
 columns: `date,received_new,entered_awaiting,analyzed_from_awaiting,`
 `deferred_from_awaiting,median_queue_days,n_known_duration,resweep`), one
-row per pipeline run date (last run per date wins; `median_queue_days`
-empty until the threshold). Like `nvd_backlog.csv`, this CSV is the
+row per pipeline run date. Unlike `nvd_backlog.csv`, a throughput row is a
+DIFF between two states, so two successful runs on one date **sum** their
+four flow counts (the second run diffs against the state the first already
+advanced and sees only the flow since); `median_queue_days`, `n_known_duration`
+and `resweep` come from the newer run (`median_queue_days` empty until the
+threshold). Before 2026-09-07 the rule was last-run-wins, which erased
+2026-08-30's flow after a manual re-dispatch; that row was repaired from git
+history (617+2 / 584 / 336 / 256). Like `nvd_backlog.csv`, this CSV is the
 IRREPLACEABLE original record — no upstream source can regenerate it.
 
 `meta.sources.nvd` may additively carry `throughput_events` (int ≥ 0):
@@ -1251,9 +1257,17 @@ into `pipeline/contracts.py`'s dispatch).
   },
   "catalog": {
     "state_model_version": "v2025.03.14", "state_score_date": "2026-07-14",
-    "state_size": 268314, "days_observed": 13, "trend_days": 12,
-    "resets_quarantined": 1, "crossed_totals": {"lo": 9004, "mid": 3110,
-    "hi": 512}, "first_observed": "2026-07-02"
+    "state_size": 268314, "days_observed": 13, "trend_days": 10,
+    "resets_quarantined": 1, "gaps_quarantined": 1,
+    "anomalies_quarantined": 1,
+    "anomaly_rule": {"factor": 5.0, "min_share_pct": 5.0, "min_nights": 5},
+    "quarantined": [
+      {"date": "2026-07-05", "reason": "reset", "prob_moved_pct": 99.8},
+      {"date": "2026-07-09", "reason": "gap", "prob_moved_pct": 2.1},
+      {"date": "2026-07-12", "reason": "anomaly", "prob_moved_pct": 14.6}
+    ],
+    "crossed_totals": {"lo": 9004, "mid": 3110, "hi": 512},
+    "first_observed": "2026-07-02"
   }
 }
 ```
@@ -1262,10 +1276,14 @@ Source: CyberMon's own nightly diffs of the EPSS feed (FIRST.org). Each
 night the pipeline fingerprints the EPSS snapshot it already fetches for
 the rest of the site — per CVE, `[probability, percentile]` from
 `EpssData.scores` / `EpssData.percentiles` — and diffs it against the
-previous night's fingerprint (**`site/data/history/epss_volatility_state.json.gz`**,
-COMMITTED next to the log like the rescore/KEV `*_state.json`, but **gzipped**
-because the percentile map re-ranks nightly and git cannot delta it; it also
-records the feed's `model_version`, `score_date` and last observed date).
+previous night's fingerprint (**`.cache/epss_volatility_state.json.gz`**, a
+CACHE like the NVD sync state — restored by actions/cache, saved only on a
+green run, never committed; it also records the feed's `model_version`,
+`score_date` and last observed date). It was committed beside the log until
+2026-09-07: gzipped because the percentile map re-ranks nightly, which is
+exactly why git could not delta it — 2.6 MB of new history every night, ~90%
+of the repository after six weeks. A lost cache costs one baseline night and
+never touches the log.
 Only CVEs present on **both** nights are compared: a CVE new to tonight's
 feed has no prior to move from, and its arrival is exactly what drives the
 percentile reshuffle. "Moved" means the value changed at the five-decimal
@@ -1296,12 +1314,28 @@ feed's `model_version` changes, a new model rescores the whole corpus
 overnight and ~everything moves for a reason unrelated to any one CVE — that
 row is kept flagged for the audit trail, its top mover suppressed, and it
 is **excluded from every trend** (`churn`, `gap`, `movers`, `crossed_totals`),
-the same quarantine Silent Rescores applies to its seeding. First-ever run
-= baseline: no prior state, zero rows, the committed CSV ships **empty**.
-State and CSV are persisted together only after a fully validated run (the
-`rescore_tracker` discipline), so they cannot diverge; a re-run against the
+the same quarantine Silent Rescores applies to its seeding. Two more
+quarantines are applied AT BUILD TIME from the log itself (so the same CSV
+always yields the same trend, retroactively, with no schema change), and
+every quarantined night is listed in `catalog.quarantined` as
+`{date, reason, prob_moved_pct}` with `reason` ∈ `reset | gap | anomaly`:
+**gap** — the previous logged row is more than one day older, so the diff
+pools several snapshots (failed nights in between) and cannot sit in a
+per-night series; **anomaly** — a whole-corpus lurch with no model change:
+the row's share of compared CVEs whose probability moved exceeds
+`anomaly_rule.factor` (5) × the median share of the clean nights AND
+`anomaly_rule.min_share_pct` (5), judged only once more than
+`anomaly_rule.min_nights` (5) candidate nights exist. A row is named in the
+order reset > anomaly > gap. The rule exists because three August-2026
+nights (12–16% of the corpus moved, the same CVE flip-flopping with
+identical old/new pairs) supplied ~87% of all 1%-line crossings on record.
+First-ever run = baseline: no prior state, zero rows, the committed CSV
+ships **empty**. State and CSV are persisted together only after a fully
+validated run (the `rescore_tracker` discipline; in CI the cache is saved
+only when the job succeeds), so they cannot diverge; a re-run against the
 same EPSS `score_date` is skipped, and merge-by-date makes it idempotent
-regardless.
+regardless. Offline fixture runs keep the state under `<out>/history` so a
+test run can never seed or read the live cache.
 
 `churn.weeks` = per-ISO-week (`YYYY-Www`, UTC observation dates)
 material-crossing counts over trend rows, gap-filled between the first and
@@ -1316,7 +1350,9 @@ a placeholder from `trend_days`, never a fake line. `movers.entries` = the
 biggest single-day probability moves on record (one per night, `|delta| >=
 min_delta`, production `0.1`), ranked by magnitude descending; `delta ==
 new − old`. `catalog` is the audit block: `days_observed == trend_days +
-resets_quarantined`, `crossed_totals` carries exactly `{lo, mid, hi}`, and
+len(quarantined)`, the three `*_quarantined` counts match the list's
+reasons, `quarantined` is date-sorted and unique, `anomaly_rule` equals the
+constants above, `crossed_totals` carries exactly `{lo, mid, hi}`, and
 `first_observed` is null exactly when the log is empty — the record starts
 at first deploy, and the file says so rather than faking depth. No pace
 projection: the record is launch-thin and the movement is nightly-batched.
@@ -1694,7 +1730,9 @@ are clean partitions that sum to `total`; each breakdown is `[{label, n}]`
 sorted by `n` descending, `n >= 1`, unique labels. `headline` summarizes the
 composition (always present — the roster is never empty): `roster_total ==
 roster_mix.total`, `top_type`/`top_type_n` mirror `by_type[0]`,
-`country_count == len(by_country)`, and `mitre_n + cisa_n <= total`.
+`country_count == len(by_country)` minus the `n/a` bucket when one is
+present (orgs that list no country stay visible in `by_country` but are not
+a country), and `mitre_n + cisa_n <= total`.
 Validator: `pipeline/roster_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
@@ -2103,3 +2141,37 @@ they are not plotted, the contract has no field for them, and a unit test
 asserts they never reach the payload. The charts stay 100%
 CyberMon-computed. Validator: `pipeline/ai_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
+
+## site/field/field.json + cves.bin.gz  (The Field instrument — NOT under site/data)
+
+Built only with `--field-out`; validated by `pipeline/field_contracts.py`;
+gitignored and shipped inside the Pages artifact (see README, "The Field").
+
+`field.json`:
+
+| key | type | rule |
+|---|---|---|
+| `generated_at` | ISO-8601 UTC | run stamp |
+| `layout.version` | int ≥ 1 | record layout version; the page refuses any other |
+| `layout.record_bytes` | int | 22 for v1 |
+| `layout.epoch` | date | `1999-01-01`; every day field counts from here |
+| `layout.no_score` / `layout.no_epss` | int | sentinels 255 / 65535 |
+| `layout.status_codes` | list[8] | NVD vulnStatus names, index = flag bits 3-5 |
+| `bin` | str | record-stream filename (`cves.bin.gz`) |
+| `n` | int ≥ 1 | records placed (PUBLISHED, dated on/after epoch) |
+| `first_day`, `last_day` | int | day range of the placed records |
+| `counts.kev/poc/scored/epss` | int ≤ n | join tallies |
+| `cnas` | list | assignerShortName by descending volume (u16 index) |
+| `vendors` | list | `["other", …]`, top 1023 first-affected vendors (u16 index) |
+| `skipped.rejected`, `skipped.undated` | int | records not placed |
+| `raw_bytes` | int | must equal `n × record_bytes` |
+| `bin_bytes` | int | gzipped size |
+| `sources` | object | cvelist release, KEV version/count, EPSS model/date, NVD fetch stamp or null, PoC CVE count |
+
+Record layout v1 (little-endian, 22 bytes): u16 ID year · u32 ID sequence ·
+u16 datePublished day · u8 score×10 · u8 CVSS family (0/2/3/4) · u16
+EPSS×10000 · u16 CNA index · u16 CWE number · u16 vendor index · u16 KEV
+dateAdded day (0 = not in KEV) · u8 flags (bit0 KEV, bit1 ransomware, bit2
+public PoC, bits3-5 NVD status code) · u8 reserved. Score precedence is
+`CveFacts.effective_score` (newest family anywhere in the record, CNA before
+ADP within a family). Rows are sorted by (ID year, sequence).

@@ -52,11 +52,52 @@ def load_csv() -> list[dict]:
 
 
 def test_catalog_day_counts_split_cleanly():
-    # methodology: reset nights are "logged flagged and excluded from every
-    # trend" — days_observed splits exactly into trend nights + resets.
+    # methodology: reset, pooled and lurch nights are "quarantined ... and
+    # listed with a reason" — days_observed splits exactly into trend
+    # nights + the named quarantined nights, and the per-reason counts add
+    # up to the list.
     cat = load_obj()["catalog"]
-    assert cat["trend_days"] + cat["resets_quarantined"] == \
-        cat["days_observed"]
+    assert cat["trend_days"] + len(cat["quarantined"]) == cat["days_observed"]
+    assert (cat["resets_quarantined"] + cat["gaps_quarantined"]
+            + cat["anomalies_quarantined"]) == len(cat["quarantined"])
+
+
+def test_anomaly_rule_matches_the_copy():
+    # hero methodology: "more than five times the clean-night median (and
+    # above five percent)" — the numbers in the copy are the builder's.
+    cat = load_obj()["catalog"]
+    assert cat["anomaly_rule"] == {"factor": 5.0, "min_share_pct": 5.0,
+                                   "min_nights": 5}
+
+
+def test_no_trend_night_is_a_lurch():
+    # churn caption: lurch nights "are quarantined from these bars" — so no
+    # night left in the trend exceeds the rule's cutoff over the trend's own
+    # median (judged only once the rule has its baseline).
+    gap = load_obj()["gap"]
+    shares = sorted(d["prob_moved"] for d in gap["days"])
+    if len(shares) < 5:
+        pytest.skip("fewer than five trend nights — the rule has no baseline")
+    mid = len(shares) // 2
+    median = shares[mid] if len(shares) % 2 else \
+        (shares[mid - 1] + shares[mid]) / 2
+    assert max(shares) <= max(5.0 * median, 5.0)
+
+
+def test_material_crossings_are_vanishingly_rare():
+    # churn caption: "material crossings are vanishingly rare" set against
+    # the percentile churn — over the trend, crossings of any line are
+    # under one percent of percentile moves.
+    d = load_obj()
+    cat = d["catalog"]
+    if not d["gap"]["days"]:
+        pytest.skip("gap gate closed — nothing charted yet")
+    trend_dates = {x["date"] for x in d["gap"]["days"]}
+    pct_moves = sum(int(r["pct_moved"]) for r in load_csv()
+                    if r["observed_date"] in trend_dates)
+    crossings = sum(cat["crossed_totals"].values())
+    assert pct_moves > 0
+    assert crossings / pct_moves < 0.01
 
 
 def test_gap_gate_fires_consistently():
@@ -110,7 +151,14 @@ def test_json_and_csv_agree_on_the_record():
     rows = load_csv()
     cat = d["catalog"]
     assert cat["days_observed"] == len(rows)
-    assert cat["trend_days"] == sum(1 for r in rows if r["reset"] != "1")
+    quarantined = {q["date"] for q in cat["quarantined"]}
+    assert cat["trend_days"] == sum(1 for r in rows
+                                    if r["observed_date"] not in quarantined)
+    # every reset flagged on the log is a quarantined night, by that name
+    for r in rows:
+        if r["reset"] == "1":
+            assert any(q["date"] == r["observed_date"] and q["reason"] == "reset"
+                       for q in cat["quarantined"])
     if rows:
         assert cat["first_observed"] == min(r["observed_date"] for r in rows)
     else:

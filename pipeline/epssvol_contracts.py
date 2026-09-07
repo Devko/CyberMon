@@ -33,6 +33,12 @@ WEEK_RE = re.compile(r"^\d{4}-W\d{2}$")
 # on, independently of the builder.
 THRESHOLDS = {"lo": 0.001, "mid": 0.01, "hi": 0.05}
 
+# Must match epss_volatility.QUARANTINE_REASONS / ANOMALY_* — hardcoded for
+# the same reason: the copy says "five times the clean-night median, above
+# five percent", and the contract is what holds the builder to it.
+QUARANTINE_REASONS = ("reset", "gap", "anomaly")
+ANOMALY_RULE = {"factor": 5.0, "min_share_pct": 5.0, "min_nights": 5}
+
 
 def _check_prob(v: Any, path: str) -> None:
     """An EPSS probability/percentile in [0, 1], at most 5 decimals."""
@@ -71,14 +77,46 @@ def _validate_epss_volatility(obj: Any) -> None:
                "epss_volatility.catalog.state_size")
     days_observed = _get(catalog, "days_observed", "epss_volatility.catalog")
     trend_days = _get(catalog, "trend_days", "epss_volatility.catalog")
-    resets = _get(catalog, "resets_quarantined", "epss_volatility.catalog")
     _check_int(days_observed, "epss_volatility.catalog.days_observed")
     _check_int(trend_days, "epss_volatility.catalog.trend_days")
-    _check_int(resets, "epss_volatility.catalog.resets_quarantined")
-    if trend_days + resets != days_observed:
+    by_reason = {}
+    for reason in QUARANTINE_REASONS:
+        key = f"{reason}s_quarantined" if reason != "anomaly" \
+            else "anomalies_quarantined"
+        by_reason[reason] = _get(catalog, key, "epss_volatility.catalog")
+        _check_int(by_reason[reason], f"epss_volatility.catalog.{key}")
+    quarantined = _check_list(
+        _get(catalog, "quarantined", "epss_volatility.catalog"),
+        "epss_volatility.catalog.quarantined")
+    if trend_days + len(quarantined) != days_observed:
         _fail("epss_volatility.catalog",
-              f"trend_days ({trend_days}) + resets_quarantined ({resets}) "
-              f"must equal days_observed ({days_observed})")
+              f"trend_days ({trend_days}) + quarantined nights "
+              f"({len(quarantined)}) must equal days_observed "
+              f"({days_observed})")
+    seen = {reason: 0 for reason in QUARANTINE_REASONS}
+    q_dates = []
+    for i, q in enumerate(quarantined):
+        path = f"epss_volatility.catalog.quarantined[{i}]"
+        dt = _get(q, "date", path)
+        _check_str(dt, f"{path}.date", DATE_RE)
+        q_dates.append(dt)
+        reason = _get(q, "reason", path)
+        if reason not in QUARANTINE_REASONS:
+            _fail(f"{path}.reason", f"unknown reason {reason!r}")
+        seen[reason] += 1
+        _check_num(_get(q, "prob_moved_pct", path), f"{path}.prob_moved_pct",
+                   0.0, 100.0)
+    _check_sorted(q_dates, "epss_volatility.catalog.quarantined (by date)")
+    if len(set(q_dates)) != len(q_dates):
+        _fail("epss_volatility.catalog.quarantined", "duplicate dates")
+    if seen != by_reason:
+        _fail("epss_volatility.catalog",
+              f"per-reason counts {by_reason} must match the quarantined "
+              f"list {seen}")
+    rule = _get(catalog, "anomaly_rule", "epss_volatility.catalog")
+    if rule != ANOMALY_RULE:
+        _fail("epss_volatility.catalog.anomaly_rule",
+              f"must equal {ANOMALY_RULE} (the copy states these numbers)")
     totals = _get(catalog, "crossed_totals", "epss_volatility.catalog")
     if set(totals) != {"lo", "mid", "hi"}:
         _fail("epss_volatility.catalog.crossed_totals",

@@ -23,10 +23,10 @@
    },
    {
     "week": "2026-W31",
-    "crossed_lo": 110,
-    "crossed_mid": 212,
-    "crossed_hi": 47,
-    "days": 6
+    "crossed_lo": 103,
+    "crossed_mid": 161,
+    "crossed_hi": 34,
+    "days": 5
    },
    {
     "week": "2026-W32",
@@ -44,32 +44,32 @@
    },
    {
     "week": "2026-W34",
-    "crossed_lo": 55,
-    "crossed_mid": 3229,
-    "crossed_hi": 1057,
-    "days": 7
+    "crossed_lo": 47,
+    "crossed_mid": 228,
+    "crossed_hi": 81,
+    "days": 6
    },
    {
     "week": "2026-W35",
-    "crossed_lo": 306,
-    "crossed_mid": 9443,
-    "crossed_hi": 3037,
-    "days": 5
+    "crossed_lo": 17,
+    "crossed_mid": 91,
+    "crossed_hi": 13,
+    "days": 2
    },
    {
     "week": "2026-W36",
-    "crossed_lo": 96,
-    "crossed_mid": 6216,
-    "crossed_hi": 1982,
-    "days": 7
+    "crossed_lo": 47,
+    "crossed_mid": 185,
+    "crossed_hi": 24,
+    "days": 5
    }
   ]
  },
  "gap": {
   "min_days": 3,
-  "trend_days": 48,
-  "prob_moved_pct": 2.6,
-  "pct_moved_pct": 97.5,
+  "trend_days": 41,
+  "prob_moved_pct": 1.0,
+  "pct_moved_pct": 97.3,
   "days": [
    {
     "date": "2026-07-18",
@@ -140,11 +140,6 @@
     "date": "2026-07-31",
     "prob_moved": 0.9,
     "pct_moved": 98.1
-   },
-   {
-    "date": "2026-08-02",
-    "prob_moved": 1.5,
-    "pct_moved": 96.8
    },
    {
     "date": "2026-08-03",
@@ -247,16 +242,6 @@
     "pct_moved": 95.4
    },
    {
-    "date": "2026-08-23",
-    "prob_moved": 12.0,
-    "pct_moved": 98.9
-   },
-   {
-    "date": "2026-08-24",
-    "prob_moved": 15.6,
-    "pct_moved": 100.0
-   },
-   {
     "date": "2026-08-25",
     "prob_moved": 1.0,
     "pct_moved": 98.0
@@ -265,16 +250,6 @@
     "date": "2026-08-26",
     "prob_moved": 1.1,
     "pct_moved": 99.2
-   },
-   {
-    "date": "2026-08-29",
-    "prob_moved": 14.0,
-    "pct_moved": 99.4
-   },
-   {
-    "date": "2026-08-30",
-    "prob_moved": 11.8,
-    "pct_moved": 99.3
    },
    {
     "date": "2026-08-31",
@@ -300,16 +275,6 @@
     "date": "2026-09-04",
     "prob_moved": 1.2,
     "pct_moved": 98.9
-   },
-   {
-    "date": "2026-09-05",
-    "prob_moved": 11.9,
-    "pct_moved": 99.2
-   },
-   {
-    "date": "2026-09-06",
-    "prob_moved": 11.7,
-    "pct_moved": 99.6
    }
   ]
  },
@@ -322,13 +287,6 @@
     "old": 0.01569,
     "new": 0.8813,
     "delta": 0.86561
-   },
-   {
-    "cve": "CVE-2026-48908",
-    "observed_date": "2026-08-24",
-    "old": 0.8813,
-    "new": 0.14824,
-    "delta": -0.73306
    },
    {
     "cve": "CVE-2026-42897",
@@ -357,41 +315,6 @@
     "old": 0.12685,
     "new": 0.69969,
     "delta": 0.57284
-   },
-   {
-    "cve": "CVE-2016-3251",
-    "observed_date": "2026-08-23",
-    "old": 0.58073,
-    "new": 0.03429,
-    "delta": -0.54644
-   },
-   {
-    "cve": "CVE-2016-3251",
-    "observed_date": "2026-08-29",
-    "old": 0.58073,
-    "new": 0.03429,
-    "delta": -0.54644
-   },
-   {
-    "cve": "CVE-2016-3251",
-    "observed_date": "2026-08-30",
-    "old": 0.03429,
-    "new": 0.58073,
-    "delta": 0.54644
-   },
-   {
-    "cve": "CVE-2016-3251",
-    "observed_date": "2026-09-05",
-    "old": 0.58073,
-    "new": 0.03429,
-    "delta": -0.54644
-   },
-   {
-    "cve": "CVE-2016-3251",
-    "observed_date": "2026-09-06",
-    "old": 0.03429,
-    "new": 0.58073,
-    "delta": 0.54644
    },
    {
     "cve": "CVE-2026-0770",
@@ -455,6 +378,48 @@
     "old": 0.31809,
     "new": 0.62381,
     "delta": 0.30572
+   },
+   {
+    "cve": "CVE-2025-6389",
+    "observed_date": "2026-08-04",
+    "old": 0.44442,
+    "new": 0.73089,
+    "delta": 0.28647
+   },
+   {
+    "cve": "CVE-2025-22037",
+    "observed_date": "2026-07-30",
+    "old": 0.37115,
+    "new": 0.65736,
+    "delta": 0.28621
+   },
+   {
+    "cve": "CVE-2025-49132",
+    "observed_date": "2026-07-28",
+    "old": 0.13105,
+    "new": 0.40019,
+    "delta": 0.26914
+   },
+   {
+    "cve": "CVE-2026-48710",
+    "observed_date": "2026-09-04",
+    "old": 0.11042,
+    "new": 0.36257,
+    "delta": 0.25215
+   },
+   {
+    "cve": "CVE-2026-34908",
+    "observed_date": "2026-08-11",
+    "old": 0.61906,
+    "new": 0.85194,
+    "delta": 0.23288
+   },
+   {
+    "cve": "CVE-2026-48284",
+    "observed_date": "2026-08-06",
+    "old": 0.28002,
+    "new": 0.04895,
+    "delta": -0.23107
    }
   ]
  },
@@ -463,12 +428,56 @@
   "state_score_date": "2026-09-06",
   "state_size": 368634,
   "days_observed": 48,
-  "trend_days": 48,
+  "trend_days": 41,
   "resets_quarantined": 0,
+  "gaps_quarantined": 1,
+  "anomalies_quarantined": 6,
+  "anomaly_rule": {
+   "factor": 5.0,
+   "min_share_pct": 5.0,
+   "min_nights": 5
+  },
+  "quarantined": [
+   {
+    "date": "2026-08-02",
+    "reason": "gap",
+    "prob_moved_pct": 1.5
+   },
+   {
+    "date": "2026-08-23",
+    "reason": "anomaly",
+    "prob_moved_pct": 12.0
+   },
+   {
+    "date": "2026-08-24",
+    "reason": "anomaly",
+    "prob_moved_pct": 15.6
+   },
+   {
+    "date": "2026-08-29",
+    "reason": "anomaly",
+    "prob_moved_pct": 14.0
+   },
+   {
+    "date": "2026-08-30",
+    "reason": "anomaly",
+    "prob_moved_pct": 11.8
+   },
+   {
+    "date": "2026-09-05",
+    "reason": "anomaly",
+    "prob_moved_pct": 11.9
+   },
+   {
+    "date": "2026-09-06",
+    "reason": "anomaly",
+    "prob_moved_pct": 11.7
+   }
+  ],
   "crossed_totals": {
-   "lo": 893,
-   "mid": 20020,
-   "hi": 6367
+   "lo": 540,
+   "mid": 1585,
+   "hi": 396
   },
   "first_observed": "2026-07-18"
  }

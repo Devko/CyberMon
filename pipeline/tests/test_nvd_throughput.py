@@ -180,12 +180,25 @@ def test_csv_round_trip_preserves_published_median(tmp_path):
     assert nvd_throughput.read_rows(path) == [row]
 
 
-def test_same_date_last_run_wins():
-    rows = [_row("2026-07-08"), _row("2026-07-09")]
-    replacement = _row("2026-07-09", received_new=99)
-    merged = nvd_throughput.merge_row(rows, replacement)
+def test_same_date_rows_sum_their_flow():
+    # A second run on one date diffs against the already-advanced state, so
+    # its counts are the flow SINCE the first run: the day's row is the sum,
+    # never the replacement (the 2026-08-30 lesson).
+    rows = [_row("2026-07-08"), _row("2026-07-09", received_new=617,
+                                     entered_awaiting=584)]
+    later = _row("2026-07-09", received_new=2, entered_awaiting=0)
+    later["n_known_duration"] = 5774
+    later["median_queue_days"] = 4.5
+    merged = nvd_throughput.merge_row(rows, later)
     assert [r["date"] for r in merged] == ["2026-07-08", "2026-07-09"]
-    assert merged[-1]["received_new"] == 99
+    assert merged[-1]["received_new"] == 619
+    assert merged[-1]["entered_awaiting"] == 584
+    assert merged[-1]["n_known_duration"] == 5774   # cumulative: newest wins
+    assert merged[-1]["median_queue_days"] == 4.5
+    assert merged[-1]["resweep"] == 0
+    # a resweep on either run marks the day
+    rows2 = [_row("2026-07-09", resweep=1)]
+    assert nvd_throughput.merge_row(rows2, _row("2026-07-09"))[0]["resweep"] == 1
 
 
 def test_missing_file_reads_empty_and_malformed_rows_fail_loudly(tmp_path):

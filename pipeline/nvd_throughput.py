@@ -210,10 +210,26 @@ def read_rows(path: Path) -> list[dict]:
 
 
 def merge_row(rows: list[dict], row: dict) -> list[dict]:
-    """Pure merge, no I/O: insert ``row`` (replacing any existing row with
-    the same date — last run per date wins) sorted ascending by date."""
+    """Pure merge, no I/O: insert ``row`` sorted ascending by date.
+
+    Unlike ``nvd_backlog.csv`` (absolute snapshots, where the last run per
+    date rightly wins), every throughput row is a DIFF between two states.
+    A second successful run on the same date diffs against the state the
+    first run already advanced, so it sees only the flow since that run —
+    replacing the earlier row would erase the transitions it recorded (it
+    did, on 2026-08-30: 617/584/336/256 became 2/0/0/0 after a manual
+    re-dispatch). Same-date rows therefore SUM their four flow counts; the
+    cumulative fields (median, n_known) and the resweep flag come from the
+    newer run, which by construction has seen everything the older one did.
+    """
     merged = [r for r in rows if r["date"] != row["date"]]
-    merged.append(dict(row))
+    new = dict(row)
+    for prev in rows:
+        if prev["date"] == row["date"]:
+            for col in _COUNT_COLUMNS:
+                new[col] = prev[col] + row[col]
+            new["resweep"] = int(prev["resweep"] or row["resweep"])
+    merged.append(new)
     merged.sort(key=lambda r: r["date"])
     return merged
 

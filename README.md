@@ -269,17 +269,24 @@ live backlog is read client-side for scale, never a fabricated trend.
 CVEs every night as the growing corpus re-ranks — while the model's actual
 probability holds for nearly all of them.* Every night CyberMon fingerprints
 the EPSS feed it already fetches (each CVE's probability and percentile) and
-diffs it against the previous night's committed fingerprint
-(`site/data/history/epss_volatility_state.json.gz`, beside the log so the two
-can never drift apart). One aggregate row per snapshot appends to a
+diffs it against the previous night's fingerprint (a cache in
+`.cache/epss_volatility_state.json.gz`, restored by actions/cache and saved
+only on a green run — it was committed until 2026-09-07, when a 2.6 MB gzip
+rewritten nightly had become ~90% of the repository; a lost cache costs one
+baseline night, never a row of the log). One aggregate row per snapshot appends to a
 committed, append-only daily log (`site/data/history/epss_volatility.csv`):
 how many compared CVEs had their percentile move versus their probability
 move, how many crossed the material thresholds (0.1% / 1% / 5%), and the
 day's single biggest probability mover. Three charts: the headline gap
 (percentile churn against probability churn), weekly material crossings, and
-a biggest-single-day movers board. Model-version reset shocks — a new model
-rescoring the whole corpus overnight — are quarantined from every trend, the
-same treatment Silent Rescores gives its seeding. **No upstream keeps a
+a biggest-single-day movers board. Three kinds of night are quarantined from
+every trend and named with their reason in the data file: model-version
+resets (a new model rescoring the whole corpus overnight — the treatment
+Silent Rescores gives its seeding), pooled nights (a diff spanning more than
+one snapshot because the nights between failed), and whole-corpus lurches (a
+night on which more than five times the clean-night median share of
+probabilities moved, and moved back — three of them in August 2026 supplied
+nine in ten of every material crossing on record until this rule existed). **No upstream keeps a
 per-CVE EPSS change log, so the record starts at first deploy — thin by
 design, deeper every night.** Distinct from the EPSS Report Card (module
 10), which grades the model's accuracy; this measures its stability. Honest
@@ -382,6 +389,39 @@ deliberately **never plotted**: they come from private incident corpora and
 are not reproducible here, so they live in the repo as attributed prose
 (`ai_timeline_data.EXTERNAL_CONTEXT`) and a unit test asserts they never
 reach the payload. Stage `pipeline/ai_metrics.py`; no new upstream.
+
+## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument, draft)
+
+*Every published CVE, one point each.* A WebGL instrument, deliberately not
+a module: it has no charts, no claims guards and no nav entry (so the
+carousel and motion pipelines never see it). It places the whole cvelistV5
+corpus — ~350k published records — in one space and lets a reader arrange
+it by the site's own theses:
+
+- **Timeline** — publication day × in-record CVSS score × EPSS as depth
+  (log scale; unscored records on the floor, un-EPSS'd records in the back
+  lane), with a year scrub that plays the corpus filling up.
+- **Score vs. reality** — chart 3's CVSS × EPSS grid as piles.
+- **By assigner** (top 48 CNAs), **by weakness** (top 30 CWEs), **by NVD
+  queue status** — pile height is the base score; each pile carries its KEV
+  count.
+
+Colour by exploitation (KEV / public PoC / neither), severity, CVSS version
+or assigner; filter by year, minimum score, KEV, PoC, ransomware use,
+assigner and vendor; hover for the record, click to open it on cve.org.
+
+Its data is `site/field/field.json` plus a gzipped fixed-width record
+stream (22 bytes per CVE, layout documented in
+`pipeline/field_export.py` and mirrored in `site/js/field.js`), built by
+`python -m pipeline --field-out site/field` from the **same streaming
+corpus pass** every module uses (an observer on `Aggregator.consume`), so
+it can never disagree with the charts about a record's score, CNA or CWE.
+`site/field/` is gitignored: a multi-megabyte blob that changes nightly
+must never enter git history. The nightly builds it into the Pages
+artifact and publishes it as a workflow artifact (`field-latest`); ci.yml's
+push-triggered deploy downloads that so a site-only push ships a complete
+site. A checkout without it renders a "not built here" notice, not an
+error.
 
 ## Architecture
 

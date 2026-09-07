@@ -604,9 +604,15 @@ def run(args: argparse.Namespace) -> int:
     # rescore_tracker pattern). The merged rows and tonight's state come back
     # UNWRITTEN — persisted below, only after every output validates, so a
     # failed run never records tonight's snapshot as diffed.
+    # The fingerprint state is a CACHE (the NVD sync-state pattern), never
+    # committed: it re-ranks wholesale nightly and was 90% of the repository
+    # while it lived in site/data/history. Offline runs keep it beside the
+    # output so a fixture run can never seed or read the live cache.
+    epssvol_state_dir = (args.out / "history" if args.offline_fixtures
+                         else args.cache_dir)
     epssvol_obj, epssvol_source, epssvol_rows, epssvol_state = \
         epss_volatility.run_stage(
-            args.out, epss, generated_at,
+            args.out, epss, generated_at, state_dir=epssvol_state_dir,
             offline_fixtures=args.offline_fixtures,
             fixtures_dir=FIXTURES_DIR)
     outputs["epss_volatility.json"] = epssvol_obj
@@ -733,7 +739,8 @@ def run(args: argparse.Namespace) -> int:
     # EPSS Volatility daily log + committed fingerprint state — same
     # deferred discipline: the irreplaceable per-CVE EPSS churn record and
     # its diffing state travel in one validated commit.
-    epss_volatility.persist(args.out, epssvol_rows, epssvol_state)
+    epss_volatility.persist(args.out, epssvol_rows, epssvol_state,
+                            state_dir=epssvol_state_dir)
     cna_roster.persist(args.out, roster_pending)
     botnet_metrics.persist(args.out, botnet_rows)
     for name, obj in outputs.items():

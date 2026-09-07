@@ -21,9 +21,23 @@ export function render(slots, data) {
   // renders instead. Thin is a fact, not a bug.
   const noteEl = slots.panel.querySelector(".panel-note");
   if (noteEl) {
-    noteEl.textContent = first
-      ? tpl(ed.note, { first_date: first })
-      : ed.noteEmpty;
+    let note = first ? tpl(ed.note, { first_date: first }) : ed.noteEmpty;
+    // Quarantined nights (reset / pooled / lurch) are named in the catalog;
+    // say how many and why, so the trend's denominator is never a mystery.
+    const q = data.catalog.quarantined ?? [];
+    if (q.length) {
+      const counts = {};
+      for (const entry of q) counts[entry.reason] = (counts[entry.reason] ?? 0) + 1;
+      const label = { reset: "model reset", gap: "pooled", anomaly: "lurch" };
+      note += tpl(ed.noteQuarantined, {
+        n: fmtInt(q.length),
+        days: fmtInt(data.catalog.days_observed),
+        reasons: Object.entries(counts)
+          .map(([r, n]) => `${fmtInt(n)} ${label[r] ?? r}`)
+          .join(", "),
+      });
+    }
+    noteEl.textContent = note;
   }
 
   if (gap.prob_moved_pct === null) {

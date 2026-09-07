@@ -167,6 +167,22 @@ jobs:
           restore-keys: |
             epss-report-state-
 
+      # EPSS-volatility fingerprint state (last night's per-CVE probability
+      # and percentile). Lived in site/data/history until 2026-09-07: a
+      # 2.6 MB gzip rewritten nightly that git cannot delta, it had become
+      # ~90% of the repository. It is a cache by the module's own definition
+      # — a miss costs exactly one night's diff (that night is a baseline;
+      # the committed epss_volatility.csv is untouched). actions/cache saves
+      # only when the job succeeds, so a night that fails the claims gate
+      # below never advances it — the same guarantee the committed file gave.
+      - name: Restore EPSS-volatility fingerprint state
+        uses: actions/cache@v4
+        with:
+          path: .cache/epss_volatility_state.json.gz
+          key: epss-volatility-state-${{ github.run_id }}
+          restore-keys: |
+            epss-volatility-state-
+
       # NOTE: the silent-rescores diff state deliberately has NO cache
       # entry here — it is committed at site/data/history/rescore_state.json
       # next to its append-only log (an actions/cache copy once restored a
@@ -181,7 +197,10 @@ jobs:
           # Optional; the pipeline tolerates an empty value and falls
           # back to slower keyless NVD paging.
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: python -m pipeline --out site/data
+        # --field-out builds the Field (site/field.html's per-CVE record
+        # stream) from the same corpus pass. It lands in the gitignored
+        # site/field/ and ships only inside the Pages artifact below.
+        run: python -m pipeline --out site/data --field-out site/field
 
       # The gate that stops a drifted claim from shipping. contracts.py
       # already validates every output's structure in-pipeline, but the
@@ -298,6 +317,19 @@ jobs:
               --label nightly-failure \
               --body "$body"
           fi
+
+      # The Field's record stream is a build product like the PDFs and
+      # clips: never committed (a multi-MB blob that changes nightly would
+      # bloat history), so ci.yml's push-triggered deploy downloads this
+      # artifact to ship a site without a hole in it. Non-blocking.
+      - name: Publish the Field for push-triggered deploys
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: field-latest
+          path: site/field
+          retention-days: 7
+          if-no-files-found: warn
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

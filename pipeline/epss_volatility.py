@@ -31,23 +31,48 @@ What each daily row records (the diff of the CVEs present on BOTH nights):
   absolute probability move, for the MOVERS board (when the model actually
   changes its mind, here is how far).
 
-Model-version reset shocks are QUARANTINED, the way Silent Rescores
-quarantines its seeding and KEV Latency quarantines its launch batch: when
-the feed's ``model_version`` changes, a new model rescores the entire
-corpus overnight, so ~everything "moves" for a reason that has nothing to
-do with any one CVE. That night's row is written for the audit trail with
-``reset`` set, and every trend (churn weeks, gap, movers, totals) excludes
-reset rows. Only ``catalog.resets_quarantined`` counts them.
+Three kinds of night are QUARANTINED from every trend (churn weeks, gap,
+movers, totals), the way Silent Rescores quarantines its seeding and KEV
+Latency its launch batch. All three stay on the log for the audit trail and
+are named, with their reason, in ``catalog.quarantined``:
 
-State (``site/data/history/epss_volatility_state.json.gz``, COMMITTED next
-to the log — the rescore_state.json / kev_state.json pattern, gzipped
-(the map re-ranks nightly, so it can't be git-delta'd), atomic tmp+replace): ``{"model_version", "score_date", "last_observed",
-"fingerprints": {cve: [prob, percentile|null]}}``. State and log persist
-together after validation (via :func:`persist`), so a failed run records
-neither, and the two can never diverge. Same-snapshot guard: when tonight's
-EPSS ``score_date`` equals the state's, the snapshot was already diffed and
-the diff is skipped; the merge-by-date write makes a genuine re-run
-idempotent regardless (last run per date wins).
+* **reset** — the feed's ``model_version`` changed: a new model rescores
+  the entire corpus overnight, so ~everything "moves" for a reason that has
+  nothing to do with any one CVE. Flagged on the row at diff time
+  (``reset``); its top mover is suppressed.
+* **gap** — the row pools more than one snapshot: the previous logged row
+  is more than a day older (failed nights in between), so the diff covers
+  several nights and cannot sit in a per-night series. Classified at build
+  time from the log itself (:func:`classify`).
+* **anomaly** — a whole-corpus lurch with no model change: the share of
+  compared CVEs whose probability moved exceeds
+  :data:`ANOMALY_FACTOR` × the median share of the clean nights (and
+  :data:`ANOMALY_MIN_SHARE` in absolute terms). Three such nights in
+  August 2026 — 12–16 % of the corpus moved and moved back, the same CVE
+  flip-flopping with identical old/new pairs — supplied nine in ten of
+  every material crossing on record until this rule existed. A feed
+  glitch is not the model changing its mind. Classified at build time, so
+  the rule applies to the whole committed log, retroactively and
+  reproducibly, with no schema change. Needs :data:`ANOMALY_MIN_NIGHTS`
+  clean nights before it judges anything.
+
+State (``{"model_version", "score_date", "last_observed", "fingerprints":
+{cve: [prob, percentile|null]}}``) lives in the pipeline CACHE DIRECTORY
+(``.cache/epss_volatility_state.json.gz``, actions/cache in CI — the NVD
+sync-state pattern), gzipped, atomic tmp+replace. It is a cache, not a
+record: the percentile map re-ranks wholesale every night, so committing
+it added ~2.6 MB of undeltable history per night (90 % of the repository
+after six weeks). A lost state costs at most one night's diff — the next
+run is a baseline night — and the committed CSV is never touched by that.
+State and log persist together after validation (via :func:`persist`), so
+a failed run records neither; CI's cache is saved only when the job
+succeeds, which gives the same guarantee across the claims gate. Offline
+fixture runs keep the state beside the output instead, so a test run can
+never seed or read a live cache. Same-snapshot guard: when tonight's EPSS
+``score_date`` equals the state's, the snapshot was already diffed and the
+diff is skipped; the merge-by-date write makes a genuine re-run idempotent
+regardless (last run per date wins — a repeat diff of the same two
+snapshots is the same row, unlike NVD throughput's flow rows).
 
 Honesty caveat, stated in the copy and the docs: the moat here is softer
 than the KEV changelog's. FIRST's daily EPSS snapshots ARE publicly
@@ -87,6 +112,17 @@ _INT_COLUMNS = ("n_scored", "n_compared", "prob_moved", "pct_moved",
                 "crossed_lo", "crossed_mid", "crossed_hi")
 
 STATE_FILENAME = "epss_volatility_state.json.gz"
+
+# Anomaly quarantine (see the module docstring): a night whose share of
+# compared CVEs with a moved probability is more than ANOMALY_FACTOR times
+# the median share of the clean nights AND at least ANOMALY_MIN_SHARE
+# percent. Clean nights run ~1 %; the August-2026 lurches ran 12–16 %.
+# Judged only once ANOMALY_MIN_NIGHTS clean nights exist — a median of two
+# is not a baseline. Contract and docs mirror these verbatim.
+ANOMALY_FACTOR = 5.0
+ANOMALY_MIN_SHARE = 5.0
+ANOMALY_MIN_NIGHTS = 5
+QUARANTINE_REASONS = ("reset", "gap", "anomaly")
 # The offline prior-night seed is a small hand-written fixture, kept
 # uncompressed for readability; the committed OUTPUT state is gzipped.
 FIXTURE_STATE_FILENAME = "epss_volatility_state.json"
@@ -167,23 +203,24 @@ def diff_day(old_fps: Mapping[str, list], new_scores: Mapping[str, float],
 
 # -------------------------------------------------------------------- state
 
-def state_path(out_dir: Path) -> Path:
-    """Committed next to the log (the rescore_state.json pattern): state and
-    log travel in the same nightly data commit and cannot diverge."""
-    return out_dir / "history" / STATE_FILENAME
+def state_path(state_dir: Path) -> Path:
+    """The fingerprint state inside ``state_dir`` — the pipeline cache
+    directory for live runs (never committed; see the module docstring),
+    ``<out>/history`` for offline fixture runs."""
+    return state_dir / STATE_FILENAME
 
 
 def csv_path(out_dir: Path) -> Path:
     return out_dir / "history" / CSV_FILENAME
 
 
-def load_state(out_dir: Path, log: Callable[[str], None] = print
+def load_state(state_dir: Path, log: Callable[[str], None] = print
                ) -> dict | None:
-    """Committed EPSS fingerprint state, or None when absent/unreadable/
+    """Cached EPSS fingerprint state, or None when absent/unreadable/
     misshapen (the stage then treats tonight as a baseline and logs zero
     rows — a lost state costs at most one night's diff; the committed log is
     the record and is never touched by the rebuild)."""
-    path = state_path(out_dir)
+    path = state_path(state_dir)
     if not path.exists():
         return None
     try:
@@ -219,10 +256,7 @@ def make_state(epss: EpssData) -> dict:
 def write_state(path: Path, state: dict) -> None:
     """Atomic tmp+replace (the rescore_state.json pattern); compact
     separators because the fingerprint map covers the whole EPSS corpus.
-    Gzipped with a zeroed mtime (identical state -> identical bytes): unlike
-    the rescore fingerprints, the EPSS percentile map re-ranks nightly, so
-    it churns wholesale and git cannot delta it between commits —
-    compression is the only lever, and it cuts the committed file ~4x."""
+    Gzipped with a zeroed mtime (identical state -> identical bytes)."""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(path.name + ".tmp")
     data = (json.dumps(state, sort_keys=True, separators=(",", ":"))
@@ -342,6 +376,46 @@ def _weekly_churn(rows: list[dict]) -> list[dict]:
     return weeks
 
 
+def classify(rows: list[dict]) -> list[str | None]:
+    """One quarantine reason per row (``None`` = a clean trend night), in
+    the rows' (date-sorted) order. Pure function of the log, so the same
+    committed CSV always yields the same trend; see the module docstring
+    for the three reasons. A row is judged in the order reset > anomaly >
+    gap, so a lurch that also pooled nights is named for the lurch."""
+    n = len(rows)
+    reasons: list[str | None] = [None] * n
+    span = [1] * n
+    for i in range(1, n):
+        span[i] = (date.fromisoformat(rows[i]["observed_date"])
+                   - date.fromisoformat(rows[i - 1]["observed_date"])).days
+    share = [_pct(r["prob_moved"], r["n_compared"]) for r in rows]
+    for i, r in enumerate(rows):
+        if r["reset"]:
+            reasons[i] = "reset"
+    # The baseline for "normal" is the median share of the nights that are
+    # neither resets nor pooled — a median, so a handful of lurches cannot
+    # drag it up to excuse themselves.
+    clean = sorted(share[i] for i in range(n)
+                   if reasons[i] is None and span[i] <= 1)
+    if clean:
+        mid = len(clean) // 2
+        median = (clean[mid] if len(clean) % 2
+                  else (clean[mid - 1] + clean[mid]) / 2)
+        cutoff = max(ANOMALY_FACTOR * median, ANOMALY_MIN_SHARE)
+        for i in range(n):
+            if reasons[i] is not None:
+                continue
+            # A night is judged only against at least MIN_NIGHTS OTHER
+            # baseline nights (it sits in the pool itself when unpooled).
+            others = len(clean) - (1 if span[i] <= 1 else 0)
+            if others >= ANOMALY_MIN_NIGHTS and share[i] > cutoff:
+                reasons[i] = "anomaly"
+    for i in range(n):
+        if reasons[i] is None and span[i] > 1:
+            reasons[i] = "gap"
+    return reasons
+
+
 def build_epss_volatility(rows: list[dict], *, state: dict | None,
                           generated_at: str, min_days: int = DEFAULT_MIN_DAYS,
                           min_delta: float = DEFAULT_MIN_DELTA,
@@ -361,10 +435,17 @@ def build_epss_volatility(rows: list[dict], *, state: dict | None,
     * ``movers`` — the biggest single-day probability moves on record
       (``>= min_delta``), ranked; fills as the record grows.
     * ``catalog`` — the audit block: state header + size, nights observed,
-      reset nights quarantined, per-band crossing totals, first observed
+      the quarantined nights by reason (reset / gap / anomaly, each named
+      with its date and share), per-band crossing totals, first observed
       date (null exactly when the log is empty).
     """
-    trend = [r for r in rows if not r["reset"]]
+    rows = sorted(rows, key=lambda r: r["observed_date"])
+    reasons = classify(rows)
+    trend = [r for r, why in zip(rows, reasons) if why is None]
+    quarantined = [{"date": r["observed_date"], "reason": why,
+                    "prob_moved_pct": _pct(r["prob_moved"], r["n_compared"])}
+                   for r, why in zip(rows, reasons) if why is not None]
+    by_reason = Counter(q["reason"] for q in quarantined)
     gated = len(trend) < min_days
 
     # ---- section 1: material churn per week --------------------------------
@@ -413,7 +494,13 @@ def build_epss_volatility(rows: list[dict], *, state: dict | None,
             "state_size": len((state or {}).get("fingerprints", {})),
             "days_observed": len(rows),
             "trend_days": len(trend),
-            "resets_quarantined": len(rows) - len(trend),
+            "resets_quarantined": by_reason["reset"],
+            "gaps_quarantined": by_reason["gap"],
+            "anomalies_quarantined": by_reason["anomaly"],
+            "anomaly_rule": {"factor": ANOMALY_FACTOR,
+                             "min_share_pct": ANOMALY_MIN_SHARE,
+                             "min_nights": ANOMALY_MIN_NIGHTS},
+            "quarantined": quarantined,
             "crossed_totals": crossed_totals,
             "first_observed": min((r["observed_date"] for r in rows),
                                   default=None),
@@ -423,8 +510,8 @@ def build_epss_volatility(rows: list[dict], *, state: dict | None,
 
 # --------------------------------------------------------------------- stage
 
-def persist(out_dir: Path, rows: list[dict], state: dict | None,
-            log: Callable[[str], None] = print) -> None:
+def persist(out_dir: Path, rows: list[dict], state: dict | None, *,
+            state_dir: Path, log: Callable[[str], None] = print) -> None:
     """Write the daily log and the fingerprint state — called by
     ``__main__.run()`` only after every pipeline output has validated (the
     rescore_tracker.persist discipline). State None means the log alone is
@@ -434,13 +521,14 @@ def persist(out_dir: Path, rows: list[dict], state: dict | None,
     log(f"  history: {len(rows)} EPSS-volatility day(s) in "
         f"{csv_path(out_dir)}")
     if state is not None:
-        write_state(state_path(out_dir), state)
+        write_state(state_path(state_dir), state)
         log(f"  epssvol: state covers {len(state['fingerprints'])} "
-            f"EPSS fingerprint(s) in {state_path(out_dir)}")
+            f"EPSS fingerprint(s) in {state_path(state_dir)}")
 
 
 def run_stage(out_dir: Path, epss: EpssData, generated_at: str, *,
-              offline_fixtures: bool, fixtures_dir: Path | None = None,
+              state_dir: Path, offline_fixtures: bool,
+              fixtures_dir: Path | None = None,
               min_days: int | None = None, min_delta: float | None = None,
               log: Callable[[str], None] = print
               ) -> tuple[dict, dict, list[dict], dict | None]:
@@ -476,7 +564,7 @@ def run_stage(out_dir: Path, epss: EpssData, generated_at: str, *,
                                     / "tests" / "fixtures")
 
     rows = read_events(csv_path(out_dir))
-    state = load_state(out_dir, log=log)
+    state = load_state(state_dir, log=log)
     if offline_fixtures and state is None:
         state = json.loads((fixtures_dir / FIXTURE_STATE_FILENAME)
                            .read_text(encoding="utf-8"))
