@@ -1,15 +1,15 @@
 name: Nightly data refresh
 
 # Runs the full pipeline against live sources, commits the refreshed
-# site/data/ (including the append-only history/nvd_backlog.csv and
-# history/nvd_throughput.csv, which CANNOT be regenerated), then deploys
-# the site to GitHub Pages.
-# site/data/ (including the append-only history/ CSVs — nvd_backlog.csv
-# and rescore_log.csv — which CANNOT be regenerated), then deploys the
-# site to GitHub Pages.
-# site/data/ (including the append-only history files — nvd_backlog.csv
-# and the KEV changelog's kev_changelog.csv + kev_state.json — which
-# CANNOT be regenerated), then deploys the site to GitHub Pages.
+# site/data/ (including the append-only history/ files — the NVD backlog
+# and throughput CSVs, the rescore log, the KEV changelog, the roster and
+# botnet snapshots — which CANNOT be regenerated for a missed night), then
+# deploys the site to GitHub Pages.
+
+# Least privilege by default; the jobs that write (contents, issues,
+# pages, id-token) declare exactly what they need.
+permissions:
+  contents: read
 
 on:
   schedule:
@@ -300,12 +300,16 @@ jobs:
         run: python3 tools/make_motion.py --out site/motion
 
       - name: Report social build-product failure (non-blocking)
+        continue-on-error: true
         if: steps.carousels.outcome == 'failure' || steps.carousel-deps.outcome == 'failure' || steps.carousel-browser.outcome == 'failure' || steps.motion.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
+          gh label create nightly-failure \
+            --description "The nightly data refresh is broken" \
+            --color D93F0B --force || true
           issue="$(gh issue list --label nightly-failure --state open \
             --json number --jq '.[0].number // empty')"
           body="Social build product failed — carousels=${{ steps.carousels.outcome }}, motion=${{ steps.motion.outcome }} (deploy proceeded without them): $RUN_URL"
@@ -386,6 +390,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
+      contents: read
       pages: write
       id-token: write
     # Shared with ci.yml's deploy job so the two workflows never race
@@ -400,6 +405,39 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # A committed-but-not-deployed night is the quietest failure of all: the
+  # repo looks fresh, the site is stale, resolve below skips because deploy
+  # did not succeed, and nothing opens an issue. This job does.
+  alert-deploy:
+    name: Report a failed Pages deploy
+    needs: [refresh, deploy]
+    if: ${{ always() && needs.deploy.result == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update the nightly-failure issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create nightly-failure \
+            --description "The nightly data refresh is broken" \
+            --color D93F0B --force || true
+          body="Nightly failed at the Pages deploy — data was committed but the site was NOT redeployed (it is serving the previous edition): $RUN_URL"
+          issue="$(gh issue list --label nightly-failure --state open \
+            --json number --jq '.[0].number // empty')"
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --body "$body"
+          else
+            gh issue create \
+              --title "Nightly data refresh is failing" \
+              --label nightly-failure \
+              --body "$body"
+          fi
 
   # A failure issue nobody closes stops being a signal. #25 was opened on
   # 2026-07-30 and stayed open through eight consecutive green nights, so

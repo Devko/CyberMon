@@ -8,6 +8,11 @@ name: CI
 # workflow does not re-run (and re-deploy) on top of the nightly's own
 # deployment.
 
+# Least privilege by default: the test jobs get a read-only token (their
+# dependencies are third-party code); deploy declares pages/id-token/actions.
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -31,7 +36,9 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-          cache-dependency-path: pipeline/requirements.txt
+          cache-dependency-path: |
+            pipeline/requirements.txt
+            pipeline/requirements-dev.txt
 
       - name: Install pipeline dependencies
         run: pip install -r pipeline/requirements.txt -r pipeline/requirements-dev.txt
@@ -89,6 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
+      contents: read
       pages: write
       id-token: write
       # For `gh run download` of the nightly's Field artifact (see below).
@@ -102,8 +110,13 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # main HEAD, not github.sha: this deploy queues behind the nightly's
+      # (shared concurrency group), and a push made while the pipeline ran
+      # would otherwise redeploy the pre-nightly data on top of tonight's.
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
