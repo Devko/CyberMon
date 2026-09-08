@@ -753,7 +753,8 @@ def run(args: argparse.Namespace) -> int:
     # validated module outputs already on disk.
     if field is not None:
         _write_field(args, field, generated_at, release=release, epss=epss,
-                     kev=kev, poc_ids=poc.all_ids, nvd_source=nvd_source)
+                     kev=kev, poc_ids=poc.all_ids,
+                     poc_dates=poc.first_poc_dates, nvd_source=nvd_source)
     return 0
 
 
@@ -775,7 +776,8 @@ def _field_nvd_statuses(args: argparse.Namespace) -> dict[str, str] | None:
 
 def _write_field(args: argparse.Namespace, field: field_export.FieldCollector,
                  generated_at: str, *, release: str, epss: EpssData,
-                 kev: KevData, poc_ids, nvd_source: dict | None) -> None:
+                 kev: KevData, poc_ids, poc_dates: dict[str, str],
+                 nvd_source: dict | None) -> None:
     print("building the Field ...")
     sources = {
         "cvelist": {"release": release},
@@ -784,12 +786,13 @@ def _write_field(args: argparse.Namespace, field: field_export.FieldCollector,
                  "score_date": epss.score_date},
         "nvd": ({"fetched_at": nvd_source.get("fetched_at")}
                 if nvd_source else None),
-        "poc": {"cve_count": len(poc_ids)},
+        "poc": {"cve_count": len(poc_ids), "dated": len(poc_dates)},
     }
     packed, meta = field_export.build(
         field, generated_at, epss_scores=epss.scores,
         kev_entries=kev.entries, poc_ids=poc_ids,
-        nvd_statuses=_field_nvd_statuses(args), sources=sources)
+        nvd_statuses=_field_nvd_statuses(args), sources=sources,
+        poc_dates=poc_dates)
     contracts.validate(field_export.META_NAME, meta)
     field_export.write(args.field_out, packed, meta)
     print(f"  {meta['n']} CVEs placed ({meta['skipped']['rejected']} rejected"

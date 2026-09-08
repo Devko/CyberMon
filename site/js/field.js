@@ -50,6 +50,16 @@ const ARRANGE = {
     thesis: "Where each record sits in NVD's queue tonight — the backlog the decay chart counts, one record at a time.",
     method: "vulnStatus from the nightly NVD sync (the same state the NVD decay and throughput charts diff). Unknown means NVD has no record of the id, or the NVD stage was skipped for this build.",
   },
+  clock: {
+    k: "The clock · publication → PoC → KEV",
+    thesis: "How long the record had. Front lane: days from publication to the first public proof of concept. Back lane: days to the KEV listing. Left of zero, the exploit came first.",
+    method: "Only records with a dated event are placed. x is the signed gap in days on a log scale (±10 years at the edges); y is the base score. PoC date is the earliest dated Exploit-DB or Metasploit entry (Nuclei publishes no dates); KEV date is CISA's dateAdded. A record with both sits in the KEV lane and the hover shows both gaps — the same joins the Time to PoC and KEV Latency modules use.",
+  },
+  vendor: {
+    k: "By vendor",
+    thesis: "Whose software. The forty-eight vendors carrying most of the selection, by the first affected vendor each record names.",
+    method: "Grouped by the CNA container's first affected[].vendor, lower-cased and whitespace-normalised; placeholder vendors (n/a, unknown) and records naming none fall into \"other\" and are not shown here. Vendor spelling is the record's own, so one company can appear under two names.",
+  },
 };
 
 const CWE_NAMES = {
@@ -86,13 +96,18 @@ const PAL = {
   sev: [col(C.sev.unscored), col(C.sev.low), col(C.sev.medium), col(C.sev.high), col(C.sev.critical)],
   ver: { 0: col(C.sev.unscored), 2: col(C.versions.v2), 3: col(C.versions.v3), 4: col(C.versions.v4) },
   cna: ["#c08a45", "#ded7c2", "#7fa7b8", "#9a8fc2", "#8fb08a", "#c2788f", "#b5a26a", "#6f9ea3"].map(col),
+  lat: ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d", "1-3y", "3y+"].map((k) => col(C.latency[k])),
+  focus: col(C.ink),
 };
 const LEGEND = {
   expl: [[C.accent, "in KEV"], [C.sev.high, "public PoC"], ["#7d776a", "neither"]],
   sev: [[C.sev.critical, "Critical"], [C.sev.high, "High"], [C.sev.medium, "Medium"], [C.sev.low, "Low"], [C.sev.unscored, "no score in record"]],
   ver: [[C.versions.v4, "CVSS v4"], [C.versions.v3, "v3"], [C.versions.v2, "v2"], [C.sev.unscored, "no score"]],
+  lat: [[C.latency.before_publish, "KEV before publication"], [C.latency["0-7d"], "0–7 d"], [C.latency["8-30d"], "8–30 d"], [C.latency["31-90d"], "31–90 d"], [C.latency["91-365d"], "91–365 d"], [C.latency["1-3y"], "1–3 y"], [C.latency["3y+"], "3 y+"], ["#7d776a", "not in KEV"]],
   cna: null, // built from the selection
 };
+// KEV latency buckets, the KEV Latency module's own edges.
+const latBucket = (lag) => (lag < 0 ? 0 : lag <= 7 ? 1 : lag <= 30 ? 2 : lag <= 90 ? 3 : lag <= 365 ? 4 : lag <= 1095 ? 5 : 6);
 
 // ---- boot ------------------------------------------------------------------
 
@@ -107,8 +122,8 @@ async function loadField() {
   const metaRes = await fetch("field/field.json", { cache: "no-cache" });
   if (!metaRes.ok) throw new Error(`field/field.json: HTTP ${metaRes.status}`);
   const meta = await metaRes.json();
-  if (meta.layout?.version !== 1 || meta.layout.record_bytes !== 22) {
-    throw new Error(`field.json layout v${meta.layout?.version} is not the v1/22-byte layout this page decodes`);
+  if (meta.layout?.version !== 2 || meta.layout.record_bytes !== 24) {
+    throw new Error(`field.json layout v${meta.layout?.version} is not the v2/24-byte layout this page decodes`);
   }
   if (typeof DecompressionStream === "undefined") {
     throw new Error("this browser cannot decompress the record stream (no DecompressionStream)");
@@ -124,12 +139,12 @@ async function loadField() {
 }
 
 function decode(meta, buf) {
-  const N = meta.n, REC = 22, dv = new DataView(buf);
+  const N = meta.n, REC = 24, dv = new DataView(buf);
   const d = {
     N, year: new Uint16Array(N), seq: new Uint32Array(N), day: new Uint16Array(N),
     score: new Uint8Array(N), ver: new Uint8Array(N), epss: new Uint16Array(N),
     cna: new Uint16Array(N), cwe: new Uint16Array(N), vendor: new Uint16Array(N),
-    kevday: new Uint16Array(N), flags: new Uint8Array(N),
+    kevday: new Uint16Array(N), pocday: new Uint16Array(N), flags: new Uint8Array(N),
   };
   for (let i = 0, o = 0; i < N; i++, o += REC) {
     d.year[i] = dv.getUint16(o, true);
@@ -142,7 +157,8 @@ function decode(meta, buf) {
     d.cwe[i] = dv.getUint16(o + 14, true);
     d.vendor[i] = dv.getUint16(o + 16, true);
     d.kevday[i] = dv.getUint16(o + 18, true);
-    d.flags[i] = dv.getUint8(o + 20);
+    d.pocday[i] = dv.getUint16(o + 20, true);
+    d.flags[i] = dv.getUint8(o + 22);
   }
   return d;
 }
@@ -254,6 +270,10 @@ function main({ meta, buf }) {
       if (ok && state.ransomOnly) ok = RANSOM(i) === 1;
       if (ok && cnaSet) ok = cnaSet.has(D.cna[i]);
       if (ok && vendSet) ok = vendSet.has(D.vendor[i]);
+      // the clock places only records with a dated event; the vendor room
+      // has no pile for "other"
+      if (ok && state.layout === "clock") ok = KEV(i) === 1 || D.pocday[i] > 0;
+      if (ok && state.layout === "vendor") ok = D.vendor[i] !== 0;
       shown[i] = ok ? 1 : 0;
       if (ok) { shownCount++; shownKev += KEV(i); }
     }
@@ -305,6 +325,31 @@ function main({ meta, buf }) {
     [["no EPSS", -46], ["0.01%", -28], ["0.1%", -14], ["1%", 0], ["10%", 14], ["100%", 28]]
       .forEach(([t, z]) => addLabel(TW / 2 + 10, -6, z, t, "lane"));
     addLabel(TW / 2 + 10, -14, 44, "EPSS →", "axis");
+  }
+
+  // the clock: signed gap in days on a symmetric log scale, ±10 y at the edges
+  const LAGMAX = 3650;
+  const xOfLag = (lag) => {
+    const a = Math.min(Math.abs(lag), LAGMAX);
+    return Math.sign(lag) * (Math.log10(1 + a) / Math.log10(1 + LAGMAX)) * (TW / 2);
+  };
+  const kevLag = (i) => D.kevday[i] - D.day[i];
+  const pocLag = (i) => D.pocday[i] - D.day[i];
+  function clockLayout() {
+    for (let i = 0; i < N; i++) {
+      if (!shown[i]) { hide(i); continue; }
+      const k = KEV(i);
+      const lag = k ? kevLag(i) : pocLag(i);
+      target[i * 3] = xOfLag(lag) + jit[i * 3] * 0.6;
+      target[i * 3 + 1] = yOfScore(i);
+      target[i * 3 + 2] = (k ? -26 : 26) + jit[i * 3 + 2] * 12;
+    }
+    [[-3650, "−10 y"], [-365, "−1 y"], [-30, "−30 d"], [0, "0"], [30, "+30 d"], [365, "+1 y"], [3650, "+10 y"]]
+      .forEach(([v, t]) => addLabel(xOfLag(v), -10, -48, t, "tick"));
+    addLabel(0, -10, -60, "before publication ← days → after", "axis");
+    [0, 5, 10].forEach((s) => addLabel(-TW / 2 - 14, (s / 10) * 36, -44, `CVSS ${s}`, "tick"));
+    addLabel(TW / 2 + 10, -6, -26, "→ KEV listing", "lane");
+    addLabel(TW / 2 + 10, -6, 26, "→ first public PoC", "lane");
   }
 
   function spiral(k, n, R) { const a = k * 2.399963; const rr = R * Math.sqrt((k + 0.5) / n); return [Math.cos(a) * rr, Math.sin(a) * rr]; }
@@ -362,7 +407,13 @@ function main({ meta, buf }) {
     fromPos.set(pos);
     animStart = performance.now();
     if (state.layout === "time") timelineLayout();
-    else if (state.layout === "cna") {
+    else if (state.layout === "clock") clockLayout();
+    else if (state.layout === "vendor") {
+      const cnt = new Map();
+      for (let i = 0; i < N; i++) if (shown[i]) cnt.set(D.vendor[i], (cnt.get(D.vendor[i]) || 0) + 1);
+      const groups = sortGroups([...cnt.keys()], (i) => D.vendor[i], (g) => VENDORS[g]).slice(0, 48);
+      clusterLayout((i) => D.vendor[i], groups, 8, 40, 38, (g, n, k) => `<b>${escapeHtml(VENDORS[g])}</b>${fmt(n)} · KEV ${fmt(k)}`);
+    } else if (state.layout === "cna") {
       const cnt = new Map();
       for (let i = 0; i < N; i++) if (shown[i]) cnt.set(D.cna[i], (cnt.get(D.cna[i]) || 0) + 1);
       const groups = sortGroups([...cnt.keys()], (i) => D.cna[i], (g) => CNAS[g]).slice(0, 48);
@@ -414,12 +465,16 @@ function main({ meta, buf }) {
         c = PAL.ver[D.ver[i]] || PAL.ver[0];
         if (D.ver[i] === 0) { s = 0.8; a = 0.2; } else { s = 0.9; a = 0.4; }
         if (k) { s = 4.2; a = 0.95; }
+      } else if (state.color === "lat") {
+        if (k) { c = PAL.lat[latBucket(kevLag(i))]; s = 4.2; a = 0.95; }
+        else { c = PAL.none; s = 0.8; a = 0.18; }
       } else {
         const r = cnaRank.get(D.cna[i]);
         c = r === undefined ? PAL.none : PAL.cna[r];
         if (r === undefined) { s = 0.8; a = 0.18; } else { s = 0.9; a = 0.45; }
         if (k) { s = 4.2; a = 0.95; }
       }
+      if (i === focusIdx) { c = PAL.focus; s = 9; a = 1; }
       colr[i * 3] = c.r; colr[i * 3 + 1] = c.g; colr[i * 3 + 2] = c.b;
       size[i] = s * state.size; alpha[i] = a;
     }
@@ -466,20 +521,25 @@ function main({ meta, buf }) {
     for (const h of hits) if (shown[h.index] && pos[h.index * 3 + 1] > -500) return h.index;
     return -1;
   }
+  const lagText = (lag) => (lag < 0 ? `${fmt(-lag)} d before publication` : lag === 0 ? "the day it published" : `${fmt(lag)} d after publication`);
+  function recordHtml(i) {
+    const sc = D.score[i] === NO_SCORE ? "no score in record" : `CVSS ${(D.score[i] / 10).toFixed(1)} (v${D.ver[i]})`;
+    const ep = D.epss[i] === NO_EPSS ? "no EPSS" : `EPSS ${(D.epss[i] / 100).toFixed(2)}%`;
+    return `<b>${cveId(i)}</b>`
+      + `<span>published ${dstr(D.day[i])} · ${sc} · ${ep}</span>`
+      + `<span>${escapeHtml(CNAS[D.cna[i]])} · ${escapeHtml(VENDORS[D.vendor[i]])} · ${escapeHtml(cweName(D.cwe[i]))}</span>`
+      + `<span>NVD: ${escapeHtml(STATUS[NVD(i)])}${POC(i) && !D.pocday[i] ? " · public PoC (undated)" : ""}</span>`
+      + (D.pocday[i] ? `<span>first public PoC ${dstr(D.pocday[i])} · ${lagText(pocLag(i))}</span>` : "")
+      + (KEV(i) ? `<em>KEV since ${dstr(D.kevday[i])} · ${lagText(kevLag(i))}${RANSOM(i) ? " · known ransomware use" : ""}</em>` : "")
+      + `<i>click to open the record on cve.org</i>`;
+  }
   function hover(e) {
     const now = performance.now();
     if (now - hoverAt < 60 || animStart) return;
     hoverAt = now;
     const i = pick(e);
     if (i < 0) { tip.style.opacity = 0; return; }
-    const sc = D.score[i] === NO_SCORE ? "no score in record" : `CVSS ${(D.score[i] / 10).toFixed(1)} (v${D.ver[i]})`;
-    const ep = D.epss[i] === NO_EPSS ? "no EPSS" : `EPSS ${(D.epss[i] / 100).toFixed(2)}%`;
-    tip.innerHTML = `<b>${cveId(i)}</b>`
-      + `<span>published ${dstr(D.day[i])} · ${sc} · ${ep}</span>`
-      + `<span>${escapeHtml(CNAS[D.cna[i]])} · ${escapeHtml(VENDORS[D.vendor[i]])} · ${escapeHtml(cweName(D.cwe[i]))}</span>`
-      + `<span>NVD: ${escapeHtml(STATUS[NVD(i)])}${POC(i) ? " · public PoC" : ""}</span>`
-      + (KEV(i) ? `<em>KEV since ${dstr(D.kevday[i])}${RANSOM(i) ? " · known ransomware use" : ""}</em>` : "")
-      + `<i>click to open the record on cve.org</i>`;
+    tip.innerHTML = recordHtml(i);
     const r = canvas.getBoundingClientRect();
     tip.style.left = `${Math.min(e.clientX - r.left + 14, r.width - 330)}px`;
     tip.style.top = `${Math.min(e.clientY - r.top + 14, r.height - 140)}px`;
@@ -523,13 +583,71 @@ function main({ meta, buf }) {
     $("f-count").textContent = fmt(shownCount);
     $("f-kev").textContent = fmt(shownKev);
     $("f-share").textContent = shownCount ? `${((shownKev / shownCount) * 100).toFixed(2)} %` : "—";
+    if (focusIdx >= 0 && shown[focusIdx]) {
+      // fly the camera to the focused record and pin its card top-right
+      cam.tx = target[focusIdx * 3]; cam.ty = target[focusIdx * 3 + 1]; cam.tz = target[focusIdx * 3 + 2];
+      cam.r = Math.min(cam.r, 140);
+      tip.innerHTML = recordHtml(focusIdx);
+      tip.style.left = `${Math.max(12, canvas.clientWidth - 336)}px`; tip.style.top = "12px"; tip.style.opacity = 1;
+    }
+    writeHash();
+  }
+
+  // ---- shareable state ------------------------------------------------------
+  // The hash carries the view so any arrangement is a link: #a=clock&c=lat&y=2020-2026&s=7&k=1&cve=CVE-2024-3400
+  let focusIdx = -1;
+  function writeHash() {
+    const h = new URLSearchParams();
+    if (state.layout !== "time") h.set("a", state.layout);
+    if (state.color !== "expl") h.set("c", state.color);
+    if (state.from !== 1999 || state.to !== MAX_YEAR) h.set("y", `${state.from}-${state.to}`);
+    if (state.minScore) h.set("s", String(state.minScore));
+    if (state.kevOnly) h.set("k", "1");
+    if (state.pocOnly) h.set("p", "1");
+    if (state.ransomOnly) h.set("r", "1");
+    if (state.cnaQ.trim()) h.set("q", state.cnaQ.trim());
+    if (state.vendorQ.trim()) h.set("v", state.vendorQ.trim());
+    if (state.sort !== "count") h.set("o", state.sort);
+    if (state.size !== 1) h.set("z", String(state.size));
+    if (focusIdx >= 0) h.set("cve", cveId(focusIdx));
+    const s = h.toString();
+    history.replaceState(null, "", s ? `#${s}` : location.pathname + location.search);
+  }
+  function findCve(id) {
+    const m = String(id).trim().match(/^CVE-(\d{4})-(\d{4,})$/i);
+    if (!m) return -1;
+    const y = +m[1], q = +m[2];
+    for (let i = 0; i < N; i++) if (D.year[i] === y && D.seq[i] === q) return i;
+    return -1;
+  }
+  function readHash() {
+    const h = new URLSearchParams(location.hash.slice(1));
+    const qs = new URLSearchParams(location.search);
+    if (ARRANGE[h.get("a")]) state.layout = h.get("a");
+    if (LEGEND[h.get("c")] !== undefined) state.color = h.get("c");
+    const y = (h.get("y") || "").match(/^(\d{4})-(\d{4})$/);
+    if (y) { state.from = Math.max(1999, Math.min(MAX_YEAR, +y[1])); state.to = Math.max(state.from, Math.min(MAX_YEAR, +y[2])); }
+    if (h.get("s")) state.minScore = Math.max(0, Math.min(10, +h.get("s") || 0));
+    state.kevOnly = h.get("k") === "1"; state.pocOnly = h.get("p") === "1"; state.ransomOnly = h.get("r") === "1";
+    state.cnaQ = h.get("q") || ""; state.vendorQ = h.get("v") || "";
+    if (["count", "kev", "name"].includes(h.get("o"))) state.sort = h.get("o");
+    if (h.get("z")) state.size = Math.max(0.5, Math.min(2.5, +h.get("z") || 1));
+    focusIdx = findCve(h.get("cve") || qs.get("cve") || "");
+    // reflect in the controls
+    document.querySelectorAll("[data-layout]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.layout === state.layout));
+    document.querySelectorAll("[data-color]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.color === state.color));
+    $("f-from").value = state.from; $("f-to").value = state.to;
+    $("f-min").value = state.minScore; $("f-minv").textContent = state.minScore ? `≥ ${state.minScore.toFixed(1)}` : "any";
+    $("f-kevonly").checked = state.kevOnly; $("f-poconly").checked = state.pocOnly; $("f-ransom").checked = state.ransomOnly;
+    $("f-cna").value = state.cnaQ; $("f-vendor").value = state.vendorQ; $("f-sort").value = state.sort; $("f-size").value = state.size;
   }
 
   // ---- controls -------------------------------------------------------------
   const CAMS = {
     time: { theta: 0.55, phi: 0.98, r: 600, tx: 60, ty: 6, tz: 0 }, grid: { theta: 0.2, phi: 0.95, r: 360, tx: 0, ty: 8, tz: 0 },
     cna: { theta: 0.15, phi: 0.72, r: 480, tx: 0, ty: 8, tz: 0 }, cwe: { theta: 0.15, phi: 0.72, r: 440, tx: 0, ty: 8, tz: 0 },
-    status: { theta: 0.15, phi: 0.72, r: 420, tx: 0, ty: 8, tz: 0 },
+    status: { theta: 0.15, phi: 0.72, r: 420, tx: 0, ty: 8, tz: 0 }, vendor: { theta: 0.15, phi: 0.72, r: 480, tx: 0, ty: 8, tz: 0 },
+    clock: { theta: 0.3, phi: 1.0, r: 560, tx: 0, ty: 6, tz: 0 },
   };
   function resetCamera() { Object.assign(cam, CAMS[state.layout]); }
 
@@ -577,8 +695,10 @@ function main({ meta, buf }) {
   document.querySelectorAll("[data-color]").forEach((b) => b.addEventListener("click", () => {
     state.color = b.dataset.color;
     document.querySelectorAll("[data-color]").forEach((x) => x.setAttribute("aria-pressed", x === b));
-    colour();
+    colour(); writeHash();
   }));
+  // a click anywhere on the canvas releases a pinned focus
+  canvas.addEventListener("pointerdown", () => { if (focusIdx >= 0) { focusIdx = -1; colour(); writeHash(); } });
 
   // ---- sources --------------------------------------------------------------
   const s = meta.sources || {};
@@ -586,7 +706,7 @@ function main({ meta, buf }) {
   const str = (x) => escapeHtml(x == null ? "?" : String(x));
   $("f-sources").innerHTML =
     `${fmt(meta.n)} published CVEs placed · ${fmt(skipped.rejected || 0)} rejected and ${fmt(skipped.undated || 0)} undated records left out · `
-    + `${fmt(meta.counts.scored)} carry a score in the record · ${fmt(meta.counts.epss)} have an EPSS score.<br>`
+    + `${fmt(meta.counts.scored)} carry a score in the record · ${fmt(meta.counts.epss)} have an EPSS score · ${fmt(meta.counts.poc_dated || 0)} have a dated public PoC.<br>`
     + `cvelistV5 ${str(s.cvelist?.release)} · CISA KEV ${str(s.kev?.catalog_version)} (${fmt(s.kev?.count || 0)} entries) · `
     + `EPSS ${str(s.epss?.model_version)} of ${str(s.epss?.score_date)} · `
     + `NVD statuses ${s.nvd?.fetched_at ? `fetched ${str(s.nvd.fetched_at)}` : "not fetched"} · `
@@ -596,7 +716,7 @@ function main({ meta, buf }) {
 
   // ---- go -------------------------------------------------------------------
   pos.fill(0); for (let i = 0; i < N; i++) pos[i * 3 + 1] = -999;
-  resetCamera(); refresh();
+  readHash(); showYears(); resetCamera(); refresh();
   notice.hidden = true;
   requestAnimationFrame(frame);
 }

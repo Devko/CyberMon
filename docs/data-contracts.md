@@ -2153,25 +2153,27 @@ gitignored and shipped inside the Pages artifact (see README, "The Field").
 |---|---|---|
 | `generated_at` | ISO-8601 UTC | run stamp |
 | `layout.version` | int ≥ 1 | record layout version; the page refuses any other |
-| `layout.record_bytes` | int | 22 for v1 |
+| `layout.record_bytes` | int | 24 for v2 (v1 was 22, without the PoC day) |
 | `layout.epoch` | date | `1999-01-01`; every day field counts from here |
 | `layout.no_score` / `layout.no_epss` | int | sentinels 255 / 65535 |
 | `layout.status_codes` | list[8] | NVD vulnStatus names, index = flag bits 3-5 |
 | `bin` | str | record-stream filename (`cves.bin.gz`) |
 | `n` | int ≥ 1 | records placed (PUBLISHED, dated on/after epoch) |
 | `first_day`, `last_day` | int | day range of the placed records |
-| `counts.kev/poc/scored/epss` | int ≤ n | join tallies |
+| `counts.kev/poc/poc_dated/scored/epss` | int ≤ n | join tallies (`poc_dated` = records with a dated Exploit-DB/Metasploit PoC) |
 | `cnas` | list | assignerShortName by descending volume (u16 index) |
 | `vendors` | list | `["other", …]`, top 1023 first-affected vendors (u16 index) |
 | `skipped.rejected`, `skipped.undated` | int | records not placed |
 | `raw_bytes` | int | must equal `n × record_bytes` |
 | `bin_bytes` | int | gzipped size |
-| `sources` | object | cvelist release, KEV version/count, EPSS model/date, NVD fetch stamp or null, PoC CVE count |
+| `sources` | object | cvelist release, KEV version/count, EPSS model/date, NVD fetch stamp or null, PoC CVE count and dated count |
 
-Record layout v1 (little-endian, 22 bytes): u16 ID year · u32 ID sequence ·
+Record layout v2 (little-endian, 24 bytes): u16 ID year · u32 ID sequence ·
 u16 datePublished day · u8 score×10 · u8 CVSS family (0/2/3/4) · u16
 EPSS×10000 · u16 CNA index · u16 CWE number · u16 vendor index · u16 KEV
-dateAdded day (0 = not in KEV) · u8 flags (bit0 KEV, bit1 ransomware, bit2
-public PoC, bits3-5 NVD status code) · u8 reserved. Score precedence is
+dateAdded day (0 = not in KEV) · u16 earliest dated public PoC day (0 =
+none dated; `PocData.first_poc_dates`, the Time to PoC join) · u8 flags
+(bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5 NVD status code) · u8
+reserved. Score precedence is
 `CveFacts.effective_score` (newest family anywhere in the record, CNA before
 ADP within a family). Rows are sorted by (ID year, sequence).

@@ -613,6 +613,9 @@ code {
   margin: 6px 0 18px;
 }
 
+/* Instruments block: one card should not stretch across the whole page. */
+.instrument-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 460px)); }
+
 .module-card {
   display: block;
   background: var(--panel);

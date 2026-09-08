@@ -401,17 +401,22 @@ it by the site's own theses:
 - **Timeline** — publication day × in-record CVSS score × EPSS as depth
   (log scale; unscored records on the floor, un-EPSS'd records in the back
   lane), with a year scrub that plays the corpus filling up.
+- **The clock** — signed days from publication to the first dated public
+  PoC (front lane) and to the KEV listing (back lane), on a log scale;
+  left of zero the exploit came first.
 - **Score vs. reality** — chart 3's CVSS × EPSS grid as piles.
-- **By assigner** (top 48 CNAs), **by weakness** (top 30 CWEs), **by NVD
-  queue status** — pile height is the base score; each pile carries its KEV
-  count.
+- **By assigner** (top 48 CNAs), **by vendor** (top 48), **by weakness**
+  (top 30 CWEs), **by NVD queue status** — pile height is the base score;
+  each pile carries its KEV count.
 
-Colour by exploitation (KEV / public PoC / neither), severity, CVSS version
-or assigner; filter by year, minimum score, KEV, PoC, ransomware use,
-assigner and vendor; hover for the record, click to open it on cve.org.
+Colour by exploitation (KEV / public PoC / neither), KEV latency (the KEV
+module's own buckets), severity, CVSS version or assigner; filter by year,
+minimum score, KEV, PoC, ransomware use, assigner and vendor; hover for the
+record, click to open it on cve.org. The URL hash carries the whole view, so
+any arrangement is a link, and `#cve=CVE-2024-3400` opens on one record.
 
 Its data is `site/field/field.json` plus a gzipped fixed-width record
-stream (22 bytes per CVE, layout documented in
+stream (24 bytes per CVE, layout documented in
 `pipeline/field_export.py` and mirrored in `site/js/field.js`), built by
 `python -m pipeline --field-out site/field` from the **same streaming
 corpus pass** every module uses (an observer on `Aggregator.consume`), so

@@ -41,8 +41,10 @@
         <h2 class="rail-k">Arrange</h2>
         <div class="rail-btns" role="group" aria-label="Arrangement">
           <button type="button" data-layout="time" aria-pressed="true">Timeline · date × score × EPSS</button>
+          <button type="button" data-layout="clock" aria-pressed="false">The clock · publication → PoC → KEV</button>
           <button type="button" data-layout="grid" aria-pressed="false">Score vs. reality grid</button>
           <button type="button" data-layout="cna" aria-pressed="false">By assigner (top 48 CNAs)</button>
+          <button type="button" data-layout="vendor" aria-pressed="false">By vendor (top 48)</button>
           <button type="button" data-layout="cwe" aria-pressed="false">By weakness (top 30 CWEs)</button>
           <button type="button" data-layout="status" aria-pressed="false">By NVD queue status</button>
         </div>
@@ -52,6 +54,7 @@
         <h2 class="rail-k">Colour</h2>
         <div class="rail-btns rail-row" role="group" aria-label="Colour">
           <button type="button" data-color="expl" aria-pressed="true">Exploitation</button>
+          <button type="button" data-color="lat" aria-pressed="false">KEV latency</button>
           <button type="button" data-color="sev" aria-pressed="false">Severity</button>
           <button type="button" data-color="ver" aria-pressed="false">CVSS version</button>
           <button type="button" data-color="cna" aria-pressed="false">Assigner</button>
@@ -93,7 +96,7 @@
         <h2 class="rail-k">Point size</h2>
         <input type="range" id="f-size" min="0.5" max="2.5" step="0.1" value="1" aria-label="Point size">
         <button type="button" class="rail-reset" id="f-reset">Reset camera</button>
-        <p class="rail-help">Drag to orbit · wheel to zoom · shift-drag to pan · hover for the record · click opens it on cve.org.</p>
+        <p class="rail-help">Drag to orbit · wheel to zoom · shift-drag to pan · hover for the record · click opens it on cve.org. The address bar carries the view: copy it to share this arrangement, or add <code>#cve=CVE-2024-3400</code> to open on one record.</p>
       </section>
 
       <section class="rail-group rail-sources" id="f-sources"></section>

@@ -104,13 +104,15 @@ def test_encode_round_trip_and_joins():
     blob, meta = fe.encode(
         c.rows, epss_scores={"CVE-2023-0001": 0.9731, "CVE-2021-0007": 0.0},
         kev_entries=kev, poc_ids={"CVE-2021-0007"},
-        nvd_statuses={"CVE-2023-0002": "Awaiting Analysis"})
+        nvd_statuses={"CVE-2023-0002": "Awaiting Analysis"},
+        poc_dates={"CVE-2021-0007": "2021-02-20", "CVE-2023-0002": "bad"})
     assert len(blob) == 3 * fe.RECORD_BYTES
     rows = fe.decode(blob)
     # sorted by (year, seq): 2021-0007 first
     years = [r[0] for r in rows]
     assert years == [2021, 2023, 2023]
-    (year, seq, day, score, ver, epss, cna, cwe, vendor, kevday, flags) = rows[1]
+    (year, seq, day, score, ver, epss, cna, cwe, vendor, kevday, pocday,
+     flags) = rows[1]
     assert (year, seq) == (2023, 1)
     assert day == (fe.date(2023, 1, 15) - fe.EPOCH).days
     assert (score, ver) == (98, 3)
@@ -121,15 +123,18 @@ def test_encode_round_trip_and_joins():
     assert kevday == (fe.date(2023, 2, 1) - fe.EPOCH).days
     assert flags & fe.FLAG_KEV and flags & fe.FLAG_RANSOMWARE
     assert not flags & fe.FLAG_POC
-    # the PoC-only, EPSS-0 record
+    assert pocday == 0
+    # the PoC-only, EPSS-0 record: a dated PoC before publication is fine
     r = rows[0]
-    assert r[5] == 0 and r[10] & fe.FLAG_POC and not r[10] & fe.FLAG_KEV
-    # NVD status rides bits 3-5
+    assert r[5] == 0 and r[11] & fe.FLAG_POC and not r[11] & fe.FLAG_KEV
+    assert r[10] == (fe.date(2021, 2, 20) - fe.EPOCH).days
+    # NVD status rides bits 3-5; an unparseable PoC date is "none"
     r = rows[2]
-    assert (r[10] >> fe.STATUS_SHIFT) & 7 == \
+    assert (r[11] >> fe.STATUS_SHIFT) & 7 == \
         fe.STATUS_CODES.index("Awaiting Analysis")
-    assert r[5] == fe.NO_EPSS
-    assert meta["counts"] == {"kev": 1, "poc": 1, "scored": 1, "epss": 2}
+    assert r[5] == fe.NO_EPSS and r[10] == 0
+    assert meta["counts"] == {"kev": 1, "poc": 1, "poc_dated": 1,
+                              "scored": 1, "epss": 2}
     assert meta["n"] == 3
     assert meta["first_day"] == rows[0][2]
     assert meta["last_day"] == max(x[2] for x in rows)

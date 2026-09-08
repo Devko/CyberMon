@@ -78,6 +78,23 @@ function boot() {
   }
 
   section.append(el("p", "panel-note", ed.backlogNote));
+
+  // Instruments: their own block, never folded into the module groups, so a
+  // tool page stays out of editorial.nav and the pipelines that read it.
+  const inst = ed.instruments;
+  if (inst && inst.items.length) {
+    const block = el("div", "module-group instrument-group");
+    block.append(
+      el("h3", "module-group-label", inst.label),
+      el("p", "module-group-lede", inst.lede)
+    );
+    const grid = el("div", "module-grid instrument-grid");
+    for (const item of inst.items) {
+      grid.append(moduleCard({ ...item, live: true }, { ...ed, statusLive: inst.status }));
+    }
+    block.append(grid);
+    section.append(block);
+  }
   main.append(section);
 
   return Promise.allSettled(jobs);

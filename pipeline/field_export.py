@@ -32,8 +32,10 @@ offset  type  meaning
 14      u16   CWE number (79 for CWE-79); 0 when untagged/non-numeric
 16      u16   vendor index into ``vendors`` (0 = "other" / unknown)
 18      u16   KEV dateAdded, days since EPOCH; 0 when not in KEV
-20      u8    flags — see ``FLAG_*`` and :data:`STATUS_CODES`
-21      u8    reserved (0)
+20      u16   earliest dated public PoC (Exploit-DB / Metasploit), days
+              since EPOCH; 0 when none is dated (Nuclei carries no dates)
+22      u8    flags — see ``FLAG_*`` and :data:`STATUS_CODES`
+23      u8    reserved (0)
 ======  ====  ===================================================
 
 Only PUBLISHED records with a parseable datePublished on or after EPOCH are
@@ -53,9 +55,9 @@ from typing import Any, Iterable
 
 from .metrics import _FAMILY_ORDER, CveFacts
 
-LAYOUT_VERSION = 1
-RECORD = struct.Struct("<HIHBBHHHHHBx")
-RECORD_BYTES = RECORD.size  # 22
+LAYOUT_VERSION = 2
+RECORD = struct.Struct("<HIHBBHHHHHHBx")
+RECORD_BYTES = RECORD.size  # 24
 EPOCH = date(1999, 1, 1)
 NO_SCORE = 255
 NO_EPSS = 65535
@@ -203,7 +205,8 @@ def _status_code(status: str | None) -> int:
 
 def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
            kev_entries: Iterable[Any], poc_ids: Iterable[str],
-           nvd_statuses: dict[str, str] | None) -> tuple[bytes, dict]:
+           nvd_statuses: dict[str, str] | None,
+           poc_dates: dict[str, str] | None = None) -> tuple[bytes, dict]:
     """Pack rows into the binary record stream plus the ``field.json``
     payload (minus ``generated_at``/``skipped``/``sources``, which
     :func:`build` stamps).
@@ -225,6 +228,9 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         ransomware = getattr(entry, "ransomware_use", None) == "Known"
         kev[entry.cve_id] = (day, ransomware)
     poc = frozenset(poc_ids)
+    poc_day = {cve: d for cve, d in (
+        (cve, _day_index(date)) for cve, date in (poc_dates or {}).items())
+        if d}
     statuses = nvd_statuses or {}
 
     counts: Counter[str] = Counter()
@@ -242,6 +248,9 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         if cve_id in poc:
             flags |= FLAG_POC
             counts["poc"] += 1
+        poc_d = poc_day.get(cve_id, 0)
+        if poc_d:
+            counts["poc_dated"] += 1
         flags |= _status_code(statuses.get(cve_id)) << STATUS_SHIFT
         epss = epss_scores.get(cve_id)
         if epss is None:
@@ -255,7 +264,7 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
             out, i * RECORD_BYTES,
             r.year, r.seq, r.day, r.score, r.version, epss_q,
             cna_index[r.cna], r.cwe, vendor_index.get(r.vendor, 0),
-            kev_day, flags)
+            kev_day, poc_d, flags)
 
     meta = {
         "layout": {
@@ -273,6 +282,7 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         "counts": {
             "kev": counts["kev"],
             "poc": counts["poc"],
+            "poc_dated": counts["poc_dated"],
             "scored": counts["scored"],
             "epss": counts["epss"],
         },
@@ -296,11 +306,12 @@ def decode(blob: bytes) -> list[tuple]:
 def build(collector: FieldCollector, generated_at: str, *,
           epss_scores: dict[str, float], kev_entries: Iterable[Any],
           poc_ids: Iterable[str], nvd_statuses: dict[str, str] | None,
-          sources: dict) -> tuple[bytes, dict]:
+          sources: dict,
+          poc_dates: dict[str, str] | None = None) -> tuple[bytes, dict]:
     """The Field's two outputs: the gzipped record stream and ``field.json``."""
     blob, meta = encode(collector.rows, epss_scores=epss_scores,
                         kev_entries=kev_entries, poc_ids=poc_ids,
-                        nvd_statuses=nvd_statuses)
+                        nvd_statuses=nvd_statuses, poc_dates=poc_dates)
     meta["generated_at"] = generated_at
     meta["skipped"] = {
         "rejected": collector.skipped_rejected,

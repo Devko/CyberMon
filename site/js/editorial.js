@@ -112,6 +112,28 @@ export const editorial = {
     statusSoon: "coming soon",
     backlogNote:
       "More modules are queued — the candidate list lives in the repo under docs/backlog.md.",
+    // Instruments are NOT modules: no charts, no claims guards, no nav entry
+    // (so the carousel and motion pipelines never see them). They render as
+    // their own block under the module directory.
+    instruments: {
+      label: "Instruments",
+      lede: "Not modules — tools for exploring the corpus the modules argue about, one record at a time.",
+      status: "instrument",
+      items: [
+        {
+          id: "field",
+          href: "field.html",
+          num: "3D",
+          label: "The Field",
+          headline: "Every published CVE, one point each.",
+          blurb:
+            "The whole cvelistV5 corpus in one WebGL space: arrange it by publication date × " +
+            "score × EPSS, by the clock from publication to PoC to KEV, by assigner, vendor, " +
+            "weakness or NVD queue status. Hover for the record, share any view by its link. " +
+            "Rebuilt nightly from the same corpus pass as the charts.",
+        },
+      ],
+    },
     modules: [
       {
         id: "cve",
