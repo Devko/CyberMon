@@ -104,7 +104,16 @@ def _collect_statuses(session, api_key: str | None, timeout: float,
                       sleep: Callable[[float], None],
                       log: Callable[[str], None],
                       extra_params: dict | None = None) -> dict[str, str]:
-    """Page (part of) the corpus, return ``{cve_id: vulnStatus}``."""
+    """Page (part of) the corpus, return ``{cve_id: vulnStatus}``.
+
+    Raises ``RuntimeError`` when a page cannot be trusted to continue the
+    walk: a missing/non-integer ``totalResults`` (the loop's only stop
+    condition), or an empty ``vulnerabilities`` page while ``totalResults``
+    says more records remain. NVD has answered 200 with an empty page
+    under load; treating that as "done" would merge a partial delta and
+    stamp ``last_sync`` past records never seen — the very drift the
+    weekly resweep exists to bound, silently shipped every night until
+    then. The caller's retry is the next nightly."""
     delay = _DELAY_KEYED if api_key else _DELAY_KEYLESS
     statuses: dict[str, str] = {}
     start_index = 0
@@ -112,15 +121,25 @@ def _collect_statuses(session, api_key: str | None, timeout: float,
     while total is None or start_index < total:
         page = _fetch_page(session, start_index, api_key, timeout, sleep, log,
                            extra_params)
-        total = int(page.get("totalResults", 0))
+        raw_total = page.get("totalResults")
+        if isinstance(raw_total, bool) or not isinstance(raw_total, int):
+            raise RuntimeError(f"NVD page at startIndex={start_index} has "
+                               f"no integer totalResults ({raw_total!r}); "
+                               f"refusing to treat it as an empty corpus")
+        total = raw_total
         vulns = page.get("vulnerabilities") or []
         for item in vulns:
             cve = item.get("cve", {})
             cve_id = cve.get("id")
             if cve_id:
                 statuses[cve_id] = cve.get("vulnStatus") or "Unknown"
-        if not vulns:  # defensive: never loop forever on an empty page
-            break
+        if not vulns:
+            if start_index < total:
+                raise RuntimeError(
+                    f"NVD returned an empty page at startIndex="
+                    f"{start_index} of totalResults={total}; refusing to "
+                    f"sync a partial delta")
+            break  # totalResults shrank to exactly what was read: done
         start_index += len(vulns)
         if start_index < total:
             log(f"  NVD: {start_index}/{total} CVEs read")

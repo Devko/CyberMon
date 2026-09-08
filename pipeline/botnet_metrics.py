@@ -52,6 +52,7 @@ until every output validates, like the other history files).
 from __future__ import annotations
 
 import csv
+import math
 from collections import Counter
 from datetime import date as _date
 from pathlib import Path
@@ -245,10 +246,14 @@ def build_c2_age(snapshot: C2Snapshot, day: str) -> dict:
             if age >= lo and (hi is None or age < hi):
                 counts[label] += 1
                 break
+    # An even-sized list yields a .5 median; round it half-UP so the
+    # headline is monotone in the data (40.5 -> 41, 41.5 -> 42). Python's
+    # round() is banker's rounding (40.5 -> 40, 41.5 -> 42), which would
+    # make a one-day-older list read a day younger.
     return {
         "snapshot_date": day,
         "n": len(ages),
-        "median_age_days": int(round(median(ages))) if ages else None,
+        "median_age_days": math.floor(median(ages) + 0.5) if ages else None,
         "oldest_age_days": ages[-1] if ages else None,
         "buckets": [{"label": label, "n": counts[label]}
                     for label in AGE_BUCKET_LABELS],

@@ -33,13 +33,15 @@ def _poc(edb_dates=None, msf_dates=None, nuclei=(), **counts) -> PocData:
                    nuclei_ids=frozenset(nuclei), **defaults)
 
 
-def _build(facts_list, poc, kev_entries=(), min_n=1):
+def _build(facts_list, poc, kev_entries=(), min_n=1, arming_min_n=None,
+           generated_at=GENERATED_AT):
     agg = Aggregator(kev_ids=[e.cve_id for e in kev_entries],
                      poc_ids=poc.all_ids)
     for facts in facts_list:
         agg.add(facts)
     return poc_metrics.build_time_to_poc(agg, poc, kev_entries,
-                                         GENERATED_AT, min_n=min_n)
+                                         generated_at, min_n=min_n,
+                                         arming_min_n=arming_min_n)
 
 
 def test_negative_gaps_are_kept_never_floored():
@@ -200,3 +202,114 @@ def test_contract_rejects_broken_arithmetic(agg, poc, kev, mutate, fragment):
     mutate(obj)
     with pytest.raises(contracts.ContractViolation, match=fragment):
         contracts.validate("time_to_poc.json", obj)
+
+
+# ---- arming: the like-for-like clock (the AI Alibi's primary metric) ----
+
+def _arming_case(*pairs, generated_at=GENERATED_AT, **kw):
+    """(published, poc_date) pairs -> the built arming section."""
+    facts, dates = [], {}
+    for i, (published, poc_date) in enumerate(pairs):
+        cve = f"CVE-{published[:4]}-{1000 + i}"
+        facts.append(_facts(cve, published, int(published[:4])))
+        dates[cve] = poc_date
+    return _build(facts, _poc(edb_dates=dates), generated_at=generated_at,
+                  **kw)["arming"]
+
+
+def test_arming_threshold_is_explicit_named_and_emitted():
+    poc = _poc(edb_dates={"CVE-2020-0001": "2020-01-05"})
+    facts = [_facts("CVE-2020-0001", "2020-01-01", 2020)]
+    # A production floor never leaks into the arming threshold: 15 is
+    # neither 15 nor "silently 30 because it is >= 10" -- it is the
+    # named constant unless the caller says otherwise.
+    assert _build(facts, poc, min_n=15)["arming"]["min_n"] == \
+        poc_metrics.ARMING_MIN_N == 30
+    assert _build(facts, poc, min_n=10)["arming"]["min_n"] == 30
+    # The fixture floor is inherited so the offline corpus still charts.
+    assert _build(facts, poc, min_n=1)["arming"]["min_n"] == 1
+    # Explicit always wins, and gates the rows.
+    out = _build(facts, poc, min_n=1, arming_min_n=2)
+    assert out["arming"]["min_n"] == 2
+    assert out["arming"]["years"] == []
+    with pytest.raises(ValueError):
+        _build(facts, poc, arming_min_n=0)
+
+
+def test_arming_window_is_symmetric_and_bounded():
+    # Cohort 2020, observed long ago. Gaps: -4452 (an old exploit finally
+    # getting an id), +91 (one day past the horizon), -90, +90, +5.
+    arming = _arming_case(("2020-01-01", "2007-10-24"),   # -4452: out
+                          ("2020-01-01", "2020-04-01"),   # +91: out
+                          ("2020-01-01", "2019-10-03"),   # -90: in
+                          ("2020-01-01", "2020-03-31"),   # +90: in
+                          ("2020-01-01", "2020-01-06"))   # +5: in
+    assert arming["horizon_days"] == 90
+    assert arming["years"] == [{
+        "year": 2020, "n": 3, "median_days": 5.0,
+        "pct_within_week": 66.7,   # -90 and +5
+        "pct_negative": 33.3,      # -90
+        "provisional": False}]
+
+
+def test_arming_observed_through_cuts_cohorts_without_a_full_window():
+    # generated_at 2026-07-09 minus 90 days = 2026-04-10: a record
+    # published that day has had the whole window; one published the day
+    # after has not, however fast its PoC was.
+    arming = _arming_case(("2026-04-10", "2026-04-11"),
+                          ("2026-04-11", "2026-04-12"))
+    assert arming["observed_through"] == "2026-04-10"
+    assert [(r["year"], r["n"]) for r in arming["years"]] == [(2026, 1)]
+
+
+def test_arming_settled_on_date_math_drives_provisional():
+    # Cohort 2024 settles on 2024-12-31 + 90 + 365 days = 2026-03-31.
+    settled = ("2024-06-01", "2024-06-02")
+    assert _arming_case(settled, generated_at="2026-03-30T23:59:59Z"
+                        )["years"][0]["provisional"] is True
+    assert _arming_case(settled, generated_at="2026-03-31T00:00:00Z"
+                        )["years"][0]["provisional"] is False
+    # And at the test clock: 2024 settled, 2025 not (settles 2027-03-31).
+    arming = _arming_case(("2024-06-01", "2024-06-02"),
+                          ("2025-06-01", "2025-06-02"))
+    assert [(r["year"], r["provisional"]) for r in arming["years"]] == \
+        [(2024, False), (2025, True)]
+
+
+def _two_cohorts():
+    return _build([_facts("CVE-2024-0001", "2024-06-01", 2024),
+                   _facts("CVE-2025-0001", "2025-06-01", 2025)],
+                  _poc(edb_dates={"CVE-2024-0001": "2024-06-02",
+                                  "CVE-2025-0001": "2025-06-02"}))
+
+
+def test_built_arming_validates():
+    from pipeline import contracts
+
+    contracts.validate("time_to_poc.json", _two_cohorts())
+
+
+@pytest.mark.parametrize("mutate,fragment", [
+    (lambda a: a["years"][0].update(provisional=True), "disagrees"),
+    (lambda a: a["years"][1].update(provisional=False), "disagrees"),
+    (lambda a: a.update(observed_through="2026/04/10"), "required format"),
+    (lambda a: a.update(ingestion_allowance_days=-1), "below minimum"),
+    (lambda a: a.update(ingestion_allowance_days=1.5), "expected integer"),
+    (lambda a: a.update(min_n=0), "below minimum"),
+    (lambda a: a.update(min_n=2), "below arming.min_n"),
+])
+def test_contract_rederives_and_bounds_the_arming_section(mutate, fragment):
+    from pipeline import contracts
+
+    obj = _two_cohorts()
+    mutate(obj["arming"])
+    with pytest.raises(contracts.ContractViolation, match=fragment):
+        contracts.validate("time_to_poc.json", obj)
+
+
+def test_contract_tolerates_editions_without_arming_min_n():
+    from pipeline import contracts
+
+    obj = _two_cohorts()
+    del obj["arming"]["min_n"]  # an edition published before the field
+    contracts.validate("time_to_poc.json", obj)

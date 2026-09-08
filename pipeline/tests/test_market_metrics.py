@@ -4,9 +4,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+# contracts must load before market_contracts: the coordinator registers
+# module contracts from its own module bottom, so importing the contract
+# file first would hit the registration mid-initialization.
+from pipeline import contracts  # noqa: F401  (see above)
 from pipeline import market_contracts
-from pipeline.market_metrics import (build_market_hype, divergence,
-                                     index_series, run_stage, yoy)
+from pipeline.market_metrics import (STALE_AFTER_DAYS, build_market_hype,
+                                     divergence, index_series,
+                                     lane_freshness, run_stage, yoy)
 from pipeline.market_terms import TERMS, TermDef
 
 from .conftest import GENERATED_AT
@@ -271,7 +276,7 @@ def test_run_stage_offline_fixtures(tmp_path):
     assert obj["generated_at"] == GENERATED_AT
     assert "stale" not in obj
     assert source == {"fetched_at": GENERATED_AT, "term_count": 6,
-                      "backfill_remaining": 3}
+                      "backfill_remaining": 3, "stale_sources": []}
     assert not (tmp_path / "cache").exists()   # no disk-state writes
     assert list(tmp_path.iterdir()) == []      # no output writes either
 
@@ -292,9 +297,11 @@ def test_run_stage_skip_carries_prior_file_forward(tmp_path):
     assert obj["stale"] is True
     assert obj["generated_at"] == GENERATED_AT
     assert obj["terms"] == [] and obj["backfill_remaining"] == 2  # untouched
-    # contract-complete even when stale (meta validator requires all fields)
+    # contract-complete even when stale (meta validator requires all
+    # fields); a pre-freshness prior file has no stale lanes to report
     assert source == {"fetched_at": "2026-06-01T00:00:00Z", "stale": True,
-                      "term_count": 0, "backfill_remaining": 2}
+                      "term_count": 0, "backfill_remaining": 2,
+                      "stale_sources": []}
     market_contracts.validate("market_hype.json", obj)  # stale shape is valid
     assert any("carrying forward" in m for m in logs)
 
@@ -353,3 +360,163 @@ def test_run_stage_live_starts_fresh_when_nothing_to_reconstruct(
               skip=False, offline_fixtures=False,
               backfill_batch=5, log=lambda m: None)
     assert seen["state"] is None  # absent output -> fresh-state behavior
+
+
+# ---------------------------------------------------------- lane freshness
+
+ALL_SOURCES = ("gdelt", "hn", "arxiv", "wiki", "edgar")
+
+
+def _stamps(**by_source):
+    """last_success for every lane: fresh (one day before GENERATED_AT)
+    unless overridden."""
+    return {s: by_source.get(s, "2026-07-08T00:00:00Z") for s in ALL_SOURCES}
+
+
+def test_lane_freshness_thresholds():
+    # GENERATED_AT is 2026-07-09T00:00:00Z
+    state = {"last_success": {
+        "gdelt": "2026-07-06T00:00:00Z",   # exactly 3 days: still fresh
+        "hn": "2026-07-05T23:59:59Z",      # 3 days + 1 s: stale
+        "arxiv": "2026-06-30T23:59:59Z",   # stale AND before the month
+        "wiki": "2026-07-01T00:00:00Z",    # stale, but June was fetched whole
+        "edgar": "last tuesday",           # unreadable: cannot be vouched
+    }}
+    stale, partial = lane_freshness(state, GENERATED_AT)
+    assert stale == ["hn", "arxiv", "wiki", "edgar"]   # contract order
+    assert partial == {"arxiv", "edgar"}
+    assert STALE_AFTER_DAYS == 3
+
+
+def test_lane_freshness_missing_stamps_are_unknown_not_stale():
+    # The sync stamps every lane it holds data for, so an absent stamp is
+    # a lane with nothing cached (or a hand-built state): nothing to judge.
+    assert lane_freshness({}, GENERATED_AT) == ([], set())
+    assert lane_freshness({"last_success": {"gdelt": "2026-07-08T00:00:00Z"}},
+                          GENERATED_AT) == ([], set())
+
+
+def test_stale_lane_loses_yoy_and_keeps_its_series():
+    rising = _monthly([10] * 12 + [20] * 12, start="2024-07")   # +100%
+    arxiv = _monthly([10, 10, 10], start="2026-04")
+    state = _state({"aaa": {"gdelt": dict(rising), "hn": dict(rising),
+                            "arxiv": arxiv}})
+    state["last_success"] = _stamps(hn="2026-07-01T00:00:00Z")  # 8 days
+    obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    assert obj["stale_sources"] == ["hn"]
+    term = obj["terms"][0]
+    assert term["yoy"]["gdelt"]["pct_change"] == 100.0
+    assert term["yoy"]["hn"] is None                      # withheld
+    assert [p["month"] for p in term["series"]["hn"]] == sorted(rising)
+    assert term["divergence"] is not None                 # hn is not a side
+    assert obj["headline"]["top_riser"]["source"] == "gdelt"
+    market_contracts.validate("market_hype.json", obj)
+
+
+def test_stale_gdelt_or_arxiv_nulls_divergence():
+    state = _state({"aaa": {"gdelt": _monthly([10, 10, 10], start="2026-04"),
+                            "arxiv": _monthly([3, 6, 12], start="2026-04")}})
+    state["last_success"] = _stamps()
+    fresh = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    assert fresh["terms"][0]["divergence"] is not None
+    for lane in ("gdelt", "arxiv"):
+        state["last_success"] = _stamps(**{lane: "2026-07-05T23:59:59Z"})
+        obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+        assert obj["stale_sources"] == [lane]
+        assert obj["terms"][0]["divergence"] is None
+        assert obj["headline"]["top_divergence"] is None
+        market_contracts.validate("market_hype.json", obj)
+
+
+def test_stale_lane_cannot_win_the_movers_board():
+    rising = _monthly([10] * 12 + [30] * 12, start="2024-07")   # +200%
+    modest = _monthly([10] * 12 + [15] * 12, start="2024-07")   # +50%
+    state = _state({"aaa": {"hn": rising, "gdelt": modest}})
+    state["last_success"] = _stamps()
+    obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    assert obj["headline"]["top_riser"]["source"] == "hn"      # when fresh
+    state["last_success"] = _stamps(hn="2026-07-05T23:59:59Z")
+    obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    assert obj["headline"]["top_riser"] == {
+        "term_id": "aaa", "label": "AAA", "source": "gdelt",
+        "pct_change": 50.0}
+    market_contracts.validate("market_hype.json", obj)
+
+
+def test_partial_previous_month_is_withheld_when_lane_was_down_at_rollover():
+    # GENERATED_AT is 2026-07-09: 2026-06 is the previous (closed) month.
+    months = {"2026-04": 5, "2026-05": 6, "2026-06": 7, "2026-07": 8}
+    state = _state({"aaa": {s: dict(months) for s in ALL_SOURCES}})
+    # hn last succeeded on the 30th: its 2026-06 cell is whatever that
+    # fetch saw before the month ended. gdelt has been down even longer.
+    # The other three succeeded yesterday.
+    state["last_success"] = _stamps(hn="2026-06-30T23:59:59Z",
+                                    gdelt="2026-06-25T00:00:00Z")
+    obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    series = obj["terms"][0]["series"]
+    assert [p["month"] for p in series["hn"]] == ["2026-04", "2026-05"]
+    assert [p["month"] for p in series["gdelt"]] == ["2026-04", "2026-05"]
+    for lane in ("arxiv", "wiki", "edgar"):
+        assert [p["month"] for p in series[lane]] == \
+            ["2026-04", "2026-05", "2026-06"], lane
+    assert series["hn"][-1]["index"] == 100.0   # peak recomputed post-trim
+    assert obj["stale_sources"] == ["gdelt", "hn"]
+    market_contracts.validate("market_hype.json", obj)
+
+
+def test_partial_month_rule_is_independent_of_staleness():
+    # Two days into July with a June-30 stamp: fresh (not stale), yet the
+    # June cell was fetched before June closed — withheld from the series
+    # and therefore from the "latest twelve populated months" YoY window.
+    monthly = _monthly([10] * 13 + [20] * 12, start="2024-06")  # ..2026-06
+    state = _state({"aaa": {"gdelt": monthly}})
+    state["last_success"] = _stamps(gdelt="2026-06-30T12:00:00Z")
+    obj = build_market_hype(state, [_term("aaa")], "2026-07-02T00:00:00Z")
+    assert obj["stale_sources"] == []
+    term = obj["terms"][0]
+    assert term["series"]["gdelt"][-1]["month"] == "2026-05"
+    assert term["yoy"]["gdelt"] == {
+        "latest_month": "2026-05", "pct_change": 91.7,
+        "n_latest_12m": 230, "n_prior_12m": 120}
+    # a stamp on the first second of the month means June was fetched whole
+    state["last_success"] = _stamps(gdelt="2026-07-01T00:00:00Z")
+    obj = build_market_hype(state, [_term("aaa")], "2026-07-02T00:00:00Z")
+    assert obj["terms"][0]["series"]["gdelt"][-1]["month"] == "2026-06"
+    assert obj["terms"][0]["yoy"]["gdelt"]["latest_month"] == "2026-06"
+
+
+def test_run_stage_live_publishes_stale_sources_in_payload_and_meta(
+        tmp_path, monkeypatch):
+    from pipeline import fetch_market
+
+    def fake_sync(state, terms, **kwargs):
+        return {"version": 1, "last_sync": GENERATED_AT, "series": {},
+                "pending": [],
+                "last_success": {"edgar": "2026-07-01T00:00:00Z"}}
+
+    monkeypatch.setattr(fetch_market, "sync_state", fake_sync)
+    logs = []
+    obj, source = run_stage(tmp_path, tmp_path / "cache", GENERATED_AT,
+                            skip=False, offline_fixtures=False,
+                            backfill_batch=5, log=logs.append)
+    assert obj["stale_sources"] == ["edgar"]
+    assert source == {"fetched_at": GENERATED_AT, "term_count": len(TERMS),
+                      "backfill_remaining": 0, "stale_sources": ["edgar"]}
+    assert any("stale source lane(s)" in m and "edgar" in m for m in logs)
+    market_contracts.validate("market_hype.json", obj)
+
+
+def test_run_stage_skip_carries_stale_sources_forward(tmp_path):
+    prior = {"generated_at": "2026-06-01T00:00:00Z", "window_months": 60,
+             "sources": list(ALL_SOURCES), "stale_sources": ["wiki"],
+             "backfill_remaining": 0, "terms": [],
+             "headline": {"top_riser": None, "top_faller": None,
+                          "top_divergence": None}}
+    (tmp_path / "market_hype.json").write_text(json.dumps(prior),
+                                               encoding="utf-8")
+    obj, source = run_stage(tmp_path, tmp_path / "cache", GENERATED_AT,
+                            skip=True, offline_fixtures=False,
+                            backfill_batch=5, log=lambda m: None)
+    assert obj["stale_sources"] == ["wiki"]
+    assert source["stale_sources"] == ["wiki"] and source["stale"] is True
+    market_contracts.validate("market_hype.json", obj)

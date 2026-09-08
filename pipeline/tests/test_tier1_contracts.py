@@ -196,3 +196,19 @@ def test_newcomer_projection_zero_newcomers_rejected(outputs):
     obj["projection"] = {"year": 2026, "newcomers": 0, "elapsed": 0.521}
     with pytest.raises(ContractViolation, match="below minimum"):
         tier1_contracts.validate("cna_concentration.json", obj)
+
+
+def test_leaderboard_row_below_min_total_rejected(outputs):
+    obj = _corrupt(outputs, "cna_concentration.json")
+    board = obj["rejection_leaderboard"]
+    board["min_total"] = board["cnas"][0]["total"] + 1
+    with pytest.raises(ContractViolation, match="below minimum"):
+        tier1_contracts.validate("cna_concentration.json", obj)
+
+
+def test_latency_headline_years_must_be_charted(outputs):
+    for key in ("latest_year", "baseline_year"):
+        obj = _corrupt(outputs, "kev_latency.json")
+        obj["headline"][key] = 1995
+        with pytest.raises(ContractViolation, match="charted latency"):
+            tier1_contracts.validate("kev_latency.json", obj)

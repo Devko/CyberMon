@@ -205,7 +205,8 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert [v["vendor"] for v in guards["vendors"]] == \
         ["Cisco", "Fortinet", "GitHub_M", "mitre", "VendorX"]
     assert by_vendor["Fortinet"] == {
-        "vendor": "Fortinet", "entries": 2, "security_entries": 2,
+        "vendor": "Fortinet", "entries": 2, "dated_entries": 2,
+        "security_entries": 2,
         "pct_security": 100.0, "first_added": "2023-06-14",
         "last_added": "2024-05-15", "median_gap_days": 336.0}
     assert by_vendor["Cisco"]["security_entries"] == 1  # ASA yes, IOS XE no
@@ -505,3 +506,19 @@ def test_skip_nvd_without_prior_data_omits_nvd_outputs(tmp_path, capsys):
     for name in ALL_FILES:
         if name not in ("nvd_decay.json", "nvd_throughput.json"):
             contracts.validate(name, _load(tmp_path, name))
+
+
+def test_history_rows_share_the_editions_date_across_midnight(tmp_path,
+                                                             monkeypatch):
+    # The NVD stages run minutes apart; a run that crosses UTC midnight
+    # used to sample "today" three separate times. Every history row must
+    # carry the edition date of generated_at — sampled once.
+    from pipeline import __main__ as cli
+
+    monkeypatch.setattr(cli, "_now_iso", lambda: "2031-12-31T23:59:59Z")
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    assert _load(tmp_path, "meta.json")["generated_at"] == \
+        "2031-12-31T23:59:59Z"
+    for name in ("nvd_backlog.csv", "nvd_throughput.csv"):
+        rows = (tmp_path / "history" / name).read_text("utf-8").splitlines()
+        assert rows[-1].startswith("2031-12-31,"), name

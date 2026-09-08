@@ -195,6 +195,14 @@ def _validate_meta(obj: Any) -> None:
         _check_int(_get(src["market"], "backfill_remaining",
                         "meta.sources.market"),
                    "meta.sources.market.backfill_remaining")
+        # Optional (pre-freshness meta files / carried blocks lack it):
+        # the same list market_hype.json publishes, checked by the market
+        # contract's own helper — imported lazily because this module
+        # loads market_contracts only at its bottom.
+        if "stale_sources" in src["market"]:
+            from .market_contracts import _check_stale_sources
+            _check_stale_sources(src["market"]["stale_sources"],
+                                 "meta.sources.market.stale_sources")
 
     # Optional so older meta files stay valid; the pipeline always emits it
     # (the HIBP stage has no skip flag — it fails loud instead).
@@ -359,6 +367,7 @@ def _validate_severity_inflation(obj: Any) -> None:
                               score_keys=["median"], pct_keys=["pct_high_critical"])
              for i, e in enumerate(blended)]
     _check_sorted(years, "severity_inflation.blended")
+    blended_years = set(years)
 
     annotations = _check_list(_get(obj, "annotations", "severity_inflation"),
                               "severity_inflation.annotations")
@@ -368,10 +377,14 @@ def _validate_severity_inflation(obj: Any) -> None:
         _check_str(_get(a, "label", path), f"{path}.label")
 
     headline = _get(obj, "headline", "severity_inflation")
-    _check_int(_get(headline, "latest_year", "severity_inflation.headline"),
-               "severity_inflation.headline.latest_year", minimum=1990)
-    _check_int(_get(headline, "baseline_year", "severity_inflation.headline"),
-               "severity_inflation.headline.baseline_year", minimum=1990)
+    # The headline quotes two charted blended years; a year the series
+    # does not contain would let the copy imply a baseline nobody can see.
+    for key in ("latest_year", "baseline_year"):
+        year = _get(headline, key, "severity_inflation.headline")
+        _check_int(year, f"severity_inflation.headline.{key}", minimum=1990)
+        if year not in blended_years:
+            _fail(f"severity_inflation.headline.{key}",
+                  f"{year} is not one of the charted blended years")
     for k in ("pct_high_critical_latest", "pct_high_critical_baseline"):
         _check_num(_get(headline, k, "severity_inflation.headline"),
                    f"severity_inflation.headline.{k}", 0.0, 100.0)
@@ -442,18 +455,29 @@ def _validate_score_vs_reality(obj: Any) -> None:
                "score_vs_reality.headline.n_critical_with_epss")
 
     kev = _get(obj, "kev", "score_vs_reality")
-    _check_int(_get(kev, "total", "score_vs_reality.kev"), "score_vs_reality.kev.total")
-    _check_int(_get(kev, "below_high", "score_vs_reality.kev"),
-               "score_vs_reality.kev.below_high")
+    kev_total = _get(kev, "total", "score_vs_reality.kev")
+    _check_int(kev_total, "score_vs_reality.kev.total")
+    below_high = _get(kev, "below_high", "score_vs_reality.kev")
+    _check_int(below_high, "score_vs_reality.kev.below_high")
+    if below_high > kev_total:
+        _fail("score_vs_reality.kev.below_high",
+              f"below_high ({below_high}) exceeds total ({kev_total})")
     _check_num(_get(kev, "pct_below_high", "score_vs_reality.kev"),
                "score_vs_reality.kev.pct_below_high", 0.0, 100.0)
     dist = _check_list(_get(kev, "cvss_distribution", "score_vs_reality.kev"),
                        "score_vs_reality.kev.cvss_distribution")
+    dist_total = 0
     for i, d in enumerate(dist):
         path = f"score_vs_reality.kev.cvss_distribution[{i}]"
         if _get(d, "bucket", path) not in CVSS_BUCKETS:
             _fail(f"{path}.bucket", f"unknown bucket {d['bucket']!r}")
         _check_int(_get(d, "n", path), f"{path}.n")
+        dist_total += d["n"]
+    # The distribution partitions the same scored KEV entries the share
+    # denominates; a mismatch means one of the two tallies drifted.
+    if dist_total != kev_total:
+        _fail("score_vs_reality.kev.cvss_distribution",
+              f"bucket counts sum to {dist_total}, kev.total is {kev_total}")
 
 
 # ----------------------------------------------------------- nvd_decay.json
@@ -506,6 +530,7 @@ def _validate_nvd_throughput(obj: Any) -> None:
     history = _check_list(_get(obj, "history", "nvd_throughput"),
                           "nvd_throughput.history")
     dates = []
+    previous_resweep = False
     for i, h in enumerate(history):
         path = f"nvd_throughput.history[{i}]"
         date = _get(h, "date", path)
@@ -514,6 +539,16 @@ def _validate_nvd_throughput(obj: Any) -> None:
                   "analyzed_from_awaiting", "deferred_from_awaiting"):
             _check_int(_get(h, k, path), f"{path}.{k}")
         _check_bool(_get(h, "resweep", path), f"{path}.resweep")
+        # Optional (editions published before the field lack it); when
+        # present it is DERIVED — true exactly on the row after a resweep
+        # row, where the catch-up lump lands — so it is re-derived here.
+        if "after_resweep" in h:
+            _check_bool(h["after_resweep"], f"{path}.after_resweep")
+            if h["after_resweep"] != previous_resweep:
+                _fail(f"{path}.after_resweep",
+                      f"must be {previous_resweep} (the previous row's "
+                      f"resweep flag), got {h['after_resweep']}")
+        previous_resweep = h["resweep"]
         dates.append(date)
     _check_sorted(dates, "nvd_throughput.history")
     if len(set(dates)) != len(dates):
@@ -529,13 +564,15 @@ def _validate_cna_leaderboard(obj: Any) -> None:
                "cna_leaderboard.window_years", minimum=1)
     _check_int(_get(obj, "min_cves", "cna_leaderboard"),
                "cna_leaderboard.min_cves", minimum=1)
+    min_cves = obj["min_cves"]
     cnas = _check_list(_get(obj, "cnas", "cna_leaderboard"), "cna_leaderboard.cnas")
     pcts = []
     for i, c in enumerate(cnas):
         path = f"cna_leaderboard.cnas[{i}]"
         _check_str(_get(c, "cna", path), f"{path}.cna")
         _check_str(_get(c, "org", path), f"{path}.org")
-        _check_int(_get(c, "n", path), f"{path}.n")
+        # min_cves is the promise the board makes: no CNA ranks on fewer.
+        _check_int(_get(c, "n", path), f"{path}.n", minimum=min_cves)
         _check_num(_get(c, "avg_cvss", path), f"{path}.avg_cvss", 0.0, 10.0)
         _check_num(_get(c, "median_cvss", path), f"{path}.median_cvss", 0.0, 10.0)
         _check_num(_get(c, "pct_geq_9", path), f"{path}.pct_geq_9", 0.0, 100.0)

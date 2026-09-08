@@ -100,6 +100,10 @@ def build_kev_guards(entries: Iterable[KevEntry], generated_at: str, *,
         vendors.append({
             "vendor": vendor,
             "entries": len(ventries),
+            # Undated entries count on the board but cannot join the gap
+            # series; the median is null iff exactly one entry is dated,
+            # and the contract checks that against THIS count.
+            "dated_entries": len(dates),
             "security_entries": security,
             "pct_security": _pct(security, len(ventries)),
             "first_added": dates[0].isoformat(),

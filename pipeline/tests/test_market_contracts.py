@@ -7,6 +7,10 @@ from pathlib import Path
 
 import pytest
 
+# contracts must load before market_contracts: the coordinator registers
+# module contracts from its own module bottom, so importing the contract
+# file first would hit the registration mid-initialization.
+from pipeline import contracts  # (see above)
 from pipeline import market_contracts, market_metrics
 from pipeline.contracts import ContractViolation
 from pipeline.market_terms import TERMS
@@ -131,3 +135,72 @@ def test_legacy_three_source_file_still_validates(hype):
     partial["sources"] = market_contracts.SOURCES
     with pytest.raises(ContractViolation, match="wiki"):
         market_contracts.validate("market_hype.json", partial)
+
+
+# ----------------------------------------------------------- stale_sources
+
+def test_stale_sources_optional_but_validated_when_present(hype):
+    assert hype["stale_sources"] == []   # the fixture state carries no stamps
+    legacy = _corrupt(hype)
+    del legacy["stale_sources"]          # pre-freshness file (a nightly behind)
+    market_contracts.validate("market_hype.json", legacy)
+    for value, why in (("hn", "expected array"),
+                       (["hn", "hn"], "duplicate"),
+                       (["telegram"], "unknown source"),
+                       (["arxiv", "gdelt"], "order")):
+        bad = _corrupt(hype)
+        bad["stale_sources"] = value
+        with pytest.raises(ContractViolation, match=why):
+            market_contracts.validate("market_hype.json", bad)
+
+
+def test_stale_source_must_not_carry_a_computed_yoy(hype):
+    bad = _corrupt(hype)
+    bad["stale_sources"] = ["gdelt"]
+    assert bad["terms"][0]["yoy"]["gdelt"] is not None   # zero_trust
+    with pytest.raises(ContractViolation, match="yoy.gdelt.*stale_sources"):
+        market_contracts.validate("market_hype.json", bad)
+    # the honest shape — null YoY, null divergence (gdelt is a side of
+    # it), a headline that does not rank the dead lane — validates
+    ok = _corrupt(hype)
+    ok["stale_sources"] = ["gdelt"]
+    for t in ok["terms"]:
+        t["yoy"]["gdelt"] = None
+        t["divergence"] = None
+    ok["headline"] = {"top_riser": None, "top_faller": None,
+                      "top_divergence": None}
+    market_contracts.validate("market_hype.json", ok)
+
+
+def test_stale_gdelt_or_arxiv_must_not_carry_a_divergence(hype):
+    bad = _corrupt(hype)
+    bad["stale_sources"] = ["arxiv"]
+    for t in bad["terms"]:
+        t["yoy"]["arxiv"] = None
+    assert any(t["divergence"] for t in bad["terms"])
+    with pytest.raises(ContractViolation, match="divergence must be null"):
+        market_contracts.validate("market_hype.json", bad)
+
+
+def test_stale_source_cannot_headline_the_movers_board(hype):
+    bad = _corrupt(hype)
+    assert bad["headline"]["top_riser"]["source"] == "gdelt"
+    bad["stale_sources"] = ["gdelt"]
+    for t in bad["terms"]:
+        t["yoy"]["gdelt"] = None
+        t["divergence"] = None
+    with pytest.raises(ContractViolation, match="headline.top_riser.source"):
+        market_contracts.validate("market_hype.json", bad)
+
+
+def test_meta_market_stale_sources_validated(outputs):
+    meta = copy.deepcopy(outputs["meta.json"])
+    meta["sources"]["market"] = {"fetched_at": GENERATED_AT, "term_count": 6,
+                                 "backfill_remaining": 3}
+    contracts.validate("meta.json", meta)            # pre-freshness block
+    meta["sources"]["market"]["stale_sources"] = ["hn", "edgar"]
+    contracts.validate("meta.json", meta)
+    meta["sources"]["market"]["stale_sources"] = ["reddit"]
+    with pytest.raises(ContractViolation,
+                       match="meta.sources.market.stale_sources"):
+        contracts.validate("meta.json", meta)

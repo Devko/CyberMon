@@ -44,7 +44,8 @@ from typing import Callable, Iterable
 
 from .fetch_epss_history import (MODEL_LABELS, entry_key, known_model_version,
                                  live_fetcher, load_state, model_eras_block,
-                                 reconstruct_state, save_state, sync_state)
+                                 model_label, reconstruct_state, save_state,
+                                 sync_state)
 from .fetch_kev import KevEntry
 from .metrics import _pct, _r1
 
@@ -118,6 +119,12 @@ def build_epss_report(state: dict, kev_entries: Iterable[KevEntry],
     classify ungradeable entries. Years group by KEV ``dateAdded``; a
     year charts only with at least ``min_n`` graded entries (fixture
     mode 1) but its ungradeable/pending counts are always in ``catalog``.
+
+    The model-era label of every scored entry is DERIVED here from its
+    ``score_date`` (``fetch_epss_history.model_label``); the label stored
+    in the state is only a fetch-time hint. That is what lets a late fix
+    to the era table relabel history on the next build instead of
+    freezing the wrong era into ``distribution.by_model`` forever.
     """
     state_entries: dict[str, dict] = state.get("entries") or {}
 
@@ -141,6 +148,10 @@ def build_epss_report(state: dict, kev_entries: Iterable[KevEntry],
             if year is not None:
                 pending_by_year[year] += 1
             continue
+        if entry["epss"] is not None:
+            # The era is a function of the score date, not of whatever the
+            # table said the night the pair was fetched.
+            entry = {**entry, "model": model_label(entry["score_date"])}
         entries_out.append({"cve": kev.cve_id, "date_added": date_added,
                             **entry})
         if entry["epss"] is None:
@@ -275,9 +286,18 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
               current_model_version: str,
               skip: bool, offline_fixtures: bool, backfill_batch: int = 30,
               min_n: int | None = None, session=None,
+              feed_score_date: str | None = None,
               log: Callable[[str], None] = print
               ) -> tuple[dict | None, dict | None]:
     """(epss_report.json object or None, meta.sources.epss_history or None).
+
+    ``current_model_version`` and ``feed_score_date`` are the current EPSS
+    feed's header fields (``EpssData.model_version`` / ``.score_date``):
+    the first is the new-model tripwire, the second lets the sync leave
+    pending any KEV pair whose day-before score date FIRST has not
+    published yet (see ``fetch_epss_history.sync_state``). A caller that
+    does not know the feed date may pass None — the null-fact grace window
+    still protects the most recent days.
 
     Mirrors the attack stage's handling:
 
@@ -351,6 +371,7 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
                        live_fetcher(session, log=log),
                        backfill_batch=backfill_batch,
                        last_sync=generated_at,
+                       feed_score_date=feed_score_date,
                        save=lambda s: save_state(cache_dir, s), log=log)
     save_state(cache_dir, state)
     obj = build_epss_report(state, kev_entries, published_dates,

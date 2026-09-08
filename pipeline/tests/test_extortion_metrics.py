@@ -57,11 +57,11 @@ def test_parse_fails_loud_on_malformed_record(field, value):
 
 
 @pytest.mark.parametrize("tx", [
-    {"hash": "", "time": 1, "amount": 1, "amountUSD": 1.0},
+    {"hash": "", "time": 1716192000, "amount": 1, "amountUSD": 1.0},
     {"hash": "h", "time": 0, "amount": 1, "amountUSD": 1.0},
-    {"hash": "h", "time": 1, "amount": -1, "amountUSD": 1.0},
-    {"hash": "h", "time": 1, "amount": 1, "amountUSD": -0.5},
-    {"hash": "h", "time": 1, "amount": 1},  # missing amountUSD
+    {"hash": "h", "time": 1716192000, "amount": -1, "amountUSD": 1.0},
+    {"hash": "h", "time": 1716192000, "amount": 1, "amountUSD": -0.5},
+    {"hash": "h", "time": 1716192000, "amount": 1},  # missing amountUSD
 ])
 def test_parse_fails_loud_on_malformed_transaction(tx):
     with pytest.raises(ValueError, match="ransomwhere"):

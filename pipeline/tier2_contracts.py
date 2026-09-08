@@ -33,8 +33,8 @@ def _check_years_sorted_unique(years: list[int], path: str) -> None:
 
 def _validate_advisory_quality(obj: Any) -> None:
     _check_generated_at(obj, "advisory_quality")
-    _check_int(_get(obj, "min_n", "advisory_quality"),
-               "advisory_quality.min_n", minimum=1)
+    min_n = _get(obj, "min_n", "advisory_quality")
+    _check_int(min_n, "advisory_quality.min_n", minimum=1)
 
     entries = _check_list(_get(obj, "years", "advisory_quality"),
                           "advisory_quality.years")
@@ -45,7 +45,8 @@ def _validate_advisory_quality(obj: Any) -> None:
         _check_int(year, f"{path}.year", minimum=1990)
         years.append(year)
         n = _get(e, "n", path)
-        _check_int(n, f"{path}.n", minimum=1)
+        # min_n is the chart's promise: no year plots on fewer records.
+        _check_int(n, f"{path}.n", minimum=min_n)
         for key in ("cwe", "cvss", "affected"):
             missing = _get(e, f"missing_{key}", path)
             _check_int(missing, f"{path}.missing_{key}")
@@ -61,8 +62,8 @@ def _validate_advisory_quality(obj: Any) -> None:
 
 def _validate_cwe_distribution(obj: Any) -> None:
     _check_generated_at(obj, "cwe_distribution")
-    _check_int(_get(obj, "min_n", "cwe_distribution"),
-               "cwe_distribution.min_n", minimum=1)
+    min_n = _get(obj, "min_n", "cwe_distribution")
+    _check_int(min_n, "cwe_distribution.min_n", minimum=1)
 
     window = _get(obj, "window", "cwe_distribution")
     start = _get(window, "start_year", "cwe_distribution.window")
@@ -103,7 +104,8 @@ def _validate_cwe_distribution(obj: Any) -> None:
                   f"year {year} outside window [{start}, {end}]")
         years.append(year)
         n_tagged = _get(e, "n_tagged", path)
-        _check_int(n_tagged, f"{path}.n_tagged", minimum=1)
+        # min_n floors the TAGGED count (shares are of tagged records).
+        _check_int(n_tagged, f"{path}.n_tagged", minimum=min_n)
         n_published = _get(e, "n_published", path)
         _check_int(n_published, f"{path}.n_published")
         if n_tagged > n_published:
@@ -127,8 +129,8 @@ def _validate_cwe_distribution(obj: Any) -> None:
 
 def _validate_kev_ransomware(obj: Any) -> None:
     _check_generated_at(obj, "kev_ransomware")
-    _check_int(_get(obj, "min_n", "kev_ransomware"),
-               "kev_ransomware.min_n", minimum=1)
+    min_n = _get(obj, "min_n", "kev_ransomware")
+    _check_int(min_n, "kev_ransomware.min_n", minimum=1)
 
     entries = _check_list(_get(obj, "years", "kev_ransomware"),
                           "kev_ransomware.years")
@@ -139,7 +141,8 @@ def _validate_kev_ransomware(obj: Any) -> None:
         _check_int(year, f"{path}.year", minimum=1990)
         years.append(year)
         total = _get(e, "total", path)
-        _check_int(total, f"{path}.total", minimum=1)
+        # min_n is the chart's promise: no year plots on fewer entries.
+        _check_int(total, f"{path}.total", minimum=min_n)
         known = _get(e, "known", path)
         _check_int(known, f"{path}.known")
         if known > total:

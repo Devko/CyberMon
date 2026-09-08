@@ -52,7 +52,14 @@ def _flag(entry: dict, key: str) -> bool:
 
 
 def parse_hibp(obj: list) -> HibpData:
-    """Extract breach entries from the HIBP breaches document."""
+    """Extract breach entries from the HIBP breaches document.
+
+    Malformed *entries* are skipped (one odd record must not sink the
+    catalog), but a document that yields *no* breach at all raises: an
+    empty array, or every entry missing a string ``Name``, is upstream
+    shape drift, and raising here — inside the fetch's try/except in
+    ``__main__`` — is what lets the Breach Ledger degrade to its previous
+    edition instead of the run aborting later at contract validation."""
     if not isinstance(obj, list):
         raise ValueError(
             f"HIBP breaches feed: expected a JSON array, got {type(obj).__name__}")
@@ -64,8 +71,11 @@ def parse_hibp(obj: list) -> HibpData:
         if isinstance(pwn_count, bool) or not isinstance(pwn_count, int) \
                 or pwn_count < 0:
             pwn_count = 0
-        classes = [c for c in entry.get("DataClasses") or []
-                   if isinstance(c, str) and c]
+        raw_classes = entry.get("DataClasses")
+        # A string here would iterate into single letters; only a list is
+        # a list of data classes.
+        classes = [c for c in raw_classes if isinstance(c, str) and c] \
+            if isinstance(raw_classes, list) else []
         breaches.append(HibpBreach(
             name=entry["Name"],
             breach_date=str(entry.get("BreachDate") or ""),
@@ -77,6 +87,9 @@ def parse_hibp(obj: list) -> HibpData:
             is_malware=_flag(entry, "IsMalware"),
             is_stealer_log=_flag(entry, "IsStealerLog"),
         ))
+    if not breaches:
+        raise ValueError("HIBP breaches feed: zero breach entries parsed "
+                         "(upstream shape drift?)")
     return HibpData(breach_count=len(breaches), breaches=breaches)
 
 

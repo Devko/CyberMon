@@ -28,7 +28,7 @@ from typing import Any, Callable
 from .contracts import (DATE_RE, EPSS_BUCKETS, _check_bool,
                         _check_generated_at, _check_int, _check_list,
                         _check_num, _check_sorted, _check_str, _fail, _get)
-from .fetch_epss_history import MODEL_LABELS, REASONS
+from .fetch_epss_history import MODEL_LABELS, REASONS, model_label
 
 CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,}$")
 PERCENTILE_BUCKETS = ["0-25", "25-50", "50-75", "75-90", "90-99", "99-100"]
@@ -193,6 +193,15 @@ def _check_entry(entry: Any, path: str) -> tuple[str, str]:
             _check_prob(percentile, f"{path}.percentile")
         if model not in MODEL_LABELS:
             _fail(f"{path}.model", f"unknown model label {model!r}")
+        # The era is a function of the score date. Re-derived rather than
+        # trusted: when the era table gains a row late, a published file
+        # still carrying the old label fails HERE instead of quietly
+        # grouping distribution.by_model under the wrong model.
+        expected_model = model_label(score_date)
+        if model != expected_model:
+            _fail(f"{path}.model",
+                  f"{model!r} is not the era covering {score_date} "
+                  f"({expected_model!r}) — rebuild relabels it")
         if reason is not None:
             _fail(f"{path}.reason", "scored entries carry no reason")
     return added, cve

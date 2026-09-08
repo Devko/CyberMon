@@ -254,3 +254,35 @@ def test_run_stage_warns_on_unknown_model_version(tmp_path):
                   backfill_batch=0, session=object(), log=logs.append)
     assert any("model_version" in line and "WARNING" in line
                for line in logs)
+
+
+# ---------------------------------------------------- derived model labels
+
+def test_build_derives_model_from_score_date_not_stored_label():
+    # Fetched the week v5 shipped, under an era table that still ended at
+    # v4: the stored hint is wrong, and must not freeze into the report.
+    state = _state({"CVE-2026-0001|2026-07-02":
+                    _scored("2026-07-01", 0.2, 0.7, "v4")})
+    obj = erm.build_epss_report(state, [_kev("CVE-2026-0001", "2026-07-02")],
+                                {}, "2026-07-20T00:00:00Z", min_n=1)
+    validate("epss_report.json", obj)
+    assert obj["entries"][0]["model"] == "v5"
+    assert [row["model"] for row in obj["distribution"]["by_model"]] == ["v5"]
+
+
+def test_run_stage_threads_the_feed_date_into_the_sync(tmp_path,
+                                                        monkeypatch):
+    seen = {}
+
+    def fake_sync(state, pairs, fetch, **kwargs):
+        seen.update(kwargs)
+        return {"version": 1, "last_sync": kwargs["last_sync"],
+                "entries": {}}
+
+    monkeypatch.setattr(erm, "sync_state", fake_sync)
+    erm.run_stage(tmp_path, tmp_path, GENERATED_AT, kev_entries=[],
+                  published_dates={}, current_model_version="v2026.06.15",
+                  feed_score_date="2026-07-08", skip=False,
+                  offline_fixtures=False, backfill_batch=0,
+                  session=object(), log=lambda _msg: None)
+    assert seen["feed_score_date"] == "2026-07-08"

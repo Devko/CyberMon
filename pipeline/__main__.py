@@ -124,10 +124,6 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _today() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
-
 def _gather_records(args: argparse.Namespace) -> tuple[str, Iterator[dict]]:
     """Return (release label, streaming record iterator) for the corpus."""
     if args.offline_fixtures:
@@ -170,12 +166,16 @@ def _save_nvd_state(cache_dir: Path, state: dict) -> None:
     tmp.replace(path)
 
 
-def _gather_nvd(args: argparse.Namespace
+def _gather_nvd(args: argparse.Namespace, today: str
                 ) -> tuple[dict[str, int] | None, dict | None,
                            list[int]]:
     """(fresh NVD status counts or None when skipped, today's throughput
     transitions or None when there was no previous state to diff against,
     accumulated known queue durations).
+
+    ``today`` is the run's edition date (``generated_at[:10]``), threaded
+    in rather than re-sampled so a run that straddles UTC midnight keys
+    every history row to the same date its outputs are stamped with.
 
     The throughput diff compares the state loaded from cache against the
     freshly synced one (pipeline/nvd_throughput.py); the tracking keys it
@@ -184,7 +184,6 @@ def _gather_nvd(args: argparse.Namespace
     """
     if args.skip_nvd:
         return None, None, []
-    today = _today()
     if args.offline_fixtures:
         counts = json.loads((FIXTURES_DIR / "nvd_statuses.json")
                             .read_text(encoding="utf-8"))
@@ -213,7 +212,7 @@ def _gather_nvd(args: argparse.Namespace
 
 
 def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
-                 generated_at: str
+                 generated_at: str, today: str
                  ) -> tuple[dict | None, dict | None, list[dict] | None]:
     """(nvd_decay.json object or None, meta.sources.nvd object or None,
     merged history rows to persist or None).
@@ -226,7 +225,7 @@ def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
     if statuses is not None:
         csv_path = args.out / "history" / "nvd_backlog.csv"
         rows = history.merge_row(history.read_rows(csv_path),
-                                 metrics.backlog_row(statuses, _today()))
+                                 metrics.backlog_row(statuses, today))
         return (metrics.build_nvd_decay(statuses, rows, generated_at),
                 {"fetched_at": generated_at}, rows)
 
@@ -247,7 +246,8 @@ def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
 def _nvd_throughput_outputs(args: argparse.Namespace,
                             statuses: dict[str, int] | None,
                             transitions: dict | None,
-                            durations: list[int], generated_at: str
+                            durations: list[int], generated_at: str,
+                            today: str
                             ) -> tuple[dict | None, list[dict] | None]:
     """(nvd_throughput.json object or None, merged throughput history rows
     to persist or None). Same policy as _nvd_outputs:
@@ -267,7 +267,7 @@ def _nvd_throughput_outputs(args: argparse.Namespace,
             return nvd_throughput.build_nvd_throughput(rows, generated_at), \
                 None
         row = nvd_throughput.throughput_row(
-            transitions["counts"], durations, _today(),
+            transitions["counts"], durations, today,
             transitions["resweep"])
         rows = nvd_throughput.merge_row(rows, row)
         return nvd_throughput.build_nvd_throughput(rows, generated_at), rows
@@ -390,6 +390,12 @@ def _corpus_floor_error(out_dir: Path, cve_count: int,
 
 def run(args: argparse.Namespace) -> int:
     generated_at = _now_iso()
+    # One edition date for every history row this run appends. Sampled
+    # once, here, from the same clock reading as generated_at: the NVD
+    # stages run minutes apart, and a run straddling UTC midnight must
+    # not key its backlog row to one date and its throughput row to the
+    # next.
+    today = generated_at[:10]
 
     # ---- gather ----------------------------------------------------------
     release, records = _gather_records(args)
@@ -447,7 +453,7 @@ def run(args: argparse.Namespace) -> int:
         feodo = fetch_blocklist()
         print(f"  Feodo Tracker: {feodo.entry_count} C2s listed "
               f"({feodo.online_count} online)")
-    nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args)
+    nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args, today)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
@@ -566,11 +572,12 @@ def run(args: argparse.Namespace) -> int:
         if carried is not None:
             outputs["extortion_ledger.json"] = carried
     nvd_decay, nvd_source, history_rows = _nvd_outputs(
-        args, nvd_statuses, generated_at)
+        args, nvd_statuses, generated_at, today)
     if nvd_decay is not None:
         outputs["nvd_decay.json"] = nvd_decay
     nvd_throughput_obj, throughput_rows = _nvd_throughput_outputs(
-        args, nvd_statuses, nvd_transitions, nvd_durations, generated_at)
+        args, nvd_statuses, nvd_transitions, nvd_durations, generated_at,
+        today)
     if nvd_throughput_obj is not None:
         outputs["nvd_throughput.json"] = nvd_throughput_obj
     if nvd_source is not None and nvd_transitions is not None:
@@ -610,6 +617,7 @@ def run(args: argparse.Namespace) -> int:
         kev_entries=kev.entries,
         published_dates=agg.kev_published_dates,
         current_model_version=epss.model_version,
+        feed_score_date=epss.score_date,
         skip=args.skip_epss_report,
         offline_fixtures=args.offline_fixtures,
         backfill_batch=args.epss_backfill_batch)

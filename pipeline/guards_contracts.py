@@ -30,10 +30,11 @@ def _check_split_block(block: Any, path: str) -> None:
 
 def _validate_kev_guards(obj: Any) -> None:
     _check_generated_at(obj, "kev_guards")
-    _check_int(_get(obj, "min_n", "kev_guards"),
-               "kev_guards.min_n", minimum=1)
-    _check_int(_get(obj, "min_vendor_entries", "kev_guards"),
-               "kev_guards.min_vendor_entries", minimum=1)
+    min_n = _get(obj, "min_n", "kev_guards")
+    _check_int(min_n, "kev_guards.min_n", minimum=1)
+    min_vendor_entries = _get(obj, "min_vendor_entries", "kev_guards")
+    _check_int(min_vendor_entries, "kev_guards.min_vendor_entries",
+               minimum=1)
 
     # ---- years: guard share per dateAdded year ----------------------------
     entries = _check_list(_get(obj, "years", "kev_guards"),
@@ -45,7 +46,8 @@ def _validate_kev_guards(obj: Any) -> None:
         _check_int(year, f"{path}.year", minimum=1990)
         years.append(year)
         total = _get(e, "total", path)
-        _check_int(total, f"{path}.total", minimum=1)
+        # min_n is the chart's promise: no year plots on fewer entries.
+        _check_int(total, f"{path}.total", minimum=min_n)
         security = _get(e, "security", path)
         _check_int(security, f"{path}.security")
         if security > total:
@@ -66,8 +68,17 @@ def _validate_kev_guards(obj: Any) -> None:
         _check_str(_get(v, "vendor", path), f"{path}.vendor")
         names.append(v["vendor"])
         n = _get(v, "entries", path)
-        _check_int(n, f"{path}.entries", minimum=1)
+        _check_int(n, f"{path}.entries", minimum=min_vendor_entries)
         counts.append(n)
+        # Undated entries count on the board but not in the gap series.
+        # ``dated_entries`` is optional only for editions published before
+        # it existed; when absent, every entry is assumed dated (the old
+        # rule). When present it keys the median-gap null rule below.
+        dated = v.get("dated_entries", n)
+        _check_int(dated, f"{path}.dated_entries", minimum=1)
+        if dated > n:
+            _fail(f"{path}.dated_entries",
+                  f"dated_entries ({dated}) exceeds entries ({n})")
         security = _get(v, "security_entries", path)
         _check_int(security, f"{path}.security_entries")
         if security > n:
@@ -83,11 +94,16 @@ def _validate_kev_guards(obj: Any) -> None:
             _fail(f"{path}.first_added",
                   f"first_added ({first}) after last_added ({last})")
         gap = _get(v, "median_gap_days", path)
-        if gap is not None:  # null iff the vendor has a single dated entry
+        # Null iff the vendor has a single DATED entry (docs): a gap needs
+        # two dates, and one date can never yield one.
+        if gap is not None:
             _check_num(gap, f"{path}.median_gap_days", 0.0, 100000.0)
-        if n >= 2 and gap is None:
+            if dated < 2:
+                _fail(f"{path}.median_gap_days",
+                      f"a median gap from {dated} dated entry")
+        elif dated >= 2:
             _fail(f"{path}.median_gap_days",
-                  f"{n} entries but no median gap")
+                  f"{dated} dated entries but no median gap")
     if counts != sorted(counts, reverse=True):
         _fail("kev_guards.vendors", "not sorted by entries descending")
     if len(set(names)) != len(names):

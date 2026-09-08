@@ -61,7 +61,14 @@ def build_attack_churn(state: dict, generated_at: str) -> dict:
             "headline": headline}
 
 
-def _source(fetched_at: str, versions: list[dict]) -> dict:
+def _source(fetched_at: str, versions: list[dict]) -> dict | None:
+    """The meta.sources.attack block, or None when there are no versions
+    to describe: an empty ``versions`` list is legal for attack_churn.json
+    (headline null), but the meta block promises a ``latest_version``
+    string and a ``version_count`` of at least 1, so the honest answer is
+    to omit it (``meta.sources.attack`` is optional by contract)."""
+    if not versions:
+        return None
     return {"fetched_at": fetched_at,
             "latest_version": versions[-1]["version"],
             "version_count": len(versions)}
@@ -105,9 +112,16 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
         carried["stale"] = True
         log(f"  --skip-attack: carrying forward attack_churn.json "
             f"from {fetched_at}")
-        # meta.sources.attack must stay contract-complete even when stale.
-        return carried, {**_source(fetched_at, carried["versions"]),
-                         "stale": True}
+        # meta.sources.attack must stay contract-complete even when stale
+        # — and a prior file with no versions at all has no block to
+        # carry (legal: headline null, versions empty), so it is omitted
+        # rather than faked.
+        source = _source(fetched_at, carried.get("versions") or [])
+        if source is None:
+            log("warning: --skip-attack prior attack_churn.json lists no "
+                "versions; omitting meta.sources.attack this run")
+            return carried, None
+        return carried, {**source, "stale": True}
 
     if offline_fixtures:
         fixture_dir = FIXTURES_DIR / "attack"

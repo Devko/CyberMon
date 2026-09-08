@@ -261,3 +261,15 @@ def test_run_stage_never_refuses_a_collapse(tmp_path):
                                 log=lambda *_: None)
     assert obj["c2_weather"]["series"][-2]["listed_total"] == 60
     assert obj["c2_weather"]["current_listed"] == 0  # the cliff, on record
+
+
+def test_median_age_rounds_half_up_not_to_even():
+    # 2026-07-21 minus 40 and 41 days: median 40.5 must read 41. Python's
+    # round() is banker's rounding and would say 40 -- a list one day
+    # older than [40, 40] reading exactly the same is the bug.
+    s = snap(c2("203.0.113.1", first_seen="2026-06-11"),   # 40 days
+             c2("203.0.113.2", first_seen="2026-06-10"))   # 41 days
+    assert bm.build_c2_age(s, "2026-07-21")["median_age_days"] == 41
+    s = snap(c2("203.0.113.1", first_seen="2026-06-10"),   # 41 days
+             c2("203.0.113.2", first_seen="2026-06-09"))   # 42 days
+    assert bm.build_c2_age(s, "2026-07-21")["median_age_days"] == 42

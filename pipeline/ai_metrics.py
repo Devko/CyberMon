@@ -328,6 +328,10 @@ def _build_attention(market: dict | None, clock: dict) -> dict:
     of comparable 0-100 series, and a term whose Wikipedia lane starts
     late is not punished for it. ``sources`` travels with every month so
     a reader can see how many lanes back each point.
+
+    A market payload carried forward by ``--skip-market`` arrives marked
+    ``"stale": true``; the marker is propagated as ``attention.stale`` so
+    the AI page can say the lanes are last night's rather than tonight's.
     """
     if market is None:
         return {"available": False, "window_months": 0, "terms": [],
@@ -386,10 +390,13 @@ def _build_attention(market: dict | None, clock: dict) -> dict:
             "clock_year_last": clock_rows[-1]["year"],
         }
 
-    return {"available": True,
-            "window_months": int(market.get("window_months", 0)),
-            "terms": terms, "clock": clock_rows,
-            "clock_unit": "days", "headline": headline}
+    attention = {"available": True,
+                 "window_months": int(market.get("window_months", 0)),
+                 "terms": terms, "clock": clock_rows,
+                 "clock_unit": "days", "headline": headline}
+    if market.get("stale") is True:
+        attention["stale"] = True
+    return attention
 
 
 def build_ai_alibi(poc: dict, generated_at: str,

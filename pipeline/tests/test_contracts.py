@@ -247,3 +247,50 @@ def test_meta_kev_zero_count_rejected(outputs):
     bad["sources"]["kev"]["count"] = 0
     with pytest.raises(ContractViolation, match="kev.count"):
         contracts.validate("meta.json", bad)
+
+
+def test_leaderboard_row_below_min_cves_rejected(outputs):
+    bad = _corrupt(outputs, "cna_leaderboard.json")
+    bad["min_cves"] = bad["cnas"][0]["n"] + 1
+    with pytest.raises(ContractViolation, match="below minimum"):
+        contracts.validate("cna_leaderboard.json", bad)
+
+
+def test_score_vs_reality_kev_arithmetic_enforced(outputs):
+    bad = _corrupt(outputs, "score_vs_reality.json")
+    bad["kev"]["below_high"] = bad["kev"]["total"] + 1
+    with pytest.raises(ContractViolation, match="exceeds total"):
+        contracts.validate("score_vs_reality.json", bad)
+    bad = _corrupt(outputs, "score_vs_reality.json")
+    bad["kev"]["cvss_distribution"][0]["n"] += 1
+    with pytest.raises(ContractViolation, match="bucket counts sum"):
+        contracts.validate("score_vs_reality.json", bad)
+
+
+def test_severity_headline_years_must_be_charted(outputs):
+    for key in ("latest_year", "baseline_year"):
+        bad = _corrupt(outputs, "severity_inflation.json")
+        bad["headline"][key] = 1995   # nothing charts that early
+        with pytest.raises(ContractViolation, match="charted blended"):
+            contracts.validate("severity_inflation.json", bad)
+
+
+def test_advisory_quality_year_below_min_n_rejected(outputs):
+    bad = _corrupt(outputs, "advisory_quality.json")
+    bad["min_n"] = bad["years"][0]["n"] + 1
+    with pytest.raises(ContractViolation, match="below minimum"):
+        contracts.validate("advisory_quality.json", bad)
+
+
+def test_cwe_distribution_year_below_min_n_rejected(outputs):
+    bad = _corrupt(outputs, "cwe_distribution.json")
+    bad["min_n"] = bad["years"][0]["n_tagged"] + 1
+    with pytest.raises(ContractViolation, match="below minimum"):
+        contracts.validate("cwe_distribution.json", bad)
+
+
+def test_kev_ransomware_year_below_min_n_rejected(outputs):
+    bad = _corrupt(outputs, "kev_ransomware.json")
+    bad["min_n"] = bad["years"][0]["total"] + 1
+    with pytest.raises(ContractViolation, match="below minimum"):
+        contracts.validate("kev_ransomware.json", bad)

@@ -87,6 +87,7 @@ def _validate_kev_latency(obj: Any) -> None:
     _check_sorted(years, "kev_latency.latency_by_year")
     if len(set(years)) != len(years):
         _fail("kev_latency.latency_by_year", "duplicate years")
+    latency_years = set(years)
 
     buckets = _check_list(_get(obj, "latency_buckets", "kev_latency"),
                           "kev_latency.latency_buckets")
@@ -109,10 +110,14 @@ def _validate_kev_latency(obj: Any) -> None:
         _fail("kev_latency.remediation_span_by_year", "duplicate years")
 
     headline = _get(obj, "headline", "kev_latency")
-    _check_int(_get(headline, "latest_year", "kev_latency.headline"),
-               "kev_latency.headline.latest_year", minimum=1990)
-    _check_int(_get(headline, "baseline_year", "kev_latency.headline"),
-               "kev_latency.headline.baseline_year", minimum=1990)
+    # Both headline years are quoted from latency_by_year; a year the
+    # charted series does not contain would be a comparison nobody can see.
+    for key in ("latest_year", "baseline_year"):
+        year = _get(headline, key, "kev_latency.headline")
+        _check_int(year, f"kev_latency.headline.{key}", minimum=1990)
+        if year not in latency_years:
+            _fail(f"kev_latency.headline.{key}",
+                  f"{year} is not one of the charted latency_by_year years")
     for key in ("median_days_latest", "median_days_baseline"):
         _check_num(_get(headline, key, "kev_latency.headline"),
                    f"kev_latency.headline.{key}", _DAYS_LO, _DAYS_HI)
@@ -153,8 +158,9 @@ def _validate_cna_concentration(obj: Any) -> None:
                     "cna_concentration.rejection_leaderboard"),
                "cna_concentration.rejection_leaderboard.window_years",
                minimum=1)
-    _check_int(_get(board, "min_total",
-                    "cna_concentration.rejection_leaderboard"),
+    min_total = _get(board, "min_total",
+                     "cna_concentration.rejection_leaderboard")
+    _check_int(min_total,
                "cna_concentration.rejection_leaderboard.min_total",
                minimum=1)
     cnas = _check_list(_get(board, "cnas",
@@ -164,7 +170,8 @@ def _validate_cna_concentration(obj: Any) -> None:
     for i, c in enumerate(cnas):
         path = f"cna_concentration.rejection_leaderboard.cnas[{i}]"
         _check_str(_get(c, "cna", path), f"{path}.cna")
-        _check_int(_get(c, "total", path), f"{path}.total", minimum=1)
+        # min_total is the board's promise: no CNA ranks on fewer records.
+        _check_int(_get(c, "total", path), f"{path}.total", minimum=min_total)
         _check_int(_get(c, "rejected", path), f"{path}.rejected")
         if c["rejected"] > c["total"]:
             _fail(f"{path}.rejected",

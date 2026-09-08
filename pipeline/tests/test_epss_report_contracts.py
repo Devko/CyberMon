@@ -134,3 +134,12 @@ def test_min_n_enforced_on_charted_years(report):
     bad = copy.deepcopy(report)
     bad["min_n"] = 5  # every charted year has fewer graded than this
     _expect_violation(bad, "below minimum")
+
+
+def test_model_label_must_match_the_score_date(report):
+    # A stale era label in a published file must fail loudly, so a late
+    # table fix is noticed the night it lands rather than never.
+    bad = copy.deepcopy(report)
+    scored = next(e for e in bad["entries"] if e["epss"] is not None)
+    scored["model"] = "v4" if scored["model"] != "v4" else "v3"
+    _expect_violation(bad, "not the era covering")

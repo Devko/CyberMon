@@ -371,6 +371,15 @@ def _validate_ai_alibi(obj: Any) -> None:
     available = _get(att, "available", "ai_alibi.attention")
     if not isinstance(available, bool):
         _fail("ai_alibi.attention.available", "must be a bool")
+    # Optional: present (and the boolean true) only when the market
+    # payload it was lifted from was a --skip-market carry-forward. Same
+    # rule as the top-level marker — a truthy string would lose the flag.
+    if "stale" in att and att["stale"] is not True:
+        _fail("ai_alibi.attention.stale",
+              f"must be the boolean true when present, got {att['stale']!r}")
+    if att.get("stale") and not available:
+        _fail("ai_alibi.attention.stale",
+              "an unavailable attention section has nothing to be stale")
     _check_int(_get(att, "window_months", "ai_alibi.attention"),
                "ai_alibi.attention.window_months", minimum=0)
     terms = _check_list(_get(att, "terms", "ai_alibi.attention"),

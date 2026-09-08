@@ -261,6 +261,14 @@ threshold). Before 2026-09-07 the rule was last-run-wins, which erased
 history (617+2 / 584 / 336 / 256). Like `nvd_backlog.csv`, this CSV is the
 IRREPLACEABLE original record — no upstream source can regenerate it.
 
+Since 2026-09-08 each published `history[]` row also carries
+`after_resweep` (bool, derived at build time: true on the row that FOLLOWS a
+`resweep` row). The feed snapshot a resweep reads is up to ~25 h stale
+(`FEED_STALENESS`), so the resweep day itself shows near-zero flow and the
+catch-up lump lands the day after — `after_resweep` marks where the lump
+is. The CSV is unchanged (no new column); the contract re-derives the flag
+when present and tolerates its absence on older editions.
+
 `meta.sources.nvd` may additively carry `throughput_events` (int ≥ 0):
 the transitions counted by that run's diff; absent on carry-forward runs
 and on runs with no previous state to diff against. `--skip-nvd` carries
@@ -505,6 +513,28 @@ only failed fetches leave gaps. Every `headline` field is nullable — no eligib
 The term list (ids, labels, per-source query strings) lives in
 `pipeline/market_terms.py`. Validator: `pipeline/market_contracts.py`
 (registered into `pipeline/contracts.py`'s dispatch).
+
+
+### Lane freshness (added 2026-09-08)
+
+The sync state records `last_success` per source lane; a lane with no
+successful pass for more than 3 days (`market_metrics.STALE_AFTER_DAYS`)
+is listed in the new top-level `stale_sources` (array of source ids, a
+subset of `sources` in that order, no duplicates; every fresh build emits
+it, possibly empty — optional only on files written before the key
+existed and their `--skip-market` carry-forwards). Invariants: for every
+term `yoy[source]` is null when `source` is stale; `divergence` is null
+when `gdelt` or `arxiv` is stale; `headline.top_riser` / `top_faller`
+never name a stale source. Series are still published for stale lanes.
+A lane whose last success predates the first day of the generation month
+also publishes no cell for the previous month (it was only partially
+fetched) on top of the existing current-month trim, so a closed month is
+never published from a partial fetch. `meta.sources.market` carries the
+same `stale_sources` list. arXiv: an empty first page is re-requested
+once, and an empty result for a term with a nonzero cached series is
+treated as a failed fetch (cache kept), never as an all-zero observation.
+EDGAR: a capped `hits.total` (`relation` ≠ `eq`) is rejected. The HN lane
+aborts after 5 consecutive failed cells.
 
 ## site/data/kev_latency.json  (KEV Latency module, all 3 charts)
 
@@ -1415,7 +1445,11 @@ Labels are whitespace-normalized but NEVER merged (Pulse Secure stays
 distinct from Ivanti — the catalog's attribution is the record).
 `median_gap_days` is the median of day gaps between consecutive
 `dateAdded` values (0.0 = same-day bulk additions), `null` iff the
-vendor has a single dated entry. `first_added` ≤ `last_added`. Sorted by
+vendor has a single dated entry. Since 2026-09-08 each row also carries
+`dated_entries` (int, 1..`entries`: entries whose `dateAdded` parsed), and
+the null rule is keyed on it (`median_gap_days` is null iff
+`dated_entries == 1`); `entries ≥ min_vendor_entries` and every
+`years[].total ≥ min_n` are validated. `first_added` ≤ `last_added`. Sorted by
 `entries` descending, ties by casefolded vendor name; vendor names
 unique. The site flags rows with `pct_security` ≥ 50 as security-vendor
 rows.
@@ -1482,7 +1516,15 @@ before** its `dateAdded` (`score_date = dateAdded − 1 day`), fetched from
 FIRST's historical API (`api.first.org/data/v1/epss?cve=…&date=…`) exactly
 once per `(cve, date_added)` pair — historical scores are immutable. The
 API returns no model version; `model` is derived from `score_date` via
-`model_eras` (encoded in `pipeline/fetch_epss_history.py`, verified
+`model_eras` AT BUILD TIME on every load path (the label stored in the
+sync state is a hint only), and the contract enforces
+`model == model_label(score_date)` for every scored entry, so a late fix
+to the era table corrects the published file instead of leaving entries
+mislabeled forever. A null-score fact is never recorded for a `score_date`
+newer than the current feed's `score_date` (the pair stays pending) or
+within 3 days of the run date (FIRST loads late some days); those pairs
+retry the next night. `model_eras` is encoded in
+`pipeline/fetch_epss_history.py` (verified
 against the version headers of the daily CSVs; the newest era is
 open-ended, `to` null, and the nightly warns loudly when the current
 feed's `model_version` is one the table does not know).
@@ -1624,7 +1666,13 @@ charted as edits** (catalog growth is the system working; the exclusion
 is disclosed as `catalog.additions_excluded`, and
 `edits_total + additions_excluded == events_total` always).
 
-`flips`: Unknown→Known changes of the ransomware flag. `by_month` is the
+`flips`: Unknown→Known changes of the ransomware flag. Since 2026-09-08 the
+block also carries `step_month` (the first month with flips — the month the
+flag column first appears in the captures, `"2023-12"` in production) and
+`lag_post_step`, the same `{n, median_days, p25_days, p75_days}` shape as
+`lag` over flips observed AFTER that month (null stats below `min_n`);
+editions before that date lack both and the site falls back to the pooled
+note. `by_month` is the
 cumulative series (running sum ends at `total`); `lag` measures
 `observed_date − dateAdded` in days per flip — `median/p25/p75` are
 published only with `n >= min_n` flips (production 10; fixture mode 1),
@@ -1739,6 +1787,13 @@ Validator: `pipeline/roster_contracts.py` (registered into
 ## site/data/time_to_poc.json  (Time to PoC module, all 3 charts)
 
 ### `arming` — the like-for-like clock (added for module 21)
+
+Since 2026-09-08 the block also carries `min_n` (int ≥ 1, production 30 via
+`ARMING_MIN_N`, fixture runs 1): every charted `years[]` row has
+`n ≥ min_n`. `observed_through` is a real `YYYY-MM-DD`,
+`ingestion_allowance_days` an int ≥ 0, and each row's `provisional` is
+re-derived by the contract as `observed_through < YYYY-12-31 +
+ingestion_allowance_days` rather than trusted.
 
 ```json
 "arming": {"horizon_days": 90, "observed_through": "2026-05-07",
@@ -2122,6 +2177,9 @@ AI-caused thesis on purpose — a real acceleration is easy to clear at 10%,
 and the finding still comes back flat. Changing it changes what the page
 claims, so re-run `pipeline/tests/test_claims_ai.py` after you do.
 
+`attention` may carry `"stale": true` (boolean, only when `available`)
+when the market payload it reads was itself carried forward under
+`--skip-market`; the page renders the lanes as carried forward.
 `attention`: the curated `ai_security` and `agentic_ai` terms selected
 from module 02's reviewable watchlist (never invented here). A term's
 monthly `index` is the mean of its per-source indexes over the sources

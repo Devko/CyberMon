@@ -37,6 +37,13 @@ from pathlib import Path
 from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
 
 RANSOMWHERE_URL = "https://api.ransomwhe.re/export"
+# Plausible bounds for a transaction ``time`` (unix epoch SECONDS): the
+# Bitcoin genesis block is January 2009, so nothing precedes 2008-01-01,
+# and nothing is later than tomorrow. A value in MILLISECONDS (a likely
+# upstream drift) lands centuries in the future and is caught here, in
+# the parser — where ``__main__``'s degrade handler sees it — instead of
+# blowing up in the ledger builder's date arithmetic outside any handler.
+EPOCH_MIN = 1199145600  # 2008-01-01T00:00:00Z
 
 
 # Ransomwhere's literal label for verified payments nobody has attributed
@@ -77,18 +84,24 @@ def _parse_tx(t: object, where: str) -> RansomTx:
     if not isinstance(t, dict):
         raise ValueError(f"ransomwhere: {where}: transaction is not an object")
     h = t.get("hash")
-    time = t.get("time")
+    ts = t.get("time")
     amount = t.get("amount")
     usd = t.get("amountUSD")
     if not isinstance(h, str) or not h:
         raise ValueError(f"ransomwhere: {where}: missing transaction hash")
-    if isinstance(time, bool) or not isinstance(time, int) or time <= 0:
-        raise ValueError(f"ransomwhere: {where}: bad transaction time {time!r}")
+    if isinstance(ts, bool) or not isinstance(ts, int) or ts <= 0:
+        raise ValueError(f"ransomwhere: {where}: bad transaction time {ts!r}")
+    epoch_max = int(time.time()) + 86400  # now + 1 day
+    if not EPOCH_MIN <= ts <= epoch_max:
+        raise ValueError(
+            f"ransomwhere: {where}: transaction time {ts!r} outside "
+            f"plausible epoch seconds [{EPOCH_MIN}, {epoch_max}] "
+            f"(milliseconds, or a date before 2008 / after tomorrow?)")
     if isinstance(amount, bool) or not isinstance(amount, int) or amount < 0:
         raise ValueError(f"ransomwhere: {where}: bad amount {amount!r}")
     if isinstance(usd, bool) or not isinstance(usd, (int, float)) or usd < 0:
         raise ValueError(f"ransomwhere: {where}: bad amountUSD {usd!r}")
-    return RansomTx(hash=h, time=time, amount=amount, amount_usd=float(usd))
+    return RansomTx(hash=h, time=ts, amount=amount, amount_usd=float(usd))
 
 
 def parse_ransomwhere(obj: object) -> RansomwhereData:

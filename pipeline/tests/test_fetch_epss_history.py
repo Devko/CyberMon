@@ -269,3 +269,68 @@ def test_fetch_scores_raises_after_non_retryable_status():
     with pytest.raises(RuntimeError):
         feh.fetch_scores(session, ["CVE-2021-1"], "2022-01-01",
                          log=lambda _msg: None)
+
+
+# ----------------------------------------------- facts that must not freeze
+
+def test_entry_from_rederives_a_stale_model_label():
+    # Fetched under an era table that did not yet know v5: stored as v4.
+    stale = {"score_date": "2026-07-01", "epss": 0.1, "percentile": 0.5,
+             "model": "v4", "reason": None}
+    assert feh._entry_from(stale)["model"] == "v5"
+    # Round-trip paths use the same normalization.
+    prior = {"version": 1, "last_sync": "",
+             "entries": {"CVE-2026-0001|2026-07-02": stale}}
+    state = feh.sync_state(prior, [("CVE-2026-0001", "2026-07-02")],
+                           _fake_fetch({}), backfill_batch=30,
+                           log=lambda _msg: None)
+    assert state["entries"]["CVE-2026-0001|2026-07-02"]["model"] == "v5"
+
+
+def test_entry_from_rejects_a_non_string_model_hint():
+    with pytest.raises(ValueError):
+        feh._entry_from({"score_date": "2026-07-01", "epss": 0.1,
+                         "percentile": 0.5, "model": 5, "reason": None})
+
+
+def test_sync_leaves_pairs_newer_than_the_feed_pending():
+    fetch = _fake_fetch({"2026-07-01": {"CVE-2026-0001": "0.2"}})
+    pairs = [("CVE-2026-0001", "2026-07-02"),   # score date 07-01: loaded
+             ("CVE-2026-0002", "2026-07-04")]   # score date 07-03: not yet
+    state = feh.sync_state(None, pairs, fetch, backfill_batch=30,
+                           feed_score_date="2026-07-02",
+                           last_sync="2026-07-20T00:00:00Z",
+                           log=lambda _msg: None)
+    assert list(state["entries"]) == ["CVE-2026-0001|2026-07-02"]
+    # the not-yet-published day was never even requested
+    assert [d for _c, d in fetch.calls] == ["2026-07-01"]
+
+
+def test_sync_never_records_a_null_fact_inside_the_grace_window():
+    # Run date 2026-07-10: score dates 07-07..07-10 are inside the window.
+    fetch = _fake_fetch({"2026-07-08": {"CVE-2026-0001": "0.3"}})
+    pairs = [("CVE-2026-0001", "2026-07-09"),   # recent, scored: kept
+             ("CVE-2026-0002", "2026-07-09"),   # recent, empty: retried
+             ("CVE-2026-0003", "2026-07-02")]   # old, empty: a fact
+    state = feh.sync_state(None, pairs, fetch, backfill_batch=30,
+                           last_sync="2026-07-10T02:00:00Z",
+                           log=lambda _msg: None)
+    assert state["entries"]["CVE-2026-0001|2026-07-09"]["epss"] == 0.3
+    assert "CVE-2026-0002|2026-07-09" not in state["entries"]
+    assert state["entries"]["CVE-2026-0003|2026-07-02"]["reason"] == \
+        "no_score_for_date"
+    # an explicit run date wins over last_sync
+    state = feh.sync_state(None, pairs, fetch, backfill_batch=30,
+                           last_sync="2026-07-10T02:00:00Z",
+                           today="2026-08-01", log=lambda _msg: None)
+    assert state["entries"]["CVE-2026-0002|2026-07-09"]["reason"] == \
+        "no_score_for_date"
+
+
+def test_grace_window_boundary_is_inclusive_of_the_run_date():
+    fetch = _fake_fetch({})
+    pairs = [("CVE-2026-0001", "2026-07-08"),   # 07-07: exactly 3 days
+             ("CVE-2026-0002", "2026-07-07")]   # 07-06: outside
+    state = feh.sync_state(None, pairs, fetch, backfill_batch=30,
+                           today="2026-07-10", log=lambda _msg: None)
+    assert list(state["entries"]) == ["CVE-2026-0002|2026-07-07"]

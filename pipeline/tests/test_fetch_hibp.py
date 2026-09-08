@@ -133,3 +133,34 @@ def test_fetch_non_retryable_status_raises_immediately():
         fetch_hibp(session=session, sleep=lambda s: None,
                    log=lambda m: None)
     assert len(session.requests) == 1  # 404 is not a blip; no retry
+
+
+# ----------------------------------------------------- degrade-path triggers
+
+@pytest.mark.parametrize("doc", [
+    [],                                              # empty feed
+    [{"Title": "no Name key"}, "junk", 42, None],    # nothing parseable
+    [{"Name": 7}, {"Name": None}],                   # Name not a string
+])
+def test_parse_zero_breaches_raises_so_the_module_can_degrade(doc):
+    # A catalog with no breach is upstream drift, not a quiet night; the
+    # ValueError lands inside the fetch handler in __main__, which carries
+    # the Breach Ledger forward — instead of an empty ledger failing later
+    # at contract validation and taking the whole run down.
+    with pytest.raises(ValueError, match="zero breach entries parsed"):
+        parse_hibp(doc)
+
+
+def test_parse_non_list_data_classes_never_becomes_letters():
+    b = parse_hibp([{"Name": "Odd", "DataClasses": "Email addresses"}]) \
+        .breaches[0]
+    assert b.data_classes == []   # not ["E", "m", "a", ...]
+    b = parse_hibp([{"Name": "Odd", "DataClasses": {"Email addresses": 1}}]) \
+        .breaches[0]
+    assert b.data_classes == []
+
+
+def test_fetch_empty_feed_raises_the_value_error_the_degrade_handler_catches():
+    session = FakeSession([FakeResponse(payload=[])])
+    with pytest.raises(ValueError, match="zero breach entries parsed"):
+        fetch_hibp(session=session, sleep=lambda s: None, log=lambda m: None)

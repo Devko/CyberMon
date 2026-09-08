@@ -249,3 +249,35 @@ def test_contract_rejects_premature_median():
     obj["queue"]["median_days"] = 4.0  # with n_known_duration = 2
     with pytest.raises(contracts.ContractViolation, match="median"):
         contracts.validate("nvd_throughput.json", obj)
+
+
+def test_after_resweep_marks_the_row_following_a_resweep():
+    # The resweep row is the FROZEN feed snapshot; the catch-up lump lands
+    # in the next diff, which the JSON flags as after_resweep. Derived at
+    # build time: the CSV shape (one resweep column) is untouched.
+    rows = [_row("2026-07-07"), _row("2026-07-08", resweep=1),
+            _row("2026-07-09"), _row("2026-07-10")]
+    obj = nvd_throughput.build_nvd_throughput(rows, GENERATED_AT)
+    contracts.validate("nvd_throughput.json", obj)
+    assert [(h["resweep"], h["after_resweep"]) for h in obj["history"]] == \
+        [(False, False), (True, False), (False, True), (False, False)]
+    # a resweep on the first row: nothing precedes it
+    obj = nvd_throughput.build_nvd_throughput(
+        [_row("2026-07-08", resweep=1)], GENERATED_AT)
+    assert obj["history"][0]["after_resweep"] is False
+    # the CSV round-trip is unaffected: the derived flag never lands there
+    assert "after_resweep" not in nvd_throughput.COLUMNS
+
+
+def test_contract_rederives_after_resweep_and_tolerates_its_absence():
+    rows = [_row("2026-07-08", resweep=1), _row("2026-07-09")]
+    obj = nvd_throughput.build_nvd_throughput(rows, GENERATED_AT)
+    obj["history"][1]["after_resweep"] = False
+    with pytest.raises(contracts.ContractViolation, match="after_resweep"):
+        contracts.validate("nvd_throughput.json", obj)
+    obj["history"][1]["after_resweep"] = "yes"
+    with pytest.raises(contracts.ContractViolation, match="after_resweep"):
+        contracts.validate("nvd_throughput.json", obj)
+    for h in obj["history"]:
+        del h["after_resweep"]        # an edition published before the field
+    contracts.validate("nvd_throughput.json", obj)

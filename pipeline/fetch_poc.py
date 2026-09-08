@@ -43,8 +43,11 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable, TypeVar
 
 from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
+
+T = TypeVar("T")
 
 EXPLOITDB_URL = ("https://gitlab.com/exploit-database/exploitdb/-/raw/"
                  "main/files_exploits.csv")
@@ -206,16 +209,37 @@ def parse_nuclei(text: str) -> frozenset[str]:
     return frozenset(ids)
 
 
-def _assemble(edb_text: str, msf_obj: dict, nuclei_text: str) -> PocData:
-    edb_dates, edb_ids, edb_total, edb_with_cve = parse_exploitdb(edb_text)
-    msf_dates, msf_ids, msf_total, msf_with_cve = parse_metasploit(msf_obj)
-    nuclei_ids = parse_nuclei(nuclei_text)
+def _assemble_parsed(edb: tuple, msf: tuple, nuclei_ids: frozenset[str]
+                     ) -> PocData:
+    """PocData from the three parse results (see :func:`_assemble`)."""
+    edb_dates, edb_ids, edb_total, edb_with_cve = edb
+    msf_dates, msf_ids, msf_total, msf_with_cve = msf
     return PocData(edb_dates=edb_dates, msf_dates=msf_dates,
                    edb_ids=edb_ids, msf_ids=msf_ids,
                    nuclei_ids=nuclei_ids,
                    edb_entries=edb_total, edb_entries_with_cve=edb_with_cve,
                    msf_modules=msf_total, msf_modules_with_cve=msf_with_cve,
                    nuclei_templates=len(nuclei_ids))
+
+
+def _assemble(edb_text: str, msf_obj: dict, nuclei_text: str) -> PocData:
+    return _assemble_parsed(parse_exploitdb(edb_text),
+                            parse_metasploit(msf_obj),
+                            parse_nuclei(nuclei_text))
+
+
+# The per-source parsers as body -> parse-result callables, so the cache
+# layer can refuse to keep a body that does not parse.
+def _parse_edb_body(body: bytes) -> tuple:
+    return parse_exploitdb(body.decode("utf-8"))
+
+
+def _parse_msf_body(body: bytes) -> tuple:
+    return parse_metasploit(json.loads(body.decode("utf-8")))
+
+
+def _parse_nuclei_body(body: bytes) -> frozenset[str]:
+    return parse_nuclei(body.decode("utf-8"))
 
 
 def load_poc_files(edb_path: Path, msf_path: Path,
@@ -227,27 +251,40 @@ def load_poc_files(edb_path: Path, msf_path: Path,
 
 
 def _cached_body(cache_dir: Path, name: str, url: str, session,
-                 sleep, log, timeout: float = 300.0) -> bytes:
-    """The file body, from today's cache if present, else downloaded.
+                 sleep, log, *, parse: Callable[[bytes], T],
+                 timeout: float = 300.0) -> T:
+    """``parse(body)`` for the file, from today's cache if present, else
+    downloaded.
 
-    Cache key = UTC date + name; stale same-name files from earlier days
-    are removed after a successful download, so the cache never grows.
+    Cache key = UTC date + name. A downloaded body is cached ONLY after
+    ``parse`` succeeds — a body that does not parse (an upstream outage
+    page, a truncated transfer) raises and leaves nothing behind, so the
+    next attempt downloads again instead of re-reading garbage. Writes
+    go to a ``.part`` file that is renamed into place; any ``.part`` left
+    by a crash between write and rename is swept before the next download
+    (the same-name glob deliberately never matched it before). Stale
+    same-name files from earlier days are removed after a successful
+    cache write, so the cache never grows.
     """
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     poc_dir = cache_dir / "poc"
     dest = poc_dir / f"{today}_{name}"
     if dest.exists():
-        return dest.read_bytes()
+        return parse(dest.read_bytes())
     resp = get_with_retry(session, url, label="PoC corpora",
                           timeout=timeout, sleep=sleep, log=log)
+    body = resp.content
+    result = parse(body)  # raises -> nothing is cached
     poc_dir.mkdir(parents=True, exist_ok=True)
+    for stale in poc_dir.glob(f"*_{name}.part"):
+        stale.unlink(missing_ok=True)
     tmp = dest.with_name(dest.name + ".part")
-    tmp.write_bytes(resp.content)
+    tmp.write_bytes(body)
     tmp.replace(dest)
     for old in poc_dir.glob(f"*_{name}"):
         if old != dest:
             old.unlink(missing_ok=True)
-    return dest.read_bytes()
+    return result
 
 
 def fetch_poc(cache_dir: Path, session=None, sleep=time.sleep,
@@ -257,11 +294,10 @@ def fetch_poc(cache_dir: Path, session=None, sleep=time.sleep,
 
     session = session or requests.Session()
     edb = _cached_body(cache_dir, "files_exploits.csv", EXPLOITDB_URL,
-                       session, sleep, log)
+                       session, sleep, log, parse=_parse_edb_body)
     msf = _cached_body(cache_dir, "modules_metadata_base.json",
-                       METASPLOIT_URL, session, sleep, log)
+                       METASPLOIT_URL, session, sleep, log,
+                       parse=_parse_msf_body)
     nuclei = _cached_body(cache_dir, "nuclei_cves.json", NUCLEI_URL,
-                          session, sleep, log)
-    return _assemble(edb.decode("utf-8"),
-                     json.loads(msf.decode("utf-8")),
-                     nuclei.decode("utf-8"))
+                          session, sleep, log, parse=_parse_nuclei_body)
+    return _assemble_parsed(edb, msf, nuclei)

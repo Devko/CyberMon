@@ -20,11 +20,21 @@ with a zero count). Missing months are unknown, not zero — they are never
 invented. Likewise every computed stat is None when its eligibility bar
 is not met, and headline entries are None when no term qualifies: the
 site renders "not enough history yet" rather than a fabricated mover.
+
+Freshness: the sync state stamps each source lane's ``last_success``
+(see ``fetch_market``). A lane whose last successful pass is older than
+``STALE_AFTER_DAYS`` at build time is published in ``stale_sources``, its
+YoY entries are null for every term and it drops out of the divergence
+call — the movers board never ranks a dead lane's ever-older data. A lane
+whose last success predates the current month also has its previous-month
+cell withheld from the series: that month closed while the lane was
+down, so what the cache holds is a partial fetch, never a closed month.
 """
 from __future__ import annotations
 
 import json
 import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 
@@ -47,11 +57,65 @@ MIN_YOY_VOLUME = 30
 # across the three averaged months — two papers against a two-paper peak
 # is an index of 100 and a fabricated "research leads by 50" headline.
 MIN_DIVERGENCE_VOLUME = 10
+# A lane with no successful pass for longer than this is stale: its YoY
+# and divergence contributions are withheld rather than computed from
+# whatever the cache last saw. Three nights covers a weekend outage of
+# the upstream (or of the runner) without crying wolf.
+STALE_AFTER_DAYS = 3
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 
 
 def _r1(x: float) -> float:
     return round(float(x), 1)
+
+
+def _parse_iso(value: str) -> datetime:
+    return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ") \
+                   .replace(tzinfo=timezone.utc)
+
+
+def _previous_month(month: str) -> str:
+    year, mon = int(month[:4]), int(month[5:7])
+    year, mon = (year - 1, 12) if mon == 1 else (year, mon - 1)
+    return f"{year:04d}-{mon:02d}"
+
+
+def lane_freshness(state: dict, generated_at: str
+                   ) -> tuple[list[str], set[str]]:
+    """``(stale_sources, partial_previous_month)`` from the state's
+    ``last_success`` stamps, judged at ``generated_at``.
+
+    A source is stale when its stamp is older than ``STALE_AFTER_DAYS``
+    (or unparseable: a stamp we cannot read is a stamp we cannot vouch
+    for). A source is in the second set when its stamp predates the first
+    day of the generation month — the previous month closed while the
+    lane was failing, so its cell is a partial fetch. A source with no
+    stamp at all is in neither: the sync stamps every lane it holds data
+    for (seeding pre-freshness states from ``last_sync``), so a missing
+    stamp means the lane has no cached months to be stale about, or a
+    hand-built/fixture state that predates freshness tracking.
+    """
+    generated = _parse_iso(generated_at)
+    month_start = generated.replace(day=1, hour=0, minute=0, second=0,
+                                    microsecond=0)
+    stamps = state.get("last_success") or {}
+    stale: list[str] = []
+    partial: set[str] = set()
+    for source in SOURCES:
+        raw = stamps.get(source)
+        if raw is None:
+            continue
+        try:
+            last = _parse_iso(str(raw))
+        except ValueError:
+            stale.append(source)
+            partial.add(source)
+            continue
+        if generated - last > timedelta(days=STALE_AFTER_DAYS):
+            stale.append(source)
+        if last < month_start:
+            partial.add(source)
+    return stale, partial
 
 
 # ---------------------------------------------------------------- pure math
@@ -166,7 +230,11 @@ def build_market_hype(state: dict, terms: list[TermDef],
     """Assemble the full market_hype.json object from sync state, for the
     given terms (in the given order). A term/source absent from the state
     simply yields an empty series and null stats. The generation month is
-    excluded everywhere (series, YoY, divergence) until it completes."""
+    excluded everywhere (series, YoY, divergence) until it completes, and
+    the lane freshness rules of :func:`lane_freshness` apply: stale lanes
+    publish their series (flagged in ``stale_sources``) but no YoY or
+    divergence; a lane down since before the month rolled over also
+    withholds its previous-month cell."""
     all_series = state.get("series", {})
     # The month in progress is collected (the sync must keep refreshing it)
     # but never published: ten days of a month charted next to complete
@@ -175,25 +243,32 @@ def build_market_hype(state: dict, terms: list[TermDef],
     # once it closes. Trimming here, at build time, keeps the sync state
     # untouched.
     current_month = generated_at[:7]
+    previous_month = _previous_month(current_month)
+    stale_sources, partial = lane_freshness(state, generated_at)
+    stale = set(stale_sources)
     term_objs = []
     for term in terms:
         per_source = {
             src: {m: n for m, n in (all_series.get(term.id, {})
                                     .get(src, {}) or {}).items()
-                  if m < current_month}
+                  if m < current_month
+                  and not (src in partial and m == previous_month)}
             for src in SOURCES}
         series = {s: index_series(per_source.get(s, {})) for s in SOURCES}
         term_objs.append({
             "id": term.id,
             "label": term.label,
             "series": series,
-            "yoy": {s: yoy(per_source.get(s, {})) for s in SOURCES},
-            "divergence": divergence(series["gdelt"], series["arxiv"]),
+            "yoy": {s: None if s in stale else yoy(per_source.get(s, {}))
+                    for s in SOURCES},
+            "divergence": (None if stale & {"gdelt", "arxiv"} else
+                           divergence(series["gdelt"], series["arxiv"])),
         })
     return {
         "generated_at": generated_at,
         "window_months": WINDOW_MONTHS,
         "sources": list(SOURCES),
+        "stale_sources": stale_sources,
         "backfill_remaining": len(state.get("pending", [])),
         "terms": term_objs,
         "headline": _headline(term_objs),
@@ -229,9 +304,8 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
         state = json.loads((FIXTURES_DIR / "market" / "state.json")
                            .read_text(encoding="utf-8"))
         terms = [t for t in TERMS if t.id in state["series"]]
-        return (build_market_hype(state, terms, generated_at),
-                {"fetched_at": generated_at, "term_count": len(terms),
-                 "backfill_remaining": len(state.get("pending", []))})
+        obj = build_market_hype(state, terms, generated_at)
+        return obj, _market_source(obj, generated_at, len(terms))
 
     if skip:
         prior_path = out_dir / "market_hype.json"
@@ -247,10 +321,9 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
         log(f"  --skip-market: carrying forward market_hype.json "
             f"from {fetched_at}")
         # meta.sources.market must stay contract-complete even when stale.
-        return carried, {"fetched_at": fetched_at, "stale": True,
-                         "term_count": len(carried.get("terms", [])),
-                         "backfill_remaining":
-                             carried.get("backfill_remaining", 0)}
+        return carried, {**_market_source(carried, fetched_at,
+                                          len(carried.get("terms", []))),
+                         "stale": True}
 
     # Live sync. fetch_market is imported lazily so the offline/skip paths
     # (and this module's unit tests) never require it to be importable.
@@ -264,6 +337,19 @@ def run_stage(out_dir: Path, cache_dir: Path, generated_at: str, *,
                        backfill_batch=backfill_batch, session=session,
                        sleep=sleep, log=log)
     save_state(cache_dir, state)
-    return (build_market_hype(state, TERMS, generated_at),
-            {"fetched_at": generated_at, "term_count": len(TERMS),
-             "backfill_remaining": len(state.get("pending", []))})
+    obj = build_market_hype(state, TERMS, generated_at)
+    if obj["stale_sources"]:
+        log(f"  market: stale source lane(s) — no successful pass in "
+            f"{STALE_AFTER_DAYS} days, YoY/divergence withheld: "
+            f"{', '.join(obj['stale_sources'])}")
+    return obj, _market_source(obj, generated_at, len(TERMS))
+
+
+def _market_source(obj: dict, fetched_at: str, term_count: int) -> dict:
+    """The ``meta.sources.market`` block for a built (or carried) payload;
+    ``stale_sources`` travels with it so the footer can name a dead lane
+    without opening market_hype.json (a carried pre-freshness file has
+    none to report)."""
+    return {"fetched_at": fetched_at, "term_count": term_count,
+            "backfill_remaining": obj.get("backfill_remaining", 0),
+            "stale_sources": list(obj.get("stale_sources") or [])}

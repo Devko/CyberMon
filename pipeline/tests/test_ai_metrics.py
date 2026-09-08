@@ -266,3 +266,64 @@ def test_empty_corpus_does_not_crash():
     assert out["banked"]["metrics"] == []
     assert out["headline"]["judged"] == 0
     assert out["headline"]["verdict"] == "insufficient"
+
+
+# ---- the primary metric: provisional cohorts never carry a verdict -------
+
+
+def arming_years(values: dict[int, float], *, provisional_from: int) -> list:
+    return [{"year": y, "n": 50, "median_days": v, "pct_within_week": 50.0,
+             "pct_negative": 10.0, "provisional": y >= provisional_from}
+            for y, v in sorted(values.items())]
+
+
+def lfl_block(out: dict, era: str = "chatgpt") -> dict:
+    metric = next(m for m in out["banked"]["metrics"] if m["primary"])
+    assert metric["id"] == "poc_like_for_like"
+    return next(b for b in metric["eras"] if b["era"] == era)
+
+
+def test_banked_withholds_when_every_post_cutoff_year_is_provisional():
+    # A clear acceleration after the ChatGPT cut (2021), but every
+    # post-cutoff cohort is still being indexed. Publishing a verdict on
+    # cohorts known to read biased is exactly the artifact the flag
+    # exists to prevent, so the cell is withheld.
+    payload = poc_payload(flat_years(5.0))
+    payload["arming"] = {
+        "horizon_days": 90, "ingestion_allowance_days": 365,
+        "observed_through": "2026-04-10", "min_n": 30,
+        "years": arming_years(flat_years(100.0, 2000, 2021)
+                              | flat_years(2.0, 2022, 2025),
+                              provisional_from=2022)}
+    out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
+    block = lfl_block(out)
+    assert block["post"]["years"] == 4          # the levels still report
+    assert block["verdict"] == "insufficient"
+    assert block["pct_banked"] is None and block["shift_share_pct"] is None
+    # The headline quotes the primary metric, so it withholds too.
+    assert out["headline"]["verdict"] == "insufficient"
+
+    # One settled post-cutoff year is enough to judge again.
+    payload["arming"]["years"] = arming_years(
+        flat_years(100.0, 2000, 2021) | flat_years(2.0, 2022, 2025),
+        provisional_from=2023)
+    out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
+    assert lfl_block(out)["verdict"] == "accelerated"
+
+
+def test_attention_propagates_the_market_stale_marker():
+    from pipeline import contracts
+
+    fresh = ai_metrics.build_ai_alibi(
+        poc_payload(flat_years(5.0, 2000, 2025)), GENERATED_AT,
+        market=market_payload())
+    assert "stale" not in fresh["attention"]
+
+    carried = dict(market_payload(), stale=True)   # a --skip-market night
+    out = ai_metrics.build_ai_alibi(
+        poc_payload(flat_years(5.0, 2000, 2025)), GENERATED_AT,
+        market=carried)
+    assert out["attention"]["stale"] is True
+    assert out["attention"]["available"] is True
+    assert "stale" not in out                      # the module itself is fresh
+    contracts.validate("ai_alibi.json", out)

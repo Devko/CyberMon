@@ -610,11 +610,15 @@ def test_reconstruct_state_round_trips_published_counts(tmp_path):
     # Closed months round-trip losslessly. The in-progress month (2026-07)
     # is deliberately never published, so it cannot be reconstructed: it is
     # re-queued and re-fetched — which the nightly HN pass does anyway.
+    # Each published lane's freshness stamp is seeded from the file's
+    # generated_at (the latest its counts can have been fetched).
     expected = {**state, "series": {"alpha": {
         "gdelt": {"2026-05": 40, "2026-06": 25},
         "hn": {m: i for i, m in enumerate(window) if m != "2026-07"},
         "arxiv": {"2026-06": 3},
-    }}, "pending": [["hn", "alpha", "2026-07"]]}
+    }}, "pending": [["hn", "alpha", "2026-07"]],
+        "last_success": {s: "2026-07-09T06:00:00Z"
+                         for s in ("gdelt", "hn", "arxiv")}}
     assert rebuilt == expected
     assert any("reconstructed sync state" in m for m in logs)
     # ... and building again from the rebuilt state reproduces every
@@ -694,7 +698,9 @@ def test_full_sync_pass_request_counts_for_two_terms():
     session = FakeSession()  # benign defaults for every source
     state = _sync(session, [TERM_A, TERM_B], months=3, batch=8)
     assert len(session.requests["gdelt"]) == 2   # one curve per term
-    assert len(session.requests["arxiv"]) == 2   # one page per term
+    # one page per term, plus one retry each: the benign default is an
+    # EMPTY feed, which arXiv is asked to confirm before it is believed
+    assert len(session.requests["arxiv"]) == 4
     # both terms are unmapped for the v1.1 lanes: not a single request
     assert session.requests["wiki"] == []
     assert session.requests["edgar"] == []
@@ -703,6 +709,10 @@ def test_full_sync_pass_request_counts_for_two_terms():
     assert state["version"] == 1
     assert state["last_sync"] == "2026-07-09T06:00:00Z"
     assert state["pending"] == []
+    # every lane succeeded (the unmapped wiki/edgar lanes vacuously)
+    assert state["last_success"] == {
+        s: "2026-07-09T06:00:00Z"
+        for s in ("gdelt", "hn", "arxiv", "wiki", "edgar")}
     for term_id in ("alpha", "beta"):
         assert set(state["series"][term_id]) == {"gdelt", "hn", "arxiv"}
         assert state["series"][term_id]["hn"] == \
@@ -710,3 +720,227 @@ def test_full_sync_pass_request_counts_for_two_terms():
         # the empty-feed arXiv success stores explicit zeros, not a gap
         assert state["series"][term_id]["arxiv"] == \
             {"2026-05": 0, "2026-06": 0, "2026-07": 0}
+
+
+# ------------------------------------------------------- arXiv empty feed
+
+def test_arxiv_empty_feed_is_retried_then_keeps_a_nonzero_cache():
+    # An HTTP 200 with totalResults=0 for a term that has cached papers
+    # used to be believed at once and overwrite sixty months with zeros.
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"arxiv": {"2026-05": 4, "2026-06": 2}}},
+             "pending": []}
+    session = FakeSession(arxiv=[_atom(0, []), _atom(0, [])])
+    sleeps, logs = [], []
+    state = _sync(session, [TERM_A], state=prior, months=3,
+                  sleep=sleeps.append, log=logs.append)
+    reqs = session.requests["arxiv"]
+    assert len(reqs) == 2                        # exactly one retry
+    assert reqs[1]["params"]["start"] == 0       # the first page again
+    assert sleeps.count(3.1) == 2                # ToS pacing both times
+    assert state["series"]["alpha"]["arxiv"] == {"2026-05": 4, "2026-06": 2}
+    assert any("empty feed" in m and "keeping cached months" in m
+               for m in logs)
+    # kept-from-cache is not a success: the stamp of the lane does not
+    # move (seeded from the pre-freshness prior state on load)
+    assert state["last_success"]["arxiv"] == "2026-07-08T00:00:00Z"
+
+
+def test_arxiv_empty_feed_is_real_for_a_term_with_nothing_cached():
+    session = FakeSession(arxiv=[_atom(0, []), _atom(0, [])])
+    state = _sync(session, [TERM_A], months=3)
+    assert len(session.requests["arxiv"]) == 2
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 0, "2026-06": 0, "2026-07": 0}
+    assert state["last_success"]["arxiv"] == "2026-07-09T06:00:00Z"
+    # ... and likewise when the cache itself is all zeros: nothing to lose
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"arxiv": {"2026-06": 0}}}, "pending": []}
+    session = FakeSession(arxiv=[_atom(0, []), _atom(0, [])])
+    state = _sync(session, [TERM_A], state=prior, months=3)
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 0, "2026-06": 0, "2026-07": 0}
+
+
+def test_arxiv_empty_first_page_then_papers_on_the_retry(monkeypatch):
+    monkeypatch.setattr(fetch_market, "ARXIV_PAGE_SIZE", 1)
+    session = FakeSession(arxiv=[
+        _atom(0, []),                          # hiccup
+        _atom(2, ["2026-05-01T00:00:00Z"]),    # retry: page 1 of 2
+        _atom(2, ["2026-06-01T00:00:00Z"]),    # page 2 of 2
+    ])
+    state = _sync(session, [TERM_A], months=3)
+    assert len(session.requests["arxiv"]) == 3
+    assert [r["params"]["start"] for r in session.requests["arxiv"]] == \
+        [0, 0, 1]
+    # the retry did not eat into the page cap: both real pages landed
+    assert state["series"]["alpha"]["arxiv"] == \
+        {"2026-05": 1, "2026-06": 1, "2026-07": 0}
+
+
+# -------------------------------------------------------- lane freshness
+
+ALL_SOURCES = ("gdelt", "hn", "arxiv", "wiki", "edgar")
+
+
+def test_every_lane_stamps_last_success_on_a_clean_night():
+    session = FakeSession(wiki=[_wiki([("2026-06", 40)])],
+                          edgar=[_edgar(1), _edgar(2), _edgar(3)])
+    state = _sync(session, [TERM_M], months=3)
+    assert state["last_success"] == {s: "2026-07-09T06:00:00Z"
+                                     for s in ALL_SOURCES}
+
+
+def test_failed_lanes_keep_their_previous_stamp():
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"mapped": {"gdelt": {"2026-06": 7},
+                                   "wiki": {"2026-06": 5},
+                                   "edgar": {"2026-06": 1}}},
+             "pending": [],
+             "last_success": {"gdelt": "2026-07-05T00:00:00Z",
+                              "wiki": "2026-07-06T00:00:00Z",
+                              "edgar": "2026-07-07T00:00:00Z"}}
+    session = FakeSession(
+        gdelt=[FakeResponse(429, text="x"), FakeResponse(429, text="x")],
+        wiki=[FakeResponse(404, text="not found")],   # renamed article
+        edgar=[FakeResponse(403, text="blocked")] * 3)
+    logs = []
+    state = _sync(session, [TERM_M], state=prior, months=3, log=logs.append)
+    stamps = state["last_success"]
+    assert stamps["gdelt"] == "2026-07-05T00:00:00Z"
+    # a 404 every night is a kept cache every night: the stamp ages until
+    # market_metrics calls the lane stale, instead of only being logged
+    assert stamps["wiki"] == "2026-07-06T00:00:00Z"
+    assert stamps["edgar"] == "2026-07-07T00:00:00Z"
+    assert stamps["arxiv"] == stamps["hn"] == "2026-07-09T06:00:00Z"
+    assert any("no successful pass tonight for edgar, gdelt, wiki" in m
+               and "gdelt=2026-07-05T00:00:00Z" in m for m in logs)
+
+
+def test_pre_freshness_state_seeds_stamps_from_last_sync():
+    # A state written before last_success existed loads unchanged and
+    # every lane with cached months is dated by the sync that wrote it.
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"gdelt": {"2026-06": 7},
+                                  "arxiv": {"2026-06": 1}}},
+             "pending": []}
+    session = FakeSession(
+        gdelt=[FakeResponse(429, text="x"), FakeResponse(429, text="x")],
+        arxiv=[FakeResponse(503, text="x")])
+    state = _sync(session, [TERM_A], state=prior, months=3)
+    assert state["last_success"]["gdelt"] == "2026-07-08T00:00:00Z"
+    assert state["last_success"]["arxiv"] == "2026-07-08T00:00:00Z"
+    # lanes that succeeded tonight (hn; wiki/edgar vacuously: TERM_A is
+    # unmapped) are stamped tonight
+    for lane in ("hn", "wiki", "edgar"):
+        assert state["last_success"][lane] == "2026-07-09T06:00:00Z"
+
+
+def test_malformed_stamps_are_dropped_on_load_and_reseeded():
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"gdelt": {"2026-06": 7}}},
+             "pending": [],
+             "last_success": {"gdelt": "yesterday-ish", "hn": 1720000000,
+                              "arxiv": "2026-07-07T00:00:00Z"}}
+    session = FakeSession(
+        gdelt=[FakeResponse(429, text="x"), FakeResponse(429, text="x")],
+        arxiv=[FakeResponse(503, text="x")])
+    state = _sync(session, [TERM_A], state=prior, months=3)
+    assert state["last_success"]["gdelt"] == "2026-07-08T00:00:00Z"  # seeded
+    assert state["last_success"]["arxiv"] == "2026-07-07T00:00:00Z"  # kept
+    assert state["last_success"]["hn"] == "2026-07-09T06:00:00Z"     # fresh
+
+
+def test_state_round_trip_keeps_last_success(tmp_path):
+    state = {"version": 1, "last_sync": "2026-07-09T06:00:00Z",
+             "series": {"alpha": {"hn": {"2026-06": 3}}}, "pending": [],
+             "last_success": {"hn": "2026-07-09T06:00:00Z"}}
+    fetch_market.save_state(tmp_path, state)
+    assert fetch_market.load_state(tmp_path) == state
+
+
+def test_reconstruct_state_seeds_stamps_and_keeps_stale_lanes_stale(
+        tmp_path):
+    state = {"version": 1, "last_sync": "2026-07-09T06:00:00Z",
+             "series": {"alpha": {"gdelt": {"2026-06": 25},
+                                  "arxiv": {"2026-06": 3}}},
+             "pending": [],
+             "last_success": {"gdelt": "2026-07-09T06:00:00Z",
+                              "arxiv": "2026-07-01T00:00:00Z"}}  # 8 days old
+    obj = _publish(tmp_path, state, [TERM_A])
+    assert obj["stale_sources"] == ["arxiv"]
+    rebuilt = fetch_market.reconstruct_state(tmp_path, log=lambda m: None)
+    # gdelt: dated by the file. arxiv: the file only says "stale at
+    # generated_at", so the stamp is the latest value that still reads
+    # as stale — a cache loss never hands a dead lane a fresh start.
+    assert rebuilt["last_success"] == {"gdelt": "2026-07-09T06:00:00Z",
+                                       "arxiv": "2026-07-06T05:59:59Z"}
+    again = build_market_hype(rebuilt, [TERM_A], "2026-07-09T06:00:00Z")
+    assert again["stale_sources"] == ["arxiv"]
+
+
+# ---------------------------------------------------------- EDGAR relation
+
+def test_edgar_capped_relation_is_not_a_count():
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"mapped": {"edgar": {"2026-05": 8}}}, "pending": []}
+    session = FakeSession(edgar=[
+        FakeResponse(payload={"hits": {"total": {"value": 10000,
+                                                 "relation": "gte"}}}),
+        _edgar(2),
+        FakeResponse(payload={"hits": {"total": {"value": 4}}}),  # no relation
+    ])
+    logs = []
+    state = _sync(session, [TERM_M], state=prior, months=3, log=logs.append)
+    # the capped cell keeps its cached count; a payload without a
+    # relation at all (older shape) is still accepted as exact
+    assert state["series"]["mapped"]["edgar"] == \
+        {"2026-05": 8, "2026-06": 2, "2026-07": 4}
+    assert any("relation='gte'" in m and "keeping cached count" in m
+               for m in logs)
+
+
+# --------------------------------------------------------- HN abort budget
+
+def test_hn_consecutive_failures_abort_the_refresh_pass(monkeypatch):
+    monkeypatch.setattr(fetch_market, "_HN_ABORT_AFTER", 2)
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"hn": {"2026-06": 3}},
+                        "beta": {"hn": {"2026-06": 4}}},
+             "pending": [["hn", "alpha", "2026-05"]],
+             "last_success": {"hn": "2026-07-08T00:00:00Z"}}
+    # 400 is not retryable, so each failed cell costs exactly one request;
+    # once the queue runs dry the FakeSession would answer benign zeros,
+    # which the abort must never reach (beta is not even attempted)
+    session = FakeSession(hn=[FakeResponse(400, payload={"error": "bad"})] * 2)
+    logs = []
+    state = _sync(session, [TERM_A, TERM_B], state=prior, months=3, batch=8,
+                  log=logs.append)
+    assert len(session.requests["hn"]) == 2
+    assert state["series"]["alpha"]["hn"] == {"2026-06": 3}   # cache kept
+    assert state["series"]["beta"]["hn"] == {"2026-06": 4}
+    assert state["last_success"]["hn"] == "2026-07-08T00:00:00Z"  # no stamp
+    assert any("2 consecutive failed cells (refresh)" in m
+               and "aborting the pass" in m for m in logs)
+    # the queue is still reshaped (missing months enqueued) but nothing
+    # is drained: every entry keeps its place for the next night
+    assert state["pending"] == [["hn", "alpha", "2026-05"],
+                                ["hn", "beta", "2026-05"],
+                                ["hn", "alpha", "2026-07"],
+                                ["hn", "beta", "2026-07"]]
+
+
+def test_hn_abort_during_backfill_keeps_undrained_cells_queued(monkeypatch):
+    monkeypatch.setattr(fetch_market, "_HN_ABORT_AFTER", 2)
+    session = FakeSession(hn=[
+        _hn(1), _hn(2),                                  # refresh 06, 07
+        FakeResponse(400, payload={}), FakeResponse(400, payload={}),
+    ])
+    # window 2026-03..07: 03, 04, 05 are queued; the drain fails twice
+    state = _sync(session, [TERM_A], months=5, batch=4)
+    assert len(session.requests["hn"]) == 4
+    assert state["series"]["alpha"]["hn"] == {"2026-06": 1, "2026-07": 2}
+    assert state["pending"] == [["hn", "alpha", "2026-03"],
+                                ["hn", "alpha", "2026-04"],
+                                ["hn", "alpha", "2026-05"]]
+    assert "hn" not in state["last_success"]  # aborted: never a success

@@ -1,0 +1,20 @@
+# Project metadata and the single place the dependency pins are declared
+# for tooling. There is deliberately no [build-system]: CyberMon is not a
+# distributable package — the pipeline runs in place as `python -m pipeline`
+# and CI installs from pipeline/requirements*.txt, which must carry the
+# same pins as the lists below.
+[project]
+name = "cybermon"
+version = "1.0"
+description = "CyberMon: nightly vulnerability-ecosystem data pipeline behind a static site"
+requires-python = ">=3.12"
+dependencies = [
+    "requests==2.34.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "playwright==1.59.0",
+    "imageio-ffmpeg==0.6.0",
+]

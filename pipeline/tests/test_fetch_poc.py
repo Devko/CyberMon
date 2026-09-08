@@ -103,3 +103,101 @@ def test_load_poc_files_assembles_union_and_first_dates():
     assert poc.first_poc_dates["CVE-2023-0001"] == "2023-01-10"
     assert poc.first_poc_dates["CVE-2012-0002"] == "2012-06-05"  # MSF only
     assert poc.nuclei_templates == 3
+
+
+# ------------------------------------------------------------ cache
+
+class _Resp:
+    def __init__(self, body: bytes):
+        self.status_code = 200
+        self.content = body
+        self.headers = {}
+
+    def raise_for_status(self):
+        pass
+
+
+class _Session:
+    """Serves one body per call; a call past the script is a failure."""
+
+    def __init__(self, *bodies: bytes):
+        self.bodies = list(bodies)
+        self.calls = 0
+
+    def get(self, url, **_kwargs):
+        self.calls += 1
+        if not self.bodies:
+            raise AssertionError("unexpected download: cache not reused")
+        return _Resp(self.bodies.pop(0))
+
+
+def _edb_body() -> bytes:
+    return (FIXTURES / "exploitdb.csv").read_bytes()
+
+
+def test_cached_body_reuses_a_parsed_download(tmp_path):
+    from pipeline.fetch_poc import _cached_body, _parse_edb_body
+
+    session = _Session(_edb_body())
+    first = _cached_body(tmp_path, "files_exploits.csv", "https://x/",
+                         session, lambda _s: None, lambda _m: None,
+                         parse=_parse_edb_body)
+    assert session.calls == 1
+    cached = list((tmp_path / "poc").glob("*_files_exploits.csv"))
+    assert len(cached) == 1 and not cached[0].name.endswith(".part")
+    # Second call: served from today's cache, no download at all.
+    again = _cached_body(tmp_path, "files_exploits.csv", "https://x/",
+                         _Session(), lambda _s: None, lambda _m: None,
+                         parse=_parse_edb_body)
+    assert again == first
+
+
+def test_cached_body_never_caches_a_body_that_fails_to_parse(tmp_path):
+    from pipeline.fetch_poc import _cached_body, _parse_edb_body
+
+    session = _Session(b"<html>503 upstream sad</html>", _edb_body())
+    with pytest.raises(ValueError):
+        _cached_body(tmp_path, "files_exploits.csv", "https://x/", session,
+                     lambda _s: None, lambda _m: None,
+                     parse=_parse_edb_body)
+    poc_dir = tmp_path / "poc"
+    assert not poc_dir.exists() or not list(poc_dir.iterdir())
+    # the retry downloads again rather than re-reading the garbage
+    _cached_body(tmp_path, "files_exploits.csv", "https://x/", session,
+                 lambda _s: None, lambda _m: None, parse=_parse_edb_body)
+    assert session.calls == 2
+
+
+def test_cached_body_sweeps_stale_part_files_and_old_days(tmp_path):
+    from pipeline.fetch_poc import _cached_body, _parse_edb_body
+
+    poc_dir = tmp_path / "poc"
+    poc_dir.mkdir()
+    (poc_dir / "2020-01-01_files_exploits.csv.part").write_bytes(b"crash")
+    (poc_dir / "2020-01-01_files_exploits.csv").write_bytes(b"old day")
+    (poc_dir / "2020-01-01_other.csv").write_bytes(b"keep")
+    _cached_body(tmp_path, "files_exploits.csv", "https://x/",
+                 _Session(_edb_body()), lambda _s: None, lambda _m: None,
+                 parse=_parse_edb_body)
+    names = sorted(p.name for p in poc_dir.iterdir())
+    assert "2020-01-01_files_exploits.csv.part" not in names
+    assert "2020-01-01_files_exploits.csv" not in names
+    assert "2020-01-01_other.csv" in names
+    assert sum(n.endswith("_files_exploits.csv") for n in names) == 1
+
+
+def test_fetch_poc_assembles_from_three_cached_sources(tmp_path):
+    from pipeline.fetch_poc import fetch_poc
+
+    session = _Session(_edb_body(),
+                       (FIXTURES / "metasploit.json").read_bytes(),
+                       (FIXTURES / "nuclei_cves.json").read_bytes())
+    poc = fetch_poc(tmp_path, session=session, sleep=lambda _s: None,
+                    log=lambda _m: None)
+    assert session.calls == 3
+    assert poc.first_poc_dates["CVE-2023-0001"] == "2023-01-10"
+    assert poc.nuclei_templates == 3
+    # A second run the same day is entirely served from the cache.
+    poc2 = fetch_poc(tmp_path, session=_Session(), sleep=lambda _s: None,
+                     log=lambda _m: None)
+    assert poc2 == poc

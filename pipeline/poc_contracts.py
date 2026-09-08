@@ -12,15 +12,23 @@ Module-specific rules beyond the shared helpers:
   matched counts they are drawn from, coverage ``with_poc`` can never
   exceed ``total``, and the catalog's dated/union counts must nest —
   a violation means the builder or a source parse broke, and publishing
-  it would chart an impossibility.
+  it would chart an impossibility;
+* the arming section's ``provisional`` flag is RE-DERIVED from
+  ``observed_through``, ``ingestion_allowance_days`` and the year (the
+  ai_contracts ``cut_year`` precedent) rather than trusted — it decides
+  whether the AI Alibi may rest a verdict on that cohort, so a flag that
+  disagrees with the dates it summarizes is a verdict nothing backs.
+  ``arming.min_n`` is optional only because editions published before
+  it existed lack it; when present every charted row must meet it.
 """
 from __future__ import annotations
 
+from datetime import date, timedelta
 from typing import Any, Callable
 
-from .contracts import (CVSS_BUCKETS, _check_generated_at, _check_int,
-                        _check_list, _check_num, _check_sorted, _check_str,
-                        _fail, _get)
+from .contracts import (CVSS_BUCKETS, DATE_RE, _check_generated_at,
+                        _check_int, _check_list, _check_num, _check_sorted,
+                        _check_str, _fail, _get)
 
 # Widest plausible publication->PoC gap in days, either direction (the
 # corpus spans ~40 years; a gap outside this window is corrupt data).
@@ -104,8 +112,22 @@ def _validate_time_to_poc(obj: Any) -> None:
     arming = _get(obj, "arming", "time_to_poc")
     horizon = _get(arming, "horizon_days", "time_to_poc.arming")
     _check_int(horizon, "time_to_poc.arming.horizon_days", minimum=1)
-    _check_str(_get(arming, "observed_through", "time_to_poc.arming"),
-               "time_to_poc.arming.observed_through")
+    allowance = _get(arming, "ingestion_allowance_days", "time_to_poc.arming")
+    _check_int(allowance, "time_to_poc.arming.ingestion_allowance_days",
+               minimum=0)
+    observed_through = _get(arming, "observed_through", "time_to_poc.arming")
+    _check_str(observed_through, "time_to_poc.arming.observed_through",
+               DATE_RE)
+    try:
+        observed_through_date = date.fromisoformat(observed_through)
+    except ValueError:
+        _fail("time_to_poc.arming.observed_through",
+              f"not a real date: {observed_through!r}")
+    # Optional only for editions that predate the field (see module
+    # docstring); the builder always emits it now.
+    arming_min_n = arming.get("min_n")
+    if arming_min_n is not None:
+        _check_int(arming_min_n, "time_to_poc.arming.min_n", minimum=1)
     arows = _check_list(_get(arming, "years", "time_to_poc.arming"),
                         "time_to_poc.arming.years")
     aseen = []
@@ -114,7 +136,11 @@ def _validate_time_to_poc(obj: Any) -> None:
         year = _get(row, "year", path)
         _check_int(year, f"{path}.year", minimum=1988)
         aseen.append(year)
-        _check_int(_get(row, "n", path), f"{path}.n", minimum=1)
+        n = _get(row, "n", path)
+        _check_int(n, f"{path}.n", minimum=1)
+        if arming_min_n is not None and n < arming_min_n:
+            _fail(f"{path}.n",
+                  f"charted with n={n}, below arming.min_n={arming_min_n}")
         # The window is SYMMETRIC and bounded, and that is the whole
         # point of this section: a median outside it means the bound was
         # not applied and the statistic is the one-sided one again,
@@ -123,8 +149,21 @@ def _validate_time_to_poc(obj: Any) -> None:
                    float(-horizon), float(horizon))
         for key in ("pct_within_week", "pct_negative"):
             _check_num(_get(row, key, path), f"{path}.{key}", 0.0, 100.0)
-        if not isinstance(_get(row, "provisional", path), bool):
+        provisional = _get(row, "provisional", path)
+        if not isinstance(provisional, bool):
             _fail(f"{path}.provisional", "must be a bool")
+        # Re-derived, never trusted. The builder's rule: a cohort's window
+        # closes `horizon` days after Dec 31 and settles `allowance` days
+        # after that; observed_through is observed_on - horizon, so the
+        # horizon cancels and the cohort is settled exactly when
+        # observed_through has reached Dec 31 + allowance.
+        settled = date(year, 12, 31) + timedelta(days=allowance)
+        expected = observed_through_date < settled
+        if provisional != expected:
+            _fail(f"{path}.provisional",
+                  f"{provisional} disagrees with the dates: cohort {year} "
+                  f"settles once observed_through reaches {settled}, and "
+                  f"observed_through is {observed_through}")
         # Every negative gap is also <= 7 days, so this nesting holds
         # here exactly as it does on the hero cohort.
         if row["pct_negative"] > row["pct_within_week"] + 0.05:

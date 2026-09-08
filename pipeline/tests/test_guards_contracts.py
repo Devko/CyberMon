@@ -87,3 +87,26 @@ def test_missing_classifier_version_rejected(outputs):
     del obj["catalog"]["classifier_version"]
     with pytest.raises(ContractViolation, match="classifier_version"):
         guards_contracts.validate(NAME, obj)
+
+
+def test_year_below_min_n_rejected(outputs):
+    obj = _corrupt(outputs)
+    obj["min_n"] = obj["years"][0]["total"] + 1
+    with pytest.raises(ContractViolation, match="below minimum"):
+        guards_contracts.validate(NAME, obj)
+
+
+def test_median_gap_null_rule_keys_on_dated_entries(outputs):
+    obj = _corrupt(outputs)
+    multi = next(v for v in obj["vendors"] if v["entries"] >= 2)
+    # Two entries, one dated: a null gap is the truth, not a violation.
+    multi["dated_entries"] = 1
+    multi["median_gap_days"] = None
+    guards_contracts.validate(NAME, obj)
+    # ... and a gap from a single dated entry is impossible.
+    multi["median_gap_days"] = 30.0
+    with pytest.raises(ContractViolation, match="1 dated entry"):
+        guards_contracts.validate(NAME, obj)
+    multi["dated_entries"] = multi["entries"] + 1
+    with pytest.raises(ContractViolation, match="exceeds entries"):
+        guards_contracts.validate(NAME, obj)

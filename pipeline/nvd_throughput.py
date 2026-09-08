@@ -41,11 +41,21 @@ Transition semantics (per nightly diff, previous state vs synced state):
 * ``modified_re``       — re-entered "Modified" (logged, not persisted).
 
 Weekly full resweeps (see ``fetch_nvd.FULL_RESYNC_DAYS``) heal any drift
-the incremental syncs missed, so a resweep day can legitimately register
+the incremental syncs missed, so a resweep can legitimately register
 catch-up transitions in one lump — most visibly re-Modified spikes;
 analyzed/deferred transitions are real regardless of which sync path saw
 them. Resweep days are detectable (``last_full_sync`` changed) and are
-flagged in the CSV so readers can tell a lump from a trend.
+flagged in the CSV (``resweep``) so readers can tell a lump from a trend.
+
+The lump does not land on the resweep day itself. A full sweep reads
+NVD's yearly feeds, which regenerate nightly and can be ~24 h stale, so
+the resweep diff sees a FROZEN snapshot (typically few transitions);
+``fetch_nvd`` back-dates ``last_sync`` by ``FEED_STALENESS`` (~25 h) and
+the next incremental pull re-covers the gap — the catch-up arrives in
+the diff AFTER the resweep. The published JSON therefore carries a second
+flag, ``after_resweep``, DERIVED at build time from the record (true on
+the row that follows a ``resweep`` row); the CSV keeps its committed
+shape, one ``resweep`` column, and no row's meaning changes.
 
 The CSV keeps one row per run date, last run per date wins, sorted
 ascending — the same rules as ``pipeline.history``. ``median_queue_days``
@@ -274,8 +284,26 @@ def throughput_row(counts: dict, accumulated_durations: list[int],
 def build_nvd_throughput(history_rows: list[dict], generated_at: str) -> dict:
     """nvd_throughput.json: the daily flow series plus the cumulative
     queue-days stat (docs/data-contracts.md). An empty history is legal —
-    the record starts at first deploy and this object says so honestly."""
+    the record starts at first deploy and this object says so honestly.
+
+    ``after_resweep`` is derived here, not stored: it marks the row that
+    follows a ``resweep`` row, which is where the catch-up lump lands
+    (module docstring). The first row can never be one."""
     latest = history_rows[-1] if history_rows else None
+    history = []
+    previous_resweep = False
+    for r in history_rows:
+        resweep = bool(r["resweep"])
+        history.append({"date": r["date"],
+                        "received_new": int(r["received_new"]),
+                        "entered_awaiting": int(r["entered_awaiting"]),
+                        "analyzed_from_awaiting":
+                            int(r["analyzed_from_awaiting"]),
+                        "deferred_from_awaiting":
+                            int(r["deferred_from_awaiting"]),
+                        "resweep": resweep,
+                        "after_resweep": previous_resweep})
+        previous_resweep = resweep
     return {
         "generated_at": generated_at,
         "min_known_duration": MIN_KNOWN_DURATIONS,
@@ -283,13 +311,5 @@ def build_nvd_throughput(history_rows: list[dict], generated_at: str) -> dict:
             "median_days": latest["median_queue_days"] if latest else None,
             "n_known_duration": latest["n_known_duration"] if latest else 0,
         },
-        "history": [{"date": r["date"],
-                     "received_new": int(r["received_new"]),
-                     "entered_awaiting": int(r["entered_awaiting"]),
-                     "analyzed_from_awaiting":
-                         int(r["analyzed_from_awaiting"]),
-                     "deferred_from_awaiting":
-                         int(r["deferred_from_awaiting"]),
-                     "resweep": bool(r["resweep"])}
-                    for r in history_rows],
+        "history": history,
     }

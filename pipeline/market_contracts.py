@@ -69,6 +69,19 @@ def _check_divergence(d: Any, path: str) -> None:
     _check_direction(_get(d, "direction", path), f"{path}.direction")
 
 
+def _check_stale_sources(v: Any, path: str) -> None:
+    """A list of distinct known source ids, in contract order. Also used
+    by the core meta contract for ``meta.sources.market.stale_sources``."""
+    entries = _check_list(v, path)
+    for i, source in enumerate(entries):
+        if source not in SOURCES:
+            _fail(f"{path}[{i}]", f"unknown source {source!r}")
+    if len(set(entries)) != len(entries):
+        _fail(path, "duplicate source ids")
+    if [s for s in SOURCES if s in entries] != entries:
+        _fail(path, f"not in contract source order {SOURCES}")
+
+
 def _check_mover(m: Any, path: str) -> None:
     _check_str(_get(m, "term_id", path), f"{path}.term_id")
     _check_str(_get(m, "label", path), f"{path}.label")
@@ -98,6 +111,15 @@ def _validate_market_hype(obj: Any) -> None:
     # Optional: present (and true) only on --skip-market carry-forwards.
     if "stale" in obj:
         _check_bool(obj["stale"], "market_hype.stale")
+    # Source lanes with no successful fetch in market_metrics.STALE_AFTER_DAYS
+    # (their yoy entries are null for every term; gdelt/arxiv staleness
+    # also nulls divergence). Optional only for files written before
+    # freshness tracking (the committed output is one nightly behind the
+    # code, and --skip-market carries such a file forward); every fresh
+    # build emits it, possibly empty.
+    if "stale_sources" in obj:
+        _check_stale_sources(obj["stale_sources"], "market_hype.stale_sources")
+    stale_sources = set(obj.get("stale_sources") or [])
 
     terms = _check_list(_get(obj, "terms", "market_hype"), "market_hype.terms")
     for i, t in enumerate(terms):
@@ -114,9 +136,18 @@ def _validate_market_hype(obj: Any) -> None:
         for source in declared:
             y = _get(yoy, source, f"{path}.yoy")
             if y is not None:
+                if source in stale_sources:
+                    _fail(f"{path}.yoy.{source}",
+                          f"source {source!r} is listed in stale_sources; "
+                          f"its YoY must be null, not computed from stale "
+                          f"cached months")
                 _check_yoy(y, f"{path}.yoy.{source}")
         div = _get(t, "divergence", path)
         if div is not None:
+            if stale_sources & {"gdelt", "arxiv"}:
+                _fail(f"{path}.divergence",
+                      "gdelt or arxiv is listed in stale_sources; "
+                      "divergence must be null")
             _check_divergence(div, f"{path}.divergence")
 
     headline = _get(obj, "headline", "market_hype")
@@ -124,6 +155,10 @@ def _validate_market_hype(obj: Any) -> None:
         mover = _get(headline, key, "market_hype.headline")
         if mover is not None:
             _check_mover(mover, f"market_hype.headline.{key}")
+            if mover["source"] in stale_sources:
+                _fail(f"market_hype.headline.{key}.source",
+                      f"{mover['source']!r} is listed in stale_sources; a "
+                      f"dead lane cannot headline the movers board")
     top_div = _get(headline, "top_divergence", "market_hype.headline")
     if top_div is not None:
         path = "market_hype.headline.top_divergence"

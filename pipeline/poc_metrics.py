@@ -62,6 +62,21 @@ ARMING_HORIZON_DAYS = 90
 # misread as a trend.
 ARMING_INGESTION_ALLOWANCE_DAYS = 365
 
+# Minimum matched CVEs a cohort year needs before its like-for-like
+# median charts. Stricter than the hero's ``min_n`` on purpose: this is
+# the AI Alibi's PRIMARY metric, and inside a +/-90-day window a cohort
+# of a dozen gaps is a coin toss wearing a unit. Emitted as
+# ``arming.min_n`` so the contract can hold every charted row to it.
+ARMING_MIN_N = 30
+
+# The offline-fixture floor: a run built with ``min_n=1`` (the
+# hand-written fixture corpus) inherits that floor for the arming series
+# too, so the tiny corpus still charts. Any other threshold must be passed
+# explicitly as ``arming_min_n`` — a production ``min_n`` of 15 does NOT
+# silently become 30 or 15; it is ARMING_MIN_N unless the caller says
+# otherwise.
+FIXTURE_MIN_N = 1
+
 # Severity-bucket key (Aggregator.flood) -> grid CVSS bucket label, in
 # chart order (metrics.cvss_bucket's mapping, spelled once here).
 _SEVERITY_TO_BUCKET = (("low", "0.1-3.9"), ("medium", "4.0-6.9"),
@@ -106,6 +121,9 @@ def _build_arming(agg: Aggregator, first_poc: dict[str, str],
     maturity, not tracker INGESTION lag. Exploit-DB and Metasploit add
     entries for older disclosures over time, so the newest cohort is
     still missing arming that will appear later, and reads slightly slow.
+
+    ``min_n`` is the charting floor for this series (:data:`ARMING_MIN_N`
+    in production); it ships in the payload as ``min_n``.
     """
     horizon = ARMING_HORIZON_DAYS
     observed_through = date.fromisoformat(generated_at[:10]) - \
@@ -148,15 +166,29 @@ def _build_arming(agg: Aggregator, first_poc: dict[str, str],
         "horizon_days": horizon,
         "ingestion_allowance_days": ARMING_INGESTION_ALLOWANCE_DAYS,
         "observed_through": observed_through.isoformat(),
+        "min_n": min_n,
         "years": years,
     }
 
 
 def build_time_to_poc(agg: Aggregator, poc: PocData,
                       kev_entries: Iterable[KevEntry], generated_at: str,
-                      *, min_n: int = 10) -> dict:
+                      *, min_n: int = 10,
+                      arming_min_n: int | None = None) -> dict:
     """Assemble the time_to_poc.json object (contract:
-    pipeline/poc_contracts.py; doc: docs/data-contracts.md)."""
+    pipeline/poc_contracts.py; doc: docs/data-contracts.md).
+
+    ``min_n`` floors the hero years, the KEV-preempt years and the
+    coverage buckets. ``arming_min_n`` floors the like-for-like arming
+    series and is deliberately separate: None resolves to
+    :data:`ARMING_MIN_N`, except that a fixture-floor run (``min_n`` of
+    :data:`FIXTURE_MIN_N`) inherits its floor so the offline corpus still
+    charts. No other ``min_n`` value ever leaks into the arming threshold.
+    """
+    if arming_min_n is None:
+        arming_min_n = min_n if min_n <= FIXTURE_MIN_N else ARMING_MIN_N
+    if arming_min_n < 1:
+        raise ValueError(f"arming_min_n must be >= 1, got {arming_min_n}")
     first_poc = poc.first_poc_dates
 
     # ---- hero: publication -> first public PoC ---------------------------
@@ -298,8 +330,7 @@ def build_time_to_poc(agg: Aggregator, poc: PocData,
     return {
         "generated_at": generated_at,
         "hero": hero,
-        "arming": _build_arming(agg, first_poc, generated_at,
-                                max(min_n, 1) if min_n < 10 else 30),
+        "arming": _build_arming(agg, first_poc, generated_at, arming_min_n),
         "kev_preempt": kev_preempt,
         "coverage": coverage,
         "catalog": catalog,

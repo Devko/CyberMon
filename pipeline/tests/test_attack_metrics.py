@@ -205,3 +205,20 @@ def test_offline_pipeline_skip_attack_without_prior_omits_output(tmp_path,
     meta = json.loads((tmp_path / "meta.json").read_text(encoding="utf-8"))
     contracts.validate("meta.json", meta)
     assert "attack" not in meta["sources"]
+
+
+def test_run_stage_skip_with_empty_prior_versions_omits_meta_source(tmp_path):
+    # A prior file with no versions is legal (headline null); carrying it
+    # forward must not crash on versions[-1], and meta.sources.attack --
+    # which promises a latest_version string -- is omitted, not faked.
+    prior = {"generated_at": GENERATED_AT, "versions": [], "headline": None}
+    (tmp_path / "attack_churn.json").write_text(json.dumps(prior),
+                                                encoding="utf-8")
+    logs = []
+    obj, source = run_stage(tmp_path, tmp_path, "2026-07-10T00:00:00Z",
+                            skip=True, offline_fixtures=False,
+                            log=logs.append)
+    attack_contracts.validate("attack_churn.json", obj)
+    assert obj["stale"] is True and obj["versions"] == []
+    assert source is None
+    assert any("no versions" in line for line in logs)

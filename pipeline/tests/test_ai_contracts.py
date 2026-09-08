@@ -282,3 +282,18 @@ def test_unchanged_valid_object_is_not_mutated_by_validation():
     before = copy.deepcopy(obj)
     contracts.validate("ai_alibi.json", obj)
     assert obj == before
+
+
+def test_attention_stale_marker_must_be_boolean_true():
+    obj = valid_obj()
+    obj["attention"]["stale"] = True
+    contracts.validate("ai_alibi.json", obj)
+    obj["attention"]["stale"] = "yes"
+    with pytest.raises(ContractViolation, match="attention.stale"):
+        contracts.validate("ai_alibi.json", obj)
+    gone = ai_metrics.build_ai_alibi(
+        poc_payload({y: 5.0 for y in range(2000, 2026)}), GENERATED_AT,
+        market=None)
+    gone["attention"]["stale"] = True
+    with pytest.raises(ContractViolation, match="nothing to be stale"):
+        contracts.validate("ai_alibi.json", gone)

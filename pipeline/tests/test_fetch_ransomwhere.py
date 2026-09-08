@@ -7,7 +7,8 @@ from __future__ import annotations
 
 import pytest
 
-from pipeline.fetch_ransomwhere import fetch_ransomwhere
+from pipeline.fetch_ransomwhere import (EPOCH_MIN, fetch_ransomwhere,
+                                        parse_ransomwhere)
 
 _EXPORT = {"result": [{"address": "1FX4", "family": "Maui",
                        "blockchain": "bitcoin", "transactions": []}]}
@@ -69,3 +70,42 @@ def test_fetch_persistent_connection_failure_raises_after_bounded_attempts():
         fetch_ransomwhere(session=session, sleep=lambda s: None,
                           log=lambda m: None)
     assert len(session.requests) == 3
+
+
+# -------------------------------------------------- transaction time bounds
+
+def _tx(**overrides):
+    base = {"hash": "h", "time": 1716192000, "amount": 1, "amountUSD": 1.0}
+    base.update(overrides)
+    return base
+
+
+def _doc(tx):
+    return {"result": [{"address": "1FX4", "family": "Maui",
+                        "blockchain": "bitcoin", "transactions": [tx]}]}
+
+
+def test_parse_rejects_millisecond_timestamps_inside_the_parser():
+    # A time in milliseconds passed the old parser and blew up in the
+    # date arithmetic of the ledger builder — outside the degrade handler
+    # in __main__. Now it is a parse error like every other malformed field.
+    with pytest.raises(ValueError, match="plausible epoch seconds"):
+        parse_ransomwhere(_doc(_tx(time=1716192000000)))
+
+
+def test_parse_time_bounds_are_2008_to_tomorrow():
+    import time as _time
+
+    parse_ransomwhere(_doc(_tx(time=EPOCH_MIN)))            # 2008-01-01
+    now = int(_time.time())
+    parse_ransomwhere(_doc(_tx(time=now + 3600)))           # clock skew
+    for bad in (EPOCH_MIN - 1, now + 2 * 86400):
+        with pytest.raises(ValueError, match="plausible epoch seconds"):
+            parse_ransomwhere(_doc(_tx(time=bad)))
+
+
+def test_fetch_surfaces_bad_timestamps_as_the_value_error_main_degrades_on():
+    session = FakeSession([FakeResponse(payload=_doc(_tx(time=1716192000000)))])
+    with pytest.raises(ValueError, match="plausible epoch seconds"):
+        fetch_ransomwhere(session=session, sleep=lambda s: None,
+                          log=lambda m: None)

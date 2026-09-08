@@ -258,3 +258,68 @@ def test_earlier_year_feed_404_stays_fatal():
         fetch_nvd.sync_status_state(None, session=MissingOldYear(),
                                     sleep=_no_sleep, log=lambda m: None,
                                     now=NOW)
+
+
+# ------------------------------------------- incremental paging integrity --
+
+def _fresh_prior():
+    return {"version": 1,
+            "last_full_sync": "2026-07-08T06:00:00Z",
+            "last_sync": "2026-07-08T06:00:00Z",
+            "statuses": {"CVE-1": "Awaiting Analysis"}}
+
+
+def test_incremental_sync_pages_the_whole_delta(monkeypatch):
+    monkeypatch.setattr(fetch_nvd, "PAGE_SIZE", 2)
+    session = FakeSession([
+        _page([("CVE-1", "Analyzed"), ("CVE-2", "Received")], total=3),
+        _page([("CVE-3", "Received")], total=3),
+    ])
+    sleeps = []
+    state = fetch_nvd.sync_status_state(_fresh_prior(), session=session,
+                                        sleep=sleeps.append,
+                                        log=lambda m: None, now=NOW)
+    assert [r["startIndex"] for r in session.requests] == [0, 2]
+    assert {r["lastModStartDate"] for r in session.requests} == \
+        {"2026-07-08T05:00:00.000+00:00"}   # same window on every page
+    assert state["statuses"] == {"CVE-1": "Analyzed", "CVE-2": "Received",
+                                 "CVE-3": "Received"}
+    assert state["last_sync"] == "2026-07-09T06:00:00Z"
+    assert sleeps == [fetch_nvd._DELAY_KEYLESS]   # paced between pages
+
+
+def test_incremental_sync_refuses_an_empty_page_before_total_results():
+    # NVD has answered 200 with an empty page under load. Treating it as
+    # "done" merged a partial delta and stamped last_sync past records
+    # never seen; now the night fails loudly and the prior state stands.
+    prior = _fresh_prior()
+    session = FakeSession([_page([("CVE-2", "Analyzed")], total=3),
+                           _page([], total=3)])
+    with pytest.raises(RuntimeError,
+                       match="empty page at startIndex=1 of totalResults=3"):
+        fetch_nvd.sync_status_state(prior, session=session, sleep=_no_sleep,
+                                    log=lambda m: None, now=NOW)
+    assert prior == _fresh_prior()   # nothing merged, nothing stamped
+
+
+@pytest.mark.parametrize("total", [None, "3", 3.0, True])
+def test_incremental_sync_refuses_a_page_without_integer_total(total):
+    page = _page([("CVE-2", "Analyzed")], total=3)
+    if total is None:
+        del page["totalResults"]
+    else:
+        page["totalResults"] = total
+    with pytest.raises(RuntimeError, match="no integer totalResults"):
+        fetch_nvd.sync_status_state(_fresh_prior(),
+                                    session=FakeSession([page]),
+                                    sleep=_no_sleep, log=lambda m: None,
+                                    now=NOW)
+
+
+def test_incremental_sync_with_no_modified_records_is_a_valid_zero_delta():
+    session = FakeSession([_page([], total=0)])
+    state = fetch_nvd.sync_status_state(_fresh_prior(), session=session,
+                                        sleep=_no_sleep, log=lambda m: None,
+                                        now=NOW)
+    assert state["statuses"] == {"CVE-1": "Awaiting Analysis"}
+    assert state["last_sync"] == "2026-07-09T06:00:00Z"

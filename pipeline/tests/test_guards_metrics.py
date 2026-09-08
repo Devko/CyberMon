@@ -127,3 +127,21 @@ def test_catalog_block_carries_classifier_revision():
                            min_vendor_entries=1)
     assert out["catalog"]["classifier_version"] == CLASSIFIER_VERSION
     assert out["catalog"]["classifier_rules"] == rule_count()
+
+
+def test_board_reports_dated_entries_and_validates_with_undated_ones():
+    from pipeline import contracts
+
+    entries = [entry(added="not-a-date"), entry(added="2024-01-01")]
+    out = build_kev_guards(entries, GENERATED_AT, min_n=1,
+                           min_vendor_entries=1)
+    row = out["vendors"][0]
+    assert row["entries"] == 2 and row["dated_entries"] == 1
+    assert row["median_gap_days"] is None   # one dated entry: no gap
+    contracts.validate("kev_guards.json", out)  # the docs' rule holds
+    entries.append(entry(added="2024-01-31"))
+    out = build_kev_guards(entries, GENERATED_AT, min_n=1,
+                           min_vendor_entries=1)
+    row = out["vendors"][0]
+    assert row["dated_entries"] == 2 and row["median_gap_days"] == 30.0
+    contracts.validate("kev_guards.json", out)

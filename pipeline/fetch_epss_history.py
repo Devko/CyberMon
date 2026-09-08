@@ -64,6 +64,24 @@ State entries record a **fact per (cve_id, date_added)**, never a maybe:
   CVE-corpus-aware refinement (listed before publication vs. genuinely
   unscored) happens in ``epss_report_metrics``, not here.
 
+Two facts are deliberately NOT what the state stores verbatim:
+
+* the ``model`` label is a **hint**, never the truth. It is stamped at
+  fetch time from :data:`MODEL_ERAS`, but the era label is a pure
+  function of ``score_date``, so :func:`_entry_from` (every path a stored
+  entry takes back into memory) and the report builder re-derive it with
+  :func:`model_label`. If the era table lags a FIRST model release, the
+  entries looked up in the gap are relabeled the night the table is
+  fixed instead of staying wrong forever — and the output contract
+  checks ``model == model_label(score_date)`` so a stale published file
+  fails loudly rather than silently;
+* "no score that day" is only a fact once FIRST has had time to load
+  that day. :func:`sync_state` leaves pending (retried next night) any
+  pair whose score date is newer than the current feed's ``score_date``,
+  and refuses to record a ``no_score_for_date`` answer for a score date
+  within :data:`NULL_FACT_GRACE_DAYS` of the run date — an empty
+  envelope there means "not loaded yet" at least as often as "unscored".
+
 A failed request (after retries) raises — the nightly treats a broken
 stage as "deploy nothing" — but the state accumulated so far is saved
 first, so no successful lookup is ever repeated.
@@ -104,6 +122,12 @@ MODEL_LABELS = tuple(era[0] for era in MODEL_ERAS)
 REASON_PRE_EPSS = "pre_epss"
 REASON_NO_SCORE = "no_score_for_date"
 REASONS = (REASON_PRE_EPSS, REASON_NO_SCORE)
+
+# A "no score that day" answer for a score date this close to the run date
+# is not recorded: FIRST loads daily scores with a lag of up to a few days,
+# and an empty envelope for a not-yet-loaded date would otherwise become a
+# permanent (wrong) fact. Such pairs stay pending and are retried nightly.
+NULL_FACT_GRACE_DAYS = 3
 
 # Requests are URL-length-bound (~2 KB); 100 CVE ids stay well under it.
 # limit > chunk size so a full chunk can never be silently paginated.
@@ -207,7 +231,14 @@ def save_state(cache_dir: Path, state: dict) -> None:
 def _entry_from(obj: dict) -> dict:
     """One state entry from a mapping carrying the per-entry fact fields
     (a published ``entries[]`` element or a cached state value). Raises
-    on any malformed field — callers decide how loudly to fail."""
+    on any malformed field — callers decide how loudly to fail.
+
+    The stored ``model`` is treated as a hint only: for a scored entry the
+    label is re-derived from ``score_date`` (see the module docstring), so
+    an entry labeled under a stale era table heals the night the table is
+    fixed. It must still be a string or null — anything else is a
+    malformed record, not a hint.
+    """
     score_date = str(obj["score_date"])
     date.fromisoformat(score_date)  # fail loudly on a bad date
     epss, percentile = obj["epss"], obj["percentile"]
@@ -225,10 +256,11 @@ def _entry_from(obj: dict) -> dict:
             percentile = float(percentile)
             if not 0.0 <= percentile <= 1.0:
                 raise ValueError(f"percentile {percentile} outside [0, 1]")
-        if model not in MODEL_LABELS:
-            raise ValueError(f"unknown model label {model!r}")
+        if model is not None and not isinstance(model, str):
+            raise ValueError(f"malformed model label {model!r}")
         if reason is not None:
             raise ValueError("scored entry with a non-null reason")
+        model = model_label(score_date)
     return {"score_date": score_date, "epss": epss,
             "percentile": percentile, "model": model, "reason": reason}
 
@@ -369,11 +401,27 @@ def fetch_scores(session, cves: list[str], score_date: str,
 
 # ----------------------------------------------------------------------- sync
 
+def _run_date(last_sync: str, today: str | None) -> date | None:
+    """The run date the null-fact grace window is measured from:
+    ``today`` when given, else the date part of ``last_sync`` (the run's
+    ``generated_at``), else None (no grace applied — tests that pass no
+    timestamp keep the plain behavior)."""
+    for candidate in (today, (last_sync or "")[:10]):
+        if candidate:
+            try:
+                return date.fromisoformat(candidate)
+            except ValueError:
+                continue
+    return None
+
+
 def sync_state(state: dict | None, kev_pairs: list[tuple[str, str]],
                fetch: Callable[[list[str], str], dict],
                *, backfill_batch: int, last_sync: str = "",
                save: Callable[[dict], None] | None = None,
-               log: Callable[[str], None] = print) -> dict:
+               log: Callable[[str], None] = print,
+               feed_score_date: str | None = None,
+               today: str | None = None) -> dict:
     """Return up-to-date sync state ``{version, last_sync, entries}``.
 
     ``kev_pairs`` is the current catalog's ``(cve_id, date_added)`` list
@@ -385,6 +433,19 @@ def sync_state(state: dict | None, kev_pairs: list[tuple[str, str]],
     first, so a partial backfill fills history front-to-back and the
     published per-year pending counts shrink deterministically. Pairs
     beyond the batch stay missing (published as pending-backfill counts).
+
+    Two kinds of pair are left pending on purpose, to be retried on a
+    later night rather than recorded as a wrong fact:
+
+    * pairs whose score date is newer than ``feed_score_date`` (the
+      current daily CSV's ``score_date``, when the caller knows it) —
+      FIRST cannot have loaded a day it has not published yet, so an
+      empty answer there says nothing; these are not even requested;
+    * pairs whose score date falls within :data:`NULL_FACT_GRACE_DAYS`
+      of the run date (``today``, else the date part of ``last_sync``)
+      AND come back with no row — the lookup is made (a scored answer is
+      a fact regardless of age), but a ``no_score_for_date`` answer is
+      discarded because the feed may simply not have loaded that day.
 
     ``save`` (when given) persists the state after each completed date, so
     an interrupted backfill or a failed request never loses progress; on a
@@ -408,6 +469,20 @@ def sync_state(state: dict | None, kev_pairs: list[tuple[str, str]],
     if not missing:
         return result
 
+    if feed_score_date:
+        ahead = [key for key in missing if wanted[key][2] > feed_score_date]
+        if ahead:
+            log(f"  epss-report: {len(ahead)} pair(s) have a score date "
+                f"newer than the current feed ({feed_score_date}); left "
+                f"pending until FIRST publishes those days")
+            missing = [key for key in missing if wanted[key][2]
+                       <= feed_score_date]
+        if not missing:
+            return result
+    run_date = _run_date(last_sync, today)
+    grace_from = (run_date - timedelta(days=NULL_FACT_GRACE_DAYS)).isoformat() \
+        if run_date is not None else None
+
     # Oldest score dates first: deterministic front-to-back backfill. A
     # non-positive batch looks up nothing (everything stays pending).
     missing.sort(key=lambda k: (wanted[k][2], wanted[k][0]))
@@ -423,6 +498,7 @@ def sync_state(state: dict | None, kev_pairs: list[tuple[str, str]],
         cve_id, _added, score_date = wanted[key]
         by_date.setdefault(score_date, []).append(cve_id)
 
+    deferred = 0
     try:
         for score_date in sorted(by_date):
             cves = sorted(by_date[score_date])
@@ -431,10 +507,20 @@ def sync_state(state: dict | None, kev_pairs: list[tuple[str, str]],
                 chunk = cves[i:i + MAX_CVES_PER_REQUEST]
                 fetched.update(parse_response(fetch(chunk, score_date),
                                               chunk, score_date))
+            # Inside the grace window an empty answer is "not loaded yet"
+            # as often as "unscored": keep the scored facts, drop the
+            # null ones so the pair is retried on a later night.
+            recent = grace_from is not None and score_date >= grace_from
             for key in batch:
                 cve_id, _added, sd = wanted[key]
-                if sd == score_date and cve_id in fetched:
-                    entries[key] = fetched[cve_id]
+                if sd != score_date or cve_id not in fetched:
+                    continue
+                entry = fetched[cve_id]
+                if recent and entry["epss"] is None \
+                        and entry["reason"] == REASON_NO_SCORE:
+                    deferred += 1
+                    continue
+                entries[key] = entry
             if save is not None:
                 save(result)
     except Exception:
@@ -445,6 +531,11 @@ def sync_state(state: dict | None, kev_pairs: list[tuple[str, str]],
                  if key in entries and entries[key]["epss"] is not None)
     log(f"  epss-report: looked up {len(batch)} pair(s) over "
         f"{len(by_date)} date(s); {scored} had a day-before score")
+    if deferred:
+        log(f"  epss-report: {deferred} empty answer(s) for score dates "
+            f"within {NULL_FACT_GRACE_DAYS} days of the run date not "
+            f"recorded (feed may not have loaded them yet); retried next "
+            f"night")
     return result
 
 
