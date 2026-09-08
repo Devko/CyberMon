@@ -577,8 +577,18 @@ def validate(filename: str, obj: Any) -> None:
 
     Raises :class:`ContractViolation` on any mismatch, ``KeyError`` if the
     filename has no contract (an output file we never agreed to emit).
+
+    ``stale`` is checked here for every output rather than in each module
+    contract: a carried-forward edition (``__main__._carry_forward``) marks
+    itself with the boolean True, and the site renders "(carried forward)"
+    on that exact value — a truthy string would pass the module contracts
+    and silently lose the marker.
     """
     VALIDATORS[filename](obj)
+    if isinstance(obj, dict) and "stale" in obj and obj["stale"] is not True:
+        raise ContractViolation(
+            f"{filename}.stale: must be the boolean true when present, "
+            f"got {obj['stale']!r}")
 
 
 # Module contracts register themselves here. Imported at the bottom on

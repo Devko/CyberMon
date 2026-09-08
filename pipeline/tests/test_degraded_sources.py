@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from pipeline.__main__ import _carry_forward, _carry_forward_source
 
 GENERATED_AT = "2026-08-03T05:59:00Z"
@@ -57,6 +59,37 @@ def test_carry_forward_source_reuses_last_nights_block(tmp_path):
     assert rw == {"fetched_at": "2026-08-01T05:41:00Z", "address_count": 9,
                   "tx_count": 21, "stale": True}
     assert _carry_forward_source(tmp_path, "hibp")["stale"] is True
+
+
+def test_carry_forward_drops_the_pace_projection(tmp_path):
+    """A carried edition keeps its numbers but not its pace: the projection
+    was computed for another night's elapsed fraction (and, across New
+    Year, another year — where its contract would reject the restamp)."""
+    from pipeline.__main__ import _carry_forward
+
+    _write(tmp_path / "breach_ledger.json", {
+        "generated_at": "2026-12-30T02:43:00Z", "n": 3,
+        "projection": {"year": 2026, "total": 1200, "elapsed": 0.99},
+    })
+    carried = _carry_forward(tmp_path, "breach_ledger.json",
+                             "2027-01-01T02:43:00Z", "HIBP fetch failed")
+    assert carried["stale"] is True
+    assert carried["generated_at"] == "2027-01-01T02:43:00Z"
+    assert "projection" not in carried
+    assert carried["n"] == 3
+
+
+def test_stale_marker_must_be_boolean_true():
+    from pipeline import contracts
+
+    obj = {"generated_at": GENERATED_AT, "sample": False, "sources": {
+        "cvelist": {"release": "r", "cve_count": 1},
+        "epss": {"model_version": "v5", "score_date": "2026-08-02",
+                 "row_count": 1},
+        "kev": {"catalog_version": "2026.08.02", "count": 1}}}
+    contracts.validate("meta.json", dict(obj, stale=True))
+    with pytest.raises(contracts.ContractViolation):
+        contracts.validate("meta.json", dict(obj, stale="yes"))
 
 
 def test_carry_forward_source_none_when_absent_or_unusable(tmp_path):

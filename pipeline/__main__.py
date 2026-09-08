@@ -323,6 +323,12 @@ def _carry_forward(out_dir: Path, filename: str, generated_at: str,
     carried = dict(prior)
     carried["generated_at"] = generated_at
     carried["stale"] = True
+    # A pace projection is computed from ITS run's elapsed fraction of ITS
+    # year; restamped under tonight's generated_at it is a wrong number,
+    # and across a year boundary it fails its own contract (projection.year
+    # must equal the edition year) — which would abort the run the degrade
+    # path exists to save. Carried editions therefore carry no pace.
+    carried.pop("projection", None)
     _warn(f"{reason}; carrying {filename} forward from "
           f"{prior.get('generated_at', 'an unknown edition')} (marked stale)")
     return carried
