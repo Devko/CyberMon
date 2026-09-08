@@ -27,6 +27,7 @@ real data.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -51,7 +52,14 @@ if _META.get("sample") is True:
 # The generation year: used to find the "latest complete year" in series
 # that include the partial current year. Payloads with a headline block
 # already encode this (headline is authoritative); raw year series don't.
-GENERATION_YEAR = int(_META["generated_at"][:4])
+#
+# January rehearsal: CYBERMON_REHEARSE_YEAR=2027 judges every raw-series
+# guard as if the edition had been generated in that year — the partial
+# current year becomes "complete" with its values as they stand. Headline
+# blocks are computed by the pipeline and cannot be rehearsed this way;
+# their guards are pinned to named years instead (see docs/backlog.md).
+GENERATION_YEAR = int(os.environ.get("CYBERMON_REHEARSE_YEAR")
+                      or _META["generated_at"][:4])
 
 
 def load(name: str) -> dict:
@@ -73,11 +81,12 @@ def complete_years(rows: list[dict]) -> list[dict]:
 
 
 def check_severity_headline(d: dict) -> None:
-    # editorial.js (cve.html hero): "Four of every ten CVEs ship as
-    # “High” or worse."
+    # editorial.js (cve.html hero): "About half of all CVEs ship as
+    # “High” or worse." — 43.5% in 2025, 53.5% in the partial 2026; the
+    # band holds "about half" on both sides of the January rollover.
     pct = d["headline"]["pct_high_critical_latest"]  # share ≥ 7.0, latest complete year
-    assert 33 <= pct <= 55, (
-        f"'Four of every ten CVEs ship as High or worse' claims ~40%; "
+    assert 40 <= pct <= 60, (
+        f"'About half of all CVEs ship as High or worse' claims ~50%; "
         f"data says {pct}% (latest complete year {d['headline']['latest_year']})"
     )
 
@@ -116,12 +125,14 @@ def check_deferred_pile(d: dict) -> None:
 
 
 def check_cna_nine_plus(d: dict) -> None:
-    # editorial.js (CNA leaderboard): "Some CNAs hand a 9+ to two of every
-    # five CVEs they score"
+    # editorial.js (CNA leaderboard): "Some CNAs hand a 9+ to a third or
+    # more of the CVEs they score" — the three-year window slides every
+    # January (39.8% today; ~31% once 2024 drops out), so the copy claims
+    # the floor, not the current peak.
     top = max(c["pct_geq_9"] for c in d["cnas"])
-    assert 30 <= top <= 60, (
-        f"'a 9+ to two of every five CVEs' claims a ~40% top share; "
-        f"data's max per-CNA pct_geq_9 is {top}%"
+    assert 28 <= top <= 60, (
+        f"'a 9+ to a third or more of the CVEs they score' needs a top "
+        f"per-CNA pct_geq_9 of at least ~30%; data's max is {top}%"
     )
 
 
@@ -160,14 +171,19 @@ def check_kev_getting_slower(d: dict) -> None:
 
 
 def check_kev_three_week_rule(d: dict) -> None:
-    # editorial.js (kev.html remediation): "the standing rule since has
-    # been three weeks."
-    rows = complete_years(d["remediation_span_by_year"])
-    assert rows, "no complete years in remediation_span_by_year"
-    latest = max(rows, key=lambda r: r["year"])
-    assert 14 <= latest["median_days"] <= 28, (
-        f"'the standing rule since has been three weeks' claims a ~21-day "
-        f"median; data says {latest['median_days']}d for {latest['year']}"
+    # editorial.js (kev.html remediation): "from 2022 through 2025 the
+    # standing rule was three weeks — and the 2026 listings are coming in
+    # at two." Pinned to named years so the January rollover cannot move
+    # the claim; 2026's row is judged whether partial or complete.
+    by_year = {r["year"]: r for r in d["remediation_span_by_year"]}
+    for y in (2022, 2023, 2024, 2025):
+        assert 14 <= by_year[y]["median_days"] <= 28, (
+            f"'from 2022 through 2025 the standing rule was three weeks' vs "
+            f"{by_year[y]['median_days']}d in {y}"
+        )
+    assert 7 <= by_year[2026]["median_days"] <= 21, (
+        f"'the 2026 listings are coming in at two' (weeks) vs "
+        f"{by_year[2026]['median_days']}d"
     )
 
 
@@ -196,8 +212,9 @@ def check_volume_belongs_to_a_handful(d: dict) -> None:
 
 def check_rejection_share_story(d: dict) -> None:
     # editorial.js (volume curve): "it collapsed from a fifth of everything
-    # shipped in 2017 to under two percent by 2023 — and the last two
-    # complete years bent it back up."
+    # shipped in 2017 to under two percent by 2023 — and 2024 and 2025
+    # bent it back up." Named years: 2026 (0.4% so far) would have failed
+    # "the last two complete years" on 2027-01-01 with no data change.
     rows = complete_years(d["years"])
     by_year = {r["year"]: r for r in rows}
 
@@ -212,65 +229,68 @@ def check_rejection_share_story(d: dict) -> None:
     assert share(2023) < 2.0, (
         f"'under two percent by 2023' vs {share(2023):.2f}%"
     )
-    latest = max(by_year)
-    assert share(latest) > share(2023) and share(latest - 1) > share(2023), (
-        f"'the last two complete years bent it back up' vs "
-        f"{latest - 1}: {share(latest - 1):.2f}%, {latest}: {share(latest):.2f}% "
-        f"against 2023's {share(2023):.2f}%"
+    assert share(2024) > share(2023) and share(2025) > share(2023), (
+        f"'2024 and 2025 bent it back up' vs 2024: {share(2024):.2f}%, "
+        f"2025: {share(2025):.2f}% against 2023's {share(2023):.2f}%"
     )
 
 
 def check_flood_critical_volume(d: dict) -> None:
-    # editorial.js (9.8 flood caption): "nearly four thousand records a
-    # year now ship stamped Critical". Bounded both ways: under 3,000 the
-    # claim inflates, past ~4,400 "nearly four thousand" understates.
-    rows = complete_years(d["years"])
-    latest = max(rows, key=lambda r: r["year"])
-    assert 3000 <= latest["critical"] <= 4400, (
-        f"'nearly four thousand … Critical' vs {latest['critical']} "
-        f"in {latest['year']}"
-    )
+    # editorial.js (9.8 flood caption): "close to four thousand records a
+    # year shipped stamped Critical in 2024 and 2025". Named years, bounded
+    # both ways: under 3,000 the claim inflates, past ~4,400 it understates.
+    by_year = {r["year"]: r for r in d["years"]}
+    for y in (2024, 2025):
+        assert 3000 <= by_year[y]["critical"] <= 4400, (
+            f"'close to four thousand … Critical in 2024 and 2025' vs "
+            f"{by_year[y]['critical']} in {y}"
+        )
 
 
 def check_entrants_top3_recruiting(d: dict) -> None:
     # editorial.js (concentration entrants): "the three biggest recruiting
-    # years on record are the last three complete ones". Will legitimately
-    # fail the January this stops being true — then update the caption.
-    rows = [y for y in d["years"] if y["year"] < int(d["generated_at"][:4])]
+    # years on record are 2023, 2024 and 2025". Named years: the partial
+    # 2026 (46 newcomers vs 2023's 77) would have failed "the last three
+    # complete ones" on 2027-01-01. Judged over complete years only, so a
+    # later year out-recruiting them fails this the January it happens.
+    rows = complete_years(d["years"])
     top3 = sorted(rows, key=lambda y: y["newcomer_count"], reverse=True)[:3]
-    last3 = {y["year"] for y in rows[-3:]}
-    assert {y["year"] for y in top3} == last3, (
-        f"'three biggest recruiting years are the last three complete ones' — "
+    assert {y["year"] for y in top3} == {2023, 2024, 2025}, (
+        f"'three biggest recruiting years on record are 2023, 2024 and 2025' — "
         f"top3 by newcomers: {[(y['year'], y['newcomer_count']) for y in top3]}"
     )
 
 
 def check_concentration_reversal(d: dict) -> None:
-    # editorial.js (concentration hero): "five of its hundreds of names
-    # still ship a majority of the database, and their share is climbing
-    # again" — majority means >50%, climbing means the last three complete
-    # years rise monotonically.
-    rows = [y for y in d["years"] if y["year"] < int(d["generated_at"][:4])]
-    a, b, c = rows[-3:]
+    # editorial.js (concentration hero): "the roster grew seventeen-fold
+    # between 2015 and 2025, yet in 2025 five of its hundreds of names
+    # still shipped a majority of the database, their share climbing for a
+    # third straight year". Named years: the partial 2026 (48.0%) would
+    # have failed "still ship a majority" on 2027-01-01.
+    by_year = {y["year"]: y for y in d["years"]}
+    a, b, c = by_year[2023], by_year[2024], by_year[2025]
     assert c["top5_share"] > 50.0, (
-        f"'still ship a majority' vs top5 {c['top5_share']}% in {c['year']}"
+        f"'in 2025 … still shipped a majority' vs top5 {c['top5_share']}%"
     )
     assert a["top5_share"] < b["top5_share"] < c["top5_share"], (
-        f"'their share is climbing again' vs "
+        f"'climbing for a third straight year' vs "
         f"{[(y['year'], y['top5_share']) for y in (a, b, c)]}"
+    )
+    growth = c["cna_count"] / by_year[2015]["cna_count"]
+    assert 15 <= growth <= 20, (
+        f"'grew seventeen-fold between 2015 and 2025' vs "
+        f"{by_year[2015]['cna_count']} -> {c['cna_count']} = {growth:.1f}x"
     )
 
 
 def check_flood_partial_year_mark(d: dict) -> None:
-    # editorial.js (flood caption): "the half-written current year has
-    # already passed that mark" (the ~four-thousand-Critical mark). This
-    # is TRUE from mid-year and false every January — the test failing in
-    # January is the reminder to reword the caption seasonally.
-    year = int(d["generated_at"][:4])
-    row = next((y for y in d["years"] if y["year"] == year), None)
-    assert row is not None and row["critical"] >= 3600, (
-        f"'current year has already passed that mark' vs "
-        f"{row['critical'] if row else 0} Critical so far in {year}"
+    # editorial.js (flood caption): "2026 passed that mark with months of
+    # the year to spare" (the ~four-thousand-Critical mark). Named year:
+    # 7,048 at 69% of 2026, so the sentence stays true once 2026 closes.
+    row = next((y for y in d["years"] if y["year"] == 2026), None)
+    assert row is not None and row["critical"] >= 4400, (
+        f"'2026 passed that mark' vs {row['critical'] if row else 0} "
+        f"Critical in 2026"
     )
 
 
@@ -280,27 +300,27 @@ def check_flood_partial_year_mark(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "the three biggest recruiting years on record are the last three complete ones",
+        "the three biggest recruiting years on record are 2023, 2024 and 2025",
         "cna_concentration.json",
         check_entrants_top3_recruiting,
     ),
     (
-        "still ship a majority of the database, and their share is climbing again",
+        "still shipped a majority of the database, their share climbing for a third straight year",
         "cna_concentration.json",
         check_concentration_reversal,
     ),
     (
-        "the half-written current year has already passed that mark",
+        "2026 passed that mark with months of the year to spare",
         "nine_eight_flood.json",
         check_flood_partial_year_mark,
     ),
     (
-        "close to four thousand records a year now ship stamped Critical",
+        "close to four thousand records a year shipped stamped Critical in 2024 and 2025",
         "nine_eight_flood.json",
         check_flood_critical_volume,
     ),
     (
-        "Four of every ten CVEs ship as “High” or worse.",
+        "About half of all CVEs ship as “High” or worse.",
         "severity_inflation.json",
         check_severity_headline,
     ),
@@ -320,7 +340,7 @@ CLAIMS = [
         check_deferred_pile,
     ),
     (
-        "Some CNAs hand a 9+ to two of every five CVEs they score",
+        "Some CNAs hand a 9+ to a third or more of the CVEs they score",
         "cna_leaderboard.json",
         check_cna_nine_plus,
     ),
@@ -340,7 +360,7 @@ CLAIMS = [
         check_kev_getting_slower,
     ),
     (
-        "the standing rule since has been three weeks — and the listings of the",
+        "from 2022 through 2025 the standing rule was three weeks — and the 2026 listings are coming in at two",
         "kev_latency.json",
         check_kev_three_week_rule,
     ),
@@ -355,7 +375,7 @@ CLAIMS = [
         check_volume_belongs_to_a_handful,
     ),
     (
-        "collapsed from a fifth of everything shipped in 2017 to under two percent by 2023 — and the last two complete years bent it back up",
+        "collapsed from a fifth of everything shipped in 2017 to under two percent by 2023 — and 2024 and 2025 bent it back up",
         "volume_curve.json",
         check_rejection_share_story,
     ),

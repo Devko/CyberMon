@@ -41,14 +41,19 @@ def load(name: str) -> dict:
 
 
 def check_old_id_share(d: dict) -> None:
-    # editorial.js (calendar.html hero): headline "One in five new CVEs
-    # arrives on an old ID" + caption "one in five of the latest complete
-    # year's records carried an ID minted in an earlier year"
-    h = d["id_age"]["headline"]
-    assert h is not None, "no charted years — nothing carries the claim"
-    assert 15 <= h["pct_prior_year_latest"] <= 27, (
-        f"'one in five' claims ~20%; data says "
-        f"{h['pct_prior_year_latest']}% for {h['latest_year']}"
+    # editorial.js (calendar.html hero): headline "Not every new CVE is
+    # new: one in five arrives on an old ID" + caption "In 2025, one in
+    # five records shipped on an earlier-year ID, and 2026 is running
+    # lower". Named years: the partial 2026 (12.1% and falling) would have
+    # failed "one in five" on 2027-01-01.
+    by_year = {y["year"]: y for y in d["id_age"]["years"]}
+    assert 15 <= by_year[2025]["pct_prior_year"] <= 27, (
+        f"'In 2025, one in five' claims ~20%; data says "
+        f"{by_year[2025]['pct_prior_year']}%"
+    )
+    assert by_year[2026]["pct_prior_year"] < by_year[2025]["pct_prior_year"], (
+        f"'2026 is running lower' vs 2026 {by_year[2026]['pct_prior_year']}% "
+        f"against 2025 {by_year[2025]['pct_prior_year']}%"
     )
 
 
@@ -76,19 +81,19 @@ def check_tuesday_peak(d: dict) -> None:
 
 
 def check_wednesday_baseline_and_clamps(d: dict) -> None:
-    # editorial.js (calendar.html weekly beat caption): "ten years ago the
-    # peak sat a day later, on Wednesday" — true for the 2015 baseline,
-    # but the baseline rolls forward each year (2016's peak is Thursday),
-    # so the sentence needs a guard, not faith.
+    # editorial.js (calendar.html weekly beat caption): "a decade earlier
+    # the peak sat later in the week" — the baseline rolls forward each
+    # January (2015 peaks Wednesday, 2016 Thursday), so the copy names no
+    # day; the guard only needs the baseline's peak to fall after Tuesday.
     comp = d["weekday"]["comparison"]
     assert comp is not None, "no charted years — nothing carries the claim"
     row = next(y for y in d["weekday"]["years"]
                if y["year"] == comp["baseline_year"])
-    wed = row["pct"][2]
-    assert wed == max(row["pct"]), (
-        f"'ten years ago the peak sat … on Wednesday' — "
-        f"{comp['baseline_year']}'s top weekday share is "
-        f"{max(row['pct'])}%, Wednesday only {wed}%; update the caption"
+    peak = row["pct"].index(max(row["pct"]))  # 0 = Monday
+    assert peak > 1, (
+        f"'a decade earlier the peak sat later in the week' — "
+        f"{comp['baseline_year']}'s peak weekday index is {peak} "
+        f"(0 = Monday); it is not later than Tuesday; update the caption"
     )
     # reservation methodology: "the real corpus currently contains none"
     # (clamped negative ID ages)
@@ -99,14 +104,15 @@ def check_wednesday_baseline_and_clamps(d: dict) -> None:
 
 
 def check_patch_tuesday_multiple(d: dict) -> None:
-    # editorial.js (calendar.html patch tuesday): "twelve days carrying
-    # roughly triple their calendar share of the year's records"
+    # editorial.js (calendar.html patch tuesday): "The latest complete year
+    # put two to three times that share on them" — 3.0x in 2025, 2.4x in
+    # the partial 2026, so the copy spans both sides of the rollover.
     h = d["patch_tuesday"]["headline"]
     assert h is not None, "no charted years — nothing carries the claim"
     calendar_pct = d["patch_tuesday"]["calendar_pct"]
     ratio = h["pct_latest"] / calendar_pct
-    assert 2.2 <= ratio <= 3.8, (
-        f"'roughly triple' claims ~3x the {calendar_pct}% calendar share; "
+    assert 1.8 <= ratio <= 3.8, (
+        f"'two to three times' the {calendar_pct}% calendar share; "
         f"data says {h['pct_latest']}% = {ratio:.1f}x for {h['latest_year']}"
     )
     # caption: "the bar has cleared the line in every complete year since
@@ -123,13 +129,13 @@ def check_patch_tuesday_multiple(d: dict) -> None:
 
 CLAIMS = [
     (
-        "ten years ago the peak sat a day later, on Wednesday",
+        "a decade earlier the peak sat later in the week",
         "cve_calendar.json",
         check_wednesday_baseline_and_clamps,
     ),
     (
-        "In the latest complete year, one in five records shipped on an "
-        "earlier-year ID",
+        "In 2025, one in five records shipped on an earlier-year ID, and "
+        "2026 is running lower",
         "cve_calendar.json",
         check_old_id_share,
     ),
@@ -140,7 +146,7 @@ CLAIMS = [
         check_tuesday_peak,
     ),
     (
-        "The latest complete year put roughly triple that share on them",
+        "The latest complete year put two to three times that share on them",
         "cve_calendar.json",
         check_patch_tuesday_multiple,
     ),

@@ -53,13 +53,14 @@ def _headline(d: dict) -> dict:
 
 
 def check_several_official_picks_miss_the_measured_top25(d: dict) -> None:
-    # editorial.js (top25_ranks caption): "several never crack the 25 most
-    # common weaknesses we actually measure"
+    # editorial.js (top25_ranks caption): "a few never crack the 25 most
+    # common weaknesses we actually measure" — 3 today, on what was the
+    # floor, and the five-year window re-slides every January.
     h = _headline(d)
     n = h["outside_measured_top25"]
-    assert 3 <= n <= 20, (
-        f"'several never crack the 25 most common weaknesses we actually "
-        f"measure' needs 3–20 of the official Top 25 to fall outside the "
+    assert 2 <= n <= 20, (
+        f"'a few never crack the 25 most common weaknesses we actually "
+        f"measure' needs 2–20 of the official Top 25 to fall outside the "
         f"measured top 25; it is {n}"
     )
 
@@ -80,7 +81,7 @@ def check_almost_all_official_classes_are_exploited(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "several never crack the 25 most common weaknesses we actually measure",
+        "a few never crack the 25 most common weaknesses we actually measure",
         "cwe_top25.json",
         check_several_official_picks_miss_the_measured_top25,
     ),

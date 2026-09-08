@@ -161,7 +161,12 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     # CWE distribution: window = last 10 complete years; CWE-79 leads by
     # volume, ties break by CWE number; unmapped CWE-1321 keeps its bare id.
     cwe = _load(tmp_path, "cwe_distribution.json")
-    assert cwe["window"] == {"start_year": 2016, "end_year": 2025}
+    # The window is the ten complete years before the run's own generation
+    # year (the offline run stamps the real clock), never a hardcoded pair —
+    # a literal 2016–2025 here failed on 2027-01-01 with no data change.
+    gen_year = int(_load(tmp_path, "meta.json")["generated_at"][:4])
+    assert cwe["window"] == {"start_year": gen_year - 10,
+                             "end_year": gen_year - 1}
     assert [t["id"] for t in cwe["top_cwes"]] == \
         ["CWE-79", "CWE-416", "CWE-787", "CWE-1321"]
     assert cwe["top_cwes"][-1]["name"] == "CWE-1321"

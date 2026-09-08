@@ -74,19 +74,19 @@ def graded_report() -> dict:
 
 
 def check_most_recent_below_1pct(d: dict) -> None:
-    # editorial.js (epss.html hero): "in the catalog's recent years most arrive
-    # having been scored below one percent the day before" — live samples
-    # put the last complete year at ~61% (2025) and the newest additions
-    # at ~65%; the range tolerates drift down to a bare majority and up
-    # to near-unanimity before the sentence dies.
+    # editorial.js (epss.html hero): "in the catalog's recent years roughly
+    # half or more arrive having been scored below one percent the day
+    # before" — 66.7 / 63.2 / 59.2% for 2023-25 and 49.1% in the partial
+    # 2026, a four-year slide; "roughly half or more" holds on both sides
+    # of the January rollover and dies below ~40%.
     h = d["headline"]
     assert h is not None, "headline is null — nothing graded at all"
     pct = h["pct_below_1pct_latest"]
-    assert 45.0 <= pct <= 90.0, (
-        f"'most arrive having been scored below one percent the day "
-        f"before' needs the latest complete year's share below 1% "
+    assert 40.0 <= pct <= 90.0, (
+        f"'roughly half or more arrive having been scored below one percent "
+        f"the day before' needs the latest complete year's share below 1% "
         f"({pct}% for {h['latest_year']}, n={h['graded_latest']}) to stay "
-        f"a rough majority"
+        f"near or above half"
     )
 
 
@@ -107,7 +107,7 @@ def check_bottom_half_share(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "most arrive having been scored below one percent the day before",
+        "roughly half or more arrive having been scored below one percent the day before",
         check_most_recent_below_1pct,
     ),
     (

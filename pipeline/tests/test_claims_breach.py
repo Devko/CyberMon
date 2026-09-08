@@ -13,6 +13,7 @@ this audit only ever judges the committed real data.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -32,7 +33,8 @@ if _META.get("sample") is True:
         allow_module_level=True,
     )
 
-GENERATION_YEAR = int(_META["generated_at"][:4])
+GENERATION_YEAR = int(os.environ.get("CYBERMON_REHEARSE_YEAR")
+                      or _META["generated_at"][:4])  # see test_claims_audit
 
 
 def load(name: str) -> dict:

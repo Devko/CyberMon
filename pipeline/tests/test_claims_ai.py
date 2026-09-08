@@ -187,16 +187,23 @@ def check_every_milestone_is_sourced(d: dict) -> None:
 
 
 def check_newest_milestones_sit_past_the_testable_edge(d: dict) -> None:
-    # editorial.js (ai.html hero): "sit beyond what this page can test".
-    # The claim is structural — the timeline must actually run
-    # past the clock's last complete year, or the sentence describes a gap
-    # that isn't there. (Committed edition 2026-08: the clock ends 2025 and
-    # four 2026 rows sit beyond it.)
+    # editorial.js (ai.html hero): "the 2026 milestones … sit beyond what
+    # this page can test". The claim is structural — the timeline must
+    # run past the clock's last complete year, or the sentence describes a
+    # gap that isn't there. It is pinned to 2026 ON PURPOSE: on 2027-01-01
+    # the clock absorbs 2026 and this guard fails, which is the intended
+    # trigger to re-examine the argument against 2026's completed data
+    # (not a calendar accident — the copy must change then, not the test).
     last_year = d["clock"]["last_year"]
+    assert last_year < 2026, (
+        f"'the 2026 milestones sit beyond what this page can test' — the "
+        f"clock now ends {last_year}, so 2026 is inside the tested span; "
+        f"re-examine the AI Alibi argument against 2026 and rewrite the hero"
+    )
     beyond = [m for m in d["milestones"] if int(m["date"][:4]) > last_year]
     assert beyond, (
-        f"'sit past the edge of anything this page can test' needs at least "
-        f"one milestone after the clock's last complete year ({last_year}); "
+        f"'sit beyond what this page can test' needs at least one milestone "
+        f"after the clock's last complete year ({last_year}); "
         f"the timeline ends at {d['milestones'][-1]['date']}"
     )
 

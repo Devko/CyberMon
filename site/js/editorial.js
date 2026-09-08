@@ -571,7 +571,7 @@ export const editorial = {
       num: "01",
       kicker: "Severity inflation",
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
-      headline: "Four of every ten CVEs ship as “High” or worse.",
+      headline: "About half of all CVEs ship as “High” or worse.",
       caption:
         "Median CVSS base score of newly published CVEs, year by year, split by scoring " +
         "version — v3 runs structurally higher than v2, so the version-split lines keep a " +
@@ -610,9 +610,9 @@ export const editorial = {
       headline: "“Critical” was an exception. Now it's a product line.",
       caption:
         "Published CVEs per year, bucketed by the base score embedded in the CVE record. " +
-        "Watch the red band: close to four thousand records a year now ship stamped Critical " +
-        "— the half-written current year has already passed that mark — and nearly " +
-        "everything arrives pre-labeled, so the label does all the triage. Read " +
+        "Watch the red band: close to four thousand records a year shipped stamped Critical " +
+        "in 2024 and 2025, 2026 passed that mark with months of the year to spare, and " +
+        "nearly everything arrives pre-labeled, so the label does all the triage. Read " +
         "the years left of the vertical marker through it: severity existed there too, but " +
         "it lived downstream in NVD's database, which this chart deliberately does not " +
         "read — the wide gray band is a fact about the record format, not about the era's " +
@@ -766,7 +766,7 @@ export const editorial = {
       caption:
         "CVE Numbering Authorities score the vulnerabilities they publish. These are their own " +
         "assigned numbers — not NVD's — ranked by how often they reach for 9-point-something. " +
-        "Some CNAs hand a 9+ to two of every five CVEs they score; others, at a hundred times " +
+        "Some CNAs hand a 9+ to a third or more of the CVEs they score; others, at a hundred times " +
         "the volume, almost never reach that shelf. Same scale, same spec — the gap is " +
         "scoring policy.",
       colCna: "CNA",
@@ -795,7 +795,7 @@ export const editorial = {
         "of the page: at this volume, triage runs on the severity label alone — which is exactly " +
         "why an inflated label is expensive. The rejection line is the system's error-correction " +
         "budget: it collapsed from a fifth of everything shipped in 2017 to under two percent " +
-        "by 2023 — and the last two complete years bent it back up. The current year is " +
+        "by 2023 — and 2024 and 2025 bent it back up. The current year is " +
         "partial — the apparent dip at the right edge is a year still being written.",
       toggleLinear: "Linear",
       toggleLog: "Log scale",
@@ -950,8 +950,8 @@ export const editorial = {
         "interquartile range per year of listing. Unlike the latency chart, the seeding era " +
         "belongs here — the deadline is set the day the entry lands, back-catalog included, " +
         "so this is a policy timeline, not a backlog artifact. The early catalog handed out " +
-        "months; the standing rule since has been three weeks — and the listings of the " +
-        "half-written current year are so far coming in tighter still.",
+        "months; from 2022 through 2025 the standing rule was three weeks — and the 2026 " +
+        "listings are coming in at two.",
       methodology:
         "Remediation span is the KEV dueDate minus dateAdded, in days, for every catalog " +
         "entry carrying both fields — no CVE match is needed, so this covers the catalog " +
@@ -1002,9 +1002,10 @@ export const editorial = {
         "one record each year, and what share of the year's volume came from the top 5 and " +
         "top 10 of them. The CNA program keeps growing — federation is the point — and for a " +
         "decade output slowly dispersed with it. Since 2023 that trend has reversed: the " +
-        "roster grew seventeen-fold, yet five of its hundreds of names still ship a majority " +
-        "of the database, and their share is climbing again — under a design in which every " +
-        "assigner, vendor or not, grades its own submissions.",
+        "roster grew seventeen-fold between 2015 and 2025, yet in 2025 five of its hundreds " +
+        "of names still shipped a majority of the database, their share climbing for a third " +
+        "straight year — under a design in which every assigner, vendor or not, grades its " +
+        "own submissions.",
       statLabel: "Share of published CVEs from the year's top 5 CNAs",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -1032,7 +1033,7 @@ export const editorial = {
       caption:
         "Bars count CNAs publishing their first-ever CVE record that year; the line is the " +
         "total active roster. Recruitment is real — the three biggest recruiting years on " +
-        "record are the last three complete ones. Hold that against the chart above: the " +
+        "record are 2023, 2024 and 2025. Hold that against the chart above: the " +
         "newcomers add count, not share. The head of the table absorbs the growth.",
       methodology:
         "A newcomer in year Y is a CNA whose earliest record in the entire corpus (published or rejected) " +
@@ -1617,8 +1618,8 @@ export const editorial = {
         "last daily forecast while the listing was still in the future — banded into " +
         "under 1%, 1–10%, and 10% or higher. EPSS predicts exploitation within 30 days, " +
         "and a KEV listing means exploitation was already observed, so on listing eve " +
-        "the model should be at its most alarmed. Instead, in the catalog's recent years most " +
-        "arrive having been scored below one percent the day before. One reading caveat " +
+        "the model should be at its most alarmed. Instead, in the catalog's recent years roughly " +
+        "half or more arrive having been scored below one percent the day before. One reading caveat " +
         "up front: the sharp 2022-to-2023 flip in the bars is a model change, not a " +
         "performance change — the v2-era model scored high across the board, every model " +
         "since scores low, and section 02 splits the eras so they never pool. The " +
@@ -1732,14 +1733,14 @@ export const editorial = {
       num: "01",
       kicker: "Reservation aging",
       source: "cvelistV5 (MITRE)",
-      headline: "One in five new CVEs arrives on an old ID.",
+      headline: "Not every new CVE is new: one in five arrives on an old ID.",
       caption:
         "Every CVE ID wears a year on its face — CVE-2025-12345 — and that year names " +
         "the moment the identifier was reserved, which can sit far ahead of anything " +
         "being published. The bands split each year's newly published records by the " +
         "age of their ID: minted the same year, the year before, or two-plus years " +
-        "back. In the latest complete year, one in five records shipped on an " +
-        "earlier-year ID — the vintage measures the age of the paperwork, not of the " +
+        "back. In 2025, one in five records shipped on an earlier-year ID, and 2026 is " +
+        "running lower — the vintage measures the age of the paperwork, not of the " +
         "bug.",
       statLabel: "Share of newly published CVEs carrying an earlier-year ID",
       statLatest: "{latest_year}",
@@ -1774,8 +1775,8 @@ export const editorial = {
       caption:
         "How each year's records spread across the week: the latest complete year " +
         "beside the year a decade before it. In the latest complete year, Tuesday leads with " +
-        "roughly a quarter of all records, the weekend is close to silent, and ten " +
-        "years ago the peak sat a day later, on Wednesday. The spike is a property " +
+        "roughly a quarter of all records, the weekend is close to silent, and a " +
+        "decade earlier the peak sat later in the week. The spike is a property " +
         "of publication workflows — advisories go out when release processes run, " +
         "and the biggest release processes run on Tuesday.",
       weekdayLabels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -1807,7 +1808,7 @@ export const editorial = {
         "of the industry schedules disclosure around it. Bars show the share of each " +
         "year's published records that land on those twelve days; the dashed line " +
         "marks what twelve days out of 365 would hold if publication ignored the " +
-        "calendar — 3.3 percent. The latest complete year put roughly triple that " +
+        "calendar — 3.3 percent. The latest complete year put two to three times that " +
         "share on them, and the bar has cleared the line in every complete year " +
         "since 2014.",
       note:
@@ -2175,7 +2176,7 @@ export const editorial = {
         "the most dangerous. Set each one's official rank beside the rank it " +
         "actually earns from raw prevalence in the CVE corpus: how often that " +
         "class is the first-listed CWE on a published record. The two orders " +
-        "pull apart, and several never crack the 25 most common weaknesses we " +
+        "pull apart, and a few never crack the 25 most common weaknesses we " +
         "actually measure. One caveat kept in plain view: MITRE builds the list " +
         "partly from the same CVE and exploited-vulnerability data, so this is a " +
         "disagreement about ranking, not two independent worlds.",

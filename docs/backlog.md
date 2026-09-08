@@ -52,7 +52,7 @@ Rejected alternatives: widening the retry ladder (does not reach a multi-hour
 outage) and fail-soft with a staleness marker on the site (needs a contract
 field plus render support, and concedes the never-deploy-stale line).
 
-## Maintenance — claims guards facing the 2027-01-01 rollover
+## Maintenance — claims guards facing the 2027-01-01 rollover — RESOLVED
 
 Filed 2026-08-29 while fixing the rejection-share failure. `complete_years()` /
 `GENERATION_YEAR` in `pipeline/tests/test_claims_audit.py` make many guards read
@@ -77,8 +77,42 @@ caption seasonally"). The other five do not — that exposure is unplanned.
 Also drifting on data rather than the calendar: `check_epss_disconnect`
 (~77 days of headroom) and `check_flood_critical_volume` (~92 days).
 
-**Do before year end:** decide per guard whether to reword the caption, widen the
-band, or pin the claim to a named year. Several fire on the same night otherwise.
+**Resolved 2026-09-08.** The September review found twelve such guards, not
+seven: five more read the latest complete year through the same seam
+(`check_rejection_share_story`, `check_wednesday_baseline_and_clamps`,
+`check_old_id_share`, `check_newest_milestones_sit_past_the_testable_edge`,
+and the offline e2e test's hardcoded CWE window 2016–2025, which also read the
+machine clock). Every one now uses the backlog's third option — the claim is
+pinned to a named year, or reworded so it holds on both sides of the rollover
+— with the guard re-pointed to the same years and the anchors re-quoted:
+
+| guard | copy now says | guard now judges |
+|---|---|---|
+| severity_headline | "About half of all CVEs ship as High or worse" | 40–60% |
+| kev_three_week_rule | "from 2022 through 2025 … three weeks — and the 2026 listings are coming in at two" | 2022–25 in 14–28 d; 2026 in 7–21 d |
+| rejection_share_story | "2024 and 2025 bent it back up" | those two rows vs 2023 |
+| flood_critical_volume / partial_year_mark | "in 2024 and 2025 … 2026 passed that mark with months to spare" | 2024–25 in 3,000–4,400; 2026 ≥ 4,400 |
+| concentration_reversal | "seventeen-fold between 2015 and 2025 … in 2025 … a majority … a third straight year" | 2025 > 50%; 2023 < 2024 < 2025; 2015→2025 growth 15–20× |
+| entrants_top3_recruiting | "2023, 2024 and 2025" | top-3 over complete years == those |
+| cna_nine_plus | "a third or more" | max ≥ 28% (window slides ~31% in January) |
+| old_id_share | "In 2025, one in five … 2026 is running lower" | 2025 in 15–27; 2026 < 2025 |
+| wednesday_baseline | "a decade earlier the peak sat later in the week" | baseline peak after Tuesday |
+| patch_tuesday_multiple | "two to three times" | 1.8–3.8× |
+| most_recent_below_1pct | "roughly half or more" | 40–90% |
+| top25 "several" | "a few never crack" | 2–20 |
+| e2e CWE window | — | relative to the run's own generated_at |
+
+Deliberately left to fail on 2027-01-01: `check_newest_milestones_sit_past_the_testable_edge`
+is pinned to "the 2026 milestones" because the AI Alibi's argument must be
+re-examined against 2026's completed data when the clock absorbs it — that
+failure is the reminder, and the test says so. `check_kev_getting_slower`,
+`check_more_assignors_than_ever` and `check_volume_belongs_to_a_handful`
+pass on the 2026 values as they stand.
+
+Rehearsal: `CYBERMON_REHEARSE_YEAR=2027 python -m pytest pipeline/tests/test_claims_audit.py`
+judges every raw-series guard as if the edition were generated next year.
+Headline blocks are computed by the pipeline and cannot be rehearsed from
+committed data; those guards are the pinned ones above.
 
 ## Shipped outside the backlog
 
