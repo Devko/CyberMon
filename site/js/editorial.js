@@ -296,8 +296,8 @@ export const editorial = {
         blurb:
           "Every night CyberMon diffs each CVE's CNA-assigned score against the " +
           "previous night's corpus and logs what moved: scores raised, scores " +
-          "lowered, and scores added after the fact — occasionally years after " +
-          "the record published, more often in bulk batches days later. No " +
+          "lowered, and scores added after the fact — sometimes long after the " +
+          "record published, often in bulk batches. No " +
           "upstream keeps this history; the record started July 2026 and " +
           "deepens every night.",
         live: true,
@@ -630,11 +630,11 @@ export const editorial = {
         "done in the record at all — CNAs filed bare entries and NVD assigned CVSS " +
         "downstream, in its own database (which this chart deliberately does not ingest). " +
         "The unscored band's collapse since is the scoring duty migrating to the source: " +
-        "CNA self-scoring rose from under 2% of records (2017) to roughly four in five " +
-        "(as of mid-2026), and when NVD's enrichment stalled in 2024, CISA's Vulnrichment " +
-        "program (the ADP container) began backstopping the rest — as of mid-2026, about " +
-        "a quarter of 2024's records carry only a CISA score, a share CNA backfill keeps " +
-        "eroding. " +
+        "in-record scoring was a rounding error in 2017 and covers well over nine in ten " +
+        "records today (the advisory-quality chart below tracks the missing-score share), " +
+        "and when NVD's enrichment stalled in 2024, CISA's Vulnrichment program (the ADP " +
+        "container) began backstopping the rest — the Vulnrichment module measures what " +
+        "CISA adds and how much of it CNA backfill later overtakes. " +
         "The share view normalizes each year to 100%. The current year (marked *) is " +
         "partial and refills nightly. In the absolute view, a dashed marker at the " +
         "current-year edge paces the partial year's total — all published records, " +
@@ -912,8 +912,9 @@ export const editorial = {
         "record in the cvelistV5 corpus, latency is the KEV dateAdded minus the CVE record's " +
         "datePublished, in days. The trend cohort starts in 2023: the catalog launched in " +
         "November 2021 by inheriting a backlog of years-old CVEs and kept bulk-importing its " +
-        "back-catalog through 2022 (the data shows the regime change — the median 'latency' " +
-        "of 2022 additions ran over a thousand days; of 2023 additions, twelve), so a seeding-era entry's " +
+        "back-catalog through 2022 (the data shows the regime change — the seeding era's " +
+        "pooled median 'latency', in the callout, runs near two and a half years; of 2023 " +
+        "additions, twelve days), so a seeding-era entry's " +
         "nominal latency measures the age of the backlog, not the speed of triage — it is " +
         "reported in the callout, never plotted in the trend. Negative " +
         "latencies are kept as negative, not floored at zero: a KEV listing that predates its " +
@@ -1125,8 +1126,8 @@ export const editorial = {
         "is the median lag of breaches cataloged each year; the shaded band spans the " +
         "25th–75th percentile. The trend starts in 2014, and the cutoff comes from the " +
         "data: HIBP launched on 2013-12-04 by importing breaches that were already " +
-        "public — six of its seven opening-import entries predate the service itself, with " +
-        "a median nominal lag of 511 days — while in 2014, the first full calendar year " +
+        "public — its seven opening-import entries predate the service itself by a median " +
+        "nominal lag of well over a year — while in 2014, the first full calendar year " +
         "the catalog ran live, the median collapses to 5 days. Old breaches keep " +
         "entering the catalog in every later year, and those stay in the trend on " +
         "purpose: a breach surfacing years late is exactly the phenomenon this chart " +
@@ -2346,8 +2347,9 @@ export const editorial = {
         "ranked by how many records it actually enriches: where it added an " +
         "SSVC decision, a CVSS score, or a CWE, not just a reference tag. The " +
         "board is short and lopsided: CISA-ADP does the substantive work, " +
-        "while the CVE Program's own root container rides on most records but " +
-        "enriches none, so it doesn't appear. Ask “is anyone but CISA an " +
+        "while the CVE Program's own root container adds only reference tags — " +
+        "never an SSVC decision, a score or a CWE, which is the board's bar — so " +
+        "it doesn't appear. Ask “is anyone but CISA an " +
         "ADP?” and the record answers: effectively, no.",
       statTemplate: "{shown} ADP publishers · CISA-ADP on {pct} of the published corpus",
       colProvider: "Publisher",

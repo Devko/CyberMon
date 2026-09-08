@@ -61,6 +61,17 @@ def check_typical_gap_in_months(d: dict) -> None:
     )
 
 
+def check_import_era_callout(d: dict) -> None:
+    # editorial.js (breach lag methodology): "its seven opening-import
+    # entries predate the service itself by a median nominal lag of well
+    # over a year" — import_era is a fixed historical set (n=7, 511 d).
+    era = d["import_era"]
+    assert era["n"] == 7, f"'its seven opening-import entries' vs n={era['n']}"
+    assert 365 <= era["median_days"] <= 1000, (
+        f"'a median nominal lag of well over a year' vs {era['median_days']} d"
+    )
+
+
 def check_third_take_over_a_year(d: dict) -> None:
     # editorial.js (breaches.html hero): "roughly a third of entries take
     # more than a year to surface". (Live fetch 2026-07: 35.5%.)
@@ -76,6 +87,11 @@ CLAIMS = [
         "the typical gap is measured in months",
         "breach_ledger.json",
         check_typical_gap_in_months,
+    ),
+    (
+        "its seven opening-import entries predate the service itself by a median nominal lag of well over a year",
+        "breach_ledger.json",
+        check_import_era_callout,
     ),
     (
         "roughly a third of entries take more than a year to surface",

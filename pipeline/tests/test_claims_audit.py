@@ -122,6 +122,38 @@ def check_severity_gradient(d: dict) -> None:
     )
 
 
+def check_in_record_scoring_rise(d: dict) -> None:
+    # editorial.js (flood methodology): "in-record scoring was a rounding
+    # error in 2017 and covers well over nine in ten records today" — read
+    # from advisory_quality.json's missing-score share (2017: 97.1% missing;
+    # latest complete year: ~6% missing on the 2026-09-08 edition).
+    by_year = {y["year"]: y for y in d["years"]}
+    assert by_year[2017]["pct_missing_cvss"] >= 90, (
+        f"'a rounding error in 2017' vs {100 - by_year[2017]['pct_missing_cvss']:.1f}% "
+        f"of 2017 records scored in-record"
+    )
+    latest = max(complete_years(d["years"]), key=lambda r: r["year"])
+    assert latest["pct_missing_cvss"] <= 10, (
+        f"'well over nine in ten records today' vs {latest['pct_missing_cvss']}% "
+        f"missing a score in {latest['year']}"
+    )
+
+
+def check_seeding_era_latency(d: dict) -> None:
+    # editorial.js (KEV latency methodology): "the seeding era's pooled
+    # median 'latency', in the callout, runs near two and a half years; of
+    # 2023 additions, twelve days" — 887.5 d pooled, 12.0 d for 2023.
+    pooled = d["launch_backfill"]["median_days"]
+    assert 700 <= pooled <= 1100, (
+        f"'near two and a half years' vs a pooled seeding-era median of "
+        f"{pooled} days"
+    )
+    row = next(r for r in d["latency_by_year"] if r["year"] == 2023)
+    assert 8 <= row["median_days"] <= 16, (
+        f"'of 2023 additions, twelve days' vs {row['median_days']} days"
+    )
+
+
 def check_kev_below_high(d: dict) -> None:
     # editorial.js (score vs. reality): "{pct} of actively exploited
     # vulnerabilities are rated below High" — copy treats this as a
@@ -354,6 +386,16 @@ CLAIMS = [
         "rises about twentyfold from Low to Critical",
         "score_vs_reality.json",
         check_severity_gradient,
+    ),
+    (
+        "in-record scoring was a rounding error in 2017 and covers well over nine in ten records today",
+        "advisory_quality.json",
+        check_in_record_scoring_rise,
+    ),
+    (
+        "pooled median 'latency', in the callout, runs near two and a half years",
+        "kev_latency.json",
+        check_seeding_era_latency,
     ),
     (
         "{pct} of actively exploited vulnerabilities are rated below High",
