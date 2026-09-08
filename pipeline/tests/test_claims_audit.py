@@ -101,6 +101,27 @@ def check_epss_disconnect(d: dict) -> None:
     )
 
 
+def check_severity_gradient(d: dict) -> None:
+    # editorial.js (score vs. reality): "the share with a better-than-10%
+    # chance of exploitation rises about twentyfold from Low to Critical"
+    # (0.39% -> 8.21% on the 2026-09-08 edition = 21x). The headline used
+    # to say the two "barely correlate"; the grid never supported that.
+    tot: dict[str, int] = {}
+    hi: dict[str, int] = {}
+    for cell in d["grid"]:
+        tot[cell["cvss_bucket"]] = tot.get(cell["cvss_bucket"], 0) + cell["n"]
+        if cell["epss_bucket"] == ">10%":
+            hi[cell["cvss_bucket"]] = hi.get(cell["cvss_bucket"], 0) + cell["n"]
+    low = 100.0 * hi.get("0.1-3.9", 0) / tot["0.1-3.9"]
+    crit = 100.0 * hi.get("9.0-10.0", 0) / tot["9.0-10.0"]
+    assert low > 0, "no Low-rated CVE above 10% EPSS — the ratio is undefined"
+    ratio = crit / low
+    assert 10 <= ratio <= 40, (
+        f"'rises about twentyfold from Low to Critical' vs Low {low:.2f}% -> "
+        f"Critical {crit:.2f}% = {ratio:.1f}x"
+    )
+
+
 def check_kev_below_high(d: dict) -> None:
     # editorial.js (score vs. reality): "{pct} of actively exploited
     # vulnerabilities are rated below High" — copy treats this as a
@@ -328,6 +349,11 @@ CLAIMS = [
         "six in ten Critical-rated CVEs carry less than a 1% probability of exploitation",
         "score_vs_reality.json",
         check_epss_disconnect,
+    ),
+    (
+        "rises about twentyfold from Low to Critical",
+        "score_vs_reality.json",
+        check_severity_gradient,
     ),
     (
         "{pct} of actively exploited vulnerabilities are rated below High",

@@ -651,13 +651,14 @@ export const editorial = {
       num: "03",
       kicker: "Score vs. reality",
       source: "cvelistV5 (MITRE) · EPSS (FIRST.org) · CISA KEV",
-      headline: "Severity is not risk. The two barely correlate.",
+      headline: "Severity is not risk. Six in ten “Critical” CVEs are unlikely to be exploited.",
       caption:
         "Every scored CVE with a current EPSS estimate, placed on a grid: CVSS severity on one " +
-        "axis, real-world exploitation probability on the other. If scores tracked risk, the mass " +
-        "would sit on the diagonal. It doesn't — six in ten Critical-rated CVEs carry less than " +
-        "a 1% probability of exploitation, while the catalog of vulnerabilities actually being " +
-        "exploited (CISA KEV) includes entries CVSS rates below High.",
+        "axis, real-world exploitation probability on the other. The two do move together — " +
+        "the share with a better-than-10% chance of exploitation rises about twentyfold from " +
+        "Low to Critical — but the label is a poor filter: six in ten Critical-rated CVEs carry " +
+        "less than a 1% probability of exploitation, while the catalog of vulnerabilities " +
+        "actually being exploited (CISA KEV) includes entries CVSS rates below High.",
       statCriticalTemplate: "{pct} of Critical-rated CVEs have <1% probability of exploitation",
       statCriticalNote: "per EPSS, across {n} Critical CVEs with a current score",
       statKevTemplate: "{pct} of actively exploited vulnerabilities are rated below High",
@@ -668,9 +669,13 @@ export const editorial = {
         "that (CVSS bucket × EPSS probability bucket). Cell color uses a log-like scale so " +
         "sparse cells stay visible. The first stat is the share of CVEs rated ≥ 9.0 whose EPSS " +
         "probability is below 1%. The KEV stat is the share of CISA Known Exploited " +
-        "Vulnerabilities catalog entries whose CVSS base score is below 7.0. EPSS estimates the " +
-        "probability of exploitation in the next 30 days; it is a model, not ground truth — but " +
-        "it is the best public one.",
+        "Vulnerabilities catalog entries whose CVSS base score is below 7.0. The score is the " +
+        "newest CVSS version anywhere in the record, CNA container before CISA-ADP — v2, v3 and " +
+        "v4 share one axis here, although v3 runs structurally higher than v2 (chart 1 splits " +
+        "them) — and for KEV entries older than the CNA-scoring era that score is usually " +
+        "CISA's own ADP score, so the KEV stat grades CISA's list largely on CISA's numbers. " +
+        "EPSS estimates the probability of exploitation in the next 30 days; it is a model, " +
+        "not ground truth — but it is the best public one.",
     },
 
     // ------------------------------------------------------------------- 4
@@ -801,7 +806,10 @@ export const editorial = {
       toggleLog: "Log scale",
       methodology:
         "Counts come from the cvelistV5 corpus: “published” is CVE records by original " +
-        "publication year; “rejected” is records with state REJECTED, counted by the same year. " +
+        "publication year; “rejected” is records with state REJECTED, counted by their original " +
+        "publication year. REJECTED records that were never published — withdrawn reservations, " +
+        "which carry no datePublished — are excluded rather than counted under the vintage of " +
+        "their ID (most rejections of recent-year IDs are of that kind). " +
         "The log toggle only rescales the axis — same data. The current year is labeled " +
         "partial and refills nightly; it is not comparable to a finished year. The dashed " +
         "segment and hollow marker pace that partial year to twelve months: the count so far " +
@@ -978,14 +986,18 @@ export const editorial = {
         "seeding years belong on this chart, same as the remediation deadlines: the flag " +
         "rides on the entry itself, so a back-catalog import answers the question as well " +
         "as a fresh listing does. Inside a catalog that is already a priority list, this " +
-        "flag is the sharpest tiebreaker it offers.",
+        "flag is the sharpest tiebreaker it offers — read the newest bars as floors, though: " +
+        "CISA applies the flag late, often more than a year after listing (the KEV Changelog " +
+        "module measures that lag), so recent years rise as their flags arrive.",
       methodology:
         "Every entry in CISA's Known Exploited Vulnerabilities catalog carries " +
         "knownRansomwareCampaignUse (“Known” or “Unknown”). Per calendar year of dateAdded: " +
         "entries added, entries flagged “Known,” and the share. Entries missing the field " +
         "count as “Unknown.” The catalog is read as a current snapshot — each entry shows " +
         "CISA's present assessment, whichever year it was listed — which is why the seeding " +
-        "era charts here alongside the rest while the latency trend quarantines it. No " +
+        "era charts here alongside the rest while the latency trend quarantines it. The " +
+        "same snapshot rule right-censors recent years: a listing flagged “Known” next year " +
+        "counts as “Unknown” tonight, so the latest bars are lower bounds, not a decline. No " +
         "CVE-record join is involved; the chart needs nothing beyond the catalog itself. A " +
         "year plots only with at least 10 entries. The current year (marked *) is partial " +
         "and refills nightly.",
@@ -1076,9 +1088,10 @@ export const editorial = {
         "{window_years} years by state: PUBLISHED versus REJECTED. Rejection rate is " +
         "rejected over (published + rejected). CNAs with fewer than {min_total} total " +
         "records in the window are excluded — a two-for-two rejection record is an " +
-        "anecdote, not a rate. Reserved-but-never-published IDs don't appear in the public " +
-        "corpus at all and can't be counted here: this board measures what was shipped and " +
-        "then withdrawn, not what was quietly never used. Default sort: rejection rate, " +
+        "anecdote, not a rate. Reserved IDs that were rejected without ever being published " +
+        "carry no publication date and are excluded from every rejection count on this site: " +
+        "this board measures what was shipped and then withdrawn, not what was quietly never " +
+        "used. Default sort: rejection rate, " +
         "descending. Click any column header to re-sort.",
     },
     // ------------------------------------------------ breaches.html · 1 · hero
