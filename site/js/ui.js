@@ -24,3 +24,16 @@ export function mkToggle(labels, onChange, activeIndex = 0) {
   });
   return wrap;
 }
+
+// Sortable column header. The <th> keeps its native columnheader role (the
+// only role aria-sort is valid on); the click/keyboard target is a real
+// <button> inside it, so Enter/Space work without a keydown handler.
+// Returns the button.
+export function sortHeader(th, activate) {
+  const b = el("button", "sort-btn", th.textContent);
+  b.type = "button";
+  th.textContent = "";
+  th.append(b);
+  b.addEventListener("click", activate);
+  return b;
+}

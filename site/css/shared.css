@@ -16,7 +16,7 @@
   --panel-up: #1b1d21;
   --ink: #e9e4d8;
   --muted: #96907f;
-  --faint: #5d594e;
+  --faint: #807b6b; /* 4.5:1 on --bg: carries real text, not just rules */
   --rule: #2a2c2e;
   --rule-strong: #3d3f42;
   --accent: #ff4a3f;
@@ -426,6 +426,21 @@ code {
 .error-card strong { color: var(--accent); display: block; margin-bottom: 6px; }
 .error-card p { margin: 0; color: var(--ink); }
 
+/* Honest empty state (a chart with nothing to draw yet) — shared by every
+   module, so it lives here, not in market.css. */
+.nodata-card {
+  border: 1px dashed var(--rule-strong);
+  background: var(--panel);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 26px 24px;
+}
+
+/* stat card with nothing to report yet: drop the accent flag */
+.stat-card.is-empty { border-left-color: var(--rule-strong); }
+
 /* ------------------------------------------------------------- CNA table -- */
 
 .table-context {
@@ -460,6 +475,23 @@ code {
 }
 
 .cna-table th.num { text-align: right; }
+
+/* Sortable header: the <th> stays a columnheader (aria-sort lives there);
+   the real <button> inside it is the click/keyboard target and inherits
+   the header's type. */
+.cna-table th .sort-btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.cna-table th .sort-btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
 
 .cna-table th:hover { color: var(--ink); }
 
@@ -520,52 +552,6 @@ code {
   font-size: 11.5px;
   color: var(--ink);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-/* ------------------------------------------------- stub-module teaser ----- */
-
-.teaser { padding: 22px 24px 16px; }
-
-.teaser-status {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  border: 1px dashed var(--accent);
-  background: var(--accent-dim);
-  display: inline-block;
-  padding: 7px 14px;
-  margin: 0 0 20px;
-}
-
-.teaser-list {
-  list-style: none;
-  margin: 8px 0 4px;
-  padding: 0;
-}
-
-.teaser-item {
-  border-bottom: 1px solid var(--rule);
-  padding: 12px 0;
-}
-
-.teaser-item:last-child { border-bottom: none; }
-
-.teaser-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.teaser-name { font-family: var(--serif); font-size: 1.05rem; }
-
-.teaser-note {
-  display: block;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--faint);
-  margin-top: 3px;
 }
 
 .tag {

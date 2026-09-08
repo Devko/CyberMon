@@ -5,10 +5,8 @@
 // renderer; each renderer runs inside its own try/catch so one bad chart
 // yields one inline error card, not a dead page. Shared chrome: common.js.
 // =============================================================================
-import { editorial } from "./editorial.js";
-import { el, link, clear } from "./dom.js";
 import { hookResize } from "./theme.js";
-import { initChrome, fetchJSON, errorCard } from "./common.js";
+import { initChrome, fetchJSON, buildSection, showError } from "./common.js";
 import { render as renderSize } from "./charts/roster_size.js";
 import { render as renderFlux } from "./charts/roster_flux.js";
 import { render as renderMix } from "./charts/roster_mix.js";
@@ -22,60 +20,6 @@ const SECTIONS = [
   { id: "roster_flux", render: renderFlux },
   { id: "roster_mix", render: renderMix },
 ];
-
-// ---- section skeleton (mirrors rescores.js) ----------------------------------
-
-function buildSection(cfg) {
-  const ed = editorial.sections[cfg.id];
-  if (!ed) throw new Error(`no editorial.sections entry for section "${cfg.id}"`);
-  const section = el("section", "chart-section" + (cfg.hero ? " hero" : ""));
-  section.id = `s-${cfg.id}`;
-
-  const head = el("header", "section-head");
-  head.append(
-    el("p", "section-kicker", `${ed.num} — ${ed.kicker}`),
-    el("h2", "section-headline", ed.headline),
-    el("p", "section-caption", ed.caption)
-  );
-
-  const stat = el("div", "section-stat");
-  const panel = el("div", "panel");
-  const controls = el("div", "panel-controls");
-  const chart = el("div", "chart" + (cfg.hero ? " chart-tall" : ""));
-  const extra = el("div", "panel-extra");
-  panel.append(controls, chart, extra);
-
-  if (ed.note) panel.append(el("p", "panel-note", ed.note));
-
-  if (ed.source) {
-    const src = el("p", "chart-source");
-    src.append(editorial.chartSourcePrefix + ed.source + " · ");
-    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
-    panel.append(src);
-  }
-
-  const details = el("details", "method");
-  const summary = el("summary", null, editorial.methodologyLabel);
-  const methodBody = el("div", "method-body");
-  const methodText = el("p", null, ed.methodology);
-  const methodSrc = el("p", "method-src", editorial.methodologySourcePrefix);
-  methodSrc.append(link(editorial.metricsUrl, editorial.methodologySourceLinkText, "mono"));
-  methodBody.append(methodText, methodSrc);
-  details.append(summary, methodBody);
-
-  section.append(head, stat, panel, details);
-
-  return { section, slots: { stat, panel, controls, chart, extra } };
-}
-
-function showError(slots, file) {
-  clear(slots.stat);
-  clear(slots.controls);
-  clear(slots.extra);
-  slots.panel.querySelector(".panel-note")?.remove();
-  clear(slots.chart).classList.remove("chart", "chart-tall");
-  slots.chart.append(errorCard(file));
-}
 
 // ---- boot ---------------------------------------------------------------------
 
@@ -101,13 +45,13 @@ async function boot() {
             cfg.render(slots, data);
           } catch (err) {
             console.warn(`[CyberMon] section "${cfg.id}" failed:`, err);
-            showError(slots, DATA_FILE);
+            showError(slots, DATA_FILE, err);
           }
         }
       })
       .catch((err) => {
         console.warn(`[CyberMon] ${DATA_FILE} failed:`, err);
-        for (const { slots } of built) showError(slots, DATA_FILE);
+        for (const { slots } of built) showError(slots, DATA_FILE, err);
       })
   );
 

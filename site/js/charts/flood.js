@@ -97,7 +97,7 @@ export function render(slots, data) {
     chart.setOption(
       {
         grid: { ...baseGrid, left: 54, top: 44 },
-        legend: { ...baseLegend, data: BUCKETS.map((b) => b.label).reverse(), icon: "rect", itemHeight: 8 },
+        legend: { ...baseLegend, type: "scroll", data: BUCKETS.map((b) => b.label).reverse(), icon: "rect", itemHeight: 8 },
         tooltip: {
           ...baseTooltip,
           trigger: "axis",

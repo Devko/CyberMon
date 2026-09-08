@@ -432,6 +432,11 @@ export const editorial = {
     title: "This section's data failed to load.",
     // {file} is rendered as an inline <code> element by the error card builder.
     body: "Couldn't fetch {file}. The rest of the page still works — reload to retry.",
+    // Chart-library variant: the JSON loaded, ECharts (CDN) did not.
+    libraryTitle: "The chart library did not load.",
+    libraryBody:
+      "Charts need ECharts from cdn.jsdelivr.net, which this browser could not " +
+      "fetch. The numbers are unaffected — read them in {file}.",
   },
 
   methodologyLabel: "How this is computed",

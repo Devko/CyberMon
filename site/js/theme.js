@@ -1,6 +1,6 @@
 // =============================================================================
 // theme.js — shared palette, ECharts base styling, formatting helpers.
-// Colors mirror the CSS custom properties in css/style.css.
+// Colors mirror the CSS custom properties in css/shared.css.
 // =============================================================================
 
 export const C = {
@@ -9,7 +9,7 @@ export const C = {
   panelUp: "#1b1d21",
   ink: "#e9e4d8",
   muted: "#96907f",
-  faint: "#5d594e",
+  faint: "#807b6b", // 4.5:1 on --bg; carries real text (axis names, notes)
   rule: "#2a2c2e",
   accent: "#ff4a3f",
   accentSoft: "rgba(255, 74, 63, 0.14)",
@@ -19,8 +19,10 @@ export const C = {
     critical: "#ff4a3f",
     high: "#c08a45",
     medium: "#77715f",
-    low: "#4b473d",
-    unscored: "#312f2a",
+    // Bottom stops lifted to ~3:1 on the panel so 14×2 px legend swatches
+    // stay visible; order (luminance) preserved.
+    low: "#6f6958",
+    unscored: "#696454",
   },
 
   versions: { v2: "#847e6d", v3: "#ded7c2", v4: "#a89f8a" },
@@ -33,16 +35,19 @@ export const C = {
     "8-30d": "#ded7c2",
     "31-90d": "#a89f8a",
     "91-365d": "#77715f",
-    "1-3y": "#4b473d",
-    "3y+": "#312f2a",
+    "1-3y": "#6f6958",
+    "3y+": "#696454",
   },
 };
 
 export const MONO =
   'ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace';
 
-export const fmtInt = (n) => Number(n).toLocaleString("en-US");
-export const fmtPct = (v) => `${Number(v).toFixed(1)}%`;
+// A missing number must never print as "0": null / undefined / "" / NaN
+// render as an em dash. (Number(null) is 0, hence the explicit check.)
+const num = (v) => (v === null || v === undefined || v === "" ? NaN : Number(v));
+export const fmtInt = (n) => (Number.isFinite(num(n)) ? num(n).toLocaleString("en-US") : "\u2014");
+export const fmtPct = (v) => (Number.isFinite(num(v)) ? `${num(v).toFixed(1)}%` : "\u2014");
 
 // ECharts tooltips render via innerHTML — every data-derived string
 // interpolated into a tooltip formatter must pass through this first.
@@ -113,9 +118,43 @@ export const baseGrid = { left: 44, right: 18, top: 36, bottom: 28 };
 
 const instances = [];
 
+// Reader's motion preference: entrance animations off under reduce-motion.
+const REDUCED =
+  typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Folded under every setOption (a chart's own keys win): ECharts' generated
+// screen-reader description of the series, no decal patterns (the newsprint
+// palette stays as designed), and the motion preference.
+export const baseOption = {
+  aria: { enabled: true, decal: { show: false } },
+  animation: !REDUCED,
+};
+
 export function mkChart(el) {
   const chart = window.echarts.init(el, null, { renderer: "canvas" });
   instances.push(chart);
+  // The container is the accessible image. Its name is set by buildSection
+  // (the section headline) or, for a sub-chart, taken from the nearest
+  // headline. A sparkline inside an already-labelled <button> is decoration:
+  // hide it rather than nest an image name into the button's name.
+  if (el.closest('button, [role="button"]')) {
+    el.setAttribute("aria-hidden", "true");
+  } else {
+    el.setAttribute("role", "img");
+    if (!el.hasAttribute("aria-label")) {
+      const h = el.closest(".chart-section")?.querySelector(".section-headline")?.textContent;
+      if (h) el.setAttribute("aria-label", h);
+    }
+  }
+  const setOption = chart.setOption.bind(chart);
+  chart.setOption = (option, ...rest) => {
+    const out = setOption({ ...baseOption, ...option }, ...rest);
+    // ECharts writes its description onto its inner root <div>, which
+    // role="img" on the container hides — surface it as the description.
+    const desc = chart.getZr()?.dom?.getAttribute("aria-label");
+    if (desc && el.getAttribute("role") === "img") el.setAttribute("aria-description", desc);
+    return out;
+  };
   return chart;
 }
 

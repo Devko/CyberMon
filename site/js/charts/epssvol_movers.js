@@ -8,6 +8,7 @@
 // actually moves.
 import { editorial, tpl } from "../editorial.js";
 import { el, clear } from "../dom.js";
+import { sortHeader } from "../ui.js";
 import { fmtInt } from "../theme.js";
 
 const COLS = [
@@ -57,15 +58,12 @@ export function render(slots, data) {
 
   const ths = COLS.map((col) => {
     const th = el("th", col.numeric ? "num" : "", ed[col.labelKey]);
-    th.tabIndex = 0;
-    th.setAttribute("role", "button");
     const activate = () => {
       if (state.key === col.key) state.dir = -state.dir;
       else { state.key = col.key; state.dir = col.numeric ? -1 : 1; }
       draw();
     };
-    th.addEventListener("click", activate);
-    th.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); } });
+    sortHeader(th, activate);
     headRow.append(th);
     return { th, col };
   });

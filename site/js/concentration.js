@@ -9,9 +9,8 @@
 // cve.js cna-methodology pattern). Shared chrome comes from common.js.
 // =============================================================================
 import { editorial, tpl } from "./editorial.js";
-import { el, link, clear } from "./dom.js";
 import { hookResize, fmtInt } from "./theme.js";
-import { initChrome, fetchJSON, errorCard } from "./common.js";
+import { initChrome, fetchJSON, buildSection, showError } from "./common.js";
 import { render as renderConcentration } from "./charts/concentration_trend.js";
 import { render as renderEntrants } from "./charts/concentration_entrants.js";
 import { render as renderRejection } from "./charts/concentration_rejection.js";
@@ -25,50 +24,6 @@ const SECTIONS = [
   { id: "entrants", render: renderEntrants },
   { id: "rejection", render: renderRejection },
 ];
-
-// ---- section skeleton (mirrors market.js) -----------------------------------
-
-function buildSection(cfg) {
-  const ed = editorial.sections[cfg.id];
-  if (!ed) throw new Error(`no editorial.sections entry for section "${cfg.id}"`);
-  const section = el("section", "chart-section" + (cfg.hero ? " hero" : ""));
-  section.id = `s-${cfg.id}`;
-
-  const head = el("header", "section-head");
-  const caption = el("p", "section-caption", ed.caption);
-  head.append(
-    el("p", "section-kicker", `${ed.num} — ${ed.kicker}`),
-    el("h2", "section-headline", ed.headline),
-    caption
-  );
-
-  const stat = el("div", "section-stat");
-  const panel = el("div", "panel");
-  const controls = el("div", "panel-controls");
-  const chart = el("div", "chart" + (cfg.hero ? " chart-tall" : ""));
-  const extra = el("div", "panel-extra");
-  panel.append(controls, chart, extra);
-
-  if (ed.source) {
-    const src = el("p", "chart-source");
-    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
-    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
-    panel.append(src);
-  }
-
-  const details = el("details", "method");
-  const summary = el("summary", null, editorial.methodologyLabel);
-  const methodBody = el("div", "method-body");
-  const methodText = el("p", null, ed.methodology);
-  const methodSrc = el("p", "method-src", editorial.methodologySourcePrefix);
-  methodSrc.append(link(editorial.metricsUrl, editorial.methodologySourceLinkText, "mono"));
-  methodBody.append(methodText, methodSrc);
-  details.append(summary, methodBody);
-
-  section.append(head, stat, panel, details);
-
-  return { section, slots: { stat, panel, controls, chart, extra }, caption, methodText };
-}
 
 // Fill editorial {placeholders} from the contract itself (cve.js pattern).
 function fillTemplates(cfg, refs, data) {
@@ -86,14 +41,6 @@ function fillTemplates(cfg, refs, data) {
     refs.caption.textContent = tpl(editorial.sections.rejection.caption, vars);
     refs.methodText.textContent = tpl(editorial.sections.rejection.methodology, vars);
   }
-}
-
-function showError(slots, file) {
-  clear(slots.stat);
-  clear(slots.controls);
-  clear(slots.extra);
-  clear(slots.chart).classList.remove("chart", "chart-tall");
-  slots.chart.append(errorCard(file));
 }
 
 // ---- boot ---------------------------------------------------------------------
@@ -121,7 +68,7 @@ async function boot() {
             cfg.render(slots, data);
           } catch (err) {
             console.warn(`[CyberMon] section "${cfg.id}" failed:`, err);
-            showError(slots, DATA_FILE);
+            showError(slots, DATA_FILE, err);
           }
         }
       })
@@ -131,7 +78,7 @@ async function boot() {
           // No payload: resolve editorial {placeholders} to honest fallbacks
           // so raw template braces never reach the reader.
           fillTemplates(cfg, refs, {});
-          showError(slots, DATA_FILE);
+          showError(slots, DATA_FILE, err);
         }
       })
   );

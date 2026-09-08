@@ -60,7 +60,7 @@ export function render(slots, data) {
     tooltip: {
       ...baseTooltip,
       formatter: (p) =>
-        `<div style="color:${C.muted};margin-bottom:4px;">CVSS ${yCats[p.value[1]]} × EPSS ${xCats[p.value[0]]}</div>` +
+        `<div style="color:${C.muted};margin-bottom:4px;">CVSS ${escapeHtml(yCats[p.value[1]])} × EPSS ${escapeHtml(xCats[p.value[0]])}</div>` +
         `<strong>${fmtInt(p.data.raw)}</strong> CVEs`,
     },
     xAxis: catAxis(xCats, {

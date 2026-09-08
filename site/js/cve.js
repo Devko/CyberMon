@@ -5,9 +5,8 @@
 // Shared chrome (masthead/nav/banner/footer) comes from common.js.
 // =============================================================================
 import { editorial, tpl } from "./editorial.js";
-import { el, link, clear } from "./dom.js";
 import { hookResize } from "./theme.js";
-import { initChrome, fetchJSON, errorCard } from "./common.js";
+import { initChrome, fetchJSON, buildSection, showError } from "./common.js";
 import { render as renderInflation } from "./charts/inflation.js";
 import { render as renderFlood } from "./charts/flood.js";
 import { render as renderReality } from "./charts/reality.js";
@@ -31,58 +30,6 @@ const SECTIONS = [
   { id: "quality", file: "data/advisory_quality.json", render: renderQuality },
   { id: "cwe", file: "data/cwe_distribution.json", render: renderCweShare },
 ];
-
-// ---- section skeleton -------------------------------------------------------
-
-function buildSection(cfg) {
-  const ed = editorial.sections[cfg.id];
-  if (!ed) throw new Error(`no editorial.sections entry for section "${cfg.id}"`);
-  const section = el("section", "chart-section" + (cfg.hero ? " hero" : ""));
-  section.id = `s-${cfg.id}`;
-
-  const head = el("header", "section-head");
-  head.append(
-    el("p", "section-kicker", `${ed.num} — ${ed.kicker}`),
-    el("h2", "section-headline", ed.headline),
-    el("p", "section-caption", ed.caption)
-  );
-
-  const stat = el("div", "section-stat");
-  const panel = el("div", "panel");
-  const controls = el("div", "panel-controls");
-  const chart = el("div", "chart" + (cfg.hero ? " chart-tall" : ""));
-  const extra = el("div", "panel-extra");
-  panel.append(controls, chart, extra);
-
-  if (ed.note) panel.append(el("p", "panel-note", ed.note));
-
-  if (ed.source) {
-    const src = el("p", "chart-source");
-    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
-    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
-    panel.append(src);
-  }
-
-  const details = el("details", "method");
-  const summary = el("summary", null, editorial.methodologyLabel);
-  const methodBody = el("div", "method-body");
-  const methodText = el("p", null, ed.methodology);
-  const methodSrc = el("p", "method-src", editorial.methodologySourcePrefix);
-  methodSrc.append(link(editorial.metricsUrl, editorial.methodologySourceLinkText, "mono"));
-  methodBody.append(methodText, methodSrc);
-  details.append(summary, methodBody);
-
-  section.append(head, stat, panel, details);
-
-  return { section, slots: { stat, panel, controls, chart, extra }, methodText };
-}
-
-function showError(slots, file) {
-  clear(slots.controls);
-  clear(slots.extra);
-  clear(slots.chart).classList.remove("chart", "chart-tall");
-  slots.chart.append(errorCard(file));
-}
 
 // ---- boot ---------------------------------------------------------------------
 
@@ -114,7 +61,7 @@ async function boot() {
         })
         .catch((err) => {
           console.warn(`[CyberMon] section "${cfg.id}" failed:`, err);
-          showError(slots, cfg.file);
+          showError(slots, cfg.file, err);
         })
     );
   }

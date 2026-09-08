@@ -4,11 +4,13 @@
 // A new tab module needs exactly this:
 //   1. Copy the HTML skeleton (masthead ids, #site-nav, #sample-banner, footer ids).
 //   2. Link css/shared.css.
-//   3. In its page script: import { initChrome, fetchJSON, errorCard } and call
-//      initChrome("<nav id from editorial.nav>").
+//   3. In its page script: import { initChrome, fetchJSON, buildSection,
+//      showError } and call initChrome("<nav id from editorial.nav>").
 //
 // initChrome renders masthead + tabs + footer, loads data/meta.json, and shows
-// the synthetic-sample banner when meta.sample === true.
+// the synthetic-sample banner when meta.sample === true. buildSection builds
+// one chart section's skeleton from editorial.sections; showError turns it
+// into an inline error card (data failure vs. chart-library failure).
 // =============================================================================
 import { editorial, tpl } from "./editorial.js";
 import { el, link, clear } from "./dom.js";
@@ -20,26 +22,129 @@ const SIMULATE_FAIL = new Set(
   (new URLSearchParams(location.search).get("fail") || "").split(",").filter(Boolean)
 );
 
+// Every failure fetchJSON raises is a DataError, so a section's catch can
+// tell "the JSON never arrived" from "the JSON arrived and the renderer
+// threw" (showError uses that to pick the right card).
+export class DataError extends Error {}
+
 export async function fetchJSON(path) {
   const key = path.replace(/^data\//, "").replace(/\.json$/, "");
   if (SIMULATE_FAIL.has(key) || SIMULATE_FAIL.has(path)) {
-    throw new Error(`${path}: simulated failure (?fail=)`);
+    throw new DataError(`${path}: simulated failure (?fail=)`);
   }
-  const res = await fetch(path, { cache: "no-cache" });
-  if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
-  return res.json();
+  let res;
+  try {
+    res = await fetch(path, { cache: "no-cache" });
+  } catch (err) {
+    throw new DataError(`${path}: ${err.message}`, { cause: err });
+  }
+  if (!res.ok) throw new DataError(`${path}: HTTP ${res.status}`);
+  try {
+    return await res.json();
+  } catch (err) {
+    throw new DataError(`${path}: ${err.message}`, { cause: err });
+  }
 }
 
 // ---- inline error card (section-level resilience) ---------------------------
 
-export function errorCard(file) {
+// kind: "data" (default — the JSON could not be fetched) or "library" (the
+// JSON is fine but ECharts never loaded, so the chart cannot draw).
+export function errorCard(file, kind = "data") {
+  const copy = editorial.loadError;
+  const title = kind === "library" ? copy.libraryTitle : copy.title;
+  const bodyTpl = kind === "library" ? copy.libraryBody : copy.body;
   const card = el("div", "error-card");
-  const title = el("strong", null, editorial.loadError.title);
   const body = el("p");
-  const [before, after] = editorial.loadError.body.split("{file}");
+  const [before, after] = bodyTpl.split("{file}");
   body.append(before, el("code", null, file), after ?? "");
-  card.append(title, body);
+  card.append(el("strong", null, title), body);
   return card;
+}
+
+// ---- chart section skeleton -------------------------------------------------
+//
+// One skeleton for every module page (was a per-module copy). Layout:
+//   <section class="chart-section[ hero]" id="s-<id>">
+//     <header class="section-head">  kicker · headline · caption
+//     <div class="section-stat">      (hero numbers, filled by the renderer)
+//     <div class="panel">             controls · chart · extra · [note] · [source]
+//     <details class="method">        methodology + source-of-truth link
+//
+// cfg:  { id, hero?, ... } — the module's SECTIONS entry (id keys editorial).
+// ed:   the editorial.sections entry; defaults to editorial.sections[cfg.id].
+// opts.noteKeys: which `ed` keys feed the panel-note slot, first present wins
+//       (default ["note"]; kev uses ["backfillNote"], breaches
+//       ["importNote", "catalogNote"]). The note is rendered as a template
+//       now and filled by the renderer once the payload is here.
+// Returns { section, slots: { stat, panel, controls, chart, extra }, caption,
+// methodText } — caption/methodText so renderers can fill {placeholders}
+// from the contract (cve.js, concentration.js).
+export function buildSection(cfg, ed = null, opts = {}) {
+  ed = ed ?? editorial.sections[cfg.id];
+  if (!ed) throw new Error(`no editorial.sections entry for section "${cfg.id}"`);
+  const { noteKeys = ["note"] } = opts;
+
+  const section = el("section", "chart-section" + (cfg.hero ? " hero" : ""));
+  section.id = `s-${cfg.id}`;
+
+  const head = el("header", "section-head");
+  const caption = el("p", "section-caption", ed.caption);
+  head.append(
+    el("p", "section-kicker", `${ed.num} — ${ed.kicker}`),
+    el("h2", "section-headline", ed.headline),
+    caption
+  );
+
+  const stat = el("div", "section-stat");
+  const panel = el("div", "panel");
+  const controls = el("div", "panel-controls");
+  const chart = el("div", "chart" + (cfg.hero ? " chart-tall" : ""));
+  // Accessible name for the chart canvas; mkChart (theme.js) adds role="img"
+  // once a canvas is actually drawn here (boards render a <table> instead,
+  // which must stay reachable, so the role is not set up front).
+  chart.setAttribute("aria-label", ed.headline);
+  const extra = el("div", "panel-extra");
+  panel.append(controls, chart, extra);
+
+  const noteKey = noteKeys.find((k) => ed[k]);
+  if (noteKey) panel.append(el("p", "panel-note", ed[noteKey]));
+
+  if (ed.source) {
+    const src = el("p", "chart-source");
+    src.append(editorial.chartSourcePrefix + ed.source + " \u00b7 ");
+    src.append(link("#footer", editorial.chartSourceLinkText, "mono"));
+    panel.append(src);
+  }
+
+  const details = el("details", "method");
+  const summary = el("summary", null, editorial.methodologyLabel);
+  const methodBody = el("div", "method-body");
+  const methodText = el("p", null, ed.methodology);
+  const methodSrc = el("p", "method-src", editorial.methodologySourcePrefix);
+  methodSrc.append(link(editorial.metricsUrl, editorial.methodologySourceLinkText, "mono"));
+  methodBody.append(methodText, methodSrc);
+  details.append(summary, methodBody);
+
+  section.append(head, stat, panel, details);
+
+  return { section, slots: { stat, panel, controls, chart, extra }, caption, methodText };
+}
+
+// Collapse a built section into one inline error card. `err` (optional) is
+// what the section's catch received: a DataError means the JSON never
+// arrived; anything else while window.echarts is missing means the data is
+// fine and the chart library is what failed — say so, and point at the file.
+export function showError(slots, file, err = null) {
+  clear(slots.stat);
+  clear(slots.controls);
+  clear(slots.extra);
+  // Never leave an unfilled {placeholder} note next to an error card.
+  slots.panel.querySelector(".panel-note")?.remove();
+  clear(slots.chart).classList.remove("chart", "chart-tall");
+  slots.chart.removeAttribute("role");
+  const kind = !window.echarts && !(err instanceof DataError) ? "library" : "data";
+  slots.chart.append(errorCard(file, kind));
 }
 
 // ---- shared chrome -----------------------------------------------------------

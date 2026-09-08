@@ -17,11 +17,16 @@ export function frag(...children) {
   return f;
 }
 
-export function link(href, text, className) {
+// External links open a new tab (noopener). In-page anchors ("#footer") stay
+// in-page so the smooth-scroll in shared.css applies; pass { sameTab: true }
+// to force that for any href.
+export function link(href, text, className, { sameTab = false } = {}) {
   const a = el("a", className, text);
   a.href = href;
-  a.target = "_blank";
-  a.rel = "noopener";
+  if (!sameTab && !String(href).startsWith("#")) {
+    a.target = "_blank";
+    a.rel = "noopener";
+  }
   return a;
 }
 

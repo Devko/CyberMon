@@ -1,9 +1,11 @@
 /* ============================================================================
-   CyberMon — market.html-only styles (Security Market module).
-   Everything reusable lives in css/shared.css; this file adds only the
-   sparkline strip, the term selector, the diverging in-cell bars, the scatter
-   legend chips, and the honest empty-state card. No new colors — every value
-   comes from the shared.css custom properties.
+   CyberMon — module-specific styles, born as market.html's sheet and now
+   linked by most module pages (market, kev, ai, …) for their own widgets:
+   the sparkline strip, the term selector, the diverging in-cell bars, the
+   scatter legend chips, the ai.html timeline rail. Everything reusable —
+   including the empty-state card — lives in css/shared.css, which every
+   page links. No new colors: every value comes from the shared.css custom
+   properties.
    ========================================================================== */
 
 /* ---------------------------------------- 1 · hype: sparkline strip ------- */
@@ -148,21 +150,6 @@
 .quadrant-chip { display: inline-flex; align-items: center; gap: 6px; }
 
 .quadrant-dot { display: inline-block; width: 8px; height: 8px; }
-
-/* ---------------------------------------- shared: honest empty state ------ */
-
-.nodata-card {
-  border: 1px dashed var(--rule-strong);
-  background: var(--panel);
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 1.7;
-  padding: 26px 24px;
-}
-
-/* stat card with nothing to report yet: drop the accent flag */
-.stat-card.is-empty { border-left-color: var(--rule-strong); }
 
 /* -------------------------------- ai.html · 1: the timeline rail ---------- */
 /* Every dot on the hero chart appears here dated, categorised and linked.

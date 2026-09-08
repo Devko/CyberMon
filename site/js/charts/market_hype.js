@@ -134,7 +134,7 @@ export function render(slots, data) {
     });
     return {
       grid: { ...baseGrid, top: 44 },
-      legend: { ...baseLegend, data: present.map((s) => s.name) },
+      legend: { ...baseLegend, type: "scroll", data: present.map((s) => s.name) },
       tooltip: {
         ...baseTooltip, trigger: "axis",
         formatter: (params) => {
