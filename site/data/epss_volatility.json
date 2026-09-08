@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-07T02:50:23Z",
+ "generated_at": "2026-09-08T02:48:34Z",
  "thresholds": {
   "lo": 0.001,
   "mid": 0.01,
@@ -425,8 +425,8 @@
  },
  "catalog": {
   "state_model_version": "v2026.06.15",
-  "state_score_date": "2026-09-06",
-  "state_size": 368634,
+  "state_score_date": "2026-09-07",
+  "state_size": 368770,
   "days_observed": 48,
   "trend_days": 41,
   "resets_quarantined": 0,
