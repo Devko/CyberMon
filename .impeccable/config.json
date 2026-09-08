@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "kicker-above-heading",
+        "value": "*",
+        "files": [
+          "site/field.html"
+        ],
+        "createdAt": "2026-09-08T06:19:33.887Z",
+        "reason": "Claude: the Instrument kicker sits inline beside the title in a grid, mirroring shared.css's .masthead-kicker convention used on all 21 module pages"
+      },
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "site/field.html"
+        ],
+        "createdAt": "2026-09-08T06:19:33.998Z",
+        "reason": "Claude: the stripes come from shared.css (.sample-banner and the body scanline ground), the site's existing design system, not from this page"
+      }
+    ]
+  }
+}
