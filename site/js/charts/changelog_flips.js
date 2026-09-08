@@ -20,10 +20,17 @@ export function render(slots, data) {
     el("span", "hero-when", ed.statLead)
   );
   stat.append(row);
+  // Post-step median (editions from 2026-09-08) beside the pooled one; the
+  // pooled-only note covers older editions and thin post-step cohorts.
+  const post = flips.lag_post_step || {};
+  const hasPooled = lag.median_days !== null && lag.median_days !== undefined;
+  const hasPost = post.median_days !== null && post.median_days !== undefined;
   stat.append(el("div", "hero-stat-label",
-    lag.median_days !== null && lag.median_days !== undefined
-      ? tpl(ed.statNote, { median: fmtInt(lag.median_days) })
-      : ed.statNoteThin));
+    hasPooled && hasPost
+      ? tpl(ed.statNote, { median: fmtInt(lag.median_days), post_median: fmtInt(post.median_days), step_month: flips.step_month || "2023-12" })
+      : hasPooled
+        ? tpl(ed.statNotePooled, { median: fmtInt(lag.median_days), step_month: flips.step_month || "2023-12" })
+        : ed.statNoteThin));
   slots.stat.append(stat);
 
   // ---- chart ----------------------------------------------------------------

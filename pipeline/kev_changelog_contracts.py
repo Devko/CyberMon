@@ -99,24 +99,36 @@ def _check_flips(obj: Any, min_n: int, edits_total: int) -> int:
         _fail(f"{path}.by_month",
               f"monthly flips sum to {running}, total is {total}")
 
-    lag = _get(flips, "lag", path)
-    n = _get(lag, "n", f"{path}.lag")
-    _check_int(n, f"{path}.lag.n")
-    if n > total:
-        _fail(f"{path}.lag.n", f"{n} lags exceed {total} flips")
-    stats = [_get(lag, k, f"{path}.lag")
-             for k in ("p25_days", "median_days", "p75_days")]
-    if n < min_n:
-        if any(s is not None for s in stats):
-            _fail(f"{path}.lag",
-                  f"stats must be null below min_n={min_n} (n={n})")
-    else:
-        for key, v in zip(("p25_days", "median_days", "p75_days"), stats):
-            # A flip can only be observed on or after the entry existed,
-            # but capture-dated events tolerate slack; keep a sane range.
-            _check_num(v, f"{path}.lag.{key}", -366.0, 36600.0)
-        if not stats[0] <= stats[1] <= stats[2]:
-            _fail(f"{path}.lag", "p25 <= median <= p75 must hold")
+    def _check_lag(lag: Any, lpath: str) -> int:
+        n = _get(lag, "n", lpath)
+        _check_int(n, f"{lpath}.n")
+        if n > total:
+            _fail(f"{lpath}.n", f"{n} lags exceed {total} flips")
+        stats = [_get(lag, k, lpath)
+                 for k in ("p25_days", "median_days", "p75_days")]
+        if n < min_n:
+            if any(s is not None for s in stats):
+                _fail(lpath, f"stats must be null below min_n={min_n} (n={n})")
+        else:
+            for key, v in zip(("p25_days", "median_days", "p75_days"), stats):
+                # A flip can only be observed on or after the entry existed,
+                # but capture-dated events tolerate slack; keep a sane range.
+                _check_num(v, f"{lpath}.{key}", -366.0, 36600.0)
+            if not stats[0] <= stats[1] <= stats[2]:
+                _fail(lpath, "p25 <= median <= p75 must hold")
+        return n
+
+    n = _check_lag(_get(flips, "lag", path), f"{path}.lag")
+    # Additive (editions before 2026-09-08 lack it): the lag over flips
+    # observed after the step month, and that month.
+    if "lag_post_step" in flips:
+        post_n = _check_lag(flips["lag_post_step"], f"{path}.lag_post_step")
+        if post_n > n:
+            _fail(f"{path}.lag_post_step.n",
+                  f"{post_n} post-step lags exceed {n} lags")
+        step = flips.get("step_month")
+        if step is not None:
+            _check_str(step, f"{path}.step_month", MONTH_RE)
     return total
 
 

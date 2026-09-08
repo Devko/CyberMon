@@ -560,6 +560,13 @@ def build_kev_changelog(state: dict, events: list[dict],
                                "flips": flips_by_month.get(label, 0),
                                "cumulative": running})
     lags: list[float] = []
+    post_lags: list[float] = []
+    # The month the flag column first appears in the captures flips every
+    # already-flagged entry at once (206 of the first 308 flips on record
+    # sat in 2023-12). That step is a property of the capture history, not
+    # of CISA's cadence, so the lag is published twice: pooled, and for
+    # flips observed after the step month.
+    step_month = min(flips_by_month) if flips_by_month else None
     entries, removed = state["entries"], state["removed"]
     for e in flips:
         fp = entries.get(e["cve"]) or removed.get(e["cve"])
@@ -570,16 +577,23 @@ def build_kev_changelog(state: dict, events: list[dict],
         except ValueError:
             continue
         lags.append(float(delta))
-    if len(lags) >= min_n:
-        p25, median, p75 = _quartiles(lags)
-        lag_block = {"n": len(lags), "median_days": _r1(median),
-                     "p25_days": _r1(p25), "p75_days": _r1(p75)}
-    else:
+        if step_month is not None and _month(e["observed_date"]) > step_month:
+            post_lags.append(float(delta))
+
+    def _lag_stats(values: list[float]) -> dict:
+        if len(values) >= min_n:
+            p25, median, p75 = _quartiles(values)
+            return {"n": len(values), "median_days": _r1(median),
+                    "p25_days": _r1(p25), "p75_days": _r1(p75)}
         # Render honestly when thin: the count ships, the stats do not.
-        lag_block = {"n": len(lags), "median_days": None,
-                     "p25_days": None, "p75_days": None}
+        return {"n": len(values), "median_days": None,
+                "p25_days": None, "p75_days": None}
+
+    lag_block = _lag_stats(lags)
     flips_block = {"total": len(flips), "reversals": reversals,
-                   "by_month": cumulative, "lag": lag_block}
+                   "by_month": cumulative, "lag": lag_block,
+                   "step_month": step_month,
+                   "lag_post_step": _lag_stats(post_lags)}
 
     # ---- section 3: the receipts board --------------------------------------
     edit_counts: Counter[str] = Counter()

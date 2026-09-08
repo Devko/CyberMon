@@ -369,7 +369,7 @@ accounts for **and in which direction**; and AI-security attention (module
 clock it is supposed to have broken. The era cutoff is a **reader-facing
 control** — ChatGPT, GPT-4, or the first documented in-the-wild uplift — so
 anyone who suspects the default date was chosen to flatter the thesis can
-move it; on the committed edition, 0 of 6 judged metric-era cells
+move it; on the September 2026 edition, 0 of 8 judged metric-era cells
 accelerated and 3 moved the other way.
 
 No fetch of its own: the clock is lifted verbatim from `time_to_poc.json`
@@ -587,12 +587,8 @@ For a fresh fork/clone of this repo, an admin must do these once in GitHub:
 CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
 CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, the Wikimedia
 Foundation, the U.S. Securities and Exchange Commission, Have I Been
-Pwned, Ransomwhere, or APNIC**. All upstream data is © its
-CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
-Pwned, Ransomwhere, APNIC, OffSec, Rapid7, or ProjectDiscovery**. All
-upstream data is © its
-CVE Program, NIST/NVD, CISA, FIRST, GDELT, Algolia, arXiv, Have I Been
-Pwned, Ransomwhere, APNIC, or abuse.ch**. All upstream data is © its
+Pwned, Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, or
+the Internet Archive**. All upstream data is © its
 respective sources under their own terms (see table above). Code in this
 repository is [MIT licensed](LICENSE).
 

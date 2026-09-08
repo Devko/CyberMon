@@ -150,7 +150,44 @@ def check_few_percent_ever_get_a_poc(d: dict) -> None:
     )
 
 
+def check_2025_cohort_is_the_anomaly(d: dict) -> None:
+    # editorial.js (exploits.html hero): "the 2025 cohort is twice 2024's
+    # with a lower quartile years in the negative" — n 504 vs 262, p25
+    # -4,448 d on the 2026-09-08 edition.
+    by_year = {r["year"]: r for r in d["hero"]["years"]}
+    a, b = by_year[2024], by_year[2025]
+    assert b["n"] >= 1.6 * a["n"], (
+        f"'the 2025 cohort is twice 2024's' vs {b['n']} against {a['n']}"
+    )
+    assert b["p25_days"] <= -365, (
+        f"'a lower quartile years in the negative' vs p25 {b['p25_days']} d"
+    )
+
+
+def check_channel_thinned(d: dict) -> None:
+    # editorial.js (exploits.html methodology and ai.html banked
+    # methodology): "the dated cohort per year is now well under a fifth of
+    # its late-2000s size" — 2,640 (2009) vs 262 (2024).
+    by_year = {r["year"]: r["n"] for r in d["hero"]["years"]}
+    peak = max(n for y, n in by_year.items() if 2005 <= y <= 2012)
+    latest = max(y for y in by_year if y < GENERATION_YEAR)
+    assert by_year[latest] <= 0.2 * peak, (
+        f"'well under a fifth of its late-2000s size' vs {by_year[latest]} "
+        f"in {latest} against a 2005-12 peak of {peak}"
+    )
+
+
 CLAIMS = [
+    (
+        "the 2025 cohort is twice 2024's with a lower quartile years in the negative",
+        "time_to_poc.json",
+        check_2025_cohort_is_the_anomaly,
+    ),
+    (
+        "the dated cohort per year is now well under a fifth of its late-2000s size",
+        "time_to_poc.json",
+        check_channel_thinned,
+    ),
     (
         "Since the mid-2000s the median has hugged zero",
         "time_to_poc.json",

@@ -126,6 +126,12 @@ def print_module(page, base_url: str, module_id: str, out_dir: Path) -> list[str
     )
 
     pages = pdf_page_count(pdf_path.read_bytes())
+    if pages is None:
+        # Not silent: a Chromium change to compressed object streams would
+        # otherwise print "ok" for a clipped PDF forever.
+        print(f"warn {module_id}.pdf · page count unavailable (no /Type /Page "
+              f"objects found — compressed object streams?); slide count "
+              f"{slide_count} unverified")
     if pages is not None and pages != slide_count:
         problems.append(f"{pdf_path.name}: {pages} PDF pages for {slide_count} slides")
     else:

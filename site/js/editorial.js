@@ -706,8 +706,8 @@ export const editorial = {
         "incrementally against the API and reswept weekly from NVD's yearly feeds). “Backlog " +
         "total” = Received + Awaiting Analysis + Undergoing Analysis; “Deferred” is NVD's " +
         "label for CVEs it has decided not to enrich. The bar axis is logarithmic — the " +
-        "Modified pile is two orders of magnitude larger than the live queue and would " +
-        "otherwise erase it. Because NVD exposes no historical series, CyberMon appends one " +
+        "Modified pile is more than an order of magnitude larger than the live queue and " +
+        "would otherwise erase it. Because NVD exposes no historical series, CyberMon appends one " +
         "row per nightly run to its own committed CSV (data/history/nvd_backlog.csv, last " +
         "run per date wins) — the history you see starts when this record did.",
     },
@@ -903,7 +903,9 @@ export const editorial = {
         "is excluded here (see the callout): it launched by inheriting a backlog of years-old " +
         "CVEs and kept importing back-catalog through 2022, which would flatten the whole " +
         "trend into one artificial spike. What's left is the catalog's actual cadence since — " +
-        "and it has been getting slower, not faster.",
+        "and its middle has drifted out, from a median of twelve days for 2023 listings to " +
+        "twenty-six for 2025, while the share listed more than a year late has edged down: " +
+        "slower in the middle, tighter at the tail.",
       statLabel: "Median days from CVE publication to KEV listing",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -1639,8 +1641,9 @@ export const editorial = {
         "and a KEV listing means exploitation was already observed, so on listing eve " +
         "the model should be at its most alarmed. Instead, in the catalog's recent years roughly " +
         "half or more arrive having been scored below one percent the day before. One reading caveat " +
-        "up front: the sharp 2022-to-2023 flip in the bars is a model change, not a " +
-        "performance change — the v2-era model scored high across the board, every model " +
+        "up front: the sharp 2022-to-2023 flip in the bars coincides with a model change " +
+        "(v2 to v3, March 2023) and with the catalog's own seeding cutoff, and the two cannot " +
+        "be separated here — the v2-era model scored high across the board, every model " +
         "since scores low, and section 02 splits the eras so they never pool. The " +
         "whole-catalog comparison figure pools them anyway (it says so). Listings that " +
         "could not have a prior score are counted separately, never as misses.",
@@ -2063,7 +2066,11 @@ export const editorial = {
       statBig: "{n}",
       statLead: "entries flipped to “Known” after they were already listed",
       statNote:
-        "median gap from listing to observed flip: {median} days — includes the 2023-12 " +
+        "median gap from listing to observed flip: {median} days pooled, {post_median} days " +
+        "for flips observed after the {step_month} step where the flag column first appears " +
+        "in the captures",
+      statNotePooled:
+        "median gap from listing to observed flip: {median} days — includes the {step_month} " +
         "step where the flag column first appears in the captures",
       statNoteThin:
         "too few observed flips to state a typical gap yet — counts ship in " +
@@ -2271,8 +2278,10 @@ export const editorial = {
       headline: "When the referee stopped scoring, a new hand picked up the pen.",
       caption:
         "Each month, the CVE records whose CISA-ADP (Vulnrichment) block was " +
-        "last stamped then — the enrichment date, deliberately not the CVE's " +
-        "birthday, because CISA back-fills legacy records by the thousand. The " +
+        "last stamped then — its dateUpdated, which is a last-modified date, so a " +
+        "re-touched record migrates forward and early months are lower bounds. " +
+        "Deliberately not the CVE's birthday, because CISA back-fills legacy " +
+        "records by the thousand. The " +
         "curve climbs from Vulnrichment's 2024 launch, through the very months " +
         "NVD's own analysis pipeline had stalled. Red bars mark back-fill " +
         "sweeps: a month CISA spent stamping a bulk batch of old CVEs rather " +
@@ -2675,7 +2684,11 @@ export const editorial = {
         "years it is negative — for the CVEs that get public exploit code at all, the " +
         "code tends to exist by the time the record lands. The gap is measured in days, " +
         "not months, and the band below zero is disclosure culture in the raw: exploits " +
-        "that shipped with the advisory, or years before a CVE id was finally assigned.",
+        "that shipped with the advisory, or years before a CVE id was finally assigned. " +
+        "Read the newest complete year with care: the 2025 cohort is twice 2024's with a " +
+        "lower quartile years in the negative — old vulnerabilities finally receiving CVE " +
+        "ids, not anything getting faster — which is why the AI Alibi page withholds it " +
+        "from judgment.",
       statLabel: "Median days from CVE publication to first public exploit code",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -2704,7 +2717,9 @@ export const editorial = {
         "cohort is self-selected — only a few percent of records ever get a tracked " +
         "public exploit, so the chart describes the CVEs somebody bothered to arm, and " +
         "recent years are additionally right-censored (a young CVE has had less time " +
-        "to attract code).",
+        "to attract code). A third: the collection channel itself has thinned — the dated " +
+        "cohort per year is now well under a fifth of its late-2000s size — so a trend here " +
+        "is also a trend in what Exploit-DB and Metasploit still index.",
     },
 
     // --------------------------------- exploits.html · 2
@@ -2981,7 +2996,10 @@ export const editorial = {
         "is anomalous — it is twice the size of 2024's and its lower quartile " +
         "sits years in the negative, the signature of old vulnerabilities finally " +
         "receiving CVE ids rather than of anything getting faster. It is the " +
-        "reason the 2025-cutoff era is withheld rather than judged.",
+        "reason the 2025-cutoff era is withheld rather than judged. Fourth, the " +
+        "collection channel thinned over the period — the dated cohort per year is " +
+        "well under a fifth of its late-2000s size — so a deceleration verdict is " +
+        "also consistent with the trackers simply indexing less.",
     },
 
     // --------------------------------- ai.html · 2
@@ -3171,7 +3189,12 @@ export const editorial = {
       "unattended pipeline and provided as-is, with no guarantee of correctness, completeness, " +
       "or availability; check a number against its primary source before you rely on it.",
     dataNote:
-      "Data: CVE List V5 (MITRE), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
+      // The CVE Terms of Use grant reuse provided MITRE's copyright designation is
+      // reproduced; CVE® and CWE™ are MITRE trademarks. Do not paraphrase.
+      "Data: CVE List V5 and the CNA roster from CVE.org (Copyright © 1999–2026 The MITRE " +
+      "Corporation; CVE® is a registered trademark of The MITRE Corporation; reproduced under " +
+      "the CVE Terms of Use), the CWE Top 25 (cwe.mitre.org; CWE™ is a trademark of The MITRE " +
+      "Corporation), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
       "NVD API 2.0 (NIST), GDELT 2.0 (news volume), Hacker News via Algolia Search API, " +
       "arXiv cs.CR metadata (thank you to arXiv for use of its open access interoperability), " +
       "Wikipedia pageview statistics via the Wikimedia REST API (CC0 aggregate data, " +

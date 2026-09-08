@@ -73,6 +73,16 @@ def graded_report() -> dict:
 # --------------------------------------------------------------------------
 
 
+def check_flip_coincides_with_model_change(d: dict) -> None:
+    # editorial.js (epss.html hero): "the sharp 2022-to-2023 flip in the
+    # bars coincides with a model change (v2 to v3, March 2023)" — the era
+    # table must carry a boundary in March 2023 for that to be true.
+    starts = [e["from"] for e in d["model_eras"] if e.get("label") == "v3"]
+    assert starts and starts[0].startswith("2023-03"), (
+        f"'a model change (v2 to v3, March 2023)' vs v3 era starting {starts}"
+    )
+
+
 def check_most_recent_below_1pct(d: dict) -> None:
     # editorial.js (epss.html hero): "in the catalog's recent years roughly
     # half or more arrive having been scored below one percent the day
@@ -106,6 +116,10 @@ def check_bottom_half_share(d: dict) -> None:
 # (verbatim claim from editorial.js, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
+    (
+        "coincides with a model change (v2 to v3, March 2023)",
+        check_flip_coincides_with_model_change,
+    ),
     (
         "roughly half or more arrive having been scored below one percent the day before",
         check_most_recent_below_1pct,

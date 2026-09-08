@@ -93,6 +93,14 @@ def check_flag_arrives_late(d: dict) -> None:
         "'entries that have sat in the catalog for months or years' has "
         "no published median to stand on"
     )
+    # Additive since 2026-09-08: the post-step lag (flips observed after
+    # the month the flag column first appears) must tell the same story.
+    post = flips.get("lag_post_step")
+    if post is not None and post.get("median_days") is not None:
+        assert 60.0 <= post["median_days"] <= 3650.0, (
+            f"post-step median gap {post['median_days']}d no longer reads "
+            f"as 'months or years'"
+        )
     assert 60.0 <= median <= 3650.0, (
         f"'entries that have sat in the catalog for months or years' "
         f"needs the median listing-to-flip gap ({median} days) to stay in "

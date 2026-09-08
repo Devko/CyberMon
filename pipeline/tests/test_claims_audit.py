@@ -165,6 +165,18 @@ def check_kev_below_high(d: dict) -> None:
     )
 
 
+def check_modified_pile_ratio(d: dict) -> None:
+    # editorial.js (NVD decay methodology): "the Modified pile is more than
+    # an order of magnitude larger than the live queue" — 243,574 vs 8,875
+    # (27x) on the 2026-09-08 edition; the copy used to say two orders.
+    statuses = {s["status"]: s["n"] for s in d["current"]["statuses"]}
+    queue = d["current"]["backlog_total"]
+    assert queue > 0 and statuses["Modified"] / queue >= 10, (
+        f"'more than an order of magnitude larger than the live queue' vs "
+        f"Modified {statuses['Modified']} / queue {queue}"
+    )
+
+
 def check_deferred_pile(d: dict) -> None:
     # editorial.js (NVD decay): "tens of thousands of CVEs were quietly
     # stamped “Deferred”"
@@ -213,13 +225,21 @@ def check_kev_three_years_late(d: dict) -> None:
 
 
 def check_kev_getting_slower(d: dict) -> None:
-    # editorial.js (kev.html trend): "and it has been getting slower,
-    # not faster."
-    h = d["headline"]
-    assert h["median_days_latest"] > h["median_days_baseline"], (
-        f"'it has been getting slower, not faster' needs the latest median "
-        f"({h['median_days_latest']}d, {h['latest_year']}) above the baseline "
-        f"({h['median_days_baseline']}d, {h['baseline_year']})"
+    # editorial.js (kev.html trend): "its middle has drifted out, from a
+    # median of twelve days for 2023 listings to twenty-six for 2025, while
+    # the share listed more than a year late has edged down" — named years;
+    # the old "getting slower, not faster" read three medians whose tail
+    # (pct_over_365d) was shortening.
+    by_year = {r["year"]: r for r in d["latency_by_year"]}
+    assert 8 <= by_year[2023]["median_days"] <= 16, (
+        f"'a median of twelve days for 2023 listings' vs {by_year[2023]['median_days']}d"
+    )
+    assert 22 <= by_year[2025]["median_days"] <= 30, (
+        f"'twenty-six for 2025' vs {by_year[2025]['median_days']}d"
+    )
+    assert by_year[2025]["pct_over_365d"] <= by_year[2023]["pct_over_365d"], (
+        f"'the share listed more than a year late has edged down' vs "
+        f"2023 {by_year[2023]['pct_over_365d']}% -> 2025 {by_year[2025]['pct_over_365d']}%"
     )
 
 
@@ -388,6 +408,11 @@ CLAIMS = [
         check_severity_gradient,
     ),
     (
+        "the Modified pile is more than an order of magnitude larger than the live queue",
+        "nvd_decay.json",
+        check_modified_pile_ratio,
+    ),
+    (
         "in-record scoring was a rounding error in 2017 and covers well over nine in ten records today",
         "advisory_quality.json",
         check_in_record_scoring_rise,
@@ -423,7 +448,7 @@ CLAIMS = [
         check_kev_three_years_late,
     ),
     (
-        "and it has been getting slower, not faster.",
+        "its middle has drifted out, from a median of twelve days for 2023 listings to twenty-six for 2025",
         "kev_latency.json",
         check_kev_getting_slower,
     ),
