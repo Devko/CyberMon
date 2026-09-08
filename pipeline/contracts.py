@@ -147,12 +147,13 @@ def _validate_meta(obj: Any) -> None:
     _check_str(_get(epss, "score_date", "meta.sources.epss"),
                "meta.sources.epss.score_date", DATE_RE)
     _check_int(_get(epss, "row_count", "meta.sources.epss"),
-               "meta.sources.epss.row_count")
+               "meta.sources.epss.row_count", minimum=1)
 
     kev = _get(src, "kev", "meta.sources")
     _check_str(_get(kev, "catalog_version", "meta.sources.kev"),
                "meta.sources.kev.catalog_version")
-    _check_int(_get(kev, "count", "meta.sources.kev"), "meta.sources.kev.count")
+    _check_int(_get(kev, "count", "meta.sources.kev"),
+               "meta.sources.kev.count", minimum=1)
 
     # Optional (documented deviation): absent when --skip-nvd had no prior data.
     if "nvd" in src:

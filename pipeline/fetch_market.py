@@ -87,6 +87,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 
+from .fetch_http import USER_AGENT
 from .market_terms import TermDef
 
 GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
@@ -95,7 +96,6 @@ ARXIV_URL = "https://export.arxiv.org/api/query"
 WIKI_URL = ("https://wikimedia.org/api/rest_v1/metrics/pageviews/"
             "per-article/en.wikipedia.org/all-access/user")
 EDGAR_URL = "https://efts.sec.gov/LATEST/search-index"
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
 # SEC's fair-access policy requires a "Company contact@email" User-Agent.
 # Tested live 2026-07-21: this exact shape returns JSON; a UA without a
 # contact address — or even one that ALSO carries the project URL in

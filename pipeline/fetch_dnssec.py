@@ -41,14 +41,10 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
+
 SERIES_URL = "https://stats.labs.apnic.net/cgi-bin/json-table.pl"
 INDEX_URL = "https://stats.labs.apnic.net/dnssec"
-
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
-_HEADERS = {"User-Agent": USER_AGENT}
-
-_RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_ATTEMPTS = 3
 
 # APNIC's world aggregate pseudo-code.
 WORLD_CC = "XA"
@@ -214,38 +210,12 @@ def load_index_file(path: Path, *, min_rows: int = 100) -> list[EconomySnapshot]
     return parse_index(path.read_text(encoding="utf-8"), min_rows=min_rows)
 
 
-def _get_with_retry(session, url: str, timeout: float, sleep, log,
-                    *, params=None):
-    """GET with fetch_attack's bounded-retry discipline: up to
-    ``_MAX_ATTEMPTS`` attempts, backing off on 429/5xx statuses and
-    connection errors. The final failure raises exactly as an unretried
-    call would — the retry absorbs blips, it never softens the
-    loud-failure policy."""
-    for attempt in range(1, _MAX_ATTEMPTS + 1):
-        last = attempt == _MAX_ATTEMPTS
-        try:
-            resp = session.get(url, params=params, headers=_HEADERS,
-                               timeout=timeout)
-        except OSError as exc:  # requests exceptions subclass OSError
-            if last:
-                raise
-            message = f"request failed: {exc!r}"
-        else:
-            if last or resp.status_code not in _RETRY_STATUSES:
-                resp.raise_for_status()
-                return resp
-            message = f"HTTP {resp.status_code}"
-        backoff = 15.0 * attempt
-        log(f"  APNIC: {message} for {url}; retrying in {backoff:.0f}s "
-            f"(attempt {attempt}/{_MAX_ATTEMPTS})")
-        sleep(backoff)
-
-
 def fetch_series(cc: str, session, timeout: float = 120.0,
                  sleep=time.sleep, log=print) -> DnssecSeries:
     """Download and parse one code's full daily series (~3.9 MB)."""
-    resp = _get_with_retry(session, SERIES_URL, timeout, sleep, log,
-                           params={"x": cc})
+    resp = get_with_retry(session, SERIES_URL, label="APNIC",
+                          params={"x": cc}, timeout=timeout,
+                          sleep=sleep, log=log)
     return parse_series(resp.json(), cc)
 
 
@@ -253,7 +223,8 @@ def fetch_index(session, timeout: float = 60.0,
                 *, min_rows: int = 100,
                 sleep=time.sleep, log=print) -> list[EconomySnapshot]:
     """Download and parse the all-economies world-map snapshot."""
-    resp = _get_with_retry(session, INDEX_URL, timeout, sleep, log)
+    resp = get_with_retry(session, INDEX_URL, label="APNIC",
+                          timeout=timeout, sleep=sleep, log=log)
     return parse_index(resp.text, min_rows=min_rows)
 
 

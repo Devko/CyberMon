@@ -184,3 +184,77 @@ def test_multi_page_sweep_paginates():
         fetch_nvd.PAGE_SIZE = old
     assert counts == {"Analyzed": 2, "Received": 1}
     assert session.requests[1]["startIndex"] == 2
+
+
+# ------------------------------------------------ feed sweep retry / 404 --
+
+def test_feed_transient_failure_is_retried_then_sweep_continues():
+    class FlakySession(FakeSession):
+        def __init__(self):
+            super().__init__(feeds={2026: _feed([("CVE-1", "Analyzed")])})
+            self.failed_once = False
+
+        def get(self, url, params=None, headers=None, timeout=None):
+            if "2026.json.gz" in url and not self.failed_once:
+                self.failed_once = True
+                return FakeResponse(status_code=503)
+            return super().get(url, params, headers, timeout)
+
+    session = FlakySession()
+    sleeps, logs = [], []
+    state = fetch_nvd.sync_status_state(None, session=session,
+                                        sleep=sleeps.append,
+                                        log=logs.append, now=NOW)
+    assert state["statuses"] == {"CVE-1": "Analyzed"}
+    assert sleeps == [15.0]
+    assert any("NVD feed: HTTP 503" in m and "retrying" in m for m in logs)
+
+
+def test_feed_http_error_is_retried_before_it_raises():
+    calls = []
+
+    class ErrorSession(FakeSession):
+        def get(self, url, params=None, headers=None, timeout=None):
+            calls.append(url)
+            return FakeResponse(status_code=503)
+
+    with pytest.raises(RuntimeError, match="NVD feed 2002 returned HTTP 503"):
+        fetch_nvd.sync_status_state(None, session=ErrorSession(),
+                                    sleep=_no_sleep, log=lambda m: None,
+                                    now=NOW)
+    assert len(calls) == 3  # bounded ladder, then fatal: no partial state
+
+
+def test_current_year_feed_404_is_tolerated_loudly():
+    """Early January: NVD has not published this year's feed yet. The
+    sweep goes on without it, says so, and every other year is read."""
+    class NoCurrentYear(FakeSession):
+        def get(self, url, params=None, headers=None, timeout=None):
+            if f"{NOW.year}.json.gz" in url:
+                return FakeResponse(status_code=404)
+            return super().get(url, params, headers, timeout)
+
+    session = NoCurrentYear(feeds={2025: _feed([("CVE-2025-1", "Analyzed")])})
+    logs = []
+    state = fetch_nvd.sync_status_state(None, session=session,
+                                        sleep=_no_sleep, log=logs.append,
+                                        now=NOW)
+    assert state["statuses"] == {"CVE-2025-1": "Analyzed"}
+    years = [int(r["url"].rsplit("-", 1)[-1].split(".")[0])
+             for r in session.feed_requests]
+    assert years == FEED_YEARS[:-1]  # the 404'd year never reached super()
+    assert any("WARNING" in m and f"feed {NOW.year}" in m and "404" in m
+               for m in logs)
+
+
+def test_earlier_year_feed_404_stays_fatal():
+    class MissingOldYear(FakeSession):
+        def get(self, url, params=None, headers=None, timeout=None):
+            if "2019.json.gz" in url:
+                return FakeResponse(status_code=404)
+            return super().get(url, params, headers, timeout)
+
+    with pytest.raises(RuntimeError, match="NVD feed 2019 returned HTTP 404"):
+        fetch_nvd.sync_status_state(None, session=MissingOldYear(),
+                                    sleep=_no_sleep, log=lambda m: None,
+                                    now=NOW)

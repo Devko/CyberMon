@@ -2,8 +2,11 @@
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
+
+from .fetch_http import get_with_retry
 
 KEV_URL = ("https://www.cisa.gov/sites/default/files/feeds/"
            "known_exploited_vulnerabilities.json")
@@ -88,11 +91,14 @@ def load_kev_file(path: Path) -> KevData:
     return parse_kev(json.loads(path.read_text(encoding="utf-8")))
 
 
-def fetch_kev(session=None, timeout: float = 60.0) -> KevData:
-    """Download and parse the current KEV catalog."""
+def fetch_kev(session=None, timeout: float = 60.0,
+              sleep=time.sleep, log=print) -> KevData:
+    """Download and parse the current KEV catalog. Transient failures are
+    retried (see :func:`pipeline.fetch_http.get_with_retry`); the last failure
+    raises unchanged."""
     import requests
 
     session = session or requests.Session()
-    resp = session.get(KEV_URL, timeout=timeout)
-    resp.raise_for_status()
+    resp = get_with_retry(session, KEV_URL, label="kev",
+                          timeout=timeout, sleep=sleep, log=log)
     return parse_kev(resp.json())

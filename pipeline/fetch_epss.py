@@ -20,12 +20,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable
 
-from .fetch_market import USER_AGENT
+from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
 
 EPSS_URL = "https://epss.cyentia.com/epss_scores-current.csv.gz"
-
-_RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_ATTEMPTS = 3
 
 
 @dataclass
@@ -48,24 +45,40 @@ class EpssData:
 
 
 def parse_epss(lines: Iterable[str]) -> EpssData:
-    """Parse the EPSS CSV (comment header first, then cve,epss,percentile)."""
+    """Parse the EPSS CSV (comment header first, then cve,epss,percentile).
+
+    Raises ``ValueError`` when the feed is not the feed: no ``#`` header
+    comment, a header without ``model_version`` or ``score_date``, a CSV
+    header without ``cve``/``epss`` columns, or zero parseable rows. Each
+    of those would otherwise flow downstream as "unknown @ 1970-01-01,
+    0 rows" and every EPSS-fed module would quietly publish nonsense."""
     iterator = iter(lines)
     first = next(iterator, "")
-    model_version, score_date = "unknown", "1970-01-01"
-    if first.startswith("#"):
-        for token in first.lstrip("#").strip().split(","):
-            key, _, value = token.partition(":")
-            if key.strip() == "model_version":
-                model_version = value.strip()
-            elif key.strip() == "score_date":
-                score_date = value.strip()[:10]  # date part of the timestamp
-    else:
-        iterator = iter([first, *iterator])  # no comment header: keep line 1
+    if not first.startswith("#"):
+        raise ValueError("EPSS feed has no '#model_version:...,score_date:"
+                         "...' header comment on line 1 "
+                         f"(got {first.strip()[:60]!r})")
+    model_version = score_date = None
+    for token in first.lstrip("#").strip().split(","):
+        key, _, value = token.partition(":")
+        if key.strip() == "model_version" and value.strip():
+            model_version = value.strip()
+        elif key.strip() == "score_date" and value.strip():
+            score_date = value.strip()[:10]  # date part of the timestamp
+    if model_version is None or score_date is None:
+        raise ValueError("EPSS feed header lacks model_version and/or "
+                         f"score_date: {first.strip()[:120]!r}")
 
     scores: dict[str, float] = {}
     percentiles: dict[str, float] = {}
     row_count = 0
-    for row in csv.DictReader(iterator):
+    reader = csv.DictReader(iterator)
+    fieldnames = reader.fieldnames or []
+    missing = [c for c in ("cve", "epss") if c not in fieldnames]
+    if missing:
+        raise ValueError(f"EPSS feed CSV header lacks column(s) {missing}: "
+                         f"{fieldnames}")
+    for row in reader:
         cve, epss = row.get("cve"), row.get("epss")
         if not cve or epss is None:
             continue
@@ -77,6 +90,9 @@ def parse_epss(lines: Iterable[str]) -> EpssData:
                 percentiles[cve] = float(pct)
             except ValueError:
                 pass  # unparseable percentile: absent, never fatal
+    if row_count == 0:
+        raise ValueError(f"EPSS feed {model_version} @ {score_date} "
+                         f"parsed zero score rows")
     return EpssData(model_version=model_version, score_date=score_date,
                     row_count=row_count, scores=scores,
                     percentiles=percentiles)
@@ -90,40 +106,15 @@ def load_epss_file(path: Path) -> EpssData:
     return parse_epss(path.read_text(encoding="utf-8").splitlines())
 
 
-def _get_with_retry(session, url: str, timeout: float, sleep, log):
-    """GET with fetch_attack's bounded-retry discipline: up to
-    ``_MAX_ATTEMPTS`` attempts, backing off on 429/5xx statuses and
-    connection errors. The final failure raises exactly as an unretried
-    call would — the retry absorbs blips, it never softens the
-    loud-failure policy."""
-    for attempt in range(1, _MAX_ATTEMPTS + 1):
-        last = attempt == _MAX_ATTEMPTS
-        try:
-            resp = session.get(url, timeout=timeout,
-                               headers={"User-Agent": USER_AGENT})
-        except OSError as exc:  # requests exceptions subclass OSError
-            if last:
-                raise
-            message = f"request failed: {exc!r}"
-        else:
-            if last or resp.status_code not in _RETRY_STATUSES:
-                resp.raise_for_status()
-                return resp
-            message = f"HTTP {resp.status_code}"
-        backoff = 15.0 * attempt
-        log(f"  epss: {message} for {url}; retrying in {backoff:.0f}s "
-            f"(attempt {attempt}/{_MAX_ATTEMPTS})")
-        sleep(backoff)
-
-
 def fetch_epss(session=None, timeout: float = 120.0,
                sleep=time.sleep, log=print) -> EpssData:
     """Download and parse the current EPSS scores feed. Transient failures
-    are retried (see :func:`_get_with_retry`); the last failure raises
-    unchanged."""
+    are retried (see :func:`pipeline.fetch_http.get_with_retry`); the last
+    failure raises unchanged."""
     import requests
 
     session = session or requests.Session()
-    resp = _get_with_retry(session, EPSS_URL, timeout, sleep, log)
+    resp = get_with_retry(session, EPSS_URL, label="epss",
+                          timeout=timeout, sleep=sleep, log=log)
     with gzip.open(io.BytesIO(resp.content), "rt", encoding="utf-8") as f:
         return parse_epss(f)

@@ -197,6 +197,10 @@ jobs:
           # Optional; the pipeline tolerates an empty value and falls
           # back to slower keyless NVD paging.
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          # Authenticates the cvelistV5 release lookup (fetch_cvelist): the
+          # unauthenticated GitHub API quota is shared by every tenant of a
+          # hosted runner's egress IP and 403s under load.
+          GITHUB_TOKEN: ${{ github.token }}
         # --field-out builds the Field (site/field.html's per-CVE record
         # stream) from the same corpus pass. It lands in the gitignored
         # site/field/ and ships only inside the Pages artifact below.

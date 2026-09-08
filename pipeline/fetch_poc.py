@@ -44,6 +44,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
+
 EXPLOITDB_URL = ("https://gitlab.com/exploit-database/exploitdb/-/raw/"
                  "main/files_exploits.csv")
 METASPLOIT_URL = ("https://raw.githubusercontent.com/rapid7/"
@@ -52,10 +54,6 @@ METASPLOIT_URL = ("https://raw.githubusercontent.com/rapid7/"
 NUCLEI_URL = ("https://raw.githubusercontent.com/projectdiscovery/"
               "nuclei-templates/main/cves.json")
 
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
-_HEADERS = {"User-Agent": USER_AGENT}
-_RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_ATTEMPTS = 3
 
 # Anything earlier is a placeholder, not a date: Metasploit ships
 # 1900-01-01 for "unknown", and no public exploit tracker predates the
@@ -228,28 +226,6 @@ def load_poc_files(edb_path: Path, msf_path: Path,
                      nuclei_path.read_text(encoding="utf-8"))
 
 
-def _get_with_retry(session, url: str, timeout: float, sleep, log):
-    """Bounded retry (fetch_dnssec discipline): 3 attempts, backoff on
-    429/5xx and connection errors, final failure raises."""
-    for attempt in range(1, _MAX_ATTEMPTS + 1):
-        last = attempt == _MAX_ATTEMPTS
-        try:
-            resp = session.get(url, headers=_HEADERS, timeout=timeout)
-        except OSError as exc:  # requests exceptions subclass OSError
-            if last:
-                raise
-            message = f"request failed: {exc!r}"
-        else:
-            if last or resp.status_code not in _RETRY_STATUSES:
-                resp.raise_for_status()
-                return resp
-            message = f"HTTP {resp.status_code}"
-        backoff = 15.0 * attempt
-        log(f"  PoC corpora: {message} for {url}; retrying in "
-            f"{backoff:.0f}s (attempt {attempt}/{_MAX_ATTEMPTS})")
-        sleep(backoff)
-
-
 def _cached_body(cache_dir: Path, name: str, url: str, session,
                  sleep, log, timeout: float = 300.0) -> bytes:
     """The file body, from today's cache if present, else downloaded.
@@ -262,7 +238,8 @@ def _cached_body(cache_dir: Path, name: str, url: str, session,
     dest = poc_dir / f"{today}_{name}"
     if dest.exists():
         return dest.read_bytes()
-    resp = _get_with_retry(session, url, timeout, sleep, log)
+    resp = get_with_retry(session, url, label="PoC corpora",
+                          timeout=timeout, sleep=sleep, log=log)
     poc_dir.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_name(dest.name + ".part")
     tmp.write_bytes(resp.content)

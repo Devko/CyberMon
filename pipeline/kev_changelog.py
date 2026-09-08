@@ -79,6 +79,7 @@ from pathlib import Path
 from typing import Callable, Iterable
 
 from .fetch_kev import KevEntry, parse_kev
+from .fetch_http import USER_AGENT
 from .metrics import _pct, _quartiles, _r1
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
@@ -122,7 +123,6 @@ _FIELD_CATEGORY = {
 
 CDX_API = "http://web.archive.org/cdx/search/cdx"
 SNAPSHOT_URL = "https://web.archive.org/web/{timestamp}id_/{original}"
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
 # Every URL the feed has lived at. Verified against the CDX index
 # 2026-07-11: the feeds/ path holds every capture (first: 2021-12-23);
 # the csv/ sibling never served JSON to the archive but stays queried in

@@ -354,6 +354,40 @@ def _carry_forward_source(out_dir: Path, key: str) -> dict | None:
     return {**block, "stale": True}
 
 
+# A CVE corpus only grows: tonight's record count below this share of last
+# night's means a truncated download, a delta release mistaken for the
+# corpus, or a zip that mostly failed to decode — never a real shrink.
+CORPUS_FLOOR_RATIO = 0.97
+
+
+def _corpus_floor_error(out_dir: Path, cve_count: int,
+                        ratio: float = CORPUS_FLOOR_RATIO) -> str | None:
+    """Why tonight's corpus must be refused, or None when it passes.
+
+    Compares ``cve_count`` against the previous edition's
+    ``meta.sources.cvelist.cve_count`` in ``out_dir/meta.json`` (present
+    on every nightly). No previous edition, or an unreadable one, is not
+    a failure: there is nothing to compare against."""
+    prior_path = out_dir / "meta.json"
+    if not prior_path.exists():
+        return None
+    try:
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
+        previous = prior["sources"]["cvelist"]["cve_count"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    if (not isinstance(previous, int) or isinstance(previous, bool)
+            or previous <= 0):
+        return None
+    floor = previous * ratio
+    if cve_count >= floor:
+        return None
+    return (f"CVE corpus shrank: {cve_count} records tonight vs {previous} "
+            f"in the previous edition ({prior.get('generated_at', '?')}); "
+            f"below the {ratio:.0%} floor ({floor:.0f}). A corpus only "
+            f"grows — refusing to publish a truncated corpus")
+
+
 def run(args: argparse.Namespace) -> int:
     generated_at = _now_iso()
 
@@ -428,6 +462,11 @@ def run(args: argparse.Namespace) -> int:
         print("error: no CVE records found; refusing to emit empty charts",
               file=sys.stderr)
         return 1
+    if not args.offline_fixtures:
+        floor_error = _corpus_floor_error(args.out, agg.cve_count)
+        if floor_error:
+            print(f"error: {floor_error}", file=sys.stderr)
+            return 1
 
     # ---- build -----------------------------------------------------------
     min_cves = args.min_cves if args.min_cves is not None else \

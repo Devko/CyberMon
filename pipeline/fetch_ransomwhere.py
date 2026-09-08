@@ -34,12 +34,10 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
+
 RANSOMWHERE_URL = "https://api.ransomwhe.re/export"
 
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
-
-_RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_ATTEMPTS = 3
 
 # Ransomwhere's literal label for verified payments nobody has attributed
 # to a family. Downstream metrics must never rank it as a "family".
@@ -133,39 +131,14 @@ def load_ransomwhere_file(path: Path) -> RansomwhereData:
     return parse_ransomwhere(json.loads(path.read_text(encoding="utf-8")))
 
 
-def _get_with_retry(session, url: str, timeout: float, sleep, log):
-    """GET with fetch_attack's bounded-retry discipline: up to
-    ``_MAX_ATTEMPTS`` attempts, backing off on 429/5xx statuses and
-    connection errors. The final failure raises exactly as an unretried
-    call would — the retry absorbs blips, it never softens the
-    loud-failure policy."""
-    for attempt in range(1, _MAX_ATTEMPTS + 1):
-        last = attempt == _MAX_ATTEMPTS
-        try:
-            resp = session.get(url, timeout=timeout,
-                               headers={"User-Agent": USER_AGENT})
-        except OSError as exc:  # requests exceptions subclass OSError
-            if last:
-                raise
-            message = f"request failed: {exc!r}"
-        else:
-            if last or resp.status_code not in _RETRY_STATUSES:
-                resp.raise_for_status()
-                return resp
-            message = f"HTTP {resp.status_code}"
-        backoff = 15.0 * attempt
-        log(f"  ransomwhere: {message} for {url}; retrying in "
-            f"{backoff:.0f}s (attempt {attempt}/{_MAX_ATTEMPTS})")
-        sleep(backoff)
-
-
 def fetch_ransomwhere(session=None, timeout: float = 120.0,
                       sleep=time.sleep, log=print) -> RansomwhereData:
     """Download and parse the current Ransomwhere export. Transient
-    failures are retried (see :func:`_get_with_retry`); the last failure
-    raises unchanged."""
+    failures are retried (see :func:`pipeline.fetch_http.get_with_retry`); the
+    last failure raises unchanged."""
     import requests
 
     session = session or requests.Session()
-    resp = _get_with_retry(session, RANSOMWHERE_URL, timeout, sleep, log)
+    resp = get_with_retry(session, RANSOMWHERE_URL, label="ransomwhere",
+                          timeout=timeout, sleep=sleep, log=log)
     return parse_ransomwhere(resp.json())

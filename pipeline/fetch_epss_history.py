@@ -75,8 +75,9 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Callable
 
+from .fetch_http import USER_AGENT
+
 API_URL = "https://api.first.org/data/v1/epss"
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
 STATE_VERSION = 1
 STATE_FILENAME = "epss_report_state.json"
 

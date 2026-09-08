@@ -49,10 +49,11 @@ import json
 from pathlib import Path
 from typing import Callable
 
+from .fetch_http import USER_AGENT
+
 INDEX_URL = ("https://raw.githubusercontent.com/mitre-attack/"
              "attack-stix-data/master/index.json")
 COLLECTION_NAME = "Enterprise ATT&CK"
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
 STATE_VERSION = 1
 STATE_FILENAME = "attack_state.json"
 

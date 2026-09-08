@@ -231,3 +231,19 @@ def test_committed_sample_data_conforms():
         path = data_dir / name
         if path.exists():
             contracts.validate(name, json.loads(path.read_text("utf-8")))
+
+
+def test_meta_epss_zero_rows_rejected(outputs):
+    """An EPSS feed that parsed to zero rows is not a feed; the contract
+    refuses the edition rather than publish empty-scored modules."""
+    bad = _corrupt(outputs, "meta.json")
+    bad["sources"]["epss"]["row_count"] = 0
+    with pytest.raises(ContractViolation, match="epss.row_count"):
+        contracts.validate("meta.json", bad)
+
+
+def test_meta_kev_zero_count_rejected(outputs):
+    bad = _corrupt(outputs, "meta.json")
+    bad["sources"]["kev"]["count"] = 0
+    with pytest.raises(ContractViolation, match="kev.count"):
+        contracts.validate("meta.json", bad)

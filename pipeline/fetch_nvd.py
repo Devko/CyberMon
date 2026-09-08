@@ -47,10 +47,11 @@ from collections import Counter
 from datetime import datetime, timedelta, timezone
 from typing import Callable
 
+from .fetch_http import USER_AGENT, get_with_retry
+
 NVD_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 FEED_URL = "https://nvd.nist.gov/feeds/json/cve/2.0/nvdcve-2.0-{year}.json.gz"
 FIRST_FEED_YEAR = 2002  # the 2002 feed carries 1999-2002
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
 PAGE_SIZE = 2000
 STATE_VERSION = 1
 FULL_RESYNC_DAYS = 7
@@ -59,6 +60,7 @@ FULL_RESYNC_DAYS = 7
 # API pull re-covers the gap.
 FEED_STALENESS = timedelta(hours=25)
 _FEED_TIMEOUT = (10.0, 300.0)  # (connect, read); feeds are large flat files
+_FEED_ATTEMPTS = 3
 _RETRY_STATUSES = {403, 429, 500, 502, 503, 504}
 _MAX_ATTEMPTS = 6
 # 30s window / 5 (or 50) requests, plus a little slack.
@@ -160,15 +162,33 @@ def _fmt_nvd(ts: datetime) -> str:
 # --------------------------------------------- full sweep via yearly feeds --
 
 def _collect_feed_statuses(session, log: Callable[[str], None],
-                           now: datetime) -> dict[str, str]:
+                           now: datetime,
+                           sleep: Callable[[float], None] = time.sleep
+                           ) -> dict[str, str]:
     """Read the whole corpus from the static yearly feeds, return
     ``{cve_id: vulnStatus}``. Each year's document is parsed and discarded
-    before the next download, so peak memory stays one feed's worth."""
+    before the next download, so peak memory stays one feed's worth.
+
+    Each feed GET runs through the shared bounded retry (``_FEED_ATTEMPTS``
+    attempts on 403/429/5xx and connection errors). Any non-200 answer
+    that survives the ladder is fatal — a partial sweep must never be
+    written as state — with one exception: NVD publishes the current
+    year's feed only once that year has records, so a 404 for ``now.year``
+    in the first days of January is logged loudly and the sweep goes on
+    without it. Every other year's 404 stays fatal."""
     statuses: dict[str, str] = {}
     for year in range(FIRST_FEED_YEAR, now.year + 1):
-        resp = session.get(FEED_URL.format(year=year),
-                           headers={"User-Agent": USER_AGENT},
-                           timeout=_FEED_TIMEOUT)
+        url = FEED_URL.format(year=year)
+        resp = get_with_retry(session, url, label="NVD feed",
+                              timeout=_FEED_TIMEOUT,
+                              attempts=_FEED_ATTEMPTS,
+                              retry_statuses=_RETRY_STATUSES,
+                              sleep=sleep, log=log, raise_for_status=False)
+        if resp.status_code == 404 and year == now.year:
+            log(f"  WARNING: NVD feed {year} returned HTTP 404 — the "
+                f"current-year feed is not published yet (expected only "
+                f"in the first days of January); sweeping without it")
+            continue
         if resp.status_code != 200:
             raise RuntimeError(f"NVD feed {year} returned HTTP "
                                f"{resp.status_code}")
@@ -190,7 +210,8 @@ def _collect_feed_statuses(session, log: Callable[[str], None],
 
 
 def full_sweep_state(session=None, log: Callable[[str], None] = print,
-                     now: datetime | None = None) -> dict:
+                     now: datetime | None = None,
+                     sleep: Callable[[float], None] = time.sleep) -> dict:
     """Build a complete sync state from the static yearly feeds.
 
     ``last_sync`` is back-dated by ``FEED_STALENESS`` because the feeds
@@ -200,7 +221,7 @@ def full_sweep_state(session=None, log: Callable[[str], None] = print,
 
     session = session or requests.Session()
     now = now or datetime.now(timezone.utc)
-    statuses = _collect_feed_statuses(session, log, now)
+    statuses = _collect_feed_statuses(session, log, now, sleep=sleep)
     return {"version": STATE_VERSION, "last_full_sync": _iso(now),
             "last_sync": _iso(now - FEED_STALENESS), "statuses": statuses}
 
@@ -241,7 +262,8 @@ def sync_status_state(state: dict | None, session=None,
     reason = _full_sweep_reason(state, now)
     if reason is not None:
         log(f"  NVD: full sweep via yearly feeds ({reason})")
-        return full_sweep_state(session=session, log=log, now=now)
+        return full_sweep_state(session=session, log=log, now=now,
+                                sleep=sleep)
 
     window_start = _parse_iso(state["last_sync"]) - _OVERLAP
     changed = _collect_statuses(

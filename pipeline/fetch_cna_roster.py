@@ -59,13 +59,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
+from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
+
 ROSTER_URL = ("https://raw.githubusercontent.com/CVEProject/cve-website/dev/"
               "src/assets/data/CNAsList.json")
 
-USER_AGENT = "CyberMon/1.0 (+https://github.com/Devko/CyberMon)"
-
-_RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_ATTEMPTS = 3
 
 
 @dataclass
@@ -165,40 +163,15 @@ def load_roster_file(path: Path) -> RosterSnapshot:
     return parse_roster(json.loads(path.read_text(encoding="utf-8")))
 
 
-def _get_with_retry(session, url: str, timeout: float, sleep, log):
-    """GET with fetch_ransomwhere's bounded-retry discipline: up to
-    ``_MAX_ATTEMPTS`` attempts, backing off on 429/5xx statuses and
-    connection errors. The final failure raises exactly as an unretried call
-    would — the retry absorbs blips, it never softens the loud-failure
-    policy (there is no carry-forward for this source)."""
-    for attempt in range(1, _MAX_ATTEMPTS + 1):
-        last = attempt == _MAX_ATTEMPTS
-        try:
-            resp = session.get(url, timeout=timeout,
-                               headers={"User-Agent": USER_AGENT})
-        except OSError as exc:  # requests exceptions subclass OSError
-            if last:
-                raise
-            message = f"request failed: {exc!r}"
-        else:
-            if last or resp.status_code not in _RETRY_STATUSES:
-                resp.raise_for_status()
-                return resp
-            message = f"HTTP {resp.status_code}"
-        backoff = 15.0 * attempt
-        log(f"  cna-roster: {message} for {url}; retrying in "
-            f"{backoff:.0f}s (attempt {attempt}/{_MAX_ATTEMPTS})")
-        sleep(backoff)
-
-
 def fetch_roster(session=None, timeout: float = 120.0,
                  sleep=time.sleep, log: Callable[[str], None] = print
                  ) -> RosterSnapshot:
     """Download and parse the current CVE.org organization roster. Transient
-    failures are retried (see :func:`_get_with_retry`); the last failure
-    raises unchanged."""
+    failures are retried (see :func:`pipeline.fetch_http.get_with_retry`); the
+    last failure raises unchanged."""
     import requests
 
     session = session or requests.Session()
-    resp = _get_with_retry(session, ROSTER_URL, timeout, sleep, log)
+    resp = get_with_retry(session, ROSTER_URL, label="cna-roster",
+                          timeout=timeout, sleep=sleep, log=log)
     return parse_roster(resp.json())
