@@ -29,7 +29,7 @@
       <p class="field-thesis">Every published CVE, one point each. Arrange them by the site's own theses.</p>
     </div>
     <dl class="field-counters" aria-live="polite">
-      <div><dt>shown</dt><dd id="f-count">—</dd></div>
+      <div><dt id="f-count-k">shown</dt><dd id="f-count">—</dd></div>
       <div><dt>in KEV</dt><dd id="f-kev" class="accent">—</dd></div>
       <div><dt>KEV share</dt><dd id="f-share">—</dd></div>
     </dl>
@@ -93,6 +93,12 @@
       </section>
 
       <section class="rail-group">
+        <h2 class="rail-k">Select</h2>
+        <button type="button" class="rail-play" id="f-select" aria-pressed="false">▭ Draw a box (S)</button>
+        <p class="rail-help">In select mode, drag a box on the canvas: the counters and a panel describe exactly what you caught — assigners, weaknesses, vendors, scores, exploitation. Esc clears.</p>
+      </section>
+
+      <section class="rail-group">
         <h2 class="rail-k">Point size</h2>
         <input type="range" id="f-size" min="0.5" max="2.5" step="0.1" value="1" aria-label="Point size">
         <button type="button" class="rail-reset" id="f-reset">Reset camera</button>
@@ -106,6 +112,8 @@
       <canvas id="f-canvas" aria-label="Three-dimensional field of every published CVE. The controls on the left arrange, colour and filter it; the counters above report what is shown."></canvas>
       <div class="field-labels" id="f-labels" aria-hidden="true"></div>
       <div class="field-tip" id="f-tip" role="status"></div>
+      <div class="field-rect" id="f-rect" hidden></div>
+      <aside class="field-sel" id="f-sel" hidden aria-label="Selection"></aside>
       <div class="field-hud">
         <p class="hud-k" id="hud-k"></p>
         <p class="hud-thesis" id="hud-thesis"></p>

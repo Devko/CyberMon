@@ -251,7 +251,7 @@ function main({ meta, buf }) {
   const state = {
     layout: "time", color: "expl", from: 1999, to: MAX_YEAR, minScore: 0,
     kevOnly: false, pocOnly: false, ransomOnly: false, cnaQ: "", vendorQ: "",
-    sort: "count", size: 1, playing: false, playFrom: 1999,
+    sort: "count", size: 1, playing: false, playFrom: 1999, select: false,
   };
   const shown = new Uint8Array(N);
   let shownCount = 0, shownKev = 0;
@@ -475,6 +475,8 @@ function main({ meta, buf }) {
         if (k) { s = 4.2; a = 0.95; }
       }
       if (i === focusIdx) { c = PAL.focus; s = 9; a = 1; }
+      // a live selection: the catch at full strength, the rest a ghost
+      if (selCount) a = selected[i] ? Math.max(a, 0.9) : Math.min(a, 0.06);
       colr[i * 3] = c.r; colr[i * 3 + 1] = c.g; colr[i * 3 + 2] = c.b;
       size[i] = s * state.size; alpha[i] = a;
     }
@@ -490,9 +492,113 @@ function main({ meta, buf }) {
 
   // ---- interaction ----------------------------------------------------------
   let drag = null, hoverAt = 0;
-  canvas.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, b: e.button, shift: e.shiftKey, moved: false }; canvas.setPointerCapture(e.pointerId); canvas.style.cursor = "grabbing"; });
-  canvas.addEventListener("pointerup", (e) => { if (drag && !drag.moved) click(e); drag = null; canvas.style.cursor = "grab"; });
+  // ---- selection: a drawn box becomes a receipt ----------------------------
+  // In select mode a left-drag draws a screen-space box; on release every
+  // shown point whose projection falls inside it is selected. The counters
+  // and the panel then describe the catch; everything else dims. Positions
+  // move on every refresh, so a selection never survives a re-layout.
+  const rectEl = $("f-rect"), selEl = $("f-sel");
+  const selected = new Uint8Array(N);
+  let selCount = 0, selKev = 0, rect = null;
+  function canvasXY(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+  function drawRect() {
+    const x = Math.min(rect.x0, rect.x1), y = Math.min(rect.y0, rect.y1);
+    rectEl.style.left = `${x}px`; rectEl.style.top = `${y}px`;
+    rectEl.style.width = `${Math.abs(rect.x1 - rect.x0)}px`; rectEl.style.height = `${Math.abs(rect.y1 - rect.y0)}px`;
+    rectEl.hidden = false;
+  }
+  const pv = new THREE.Vector3();
+  function captureRect(r) {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const x0 = Math.min(r.x0, r.x1), x1 = Math.max(r.x0, r.x1), y0 = Math.min(r.y0, r.y1), y1 = Math.max(r.y0, r.y1);
+    if (x1 - x0 < 3 || y1 - y0 < 3) return;
+    camera.updateMatrixWorld();
+    selCount = 0; selKev = 0;
+    for (let i = 0; i < N; i++) {
+      selected[i] = 0;
+      if (!shown[i] || pos[i * 3 + 1] < -500) continue;
+      pv.set(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]).project(camera);
+      if (pv.z >= 1) continue;
+      const sx = (pv.x * 0.5 + 0.5) * w, sy = (-pv.y * 0.5 + 0.5) * h;
+      if (sx >= x0 && sx <= x1 && sy >= y0 && sy <= y1) { selected[i] = 1; selCount++; selKev += KEV(i); }
+    }
+    renderSelection(); colour(); updateCounters();
+  }
+  function clearSelection(recolour = true) {
+    if (!selCount) return;
+    selected.fill(0); selCount = 0; selKev = 0;
+    selEl.hidden = true;
+    if (recolour) { colour(); updateCounters(); }
+  }
+  function topN(keyFn, nameFn, n = 5) {
+    const cnt = new Map();
+    for (let i = 0; i < N; i++) if (selected[i]) cnt.set(keyFn(i), (cnt.get(keyFn(i)) || 0) + 1);
+    return [...cnt.entries()].sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, c]) => [nameFn(k), c]);
+  }
+  function renderSelection() {
+    if (!selCount) { selEl.hidden = true; return; }
+    let poc = 0, scored = 0, crit = 0, withEpss = 0, hot = 0, yMin = 9999, yMax = 0, ransom = 0;
+    const scores = [];
+    for (let i = 0; i < N; i++) {
+      if (!selected[i]) continue;
+      if (POC(i)) poc++;
+      if (RANSOM(i)) ransom++;
+      if (D.score[i] !== NO_SCORE) { scored++; scores.push(D.score[i]); if (D.score[i] >= 90) crit++; }
+      if (D.epss[i] !== NO_EPSS) { withEpss++; if (D.epss[i] >= 100) hot++; }
+      const y = 1999 + pubYear[i]; if (y < yMin) yMin = y; if (y > yMax) yMax = y;
+    }
+    scores.sort((a, b) => a - b);
+    const median = scores.length ? (scores[Math.floor(scores.length / 2)] / 10).toFixed(1) : "—";
+    const pct = (a, b) => (b ? `${((a / b) * 100).toFixed(1)} %` : "—");
+    const list = (rows) => `<ol>${rows.map(([name, c]) => `<li><span>${escapeHtml(String(name))}</span><span>${fmt(c)}</span></li>`).join("")}</ol>`;
+    selEl.innerHTML = `<div class="sel-head"><b><span>${fmt(selCount)}</span> selected</b><button type="button" class="sel-close" id="f-sel-clear">clear</button></div>`
+      + `<dl><dt>of shown</dt><dd>${pct(selCount, shownCount)} of ${fmt(shownCount)}</dd>`
+      + `<dt>published</dt><dd>${yMin === yMax ? yMin : `${yMin}–${yMax}`}</dd>`
+      + `<dt>in KEV</dt><dd>${fmt(selKev)} · ${pct(selKev, selCount)}${ransom ? ` · ${fmt(ransom)} ransomware` : ""}</dd>`
+      + `<dt>public PoC</dt><dd>${fmt(poc)} · ${pct(poc, selCount)}</dd>`
+      + `<dt>scored</dt><dd>${fmt(scored)} · median ${median} · Critical ${pct(crit, scored)}</dd>`
+      + `<dt>EPSS ≥ 1%</dt><dd>${fmt(hot)} · ${pct(hot, withEpss)} of ${fmt(withEpss)} scored by EPSS</dd></dl>`
+      + `<h4>Assigners</h4>${list(topN((i) => D.cna[i], (k) => CNAS[k]))}`
+      + `<h4>Weaknesses</h4>${list(topN((i) => D.cwe[i], (k) => cweName(k)))}`
+      + `<h4>Vendors</h4>${list(topN((i) => D.vendor[i], (k) => VENDORS[k]))}`
+      + `<p class="sel-note">Counts are exact over the ${fmt(selCount)} records inside the box in this view. Re-arranging or filtering clears the selection.</p>`;
+    selEl.hidden = false;
+    $("f-sel-clear").addEventListener("click", () => clearSelection());
+  }
+  function updateCounters() {
+    const live = selCount > 0;
+    $("f-count-k").textContent = live ? "selected" : "shown";
+    $("f-count").textContent = fmt(live ? selCount : shownCount);
+    $("f-kev").textContent = fmt(live ? selKev : shownKev);
+    const n = live ? selCount : shownCount, k = live ? selKev : shownKev;
+    $("f-share").textContent = n ? `${((k / n) * 100).toFixed(2)} %` : "—";
+  }
+  function setSelectMode(on) {
+    state.select = on;
+    $("f-select").setAttribute("aria-pressed", String(on));
+    canvas.classList.toggle("selecting", on);
+    if (!on && rect) { rect = null; rectEl.hidden = true; }
+  }
+  $("f-select").addEventListener("click", () => setSelectMode(!state.select));
+  addEventListener("keydown", (e) => {
+    if (e.target && /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.key === "Escape") { if (selCount) clearSelection(); else setSelectMode(false); }
+    if (e.key === "s" || e.key === "S") setSelectMode(!state.select);
+  });
+
+  canvas.addEventListener("pointerdown", (e) => {
+    if (state.select && e.button === 0 && !e.shiftKey) {
+      const [x, y] = canvasXY(e); rect = { x0: x, y0: y, x1: x, y1: y }; drawRect();
+      canvas.setPointerCapture(e.pointerId); tip.style.opacity = 0; return;
+    }
+    drag = { x: e.clientX, y: e.clientY, b: e.button, shift: e.shiftKey, moved: false }; canvas.setPointerCapture(e.pointerId); canvas.style.cursor = "grabbing";
+  });
+  canvas.addEventListener("pointerup", (e) => {
+    if (rect) { const r = rect; rect = null; rectEl.hidden = true; captureRect(r); return; }
+    if (drag && !drag.moved) click(e); drag = null; canvas.style.cursor = state.select ? "crosshair" : "grab";
+  });
   canvas.addEventListener("pointermove", (e) => {
+    if (rect) { [rect.x1, rect.y1] = canvasXY(e); drawRect(); return; }
     if (drag) {
       const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
       if (Math.abs(dx) + Math.abs(dy) > 2) drag.moved = true;
@@ -579,10 +685,11 @@ function main({ meta, buf }) {
   }
 
   function refresh() {
-    applyFilter(); layout(); colour();
-    $("f-count").textContent = fmt(shownCount);
-    $("f-kev").textContent = fmt(shownKev);
-    $("f-share").textContent = shownCount ? `${((shownKev / shownCount) * 100).toFixed(2)} %` : "—";
+    applyFilter();
+    // positions are about to move: a box drawn on the old view means nothing
+    if (selCount) { selected.fill(0); selCount = 0; selKev = 0; selEl.hidden = true; }
+    layout(); colour();
+    updateCounters();
     if (focusIdx >= 0 && shown[focusIdx]) {
       // fly the camera to the focused record and pin its card top-right
       cam.tx = target[focusIdx * 3]; cam.ty = target[focusIdx * 3 + 1]; cam.tz = target[focusIdx * 3 + 2];

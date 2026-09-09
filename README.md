@@ -412,8 +412,12 @@ it by the site's own theses:
 Colour by exploitation (KEV / public PoC / neither), KEV latency (the KEV
 module's own buckets), severity, CVSS version or assigner; filter by year,
 minimum score, KEV, PoC, ransomware use, assigner and vendor; hover for the
-record, click to open it on cve.org. The URL hash carries the whole view, so
-any arrangement is a link, and `#cve=CVE-2024-3400` opens on one record.
+record, click to open it on cve.org. **Select mode** (the rail button, or
+`S`) turns a drawn box into a receipt: the counters and a panel recompute
+for exactly the records caught — assigners, weaknesses, vendors, score
+distribution, KEV / PoC / EPSS shares — and the rest of the field dims. The
+URL hash carries the whole view, so any arrangement is a link, and
+`#cve=CVE-2024-3400` opens on one record.
 
 Its data is `site/field/field.json` plus a gzipped fixed-width record
 stream (24 bytes per CVE, layout documented in

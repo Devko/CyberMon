@@ -395,3 +395,108 @@
 @media (prefers-reduced-motion: reduce) {
   .rail-btns button, .rail-play, .rail-reset, .field-tip { transition: none; }
 }
+
+/* ------------------------------------------------------------- selection -- */
+
+#f-canvas.selecting { cursor: crosshair; }
+
+.field-rect {
+  position: absolute;
+  pointer-events: none;
+  border: 1px dashed var(--accent);
+  background: var(--accent-dim);
+  z-index: 2;
+}
+
+.field-rect[hidden] { display: none; }
+
+.field-sel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: min(340px, calc(100% - 24px));
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
+  padding: 12px 14px 14px;
+  background: var(--panel-up);
+  border: 1px solid var(--rule-strong);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.field-sel[hidden] { display: none; }
+
+.field-sel .sel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.field-sel .sel-head b {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.field-sel .sel-head b span { color: var(--accent); }
+
+.field-sel .sel-close {
+  appearance: none;
+  font: inherit;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--rule);
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.field-sel .sel-close:hover { color: var(--ink); border-color: var(--rule-strong); }
+
+.field-sel dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  row-gap: 3px;
+  margin: 0 0 8px;
+}
+
+.field-sel dt { color: var(--muted); }
+.field-sel dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+.field-sel h4 {
+  margin: 8px 0 3px;
+  font-weight: 400;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field-sel ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.field-sel li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.field-sel li span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.field-sel .sel-note { margin: 8px 0 0; color: var(--muted); font-size: 11.5px; }
+
+@media (max-width: 860px) {
+  .field-sel { top: 8px; right: 8px; width: min(300px, calc(100% - 16px)); font-size: 12px; }
+}
