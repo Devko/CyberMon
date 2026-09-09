@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-08T02:48:34Z",
+ "generated_at": "2026-09-09T02:48:49Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -8,6 +8,7 @@
   "wiki",
   "edgar"
  ],
+ "stale_sources": [],
  "backfill_remaining": 0,
  "terms": [
   {
@@ -3949,8 +3950,8 @@
      },
      {
       "month": "2026-07",
-      "n": 19,
-      "index": 67.9
+      "n": 20,
+      "index": 71.4
      },
      {
       "month": "2026-08",
@@ -4568,8 +4569,8 @@
     },
     "arxiv": {
      "latest_month": "2026-08",
-     "pct_change": 66.0,
-     "n_latest_12m": 264,
+     "pct_change": 66.7,
+     "n_latest_12m": 265,
      "n_prior_12m": 159
     },
     "wiki": {
@@ -4587,8 +4588,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 77.6,
-    "arxiv_index_avg3m": 82.1,
-    "research_vs_media_index": 4.5,
+    "arxiv_index_avg3m": 83.3,
+    "research_vs_media_index": 5.7,
     "direction": "aligned"
    }
   },
@@ -13171,7 +13172,7 @@
      },
      {
       "month": "2026-07",
-      "n": 801,
+      "n": 802,
       "index": 34.7
      },
      {
@@ -13208,8 +13209,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 16.1,
-     "n_latest_12m": 14255,
+     "pct_change": 16.2,
+     "n_latest_12m": 14256,
      "n_prior_12m": 12273
     }
    },

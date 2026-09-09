@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-08T02:48:34Z",
+ "generated_at": "2026-09-09T02:48:49Z",
  "min_n": 10,
  "years": [
   {
@@ -29,19 +29,19 @@
   {
    "year": 2025,
    "total": 245,
-   "known": 30,
-   "pct_known": 12.2
+   "known": 31,
+   "pct_known": 12.7
   },
   {
    "year": 2026,
-   "total": 211,
+   "total": 215,
    "known": 24,
-   "pct_known": 11.4
+   "pct_known": 11.2
   }
  ],
  "catalog": {
-  "total": 1695,
-  "known": 354,
+  "total": 1699,
+  "known": 355,
   "pct_known": 20.9
  }
 }

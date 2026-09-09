@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-08T02:48:34Z",
+ "generated_at": "2026-09-09T02:48:49Z",
  "thresholds": {
   "lo": 0.001,
   "mid": 0.01,
@@ -425,12 +425,12 @@
  },
  "catalog": {
   "state_model_version": "v2026.06.15",
-  "state_score_date": "2026-09-07",
-  "state_size": 368770,
-  "days_observed": 48,
+  "state_score_date": "2026-09-08",
+  "state_size": 369023,
+  "days_observed": 49,
   "trend_days": 41,
   "resets_quarantined": 0,
-  "gaps_quarantined": 1,
+  "gaps_quarantined": 2,
   "anomalies_quarantined": 6,
   "anomaly_rule": {
    "factor": 5.0,
@@ -472,6 +472,11 @@
     "date": "2026-09-06",
     "reason": "anomaly",
     "prob_moved_pct": 11.7
+   },
+   {
+    "date": "2026-09-08",
+    "reason": "gap",
+    "prob_moved_pct": 1.0
    }
   ],
   "crossed_totals": {

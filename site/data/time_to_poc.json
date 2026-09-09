@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-08T02:48:34Z",
+ "generated_at": "2026-09-09T02:48:49Z",
  "hero": {
   "matched": {
    "dated_cves": 26246,
@@ -271,7 +271,8 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-06-10",
+  "observed_through": "2026-06-11",
+  "min_n": 30,
   "years": [
    {
     "year": 2000,
@@ -493,7 +494,7 @@
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1695,
+  "total_kev": 1699,
   "trend": {
    "with_poc_date": 244,
    "preempted": 198,
@@ -542,7 +543,7 @@
    },
    {
     "year": 2026,
-    "total_added": 211,
+    "total_added": 215,
     "with_poc_date": 53,
     "preempted": 42,
     "pct_preempted": 79.2
@@ -560,7 +561,7 @@
    },
    {
     "bucket": "4.0-6.9",
-    "total": 23721,
+    "total": 23720,
     "with_poc": 251,
     "pct": 1.1
    },
@@ -572,7 +573,7 @@
    },
    {
     "bucket": "9.0-10.0",
-    "total": 4110,
+    "total": 4111,
     "with_poc": 340,
     "pct": 8.3
    }
@@ -597,11 +598,11 @@
    "dated_cves": 3038
   },
   "nuclei": {
-   "templates": 4378,
-   "cves": 4378
+   "templates": 4384,
+   "cves": 4384
   },
-  "union_cves": 29554,
+  "union_cves": 29560,
   "dated_cves": 26246,
-  "matched_in_corpus": 29492
+  "matched_in_corpus": 29498
  }
 }

@@ -15315,7 +15315,7 @@
    "name": "WatchGuard Firebox Out of Bounds Write Vulnerability",
    "notes": "20ab4ede9e1d",
    "product": "Firebox",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "WatchGuard"
   },
   "CVE-2025-14847": {
@@ -18519,6 +18519,17 @@
    "ransom": "Unknown",
    "vendor": "Arista"
   },
+  "CVE-2026-75650": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-08",
+   "desc": "411aee32c05e",
+   "due": "2026-09-11",
+   "name": "Adobe Commerce and Magento Improper Neutralization of Special Elements Used in a Template Engine Vulnerability",
+   "notes": "0e1438c853a5",
+   "product": "Commerce and Magento",
+   "ransom": "Unknown",
+   "vendor": "Adobe"
+  },
   "CVE-2026-8037": {
    "action": "ba0d649eb29b",
    "added": "2026-08-07",
@@ -18540,6 +18551,17 @@
    "product": "NG/MF",
    "ransom": "Unknown",
    "vendor": "PaperCut"
+  },
+  "CVE-2026-81963": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-08",
+   "desc": "bf1512012d4e",
+   "due": "2026-09-22",
+   "name": "Microsoft Windows Link Following Vulnerability",
+   "notes": "1fc95421d491",
+   "product": "Windows",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
   },
   "CVE-2026-82078": {
    "action": "ba0d649eb29b",
@@ -18618,6 +18640,28 @@
    "ransom": "Unknown",
    "vendor": "Google"
   },
+  "CVE-2026-85880": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-08",
+   "desc": "fb3a93a725ca",
+   "due": "2026-09-22",
+   "name": "Microsoft Windows Heap-Based Buffer Overflow Vulnerability",
+   "notes": "b0a9a5825d88",
+   "product": "Windows",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
+  "CVE-2026-86218": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-08",
+   "desc": "0d11b2756080",
+   "due": "2026-09-11",
+   "name": "N-able N-central Static Code Injection Vulnerability",
+   "notes": "baf537429b6a",
+   "product": "N-central",
+   "ransom": "Unknown",
+   "vendor": "N-able"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -18652,7 +18696,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-08",
+ "last_observed": "2026-09-09",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

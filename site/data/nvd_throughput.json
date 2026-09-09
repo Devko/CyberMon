@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-08T02:48:34Z",
+ "generated_at": "2026-09-09T02:48:49Z",
  "min_known_duration": 30,
  "queue": {
   "median_days": 4.0,
@@ -12,7 +12,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-13",
@@ -20,7 +21,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-14",
@@ -28,7 +30,8 @@
    "entered_awaiting": 58,
    "analyzed_from_awaiting": 104,
    "deferred_from_awaiting": 173,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-15",
@@ -36,7 +39,8 @@
    "entered_awaiting": 659,
    "analyzed_from_awaiting": 141,
    "deferred_from_awaiting": 29,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-16",
@@ -44,7 +48,8 @@
    "entered_awaiting": 768,
    "analyzed_from_awaiting": 146,
    "deferred_from_awaiting": 148,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-07-17",
@@ -52,7 +57,8 @@
    "entered_awaiting": 66,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": true
   },
   {
    "date": "2026-07-18",
@@ -60,7 +66,8 @@
    "entered_awaiting": 75,
    "analyzed_from_awaiting": 333,
    "deferred_from_awaiting": 51,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-07-19",
@@ -68,7 +75,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-20",
@@ -76,7 +84,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 15,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-21",
@@ -84,7 +93,8 @@
    "entered_awaiting": 14,
    "analyzed_from_awaiting": 180,
    "deferred_from_awaiting": 70,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-22",
@@ -92,7 +102,8 @@
    "entered_awaiting": 135,
    "analyzed_from_awaiting": 174,
    "deferred_from_awaiting": 67,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-23",
@@ -100,7 +111,8 @@
    "entered_awaiting": 92,
    "analyzed_from_awaiting": 133,
    "deferred_from_awaiting": 60,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-24",
@@ -108,7 +120,8 @@
    "entered_awaiting": 11,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-07-25",
@@ -116,7 +129,8 @@
    "entered_awaiting": 502,
    "analyzed_from_awaiting": 193,
    "deferred_from_awaiting": 163,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-07-26",
@@ -124,7 +138,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-27",
@@ -132,7 +147,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-28",
@@ -140,7 +156,8 @@
    "entered_awaiting": 257,
    "analyzed_from_awaiting": 229,
    "deferred_from_awaiting": 35,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-29",
@@ -148,7 +165,8 @@
    "entered_awaiting": 97,
    "analyzed_from_awaiting": 173,
    "deferred_from_awaiting": 61,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-30",
@@ -156,7 +174,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 206,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-07-31",
@@ -164,7 +183,8 @@
    "entered_awaiting": 8,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-08-01",
@@ -172,7 +192,8 @@
    "entered_awaiting": 534,
    "analyzed_from_awaiting": 273,
    "deferred_from_awaiting": 295,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-08-03",
@@ -180,7 +201,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 27,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-04",
@@ -188,7 +210,8 @@
    "entered_awaiting": 43,
    "analyzed_from_awaiting": 418,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-05",
@@ -196,7 +219,8 @@
    "entered_awaiting": 23,
    "analyzed_from_awaiting": 105,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-06",
@@ -204,7 +228,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 178,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-07",
@@ -212,7 +237,8 @@
    "entered_awaiting": 105,
    "analyzed_from_awaiting": 283,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-08",
@@ -220,7 +246,8 @@
    "entered_awaiting": 5,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-08-09",
@@ -228,7 +255,8 @@
    "entered_awaiting": 4,
    "analyzed_from_awaiting": 158,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-08-10",
@@ -236,7 +264,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 12,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-11",
@@ -244,7 +273,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 106,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-12",
@@ -252,7 +282,8 @@
    "entered_awaiting": 222,
    "analyzed_from_awaiting": 139,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-13",
@@ -260,7 +291,8 @@
    "entered_awaiting": 210,
    "analyzed_from_awaiting": 180,
    "deferred_from_awaiting": 452,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-14",
@@ -268,7 +300,8 @@
    "entered_awaiting": 32,
    "analyzed_from_awaiting": 329,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-15",
@@ -276,7 +309,8 @@
    "entered_awaiting": 89,
    "analyzed_from_awaiting": 158,
    "deferred_from_awaiting": 136,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-16",
@@ -284,7 +318,8 @@
    "entered_awaiting": 2,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-08-17",
@@ -292,7 +327,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-08-18",
@@ -300,7 +336,8 @@
    "entered_awaiting": 1,
    "analyzed_from_awaiting": 230,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-19",
@@ -308,7 +345,8 @@
    "entered_awaiting": 60,
    "analyzed_from_awaiting": 108,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-20",
@@ -316,7 +354,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 222,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-21",
@@ -324,7 +363,8 @@
    "entered_awaiting": 308,
    "analyzed_from_awaiting": 48,
    "deferred_from_awaiting": 351,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-22",
@@ -332,7 +372,8 @@
    "entered_awaiting": 26,
    "analyzed_from_awaiting": 222,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-23",
@@ -340,7 +381,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-24",
@@ -348,7 +390,8 @@
    "entered_awaiting": 1,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-08-25",
@@ -356,7 +399,8 @@
    "entered_awaiting": 57,
    "analyzed_from_awaiting": 309,
    "deferred_from_awaiting": 62,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-08-26",
@@ -364,7 +408,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 274,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-27",
@@ -372,7 +417,8 @@
    "entered_awaiting": 204,
    "analyzed_from_awaiting": 168,
    "deferred_from_awaiting": 1113,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-30",
@@ -380,7 +426,8 @@
    "entered_awaiting": 584,
    "analyzed_from_awaiting": 336,
    "deferred_from_awaiting": 256,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-08-31",
@@ -388,7 +435,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-09-01",
@@ -396,7 +444,8 @@
    "entered_awaiting": 1,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": true
+   "resweep": true,
+   "after_resweep": false
   },
   {
    "date": "2026-09-02",
@@ -404,7 +453,8 @@
    "entered_awaiting": 348,
    "analyzed_from_awaiting": 432,
    "deferred_from_awaiting": 551,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": true
   },
   {
    "date": "2026-09-03",
@@ -412,7 +462,8 @@
    "entered_awaiting": 90,
    "analyzed_from_awaiting": 239,
    "deferred_from_awaiting": 10,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-09-04",
@@ -420,7 +471,8 @@
    "entered_awaiting": 165,
    "analyzed_from_awaiting": 229,
    "deferred_from_awaiting": 226,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-09-05",
@@ -428,7 +480,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 228,
    "deferred_from_awaiting": 15,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-09-06",
@@ -436,7 +489,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-09-07",
@@ -444,7 +498,8 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
   },
   {
    "date": "2026-09-08",
@@ -452,7 +507,17 @@
    "entered_awaiting": 0,
    "analyzed_from_awaiting": 0,
    "deferred_from_awaiting": 0,
-   "resweep": false
+   "resweep": false,
+   "after_resweep": false
+  },
+  {
+   "date": "2026-09-09",
+   "received_new": 20,
+   "entered_awaiting": 6,
+   "analyzed_from_awaiting": 0,
+   "deferred_from_awaiting": 0,
+   "resweep": true,
+   "after_resweep": false
   }
  ]
 }
