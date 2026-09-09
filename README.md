@@ -400,7 +400,7 @@ it by the site's own theses:
 
 - **Timeline** — publication day × in-record CVSS score × EPSS as depth
   (log scale; unscored records on the floor, un-EPSS'd records in the back
-  lane), with a year scrub that plays the corpus filling up.
+  lane), with a year range as the filter and an "as of" month scrub whose play button lets the corpus arrive in place, month by month.
 - **The clock** — signed days from publication to the first dated public
   PoC (front lane) and to the KEV listing (back lane), on a log scale;
   left of zero the exploit came first.

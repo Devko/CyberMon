@@ -251,8 +251,22 @@ function main({ meta, buf }) {
   const state = {
     layout: "time", color: "expl", from: 1999, to: MAX_YEAR, minScore: 0,
     kevOnly: false, pocOnly: false, ransomOnly: false, cnaQ: "", vendorQ: "",
-    sort: "count", size: 1, playing: false, playFrom: 1999, select: false,
+    sort: "count", size: 1, select: false,
+    asOf: -1,  // month index into MONTHS; -1 = everything (no cut)
   };
+  // Month table for the "as of" control: records published after the cut
+  // are drawn at zero alpha, in place — they arrive, they never slide.
+  const MONTHS = [];
+  for (let y = 1999; y <= MAX_YEAR; y++) {
+    for (let m = 0; m < 12; m++) {
+      const start = (Date.UTC(y, m, 1) - EPOCH) / 864e5;
+      if (start > LAST_DAY) break;
+      MONTHS.push({ label: `${y}-${String(m + 1).padStart(2, "0")}`, start });
+    }
+  }
+  const MAX_MONTH = MONTHS.length - 1;
+  const asOfDay = () => (state.asOf < 0 || state.asOf >= MAX_MONTH ? LAST_DAY : MONTHS[state.asOf + 1].start - 1);
+  let visCount = 0, visKev = 0;
   const shown = new Uint8Array(N);
   let shownCount = 0, shownKev = 0;
   function applyFilter() {
@@ -303,8 +317,8 @@ function main({ meta, buf }) {
   const yOfScore = (i) => (D.score[i] === NO_SCORE ? -6 + jit[i * 3 + 1] * 1.5 : (D.score[i] / 100) * 36 + jit[i * 3 + 1] * 0.6);
 
   function timelineLayout() {
-    const spanFrom = state.playing ? state.playFrom : state.from;
-    const spanTo = state.playing ? MAX_YEAR : state.to;
+    const spanFrom = state.from;
+    const spanTo = state.to;
     const a = dayOfYear(spanFrom), b = Math.min(LAST_DAY + 1, dayOfYear(spanTo + 1));
     const span = Math.max(1, b - a);
     for (let i = 0; i < N; i++) {
@@ -451,9 +465,12 @@ function main({ meta, buf }) {
       cnaTop = [...cnt.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map((e) => e[0]);
       cnaRank = new Map(cnaTop.map((c, i) => [c, i]));
     }
+    const cut = asOfDay();
+    visCount = 0; visKev = 0;
     for (let i = 0; i < N; i++) {
       let c, s = 1.0, a = 0.55;
       const k = KEV(i);
+      if (shown[i] && D.day[i] <= cut) { visCount++; visKev += k; }
       if (state.color === "expl") {
         c = k ? PAL.kev : POC(i) ? PAL.poc : PAL.none;
         if (k) { s = 4.2; a = 0.95; } else if (POC(i)) { s = 1.6; a = 0.7; } else { s = 0.8; a = 0.22; }
@@ -477,6 +494,7 @@ function main({ meta, buf }) {
       if (i === focusIdx) { c = PAL.focus; s = 9; a = 1; }
       // a live selection: the catch at full strength, the rest a ghost
       if (selCount) a = selected[i] ? Math.max(a, 0.9) : Math.min(a, 0.06);
+      if (D.day[i] > cut) { a = 0; s = 0; }  // not yet published as of the cut
       colr[i * 3] = c.r; colr[i * 3 + 1] = c.g; colr[i * 3 + 2] = c.b;
       size[i] = s * state.size; alpha[i] = a;
     }
@@ -513,10 +531,11 @@ function main({ meta, buf }) {
     const x0 = Math.min(r.x0, r.x1), x1 = Math.max(r.x0, r.x1), y0 = Math.min(r.y0, r.y1), y1 = Math.max(r.y0, r.y1);
     if (x1 - x0 < 3 || y1 - y0 < 3) return;
     camera.updateMatrixWorld();
+    const cut = asOfDay();
     selCount = 0; selKev = 0;
     for (let i = 0; i < N; i++) {
       selected[i] = 0;
-      if (!shown[i] || pos[i * 3 + 1] < -500) continue;
+      if (!shown[i] || pos[i * 3 + 1] < -500 || D.day[i] > cut) continue;
       pv.set(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]).project(camera);
       if (pv.z >= 1) continue;
       const sx = (pv.x * 0.5 + 0.5) * w, sy = (-pv.y * 0.5 + 0.5) * h;
@@ -566,11 +585,12 @@ function main({ meta, buf }) {
     $("f-sel-clear").addEventListener("click", () => clearSelection());
   }
   function updateCounters() {
-    const live = selCount > 0;
-    $("f-count-k").textContent = live ? "selected" : "shown";
-    $("f-count").textContent = fmt(live ? selCount : shownCount);
-    $("f-kev").textContent = fmt(live ? selKev : shownKev);
-    const n = live ? selCount : shownCount, k = live ? selKev : shownKev;
+    const live = selCount > 0, timed = state.asOf >= 0 && state.asOf < MAX_MONTH;
+    $("f-count-k").textContent = live ? "selected" : timed ? `as of ${MONTHS[state.asOf].label}` : "shown";
+    const n = live ? selCount : timed ? visCount : shownCount;
+    const k = live ? selKev : timed ? visKev : shownKev;
+    $("f-count").textContent = fmt(n);
+    $("f-kev").textContent = fmt(k);
     $("f-share").textContent = n ? `${((k / n) * 100).toFixed(2)} %` : "—";
   }
   function setSelectMode(on) {
@@ -708,6 +728,7 @@ function main({ meta, buf }) {
     if (state.layout !== "time") h.set("a", state.layout);
     if (state.color !== "expl") h.set("c", state.color);
     if (state.from !== 1999 || state.to !== MAX_YEAR) h.set("y", `${state.from}-${state.to}`);
+    if (state.asOf >= 0 && state.asOf < MAX_MONTH) h.set("t", MONTHS[state.asOf].label);
     if (state.minScore) h.set("s", String(state.minScore));
     if (state.kevOnly) h.set("k", "1");
     if (state.pocOnly) h.set("p", "1");
@@ -733,6 +754,8 @@ function main({ meta, buf }) {
     if (ARRANGE[h.get("a")]) state.layout = h.get("a");
     if (LEGEND[h.get("c")] !== undefined) state.color = h.get("c");
     const y = (h.get("y") || "").match(/^(\d{4})-(\d{4})$/);
+    const t = MONTHS.findIndex((m) => m.label === h.get("t"));
+    state.asOf = t >= 0 && t < MAX_MONTH ? t : -1;
     if (y) { state.from = Math.max(1999, Math.min(MAX_YEAR, +y[1])); state.to = Math.max(state.from, Math.min(MAX_YEAR, +y[2])); }
     if (h.get("s")) state.minScore = Math.max(0, Math.min(10, +h.get("s") || 0));
     state.kevOnly = h.get("k") === "1"; state.pocOnly = h.get("p") === "1"; state.ransomOnly = h.get("r") === "1";
@@ -768,20 +791,41 @@ function main({ meta, buf }) {
   };
   fromEl.addEventListener("input", onYears); toEl.addEventListener("input", onYears); showYears();
 
+  // ---- "as of": a month cut that reveals records in place ------------------
+  // The arrangement is computed once for the whole selection; the cut only
+  // changes alpha, so a sweep costs one colour pass per month and points
+  // arrive where they belong instead of sliding as the axis rescales.
+  const asOfEl = $("f-asof");
+  asOfEl.max = MAX_MONTH; asOfEl.value = MAX_MONTH;
+  function showAsOf() {
+    const all = state.asOf < 0 || state.asOf >= MAX_MONTH;
+    asOfEl.value = all ? MAX_MONTH : state.asOf;
+    $("f-asof-v").textContent = all ? "everything" : MONTHS[state.asOf].label;
+  }
+  function setAsOf(idx, { hash = true } = {}) {
+    state.asOf = idx >= MAX_MONTH || idx < 0 ? -1 : idx;
+    showAsOf(); colour(); updateCounters();
+    if (hash) writeHash();
+  }
+  asOfEl.addEventListener("input", (e) => { stopPlay(); setAsOf(+e.target.value); });
+
   let playTimer = null;
   function stopPlay() {
-    if (!state.playing) return;
-    state.playing = false; clearInterval(playTimer); $("f-play").textContent = "▶ Play the years";
+    if (!playTimer) return;
+    clearInterval(playTimer); playTimer = null; $("f-play").textContent = "▶ Play the months";
+    writeHash();
   }
   $("f-play").addEventListener("click", () => {
-    if (state.playing) { stopPlay(); refresh(); return; }
-    state.playing = true; state.playFrom = state.from; state.to = state.from;
-    toEl.value = state.to; showYears(); $("f-play").textContent = "■ Stop";
-    refresh();
+    if (playTimer) { stopPlay(); return; }
+    // start where the cut stands, or at the first month of the year range
+    let idx = state.asOf >= 0 ? state.asOf : MONTHS.findIndex((m) => m.start >= dayOfYear(state.from));
+    if (idx < 0 || idx >= MAX_MONTH) idx = 0;
+    setAsOf(idx, { hash: false });
+    $("f-play").textContent = "■ Stop";
     playTimer = setInterval(() => {
-      if (state.to >= MAX_YEAR) { stopPlay(); refresh(); return; }
-      state.to++; toEl.value = state.to; showYears(); refresh();
-    }, REDUCE ? 1200 : 700);
+      if (state.asOf < 0 || state.asOf + 1 >= MAX_MONTH) { setAsOf(-1, { hash: false }); stopPlay(); return; }
+      setAsOf(state.asOf + 1, { hash: false });
+    }, REDUCE ? 400 : 90);
   });
 
   $("f-min").addEventListener("input", (e) => { state.minScore = +e.target.value; $("f-minv").textContent = state.minScore ? `≥ ${state.minScore.toFixed(1)}` : "any"; refresh(); });
@@ -823,7 +867,7 @@ function main({ meta, buf }) {
 
   // ---- go -------------------------------------------------------------------
   pos.fill(0); for (let i = 0; i < N; i++) pos[i * 3 + 1] = -999;
-  readHash(); showYears(); resetCamera(); refresh();
+  readHash(); showYears(); showAsOf(); resetCamera(); refresh();
   notice.hidden = true;
   requestAnimationFrame(frame);
 }
