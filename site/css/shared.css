@@ -511,6 +511,10 @@ code {
 
 .cna-name { min-width: 170px; }
 .cna-short { display: block; color: var(--ink); }
+
+/* A CVE id that opens the Field instrument on that record (dom.js withCveLinks). */
+.cve-link { color: var(--ink); text-decoration: underline dotted; text-decoration-color: var(--faint); text-underline-offset: 3px; }
+.cve-link:hover { color: var(--accent); text-decoration-color: var(--accent); }
 .cna-org { display: block; font-size: 11px; color: var(--faint); }
 
 /* Naming Chaos board: the alternate-name list — secondary to the count,

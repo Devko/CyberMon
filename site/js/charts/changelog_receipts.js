@@ -3,7 +3,7 @@
 // (guards_recidivism.js pattern): the most-edited catalog entries, with
 // the removals — a removed KEV entry is news — listed by name below.
 import { editorial, tpl } from "../editorial.js";
-import { el, clear } from "../dom.js";
+import { el, clear, withCveLinks } from "../dom.js";
 import { sortHeader } from "../ui.js";
 import { fmtInt } from "../theme.js";
 
@@ -73,6 +73,10 @@ export function render(slots, data) {
             cell.append(fill, el("span", "cellbar-val", fmtInt(r.edits)));
             td.append(cell);
             tr.append(td);
+          } else if (col.key === "cve") {
+            const td = el("td", "mono");
+            td.append(withCveLinks(String(r.cve ?? "")));
+            tr.append(td);
           } else {
             const td = el("td", col.mono ? "mono" : "");
             td.textContent = String(r[col.key] ?? "");
@@ -95,13 +99,15 @@ export function render(slots, data) {
   } else {
     for (const r of removals) {
       const line = r.listed ? ed.removalRow : ed.removalRowUnlisted;
-      extra.append(el("p", "mono", tpl(line, {
+      const p = el("p", "mono");
+      p.append(withCveLinks(tpl(line, {
         cve: r.cve,
         vendor: r.vendor || "?",
         product: r.product || "?",
         listed: r.listed,
         removed: r.removed,
       })));
+      extra.append(p);
     }
   }
   slots.extra.append(extra);

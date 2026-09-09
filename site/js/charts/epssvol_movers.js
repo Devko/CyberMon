@@ -7,7 +7,7 @@
 // board is expected to launch sparse and fill at the speed the model
 // actually moves.
 import { editorial, tpl } from "../editorial.js";
-import { el, clear } from "../dom.js";
+import { el, clear, withCveLinks } from "../dom.js";
 import { sortHeader } from "../ui.js";
 import { fmtInt } from "../theme.js";
 
@@ -93,7 +93,9 @@ export function render(slots, data) {
       for (const col of COLS) {
         if (col.key === "cve") {
           const td = el("td", "cna-name");
-          td.append(el("span", "cna-short", r.cve));
+          const span = el("span", "cna-short");
+          span.append(withCveLinks(r.cve));
+          td.append(span);
           tr.append(td);
         } else if (col.key === "observed_date") {
           const td = el("td", null);
