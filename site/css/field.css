@@ -259,6 +259,7 @@
   width: 100%;
   height: 100%;
   cursor: grab;
+  touch-action: none; /* the page handles pinch and two-finger pan itself */
 }
 
 .field-labels {

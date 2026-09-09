@@ -238,6 +238,28 @@ function main({ meta, buf }) {
   points.frustumCulled = false;
   scene.add(points);
 
+  // Picking through an ID buffer: every point carries its index encoded in
+  // an RGB attribute; a hover renders the cloud once, opaque, with that
+  // colour and the same point sizes, into a small render target and reads
+  // the one pixel under the pointer. Nearest point wins by depth; hidden
+  // points (alpha 0) are discarded. Constant cost at any N — the raycaster
+  // walked all 370k points per hover.
+  const pickId = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    const id = i + 1;
+    pickId[i * 3] = (id & 255) / 255; pickId[i * 3 + 1] = ((id >> 8) & 255) / 255; pickId[i * 3 + 2] = ((id >> 16) & 255) / 255;
+  }
+  geo.setAttribute("pickId", new THREE.BufferAttribute(pickId, 3));
+  const pickMat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: sprite } },
+    vertexShader: "attribute float size;attribute float alpha;attribute vec3 pickId;varying vec3 vId;varying float vA;void main(){vId=pickId;vA=alpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=max(1.6,size*(640.0/-mv.z));gl_Position=projectionMatrix*mv;}",
+    fragmentShader: "uniform sampler2D map;varying vec3 vId;varying float vA;void main(){if(vA<0.01||texture2D(map,gl_PointCoord).a<0.3)discard;gl_FragColor=vec4(vId,1.0);}",
+    transparent: false, depthWrite: true, depthTest: true,
+  });
+  const PICK_SCALE = 0.5; // half resolution is plenty for a 2-4 px sprite core
+  const pickTarget = new THREE.WebGLRenderTarget(2, 2, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: true });
+  const pickPixel = new Uint8Array(4);
+
   // deterministic jitter so a pile never collapses to one pixel
   const jit = new Float32Array(N * 3);
   { let s = 12345; for (let i = 0; i < N * 3; i++) { s = (s * 16807) % 2147483647; jit[i] = s / 2147483647 - 0.5; } }
@@ -306,12 +328,12 @@ function main({ meta, buf }) {
   const labels = [];
   function clearLabels() { labels.forEach((l) => l.el.remove()); labels.length = 0; }
   // `html` is authored markup; data inside it is escaped by the caller.
-  function addLabel(x, y, z, html, cls) {
+  function addLabel(x, y, z, html, cls, kind = "") {
     const el = document.createElement("div");
     el.className = "f-label " + (cls || "");
     el.innerHTML = html;
     labelsEl.appendChild(el);
-    labels.push({ el, p: new THREE.Vector3(x, y, z) });
+    labels.push({ el, p: new THREE.Vector3(x, y, z), kind, sx: 0, on: false });
   }
   const hide = (i) => { target[i * 3] = 0; target[i * 3 + 1] = -999; target[i * 3 + 2] = 0; };
 
@@ -334,12 +356,18 @@ function main({ meta, buf }) {
       target[i * 3 + 1] = yOfScore(i);
       target[i * 3 + 2] = zOfEpss(i);
     }
-    const years = spanTo - spanFrom + 1;
-    const step = years > 20 ? 5 : years > 10 ? 2 : 1;
+    // Every year and every month gets a tick; the render loop thins them by
+    // the pixel distance between neighbours, so a zoomed-in view reads months
+    // and a zoomed-out one reads every fifth year.
+    const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     for (let y = spanFrom; y <= spanTo; y++) {
-      if ((y - spanFrom) % step) continue;
       const x = ((dayOfYear(y) - a) / span - 0.5) * TW;
-      addLabel(x, -10, -56, String(y), "tick");
+      addLabel(x, -10, -56, String(y), "tick", "year");
+      for (let m = 1; m < 12; m++) {
+        const d = (Date.UTC(y, m, 1) - EPOCH) / 864e5;
+        if (d > LAST_DAY) break;
+        addLabel(((d - a) / span - 0.5) * TW, -10, -56, MON[m], "tick", "month");
+      }
     }
     [0, 5, 10].forEach((s) => addLabel(-TW / 2 - 14, (s / 10) * 36, -50, `CVSS ${s}`, "tick"));
     addLabel(-TW / 2 - 14, -6, -50, "no score", "tick");
@@ -620,18 +648,50 @@ function main({ meta, buf }) {
     if (e.key === "s" || e.key === "S") setSelectMode(!state.select);
   });
 
+  // Two pointers on the canvas is a gesture: the distance between them
+  // zooms, their midpoint pans. It cancels any drag or box in progress.
+  const ptrs = new Map();
+  // Synthetic or already-released pointers make setPointerCapture throw; the
+  // capture is a nicety (drags that leave the canvas keep tracking), not a need.
+  const capture = (e) => { try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* no active pointer */ } };
+  let pinch = null;
+  function pinchStart() {
+    const [a, b] = [...ptrs.values()];
+    pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2, r0: cam.r };
+    drag = null; if (rect) { rect = null; rectEl.hidden = true; }
+    tip.style.opacity = 0;
+  }
+  function pinchMove() {
+    const [a, b] = [...ptrs.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+    cam.r = Math.max(30, Math.min(1600, pinch.r0 * (pinch.d0 / d)));
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const k = cam.r * 0.0016, dx = mx - pinch.mx, dy = my - pinch.my;
+    cam.tx -= dx * Math.cos(cam.theta) * k; cam.tz += dx * Math.sin(cam.theta) * k; cam.ty += dy * k;
+    pinch.mx = mx; pinch.my = my;
+  }
+  canvas.addEventListener("pointercancel", (e) => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; drag = null; });
+
   canvas.addEventListener("pointerdown", (e) => {
+    ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (ptrs.size === 2) { capture(e); pinchStart(); return; }
+    if (ptrs.size > 2) return;
     if (state.select && e.button === 0 && !e.shiftKey) {
       const [x, y] = canvasXY(e); rect = { x0: x, y0: y, x1: x, y1: y }; drawRect();
-      canvas.setPointerCapture(e.pointerId); tip.style.opacity = 0; return;
+      capture(e); tip.style.opacity = 0; return;
     }
-    drag = { x: e.clientX, y: e.clientY, b: e.button, shift: e.shiftKey, moved: false }; canvas.setPointerCapture(e.pointerId); canvas.style.cursor = "grabbing";
+    drag = { x: e.clientX, y: e.clientY, b: e.button, shift: e.shiftKey, moved: false }; capture(e); canvas.style.cursor = "grabbing";
   });
   canvas.addEventListener("pointerup", (e) => {
+    ptrs.delete(e.pointerId);
+    if (pinch) { if (ptrs.size < 2) pinch = null; drag = null; return; }
     if (rect) { const r = rect; rect = null; rectEl.hidden = true; captureRect(r); return; }
     if (drag && !drag.moved) click(e); drag = null; canvas.style.cursor = state.select ? "crosshair" : "grab";
   });
   canvas.addEventListener("pointermove", (e) => {
+    if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinch) { if (ptrs.size >= 2) pinchMove(); return; }
+    if (e.pointerType === "touch" && !drag && !rect) return; // no hover on touch
     if (rect) { [rect.x1, rect.y1] = canvasXY(e); drawRect(); return; }
     if (drag) {
       const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
@@ -650,16 +710,22 @@ function main({ meta, buf }) {
   canvas.addEventListener("contextmenu", (e) => e.preventDefault());
   canvas.addEventListener("pointerleave", () => { tip.style.opacity = 0; });
 
-  const ray = new THREE.Raycaster(); ray.params.Points.threshold = 1.6;
-  const mouse = new THREE.Vector2();
   function pick(e) {
     const r = canvas.getBoundingClientRect();
-    mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
-    mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
-    ray.setFromCamera(mouse, camera);
-    const hits = ray.intersectObject(points);
-    for (const h of hits) if (shown[h.index] && pos[h.index * 3 + 1] > -500) return h.index;
-    return -1;
+    const w = Math.max(2, Math.round(r.width * PICK_SCALE)), h = Math.max(2, Math.round(r.height * PICK_SCALE));
+    if (pickTarget.width !== w || pickTarget.height !== h) pickTarget.setSize(w, h);
+    const px = Math.min(w - 1, Math.max(0, Math.round((e.clientX - r.left) * PICK_SCALE)));
+    const py = Math.min(h - 1, Math.max(0, h - 1 - Math.round((e.clientY - r.top) * PICK_SCALE)));
+    const clearAlpha = renderer.getClearAlpha();
+    points.material = pickMat; grid.visible = false;
+    renderer.setRenderTarget(pickTarget); renderer.setClearColor(0x000000, 0); renderer.clear();
+    renderer.render(scene, camera);
+    renderer.readRenderTargetPixels(pickTarget, px, py, 1, 1, pickPixel);
+    renderer.setRenderTarget(null); renderer.setClearColor(0x000000, clearAlpha);
+    points.material = mat; grid.visible = true;
+    if (pickPixel[3] === 0) return -1;
+    const i = pickPixel[0] + (pickPixel[1] << 8) + (pickPixel[2] << 16) - 1;
+    return i >= 0 && i < N && shown[i] && pos[i * 3 + 1] > -500 ? i : -1;
   }
   const lagText = (lag) => (lag < 0 ? `${fmt(-lag)} d before publication` : lag === 0 ? "the day it published" : `${fmt(lag)} d after publication`);
   function recordHtml(i) {
@@ -699,9 +765,7 @@ function main({ meta, buf }) {
       const e = 1 - Math.pow(1 - t, 3);
       for (let i = 0; i < N * 3; i++) pos[i] = fromPos[i] + (target[i] - fromPos[i]) * e;
       geo.attributes.position.needsUpdate = true;
-      // three caches the bounding sphere on first raycast; recompute once the
-      // points have settled or every later hover misses the broad-phase test.
-      if (t >= 1) { animStart = 0; geo.computeBoundingSphere(); }
+      if (t >= 1) animStart = 0;
     }
     camera.position.set(
       cam.tx + cam.r * Math.sin(cam.phi) * Math.sin(cam.theta),
@@ -713,9 +777,23 @@ function main({ meta, buf }) {
     for (const l of labels) {
       v.copy(l.p).project(camera);
       const on = v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1;
+      l.on = on; l.sx = (v.x * 0.5 + 0.5) * w;
       l.el.style.display = on ? "block" : "none";
-      if (on) { l.el.style.left = `${(v.x * 0.5 + 0.5) * w}px`; l.el.style.top = `${(-v.y * 0.5 + 0.5) * h}px`; }
+      if (on) { l.el.style.left = `${l.sx}px`; l.el.style.top = `${(-v.y * 0.5 + 0.5) * h}px`; }
     }
+    thinTicks();
+  }
+
+  // Timeline ticks: months show only when a year spans enough pixels for
+  // them; year labels drop to every 2nd / 5th / 10th when they would overlap.
+  function thinTicks() {
+    const years = labels.filter((l) => l.kind === "year");
+    if (years.length < 2) return;
+    const perYear = Math.abs(years[1].sx - years[0].sx);
+    const yearStep = perYear >= 30 ? 1 : perYear >= 15 ? 2 : perYear >= 6 ? 5 : 10;
+    const months = perYear >= 420;
+    years.forEach((l, i) => { if (l.on && i % yearStep) l.el.style.display = "none"; });
+    if (!months) for (const l of labels) if (l.kind === "month" && l.on) l.el.style.display = "none";
   }
 
   function refresh() {
