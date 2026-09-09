@@ -134,10 +134,39 @@ def test_encode_round_trip_and_joins():
         fe.STATUS_CODES.index("Awaiting Analysis")
     assert r[5] == fe.NO_EPSS and r[10] == 0
     assert meta["counts"] == {"kev": 1, "poc": 1, "poc_dated": 1,
+                              "rescored": 0, "crossed": 0,
                               "scored": 1, "epss": 2}
     assert meta["n"] == 3
     assert meta["first_day"] == rows[0][2]
     assert meta["last_day"] == max(x[2] for x in rows)
+
+
+def test_changed_lately_bits_and_counts():
+    c = _rows()
+    blob, meta = fe.encode(
+        c.rows, epss_scores={}, kev_entries=[], poc_ids=(), nvd_statuses=None,
+        recent_rescored={"CVE-2023-0001"}, recent_crossed={"CVE-2023-0001", "CVE-2021-0007"})
+    rows = fe.decode(blob)
+    by_id = {(r[0], r[1]): r for r in rows}
+    f1 = by_id[(2023, 1)][11]
+    assert f1 & fe.FLAG_RESCORED and f1 & fe.FLAG_CROSSED
+    f7 = by_id[(2021, 7)][11]
+    assert f7 & fe.FLAG_CROSSED and not f7 & fe.FLAG_RESCORED
+    assert not by_id[(2023, 2)][11] & (fe.FLAG_RESCORED | fe.FLAG_CROSSED)
+    assert meta["counts"]["rescored"] == 1 and meta["counts"]["crossed"] == 2
+    assert meta["window_days"] == fe.RECENT_WINDOW_DAYS
+    assert meta["layout"]["version"] == 3 and meta["layout"]["record_bytes"] == 24
+
+
+def test_recently_rescored_windows_the_log():
+    rows = [
+        {"observed_date": "2026-09-01", "cve": "CVE-2024-0001"},
+        {"observed_date": "2026-07-01", "cve": "CVE-2024-0002"},  # too old
+        {"observed_date": "2026-08-10", "cve": "CVE-2024-0003"},  # day 30
+        {"observed_date": "bad", "cve": "CVE-2024-0004"},
+    ]
+    got = fe.recently_rescored(rows, "2026-09-09T02:43:00Z")
+    assert got == {"CVE-2024-0001", "CVE-2024-0003"}
 
 
 def test_index_tables_rank_by_volume_and_reserve_other():

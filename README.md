@@ -410,8 +410,11 @@ it by the site's own theses:
   each pile carries its KEV count.
 
 Colour by exploitation (KEV / public PoC / neither), KEV latency (the KEV
-module's own buckets), severity, CVSS version or assigner; filter by year,
-minimum score, KEV, PoC, ransomware use, assigner and vendor; hover for the
+module's own buckets), severity, CVSS version, assigner, or "changed lately"
+(a CNA score changed or an EPSS probability crossed the 1% line in the last
+30 days — the records the Rescores and Volatility modules are arguing about
+this week); filter by year, minimum score, KEV, PoC, ransomware use, recent
+change, assigner and vendor; hover for the
 record, click to open it on cve.org. **Select mode** (the rail button, or
 `S`) turns a drawn box into a receipt: the counters and a panel recompute
 for exactly the records caught — assigners, weaknesses, vendors, score

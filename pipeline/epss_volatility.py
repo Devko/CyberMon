@@ -94,7 +94,7 @@ import json
 from collections import Counter
 from datetime import date, timedelta
 from pathlib import Path
-from typing import Callable, Mapping
+from typing import Callable, Iterable, Mapping
 
 from .fetch_epss import EpssData
 from .metrics import _pct
@@ -104,6 +104,13 @@ from .metrics import _pct
 # in what the model is saying; a percentile reshuffle underneath a static
 # probability is not. Contract mirrors these verbatim.
 THRESHOLDS = {"lo": 0.001, "mid": 0.01, "hi": 0.05}
+
+# The Field's "changed lately" flag: CVEs that crossed the 1% line (the
+# ``mid`` threshold, the one the modules call material) within this many
+# days ride in the cached state as ``recent_crossings`` {cve: observed_date}.
+# It is a cache like the fingerprints: a lost state costs the flag one
+# window, never a log row.
+RECENT_WINDOW_DAYS = 30
 
 CSV_COLUMNS = ("observed_date", "model_version", "n_scored", "n_compared",
                "prob_moved", "pct_moved", "crossed_lo", "crossed_mid",
@@ -239,18 +246,50 @@ def load_state(state_dir: Path, log: Callable[[str], None] = print
     return state
 
 
-def make_state(epss: EpssData) -> dict:
+def make_state(epss: EpssData,
+               recent_crossings: Mapping[str, str] | None = None) -> dict:
     """Tonight's persistable state: the per-CVE ``[prob, percentile|null]``
     fingerprint plus the header metadata the guards key on. ``last_observed``
     equals ``score_date`` (a diff row is stamped with the EPSS snapshot date
-    it observed, not the wall-clock run date)."""
+    it observed, not the wall-clock run date). ``recent_crossings`` is the
+    rolling 30-day map of CVEs that crossed the 1% line (see
+    :func:`merge_recent_crossings`)."""
     fingerprints = {cve: [_r5(prob), _r5(epss.percentiles[cve])
                           if cve in epss.percentiles else None]
                     for cve, prob in epss.scores.items()}
     return {"model_version": epss.model_version,
             "score_date": epss.score_date,
             "last_observed": epss.score_date,
-            "fingerprints": fingerprints}
+            "fingerprints": fingerprints,
+            "recent_crossings": dict(recent_crossings or {})}
+
+
+def crossings_1pct(old_fps: Mapping[str, list],
+                   new_scores: Mapping[str, float]) -> list[str]:
+    """CVEs whose probability crossed the 1% line between the two feeds
+    (either direction; only CVEs present on both nights, like diff_day)."""
+    thr = THRESHOLDS["mid"]
+    out = []
+    for cve, new_p in new_scores.items():
+        fp = old_fps.get(cve)
+        if fp is not None and _crossed(fp[0], new_p, thr):
+            out.append(cve)
+    return out
+
+
+def merge_recent_crossings(prior: Mapping[str, str] | None,
+                           crossed: Iterable[str], observed_date: str,
+                           *, window_days: int = RECENT_WINDOW_DAYS
+                           ) -> dict[str, str]:
+    """The rolling map: tonight's crossings stamped ``observed_date``, prior
+    entries kept while within ``window_days`` of it, newest date wins."""
+    cutoff = (date.fromisoformat(observed_date)
+              - timedelta(days=window_days)).isoformat()
+    merged = {cve: d for cve, d in (prior or {}).items()
+              if isinstance(d, str) and d >= cutoff}
+    for cve in crossed:
+        merged[cve] = observed_date
+    return merged
 
 
 def write_state(path: Path, state: dict) -> None:
@@ -572,17 +611,26 @@ def run_stage(out_dir: Path, epss: EpssData, generated_at: str, *,
             f"({len(state['fingerprints'])} fingerprints, "
             f"score_date {state['score_date']})")
 
+    recent: dict[str, str] = {}
     if state is None:
         log("  epssvol: no previous EPSS state — baseline night, zero rows "
             "(the record starts now; at worst one night's diff is lost)")
     elif state["score_date"] == epss.score_date:
         log(f"  epssvol: EPSS snapshot {epss.score_date} already diffed — "
             f"skipping (re-runs never double-count)")
+        recent = merge_recent_crossings(state.get("recent_crossings"), (),
+                                        epss.score_date)
     else:
         reset = state["model_version"] != epss.model_version
         row = diff_day(state["fingerprints"], epss.scores, epss.percentiles,
                        epss.score_date, epss.model_version, reset=reset)
         rows = merge_row(rows, row)
+        # A reset night rebaselines the whole distribution: its crossings
+        # are not events, so the rolling map only ages that night.
+        tonight = [] if reset else crossings_1pct(state["fingerprints"],
+                                                  epss.scores)
+        recent = merge_recent_crossings(state.get("recent_crossings"),
+                                        tonight, epss.score_date)
         if reset:
             log(f"  epssvol: model_version {state['model_version']} -> "
                 f"{epss.model_version} — reset night quarantined from the "
@@ -594,7 +642,7 @@ def run_stage(out_dir: Path, epss: EpssData, generated_at: str, *,
                 f" material crossing(s) ({state['score_date']} -> "
                 f"{epss.score_date})")
 
-    new_state = make_state(epss)
+    new_state = make_state(epss, recent_crossings=recent)
     obj = build_epss_volatility(rows, state=new_state,
                                 generated_at=generated_at, min_days=min_days,
                                 min_delta=min_delta)

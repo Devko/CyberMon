@@ -2224,14 +2224,21 @@ gitignored and shipped inside the Pages artifact (see README, "The Field").
 | `skipped.rejected`, `skipped.undated` | int | records not placed |
 | `raw_bytes` | int | must equal `n × record_bytes` |
 | `bin_bytes` | int | gzipped size |
-| `sources` | object | cvelist release, KEV version/count, EPSS model/date, NVD fetch stamp or null, PoC CVE count and dated count |
+| `window_days` | int ≥ 1 | the window of the two "changed lately" bits (30) |
+| `counts.rescored`, `counts.crossed` | int ≤ n | records flagged rescored / crossed the 1% EPSS line within the window |
+| `sources` | object | cvelist release, KEV version/count, EPSS model/date, NVD fetch stamp or null, PoC CVE count and dated count, `changed` (window, rescore-log rows read, crossings tracked) |
 
-Record layout v2 (little-endian, 24 bytes): u16 ID year · u32 ID sequence ·
+Record layout v3 (little-endian, 24 bytes; v3 = v2 plus flag bits 6-7, the
+page accepts both): u16 ID year · u32 ID sequence ·
 u16 datePublished day · u8 score×10 · u8 CVSS family (0/2/3/4) · u16
 EPSS×10000 · u16 CNA index · u16 CWE number · u16 vendor index · u16 KEV
 dateAdded day (0 = not in KEV) · u16 earliest dated public PoC day (0 =
 none dated; `PocData.first_poc_dates`, the Time to PoC join) · u8 flags
-(bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5 NVD status code) · u8
+(bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5 NVD status code, bit6
+a CNA score added/raised/lowered within the window — from the committed
+rescore log, so a lost cache never blanks it; bit7 EPSS crossed the 1% line
+within the window — from the volatility state's rolling `recent_crossings`
+map, a cache: a lost state costs the bit one window, never a log row) · u8
 reserved. Score precedence is
 `CveFacts.effective_score` (newest family anywhere in the record, CNA before
 ADP within a family). Rows are sorted by (ID year, sequence).

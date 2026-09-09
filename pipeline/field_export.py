@@ -34,7 +34,9 @@ offset  type  meaning
 18      u16   KEV dateAdded, days since EPOCH; 0 when not in KEV
 20      u16   earliest dated public PoC (Exploit-DB / Metasploit), days
               since EPOCH; 0 when none is dated (Nuclei carries no dates)
-22      u8    flags — see ``FLAG_*`` and :data:`STATUS_CODES`
+22      u8    flags — bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5
+              NVD status code, bit6 CNA score changed in the last 30 days,
+              bit7 EPSS crossed the 1% line in the last 30 days (layout v3)
 23      u8    reserved (0)
 ======  ====  ===================================================
 
@@ -51,11 +53,11 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from .metrics import _FAMILY_ORDER, CveFacts
 
-LAYOUT_VERSION = 2
+LAYOUT_VERSION = 3  # v3 = v2 layout plus flag bits 6-7 (same 24 bytes)
 RECORD = struct.Struct("<HIHBBHHHHHHBx")
 RECORD_BYTES = RECORD.size  # 24
 EPOCH = date(1999, 1, 1)
@@ -68,6 +70,9 @@ FLAG_KEV = 1 << 0
 FLAG_RANSOMWARE = 1 << 1
 FLAG_POC = 1 << 2
 STATUS_SHIFT = 3  # bits 3-5: NVD vulnStatus code
+FLAG_RESCORED = 1 << 6   # a CNA score added/raised/lowered in the window
+FLAG_CROSSED = 1 << 7    # EPSS crossed the 1% line in the window
+RECENT_WINDOW_DAYS = 30  # the window both "changed lately" bits share
 STATUS_CODES: tuple[str, ...] = (
     "Unknown", "Received", "Awaiting Analysis", "Undergoing Analysis",
     "Analyzed", "Modified", "Deferred", "Rejected",
@@ -201,12 +206,36 @@ def _status_code(status: str | None) -> int:
     return _STATUS_INDEX.get(status or "", 0)
 
 
+def recently_rescored(rows: Iterable[Mapping[str, Any]], generated_at: str,
+                      *, window_days: int = RECENT_WINDOW_DAYS) -> set[str]:
+    """CVEs with a rescore-log event observed within ``window_days`` of the
+    edition date. ``rows`` are the merged rescore CSV rows (observed_date,
+    cve, ...) — the committed record, so a lost cache never blanks this bit."""
+    from datetime import timedelta
+    cutoff = (date.fromisoformat(generated_at[:10])
+              - timedelta(days=window_days)).isoformat()
+    out: set[str] = set()
+    for r in rows:
+        observed = r.get("observed_date")
+        if not isinstance(observed, str) or not r.get("cve"):
+            continue
+        try:
+            date.fromisoformat(observed)
+        except ValueError:
+            continue  # a malformed date is not "recent"
+        if observed >= cutoff:
+            out.add(str(r["cve"]))
+    return out
+
+
 # ---------------------------------------------------------------- encoding
 
 def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
            kev_entries: Iterable[Any], poc_ids: Iterable[str],
            nvd_statuses: dict[str, str] | None,
-           poc_dates: dict[str, str] | None = None) -> tuple[bytes, dict]:
+           poc_dates: dict[str, str] | None = None,
+           recent_rescored: Iterable[str] = (),
+           recent_crossed: Iterable[str] = ()) -> tuple[bytes, dict]:
     """Pack rows into the binary record stream plus the ``field.json``
     payload (minus ``generated_at``/``skipped``/``sources``, which
     :func:`build` stamps).
@@ -228,6 +257,8 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         ransomware = getattr(entry, "ransomware_use", None) == "Known"
         kev[entry.cve_id] = (day, ransomware)
     poc = frozenset(poc_ids)
+    rescored = frozenset(recent_rescored)
+    crossed = frozenset(recent_crossed)
     poc_day = {cve: d for cve, d in (
         (cve, _day_index(date)) for cve, date in (poc_dates or {}).items())
         if d}
@@ -252,6 +283,12 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         if poc_d:
             counts["poc_dated"] += 1
         flags |= _status_code(statuses.get(cve_id)) << STATUS_SHIFT
+        if cve_id in rescored:
+            flags |= FLAG_RESCORED
+            counts["rescored"] += 1
+        if cve_id in crossed:
+            flags |= FLAG_CROSSED
+            counts["crossed"] += 1
         epss = epss_scores.get(cve_id)
         if epss is None:
             epss_q = NO_EPSS
@@ -276,6 +313,7 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
             "status_codes": list(STATUS_CODES),
         },
         "bin": BIN_NAME,
+        "window_days": RECENT_WINDOW_DAYS,
         "n": len(rows),
         "first_day": rows[0].day if rows else 0,
         "last_day": max((r.day for r in rows), default=0),
@@ -283,6 +321,8 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
             "kev": counts["kev"],
             "poc": counts["poc"],
             "poc_dated": counts["poc_dated"],
+            "rescored": counts["rescored"],
+            "crossed": counts["crossed"],
             "scored": counts["scored"],
             "epss": counts["epss"],
         },
@@ -307,11 +347,15 @@ def build(collector: FieldCollector, generated_at: str, *,
           epss_scores: dict[str, float], kev_entries: Iterable[Any],
           poc_ids: Iterable[str], nvd_statuses: dict[str, str] | None,
           sources: dict,
-          poc_dates: dict[str, str] | None = None) -> tuple[bytes, dict]:
+          poc_dates: dict[str, str] | None = None,
+          recent_rescored: Iterable[str] = (),
+          recent_crossed: Iterable[str] = ()) -> tuple[bytes, dict]:
     """The Field's two outputs: the gzipped record stream and ``field.json``."""
     blob, meta = encode(collector.rows, epss_scores=epss_scores,
                         kev_entries=kev_entries, poc_ids=poc_ids,
-                        nvd_statuses=nvd_statuses, poc_dates=poc_dates)
+                        nvd_statuses=nvd_statuses, poc_dates=poc_dates,
+                        recent_rescored=recent_rescored,
+                        recent_crossed=recent_crossed)
     meta["generated_at"] = generated_at
     meta["skipped"] = {
         "rejected": collector.skipped_rejected,

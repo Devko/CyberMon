@@ -38,7 +38,9 @@ def _validate_field(obj: Any) -> None:
     counts = obj.get("counts")
     if not isinstance(counts, dict):
         raise ContractViolation("field.json.counts: not an object")
-    for key in ("kev", "poc", "poc_dated", "scored", "epss"):
+    _check_int(obj.get("window_days"), "field.json.window_days", minimum=1)
+    for key in ("kev", "poc", "poc_dated", "scored", "epss", "rescored",
+                "crossed"):
         _check_int(counts.get(key), f"field.json.counts.{key}")
         if counts[key] > n:
             raise ContractViolation(f"field.json.counts.{key} exceeds n")

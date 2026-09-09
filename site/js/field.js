@@ -105,7 +105,13 @@ const LEGEND = {
   ver: [[C.versions.v4, "CVSS v4"], [C.versions.v3, "v3"], [C.versions.v2, "v2"], [C.sev.unscored, "no score"]],
   lat: [[C.latency.before_publish, "KEV before publication"], [C.latency["0-7d"], "0–7 d"], [C.latency["8-30d"], "8–30 d"], [C.latency["31-90d"], "31–90 d"], [C.latency["91-365d"], "91–365 d"], [C.latency["1-3y"], "1–3 y"], [C.latency["3y+"], "3 y+"], ["#7d776a", "not in KEV"]],
   cna: null, // built from the selection
+  chg: [[C.versions.v3, "CNA score changed"], [C.sev.high, "EPSS crossed the 1% line"], [C.ink, "both"], ["#7d776a", "unchanged"]],
 };
+// "Changed lately" bits (layout v3): a CNA score added / raised / lowered,
+// or an EPSS probability that crossed the 1% line, within the window the
+// export names (field.json window_days, 30). Zero on v2 data.
+const RESCORED = (flags) => (flags >> 6) & 1, CROSSED = (flags) => (flags >> 7) & 1;
+const PAL_CHG = { rescored: col(C.versions.v3), crossed: col(C.sev.high), both: col(C.ink) };
 // KEV latency buckets, the KEV Latency module's own edges.
 const latBucket = (lag) => (lag < 0 ? 0 : lag <= 7 ? 1 : lag <= 30 ? 2 : lag <= 90 ? 3 : lag <= 365 ? 4 : lag <= 1095 ? 5 : 6);
 
@@ -122,8 +128,8 @@ async function loadField() {
   const metaRes = await fetch("field/field.json", { cache: "no-cache" });
   if (!metaRes.ok) throw new Error(`field/field.json: HTTP ${metaRes.status}`);
   const meta = await metaRes.json();
-  if (meta.layout?.version !== 2 || meta.layout.record_bytes !== 24) {
-    throw new Error(`field.json layout v${meta.layout?.version} is not the v2/24-byte layout this page decodes`);
+  if (![2, 3].includes(meta.layout?.version) || meta.layout.record_bytes !== 24) {
+    throw new Error(`field.json layout v${meta.layout?.version} is not the v2/v3 24-byte layout this page decodes`);
   }
   if (typeof DecompressionStream === "undefined") {
     throw new Error("this browser cannot decompress the record stream (no DecompressionStream)");
@@ -250,7 +256,7 @@ function main({ meta, buf }) {
   // ---- state & filter -------------------------------------------------------
   const state = {
     layout: "time", color: "expl", from: 1999, to: MAX_YEAR, minScore: 0,
-    kevOnly: false, pocOnly: false, ransomOnly: false, cnaQ: "", vendorQ: "",
+    kevOnly: false, pocOnly: false, ransomOnly: false, changedOnly: false, cnaQ: "", vendorQ: "",
     sort: "count", size: 1, select: false,
     asOf: -1,  // month index into MONTHS; -1 = everything (no cut)
   };
@@ -282,6 +288,7 @@ function main({ meta, buf }) {
       if (ok && state.kevOnly) ok = KEV(i) === 1;
       if (ok && state.pocOnly) ok = POC(i) === 1;
       if (ok && state.ransomOnly) ok = RANSOM(i) === 1;
+      if (ok && state.changedOnly) ok = (D.flags[i] & 0xC0) !== 0;
       if (ok && cnaSet) ok = cnaSet.has(D.cna[i]);
       if (ok && vendSet) ok = vendSet.has(D.vendor[i]);
       // the clock places only records with a dated event; the vendor room
@@ -482,6 +489,13 @@ function main({ meta, buf }) {
         c = PAL.ver[D.ver[i]] || PAL.ver[0];
         if (D.ver[i] === 0) { s = 0.8; a = 0.2; } else { s = 0.9; a = 0.4; }
         if (k) { s = 4.2; a = 0.95; }
+      } else if (state.color === "chg") {
+        const r = RESCORED(D.flags[i]), x = CROSSED(D.flags[i]);
+        if (r && x) { c = PAL_CHG.both; s = 2.4; a = 0.95; }
+        else if (r) { c = PAL_CHG.rescored; s = 1.8; a = 0.85; }
+        else if (x) { c = PAL_CHG.crossed; s = 1.8; a = 0.85; }
+        else { c = PAL.none; s = 0.8; a = 0.12; }
+        if (k) s = Math.max(s, 4.2);
       } else if (state.color === "lat") {
         if (k) { c = PAL.lat[latBucket(kevLag(i))]; s = 4.2; a = 0.95; }
         else { c = PAL.none; s = 0.8; a = 0.18; }
@@ -733,6 +747,7 @@ function main({ meta, buf }) {
     if (state.kevOnly) h.set("k", "1");
     if (state.pocOnly) h.set("p", "1");
     if (state.ransomOnly) h.set("r", "1");
+    if (state.changedOnly) h.set("g", "1");
     if (state.cnaQ.trim()) h.set("q", state.cnaQ.trim());
     if (state.vendorQ.trim()) h.set("v", state.vendorQ.trim());
     if (state.sort !== "count") h.set("o", state.sort);
@@ -759,6 +774,7 @@ function main({ meta, buf }) {
     if (y) { state.from = Math.max(1999, Math.min(MAX_YEAR, +y[1])); state.to = Math.max(state.from, Math.min(MAX_YEAR, +y[2])); }
     if (h.get("s")) state.minScore = Math.max(0, Math.min(10, +h.get("s") || 0));
     state.kevOnly = h.get("k") === "1"; state.pocOnly = h.get("p") === "1"; state.ransomOnly = h.get("r") === "1";
+    state.changedOnly = h.get("g") === "1";
     state.cnaQ = h.get("q") || ""; state.vendorQ = h.get("v") || "";
     if (["count", "kev", "name"].includes(h.get("o"))) state.sort = h.get("o");
     if (h.get("z")) state.size = Math.max(0.5, Math.min(2.5, +h.get("z") || 1));
@@ -769,6 +785,7 @@ function main({ meta, buf }) {
     $("f-from").value = state.from; $("f-to").value = state.to;
     $("f-min").value = state.minScore; $("f-minv").textContent = state.minScore ? `≥ ${state.minScore.toFixed(1)}` : "any";
     $("f-kevonly").checked = state.kevOnly; $("f-poconly").checked = state.pocOnly; $("f-ransom").checked = state.ransomOnly;
+    $("f-changed").checked = state.changedOnly;
     $("f-cna").value = state.cnaQ; $("f-vendor").value = state.vendorQ; $("f-sort").value = state.sort; $("f-size").value = state.size;
   }
 
@@ -832,6 +849,7 @@ function main({ meta, buf }) {
   $("f-kevonly").addEventListener("change", (e) => { state.kevOnly = e.target.checked; refresh(); });
   $("f-poconly").addEventListener("change", (e) => { state.pocOnly = e.target.checked; refresh(); });
   $("f-ransom").addEventListener("change", (e) => { state.ransomOnly = e.target.checked; refresh(); });
+  $("f-changed").addEventListener("change", (e) => { state.changedOnly = e.target.checked; refresh(); });
   let qt = null;
   $("f-cna").addEventListener("input", (e) => { clearTimeout(qt); qt = setTimeout(() => { state.cnaQ = e.target.value; refresh(); }, 250); });
   $("f-vendor").addEventListener("input", (e) => { clearTimeout(qt); qt = setTimeout(() => { state.vendorQ = e.target.value; refresh(); }, 250); });
@@ -858,6 +876,9 @@ function main({ meta, buf }) {
   $("f-sources").innerHTML =
     `${fmt(meta.n)} published CVEs placed · ${fmt(skipped.rejected || 0)} rejected and ${fmt(skipped.undated || 0)} undated records left out · `
     + `${fmt(meta.counts.scored)} carry a score in the record · ${fmt(meta.counts.epss)} have an EPSS score · ${fmt(meta.counts.poc_dated || 0)} have a dated public PoC.<br>`
+    + (meta.layout.version >= 3
+      ? `Changed in the last ${fmt(meta.window_days || 30)} days: ${fmt(meta.counts.rescored || 0)} CNA scores (the Silent Rescores log) · ${fmt(meta.counts.crossed || 0)} crossed the 1% EPSS line (the Volatility diff).<br>`
+      : ""),
     + `cvelistV5 ${str(s.cvelist?.release)} · CISA KEV ${str(s.kev?.catalog_version)} (${fmt(s.kev?.count || 0)} entries) · `
     + `EPSS ${str(s.epss?.model_version)} of ${str(s.epss?.score_date)} · `
     + `NVD statuses ${s.nvd?.fetched_at ? `fetched ${str(s.nvd.fetched_at)}` : "not fetched"} · `

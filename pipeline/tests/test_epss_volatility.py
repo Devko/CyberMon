@@ -54,6 +54,17 @@ _STATE = make_state(_epss(_NEW_SCORES, _NEW_PCTS, model="v1",
 
 # -------------------------------------------------------------- diff engine
 
+def test_recent_crossings_roll_with_the_window():
+    from pipeline.epss_volatility import (crossings_1pct,
+                                          merge_recent_crossings)
+    old = {"CVE-1": [0.005, None], "CVE-2": [0.02, None], "CVE-3": [0.5, None]}
+    new = {"CVE-1": 0.02, "CVE-2": 0.02, "CVE-3": 0.004, "CVE-9": 0.9}
+    assert sorted(crossings_1pct(old, new)) == ["CVE-1", "CVE-3"]
+    prior = {"CVE-7": "2026-08-01", "CVE-8": "2026-08-15"}
+    merged = merge_recent_crossings(prior, ["CVE-1"], "2026-09-08")
+    assert merged == {"CVE-8": "2026-08-15", "CVE-1": "2026-09-08"}
+
+
 def test_crossed_edges_both_directions():
     assert ev._crossed(0.0009, 0.0010, 0.001) is True    # up over 0.001
     assert ev._crossed(0.04, 0.97, 0.05) is True         # up over 0.05
@@ -106,7 +117,8 @@ def test_state_round_trip(tmp_path):
     assert state == {"model_version": "v1", "score_date": "2026-07-08",
                      "last_observed": "2026-07-08",
                      "fingerprints": {"CVE-A": [0.02, 0.88],
-                                      "CVE-B": [0.5, None]}}
+                                      "CVE-B": [0.5, None]},
+                     "recent_crossings": {}}
     assert state_path(tmp_path) == tmp_path / "epss_volatility_state.json.gz"
     write_state(state_path(tmp_path), state)
     assert load_state(tmp_path, log=lambda m: None) == state

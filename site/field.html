@@ -58,6 +58,7 @@
           <button type="button" data-color="sev" aria-pressed="false">Severity</button>
           <button type="button" data-color="ver" aria-pressed="false">CVSS version</button>
           <button type="button" data-color="cna" aria-pressed="false">Assigner</button>
+          <button type="button" data-color="chg" aria-pressed="false">Changed lately</button>
         </div>
         <p class="rail-legend" id="f-legend"></p>
       </section>
@@ -83,6 +84,7 @@
         <label class="rail-check"><input type="checkbox" id="f-kevonly"> in KEV only</label>
         <label class="rail-check"><input type="checkbox" id="f-poconly"> public PoC only</label>
         <label class="rail-check"><input type="checkbox" id="f-ransom"> known ransomware use</label>
+        <label class="rail-check"><input type="checkbox" id="f-changed"> changed in the last 30 days</label>
         <input type="search" id="f-cna" placeholder="assigner contains…" aria-label="Filter by assigner">
         <input type="search" id="f-vendor" placeholder="vendor contains…" aria-label="Filter by vendor">
         <label class="rail-select">sort groups
