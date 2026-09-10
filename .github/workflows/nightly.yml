@@ -329,15 +329,19 @@ jobs:
       # The Field's record stream is a build product like the PDFs and
       # clips: never committed (a multi-MB blob that changes nightly would
       # bloat history), so ci.yml's push-triggered deploy downloads this
-      # artifact to ship a site without a hole in it. Non-blocking.
+      # artifact to ship a site without a hole in it. Required for site deploys.
+      - name: Validate and check the assembled Field
+        run: |
+          python tools/fetch_field.py --out site/field --validate-only > /dev/null
+          python tools/field_smoke.py --site site
+
       - name: Publish the Field for push-triggered deploys
-        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: field-latest
           path: site/field
           retention-days: 7
-          if-no-files-found: warn
+          if-no-files-found: error
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

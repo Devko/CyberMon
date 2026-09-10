@@ -35,14 +35,25 @@
     </dl>
   </header>
 
+  <div class="field-toolbar">
+    <button type="button" id="f-controls-toggle" aria-expanded="false" aria-controls="f-controls">Controls</button>
+    <button type="button" id="f-results-toggle" aria-expanded="false" aria-controls="f-results">Browse records</button>
+    <button type="button" id="f-flat" aria-pressed="false">Flat view</button>
+    <span id="f-edition"></span>
+  </div>
   <div class="field-body-grid">
-    <aside class="field-rail" aria-label="Field controls">
+    <aside id="f-controls" class="field-rail" aria-label="Field controls">
+      <section class="rail-group">
+        <label class="rail-k" for="f-record">Find CVE</label>
+        <input type="search" id="f-record" placeholder="CVE-2024-3400" autocomplete="off">
+        <button type="button" class="rail-reset" id="f-reset-filters">Reset filters</button>
+      </section>
       <section class="rail-group">
         <h2 class="rail-k">Arrange</h2>
         <div class="rail-btns" role="group" aria-label="Arrangement">
           <button type="button" data-layout="time" aria-pressed="true">Timeline · date × score × EPSS</button>
           <button type="button" data-layout="clock" aria-pressed="false">The clock · publication → PoC → KEV</button>
-          <button type="button" data-layout="grid" aria-pressed="false">Score vs. reality grid</button>
+          <button type="button" data-layout="grid" aria-pressed="false">Severity × predicted exploitation</button>
           <button type="button" data-layout="cna" aria-pressed="false">By assigner (top 48 CNAs)</button>
           <button type="button" data-layout="vendor" aria-pressed="false">By vendor (top 48)</button>
           <button type="button" data-layout="cwe" aria-pressed="false">By weakness (top 30 CWEs)</button>
@@ -69,8 +80,8 @@
           <input type="range" id="f-from" min="1999" max="2026" value="1999" aria-label="First publication year">
           <input type="range" id="f-to" min="1999" max="2026" value="2026" aria-label="Last publication year">
         </div>
-        <h2 class="rail-k" style="margin-top:8px">As of <span class="rail-v" id="f-asof-v">—</span></h2>
-        <input type="range" id="f-asof" min="0" max="0" value="0" aria-label="Show only records published up to this month">
+        <h2 class="rail-k" style="margin-top:8px">Published through <span class="rail-v" id="f-asof-v">—</span></h2>
+        <input type="range" id="f-asof" min="0" max="0" value="0" aria-label="Show records published through this month, using current edition attributes">
         <button type="button" class="rail-play" id="f-play">▶ Play the months</button>
       </section>
 
@@ -98,6 +109,7 @@
 
       <section class="rail-group">
         <h2 class="rail-k">Select</h2>
+        <button type="button" class="rail-play" id="f-select-shown">Select all shown records</button>
         <button type="button" class="rail-play" id="f-select" aria-pressed="false">▭ Draw a box (S)</button>
         <p class="rail-help">In select mode, drag a box on the canvas: the counters and a panel describe exactly what you caught — assigners, weaknesses, vendors, scores, exploitation. Esc clears.</p>
       </section>
@@ -106,19 +118,33 @@
         <h2 class="rail-k">Point size</h2>
         <input type="range" id="f-size" min="0.5" max="2.5" step="0.1" value="1" aria-label="Point size">
         <button type="button" class="rail-reset" id="f-reset">Reset camera</button>
-        <p class="rail-help">Drag to orbit · wheel to zoom · shift-drag to pan · hover for the record · click opens it on cve.org. The address bar carries the view: copy it to share this arrangement, or add <code>#cve=CVE-2024-3400</code> to open on one record.</p>
+        <p class="rail-help">Drag to orbit · wheel or pinch to zoom · shift-drag or two fingers to pan. Focus the canvas and use arrow keys, +/−, or Home. Click or tap to inspect a record; Browse records provides the same population as an accessible list. Links share filters, arrangement, flat view and point size using the latest edition; camera movement and box selections are not shared.</p>
       </section>
 
       <section class="rail-group rail-sources" id="f-sources"></section>
     </aside>
 
     <main class="field-stage" id="f-stage">
-      <canvas id="f-canvas" aria-label="Three-dimensional field of every published CVE. The controls on the left arrange, colour and filter it; the counters above report what is shown."></canvas>
+      <div class="field-viewport">
+      <canvas tabindex="0" id="f-canvas" aria-label="Three-dimensional field of every published CVE. The controls on the left arrange, colour and filter it; the counters above report what is shown."></canvas>
       <div class="field-labels" id="f-labels" aria-hidden="true"></div>
       <div class="field-tip" id="f-tip" role="status"></div>
       <div class="field-rect" id="f-rect" hidden></div>
       <aside class="field-sel" id="f-sel" hidden aria-label="Selection"></aside>
+      <aside class="field-inspector" id="f-inspector" hidden aria-label="Record details">
+        <button type="button" id="f-inspector-close">Close record</button><div id="f-record-detail"></div>
+      </aside>
+      <section class="field-results" id="f-results" hidden aria-label="Visible records">
+        <div class="result-toolbar"><button type="button" id="f-results-close">Close records</button><button type="button" id="f-export">Download records JSON</button></div>
+        <p id="f-result-summary" role="status"></p>
+        <div class="table-wrap"><table><thead><tr><th>CVE</th><th>Published</th><th>Assigner</th><th>Vendor</th><th>CVSS</th><th>EPSS ≈</th><th>KEV</th></tr></thead><tbody id="f-result-rows"></tbody></table></div>
+        <div class="result-toolbar"><button type="button" id="f-prev">Previous</button><button type="button" id="f-next">Next</button></div>
+      </section>
+      <div class="field-empty" id="f-empty" hidden>No records are placed for this view. <button type="button" id="f-empty-reset">Reset filters</button></div>
+      <div class="field-notice" id="f-notice" hidden role="status"></div>
+      </div>
       <div class="field-hud">
+        <p class="rail-help" id="f-coverage"></p>
         <p class="hud-k" id="hud-k"></p>
         <p class="hud-thesis" id="hud-thesis"></p>
         <details class="hud-method">
@@ -126,7 +152,7 @@
           <p id="hud-method"></p>
         </details>
       </div>
-      <div class="field-notice" id="f-notice" hidden></div>
+
     </main>
   </div>
 
@@ -134,8 +160,7 @@
   <script type="module" src="js/field.js"></script>
   <noscript>
     <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
-      The Field is a WebGL instrument and needs JavaScript. The same corpus is charted,
-      without scripts required to read the numbers, on <a href="cve.html" style="color:#e9e4d8">cve.html</a>.
+      The Field is a WebGL instrument and needs JavaScript. Read the <a href="data/score_vs_reality.json" style="color:#e9e4d8">raw severity and EPSS data</a> without scripts, or enable JavaScript for the <a href="cve.html" style="color:#e9e4d8">CVE charts</a>.
     </p>
   </noscript>
 </body>

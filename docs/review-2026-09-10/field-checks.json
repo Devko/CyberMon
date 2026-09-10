@@ -1,0 +1,39 @@
+{
+  "edition": "2026-09-10T02:49:04Z",
+  "record_count": 371161,
+  "cna": {
+    "actually_placed": 337013,
+    "matching_filter": 371161,
+    "actually_placed_kev": 1445
+  },
+  "vendor": {
+    "actually_placed": 96318,
+    "matching_filter": 150457,
+    "actually_placed_kev": 756
+  },
+  "cwe": {
+    "actually_placed": 318342,
+    "matching_filter": 371161,
+    "actually_placed_kev": 1292
+  },
+  "selection_before_cut": "371,161 selected\nCLEAR\nof shown\n100.0 % of 371,161\npublished\n1999\u20132026\nin KEV\n1,703 \u00b7 0.5 % \u00b7 358 ransomware\npublic PoC\n29,389 \u00b7 7.9 %\nscored\n200,023 \u00b7 median 6.9 \u00b7 Critical 10.5 %\nEPSS \u2265 1%\n146,253 \u00b7 39.4 % of 370,894 scored by EPSS\nASSIGNERS\nmitre\n114,791\nGitHub_M\n19,292\nPatchstack\n17,910\nVulDB\n16,291\nLinux\n15,203\nWEAKNESSES\nuntagged\n184,318\nCWE-79 XSS\n27,792\nCWE-89 SQL injection\n12,544\nCWE-862 Missing authorization\n7,712\nCWE-352 CSRF\n5,836\nVENDORS\nother\n220,704\nlinux\n15,367\nmicrosoft\n10,780\noracle corporation\n7,158\ngoogle\n6,408\n\nCounts are exact over the 371,161 records inside the box in this view. Re-arranging or filtering clears the selection.",
+  "selection_after_cut": {
+    "count": "371,161",
+    "label": "SELECTED",
+    "panel": "371,161 selected\nCLEAR\nof shown\n100.0 % of 371,161\npublished\n1999\u20132026\nin KEV\n1,703 \u00b7 0.5 % \u00b7 358 ransomware\npublic PoC\n29,389 \u00b7 7.9 %\nscored\n200,023 \u00b7 median 6.9 \u00b7 Critical 10.5 %\nEPSS \u2265 1%\n146,253 \u00b7 39.4 % of 370,894 scored by EPSS\nASSIGNERS\nmitre\n114,791\nGitHub_M\n19,292\nPatchstack\n17,910\nVulDB\n16,291\nLinux\n15,203\nWEAKNESSES\nuntagged\n184,318\nCWE-79 XSS\n27,792\nCWE-89 SQL injection\n12,544\nCWE-862 Missing authorization\n7,712\nCWE-352 CSRF\n5,836\nVENDORS\nother\n220,704\nlinux\n15,367\nmicrosoft\n10,780\noracle corporation\n7,158\ngoogle\n6,408\n\nCounts are exact over the 371,161 records inside the box in this view. Re-arranging or filtering clears the selection."
+  },
+  "after_clear": "0",
+  "size_url": "https://devko.github.io/CyberMon/field.html#t=1999-01",
+  "source_matches": {
+    "field.html": false,
+    "js/field.js": false,
+    "css/field.css": false
+  },
+  "cdn_failure": {
+    "errors": [
+      "THREE is not defined"
+    ],
+    "notice_visible": false,
+    "count": "\u2014"
+  }
+}

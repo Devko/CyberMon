@@ -859,6 +859,7 @@ def _write_field(args: argparse.Namespace, field: field_export.FieldCollector,
         nvd_statuses=_field_nvd_statuses(args), sources=sources,
         poc_dates=poc_dates, recent_rescored=recent_rescored,
         recent_crossed=recent_crossed)
+    meta["sample"] = args.offline_fixtures
     contracts.validate(field_export.META_NAME, meta)
     field_export.write(args.field_out, packed, meta)
     print(f"  {meta['n']} CVEs placed ({meta['skipped']['rejected']} rejected"

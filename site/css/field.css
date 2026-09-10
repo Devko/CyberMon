@@ -501,3 +501,48 @@
 @media (max-width: 860px) {
   .field-sel { top: 8px; right: 8px; width: min(300px, calc(100% - 16px)); font-size: 12px; }
 }
+
+/* Review fixes: persistent viewport, separate explanatory area, readable records. */
+.field-body { grid-template-rows: auto auto minmax(0, 1fr); }
+.field-toolbar { display: flex; gap: 8px; align-items: center; padding: 8px 18px; border-bottom: 1px solid var(--rule); font: 12px var(--mono); }
+.field-toolbar span { color: var(--muted); margin-left: auto; max-width: 75ch; }
+.field-toolbar button, .field-results button, .field-inspector button, .field-empty button { font: 12px var(--mono); padding: 8px 10px; color: var(--ink); background: var(--panel-up); border: 1px solid var(--rule-strong); cursor: pointer; }
+.field-toolbar button[aria-pressed="true"] { border-color: var(--accent); }
+#f-controls-toggle { display: none; }
+.field-stage { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-width: 0; }
+.field-viewport { position: relative; min-height: 0; min-width: 0; }
+.field-hud { position: static; max-width: none; padding: 12px 20px; border-top: 1px solid var(--rule); background: var(--bg); pointer-events: auto; }
+.hud-thesis { font-size: 17px; max-width: 85ch; margin: 6px 0; }
+.hud-method p { max-height: 110px; overflow-y: auto; }
+.f-label.group { max-width: 115px; overflow: hidden; text-overflow: ellipsis; font-size: 11px; background: rgba(14,15,17,.8); padding: 2px 3px; }
+.f-label.group b { overflow: hidden; text-overflow: ellipsis; }
+.field-inspector { position: absolute; z-index: 6; top: 10px; right: 10px; width: min(340px, calc(100% - 20px)); max-height: calc(100% - 20px); overflow: auto; padding: 12px; background: var(--panel-up); border: 1px solid var(--rule-strong); font: 12px/1.6 var(--mono); }
+#f-record-detail b, #f-record-detail span, #f-record-detail em, #f-record-detail i { display: block; }
+#f-record-detail i { display: none; }
+.field-results { position: absolute; inset: 0; z-index: 5; background: var(--bg); overflow: auto; padding: 16px; font: 12px/1.6 var(--mono); }
+.field-results table { border-collapse: collapse; min-width: 700px; width: 100%; }
+.field-results td, .field-results th { padding: 8px; text-align: left; border-bottom: 1px solid var(--rule); }
+.result-toolbar { display: flex; gap: 8px; }
+.field-empty { position: absolute; top: 14px; left: 14px; padding: 12px; background: var(--panel-up); font: 12px var(--mono); }
+.field-inspector[hidden], .field-results[hidden], .field-empty[hidden] { display: none; }
+#f-canvas:focus-visible, .field-stage button:focus-visible, .field-toolbar button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+@media (max-width: 860px) {
+  .field-body { height: 100dvh; overflow: hidden; }
+  .field-bar { padding: 10px 14px; gap: 8px; }
+  .field-brand { grid-template-columns: auto 1fr; grid-template-areas: "mark title" "thesis thesis"; gap: 6px 12px; }
+  .field-kicker { display: none; }
+  .field-title { font-size: 23px; }
+  .field-thesis { font-size: 13px; }
+  .field-counters dd { font-size: 18px; }
+  .field-toolbar { flex-wrap: wrap; padding: 6px 12px; }
+  .field-toolbar span { flex-basis: 100%; font-size: 10px; }
+  #f-controls-toggle { display: block; }
+  .field-body-grid { grid-template-rows: minmax(0, 1fr); position: relative; }
+  .field-rail { display: none; }
+  .controls-open .field-rail { display: flex; position: absolute; inset: 0 0 0 auto; width: min(320px, 100%); z-index: 10; background: var(--bg); border-left: 1px solid var(--rule); }
+  .field-stage { order: 0; }
+  .field-hud { padding: 8px 12px; }
+  .hud-thesis { font-size: 14px; }
+  .hud-k, #f-coverage { font-size: 10px; }
+  .hud-method p { max-height: 80px; }
+}

@@ -93,7 +93,7 @@ function boot() {
       grid.append(moduleCard({ ...item, live: true }, { ...ed, statusLive: inst.status }));
     }
     block.append(grid);
-    section.append(block);
+    section.insertBefore(block, head);
   }
   main.append(section);
 

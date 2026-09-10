@@ -1,0 +1,222 @@
+[
+  {
+    "page": "index.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": false
+  },
+  {
+    "page": "cve.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "market.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "kev.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "concentration.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "breaches.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "extortion.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "attack.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "hygiene.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "guards.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "epss.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "calendar.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "rescores.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "changelog.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "naming.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "top25.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "adp.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "epssvol.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "roster.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "exploits.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "c2.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  },
+  {
+    "page": "ai.html",
+    "status": 200,
+    "errors": [],
+    "failed_http": [],
+    "error_cards": [],
+    "footer": "Edition generated 2026-09-10T02:49:04Z\n\nSources \u2014 cvelistV5 release cve_2026-09-10_0200Z (389,482 CVEs) \u00b7 EPSS v2026.06.15 scores of 2026-09-09 \u00b7 CISA KEV 2026.09.09 (1,703 entries) \u00b7 NVD statuses fetched 2026-09-10T02:49:04Z \u00b7 market terms fetched 2026-09-10T02:49:04Z \u00b7 HIBP breach catalog fetched 2026-09-10T02:49:04Z (1,034 breaches) \u00b7 Ransomwhere 11,186 addresses / 21,802 transactions fetched 2026-09-10T02:49:04Z \u00b7 ATT&CK enterprise v19.2 (41 releases) \u00b7 APNIC DNSSEC series fetched 2026-09-10T02:49:04Z \u00b7 EPSS history: 1,397 KEV entries graded \u00b7 rescore log: 4,945 events on record \u00b7 KEV changelog: 4,339 catalog events on record \u00b7 Exploit-DB index (47,159 entries) \u00b7 Metasploit metadata (7,174 modules) \u00b7 Nuclei CVE templates (4,388) \u00b7 Feodo Tracker: 5 C2s listed (1 online) fetched 2026-09-10T02:49:04Z",
+    "overflow": false,
+    "mobile_overflow": true
+  }
+]

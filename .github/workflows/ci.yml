@@ -80,6 +80,9 @@ jobs:
       - name: Run site smoke test
         run: python tools/site_smoke.py
 
+      - name: Check Field interactions and failures
+        run: python tools/field_smoke.py
+
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts
       # they are non-blank and actually differ. NOT a full render — capturing
@@ -156,21 +159,16 @@ jobs:
         continue-on-error: true
         run: python3 tools/make_motion.py --out site/motion
 
-      # The Field (site/field.html) reads a per-CVE record stream that only
-      # the nightly can build (it needs the 550 MB cvelist corpus). Pull the
-      # newest one the nightly published so a site-only push does not
-      # deploy a page with a hole in it. Non-blocking: without it the page
-      # shows its own "not built here" notice instead of erroring.
-      - name: Fetch the latest Field from the nightly
-        continue-on-error: true
+      # A current, hash-verified Field is required. Successful catch-up no-ops
+      # carry no artifact; the helper searches runs that actually built one.
+      - name: Fetch and validate the latest Field from the nightly
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: |
-          run_id="$(gh run list --workflow=nightly.yml --status=success \n            --limit 10 --json databaseId --jq '.[0].databaseId')"
-          if [ -z "$run_id" ]; then echo 'No green nightly yet; skipping.'; exit 0; fi
-          gh run download "$run_id" --name field-latest --dir site/field
-          ls -la site/field
+        run: python tools/fetch_field.py --out site/field
+
+      - name: Check assembled Field
+        run: python tools/field_smoke.py --site site
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3

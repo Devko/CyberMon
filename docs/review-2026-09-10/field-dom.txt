@@ -1,0 +1,90 @@
+CYBERMON
+INSTRUMENT
+The Field
+
+Every published CVE, one point each. Arrange them by the site's own theses.
+
+SHOWN
+371,161
+IN KEV
+1,703
+KEV SHARE
+0.46 %
+ARRANGE
+Timeline · date × score × EPSS
+The clock · publication → PoC → KEV
+Score vs. reality grid
+By assigner (top 48 CNAs)
+By vendor (top 48)
+By weakness (top 30 CWEs)
+By NVD queue status
+COLOUR
+Exploitation
+KEV latency
+Severity
+CVSS version
+Assigner
+Changed lately
+
+in KEVpublic PoCneither
+
+PUBLISHED
+1999–2026
+AS OF
+everything
+▶ Play the months
+CVSS BASE SCORE
+any
+FILTER
+in KEV only
+public PoC only
+known ransomware use
+changed in the last 30 days
+sort groups
+by CVE count
+by KEV count
+by name
+SELECT
+▭ Draw a box (S)
+
+In select mode, drag a box on the canvas: the counters and a panel describe exactly what you caught — assigners, weaknesses, vendors, scores, exploitation. Esc clears.
+
+POINT SIZE
+Reset camera
+
+Drag to orbit · wheel to zoom · shift-drag to pan · hover for the record · click opens it on cve.org. The address bar carries the view: copy it to share this arrangement, or add #cve=CVE-2024-3400 to open on one record.
+
+371,161 published CVEs placed · 18,321 rejected and 0 undated records left out · 200,023 carry a score in the record · 370,894 have an EPSS score · 25,908 have a dated public PoC.
+Changed in the last 30 days: 1,024 CNA scores (the Silent Rescores log) · 50 crossed the 1% EPSS line (the Volatility diff).
+
+1999
+2001
+2003
+2005
+2007
+2009
+2011
+2013
+2015
+2017
+2019
+2021
+2023
+2025
+CVSS 0
+CVSS 5
+CVSS 10
+no score
+no EPSS
+0.01%
+0.1%
+1%
+10%
+100%
+EPSS →
+
+TIMELINE · DATE × SCORE × EPSS
+
+Twenty-seven years of records, placed by the day each was published and the score it shipped with. Depth is EPSS: the nearer a point, the likelier the exploit.
+
+HOW THIS IS PLACED

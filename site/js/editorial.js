@@ -252,11 +252,11 @@ export const editorial = {
         href: "epss.html",
         num: "10",
         label: "EPSS Report Card",
-        headline: "The industry's exploit forecast rarely gets an outside grade. CyberMon grades it.",
+        headline: "What EPSS predicted before a vulnerability entered KEV.",
         blurb:
           "For every CVE that CISA later confirmed exploited, the EPSS score published " +
-          "the day before the KEV listing — the forecast's last chance to sound the " +
-          "alarm. Grade bands per catalog year, the day-before distribution split by " +
+          "the day before the KEV listing — a descriptive snapshot of the " +
+          "forecast. Probability bands per catalog year, the day-before distribution split by " +
           "model version, and where the model ranked the confirmed-exploited cohort.",
         live: true,
       },
@@ -1632,21 +1632,15 @@ export const editorial = {
       source: "EPSS (FIRST.org) · CISA KEV",
       headline: "The day before confirmation, the forecast was calm.",
       caption:
-        "EPSS is the industry's de facto public exploitation forecast, and this site already " +
-        "calls it the best public model — which is exactly why somebody should grade " +
-        "it. For every vulnerability CISA added to its Known Exploited catalog, this " +
-        "chart reads the EPSS score published the day before the listing — the model's " +
-        "last daily forecast while the listing was still in the future — banded into " +
-        "under 1%, 1–10%, and 10% or higher. EPSS predicts exploitation within 30 days, " +
-        "and a KEV listing means exploitation was already observed, so on listing eve " +
-        "the model should be at its most alarmed. Instead, in the catalog's recent years roughly " +
-        "half or more arrive having been scored below one percent the day before. One reading caveat " +
-        "up front: the sharp 2022-to-2023 flip in the bars coincides with a model change " +
-        "(v2 to v3, March 2023) and with the catalog's own seeding cutoff, and the two cannot " +
-        "be separated here — the v2-era model scored high across the board, every model " +
-        "since scores low, and section 02 splits the eras so they never pool. The " +
-        "whole-catalog comparison figure pools them anyway (it says so). Listings that " +
-        "could not have a prior score are counted separately, never as misses.",
+        "For each vulnerability added to CISA KEV, this chart reads its EPSS score on " +
+        "the day before listing. In recent catalog years, roughly half or more arrive having been scored below one percent the day before. " +
+        "This describes scores before catalog inclusion; it does not measure forecast accuracy. " +
+        "EPSS predicts exploitation within the next 30 days, while KEV dateAdded is not " +
+        "the date exploitation occurred. A low probability does not rule out an event, " +
+        "and this selected cohort cannot establish calibration or overall model performance. " +
+        "The 2022-to-2023 shift coincides with a model change (v2 to v3, March 2023) " +
+        "and the catalog's seeding cutoff, which cannot be separated here. Model eras " +
+        "are split below; entries without a prior score are counted separately.",
       statLabel: "Graded KEV additions scored under 1% on listing eve",
       statLatest: "{latest_year}",
       statAgo: "whole catalog",
@@ -1664,30 +1658,17 @@ export const editorial = {
         "{pending} entries are still awaiting their historical day-before lookup; " +
         "every number on this page covers only what has been fetched so far.",
       methodology:
-        "For every entry in CISA's Known Exploited Vulnerabilities catalog, the " +
-        "pipeline asks FIRST's historical EPSS API for the entry's score on the day " +
-        "before its KEV dateAdded, and each answer is fetched exactly once — " +
-        "historical scores are immutable, and the published data file doubles as the " +
-        "archive. Grading the day-before score is deliberately generous to the model: " +
-        "EPSS estimates the probability of exploitation within the next 30 days, and a " +
-        "KEV listing certifies exploitation was already observed (the median gap from " +
-        "CVE publication to KEV listing is measured in weeks on this site's own KEV " +
-        "Latency page), so listing eve is the moment the model has had every chance to " +
-        "be alarmed — a sub-1% score there is the strongest possible form of miss, not " +
-        "a timing technicality. The exception is fast listings: an entry added within " +
-        "days of its CVE publishing gives a model that reads public signals little " +
-        "runway, and such entries stay in the cohort — read the strongest-miss framing " +
-        "with that in mind. Bands are shares of graded entries only. An entry " +
-        "listed before, or the same day, its CVE record published cannot have a " +
-        "day-before score and is reported separately; so are entries whose lookup is " +
-        "still pending — partial coverage is disclosed, never blended. One fairness " +
-        "caveat runs the other way: in the catalog's 2021–22 seeding era (the launch " +
-        "batch plus back-catalog imports of years-old CVEs), the exploitation behind a " +
-        "listing may predate it by years, so those bars answer “was the model alarmed " +
-        "about old known-exploited CVEs” rather than “did it see a fresh one coming” — " +
-        "and the seeding years actually grade better than the live era. The per-year " +
-        "split exists so the eras never blend. A year plots only with at least 10 " +
-        "graded entries. The current year (marked *) is partial and refills nightly.",
+        "For each current CISA KEV entry, the pipeline retrieves FIRST's historical " +
+        "EPSS score for the day before dateAdded. Bands are shares of entries with " +
+        "an available score; entries listed before or on publication, unavailable " +
+        "scores, and pending lookups are reported separately. A year needs at least " +
+        "10 scored entries; the current year is partial. KEV inclusion confirms known " +
+        "exploitation but supplies no event date for testing the next-30-day forecast. " +
+        "This is a retrospective catalog cohort, not a calibration test or a false-negative " +
+        "rate. Such evaluation needs dated outcomes, a defined forecast window, comparison " +
+        "records, and explicit observation coverage. Seeding-era entries may concern " +
+        "exploitation years before listing. Model versions are separated because their " +
+        "probability distributions differ. The published file retains the historical lookups.",
     },
 
     // --------------------------------------------- epss.html · 2

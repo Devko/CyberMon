@@ -112,7 +112,7 @@ def test_encode_round_trip_and_joins():
     years = [r[0] for r in rows]
     assert years == [2021, 2023, 2023]
     (year, seq, day, score, ver, epss, cna, cwe, vendor, kevday, pocday,
-     flags) = rows[1]
+     flags, epss_bucket) = rows[1]
     assert (year, seq) == (2023, 1)
     assert day == (fe.date(2023, 1, 15) - fe.EPOCH).days
     assert (score, ver) == (98, 3)
@@ -155,7 +155,7 @@ def test_changed_lately_bits_and_counts():
     assert not by_id[(2023, 2)][11] & (fe.FLAG_RESCORED | fe.FLAG_CROSSED)
     assert meta["counts"]["rescored"] == 1 and meta["counts"]["crossed"] == 2
     assert meta["window_days"] == fe.RECENT_WINDOW_DAYS
-    assert meta["layout"]["version"] == 3 and meta["layout"]["record_bytes"] == 24
+    assert meta["layout"]["version"] == 4 and meta["layout"]["record_bytes"] == 24
 
 
 def test_recently_rescored_windows_the_log():
@@ -198,7 +198,7 @@ def test_build_writes_validated_outputs(tmp_path):
     assert meta["bin_bytes"] == len(packed)
     assert meta["skipped"] == {"rejected": 0, "undated": 0}
     fe.write(tmp_path, packed, meta)
-    assert (tmp_path / fe.BIN_NAME).read_bytes() == packed
+    assert (tmp_path / meta["bin"]).read_bytes() == packed
     assert json.loads((tmp_path / fe.META_NAME).read_text())["n"] == 3
 
 
@@ -242,3 +242,50 @@ def test_extract_facts_state_drives_the_rejected_skip():
     c = fe.FieldCollector()
     c(extract_facts(rejected), rejected)
     assert c.rows == [] and c.skipped_rejected == 1
+
+def test_exact_epss_buckets_survive_display_rounding():
+    from pipeline.metrics import epss_bucket
+    probabilities = [0, 0.000949, 0.00096, 0.001, 0.00996, 0.01, 0.09996, 0.1, 1]
+    rows = [fe.FieldRow(2026, i + 1, 1, 40, 3, 'CNA', 79, 'vendor') for i in range(len(probabilities))]
+    blob, _ = fe.encode(rows, epss_scores={f'CVE-2026-{i + 1:04d}': p for i, p in enumerate(probabilities)}, kev_entries=[], poc_ids=[], nvd_statuses={})
+    labels = [None, '<0.1%', '0.1-1%', '1-10%', '>10%']
+    for row, probability in zip(fe.decode(blob), probabilities):
+        assert labels[row[12]] == epss_bucket(probability)
+
+
+def test_vendor_long_tail_and_publication_bounds():
+    rows = [fe.FieldRow(2026, i + 1, 100 - i % 100, 40, 3, 'CNA', 79, f'vendor-{i}') for i in range(1200)]
+    blob, meta = fe.encode(rows, epss_scores={}, kev_entries=[], poc_ids=[], nvd_statuses={})
+    assert len(meta['vendors']) == 1201
+    assert all(row[8] != 0 for row in fe.decode(blob))
+    assert meta['first_day'] == 1
+
+
+def test_artifact_checksum_rejects_tampering(tmp_path):
+    from tools.fetch_field import validate
+    packed, meta = fe.build(_rows(), '2026-09-10T00:00:00Z', epss_scores={}, kev_entries=[], poc_ids=[], nvd_statuses={}, sources={})
+    fe.write(tmp_path, packed, meta)
+    assert validate(tmp_path)['n'] == 3
+    (tmp_path / meta['bin']).write_bytes(packed[:-1] + bytes([packed[-1] ^ 1]))
+    with pytest.raises(ValueError, match='checksum'):
+        validate(tmp_path)
+
+
+def test_artifact_fetch_skips_successful_noop(monkeypatch, tmp_path):
+    from tools import fetch_field
+    calls = []
+    def fake_gh(*args):
+        calls.append(args)
+        if args[:2] == ('run', 'list'):
+            return '[{"databaseId": 2}, {"databaseId": 1}]'
+        if args[0] == 'api':
+            return '{"artifacts": []}' if '/2/' in args[1] else '{"artifacts": [{"name": "field-latest", "expired": false}]}'
+        destination = Path(args[args.index('--dir') + 1])
+        packed, meta = fe.build(_rows(), '2026-09-10T00:00:00Z', epss_scores={}, kev_entries=[], poc_ids=[], nvd_statuses={}, sources={})
+        fe.write(destination, packed, meta)
+        return ''
+    monkeypatch.setattr(fetch_field, 'gh', fake_gh)
+    fetch_field.fetch(tmp_path)
+    assert fetch_field.validate(tmp_path)['n'] == 3
+    assert any(c[:3] == ('run', 'download', '1') for c in calls)
+    assert not any(c[:3] == ('run', 'download', '2') for c in calls)

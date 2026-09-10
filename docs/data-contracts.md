@@ -2200,7 +2200,7 @@ asserts they never reach the payload. The charts stay 100%
 CyberMon-computed. Validator: `pipeline/ai_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
-## site/field/field.json + cves.bin.gz  (The Field instrument — NOT under site/data)
+## site/field/field.json + cves.<sha256>.bin.gz  (The Field instrument — NOT under site/data)
 
 Built only with `--field-out`; validated by `pipeline/field_contracts.py`;
 gitignored and shipped inside the Pages artifact (see README, "The Field").
@@ -2210,17 +2210,19 @@ gitignored and shipped inside the Pages artifact (see README, "The Field").
 | key | type | rule |
 |---|---|---|
 | `generated_at` | ISO-8601 UTC | run stamp |
-| `layout.version` | int ≥ 1 | record layout version; the page refuses any other |
-| `layout.record_bytes` | int | 24 for v2 (v1 was 22, without the PoC day) |
+| `layout.version` | int | 4; the page requires exact-bucket v4 data |
+| `layout.record_bytes` | int | 24 for v4 |
 | `layout.epoch` | date | `1999-01-01`; every day field counts from here |
 | `layout.no_score` / `layout.no_epss` | int | sentinels 255 / 65535 |
 | `layout.status_codes` | list[8] | NVD vulnStatus names, index = flag bits 3-5 |
-| `bin` | str | record-stream filename (`cves.bin.gz`) |
+| `bin` | str | `cves.<sha256>.bin.gz`, content-addressed compressed stream |
+| `sha256` | str | SHA-256 of the compressed binary; verified by loader and deployment |
+| `sample` | bool | true for fixture outputs; rejected by deployment |
 | `n` | int ≥ 1 | records placed (PUBLISHED, dated on/after epoch) |
 | `first_day`, `last_day` | int | day range of the placed records |
 | `counts.kev/poc/poc_dated/scored/epss` | int ≤ n | join tallies (`poc_dated` = records with a dated Exploit-DB/Metasploit PoC) |
 | `cnas` | list | assignerShortName by descending volume (u16 index) |
-| `vendors` | list | `["other", …]`, top 1023 first-affected vendors (u16 index) |
+| `vendors` | list | `["other", …]`, all first non-placeholder affected vendor names (u16 index); fail if the dictionary exceeds 65,536 entries |
 | `skipped.rejected`, `skipped.undated` | int | records not placed |
 | `raw_bytes` | int | must equal `n × record_bytes` |
 | `bin_bytes` | int | gzipped size |
@@ -2228,8 +2230,8 @@ gitignored and shipped inside the Pages artifact (see README, "The Field").
 | `counts.rescored`, `counts.crossed` | int ≤ n | records flagged rescored / crossed the 1% EPSS line within the window |
 | `sources` | object | cvelist release, KEV version/count, EPSS model/date, NVD fetch stamp or null, PoC CVE count and dated count, `changed` (window, rescore-log rows read, crossings tracked) |
 
-Record layout v3 (little-endian, 24 bytes; v3 = v2 plus flag bits 6-7, the
-page accepts both): u16 ID year · u32 ID sequence ·
+Record layout v4 (little-endian, 24 bytes; v4 adds an exact EPSS bucket
+at previously reserved byte 23; the page requires v4): u16 ID year · u32 ID sequence ·
 u16 datePublished day · u8 score×10 · u8 CVSS family (0/2/3/4) · u16
 EPSS×10000 · u16 CNA index · u16 CWE number · u16 vendor index · u16 KEV
 dateAdded day (0 = not in KEV) · u16 earliest dated public PoC day (0 =
@@ -2239,6 +2241,9 @@ a CNA score added/raised/lowered within the window — from the committed
 rescore log, so a lost cache never blanks it; bit7 EPSS crossed the 1% line
 within the window — from the volatility state's rolling `recent_crossings`
 map, a cache: a lost state costs the bit one window, never a log row) · u8
-reserved. Score precedence is
+exact EPSS bucket (0 missing, 1 below 0.1%, 2 from 0.1% to below 1%,
+3 from 1% to below 10%, 4 at least 10%). Buckets are computed from raw
+probabilities before u16 display rounding, preserving parity with the
+original severity/EPSS chart. Score precedence is
 `CveFacts.effective_score` (newest family anywhere in the record, CNA before
 ADP within a family). Rows are sorted by (ID year, sequence).

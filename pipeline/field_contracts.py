@@ -6,6 +6,8 @@ cross-checked here only by size: ``raw_bytes`` must equal ``n × record_bytes``.
 """
 from __future__ import annotations
 
+import re
+
 from typing import Any, Callable
 
 from .contracts import (ContractViolation, _check_generated_at, _check_int,
@@ -29,6 +31,12 @@ def _validate_field(obj: Any) -> None:
         raise ContractViolation("field.json.layout.status_codes: 8 codes "
                                 f"fit in three flag bits, got {len(codes)}")
     _check_str(obj.get("bin"), "field.json.bin")
+    if layout["version"] >= 4:
+        digest = obj.get("sha256", "")
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise ContractViolation("field.json.sha256: expected SHA-256 digest")
+        if obj["bin"] != f"cves.{digest}.bin.gz":
+            raise ContractViolation("field.json.bin: must name its content hash")
     n = obj.get("n")
     _check_int(n, "field.json.n", minimum=1)
     _check_int(obj.get("first_day"), "field.json.first_day")
@@ -50,7 +58,7 @@ def _validate_field(obj: Any) -> None:
     vendors = _check_list(obj.get("vendors"), "field.json.vendors")
     if not vendors or vendors[0] != "other":
         raise ContractViolation('field.json.vendors[0] must be "other"')
-    if len(vendors) > 1024 or len(cnas) > 65536:
+    if len(vendors) > 65536 or len(cnas) > 65536:
         raise ContractViolation("field.json: index tables exceed u16 range")
     skipped = obj.get("skipped")
     if not isinstance(skipped, dict):

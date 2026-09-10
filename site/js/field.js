@@ -2,7 +2,7 @@
 // field.js — The Field (field.html): every published CVE as one point in a
 // WebGL space, arranged by the site's own theses.
 //
-// Reads field/field.json + field/cves.bin.gz, both built by the nightly with
+// Reads field/field.json + a content-addressed record blob, both built by the nightly with
 // `python -m pipeline --field-out site/field` (pipeline/field_export.py owns
 // the record layout; the decode below mirrors it field for field). The blob
 // is a deploy-time build product — a fresh checkout has none, and the page
@@ -27,13 +27,13 @@ const $ = (id) => document.getElementById(id);
 const ARRANGE = {
   time: {
     k: "Timeline · date × score × EPSS",
-    thesis: "Twenty-seven years of records, placed by the day each was published and the score it shipped with. Depth is EPSS: the nearer a point, the likelier the exploit.",
-    method: "x: datePublished (UTC day). y: the newest CVSS base score in the record, CNA container before CISA-ADP — the same precedence the severity-inflation chart uses; records with no in-record score sit on the floor. z: log10 of the current EPSS probability, so each lane back is ten times less likely; records EPSS has never scored sit in the back lane.",
+    thesis: "Records by publication day and current in-record severity. Depth shows the current EPSS forecast for exploitation in the next 30 days; KEV marks observed exploitation.",
+    method: "x: datePublished (UTC day). y: the newest CVSS base score in the record, CNA container before CISA-ADP — the same precedence the severity-inflation chart uses; records with no in-record score sit on the floor. z: log10 of the current EPSS probability, so each lane back is ten times less likely; records without a current EPSS score sit in the back lane.",
   },
   grid: {
-    k: "Score vs. reality",
-    thesis: "Left to right: how likely exploitation is, by EPSS. Front to back: how severe the label says it is, by CVSS. If scores tracked risk, the mass would run along the diagonal.",
-    method: "The same sixteen buckets as chart 3 on the CVE Ecosystem page (CVSS 0.1–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / >10%), plus a row for records with no in-record score and a column for records EPSS has not scored. Pile height is the base score.",
+    k: "Severity × predicted exploitation",
+    thesis: "EPSS estimates exploitation probability; CVSS describes severity. These are different dimensions, with no expected diagonal. KEV is the separate observed-exploitation overlay.",
+    method: "The same sixteen buckets as chart 3 on the CVE Ecosystem page (CVSS 0.1–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no in-record score and a column for records without a current EPSS score. Pile height is the base score.",
   },
   cna: {
     k: "By assigner",
@@ -89,7 +89,7 @@ const cweName = (n) => (CWE_NAMES[n] ? (n ? `CWE-${n} ${CWE_NAMES[n]}` : "untagg
 // ---- palette (theme.js, plus the one lane colour the charts don't need) -----
 
 const col = (hex) => new THREE.Color(hex);
-const PAL = {
+function makePalette() { return {
   kev: col(C.accent),
   poc: col(C.sev.high),
   none: col("#7d776a"),
@@ -98,7 +98,7 @@ const PAL = {
   cna: ["#c08a45", "#ded7c2", "#7fa7b8", "#9a8fc2", "#8fb08a", "#c2788f", "#b5a26a", "#6f9ea3"].map(col),
   lat: ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d", "1-3y", "3y+"].map((k) => col(C.latency[k])),
   focus: col(C.ink),
-};
+}; }
 const LEGEND = {
   expl: [[C.accent, "in KEV"], [C.sev.high, "public PoC"], ["#7d776a", "neither"]],
   sev: [[C.sev.critical, "Critical"], [C.sev.high, "High"], [C.sev.medium, "Medium"], [C.sev.low, "Low"], [C.sev.unscored, "no score in record"]],
@@ -111,7 +111,7 @@ const LEGEND = {
 // or an EPSS probability that crossed the 1% line, within the window the
 // export names (field.json window_days, 30). Zero on v2 data.
 const RESCORED = (flags) => (flags >> 6) & 1, CROSSED = (flags) => (flags >> 7) & 1;
-const PAL_CHG = { rescored: col(C.versions.v3), crossed: col(C.sev.high), both: col(C.ink) };
+
 // KEV latency buckets, the KEV Latency module's own edges.
 const latBucket = (lag) => (lag < 0 ? 0 : lag <= 7 ? 1 : lag <= 30 ? 2 : lag <= 90 ? 3 : lag <= 365 ? 4 : lag <= 1095 ? 5 : 6);
 
@@ -128,8 +128,8 @@ async function loadField() {
   const metaRes = await fetch("field/field.json", { cache: "no-cache" });
   if (!metaRes.ok) throw new Error(`field/field.json: HTTP ${metaRes.status}`);
   const meta = await metaRes.json();
-  if (![2, 3].includes(meta.layout?.version) || meta.layout.record_bytes !== 24) {
-    throw new Error(`field.json layout v${meta.layout?.version} is not the v2/v3 24-byte layout this page decodes`);
+  if (![4].includes(meta.layout?.version) || meta.layout.record_bytes !== 24) {
+    throw new Error(`field.json layout v${meta.layout?.version} needs a fresh Field build (this page requires the exact-bucket v4 layout)`);
   }
   if (typeof DecompressionStream === "undefined") {
     throw new Error("this browser cannot decompress the record stream (no DecompressionStream)");
@@ -137,8 +137,11 @@ async function loadField() {
   showNotice("Loading the Field", `<span class="progress">${Number(meta.n).toLocaleString("en-US")} records · ${(Number(meta.bin_bytes) / 1048576).toFixed(1)} MB…</span>`);
   const binRes = await fetch(`field/${encodeURIComponent(meta.bin)}`, { cache: "no-cache" });
   if (!binRes.ok) throw new Error(`field/${meta.bin}: HTTP ${binRes.status}`);
-  const buf = await new Response(binRes.body.pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
-  if (buf.byteLength !== meta.raw_bytes) {
+  const packed = await binRes.arrayBuffer();
+  const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", packed))].map((b) => b.toString(16).padStart(2, "0")).join("");
+  if (hash !== meta.sha256 || meta.bin !== `cves.${hash}.bin.gz`) throw new Error("Field checksum mismatch; reload to fetch a consistent edition");
+  const buf = await new Response(new Blob([packed]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
+  if (buf.byteLength !== meta.raw_bytes || buf.byteLength !== meta.n * 24) {
     throw new Error(`record stream is ${buf.byteLength} bytes, field.json promised ${meta.raw_bytes}`);
   }
   return { meta, buf };
@@ -150,7 +153,7 @@ function decode(meta, buf) {
     N, year: new Uint16Array(N), seq: new Uint32Array(N), day: new Uint16Array(N),
     score: new Uint8Array(N), ver: new Uint8Array(N), epss: new Uint16Array(N),
     cna: new Uint16Array(N), cwe: new Uint16Array(N), vendor: new Uint16Array(N),
-    kevday: new Uint16Array(N), pocday: new Uint16Array(N), flags: new Uint8Array(N),
+    kevday: new Uint16Array(N), pocday: new Uint16Array(N), flags: new Uint8Array(N), bucket: new Uint8Array(N),
   };
   for (let i = 0, o = 0; i < N; i++, o += REC) {
     d.year[i] = dv.getUint16(o, true);
@@ -165,11 +168,14 @@ function decode(meta, buf) {
     d.kevday[i] = dv.getUint16(o + 18, true);
     d.pocday[i] = dv.getUint16(o + 20, true);
     d.flags[i] = dv.getUint8(o + 22);
+    d.bucket[i] = dv.getUint8(o + 23);
   }
   return d;
 }
 
 function main({ meta, buf }) {
+  const PAL = makePalette();
+  const PAL_CHG = { rescored: col(C.versions.v3), crossed: col(C.sev.high), both: col(C.ink) };
   const D = decode(meta, buf);
   const { N } = D;
   const NO_SCORE = meta.layout.no_score, NO_EPSS = meta.layout.no_epss;
@@ -209,7 +215,7 @@ function main({ meta, buf }) {
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x0e0f11, 0.0016);
-  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 3000);
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 12000);
   const grid = new THREE.GridHelper(560, 56, 0x2a2c2e, 0x1b1d21);
   grid.position.y = -9;
   scene.add(grid);
@@ -232,18 +238,23 @@ function main({ meta, buf }) {
     uniforms: { map: { value: sprite } },
     vertexShader: "attribute float size;attribute float alpha;attribute vec3 color;varying vec3 vC;varying float vA;void main(){vC=color;vA=alpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=max(1.6,size*(640.0/-mv.z));gl_Position=projectionMatrix*mv;}",
     fragmentShader: "uniform sampler2D map;varying vec3 vC;varying float vA;void main(){vec4 t=texture2D(map,gl_PointCoord);if(t.a*vA<0.02)discard;gl_FragColor=vec4(vC,t.a*vA);}",
-    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    transparent: true, depthWrite: false, blending: THREE.NormalBlending,
   });
   const points = new THREE.Points(geo, mat);
   points.frustumCulled = false;
   scene.add(points);
+  const kevGeo = new THREE.BufferGeometry();
+  for (const [name, attr] of Object.entries(geo.attributes)) kevGeo.setAttribute(name, attr);
+  kevGeo.setIndex(Array.from({ length: N }, (_, i) => i).filter((i) => KEV(i)));
+  const kevPoints = new THREE.Points(kevGeo, mat);
+  kevPoints.frustumCulled = false; kevPoints.renderOrder = 1; scene.add(kevPoints);
 
   // Picking through an ID buffer: every point carries its index encoded in
   // an RGB attribute; a hover renders the cloud once, opaque, with that
   // colour and the same point sizes, into a small render target and reads
   // the one pixel under the pointer. Nearest point wins by depth; hidden
-  // points (alpha 0) are discarded. Constant cost at any N — the raycaster
-  // walked all 370k points per hover.
+  // points (alpha 0) are discarded. Readback is one pixel; GPU drawing
+  // still scales with the number of points.
   const pickId = new Float32Array(N * 3);
   for (let i = 0; i < N; i++) {
     const id = i + 1;
@@ -256,7 +267,7 @@ function main({ meta, buf }) {
     fragmentShader: "uniform sampler2D map;varying vec3 vId;varying float vA;void main(){if(vA<0.01||texture2D(map,gl_PointCoord).a<0.3)discard;gl_FragColor=vec4(vId,1.0);}",
     transparent: false, depthWrite: true, depthTest: true,
   });
-  const PICK_SCALE = 0.5; // half resolution is plenty for a 2-4 px sprite core
+  const PICK_SCALE = renderer.getPixelRatio(); // exact drawing-buffer footprint
   const pickTarget = new THREE.WebGLRenderTarget(2, 2, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter, depthBuffer: true });
   const pickPixel = new Uint8Array(4);
 
@@ -265,12 +276,19 @@ function main({ meta, buf }) {
   { let s = 12345; for (let i = 0; i < N * 3; i++) { s = (s * 16807) % 2147483647; jit[i] = s / 2147483647 - 0.5; } }
 
   const cam = { theta: 0.35, phi: 1.05, r: 560, tx: 0, ty: 8, tz: 0 };
+  let ready = false, raf = 0;
+  function invalidate() {
+    if (ready && !raf && !document.hidden) raf = requestAnimationFrame(frame);
+  }
+  addEventListener("visibilitychange", () => { if (document.hidden) stopPlay(); else invalidate(); });
+  canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); showNotice("Graphics context lost", '<p><button type="button" id="f-reload">Reload the Field</button></p>'); $("f-reload").onclick = () => location.reload(); });
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    if (ready) { resetCamera(); invalidate(); }
   }
   new ResizeObserver(resize).observe(canvas);
   resize();
@@ -279,7 +297,7 @@ function main({ meta, buf }) {
   const state = {
     layout: "time", color: "expl", from: 1999, to: MAX_YEAR, minScore: 0,
     kevOnly: false, pocOnly: false, ransomOnly: false, changedOnly: false, cnaQ: "", vendorQ: "",
-    sort: "count", size: 1, select: false,
+    sort: "count", size: 1, select: false, flat: false, recordQ: "",
     asOf: -1,  // month index into MONTHS; -1 = everything (no cut)
   };
   // Month table for the "as of" control: records published after the cut
@@ -292,10 +310,12 @@ function main({ meta, buf }) {
       MONTHS.push({ label: `${y}-${String(m + 1).padStart(2, "0")}`, start });
     }
   }
+  const initialState = { ...state };
   const MAX_MONTH = MONTHS.length - 1;
   const asOfDay = () => (state.asOf < 0 || state.asOf >= MAX_MONTH ? LAST_DAY : MONTHS[state.asOf + 1].start - 1);
   let visCount = 0, visKev = 0;
-  const shown = new Uint8Array(N);
+  const shown = new Uint8Array(N), placed = new Uint8Array(N);
+  const visible = (i) => placed[i] && D.day[i] <= asOfDay();
   let shownCount = 0, shownKev = 0;
   function applyFilter() {
     shownCount = 0; shownKev = 0;
@@ -307,6 +327,7 @@ function main({ meta, buf }) {
     for (let i = 0; i < N; i++) {
       const y = pubYear[i];
       let ok = y >= lo && y <= hi && (minS === 0 || (D.score[i] !== NO_SCORE && D.score[i] >= minS));
+      if (ok && state.recordQ.trim()) ok = cveId(i).includes(state.recordQ.trim().toUpperCase());
       if (ok && state.kevOnly) ok = KEV(i) === 1;
       if (ok && state.pocOnly) ok = POC(i) === 1;
       if (ok && state.ransomOnly) ok = RANSOM(i) === 1;
@@ -326,7 +347,8 @@ function main({ meta, buf }) {
   const target = new Float32Array(N * 3), fromPos = new Float32Array(N * 3);
   let animStart = 0;
   const labels = [];
-  function clearLabels() { labels.forEach((l) => l.el.remove()); labels.length = 0; }
+  let groupLabels = null;
+  function clearLabels() { labels.forEach((l) => l.el.remove()); labels.length = 0; groupLabels = null; }
   // `html` is authored markup; data inside it is escaped by the caller.
   function addLabel(x, y, z, html, cls, kind = "") {
     const el = document.createElement("div");
@@ -335,7 +357,7 @@ function main({ meta, buf }) {
     labelsEl.appendChild(el);
     labels.push({ el, p: new THREE.Vector3(x, y, z), kind, sx: 0, on: false });
   }
-  const hide = (i) => { target[i * 3] = 0; target[i * 3 + 1] = -999; target[i * 3 + 2] = 0; };
+  const hide = (i) => { placed[i] = 0; target[i * 3] = 0; target[i * 3 + 1] = -999; target[i * 3 + 2] = 0; };
 
   const TW = 460;
   const zOfEpss = (i) => {
@@ -430,10 +452,28 @@ function main({ meta, buf }) {
       target[i * 3 + 1] = (D.score[i] === NO_SCORE ? 0 : (D.score[i] / 100) * 7) + jit[i * 3 + 1] * 0.8;
       target[i * 3 + 2] = s.cz + dz;
     }
+    groupLabels = { keyFn, titleFn, entries: new Map() };
     groups.forEach((g) => {
       const s = gs.get(g);
-      addLabel(s.cx, labelY, s.cz + s.R + 4, titleFn(g, counts.get(g) || 0, kevs.get(g) || 0), "");
+      addLabel(s.cx, labelY, s.cz + s.R + 4, titleFn(g, counts.get(g) || 0, kevs.get(g) || 0), "group");
+      groupLabels.entries.set(g, labels[labels.length - 1].el);
     });
+  }
+  function topGroups(groups, keyFn, nameOf, limit) {
+    const counts = new Map();
+    for (let i = 0; i < N; i++) if (shown[i]) counts.set(keyFn(i), (counts.get(keyFn(i)) || 0) + 1);
+    const top = groups.sort((a, b) => counts.get(b) - counts.get(a)).slice(0, limit);
+    return sortGroups(top, keyFn, nameOf);
+  }
+  function updateGroupLabels() {
+    if (!groupLabels) return;
+    const counts = new Map(), kevs = new Map();
+    for (let i = 0; i < N; i++) if (visible(i)) {
+      const g = groupLabels.keyFn(i);
+      counts.set(g, (counts.get(g) || 0) + 1);
+      kevs.set(g, (kevs.get(g) || 0) + KEV(i));
+    }
+    for (const [g, el] of groupLabels.entries) el.innerHTML = groupLabels.titleFn(g, counts.get(g) || 0, kevs.get(g) || 0);
   }
   function sortGroups(groups, keyFn, nameOf) {
     if (state.sort === "name") return groups.sort((a, b) => String(nameOf(a)).localeCompare(String(nameOf(b))));
@@ -449,10 +489,11 @@ function main({ meta, buf }) {
   }
   const fmt = (n) => Number(n).toLocaleString("en-US");
   const sevBucket = (i) => { const s = D.score[i]; return s === NO_SCORE ? 0 : s >= 90 ? 4 : s >= 70 ? 3 : s >= 40 ? 2 : 1; };
-  const epssBucket = (i) => { const e = D.epss[i]; return e === NO_EPSS ? 0 : e >= 1000 ? 4 : e >= 100 ? 3 : e >= 10 ? 2 : 1; };
+  const epssBucket = (i) => D.bucket[i];
 
   function layout() {
     clearLabels();
+    placed.set(shown);
     fromPos.set(pos);
     animStart = performance.now();
     if (state.layout === "time") timelineLayout();
@@ -460,17 +501,17 @@ function main({ meta, buf }) {
     else if (state.layout === "vendor") {
       const cnt = new Map();
       for (let i = 0; i < N; i++) if (shown[i]) cnt.set(D.vendor[i], (cnt.get(D.vendor[i]) || 0) + 1);
-      const groups = sortGroups([...cnt.keys()], (i) => D.vendor[i], (g) => VENDORS[g]).slice(0, 48);
+      const groups = topGroups([...cnt.keys()], (i) => D.vendor[i], (g) => VENDORS[g], 48);
       clusterLayout((i) => D.vendor[i], groups, 8, 40, 38, (g, n, k) => `<b>${escapeHtml(VENDORS[g])}</b>${fmt(n)} · KEV ${fmt(k)}`);
     } else if (state.layout === "cna") {
       const cnt = new Map();
       for (let i = 0; i < N; i++) if (shown[i]) cnt.set(D.cna[i], (cnt.get(D.cna[i]) || 0) + 1);
-      const groups = sortGroups([...cnt.keys()], (i) => D.cna[i], (g) => CNAS[g]).slice(0, 48);
+      const groups = topGroups([...cnt.keys()], (i) => D.cna[i], (g) => CNAS[g], 48);
       clusterLayout((i) => D.cna[i], groups, 8, 40, 38, (g, n, k) => `<b>${escapeHtml(CNAS[g])}</b>${fmt(n)} · KEV ${fmt(k)}`);
     } else if (state.layout === "cwe") {
       const cnt = new Map();
       for (let i = 0; i < N; i++) if (shown[i]) cnt.set(D.cwe[i], (cnt.get(D.cwe[i]) || 0) + 1);
-      const groups = sortGroups([...cnt.keys()], (i) => D.cwe[i], (g) => cweName(g)).slice(0, 30);
+      const groups = topGroups([...cnt.keys()], (i) => D.cwe[i], (g) => cweName(g), 30);
       clusterLayout((i) => D.cwe[i], groups, 6, 52, 46, (g, n, k) => `<b>${escapeHtml(cweName(g))}</b>${fmt(n)} · KEV ${fmt(k)}`);
     } else if (state.layout === "status") {
       const groups = sortGroups([1, 2, 3, 4, 5, 6, 7, 0], NVD, (g) => STATUS[g]);
@@ -478,7 +519,7 @@ function main({ meta, buf }) {
     } else if (state.layout === "grid") {
       const groups = []; for (let r = 4; r >= 0; r--) for (let c = 0; c < 5; c++) groups.push(r * 5 + c);
       clusterLayout((i) => sevBucket(i) * 5 + epssBucket(i), groups, 5, 48, 44, (g, n, k) => `${fmt(n)}${k ? ` · KEV ${fmt(k)}` : ""}`, -9);
-      const EP = ["no EPSS", "<0.1%", "0.1–1%", "1–10%", ">10%"], SV = ["no score", "Low", "Medium", "High", "Critical"];
+      const EP = ["no EPSS", "<0.1%", "0.1–1%", "1–10%", "≥10%"], SV = ["no score", "Low", "Medium", "High", "Critical"];
       EP.forEach((t, c) => addLabel((c - 2) * 48, -9, 2.5 * 44 + 14, escapeHtml(t), "tick"));
       addLabel(0, -9, 2.5 * 44 + 26, "EPSS exploitation probability →", "axis");
       SV.forEach((t, r) => addLabel(-2.5 * 48 - 14, -9, (2 - r) * 44, t, "tick"));
@@ -500,12 +541,11 @@ function main({ meta, buf }) {
       cnaTop = [...cnt.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map((e) => e[0]);
       cnaRank = new Map(cnaTop.map((c, i) => [c, i]));
     }
-    const cut = asOfDay();
     visCount = 0; visKev = 0;
     for (let i = 0; i < N; i++) {
       let c, s = 1.0, a = 0.55;
       const k = KEV(i);
-      if (shown[i] && D.day[i] <= cut) { visCount++; visKev += k; }
+      if (visible(i)) { visCount++; visKev += k; }
       if (state.color === "expl") {
         c = k ? PAL.kev : POC(i) ? PAL.poc : PAL.none;
         if (k) { s = 4.2; a = 0.95; } else if (POC(i)) { s = 1.6; a = 0.7; } else { s = 0.8; a = 0.22; }
@@ -536,7 +576,7 @@ function main({ meta, buf }) {
       if (i === focusIdx) { c = PAL.focus; s = 9; a = 1; }
       // a live selection: the catch at full strength, the rest a ghost
       if (selCount) a = selected[i] ? Math.max(a, 0.9) : Math.min(a, 0.06);
-      if (D.day[i] > cut) { a = 0; s = 0; }  // not yet published as of the cut
+      if (!visible(i)) { a = 0; s = 0; }  // not yet published as of the cut
       colr[i * 3] = c.r; colr[i * 3 + 1] = c.g; colr[i * 3 + 2] = c.b;
       size[i] = s * state.size; alpha[i] = a;
     }
@@ -547,8 +587,85 @@ function main({ meta, buf }) {
       ? cnaTop.map((c, i) => [PAL.cna[i].getStyle(), CNAS[c]]).concat([["#7d776a", "other assigners"]])
       : LEGEND[state.color];
     $("f-legend").innerHTML = leg.map(([hex, t]) => `<span><i style="background:${escapeHtml(hex)}"></i>${escapeHtml(t)}</span>`).join("")
-      + (state.color !== "expl" ? `<span><i style="background:${C.accent}"></i>KEV, always larger</span>` : "");
+      + (state.color !== "expl" ? `<span>● Larger point: in KEV (colour follows this legend)</span>` : "");
+    invalidate();
   }
+
+  // Paginated, keyboard-accessible records share the canvas visibility mask.
+  let resultPage = 0;
+  const PAGE_SIZE = 40;
+  function resultIndices() {
+    const ids = [];
+    for (let i = 0; i < N; i++) if (visible(i) && (!selCount || selected[i])) ids.push(i);
+    return ids;
+  }
+  function renderResults() {
+    if ($("f-results").hidden) return;
+    const ids = resultIndices(), pages = Math.max(1, Math.ceil(ids.length / PAGE_SIZE));
+    resultPage = Math.min(resultPage, pages - 1);
+    $("f-result-summary").textContent = `${fmt(ids.length)} ${selCount ? "selected" : "shown"} records · page ${resultPage + 1} of ${pages}`;
+    $("f-result-rows").innerHTML = ids.slice(resultPage * PAGE_SIZE, (resultPage + 1) * PAGE_SIZE).map((i) =>
+      `<tr><td><button type="button" data-record="${i}">${cveId(i)}</button></td><td>${dstr(D.day[i])}</td><td>${escapeHtml(CNAS[D.cna[i]])}</td><td>${escapeHtml(VENDORS[D.vendor[i]])}</td><td>${D.score[i] === NO_SCORE ? "—" : (D.score[i] / 10).toFixed(1)}</td><td>${D.epss[i] === NO_EPSS ? "—" : (D.epss[i] / 100).toFixed(2) + "%"}</td><td>${KEV(i) ? "Yes" : "No"}</td></tr>`).join("");
+    $("f-prev").disabled = resultPage === 0; $("f-next").disabled = resultPage >= pages - 1;
+  }
+  function inspect(i) {
+    focusIdx = i;
+    $("f-inspector").hidden = false;
+    $("f-record-detail").innerHTML = recordHtml(i)
+      + `<p><a href="https://www.cve.org/CVERecord?id=${cveId(i)}" target="_blank" rel="noopener">Open original CVE record ↗</a></p>`
+      + `<p><a href="rescores.html">CNA score change log</a> · <a href="epssvol.html">EPSS changes</a></p>`;
+    colour();
+  }
+  function closeInspector() { $("f-inspector").hidden = true; focusIdx = -1; colour(); writeHash(); }
+  $("f-inspector-close").addEventListener("click", closeInspector);
+  $("f-record").addEventListener("input", (e) => {
+    clearTimeout(recordTimer);
+    recordTimer = setTimeout(() => { state.recordQ = e.target.value; focusIdx = -1; refresh(); }, 200);
+  });
+  let recordTimer = null;
+  $("f-record").addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    clearTimeout(recordTimer); state.recordQ = e.target.value; refresh();
+    const ids = resultIndices();
+    if (ids.length === 1) { inspect(ids[0]); writeHash(); }
+    else { $("f-results").hidden = false; renderResults(); }
+  });
+  $("f-result-rows").addEventListener("click", (e) => {
+    const button = e.target.closest("[data-record]");
+    if (button) { inspect(+button.dataset.record); writeHash(); $("f-inspector-close").focus(); }
+  });
+  $("f-results-toggle").addEventListener("click", () => {
+    $("f-results").hidden = !$("f-results").hidden;
+    $("f-results-toggle").setAttribute("aria-expanded", String(!$("f-results").hidden));
+    renderResults(); if (!$("f-results").hidden) $("f-results-close").focus();
+  });
+  $("f-results-close").addEventListener("click", () => {
+    $("f-results").hidden = true; $("f-results-toggle").setAttribute("aria-expanded", "false"); $("f-results-toggle").focus();
+  });
+  $("f-prev").onclick = () => { resultPage--; renderResults(); };
+  $("f-next").onclick = () => { resultPage++; renderResults(); };
+  $("f-export").addEventListener("click", () => {
+    const records = resultIndices().map((i) => ({ cve: cveId(i), published: dstr(D.day[i]), assigner: CNAS[D.cna[i]], vendor: VENDORS[D.vendor[i]], cwe: cweName(D.cwe[i]), cvss: D.score[i] === NO_SCORE ? null : D.score[i] / 10, epss_rounded: D.epss[i] === NO_EPSS ? null : D.epss[i] / 10000, epss_bucket: D.bucket[i], kev: !!KEV(i) }));
+    const url = URL.createObjectURL(new Blob([JSON.stringify({ edition: meta.generated_at, view: location.hash, scope: selCount ? "selected" : "shown", count: records.length, records }, null, 2)], { type: "application/json" }));
+    const a = document.createElement("a"); a.href = url; a.download = "cybermon-field-records.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  function resetFilters() {
+    stopPlay(); clearTimeout(recordTimer); clearTimeout(qt); clearTimeout(vt);
+    const view = { layout: state.layout, color: state.color, size: state.size, flat: state.flat };
+    Object.assign(state, initialState, view); focusIdx = -1; setSelectMode(false);
+    writeHash(); readHash(); showYears(); showAsOf(); refresh();
+  }
+  $("f-reset-filters").onclick = resetFilters; $("f-empty-reset").onclick = resetFilters;
+  $("f-flat").onclick = () => { state.flat = !state.flat; $("f-flat").setAttribute("aria-pressed", String(state.flat)); resetCamera(); writeHash(); };
+  $("f-controls-toggle").onclick = () => {
+    const open = document.body.classList.toggle("controls-open");
+    $("f-controls-toggle").setAttribute("aria-expanded", String(open));
+    if (open) $("f-record").focus();
+  };
+  canvas.addEventListener("keydown", (e) => {
+    const actions = { ArrowLeft: () => cam.theta -= 0.1, ArrowRight: () => cam.theta += 0.1, ArrowUp: () => cam.phi = Math.max(0.01, cam.phi - 0.1), ArrowDown: () => cam.phi = Math.min(1.57, cam.phi + 0.1), "+": () => cam.r = Math.max(30, cam.r / 1.15), "=": () => cam.r = Math.max(30, cam.r / 1.15), "-": () => cam.r = Math.min(8000, cam.r * 1.15), Home: resetCamera };
+    if (actions[e.key]) { e.preventDefault(); actions[e.key](); invalidate(); }
+  });
 
   // ---- interaction ----------------------------------------------------------
   let drag = null, hoverAt = 0;
@@ -577,9 +694,9 @@ function main({ meta, buf }) {
     selCount = 0; selKev = 0;
     for (let i = 0; i < N; i++) {
       selected[i] = 0;
-      if (!shown[i] || pos[i * 3 + 1] < -500 || D.day[i] > cut) continue;
+      if (!visible(i)) continue;
       pv.set(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]).project(camera);
-      if (pv.z >= 1) continue;
+      if (pv.z < -1 || pv.z >= 1) continue;
       const sx = (pv.x * 0.5 + 0.5) * w, sy = (-pv.y * 0.5 + 0.5) * h;
       if (sx >= x0 && sx <= x1 && sy >= y0 && sy <= y1) { selected[i] = 1; selCount++; selKev += KEV(i); }
     }
@@ -605,15 +722,15 @@ function main({ meta, buf }) {
       if (POC(i)) poc++;
       if (RANSOM(i)) ransom++;
       if (D.score[i] !== NO_SCORE) { scored++; scores.push(D.score[i]); if (D.score[i] >= 90) crit++; }
-      if (D.epss[i] !== NO_EPSS) { withEpss++; if (D.epss[i] >= 100) hot++; }
+      if (D.epss[i] !== NO_EPSS) { withEpss++; if (D.bucket[i] >= 3) hot++; }
       const y = 1999 + pubYear[i]; if (y < yMin) yMin = y; if (y > yMax) yMax = y;
     }
     scores.sort((a, b) => a - b);
-    const median = scores.length ? (scores[Math.floor(scores.length / 2)] / 10).toFixed(1) : "—";
+    const median = scores.length ? ((scores[Math.floor((scores.length - 1) / 2)] + scores[Math.floor(scores.length / 2)]) / 20).toFixed(1) : "—";
     const pct = (a, b) => (b ? `${((a / b) * 100).toFixed(1)} %` : "—");
     const list = (rows) => `<ol>${rows.map(([name, c]) => `<li><span>${escapeHtml(String(name))}</span><span>${fmt(c)}</span></li>`).join("")}</ol>`;
     selEl.innerHTML = `<div class="sel-head"><b><span>${fmt(selCount)}</span> selected</b><button type="button" class="sel-close" id="f-sel-clear">clear</button></div>`
-      + `<dl><dt>of shown</dt><dd>${pct(selCount, shownCount)} of ${fmt(shownCount)}</dd>`
+      + `<dl><dt>of shown</dt><dd>${pct(selCount, visCount)} of ${fmt(visCount)}</dd>`
       + `<dt>published</dt><dd>${yMin === yMax ? yMin : `${yMin}–${yMax}`}</dd>`
       + `<dt>in KEV</dt><dd>${fmt(selKev)} · ${pct(selKev, selCount)}${ransom ? ` · ${fmt(ransom)} ransomware` : ""}</dd>`
       + `<dt>public PoC</dt><dd>${fmt(poc)} · ${pct(poc, selCount)}</dd>`
@@ -622,18 +739,22 @@ function main({ meta, buf }) {
       + `<h4>Assigners</h4>${list(topN((i) => D.cna[i], (k) => CNAS[k]))}`
       + `<h4>Weaknesses</h4>${list(topN((i) => D.cwe[i], (k) => cweName(k)))}`
       + `<h4>Vendors</h4>${list(topN((i) => D.vendor[i], (k) => VENDORS[k]))}`
-      + `<p class="sel-note">Counts are exact over the ${fmt(selCount)} records inside the box in this view. Re-arranging or filtering clears the selection.</p>`;
+      + `<p class="sel-note">Counts are exact over the ${fmt(selCount)} selected records in this view. Re-arranging or filtering clears the selection.</p>`;
     selEl.hidden = false;
     $("f-sel-clear").addEventListener("click", () => clearSelection());
   }
   function updateCounters() {
     const live = selCount > 0, timed = state.asOf >= 0 && state.asOf < MAX_MONTH;
-    $("f-count-k").textContent = live ? "selected" : timed ? `as of ${MONTHS[state.asOf].label}` : "shown";
-    const n = live ? selCount : timed ? visCount : shownCount;
-    const k = live ? selKev : timed ? visKev : shownKev;
+    $("f-count-k").textContent = live ? "selected" : timed ? `published through ${MONTHS[state.asOf].label}` : "shown";
+    const n = live ? selCount : visCount;
+    const k = live ? selKev : visKev;
     $("f-count").textContent = fmt(n);
     $("f-kev").textContent = fmt(k);
     $("f-share").textContent = n ? `${((k / n) * 100).toFixed(2)} %` : "—";
+    $("f-coverage").textContent = `${fmt(visCount)} placed through this month · ${fmt(shownCount)} match the filters across all months. Top-group limits may exclude matches.`;
+    $("f-empty").hidden = visCount > 0;
+    updateGroupLabels();
+    resultPage = 0; renderResults();
   }
   function setSelectMode(on) {
     state.select = on;
@@ -641,10 +762,20 @@ function main({ meta, buf }) {
     canvas.classList.toggle("selecting", on);
     if (!on && rect) { rect = null; rectEl.hidden = true; }
   }
+  $("f-select-shown").addEventListener("click", () => {
+    selCount = 0; selKev = 0;
+    for (let i = 0; i < N; i++) { selected[i] = visible(i) ? 1 : 0; if (selected[i]) { selCount++; selKev += KEV(i); } }
+    renderSelection(); colour(); updateCounters();
+  });
   $("f-select").addEventListener("click", () => setSelectMode(!state.select));
   addEventListener("keydown", (e) => {
-    if (e.target && /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
-    if (e.key === "Escape") { if (selCount) clearSelection(); else setSelectMode(false); }
+    if (e.key !== "Escape" && e.target && /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.key === "Escape") {
+      if (!$("f-inspector").hidden) closeInspector();
+      else if (!$("f-results").hidden) $("f-results-close").click();
+      else if (document.body.classList.contains("controls-open")) $("f-controls-toggle").click();
+      else if (selCount) clearSelection(); else setSelectMode(false);
+    }
     if (e.key === "s" || e.key === "S") setSelectMode(!state.select);
   });
 
@@ -664,13 +795,13 @@ function main({ meta, buf }) {
   function pinchMove() {
     const [a, b] = [...ptrs.values()];
     const d = Math.hypot(a.x - b.x, a.y - b.y) || 1;
-    cam.r = Math.max(30, Math.min(1600, pinch.r0 * (pinch.d0 / d)));
+    cam.r = Math.max(30, Math.min(8000, pinch.r0 * (pinch.d0 / d)));
     const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
     const k = cam.r * 0.0016, dx = mx - pinch.mx, dy = my - pinch.my;
     cam.tx -= dx * Math.cos(cam.theta) * k; cam.tz += dx * Math.sin(cam.theta) * k; cam.ty += dy * k;
     pinch.mx = mx; pinch.my = my;
   }
-  canvas.addEventListener("pointercancel", (e) => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; drag = null; });
+  canvas.addEventListener("pointercancel", (e) => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; drag = null; rect = null; rectEl.hidden = true; canvas.style.cursor = state.select ? "crosshair" : "grab"; });
 
   canvas.addEventListener("pointerdown", (e) => {
     ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -690,7 +821,7 @@ function main({ meta, buf }) {
   });
   canvas.addEventListener("pointermove", (e) => {
     if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pinch) { if (ptrs.size >= 2) pinchMove(); return; }
+    if (pinch) { if (ptrs.size >= 2) pinchMove(); invalidate(); return; }
     if (e.pointerType === "touch" && !drag && !rect) return; // no hover on touch
     if (rect) { [rect.x1, rect.y1] = canvasXY(e); drawRect(); return; }
     if (drag) {
@@ -703,10 +834,10 @@ function main({ meta, buf }) {
       } else {
         cam.theta -= dx * 0.006; cam.phi = Math.max(0.12, Math.min(1.52, cam.phi - dy * 0.006));
       }
-      tip.style.opacity = 0;
+      tip.style.opacity = 0; invalidate();
     } else hover(e);
   }, { passive: true });
-  canvas.addEventListener("wheel", (e) => { e.preventDefault(); cam.r = Math.max(30, Math.min(1600, cam.r * (1 + e.deltaY * 0.0012))); }, { passive: false });
+  canvas.addEventListener("wheel", (e) => { e.preventDefault(); cam.r = Math.max(30, Math.min(8000, cam.r * (1 + e.deltaY * 0.0012))); invalidate(); }, { passive: false });
   canvas.addEventListener("contextmenu", (e) => e.preventDefault());
   canvas.addEventListener("pointerleave", () => { tip.style.opacity = 0; });
 
@@ -717,12 +848,12 @@ function main({ meta, buf }) {
     const px = Math.min(w - 1, Math.max(0, Math.round((e.clientX - r.left) * PICK_SCALE)));
     const py = Math.min(h - 1, Math.max(0, h - 1 - Math.round((e.clientY - r.top) * PICK_SCALE)));
     const clearAlpha = renderer.getClearAlpha();
-    points.material = pickMat; grid.visible = false;
+    points.material = pickMat; grid.visible = false; kevPoints.visible = false;
     renderer.setRenderTarget(pickTarget); renderer.setClearColor(0x000000, 0); renderer.clear();
     renderer.render(scene, camera);
     renderer.readRenderTargetPixels(pickTarget, px, py, 1, 1, pickPixel);
     renderer.setRenderTarget(null); renderer.setClearColor(0x000000, clearAlpha);
-    points.material = mat; grid.visible = true;
+    points.material = mat; grid.visible = true; kevPoints.visible = true;
     if (pickPixel[3] === 0) return -1;
     const i = pickPixel[0] + (pickPixel[1] << 8) + (pickPixel[2] << 16) - 1;
     return i >= 0 && i < N && shown[i] && pos[i * 3 + 1] > -500 ? i : -1;
@@ -737,7 +868,10 @@ function main({ meta, buf }) {
       + `<span>NVD: ${escapeHtml(STATUS[NVD(i)])}${POC(i) && !D.pocday[i] ? " · public PoC (undated)" : ""}</span>`
       + (D.pocday[i] ? `<span>first public PoC ${dstr(D.pocday[i])} · ${lagText(pocLag(i))}</span>` : "")
       + (KEV(i) ? `<em>KEV since ${dstr(D.kevday[i])} · ${lagText(kevLag(i))}${RANSOM(i) ? " · known ransomware use" : ""}</em>` : "")
-      + `<i>click to open the record on cve.org</i>`;
+      + (RESCORED(D.flags[i]) ? `<span>CNA score added or changed within ${meta.window_days} days of this edition.</span>` : "")
+      + (CROSSED(D.flags[i]) ? `<span>EPSS crossed the 1% threshold within ${meta.window_days} days of this edition.</span>` : "")
+      + ((D.flags[i] & 0xC0) ? `<span>This snapshot does not retain the change date, direction, or old value; see the change logs.</span>` : "")
+      + `<i>Click or tap to inspect this record.</i>`;
   }
   function hover(e) {
     const now = performance.now();
@@ -747,19 +881,19 @@ function main({ meta, buf }) {
     if (i < 0) { tip.style.opacity = 0; return; }
     tip.innerHTML = recordHtml(i);
     const r = canvas.getBoundingClientRect();
-    tip.style.left = `${Math.min(e.clientX - r.left + 14, r.width - 330)}px`;
-    tip.style.top = `${Math.min(e.clientY - r.top + 14, r.height - 140)}px`;
+    tip.style.left = `${Math.min(e.clientX - r.left + 14, Math.max(8, r.width - 330))}px`;
+    tip.style.top = `${Math.min(e.clientY - r.top + 14, Math.max(8, r.height - tip.offsetHeight - 8))}px`;
     tip.style.opacity = 1;
   }
   function click(e) {
     const i = pick(e);
-    if (i >= 0) window.open(`https://www.cve.org/CVERecord?id=${encodeURIComponent(cveId(i))}`, "_blank", "noopener");
+    if (i >= 0) { inspect(i); writeHash(); }
   }
 
   // ---- render loop ----------------------------------------------------------
   const v = new THREE.Vector3();
   function frame() {
-    requestAnimationFrame(frame);
+    raf = 0;
     if (animStart) {
       const t = REDUCE ? 1 : Math.min(1, (performance.now() - animStart) / 750);
       const e = 1 - Math.pow(1 - t, 3);
@@ -782,6 +916,8 @@ function main({ meta, buf }) {
       if (on) { l.el.style.left = `${l.sx}px`; l.el.style.top = `${(-v.y * 0.5 + 0.5) * h}px`; }
     }
     thinTicks();
+    avoidCollisions();
+    if (animStart) invalidate();
   }
 
   // Timeline ticks: months show only when a year spans enough pixels for
@@ -796,18 +932,28 @@ function main({ meta, buf }) {
     if (!months) for (const l of labels) if (l.kind === "month" && l.on) l.el.style.display = "none";
   }
 
+  function avoidCollisions() {
+    const used = [];
+    for (const l of [...labels].sort((a, b) => (b.el.classList.contains("axis") ? 1 : 0) - (a.el.classList.contains("axis") ? 1 : 0))) {
+      if (l.el.style.display === "none") continue;
+      const r = l.el.getBoundingClientRect(), bounds = canvas.getBoundingClientRect();
+      if (r.left < bounds.left + 4 || r.right > bounds.right - 4 || r.top < bounds.top + 4 || r.bottom > bounds.bottom - 4 || used.some((x) => r.left < x.right + 5 && r.right > x.left - 5 && r.top < x.bottom + 3 && r.bottom > x.top - 3)) l.el.style.display = "none";
+      else used.push(r);
+    }
+  }
   function refresh() {
+    tip.style.opacity = 0;
+    $("f-inspector").hidden = true;
     applyFilter();
     // positions are about to move: a box drawn on the old view means nothing
     if (selCount) { selected.fill(0); selCount = 0; selKev = 0; selEl.hidden = true; }
-    layout(); colour();
+    layout(); colour(); invalidate();
     updateCounters();
-    if (focusIdx >= 0 && shown[focusIdx]) {
+    if (focusIdx >= 0 && visible(focusIdx)) {
       // fly the camera to the focused record and pin its card top-right
       cam.tx = target[focusIdx * 3]; cam.ty = target[focusIdx * 3 + 1]; cam.tz = target[focusIdx * 3 + 2];
       cam.r = Math.min(cam.r, 140);
-      tip.innerHTML = recordHtml(focusIdx);
-      tip.style.left = `${Math.max(12, canvas.clientWidth - 336)}px`; tip.style.top = "12px"; tip.style.opacity = 1;
+      inspect(focusIdx);
     }
     writeHash();
   }
@@ -830,6 +976,8 @@ function main({ meta, buf }) {
     if (state.vendorQ.trim()) h.set("v", state.vendorQ.trim());
     if (state.sort !== "count") h.set("o", state.sort);
     if (state.size !== 1) h.set("z", String(state.size));
+    if (state.flat) h.set("flat", "1");
+    if (state.recordQ.trim()) h.set("id", state.recordQ.trim());
     if (focusIdx >= 0) h.set("cve", cveId(focusIdx));
     const s = h.toString();
     history.replaceState(null, "", s ? `#${s}` : location.pathname + location.search);
@@ -844,8 +992,8 @@ function main({ meta, buf }) {
   function readHash() {
     const h = new URLSearchParams(location.hash.slice(1));
     const qs = new URLSearchParams(location.search);
-    if (ARRANGE[h.get("a")]) state.layout = h.get("a");
-    if (LEGEND[h.get("c")] !== undefined) state.color = h.get("c");
+    if (Object.hasOwn(ARRANGE, h.get("a"))) state.layout = h.get("a");
+    if (Object.hasOwn(LEGEND, h.get("c"))) state.color = h.get("c");
     const y = (h.get("y") || "").match(/^(\d{4})-(\d{4})$/);
     const t = MONTHS.findIndex((m) => m.label === h.get("t"));
     state.asOf = t >= 0 && t < MAX_MONTH ? t : -1;
@@ -856,6 +1004,10 @@ function main({ meta, buf }) {
     state.cnaQ = h.get("q") || ""; state.vendorQ = h.get("v") || "";
     if (["count", "kev", "name"].includes(h.get("o"))) state.sort = h.get("o");
     if (h.get("z")) state.size = Math.max(0.5, Math.min(2.5, +h.get("z") || 1));
+    state.flat = h.get("flat") === "1";
+    state.recordQ = h.get("id") || "";
+    $("f-record").value = state.recordQ;
+    $("f-flat").setAttribute("aria-pressed", String(state.flat));
     focusIdx = findCve(h.get("cve") || qs.get("cve") || "");
     // reflect in the controls
     document.querySelectorAll("[data-layout]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.layout === state.layout));
@@ -874,7 +1026,15 @@ function main({ meta, buf }) {
     status: { theta: 0.15, phi: 0.72, r: 420, tx: 0, ty: 8, tz: 0 }, vendor: { theta: 0.15, phi: 0.72, r: 480, tx: 0, ty: 8, tz: 0 },
     clock: { theta: 0.3, phi: 1.0, r: 560, tx: 0, ty: 6, tz: 0 },
   };
-  function resetCamera() { Object.assign(cam, CAMS[state.layout]); }
+  function resetCamera() {
+    Object.assign(cam, CAMS[state.layout]);
+    cam.tx = 0;
+    if (state.flat) { cam.theta = 0; cam.phi = ["time", "clock"].includes(state.layout) ? Math.PI / 2 : 0.001; }
+    // Fit the horizontal extent plus label margins on narrow viewports.
+    const horizontal = ["time", "clock"].includes(state.layout) ? 310 : 260;
+    cam.r = Math.max(cam.r, horizontal / (Math.tan(camera.fov * Math.PI / 360) * camera.aspect));
+    invalidate();
+  }
 
   const fromEl = $("f-from"), toEl = $("f-to");
   fromEl.max = toEl.max = MAX_YEAR; toEl.value = MAX_YEAR;
@@ -882,7 +1042,7 @@ function main({ meta, buf }) {
   const onYears = () => {
     let a = +fromEl.value, b = +toEl.value;
     if (a > b) [a, b] = [b, a];
-    state.from = a; state.to = b; showYears(); stopPlay(); refresh();
+    state.from = a; state.to = b; fromEl.value = a; toEl.value = b; showYears(); stopPlay(); refresh();
   };
   fromEl.addEventListener("input", onYears); toEl.addEventListener("input", onYears); showYears();
 
@@ -899,6 +1059,8 @@ function main({ meta, buf }) {
   }
   function setAsOf(idx, { hash = true } = {}) {
     state.asOf = idx >= MAX_MONTH || idx < 0 ? -1 : idx;
+    clearSelection(false);
+    if (focusIdx >= 0 && !visible(focusIdx)) closeInspector();
     showAsOf(); colour(); updateCounters();
     if (hash) writeHash();
   }
@@ -928,11 +1090,11 @@ function main({ meta, buf }) {
   $("f-poconly").addEventListener("change", (e) => { state.pocOnly = e.target.checked; refresh(); });
   $("f-ransom").addEventListener("change", (e) => { state.ransomOnly = e.target.checked; refresh(); });
   $("f-changed").addEventListener("change", (e) => { state.changedOnly = e.target.checked; refresh(); });
-  let qt = null;
+  let qt = null, vt = null;
   $("f-cna").addEventListener("input", (e) => { clearTimeout(qt); qt = setTimeout(() => { state.cnaQ = e.target.value; refresh(); }, 250); });
-  $("f-vendor").addEventListener("input", (e) => { clearTimeout(qt); qt = setTimeout(() => { state.vendorQ = e.target.value; refresh(); }, 250); });
+  $("f-vendor").addEventListener("input", (e) => { clearTimeout(vt); vt = setTimeout(() => { state.vendorQ = e.target.value; refresh(); }, 250); });
   $("f-sort").addEventListener("change", (e) => { state.sort = e.target.value; refresh(); });
-  $("f-size").addEventListener("input", (e) => { state.size = +e.target.value; colour(); });
+  $("f-size").addEventListener("input", (e) => { state.size = +e.target.value; colour(); writeHash(); });
   $("f-reset").addEventListener("click", resetCamera);
   document.querySelectorAll("[data-layout]").forEach((b) => b.addEventListener("click", () => {
     state.layout = b.dataset.layout;
@@ -956,7 +1118,7 @@ function main({ meta, buf }) {
     + `${fmt(meta.counts.scored)} carry a score in the record · ${fmt(meta.counts.epss)} have an EPSS score · ${fmt(meta.counts.poc_dated || 0)} have a dated public PoC.<br>`
     + (meta.layout.version >= 3
       ? `Changed in the last ${fmt(meta.window_days || 30)} days: ${fmt(meta.counts.rescored || 0)} CNA scores (the Silent Rescores log) · ${fmt(meta.counts.crossed || 0)} crossed the 1% EPSS line (the Volatility diff).<br>`
-      : ""),
+      : "")
     + `cvelistV5 ${str(s.cvelist?.release)} · CISA KEV ${str(s.kev?.catalog_version)} (${fmt(s.kev?.count || 0)} entries) · `
     + `EPSS ${str(s.epss?.model_version)} of ${str(s.epss?.score_date)} · `
     + `NVD statuses ${s.nvd?.fetched_at ? `fetched ${str(s.nvd.fetched_at)}` : "not fetched"} · `
@@ -967,8 +1129,9 @@ function main({ meta, buf }) {
   // ---- go -------------------------------------------------------------------
   pos.fill(0); for (let i = 0; i < N; i++) pos[i * 3 + 1] = -999;
   readHash(); showYears(); showAsOf(); resetCamera(); refresh();
+  $("f-edition").textContent = `${meta.sample ? "SAMPLE / VISUAL TEST. " : ""}Attributes from ${meta.generated_at}. Publication playback does not reconstruct historical scores or exploitation status.`;
   notice.hidden = true;
-  requestAnimationFrame(frame);
+  ready = true; invalidate();
 }
 
 async function boot() {

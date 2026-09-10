@@ -390,50 +390,51 @@ are not reproducible here, so they live in the repo as attributed prose
 (`ai_timeline_data.EXTERNAL_CONTEXT`) and a unit test asserts they never
 reach the payload. Stage `pipeline/ai_metrics.py`; no new upstream.
 
-## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument, draft)
+## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 
-*Every published CVE, one point each.* A WebGL instrument, deliberately not
-a module: it has no charts, no claims guards and no nav entry (so the
-carousel and motion pipelines never see it). It places the whole cvelistV5
-corpus — ~350k published records — in one space and lets a reader arrange
-it by the site's own theses:
+*Every published CVE, one point each.* The Field explores the corpus by
+publication date, current severity and EPSS, publication-to-PoC/KEV timing,
+assigner, vendor, weakness, or current NVD status. It has a dedicated
+Instruments link and stays separate from module/carousel generation.
 
-- **Timeline** — publication day × in-record CVSS score × EPSS as depth
-  (log scale; unscored records on the floor, un-EPSS'd records in the back
-  lane), with a year range as the filter and an "as of" month scrub whose play button lets the corpus arrive in place, month by month.
-- **The clock** — signed days from publication to the first dated public
-  PoC (front lane) and to the KEV listing (back lane), on a log scale;
-  left of zero the exploit came first.
-- **Score vs. reality** — chart 3's CVSS × EPSS grid as piles.
-- **By assigner** (top 48 CNAs), **by vendor** (top 48), **by weakness**
-  (top 30 CWEs), **by NVD queue status** — pile height is the base score;
-  each pile carries its KEV count.
+Publication playback reveals records through a selected month using the
+attributes of the displayed edition. It is **not** a reconstruction of
+historical scores, EPSS forecasts, or exploitation status. CVSS severity
+and EPSS probability are distinct dimensions; no diagonal relationship is
+assumed. KEV supplies a separate observed-exploitation overlay.
 
-Colour by exploitation (KEV / public PoC / neither), KEV latency (the KEV
-module's own buckets), severity, CVSS version, assigner, or "changed lately"
-(a CNA score changed or an EPSS probability crossed the 1% line in the last
-30 days — the records the Rescores and Volatility modules are arguing about
-this week); filter by year, minimum score, KEV, PoC, ransomware use, recent
-change, assigner and vendor; hover for the
-record, click to open it on cve.org. **Select mode** (the rail button, or
-`S`) turns a drawn box into a receipt: the counters and a panel recompute
-for exactly the records caught — assigners, weaknesses, vendors, score
-distribution, KEV / PoC / EPSS shares — and the rest of the field dims. The
-URL hash carries the whole view, so any arrangement is a link, and
-`#cve=CVE-2024-3400` opens on one record.
+Filters, time cuts, placed-group limits, counters, selections and the
+paginated **Browse records** table describe the same visible population.
+Group membership is top 48 assigners/vendors or top 30 weaknesses by
+matching volume; sorting changes only their display order. The UI also
+reports the matching population before group/time limits. Changing filters,
+arrangements, or the publication cut clears the selection.
 
-Its data is `site/field/field.json` plus a gzipped fixed-width record
-stream (24 bytes per CVE, layout documented in
-`pipeline/field_export.py` and mirrored in `site/js/field.js`), built by
-`python -m pipeline --field-out site/field` from the **same streaming
-corpus pass** every module uses (an observer on `Aggregator.consume`), so
-it can never disagree with the charts about a record's score, CNA or CWE.
-`site/field/` is gitignored: a multi-megabyte blob that changes nightly
-must never enter git history. The nightly builds it into the Pages
-artifact and publishes it as a workflow artifact (`field-latest`); ci.yml's
-push-triggered deploy downloads that so a site-only push ships a complete
-site. A checkout without it renders a "not built here" notice, not an
-error.
+Search by CVE ID, inspect a record with click/tap or the keyboard-accessible
+list, and download shown/selected records as JSON with their edition.
+Canvas arrow keys orbit, +/− zoom, and Home resets the camera. A flat view
+and mobile controls drawer supplement the spatial view. The URL saves
+filters, arrangement, flat view and point size against the latest edition;
+camera movement and box selections are not serialized. `#cve=CVE-2024-3400`
+focuses an individual record.
+
+The nightly builds `site/field/field.json` and a content-addressed gzip
+binary with `python -m pipeline --out site/data --field-out site/field`.
+Layout v4 keeps the 24-byte record and uses byte 23 for the **exact EPSS
+bucket computed before rounding**. Vendor names retain the full u16
+dictionary. The loader verifies the SHA-256 digest and requires v4;
+legacy blobs must be rebuilt, not relabelled as v4. All artifacts remain
+gitignored. Sample fixture outputs are marked and rejected by deployment.
+
+`tools/fetch_field.py` finds a successful nightly that actually produced a
+valid current-layout `field-latest` artifact (skipping successful catch-up
+no-ops). Deployment requires the artifact and a Field browser check.
+**For the v4 rollout, run the nightly on this revision before a push deploy
+can obtain a compatible artifact.** No production data is committed here.
+
+Checks: `python -m pytest pipeline/tests -q`, `python tools/site_smoke.py`,
+and `python tools/field_smoke.py` (isolated synthetic fixture). Use
+`python tools/field_smoke.py --site site` to check an assembled real build.
 
 ## Architecture
 

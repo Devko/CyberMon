@@ -206,6 +206,9 @@ function renderNav(activeId) {
     for (const tab of g.tabs) row.append(tabEl(tab));
     nav.append(row);
   }
+  const instruments = el("div", "site-nav-row");
+  instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab"));
+  nav.prepend(instruments);
 }
 
 function renderMasthead() {

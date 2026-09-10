@@ -37,7 +37,7 @@ offset  type  meaning
 22      u8    flags — bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5
               NVD status code, bit6 CNA score changed in the last 30 days,
               bit7 EPSS crossed the 1% line in the last 30 days (layout v3)
-23      u8    reserved (0)
+23      u8    exact EPSS bucket: 0 absent; 1 <0.1%; 2 <1%; 3 <10%; 4 >=10%
 ======  ====  ===================================================
 
 Only PUBLISHED records with a parseable datePublished on or after EPOCH are
@@ -47,6 +47,7 @@ page can say how much of the corpus it does not show.
 from __future__ import annotations
 
 import gzip
+import hashlib
 import json
 import struct
 from collections import Counter
@@ -57,14 +58,14 @@ from typing import Any, Iterable, Mapping
 
 from .metrics import _FAMILY_ORDER, CveFacts
 
-LAYOUT_VERSION = 3  # v3 = v2 layout plus flag bits 6-7 (same 24 bytes)
-RECORD = struct.Struct("<HIHBBHHHHHHBx")
+LAYOUT_VERSION = 4  # v4 adds an exact EPSS bucket at byte 23 (same 24 bytes)
+RECORD = struct.Struct("<HIHBBHHHHHHBB")
 RECORD_BYTES = RECORD.size  # 24
 EPOCH = date(1999, 1, 1)
 NO_SCORE = 255
 NO_EPSS = 65535
 MAX_DAY = 65535
-MAX_VENDORS = 1023  # index 0 is reserved for "other"
+MAX_VENDORS = 65535  # index 0 is reserved for "other"
 
 FLAG_KEV = 1 << 0
 FLAG_RANSOMWARE = 1 << 1
@@ -247,8 +248,9 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
     cnas = [name for name, _ in cna_counts.most_common()]
     cna_index = {name: i for i, name in enumerate(cnas)}
     vendor_counts = Counter(r.vendor for r in rows if r.vendor)
-    vendors = ["other"] + [name for name, _ in
-                           vendor_counts.most_common(MAX_VENDORS)]
+    if len(vendor_counts) > MAX_VENDORS:
+        raise ValueError("Field vendor dictionary exceeds u16; increase the layout before exporting")
+    vendors = ["other"] + [name for name, _ in vendor_counts.most_common()]
     vendor_index = {name: i for i, name in enumerate(vendors)}
 
     kev: dict[str, tuple[int, bool]] = {}
@@ -292,8 +294,10 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         epss = epss_scores.get(cve_id)
         if epss is None:
             epss_q = NO_EPSS
+            epss_bucket = 0
         else:
             epss_q = int(round(max(0.0, min(1.0, epss)) * 10000))
+            epss_bucket = 4 if epss >= 0.1 else 3 if epss >= 0.01 else 2 if epss >= 0.001 else 1
             counts["epss"] += 1
         if r.score != NO_SCORE:
             counts["scored"] += 1
@@ -301,7 +305,7 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
             out, i * RECORD_BYTES,
             r.year, r.seq, r.day, r.score, r.version, epss_q,
             cna_index[r.cna], r.cwe, vendor_index.get(r.vendor, 0),
-            kev_day, poc_d, flags)
+            kev_day, poc_d, flags, epss_bucket)
 
     meta = {
         "layout": {
@@ -315,7 +319,7 @@ def encode(rows: Iterable[FieldRow], *, epss_scores: dict[str, float],
         "bin": BIN_NAME,
         "window_days": RECENT_WINDOW_DAYS,
         "n": len(rows),
-        "first_day": rows[0].day if rows else 0,
+        "first_day": min((r.day for r in rows), default=0),
         "last_day": max((r.day for r in rows), default=0),
         "counts": {
             "kev": counts["kev"],
@@ -363,6 +367,8 @@ def build(collector: FieldCollector, generated_at: str, *,
     }
     meta["sources"] = sources
     packed = gzip.compress(blob, compresslevel=9, mtime=0)
+    meta["sha256"] = hashlib.sha256(packed).hexdigest()
+    meta["bin"] = f"cves.{meta['sha256']}.bin.gz"
     meta["bin_bytes"] = len(packed)
     meta["raw_bytes"] = len(blob)
     return packed, meta
@@ -370,6 +376,6 @@ def build(collector: FieldCollector, generated_at: str, *,
 
 def write(out_dir: Path, packed: bytes, meta: dict) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / BIN_NAME).write_bytes(packed)
+    (out_dir / meta["bin"]).write_bytes(packed)
     (out_dir / META_NAME).write_text(json.dumps(meta, indent=1) + "\n",
                                      encoding="utf-8")

@@ -1,0 +1,407 @@
+{
+  "mobile_width": {
+    "viewport": 390,
+    "document": 390
+  },
+  "overflow_elements": [
+    {
+      "tag": "TABLE",
+      "cls": "cna-table",
+      "id": "",
+      "x": 33,
+      "right": 673,
+      "w": 640,
+      "text": "CNACVEsavg CVSSmedian% \u2265 9.0% \u2265 7.0GovTech CSGGovTech CSG108"
+    },
+    {
+      "tag": "THEAD",
+      "cls": "",
+      "id": "",
+      "x": 33,
+      "right": 673,
+      "w": 640,
+      "text": "CNACVEsavg CVSSmedian% \u2265 9.0% \u2265 7.0"
+    },
+    {
+      "tag": "TR",
+      "cls": "",
+      "id": "",
+      "x": 33,
+      "right": 673,
+      "w": 640,
+      "text": "CNACVEsavg CVSSmedian% \u2265 9.0% \u2265 7.0"
+    },
+    {
+      "tag": "TH",
+      "cls": "num",
+      "id": "",
+      "x": 379.9375,
+      "right": 477.609375,
+      "w": 97.671875,
+      "text": "median"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "sort-btn",
+      "id": "",
+      "x": 419.65625,
+      "right": 463.609375,
+      "w": 43.953125,
+      "text": "median"
+    },
+    {
+      "tag": "TH",
+      "cls": "num is-sorted",
+      "id": "",
+      "x": 477.609375,
+      "right": 575.28125,
+      "w": 97.671875,
+      "text": "% \u2265 9.0"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "sort-btn",
+      "id": "",
+      "x": 495.34375,
+      "right": 546.625,
+      "w": 51.28125,
+      "text": "% \u2265 9.0"
+    },
+    {
+      "tag": "TH",
+      "cls": "num",
+      "id": "",
+      "x": 575.28125,
+      "right": 673,
+      "w": 97.71875,
+      "text": "% \u2265 7.0"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "sort-btn",
+      "id": "",
+      "x": 607.71875,
+      "right": 659,
+      "w": 51.28125,
+      "text": "% \u2265 7.0"
+    },
+    {
+      "tag": "TBODY",
+      "cls": "",
+      "id": "",
+      "x": 33,
+      "right": 673,
+      "w": 640,
+      "text": "GovTech CSGGovTech CSG1087.98.439.8%68.5%twcerttwcert4428.08"
+    },
+    {
+      "tag": "TR",
+      "cls": "",
+      "id": "",
+      "x": 33,
+      "right": 673,
+      "w": 640,
+      "text": "GovTech CSGGovTech CSG1087.98.439.8%68.5%"
+    },
+    {
+      "tag": "TD",
+      "cls": "num",
+      "id": "",
+      "x": 379.9375,
+      "right": 477.609375,
+      "w": 97.671875,
+      "text": "8.4"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar",
+      "id": "",
+      "x": 387.609375,
+      "right": 463.609375,
+      "w": 76,
+      "text": "8.4"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar-fill",
+      "id": "",
+      "x": 388.609375,
+      "right": 450.765625,
+      "w": 62.15625,
+      "text": ""
+    },
+    {
+      "tag": "SPAN",
+      "cls": "cellbar-val",
+      "id": "",
+      "x": 388.609375,
+      "right": 462.609375,
+      "w": 74,
+      "text": "8.4"
+    },
+    {
+      "tag": "TD",
+      "cls": "num",
+      "id": "",
+      "x": 477.609375,
+      "right": 575.28125,
+      "w": 97.671875,
+      "text": "39.8%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar",
+      "id": "",
+      "x": 485.28125,
+      "right": 561.28125,
+      "w": 76,
+      "text": "39.8%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar-fill accent",
+      "id": "",
+      "x": 486.28125,
+      "right": 515.71875,
+      "w": 29.4375,
+      "text": ""
+    },
+    {
+      "tag": "SPAN",
+      "cls": "cellbar-val",
+      "id": "",
+      "x": 486.28125,
+      "right": 560.28125,
+      "w": 74,
+      "text": "39.8%"
+    },
+    {
+      "tag": "TD",
+      "cls": "num",
+      "id": "",
+      "x": 575.28125,
+      "right": 673,
+      "w": 97.71875,
+      "text": "68.5%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar",
+      "id": "",
+      "x": 583,
+      "right": 659,
+      "w": 76,
+      "text": "68.5%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar-fill",
+      "id": "",
+      "x": 584,
+      "right": 634.6875,
+      "w": 50.6875,
+      "text": ""
+    },
+    {
+      "tag": "SPAN",
+      "cls": "cellbar-val",
+      "id": "",
+      "x": 584,
+      "right": 658,
+      "w": 74,
+      "text": "68.5%"
+    },
+    {
+      "tag": "TR",
+      "cls": "",
+      "id": "",
+      "x": 33,
+      "right": 673,
+      "w": 640,
+      "text": "twcerttwcert4428.08.731.0%76.2%"
+    },
+    {
+      "tag": "TD",
+      "cls": "num",
+      "id": "",
+      "x": 379.9375,
+      "right": 477.609375,
+      "w": 97.671875,
+      "text": "8.7"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar",
+      "id": "",
+      "x": 387.609375,
+      "right": 463.609375,
+      "w": 76,
+      "text": "8.7"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar-fill",
+      "id": "",
+      "x": 388.609375,
+      "right": 452.984375,
+      "w": 64.375,
+      "text": ""
+    },
+    {
+      "tag": "SPAN",
+      "cls": "cellbar-val",
+      "id": "",
+      "x": 388.609375,
+      "right": 462.609375,
+      "w": 74,
+      "text": "8.7"
+    },
+    {
+      "tag": "TD",
+      "cls": "num",
+      "id": "",
+      "x": 477.609375,
+      "right": 575.28125,
+      "w": 97.671875,
+      "text": "31.0%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar",
+      "id": "",
+      "x": 485.28125,
+      "right": 561.28125,
+      "w": 76,
+      "text": "31.0%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar-fill accent",
+      "id": "",
+      "x": 486.28125,
+      "right": 509.21875,
+      "w": 22.9375,
+      "text": ""
+    },
+    {
+      "tag": "SPAN",
+      "cls": "cellbar-val",
+      "id": "",
+      "x": 486.28125,
+      "right": 560.28125,
+      "w": 74,
+      "text": "31.0%"
+    },
+    {
+      "tag": "TD",
+      "cls": "num",
+      "id": "",
+      "x": 575.28125,
+      "right": 673,
+      "w": 97.71875,
+      "text": "76.2%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar",
+      "id": "",
+      "x": 583,
+      "right": 659,
+      "w": 76,
+      "text": "76.2%"
+    },
+    {
+      "tag": "DIV",
+      "cls": "cellbar-fill",
+      "id": "",
+      "x": 584,
+      "right": 640.375,
+      "w": 56.375,
+      "text": ""
+    }
+  ],
+  "source_matches_normalized": {
+    "field.html": true,
+    "js/field.js": true,
+    "css/field.css": true
+  },
+  "grid_differences": [
+    {
+      "cvss_bucket": "0.1-3.9",
+      "epss_bucket": "<0.1%",
+      "n": 193,
+      "field_n": 140
+    },
+    {
+      "cvss_bucket": "0.1-3.9",
+      "epss_bucket": "0.1-1%",
+      "n": 7849,
+      "field_n": 7897
+    },
+    {
+      "cvss_bucket": "0.1-3.9",
+      "epss_bucket": "1-10%",
+      "n": 714,
+      "field_n": 719
+    },
+    {
+      "cvss_bucket": "4.0-6.9",
+      "epss_bucket": "<0.1%",
+      "n": 1545,
+      "field_n": 1170
+    },
+    {
+      "cvss_bucket": "4.0-6.9",
+      "epss_bucket": "0.1-1%",
+      "n": 83075,
+      "field_n": 83385
+    },
+    {
+      "cvss_bucket": "4.0-6.9",
+      "epss_bucket": "1-10%",
+      "n": 7892,
+      "field_n": 7957
+    },
+    {
+      "cvss_bucket": "7.0-8.9",
+      "epss_bucket": "<0.1%",
+      "n": 893,
+      "field_n": 702
+    },
+    {
+      "cvss_bucket": "7.0-8.9",
+      "epss_bucket": "0.1-1%",
+      "n": 59581,
+      "field_n": 59687
+    },
+    {
+      "cvss_bucket": "7.0-8.9",
+      "epss_bucket": "1-10%",
+      "n": 13915,
+      "field_n": 14000
+    },
+    {
+      "cvss_bucket": "9.0-10.0",
+      "epss_bucket": "<0.1%",
+      "n": 13,
+      "field_n": 9
+    },
+    {
+      "cvss_bucket": "9.0-10.0",
+      "epss_bucket": "0.1-1%",
+      "n": 13427,
+      "field_n": 13386
+    },
+    {
+      "cvss_bucket": "9.0-10.0",
+      "epss_bucket": "1-10%",
+      "n": 5888,
+      "field_n": 5933
+    }
+  ],
+  "meta_bytes": {
+    "n": 371161,
+    "raw_bytes": 8907864,
+    "bin_bytes": 2475852
+  }
+}
