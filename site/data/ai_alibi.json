@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-09T02:48:49Z",
+ "generated_at": "2026-09-10T02:49:04Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -298,7 +298,7 @@
      {
       "year": 2025,
       "value": -11.5,
-      "n": 504
+      "n": 506
      }
     ]
    },
@@ -440,8 +440,8 @@
      },
      {
       "year": 2025,
-      "value": 75.0,
-      "n": 504
+      "value": 75.1,
+      "n": 506
      }
     ]
    },
@@ -583,8 +583,8 @@
      },
      {
       "year": 2025,
-      "value": 55.4,
-      "n": 504
+      "value": 55.3,
+      "n": 506
      }
     ]
    }
@@ -596,7 +596,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-06-11",
+  "observed_through": "2026-06-12",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -753,13 +753,13 @@
    {
     "year": 2025,
     "value": 1.0,
-    "n": 220,
+    "n": 221,
     "provisional": true
    },
    {
     "year": 2026,
     "value": 1.0,
-    "n": 100,
+    "n": 103,
     "provisional": true
    }
   ]
@@ -791,7 +791,7 @@
       "post": {
        "value": 0.6,
        "years": 5,
-       "n": 997
+       "n": 1001
       },
       "era_shift": 0.2,
       "pct_banked": 99.4,
@@ -814,7 +814,7 @@
       "post": {
        "value": 0.5,
        "years": 4,
-       "n": 792
+       "n": 796
       },
       "era_shift": -0.1,
       "pct_banked": 100.3,
@@ -837,7 +837,7 @@
       "post": {
        "value": 1.0,
        "years": 2,
-       "n": 320
+       "n": 324
       },
       "era_shift": 0.4,
       "pct_banked": null,
@@ -869,7 +869,7 @@
       "post": {
        "value": -1.0,
        "years": 4,
-       "n": 1467
+       "n": 1469
       },
       "era_shift": 0.0,
       "pct_banked": 100.0,
@@ -892,7 +892,7 @@
       "post": {
        "value": -2.7,
        "years": 3,
-       "n": 1159
+       "n": 1161
       },
       "era_shift": -2.9,
       "pct_banked": 101.3,
@@ -915,7 +915,7 @@
       "post": {
        "value": -11.5,
        "years": 1,
-       "n": 504
+       "n": 506
       },
       "era_shift": -12.8,
       "pct_banked": null,
@@ -947,7 +947,7 @@
       "post": {
        "value": 61.4,
        "years": 4,
-       "n": 1467
+       "n": 1469
       },
       "era_shift": -15.4,
       "pct_banked": 57.1,
@@ -970,7 +970,7 @@
       "post": {
        "value": 62.9,
        "years": 3,
-       "n": 1159
+       "n": 1161
       },
       "era_shift": -8.5,
       "pct_banked": 75.3,
@@ -991,11 +991,11 @@
        "n": 1944
       },
       "post": {
-       "value": 75.0,
+       "value": 75.1,
        "years": 1,
-       "n": 504
+       "n": 506
       },
-      "era_shift": 12.6,
+      "era_shift": 12.7,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1025,7 +1025,7 @@
       "post": {
        "value": 39.7,
        "years": 4,
-       "n": 1467
+       "n": 1469
       },
       "era_shift": -8.7,
       "pct_banked": 84.7,
@@ -1046,13 +1046,13 @@
        "n": 3217
       },
       "post": {
-       "value": 40.2,
+       "value": 40.1,
        "years": 3,
-       "n": 1159
+       "n": 1161
       },
-      "era_shift": -4.7,
-      "pct_banked": 91.6,
-      "shift_share_pct": -8.4,
+      "era_shift": -4.8,
+      "pct_banked": 91.5,
+      "shift_share_pct": -8.5,
       "verdict": "no_inflection"
      },
      {
@@ -1069,11 +1069,11 @@
        "n": 1944
       },
       "post": {
-       "value": 55.4,
+       "value": 55.3,
        "years": 1,
-       "n": 504
+       "n": 506
       },
-      "era_shift": 17.4,
+      "era_shift": 17.3,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"

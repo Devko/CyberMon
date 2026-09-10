@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-09-09T02:48:49Z",
+ "generated_at": "2026-09-10T02:49:04Z",
  "roster_size": {
   "min_n": 2,
-  "current": 544,
-  "net_change": 14,
+  "current": 548,
+  "net_change": 18,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -209,6 +209,10 @@
    {
     "date": "2026-09-09",
     "size": 544
+   },
+   {
+    "date": "2026-09-10",
+    "size": 548
    }
   ]
  },
@@ -228,25 +232,25 @@
    },
    {
     "month": "2026-09",
-    "onboarded": 1,
+    "onboarded": 5,
     "departed": 0,
     "scope_changed": 0
    }
   ],
   "totals": {
-   "onboarded": 15,
+   "onboarded": 19,
    "departed": 1,
    "scope_changed": 5
   },
-  "events_total": 21,
+  "events_total": 25,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 544,
+  "total": 548,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 443
+    "n": 447
    },
    {
     "label": "Open Source",
@@ -284,11 +288,11 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 456
+    "n": 459
    },
    {
     "label": "CISA",
-    "n": 86
+    "n": 87
    },
    {
     "label": "n/a",
@@ -298,15 +302,15 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 386
+    "n": 387
    },
    {
     "label": "icscert",
-    "n": 84
+    "n": 85
    },
    {
     "label": "ENISA",
-    "n": 22
+    "n": 24
    },
    {
     "label": "redhat",
@@ -332,11 +336,11 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 285
+    "n": 286
    },
    {
     "label": "Germany",
-    "n": 27
+    "n": 28
    },
    {
     "label": "China",
@@ -344,7 +348,7 @@
    },
    {
     "label": "Taiwan",
-    "n": 16
+    "n": 17
    },
    {
     "label": "Japan",
@@ -423,6 +427,10 @@
     "n": 3
    },
    {
+    "label": "Norway",
+    "n": 3
+   },
+   {
     "label": "Slovak Republic",
     "n": 3
    },
@@ -436,10 +444,6 @@
    },
    {
     "label": "New Zealand",
-    "n": 2
-   },
-   {
-    "label": "Norway",
     "n": 2
    },
    {
@@ -509,12 +513,12 @@
   ]
  },
  "headline": {
-  "roster_total": 544,
+  "roster_total": 548,
   "top_type": "Vendor",
-  "top_type_n": 443,
+  "top_type_n": 447,
   "country_count": 43,
   "root_count": 7,
-  "mitre_n": 456,
-  "cisa_n": 86
+  "mitre_n": 459,
+  "cisa_n": 87
  }
 }

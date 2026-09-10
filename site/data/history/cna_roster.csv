@@ -20,3 +20,7 @@ observed_date,short_name,change_type,org,country,type
 2026-08-26,AISLE,scope_changed,AISLE Incorporated,Netherlands,Researcher + Vendor
 2026-08-26,ENISA,scope_changed,EU Agency for Cybersecurity (ENISA),Greece,Consortium
 2026-09-02,S4M,onboarded,Security4Media,Switzerland,Researcher
+2026-09-10,Airoha,onboarded,Airoha Technology Corp.,Taiwan,Vendor
+2026-09-10,HONA,onboarded,Honeywell Aerospace,USA,Vendor
+2026-09-10,Zenitel,onboarded,Zenitel Norway AS,Norway,Vendor
+2026-09-10,esaqa,onboarded,esaqa GmbH,Germany,Vendor

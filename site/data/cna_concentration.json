@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-09T02:48:49Z",
+ "generated_at": "2026-09-10T02:49:04Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 374,
    "newcomer_count": 47,
-   "top5_share": 47.0,
-   "top10_share": 69.1,
-   "hhi": 609.3
+   "top5_share": 46.7,
+   "top10_share": 69.0,
+   "hhi": 605.5
   }
  ],
  "rejection_leaderboard": {
@@ -274,7 +274,7 @@
    },
    {
     "cna": "redhat",
-    "total": 2691,
+    "total": 2699,
     "rejected": 187,
     "rejected_rate_pct": 6.9
    },
@@ -328,7 +328,7 @@
    },
    {
     "cna": "Linux",
-    "total": 15501,
+    "total": 15513,
     "rejected": 310,
     "rejected_rate_pct": 2.0
    },
@@ -370,13 +370,13 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 6835,
+    "total": 6926,
     "rejected": 88,
     "rejected_rate_pct": 1.3
    },
    {
     "cna": "hackerone",
-    "total": 715,
+    "total": 718,
     "rejected": 9,
     "rejected_rate_pct": 1.3
    },
@@ -388,13 +388,13 @@
    },
    {
     "cna": "Google",
-    "total": 229,
+    "total": 230,
     "rejected": 3,
     "rejected_rate_pct": 1.3
    },
    {
     "cna": "twcert",
-    "total": 660,
+    "total": 661,
     "rejected": 8,
     "rejected_rate_pct": 1.2
    },
@@ -424,7 +424,7 @@
    },
    {
     "cna": "mitre",
-    "total": 28180,
+    "total": 28221,
     "rejected": 275,
     "rejected_rate_pct": 1.0
    },
@@ -471,20 +471,14 @@
     "rejected_rate_pct": 0.6
    },
    {
-    "cna": "Wordfence",
-    "total": 10876,
-    "rejected": 49,
-    "rejected_rate_pct": 0.5
-   },
-   {
     "cna": "apache",
-    "total": 1686,
+    "total": 1695,
     "rejected": 8,
     "rejected_rate_pct": 0.5
    },
    {
     "cna": "TR-CERT",
-    "total": 786,
+    "total": 791,
     "rejected": 4,
     "rejected_rate_pct": 0.5
    },
@@ -496,9 +490,15 @@
    },
    {
     "cna": "zephyr",
-    "total": 198,
+    "total": 199,
     "rejected": 1,
     "rejected_rate_pct": 0.5
+   },
+   {
+    "cna": "Wordfence",
+    "total": 10908,
+    "rejected": 49,
+    "rejected_rate_pct": 0.4
    },
    {
     "cna": "google_android",
@@ -532,37 +532,37 @@
    },
    {
     "cna": "VulDB",
-    "total": 16324,
+    "total": 16332,
     "rejected": 41,
     "rejected_rate_pct": 0.3
    },
    {
     "cna": "icscert",
-    "total": 1785,
+    "total": 1789,
     "rejected": 6,
     "rejected_rate_pct": 0.3
    },
    {
     "cna": "huawei",
-    "total": 1137,
+    "total": 1148,
     "rejected": 3,
     "rejected_rate_pct": 0.3
    },
    {
     "cna": "schneider",
-    "total": 345,
+    "total": 348,
     "rejected": 1,
     "rejected_rate_pct": 0.3
    },
    {
     "cna": "GitHub_M",
-    "total": 17709,
+    "total": 17732,
     "rejected": 29,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "Chrome",
-    "total": 3625,
+    "total": 3855,
     "rejected": 9,
     "rejected_rate_pct": 0.2
    },
@@ -610,7 +610,7 @@
    },
    {
     "cna": "SamsungMobile",
-    "total": 599,
+    "total": 628,
     "rejected": 1,
     "rejected_rate_pct": 0.2
    },
@@ -658,7 +658,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4478,
+    "total": 4506,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -682,7 +682,7 @@
    },
    {
     "cna": "dell",
-    "total": 1275,
+    "total": 1347,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -706,7 +706,7 @@
    },
    {
     "cna": "hpe",
-    "total": 697,
+    "total": 702,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -844,7 +844,7 @@
    },
    {
     "cna": "suse",
-    "total": 203,
+    "total": 204,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -891,20 +891,20 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "OX",
-    "total": 171,
+    "cna": "AMZN",
+    "total": 172,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
     "cna": "OpenText",
-    "total": 171,
+    "total": 172,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "AMZN",
-    "total": 170,
+    "cna": "OX",
+    "total": 171,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -933,14 +933,14 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "JFROG",
-    "total": 151,
+    "cna": "CIRCL",
+    "total": 152,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "CIRCL",
-    "total": 150,
+    "cna": "JFROG",
+    "total": 151,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1113,6 +1113,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "Tanium",
+    "total": 79,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "PSF",
     "total": 78,
     "rejected": 0,
@@ -1275,12 +1281,6 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "Tanium",
-    "total": 58,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
     "cna": "HiddenLayer",
     "total": 57,
     "rejected": 0,
@@ -1372,6 +1372,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 68,
-  "elapsed": 0.69
+  "elapsed": 0.693
  }
 }

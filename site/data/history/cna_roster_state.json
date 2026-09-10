@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-09-09",
+ "last_observed": "2026-09-10",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -126,6 +126,12 @@
    "country": "Switzerland",
    "org": "Airlock by Ergon",
    "scope": "66a217aba3a1",
+   "type": "Vendor"
+  },
+  "Airoha": {
+   "country": "Taiwan",
+   "org": "Airoha Technology Corp.",
+   "scope": "729f1192e8a6",
    "type": "Vendor"
   },
   "AlgoSec": {
@@ -966,6 +972,12 @@
    "country": "Slovak Republic",
    "org": "HDS a.s.",
    "scope": "7096db6eef35",
+   "type": "Vendor"
+  },
+  "HONA": {
+   "country": "USA",
+   "org": "Honeywell Aerospace",
+   "scope": "6817a09bf9a8",
    "type": "Vendor"
   },
   "HYPR": {
@@ -2444,6 +2456,12 @@
    "scope": "9e6ef3390f58",
    "type": "Vendor"
   },
+  "Zenitel": {
+   "country": "Norway",
+   "org": "Zenitel Norway AS",
+   "scope": "bf38ea3dbdf0",
+   "type": "Vendor"
+  },
   "Zohocorp": {
    "country": "India",
    "org": "Zohocorp",
@@ -2676,6 +2694,12 @@
    "country": "Netherlands",
    "org": "Elastic",
    "scope": "8bdf0551fce6",
+   "type": "Vendor"
+  },
+  "esaqa": {
+   "country": "Germany",
+   "org": "esaqa GmbH",
+   "scope": "04dc99abab8a",
    "type": "Vendor"
   },
   "fedora": {
@@ -3471,6 +3495,10 @@
   [
    "2026-09-09",
    544
+  ],
+  [
+   "2026-09-10",
+   548
   ]
  ],
  "version": 1

@@ -2775,7 +2775,7 @@
    "name": "Microsoft Win32k Privilege Escalation Vulnerability",
    "notes": "7ba24c2f0a4c",
    "product": "Win32k",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2016-7256": {
@@ -4964,7 +4964,7 @@
    "name": "Microsoft Win32k Privilege Escalation Vulnerability",
    "notes": "06541673a5f7",
    "product": "Win32k",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Microsoft"
   },
   "CVE-2019-0863": {
@@ -11377,7 +11377,7 @@
    "name": "Synacor Zimbra Collaboration Suite (ZCS) Arbitrary File Upload Vulnerability",
    "notes": "35d5fb693e29",
    "product": "Zimbra Collaboration Suite (ZCS)",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Synacor"
   },
   "CVE-2022-42475": {
@@ -15769,6 +15769,17 @@
    "ransom": "Unknown",
    "vendor": "Advantive"
   },
+  "CVE-2025-25249": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-09",
+   "desc": "6b79e32a3d5d",
+   "due": "2026-09-12",
+   "name": "Fortinet Multiple Products Heap-based Buffer Overflow Vulnerability",
+   "notes": "9c414e1309cb",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
+  },
   "CVE-2025-25257": {
    "action": "f09df147152e",
    "added": "2025-07-18",
@@ -17364,6 +17375,17 @@
    "ransom": "Unknown",
    "vendor": "N-able"
   },
+  "CVE-2026-19490": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-09",
+   "desc": "17391437e9a6",
+   "due": "2026-09-12",
+   "name": "Citrix NetScaler Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+   "notes": "5a686bf543cf",
+   "product": "NetScaler",
+   "ransom": "Unknown",
+   "vendor": "Citrix"
+  },
   "CVE-2026-20045": {
    "action": "f09df147152e",
    "added": "2026-01-21",
@@ -17372,6 +17394,17 @@
    "name": "Cisco Unified Communications Products Code Injection Vulnerability",
    "notes": "616efdda69e9",
    "product": "Unified Communications Manager",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
+  "CVE-2026-20079": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-09",
+   "desc": "22feeac9925b",
+   "due": "2026-09-12",
+   "name": "Cisco Firewall Management Center Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+   "notes": "3909e4f6407a",
+   "product": "Secure Firewall Management Center (FMC) and Security Cloud Control (SCC) Firewall Management",
    "ransom": "Unknown",
    "vendor": "Cisco"
   },
@@ -18662,6 +18695,17 @@
    "ransom": "Unknown",
    "vendor": "N-able"
   },
+  "CVE-2026-87491": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-09",
+   "desc": "4655973e9d68",
+   "due": "2026-09-23",
+   "name": "Google Chromium V8 Out of Bounds Write Vulnerability",
+   "notes": "6984e0be8b4f",
+   "product": "Chromium V8",
+   "ransom": "Unknown",
+   "vendor": "Google"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -18696,7 +18740,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-09",
+ "last_observed": "2026-09-10",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

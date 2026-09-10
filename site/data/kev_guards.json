@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-09T02:48:49Z",
+ "generated_at": "2026-09-10T02:49:04Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 215,
-   "security": 33,
-   "pct_security": 15.3
+   "total": 219,
+   "security": 36,
+   "pct_security": 16.4
   }
  ],
  "vendors": [
@@ -53,12 +53,12 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 96,
-   "dated_entries": 96,
-   "security_entries": 21,
-   "pct_security": 21.9,
+   "entries": 97,
+   "dated_entries": 97,
+   "security_entries": 22,
+   "pct_security": 22.7,
    "first_added": "2021-11-03",
-   "last_added": "2026-08-11",
+   "last_added": "2026-09-09",
    "median_gap_days": 0.0
   },
   {
@@ -83,13 +83,13 @@
   },
   {
    "vendor": "Google",
-   "entries": 73,
-   "dated_entries": 73,
+   "entries": 74,
+   "dated_entries": 74,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-04",
-   "median_gap_days": 7.5
+   "last_added": "2026-09-09",
+   "median_gap_days": 7.0
   },
   {
    "vendor": "Oracle",
@@ -123,12 +123,12 @@
   },
   {
    "vendor": "Fortinet",
-   "entries": 29,
-   "dated_entries": 29,
-   "security_entries": 29,
+   "entries": 30,
+   "dated_entries": 30,
+   "security_entries": 30,
    "pct_security": 100.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-07-27",
+   "last_added": "2026-09-09",
    "median_gap_days": 42.0
   },
   {
@@ -163,13 +163,13 @@
   },
   {
    "vendor": "Citrix",
-   "entries": 23,
-   "dated_entries": 23,
-   "security_entries": 17,
-   "pct_security": 73.9,
+   "entries": 24,
+   "dated_entries": 24,
+   "security_entries": 18,
+   "pct_security": 75.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-08-26",
-   "median_gap_days": 5.5
+   "last_added": "2026-09-09",
+   "median_gap_days": 10.0
   },
   {
    "vendor": "SonicWall",
@@ -534,20 +534,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 203,
+   "total": 206,
    "known": 78,
-   "pct_known": 38.4
+   "pct_known": 37.9
   },
   "other": {
-   "total": 1496,
-   "known": 277,
-   "pct_known": 18.5
+   "total": 1497,
+   "known": 280,
+   "pct_known": 18.7
   }
  },
  "catalog": {
-  "total": 1699,
-  "security": 203,
-  "pct_security": 11.9,
+  "total": 1703,
+  "security": 206,
+  "pct_security": 12.1,
   "classifier_version": 2,
   "classifier_rules": 35
  }

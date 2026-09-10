@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-09T02:48:49Z",
+ "generated_at": "2026-09-10T02:49:04Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -13,7 +13,7 @@
  "window_years": 5,
  "min_n": 2000,
  "measured_total": 120161,
- "kev_total": 1479,
+ "kev_total": 1483,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -58,7 +58,7 @@
    "measured_rank": 5,
    "measured_n": 3415,
    "measured_share": 2.8,
-   "kev_n": 122
+   "kev_n": 123
   },
   {
    "cwe": "CWE-22",
@@ -157,7 +157,7 @@
    "measured_rank": 18,
    "measured_n": 1573,
    "measured_share": 1.3,
-   "kev_n": 18
+   "kev_n": 19
   },
   {
    "cwe": "CWE-863",
@@ -250,6 +250,6 @@
   "in_measured_top25": 22,
   "outside_measured_top25": 3,
   "in_kev": 24,
-  "kev_coverage_pct": 65.0
+  "kev_coverage_pct": 64.9
  }
 }

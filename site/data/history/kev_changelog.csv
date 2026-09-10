@@ -4331,3 +4331,10 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-09-09,CVE-2026-85880,added,,,,daily
 2026-09-09,CVE-2026-86218,added,,,,daily
 2026-09-09,CVE-2025-14733,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-09-10,CVE-2025-25249,added,,,,daily
+2026-09-10,CVE-2026-19490,added,,,,daily
+2026-09-10,CVE-2026-20079,added,,,,daily
+2026-09-10,CVE-2026-87491,added,,,,daily
+2026-09-10,CVE-2016-7255,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-09-10,CVE-2019-0859,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
+2026-09-10,CVE-2022-41352,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
