@@ -17526,7 +17526,7 @@
    "name": "Cisco Secure Firewall Management Center Use of Hard-coded Password Vulnerability",
    "notes": "46d478666c6f",
    "product": "Secure Firewall Management Center (FMC)",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Cisco"
   },
   "CVE-2026-20349": {
@@ -18475,6 +18475,17 @@
    "ransom": "Unknown",
    "vendor": "JFrog"
   },
+  "CVE-2026-67277": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-10",
+   "desc": "85b26a25e356",
+   "due": "2026-09-13",
+   "name": "MikroTik RouterOS Missing Authentication for Critical Function Vulnerability",
+   "notes": "cd168c53c578",
+   "product": "RouterOS",
+   "ransom": "Unknown",
+   "vendor": "MikroTik"
+  },
   "CVE-2026-68820": {
    "action": "ba0d649eb29b",
    "added": "2026-08-11",
@@ -18684,6 +18695,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2026-86060": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-10",
+   "desc": "c5448be96155",
+   "due": "2026-09-13",
+   "name": "MikroTik RouterOS Improper Neutralization of Argument Delimiters in a Command Vulnerability",
+   "notes": "9a84f6ec498e",
+   "product": "RouterOS",
+   "ransom": "Unknown",
+   "vendor": "MikroTik"
+  },
   "CVE-2026-86218": {
    "action": "ba0d649eb29b",
    "added": "2026-09-08",
@@ -18740,7 +18762,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-10",
+ "last_observed": "2026-09-11",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

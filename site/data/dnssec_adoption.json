@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-10T06:34:25Z",
+ "generated_at": "2026-09-11T02:48:59Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -626,14 +626,14 @@
    },
    {
     "month": "2026-09",
-    "validating_pc": 38.4
+    "validating_pc": 38.6
    }
   ],
   "latest": {
-   "date": "2026-09-07",
-   "validating_pc": 38.4,
+   "date": "2026-09-08",
+   "validating_pc": 38.6,
    "partial_pc": 8.5,
-   "seen": 598900054
+   "seen": 603924154
   },
   "baseline": {
    "month": "2016-09",
@@ -859,7 +859,7 @@
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 59.2,
+   "latest_pc": 59.3,
    "series": [
     {
      "month": "2013-12",
@@ -1067,7 +1067,7 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 59.2
+     "validating_pc": 59.3
     }
    ]
   },
@@ -1504,7 +1504,7 @@
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 47.8,
+   "latest_pc": 47.7,
    "series": [
     {
      "month": "2013-12",
@@ -1712,7 +1712,7 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 47.8
+     "validating_pc": 47.7
     }
    ]
   },
@@ -2810,11 +2810,11 @@
    },
    {
     "bucket": "50-75%",
-    "n": 52
+    "n": 51
    },
    {
     "bucket": "75%+",
-    "n": 63
+    "n": 64
    }
   ]
  }

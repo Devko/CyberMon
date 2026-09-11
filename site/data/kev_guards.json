@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-10T06:34:25Z",
+ "generated_at": "2026-09-11T02:48:59Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 219,
+   "total": 221,
    "security": 36,
-   "pct_security": 16.4
+   "pct_security": 16.3
   }
  ],
  "vendors": [
@@ -535,17 +535,17 @@
  "ransomware": {
   "security": {
    "total": 206,
-   "known": 78,
-   "pct_known": 37.9
+   "known": 79,
+   "pct_known": 38.3
   },
   "other": {
-   "total": 1497,
+   "total": 1499,
    "known": 280,
    "pct_known": 18.7
   }
  },
  "catalog": {
-  "total": 1703,
+  "total": 1705,
   "security": 206,
   "pct_security": 12.1,
   "classifier_version": 2,

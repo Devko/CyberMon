@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-10T06:34:25Z",
+ "generated_at": "2026-09-11T02:48:59Z",
  "thresholds": {
   "lo": 0.001,
   "mid": 0.01,
@@ -65,18 +65,18 @@
    },
    {
     "week": "2026-W37",
-    "crossed_lo": 16,
-    "crossed_mid": 50,
-    "crossed_hi": 8,
-    "days": 1
+    "crossed_lo": 35,
+    "crossed_mid": 100,
+    "crossed_hi": 14,
+    "days": 2
    }
   ]
  },
  "gap": {
   "min_days": 3,
-  "trend_days": 42,
+  "trend_days": 43,
   "prob_moved_pct": 1.0,
-  "pct_moved_pct": 97.3,
+  "pct_moved_pct": 97.4,
   "days": [
    {
     "date": "2026-07-18",
@@ -287,6 +287,11 @@
     "date": "2026-09-09",
     "prob_moved": 0.9,
     "pct_moved": 99.8
+   },
+   {
+    "date": "2026-09-10",
+    "prob_moved": 1.2,
+    "pct_moved": 98.5
    }
   ]
  },
@@ -327,6 +332,13 @@
     "old": 0.12685,
     "new": 0.69969,
     "delta": 0.57284
+   },
+   {
+    "cve": "CVE-2023-4873",
+    "observed_date": "2026-09-10",
+    "old": 0.74897,
+    "new": 0.21956,
+    "delta": -0.52941
    },
    {
     "cve": "CVE-2026-0770",
@@ -425,22 +437,15 @@
     "old": 0.61906,
     "new": 0.85194,
     "delta": 0.23288
-   },
-   {
-    "cve": "CVE-2026-48284",
-    "observed_date": "2026-08-06",
-    "old": 0.28002,
-    "new": 0.04895,
-    "delta": -0.23107
    }
   ]
  },
  "catalog": {
   "state_model_version": "v2026.06.15",
-  "state_score_date": "2026-09-09",
-  "state_size": 370894,
-  "days_observed": 50,
-  "trend_days": 42,
+  "state_score_date": "2026-09-10",
+  "state_size": 371256,
+  "days_observed": 51,
+  "trend_days": 43,
   "resets_quarantined": 0,
   "gaps_quarantined": 2,
   "anomalies_quarantined": 6,
@@ -492,9 +497,9 @@
    }
   ],
   "crossed_totals": {
-   "lo": 556,
-   "mid": 1635,
-   "hi": 404
+   "lo": 575,
+   "mid": 1685,
+   "hi": 410
   },
   "first_observed": "2026-07-18"
  }
