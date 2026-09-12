@@ -4950,3 +4950,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-09-11,CVE-2026-80914,Linux,first_score,,,v3,8.8
 2026-09-11,CVE-2026-80921,Linux,first_score,,,v3,8.8
 2026-09-11,CVE-2026-80924,Linux,first_score,,,v3,7.5
+2026-09-12,CVE-2026-65646,hackerone,version_shift,v4,8.7,v3,9.9
+2026-09-12,CVE-2026-82079,Nintendo,first_score,,,v4,7.0

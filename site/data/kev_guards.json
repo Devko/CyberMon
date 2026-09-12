@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-11T02:48:59Z",
+ "generated_at": "2026-09-12T02:48:34Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 221,
+   "total": 225,
    "security": 36,
-   "pct_security": 16.3
+   "pct_security": 16.0
   }
  ],
  "vendors": [
@@ -472,6 +472,16 @@
    "median_gap_days": 37.0
   },
   {
+   "vendor": "GitLab",
+   "entries": 5,
+   "dated_entries": 5,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-09-11",
+   "median_gap_days": 424.0
+  },
+  {
    "vendor": "GNU",
    "entries": 5,
    "dated_entries": 5,
@@ -539,13 +549,13 @@
    "pct_known": 38.3
   },
   "other": {
-   "total": 1499,
-   "known": 280,
+   "total": 1503,
+   "known": 281,
    "pct_known": 18.7
   }
  },
  "catalog": {
-  "total": 1705,
+  "total": 1709,
   "security": 206,
   "pct_security": 12.1,
   "classifier_version": 2,

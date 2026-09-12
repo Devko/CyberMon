@@ -18057,6 +18057,28 @@
    "ransom": "Known",
    "vendor": "WebPros"
   },
+  "CVE-2026-42016": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-11",
+   "desc": "de1b32415627",
+   "due": "2026-09-25",
+   "name": "JFrog Artifactory Incorrect Authorization Vulnerability",
+   "notes": "d67e2735cc2f",
+   "product": "Artifactory",
+   "ransom": "Unknown",
+   "vendor": "JFrog"
+  },
+  "CVE-2026-42018": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-11",
+   "desc": "7ea92db601b4",
+   "due": "2026-09-25",
+   "name": "JFrog Artifactory Improper Authentication Vulnerability",
+   "notes": "71864af5fdf9",
+   "product": "Artifactory",
+   "ransom": "Unknown",
+   "vendor": "JFrog"
+  },
   "CVE-2026-42208": {
    "action": "f09df147152e",
    "added": "2026-05-08",
@@ -18384,7 +18406,7 @@
    "name": "Broadcom VMware vCenter Path Traversal Vulnerability",
    "notes": "61277ac66cdc",
    "product": "VMware vCenter",
-   "ransom": "Unknown",
+   "ransom": "Known",
    "vendor": "Broadcom"
   },
   "CVE-2026-59822": {
@@ -18673,6 +18695,17 @@
    "ransom": "Unknown",
    "vendor": "Citrix"
   },
+  "CVE-2026-84869": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-11",
+   "desc": "42af72d272dc",
+   "due": "2026-09-14",
+   "name": "ConnectWise ScreenConnect Improper Privilege Management and Missing Authorization Vulnerability",
+   "notes": "f74bafd38a93",
+   "product": "ScreenConnect",
+   "ransom": "Unknown",
+   "vendor": "ConnectWise"
+  },
   "CVE-2026-85046": {
    "action": "ba0d649eb29b",
    "added": "2026-09-04",
@@ -18683,6 +18716,17 @@
    "product": "Chromium V8",
    "ransom": "Unknown",
    "vendor": "Google"
+  },
+  "CVE-2026-85706": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-11",
+   "desc": "c3c0bd6d55fd",
+   "due": "2026-09-14",
+   "name": "GitLab Community Edition and Enterprise Edition Path Traversal Vulnerability",
+   "notes": "28a3b480957f",
+   "product": "Community Edition and Enterprise Edition",
+   "ransom": "Unknown",
+   "vendor": "GitLab"
   },
   "CVE-2026-85880": {
    "action": "ba0d649eb29b",
@@ -18762,7 +18806,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-11",
+ "last_observed": "2026-09-12",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
