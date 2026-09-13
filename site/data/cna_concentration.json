@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-12T02:48:34Z",
+ "generated_at": "2026-09-13T02:48:50Z",
  "years": [
   {
    "year": 1999,
@@ -222,8 +222,8 @@
    "cna_count": 376,
    "newcomer_count": 49,
    "top5_share": 46.9,
-   "top10_share": 69.1,
-   "hhi": 606.4
+   "top10_share": 69.0,
+   "hhi": 606.2
   }
  ],
  "rejection_leaderboard": {
@@ -370,7 +370,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 7029,
+    "total": 7063,
     "rejected": 89,
     "rejected_rate_pct": 1.3
    },
@@ -424,7 +424,7 @@
    },
    {
     "cna": "mitre",
-    "total": 28272,
+    "total": 28277,
     "rejected": 275,
     "rejected_rate_pct": 1.0
    },
@@ -496,7 +496,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 10946,
+    "total": 10957,
     "rejected": 49,
     "rejected_rate_pct": 0.4
    },
@@ -532,7 +532,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 16334,
+    "total": 16339,
     "rejected": 41,
     "rejected_rate_pct": 0.3
    },
@@ -610,7 +610,7 @@
    },
    {
     "cna": "GitLab",
-    "total": 1046,
+    "total": 1048,
     "rejected": 2,
     "rejected_rate_pct": 0.2
    },
@@ -658,7 +658,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4538,
+    "total": 4574,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -1372,6 +1372,6 @@
  "projection": {
   "year": 2026,
   "newcomers": 70,
-  "elapsed": 0.699
+  "elapsed": 0.701
  }
 }

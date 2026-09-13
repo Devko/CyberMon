@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-12T02:48:34Z",
+ "generated_at": "2026-09-13T02:48:50Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -596,7 +596,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-06-14",
+  "observed_through": "2026-06-15",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -759,7 +759,7 @@
    {
     "year": 2026,
     "value": 1.0,
-    "n": 103,
+    "n": 105,
     "provisional": true
    }
   ]
@@ -791,7 +791,7 @@
       "post": {
        "value": 0.6,
        "years": 5,
-       "n": 1001
+       "n": 1003
       },
       "era_shift": 0.2,
       "pct_banked": 99.4,
@@ -814,7 +814,7 @@
       "post": {
        "value": 0.5,
        "years": 4,
-       "n": 796
+       "n": 798
       },
       "era_shift": -0.1,
       "pct_banked": 100.3,
@@ -837,7 +837,7 @@
       "post": {
        "value": 1.0,
        "years": 2,
-       "n": 324
+       "n": 326
       },
       "era_shift": 0.4,
       "pct_banked": null,

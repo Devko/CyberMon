@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-12T02:48:34Z",
+ "generated_at": "2026-09-13T02:48:50Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -168,11 +168,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 6908,
+   "n": 6942,
    "avg_cvss": 7.5,
    "median_cvss": 8.3,
-   "pct_geq_9": 15.6,
-   "pct_geq_7": 64.1
+   "pct_geq_9": 15.5,
+   "pct_geq_7": 63.9
   },
   {
    "cna": "Fluid Attacks",
@@ -321,11 +321,11 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1535,
+   "n": 1540,
    "avg_cvss": 6.2,
    "median_cvss": 6.3,
    "pct_geq_9": 9.9,
-   "pct_geq_7": 37.9
+   "pct_geq_7": 38.0
   },
   {
    "cna": "CERT-In",
@@ -492,7 +492,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9848,
+   "n": 9859,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.4,
@@ -634,6 +634,15 @@
    "pct_geq_7": 62.7
   },
   {
+   "cna": "GitLab",
+   "org": "GitLab",
+   "n": 653,
+   "avg_cvss": 5.9,
+   "median_cvss": 5.5,
+   "pct_geq_9": 2.6,
+   "pct_geq_7": 28.3
+  },
+  {
    "cna": "zephyr",
    "org": "zephyr",
    "n": 159,
@@ -641,15 +650,6 @@
    "median_cvss": 6.4,
    "pct_geq_9": 2.5,
    "pct_geq_7": 36.5
-  },
-  {
-   "cna": "GitLab",
-   "org": "GitLab",
-   "n": 651,
-   "avg_cvss": 5.9,
-   "median_cvss": 5.5,
-   "pct_geq_9": 2.3,
-   "pct_geq_7": 28.1
   },
   {
    "cna": "mongodb",
@@ -663,7 +663,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13508,
+   "n": 13513,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.0,
