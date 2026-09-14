@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-09-13T02:48:50Z",
+ "generated_at": "2026-09-14T02:52:36Z",
  "min_n": 10,
  "catalog": {
-  "total": 1035,
-  "cohort": 1002,
+  "total": 1036,
+  "cohort": 1003,
   "excluded": {
    "fabricated": 3,
    "spam_list": 16,
@@ -127,10 +127,10 @@
   },
   {
    "year": 2026,
-   "n": 98,
+   "n": 99,
    "median_days": 21.0,
-   "p25_days": 7.2,
-   "p75_days": 45.8,
+   "p25_days": 7.5,
+   "p75_days": 45.5,
    "pct_negative": 0.0,
    "pct_over_365d": 5.1
   }
@@ -203,8 +203,8 @@
   },
   {
    "year": 2026,
-   "breaches": 98,
-   "records": 445251153
+   "breaches": 99,
+   "records": 449904365
   }
  ],
  "class_shares": {
@@ -363,28 +363,28 @@
    },
    {
     "year": 2026,
-    "n": 98,
+    "n": 99,
     "shares": {
      "Email addresses": 100.0,
-     "Passwords": 18.4,
-     "Names": 78.6,
-     "Usernames": 22.4,
-     "IP addresses": 17.3,
-     "Phone numbers": 63.3
+     "Passwords": 18.2,
+     "Names": 78.8,
+     "Usernames": 23.2,
+     "IP addresses": 17.2,
+     "Phone numbers": 62.6
     }
    }
   ]
  },
  "headline": {
-  "trend_n": 995,
-  "median_days": 137.0,
-  "pct_over_365d": 34.9,
+  "trend_n": 996,
+  "median_days": 136.5,
+  "pct_over_365d": 34.8,
   "latest_year": 2025,
   "median_days_latest": 194.0
  },
  "projection": {
   "year": 2026,
-  "breaches": 140,
-  "elapsed": 0.701
+  "breaches": 141,
+  "elapsed": 0.704
  }
 }
