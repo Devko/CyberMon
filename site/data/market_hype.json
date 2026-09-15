@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-14T02:52:36Z",
+ "generated_at": "2026-09-15T02:50:56Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -8,7 +8,9 @@
   "wiki",
   "edgar"
  ],
- "stale_sources": [],
+ "stale_sources": [
+  "arxiv"
+ ],
  "backfill_remaining": 0,
  "terms": [
   {
@@ -1514,12 +1516,7 @@
      "n_latest_12m": 624,
      "n_prior_12m": 474
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 48.3,
-     "n_latest_12m": 86,
-     "n_prior_12m": 58
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -44.0,
@@ -1533,12 +1530,7 @@
      "n_prior_12m": 493
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 32.4,
-    "arxiv_index_avg3m": 92.6,
-    "research_vs_media_index": 60.2,
-    "direction": "research_leads"
-   }
+   "divergence": null
   },
   {
    "id": "sbom",
@@ -3043,12 +3035,7 @@
      "n_latest_12m": 169,
      "n_prior_12m": 104
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 91.7,
-     "n_latest_12m": 23,
-     "n_prior_12m": 12
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -16.4,
@@ -4567,12 +4554,7 @@
      "n_latest_12m": 585,
      "n_prior_12m": 307
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 66.7,
-     "n_latest_12m": 265,
-     "n_prior_12m": 159
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -13.2,
@@ -4586,12 +4568,7 @@
      "n_prior_12m": 163
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 77.6,
-    "arxiv_index_avg3m": 83.3,
-    "research_vs_media_index": 5.7,
-    "direction": "aligned"
-   }
+   "divergence": null
   },
   {
    "id": "xdr",
@@ -10337,12 +10314,7 @@
      "n_latest_12m": 376,
      "n_prior_12m": 103
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 107.1,
-     "n_latest_12m": 58,
-     "n_prior_12m": 28
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -25.0,
@@ -10356,12 +10328,7 @@
      "n_prior_12m": 177
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 96.5,
-    "arxiv_index_avg3m": 48.1,
-    "research_vs_media_index": -48.4,
-    "direction": "media_leads"
-   }
+   "divergence": null
   },
   {
    "id": "agentic_ai",
@@ -11671,12 +11638,7 @@
      "n_latest_12m": 1638,
      "n_prior_12m": 581
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 583.3,
-     "n_latest_12m": 164,
-     "n_prior_12m": 24
-    },
+    "arxiv": null,
     "wiki": null,
     "edgar": {
      "latest_month": "2026-08",
@@ -11685,12 +11647,7 @@
      "n_prior_12m": 503
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 79.4,
-    "arxiv_index_avg3m": 73.0,
-    "research_vs_media_index": -6.4,
-    "direction": "aligned"
-   }
+   "divergence": null
   },
   {
    "id": "ransomware",
@@ -13172,8 +13129,8 @@
      },
      {
       "month": "2026-07",
-      "n": 803,
-      "index": 34.7
+      "n": 804,
+      "index": 34.8
      },
      {
       "month": "2026-08",
@@ -13195,12 +13152,7 @@
      "n_latest_12m": 651,
      "n_prior_12m": 637
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": -7.9,
-     "n_latest_12m": 58,
-     "n_prior_12m": 63
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -19.6,
@@ -13210,16 +13162,11 @@
     "edgar": {
      "latest_month": "2026-08",
      "pct_change": 16.2,
-     "n_latest_12m": 14262,
+     "n_latest_12m": 14263,
      "n_prior_12m": 12273
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 14.1,
-    "arxiv_index_avg3m": 23.8,
-    "research_vs_media_index": 9.7,
-    "direction": "aligned"
-   }
+   "divergence": null
   },
   {
    "id": "supply_chain_security",
@@ -14701,8 +14648,8 @@
      },
      {
       "month": "2026-07",
-      "n": 65,
-      "index": 33.2
+      "n": 66,
+      "index": 33.7
      },
      {
       "month": "2026-08",
@@ -14724,12 +14671,7 @@
      "n_latest_12m": 261,
      "n_prior_12m": 130
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 105.9,
-     "n_latest_12m": 35,
-     "n_prior_12m": 17
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": 10.0,
@@ -14738,8 +14680,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 35.8,
-     "n_latest_12m": 993,
+     "pct_change": 36.0,
+     "n_latest_12m": 994,
      "n_prior_12m": 731
     }
    },
@@ -17767,12 +17709,7 @@
      "n_latest_12m": 327,
      "n_prior_12m": 305
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": -6.0,
-     "n_latest_12m": 63,
-     "n_prior_12m": 67
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -19.9,
@@ -17786,12 +17723,7 @@
      "n_prior_12m": 169
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 32.9,
-    "arxiv_index_avg3m": 73.3,
-    "research_vs_media_index": 40.4,
-    "direction": "research_leads"
-   }
+   "divergence": null
   },
   {
    "id": "confidential_computing",
@@ -19206,12 +19138,7 @@
      "n_latest_12m": 106,
      "n_prior_12m": 87
     },
-    "arxiv": {
-     "latest_month": "2026-08",
-     "pct_change": 28.6,
-     "n_latest_12m": 36,
-     "n_prior_12m": 28
-    },
+    "arxiv": null,
     "wiki": {
      "latest_month": "2026-08",
      "pct_change": -16.9,
@@ -19225,12 +19152,7 @@
      "n_prior_12m": 17
     }
    },
-   "divergence": {
-    "gdelt_index_avg3m": 41.0,
-    "arxiv_index_avg3m": 66.7,
-    "research_vs_media_index": 25.7,
-    "direction": "research_leads"
-   }
+   "divergence": null
   },
   {
    "id": "mdr",
@@ -20609,10 +20531,10 @@
  ],
  "headline": {
   "top_riser": {
-   "term_id": "agentic_ai",
-   "label": "Agentic AI",
-   "source": "arxiv",
-   "pct_change": 583.3
+   "term_id": "confidential_computing",
+   "label": "Confidential Computing",
+   "source": "edgar",
+   "pct_change": 382.4
   },
   "top_faller": {
    "term_id": "zero_trust",
@@ -20620,11 +20542,6 @@
    "source": "wiki",
    "pct_change": -44.0
   },
-  "top_divergence": {
-   "term_id": "zero_trust",
-   "label": "Zero Trust",
-   "research_vs_media_index": 60.2,
-   "direction": "research_leads"
-  }
+  "top_divergence": null
  }
 }

@@ -18596,6 +18596,17 @@
    "ransom": "Unknown",
    "vendor": "Adobe"
   },
+  "CVE-2026-76461": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-14",
+   "desc": "33d68894eaac",
+   "due": "2026-09-17",
+   "name": "Cisco Secure Email Gateway SQL Injection Vulnerability",
+   "notes": "fcdf7f391d65",
+   "product": "Secure Email Gateway",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2026-8037": {
    "action": "ba0d649eb29b",
    "added": "2026-08-07",
@@ -18806,7 +18817,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-14",
+ "last_observed": "2026-09-15",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

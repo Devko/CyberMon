@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-14T02:52:36Z",
+ "generated_at": "2026-09-15T02:50:56Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,8 +12,8 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120160,
- "kev_total": 1489,
+ "measured_total": 120161,
+ "kev_total": 1490,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -31,7 +31,7 @@
    "measured_rank": 2,
    "measured_n": 9225,
    "measured_share": 7.7,
-   "kev_n": 30
+   "kev_n": 31
   },
   {
    "cwe": "CWE-352",
@@ -83,7 +83,7 @@
    "name": "Out-of-bounds read",
    "official_rank": 8,
    "measured_rank": 6,
-   "measured_n": 3147,
+   "measured_n": 3148,
    "measured_share": 2.6,
    "kev_n": 18
   },
@@ -250,6 +250,6 @@
   "in_measured_top25": 22,
   "outside_measured_top25": 3,
   "in_kev": 24,
-  "kev_coverage_pct": 64.9
+  "kev_coverage_pct": 65.0
  }
 }

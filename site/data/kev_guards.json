@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-14T02:52:36Z",
+ "generated_at": "2026-09-15T02:50:56Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 225,
+   "total": 226,
    "security": 36,
-   "pct_security": 16.0
+   "pct_security": 15.9
   }
  ],
  "vendors": [
@@ -53,12 +53,12 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 97,
-   "dated_entries": 97,
+   "entries": 98,
+   "dated_entries": 98,
    "security_entries": 22,
-   "pct_security": 22.7,
+   "pct_security": 22.4,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-09",
+   "last_added": "2026-09-14",
    "median_gap_days": 0.0
   },
   {
@@ -549,15 +549,15 @@
    "pct_known": 38.3
   },
   "other": {
-   "total": 1503,
+   "total": 1504,
    "known": 281,
    "pct_known": 18.7
   }
  },
  "catalog": {
-  "total": 1709,
+  "total": 1710,
   "security": 206,
-  "pct_security": 12.1,
+  "pct_security": 12.0,
   "classifier_version": 2,
   "classifier_rules": 35
  }
