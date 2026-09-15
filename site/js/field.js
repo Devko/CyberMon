@@ -214,7 +214,7 @@ function main({ meta, buf }) {
   }
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x0e0f11, 0.0016);
+  scene.fog = new THREE.FogExp2(0x0e0f11, 0.0016); // softens the grid; the points fog themselves below
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 12000);
   const grid = new THREE.GridHelper(560, 56, 0x2a2c2e, 0x1b1d21);
   grid.position.y = -9;
@@ -234,10 +234,32 @@ function main({ meta, buf }) {
   geo.setAttribute("color", new THREE.BufferAttribute(colr, 3));
   geo.setAttribute("size", new THREE.BufferAttribute(size, 1));
   geo.setAttribute("alpha", new THREE.BufferAttribute(alpha, 1));
+  // Depth fog, scaled to the zoom. Looking along the timeline from close up
+  // stacks every later year on the same pixels; blended points saturate to
+  // their own colour, so the "neither" points behind whatever is being
+  // inspected pile into a flat grey wall. Between FOG_NEAR and FOG_FAR orbit
+  // radii from the camera, a point's colour sinks toward the page background
+  // and its alpha fades, so a stack far away saturates to darkness instead of
+  // grey. The default and flat views keep the whole field inside FOG_NEAR.
+  const FOG_NEAR = 1.2, FOG_FAR = 3;
+  const fogU = { fogNear: { value: 1e9 }, fogFar: { value: 2e9 }, fogColor: { value: scene.fog.color } };
   const mat = new THREE.ShaderMaterial({
-    uniforms: { map: { value: sprite } },
-    vertexShader: "attribute float size;attribute float alpha;attribute vec3 color;varying vec3 vC;varying float vA;void main(){vC=color;vA=alpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=max(1.6,size*(640.0/-mv.z));gl_Position=projectionMatrix*mv;}",
-    fragmentShader: "uniform sampler2D map;varying vec3 vC;varying float vA;void main(){vec4 t=texture2D(map,gl_PointCoord);if(t.a*vA<0.02)discard;gl_FragColor=vec4(vC,t.a*vA);}",
+    uniforms: { map: { value: sprite }, ...fogU },
+    vertexShader: [
+      "uniform float fogNear;uniform float fogFar;uniform vec3 fogColor;",
+      "attribute float size;attribute float alpha;attribute vec3 color;varying vec3 vC;varying float vA;",
+      "void main(){vec4 mv=modelViewMatrix*vec4(position,1.0);",
+      // A point never draws smaller than 1.6px, so far away the sprite stops
+      // shrinking while the number of points per pixel keeps growing. Points
+      // that would draw below the floor keep only the ink their natural
+      // footprint would have carried (area ratio), floored so 8-bit blending
+      // still registers them.
+      "float s=size*(640.0/-mv.z);float ps=max(1.6,s);float k=s/ps;",
+      "float f=smoothstep(fogNear,fogFar,-mv.z);",
+      "vC=mix(color,fogColor,f);vA=alpha*max(k*k,0.1)*(1.0-f);",
+      "gl_PointSize=ps;gl_Position=projectionMatrix*mv;}",
+    ].join(""),
+    fragmentShader: "uniform sampler2D map;varying vec3 vC;varying float vA;void main(){if(vA<=0.0)discard;vec4 t=texture2D(map,gl_PointCoord);if(t.a<0.02)discard;gl_FragColor=vec4(vC,t.a*vA);}",
     transparent: true, depthWrite: false, blending: THREE.NormalBlending,
   });
   const points = new THREE.Points(geo, mat);
@@ -262,8 +284,9 @@ function main({ meta, buf }) {
   }
   geo.setAttribute("pickId", new THREE.BufferAttribute(pickId, 3));
   const pickMat = new THREE.ShaderMaterial({
-    uniforms: { map: { value: sprite } },
-    vertexShader: "attribute float size;attribute float alpha;attribute vec3 pickId;varying vec3 vId;varying float vA;void main(){vId=pickId;vA=alpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=max(1.6,size*(640.0/-mv.z));gl_Position=projectionMatrix*mv;}",
+    uniforms: { map: { value: sprite }, ...fogU },
+    // points lost in the fog are not hoverable either
+    vertexShader: "uniform float fogNear;uniform float fogFar;attribute float size;attribute float alpha;attribute vec3 pickId;varying vec3 vId;varying float vA;void main(){vId=pickId;vec4 mv=modelViewMatrix*vec4(position,1.0);vA=alpha*(1.0-smoothstep(fogNear,fogFar,-mv.z));gl_PointSize=max(1.6,size*(640.0/-mv.z));gl_Position=projectionMatrix*mv;}",
     fragmentShader: "uniform sampler2D map;varying vec3 vId;varying float vA;void main(){if(vA<0.01||texture2D(map,gl_PointCoord).a<0.3)discard;gl_FragColor=vec4(vId,1.0);}",
     transparent: false, depthWrite: true, depthTest: true,
   });
@@ -906,6 +929,7 @@ function main({ meta, buf }) {
       cam.ty + cam.r * Math.cos(cam.phi),
       cam.tz + cam.r * Math.sin(cam.phi) * Math.cos(cam.theta));
     camera.lookAt(cam.tx, cam.ty, cam.tz);
+    fogU.fogNear.value = cam.r * FOG_NEAR; fogU.fogFar.value = cam.r * FOG_FAR;
     renderer.render(scene, camera);
     const w = canvas.clientWidth, h = canvas.clientHeight;
     for (const l of labels) {
