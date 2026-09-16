@@ -24,3 +24,5 @@ observed_date,short_name,change_type,org,country,type
 2026-09-10,HONA,onboarded,Honeywell Aerospace,USA,Vendor
 2026-09-10,Zenitel,onboarded,Zenitel Norway AS,Norway,Vendor
 2026-09-10,esaqa,onboarded,esaqa GmbH,Germany,Vendor
+2026-09-16,RES,onboarded,RedEye Security,USA,Vendor
+2026-09-16,schneider,scope_changed,Schneider Electric,France,Vendor

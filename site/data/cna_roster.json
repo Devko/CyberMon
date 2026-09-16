@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-09-15T02:50:56Z",
+ "generated_at": "2026-09-16T02:50:06Z",
  "roster_size": {
   "min_n": 2,
-  "current": 548,
-  "net_change": 18,
+  "current": 549,
+  "net_change": 19,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -233,6 +233,10 @@
    {
     "date": "2026-09-15",
     "size": 548
+   },
+   {
+    "date": "2026-09-16",
+    "size": 549
    }
   ]
  },
@@ -252,25 +256,25 @@
    },
    {
     "month": "2026-09",
-    "onboarded": 5,
+    "onboarded": 6,
     "departed": 0,
-    "scope_changed": 0
+    "scope_changed": 1
    }
   ],
   "totals": {
-   "onboarded": 19,
+   "onboarded": 20,
    "departed": 1,
-   "scope_changed": 5
+   "scope_changed": 6
   },
-  "events_total": 25,
+  "events_total": 27,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 548,
+  "total": 549,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 447
+    "n": 448
    },
    {
     "label": "Open Source",
@@ -312,7 +316,7 @@
    },
    {
     "label": "CISA",
-    "n": 87
+    "n": 88
    },
    {
     "label": "n/a",
@@ -326,7 +330,7 @@
    },
    {
     "label": "icscert",
-    "n": 85
+    "n": 86
    },
    {
     "label": "ENISA",
@@ -356,7 +360,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 286
+    "n": 287
    },
    {
     "label": "Germany",
@@ -533,12 +537,12 @@
   ]
  },
  "headline": {
-  "roster_total": 548,
+  "roster_total": 549,
   "top_type": "Vendor",
-  "top_type_n": 447,
+  "top_type_n": 448,
   "country_count": 43,
   "root_count": 7,
   "mitre_n": 459,
-  "cisa_n": 87
+  "cisa_n": 88
  }
 }

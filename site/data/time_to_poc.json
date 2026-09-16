@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-09-15T02:50:56Z",
+ "generated_at": "2026-09-16T02:50:06Z",
  "hero": {
   "matched": {
    "dated_cves": 26255,
-   "matched_cves": 26198,
-   "unmatched_cves": 57
+   "matched_cves": 26200,
+   "unmatched_cves": 55
   },
   "years": [
    {
@@ -252,12 +252,12 @@
    },
    {
     "year": 2026,
-    "n": 178,
-    "median_days": 7.5,
+    "n": 180,
+    "median_days": 6.0,
     "p25_days": 0.0,
-    "p75_days": 49.2,
-    "pct_negative": 23.0,
-    "pct_within_week": 50.0
+    "p75_days": 47.8,
+    "pct_negative": 23.9,
+    "pct_within_week": 50.6
    }
   ],
   "headline": {
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-06-17",
+  "observed_through": "2026-06-18",
   "min_n": 30,
   "years": [
    {
@@ -598,11 +598,11 @@
    "dated_cves": 3046
   },
   "nuclei": {
-   "templates": 4406,
-   "cves": 4406
+   "templates": 4420,
+   "cves": 4420
   },
-  "union_cves": 29585,
+  "union_cves": 29597,
   "dated_cves": 26255,
-  "matched_in_corpus": 29523
+  "matched_in_corpus": 29537
  }
 }

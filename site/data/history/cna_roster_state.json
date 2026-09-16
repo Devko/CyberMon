@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-09-15",
+ "last_observed": "2026-09-16",
  "orgs": {
   "2N": {
    "country": "Czech Republic",
@@ -1790,6 +1790,12 @@
    "scope": "8e5dd74db27d",
    "type": "Researcher + Vendor"
   },
+  "RES": {
+   "country": "USA",
+   "org": "RedEye Security",
+   "scope": "4d61db104385",
+   "type": "Vendor"
+  },
   "RTI": {
    "country": "USA",
    "org": "Real-Time Innovations, Inc.",
@@ -3101,7 +3107,7 @@
   "schneider": {
    "country": "France",
    "org": "Schneider Electric",
-   "scope": "f100e4f4bfc9",
+   "scope": "b8d3c1e63f16",
    "type": "Vendor"
   },
   "seal": {
@@ -3519,6 +3525,10 @@
   [
    "2026-09-15",
    548
+  ],
+  [
+   "2026-09-16",
+   549
   ]
  ],
  "version": 1
