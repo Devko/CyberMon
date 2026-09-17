@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-16T02:50:06Z",
+ "generated_at": "2026-09-17T02:50:31Z",
  "years": [
   {
    "year": 1999,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "critical": 7631,
-   "high": 26502,
-   "medium": 25743,
-   "low": 2571,
-   "unscored": 3346
+   "critical": 7732,
+   "high": 26928,
+   "medium": 25982,
+   "low": 2585,
+   "unscored": 3435
   }
  ],
  "record_era": {
@@ -232,7 +232,7 @@
  },
  "projection": {
   "year": 2026,
-  "total": 92720,
-  "elapsed": 0.71
+  "total": 93583,
+  "elapsed": 0.712
  }
 }

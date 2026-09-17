@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-16T02:50:06Z",
+ "generated_at": "2026-09-17T02:50:31Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -626,14 +626,14 @@
    },
    {
     "month": "2026-09",
-    "validating_pc": 38.6
+    "validating_pc": 38.7
    }
   ],
   "latest": {
-   "date": "2026-09-13",
-   "validating_pc": 38.6,
+   "date": "2026-09-14",
+   "validating_pc": 38.7,
    "partial_pc": 8.7,
-   "seen": 604910309
+   "seen": 603974452
   },
   "baseline": {
    "month": "2016-09",
@@ -859,7 +859,7 @@
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 59.6,
+   "latest_pc": 59.8,
    "series": [
     {
      "month": "2013-12",
@@ -1067,7 +1067,7 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 59.6
+     "validating_pc": 59.8
     }
    ]
   },
@@ -1289,7 +1289,7 @@
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 53.7,
+   "latest_pc": 53.8,
    "series": [
     {
      "month": "2013-12",
@@ -1497,14 +1497,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 53.7
+     "validating_pc": 53.8
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 48.4,
+   "latest_pc": 48.5,
    "series": [
     {
      "month": "2013-12",
@@ -1712,14 +1712,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 48.4
+     "validating_pc": 48.5
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 42.4,
+   "latest_pc": 42.3,
    "series": [
     {
      "month": "2013-12",
@@ -1927,14 +1927,14 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 42.4
+     "validating_pc": 42.3
     }
    ]
   },
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 38.1,
+   "latest_pc": 38.0,
    "series": [
     {
      "month": "2013-12",
@@ -2142,7 +2142,7 @@
     },
     {
      "month": "2026-09",
-     "validating_pc": 38.1
+     "validating_pc": 38.0
     }
    ]
   },
@@ -2802,7 +2802,7 @@
    },
    {
     "bucket": "10-25%",
-    "n": 33
+    "n": 32
    },
    {
     "bucket": "25-50%",
@@ -2810,7 +2810,7 @@
    },
    {
     "bucket": "50-75%",
-    "n": 51
+    "n": 52
    },
    {
     "bucket": "75%+",

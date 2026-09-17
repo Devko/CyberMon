@@ -18060,7 +18060,7 @@
   "CVE-2026-42016": {
    "action": "ba0d649eb29b",
    "added": "2026-09-11",
-   "desc": "de1b32415627",
+   "desc": "e8debd6dede2",
    "due": "2026-09-25",
    "name": "JFrog Artifactory Incorrect Authorization Vulnerability",
    "notes": "d67e2735cc2f",
@@ -18398,6 +18398,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2026-58704": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-16",
+   "desc": "4fcf93b6555e",
+   "due": "2026-09-19",
+   "name": "Google Pixel Improper Authorization Vulnerability",
+   "notes": "f4dcc963b636",
+   "product": "Pixel",
+   "ransom": "Unknown",
+   "vendor": "Google"
+  },
   "CVE-2026-59310": {
    "action": "ba0d649eb29b",
    "added": "2026-08-18",
@@ -18500,7 +18511,7 @@
   "CVE-2026-67277": {
    "action": "ba0d649eb29b",
    "added": "2026-09-10",
-   "desc": "85b26a25e356",
+   "desc": "2502bc948f4e",
    "due": "2026-09-13",
    "name": "MikroTik RouterOS Missing Authentication for Critical Function Vulnerability",
    "notes": "cd168c53c578",
@@ -18595,6 +18606,17 @@
    "product": "Commerce and Magento",
    "ransom": "Unknown",
    "vendor": "Adobe"
+  },
+  "CVE-2026-76460": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-16",
+   "desc": "f9e0c69a29a5",
+   "due": "2026-09-19",
+   "name": "Cisco Identity Services Engine Incorrect Use of Privileged APIs Vulnerability",
+   "notes": "b452a89292d5",
+   "product": "Identity Services Engine",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
   },
   "CVE-2026-76461": {
    "action": "ba0d649eb29b",
@@ -18709,7 +18731,7 @@
   "CVE-2026-84869": {
    "action": "ba0d649eb29b",
    "added": "2026-09-11",
-   "desc": "42af72d272dc",
+   "desc": "276a940128fd",
    "due": "2026-09-14",
    "name": "ConnectWise ScreenConnect Improper Privilege Management and Missing Authorization Vulnerability",
    "notes": "f74bafd38a93",
@@ -18753,10 +18775,10 @@
   "CVE-2026-86060": {
    "action": "ba0d649eb29b",
    "added": "2026-09-10",
-   "desc": "c5448be96155",
+   "desc": "eba52dc5dcd5",
    "due": "2026-09-13",
    "name": "MikroTik RouterOS Improper Neutralization of Argument Delimiters in a Command Vulnerability",
-   "notes": "9a84f6ec498e",
+   "notes": "f887e66b3e90",
    "product": "RouterOS",
    "ransom": "Unknown",
    "vendor": "MikroTik"
@@ -18782,6 +18804,17 @@
    "product": "Chromium V8",
    "ransom": "Unknown",
    "vendor": "Google"
+  },
+  "CVE-2026-87886": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-16",
+   "desc": "7ea6f8370c03",
+   "due": "2026-09-19",
+   "name": "Acronis Backup Incorrect Default Permissions Vulnerability",
+   "notes": "495ef2474da6",
+   "product": "Backup",
+   "ransom": "Unknown",
+   "vendor": "Acronis"
   },
   "CVE-2026-9082": {
    "action": "f09df147152e",
@@ -18817,7 +18850,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-16",
+ "last_observed": "2026-09-17",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

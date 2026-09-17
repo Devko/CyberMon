@@ -4347,3 +4347,11 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-09-12,CVE-2026-85706,added,,,,daily
 2026-09-12,CVE-2026-59310,field_changed,knownRansomwareCampaignUse,Unknown,Known,daily
 2026-09-15,CVE-2026-76461,added,,,,daily
+2026-09-17,CVE-2026-58704,added,,,,daily
+2026-09-17,CVE-2026-76460,added,,,,daily
+2026-09-17,CVE-2026-87886,added,,,,daily
+2026-09-17,CVE-2026-42016,text_changed,shortDescription,,,daily
+2026-09-17,CVE-2026-67277,text_changed,shortDescription,,,daily
+2026-09-17,CVE-2026-84869,text_changed,shortDescription,,,daily
+2026-09-17,CVE-2026-86060,text_changed,shortDescription,,,daily
+2026-09-17,CVE-2026-86060,text_changed,notes,,,daily

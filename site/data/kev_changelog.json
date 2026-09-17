@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-16T02:50:06Z",
+ "generated_at": "2026-09-17T02:50:31Z",
  "min_n": 10,
  "months": [
   {
@@ -430,9 +430,9 @@
    "month": "2026-09",
    "due_date": 0,
    "ransomware_flag": 8,
-   "text": 0,
+   "text": 5,
    "removed": 0,
-   "total": 8
+   "total": 13
   }
  ],
  "flips": {
@@ -778,17 +778,17 @@
   ]
  },
  "catalog": {
-  "entries": 1710,
+  "entries": 1713,
   "removed_total": 9,
-  "events_total": 4348,
-  "edits_total": 2940,
-  "additions_excluded": 1408,
+  "events_total": 4356,
+  "edits_total": 2945,
+  "additions_excluded": 1411,
   "first_observed": "2021-12-23",
-  "last_observed": "2026-09-16",
+  "last_observed": "2026-09-17",
   "backfill_captures": 53
  },
  "headline": {
-  "edits_total": 2940,
+  "edits_total": 2945,
   "edits_per_100_entries": 171.9,
   "pct_flag_flips": 10.7
  }
