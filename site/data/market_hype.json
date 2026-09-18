@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-17T02:50:31Z",
+ "generated_at": "2026-09-18T02:50:07Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -13157,7 +13157,7 @@
      },
      {
       "month": "2026-04",
-      "n": 2225,
+      "n": 2226,
       "index": 96.3
      },
      {
@@ -13210,7 +13210,7 @@
     "edgar": {
      "latest_month": "2026-08",
      "pct_change": 16.2,
-     "n_latest_12m": 14262,
+     "n_latest_12m": 14263,
      "n_prior_12m": 12273
     }
    },
@@ -14696,13 +14696,13 @@
      },
      {
       "month": "2026-06",
-      "n": 57,
-      "index": 29.1
+      "n": 58,
+      "index": 29.6
      },
      {
       "month": "2026-07",
-      "n": 66,
-      "index": 33.7
+      "n": 67,
+      "index": 34.2
      },
      {
       "month": "2026-08",
@@ -14738,8 +14738,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 35.8,
-     "n_latest_12m": 993,
+     "pct_change": 36.1,
+     "n_latest_12m": 995,
      "n_prior_12m": 731
     }
    },

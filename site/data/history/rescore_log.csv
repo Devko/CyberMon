@@ -5236,3 +5236,9 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-09-15,CVE-2026-73324,VulnCheck,rescore,v4,6.9,v4,5.3
 2026-09-16,CVE-2023-5578,VulDB,version_shift,v3,3.5,v4,5.1
 2026-09-17,CVE-2026-27238,adobe,rescore,v3,5.4,v3,7.8
+2026-09-18,CVE-2026-67378,microsoft,rescore,v3,8.5,v3,9.0
+2026-09-18,CVE-2026-67631,microsoft,rescore,v3,8.8,v3,9.8
+2026-09-18,CVE-2026-67636,microsoft,rescore,v3,8.5,v3,9.0
+2026-09-18,CVE-2026-67643,microsoft,rescore,v3,8.8,v3,9.8
+2026-09-18,CVE-2026-82874,VulnCheck,rescore,v4,2.4,v4,9.4
+2026-09-18,CVE-2026-86865,Tanium,rescore,v3,8.8,v3,7.2

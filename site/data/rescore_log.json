@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-17T02:50:31Z",
+ "generated_at": "2026-09-18T02:50:07Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -75,8 +75,8 @@
   },
   {
    "week": "2026-W38",
-   "rescore_up": 1,
-   "rescore_down": 2,
+   "rescore_up": 6,
+   "rescore_down": 3,
    "first_score": 280,
    "version_shift": 1,
    "score_removed": 0
@@ -84,9 +84,9 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 79,
-  "up": 27,
-  "down": 52,
+  "n": 85,
+  "up": 32,
+  "down": 53,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -98,11 +98,11 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 36
+    "n": 37
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 19
+    "n": 23
    },
    {
     "bucket": "+2.0..+3.9",
@@ -110,7 +110,7 @@
    },
    {
     "bucket": ">=+4.0",
-    "n": 4
+    "n": 5
    }
   ],
   "median_delta": -0.6
@@ -120,8 +120,8 @@
   "cnas": [
    {
     "cna": "VulnCheck",
-    "rescores": 24,
-    "up": 3,
+    "rescores": 25,
+    "up": 4,
     "down": 21
    },
    {
@@ -138,8 +138,8 @@
    },
    {
     "cna": "microsoft",
-    "rescores": 6,
-    "up": 5,
+    "rescores": 10,
+    "up": 9,
     "down": 1
    },
    {
@@ -151,15 +151,15 @@
   ]
  },
  "catalog": {
-  "state_size": 375543,
-  "corpus_release": "cve_2026-09-17_0200Z",
+  "state_size": 376578,
+  "corpus_release": "cve_2026-09-18_0200Z",
   "totals": {
-   "rescore": 79,
+   "rescore": 85,
    "version_shift": 18,
    "first_score": 5137,
    "score_removed": 3
   },
-  "events_total": 5237,
+  "events_total": 5243,
   "first_observed": "2026-07-15"
  }
 }
