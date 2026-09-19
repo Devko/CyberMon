@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-18T02:50:07Z",
+ "generated_at": "2026-09-19T02:48:19Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 229,
+   "total": 232,
    "security": 37,
-   "pct_security": 16.2
+   "pct_security": 15.9
   }
  ],
  "vendors": [
@@ -122,6 +122,16 @@
    "median_gap_days": 7.5
   },
   {
+   "vendor": "Linux",
+   "entries": 31,
+   "dated_entries": 31,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-12-10",
+   "last_added": "2026-09-18",
+   "median_gap_days": 33.5
+  },
+  {
    "vendor": "Fortinet",
    "entries": 30,
    "dated_entries": 30,
@@ -130,16 +140,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-09-09",
    "median_gap_days": 42.0
-  },
-  {
-   "vendor": "Linux",
-   "entries": 28,
-   "dated_entries": 28,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-12-10",
-   "last_added": "2026-08-27",
-   "median_gap_days": 36.0
   },
   {
    "vendor": "D-Link",
@@ -549,13 +549,13 @@
    "pct_known": 38.2
   },
   "other": {
-   "total": 1506,
+   "total": 1509,
    "known": 281,
-   "pct_known": 18.7
+   "pct_known": 18.6
   }
  },
  "catalog": {
-  "total": 1713,
+  "total": 1716,
   "security": 207,
   "pct_security": 12.1,
   "classifier_version": 2,

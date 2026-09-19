@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-18T02:50:07Z",
+ "generated_at": "2026-09-19T02:48:19Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -3015,8 +3015,8 @@
      },
      {
       "month": "2026-06",
-      "n": 2,
-      "index": 18.2
+      "n": 3,
+      "index": 27.3
      },
      {
       "month": "2026-07",
@@ -3057,8 +3057,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 22.2,
-     "n_latest_12m": 55,
+     "pct_change": 24.4,
+     "n_latest_12m": 56,
      "n_prior_12m": 45
     }
    },
@@ -12578,8 +12578,8 @@
      },
      {
       "month": "2026-07",
-      "n": 4,
-      "index": 28.6
+      "n": 5,
+      "index": 35.7
      },
      {
       "month": "2026-08",
@@ -13147,8 +13147,8 @@
      },
      {
       "month": "2026-02",
-      "n": 2023,
-      "index": 87.5
+      "n": 2025,
+      "index": 87.6
      },
      {
       "month": "2026-03",
@@ -13162,23 +13162,23 @@
      },
      {
       "month": "2026-05",
-      "n": 1244,
-      "index": 53.8
+      "n": 1246,
+      "index": 53.9
      },
      {
       "month": "2026-06",
-      "n": 738,
-      "index": 31.9
+      "n": 741,
+      "index": 32.1
      },
      {
       "month": "2026-07",
-      "n": 804,
+      "n": 805,
       "index": 34.8
      },
      {
       "month": "2026-08",
-      "n": 1049,
-      "index": 45.4
+      "n": 1054,
+      "index": 45.6
      }
     ]
    },
@@ -13197,8 +13197,8 @@
     },
     "arxiv": {
      "latest_month": "2026-08",
-     "pct_change": -7.9,
-     "n_latest_12m": 58,
+     "pct_change": -6.3,
+     "n_latest_12m": 59,
      "n_prior_12m": 63
     },
     "wiki": {
@@ -13209,16 +13209,16 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 16.2,
-     "n_latest_12m": 14263,
+     "pct_change": 16.3,
+     "n_latest_12m": 14276,
      "n_prior_12m": 12273
     }
    },
    "divergence": {
     "gdelt_index_avg3m": 14.1,
-    "arxiv_index_avg3m": 23.8,
-    "research_vs_media_index": 9.7,
-    "direction": "aligned"
+    "arxiv_index_avg3m": 26.2,
+    "research_vs_media_index": 12.1,
+    "direction": "research_leads"
    }
   },
   {
@@ -14676,8 +14676,8 @@
      },
      {
       "month": "2026-02",
-      "n": 129,
-      "index": 65.8
+      "n": 130,
+      "index": 66.3
      },
      {
       "month": "2026-03",
@@ -14691,23 +14691,23 @@
      },
      {
       "month": "2026-05",
-      "n": 95,
-      "index": 48.5
+      "n": 96,
+      "index": 49.0
      },
      {
       "month": "2026-06",
-      "n": 58,
-      "index": 29.6
+      "n": 60,
+      "index": 30.6
      },
      {
       "month": "2026-07",
-      "n": 67,
-      "index": 34.2
+      "n": 68,
+      "index": 34.7
      },
      {
       "month": "2026-08",
-      "n": 83,
-      "index": 42.3
+      "n": 85,
+      "index": 43.4
      }
     ]
    },
@@ -14738,8 +14738,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 36.1,
-     "n_latest_12m": 995,
+     "pct_change": 37.1,
+     "n_latest_12m": 1002,
      "n_prior_12m": 731
     }
    },

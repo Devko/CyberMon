@@ -16275,6 +16275,28 @@
    "ransom": "Unknown",
    "vendor": "ConnectWise"
   },
+  "CVE-2025-39682": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-18",
+   "desc": "18a028d5ba6b",
+   "due": "2026-09-21",
+   "name": "Linux Kernel Improper Check for Unusual or Exceptional Conditions Vulnerability",
+   "notes": "d26d62f509cf",
+   "product": "Kernel",
+   "ransom": "Unknown",
+   "vendor": "Linux"
+  },
+  "CVE-2025-39964": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-18",
+   "desc": "1b6dac964989",
+   "due": "2026-09-21",
+   "name": "Linux Kernel Race Condition Vulnerability",
+   "notes": "a0dc61e83a18",
+   "product": "Kernel",
+   "ransom": "Unknown",
+   "vendor": "Linux"
+  },
   "CVE-2025-4008": {
    "action": "f09df147152e",
    "added": "2025-10-02",
@@ -18299,6 +18321,17 @@
    "ransom": "Unknown",
    "vendor": "Google"
   },
+  "CVE-2026-53266": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-18",
+   "desc": "8c149b673f7e",
+   "due": "2026-09-21",
+   "name": "Linux Kernel Out-of-Bounds Write Vulnerability",
+   "notes": "65c4d71f37dd",
+   "product": "Kernel",
+   "ransom": "Unknown",
+   "vendor": "Linux"
+  },
   "CVE-2026-53362": {
    "action": "ba0d649eb29b",
    "added": "2026-08-27",
@@ -18850,7 +18883,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-18",
+ "last_observed": "2026-09-19",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
