@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CyberMon — The Alias Graph. One adversary, one name per shop.</title>
+  <meta name="description" content="Every tracked threat actor placed between the vendor naming schemes that name it — Microsoft's weather, CrowdStrike's animals, Mandiant's numbers, Secureworks' metals, Unit 42's constellations — as a force-directed graph.">
+  <meta property="og:title" content="CyberMon — The Alias Graph. One adversary, one name per shop.">
+  <meta property="og:description" content="Every tracked threat actor placed between the vendor naming schemes that name it, as a force-directed graph.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CyberMon">
+  <meta property="og:url" content="https://devko.github.io/CyberMon/alias.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#0e0f11">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/field.css">
+  <link rel="stylesheet" href="css/alias.css">
+</head>
+<body class="field-body">
+
+  <header class="field-bar">
+    <div class="field-brand">
+      <a class="field-wordmark" href="index.html" aria-label="CyberMon overview">CYBER<span class="accent">MON</span></a>
+      <span class="field-kicker">Instrument</span>
+      <h1 class="field-title">The Alias Graph</h1>
+      <p class="field-thesis">One adversary, one name per shop. Each house naming scheme is a hub; every actor sits where its names pull it.</p>
+    </div>
+    <dl class="field-counters" aria-live="polite">
+      <div><dt>actors with aliases</dt><dd id="a-actors">—</dd></div>
+      <div><dt>named by 3+ schemes</dt><dd id="a-multi" class="accent">—</dd></div>
+      <div><dt>alias strings</dt><dd id="a-aliases">—</dd></div>
+    </dl>
+  </header>
+
+  <div class="field-body-grid">
+    <aside class="field-rail" aria-label="Alias graph controls">
+      <section class="rail-group">
+        <h2 class="rail-k">Find</h2>
+        <input type="search" id="a-search" placeholder="actor or alias contains…" aria-label="Find an actor or alias">
+        <p class="rail-help">Hover an actor to see its names by scheme; click to pin it. Hover a hub to light up everyone it names. Drag to move the view, wheel to zoom.</p>
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">Show</h2>
+        <label class="rail-check"><input type="checkbox" id="a-multi-only"> actors named by 2+ schemes only</label>
+        <label class="rail-check"><input type="checkbox" id="a-labels" checked> actor labels</label>
+        <label class="rail-select">size actors by
+          <select id="a-size" aria-label="Size actors by">
+            <option value="aliases">alias count</option>
+            <option value="schemes">scheme count</option>
+            <option value="flat">nothing</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="rail-group">
+        <h2 class="rail-k">Schemes</h2>
+        <div class="rail-legend" id="a-legend"></div>
+      </section>
+
+      <section class="rail-group">
+        <button type="button" class="rail-reset" id="a-reset">Reset view</button>
+      </section>
+
+      <section class="rail-group rail-sources" id="a-sources"></section>
+    </aside>
+
+    <main class="field-stage" id="a-stage">
+      <canvas id="a-canvas" aria-label="Force-directed graph of threat actors and the vendor naming schemes that name them. The list on the left names each scheme; hover or use the search box to read an actor's names."></canvas>
+      <div class="field-tip" id="a-tip" role="status"></div>
+      <aside class="field-sel alias-panel" id="a-panel" hidden aria-label="Actor names"></aside>
+      <div class="field-hud">
+        <p class="hud-k">Actors × naming schemes</p>
+        <p class="hud-thesis">The crowded middle is the industry's map disagreeing with itself: the more shops name an actor, the more names it answers to.</p>
+        <details class="hud-method">
+          <summary>how this is placed</summary>
+          <p id="a-method"></p>
+        </details>
+      </div>
+      <div class="field-notice" id="a-notice" hidden></div>
+    </main>
+  </div>
+
+  <script type="module" src="js/alias.js"></script>
+  <noscript>
+    <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
+      The Alias Graph needs JavaScript. The same data is tabulated on <a href="naming.html" style="color:#e9e4d8">naming.html</a>.
+    </p>
+  </noscript>
+</body>
+</html>
