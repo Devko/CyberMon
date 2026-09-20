@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-19T02:48:19Z",
+ "generated_at": "2026-09-20T02:49:47Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -168,11 +168,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 7368,
+   "n": 7381,
    "avg_cvss": 7.5,
    "median_cvss": 8.3,
    "pct_geq_9": 15.4,
-   "pct_geq_7": 64.3
+   "pct_geq_7": 64.2
   },
   {
    "cna": "CERT-PL",
@@ -366,7 +366,7 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1620,
+   "n": 1624,
    "avg_cvss": 6.1,
    "median_cvss": 6.1,
    "pct_geq_9": 9.4,
@@ -519,11 +519,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 9932,
+   "n": 9986,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.4,
-   "pct_geq_7": 26.1
+   "pct_geq_7": 26.0
   },
   {
    "cna": "Acronis",
@@ -546,11 +546,11 @@
   {
    "cna": "EEF",
    "org": "EEF",
-   "n": 304,
+   "n": 305,
    "avg_cvss": 6.4,
    "median_cvss": 6.9,
    "pct_geq_9": 5.6,
-   "pct_geq_7": 45.4
+   "pct_geq_7": 45.2
   },
   {
    "cna": "microsoft",
@@ -600,11 +600,11 @@
   {
    "cna": "redhat",
    "org": "redhat",
-   "n": 1526,
+   "n": 1529,
    "avg_cvss": 6.4,
    "median_cvss": 6.5,
    "pct_geq_9": 4.3,
-   "pct_geq_7": 41.0
+   "pct_geq_7": 40.9
   },
   {
    "cna": "Zoom",
@@ -699,11 +699,11 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13799,
+   "n": 13804,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.1,
-   "pct_geq_7": 14.3
+   "pct_geq_7": 14.4
   },
   {
    "cna": "Mattermost",
