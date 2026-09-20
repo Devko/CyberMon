@@ -142,6 +142,8 @@ def outputs(agg, epss, kev, hibp, ransomwhere, poc) -> dict[str, dict]:
         iter_cve_records_from_dir(FIXTURES / "cvelist"), observer=credits)
     out["ai_credits.json"] = ai_credits_metrics.build_ai_credits(
         credits, GENERATED_AT)
+    out["ai_credits_ledger.json"] = \
+        ai_credits_metrics.build_ai_credits_ledger(credits, GENERATED_AT)
     out["epss_report.json"] = epss_report
     out["meta.json"]["sources"]["epss_history"] = epss_history_source
     out["meta.json"]["sources"]["rescores"] = {

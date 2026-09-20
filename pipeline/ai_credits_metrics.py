@@ -6,12 +6,17 @@ an AI lab found the bug? This stage rides the shared corpus pass as an
 every credit string against the committed registry in
 ``ai_credits_data.py``.
 
-**A floor, never a census.** ``credits`` is optional and under half of
-published records carry one at all (the ``coverage`` section publishes that
-share per year so the page can say so). An AI-found bug whose CNA wrote no
-credit, or credited only the human who filed it, is invisible here; the
-series measures *crediting practice* as much as discovery. The opposite
-error is guarded by the registry being narrow and hand-curated.
+**What this measures is attribution, not discovery.** A match says a
+record *credits* a registry entity; nothing here verifies how a bug was
+found. ``credits`` is optional and under half of published records carry
+one at all (``coverage`` publishes that share per year), so the COUNTS are
+incomplete: an AI-assisted find whose CNA wrote no credit, or credited only
+the person who filed it, is invisible. That selection cuts both ways for
+everything that is not a count — a share, a median or a ranking can move in
+either direction as missing records appear. The registry is narrow and
+hand-curated, and each credit's CVE-schema role is honoured: a registry
+name credited only for remediation or coordination is recorded as ``fix``
+and never counted.
 
 **Entities only.** Credit strings carry personal names and e-mail
 addresses. Nothing from the raw string is emitted — the JSON holds registry
@@ -25,11 +30,14 @@ separate headlines, lanes, severity cuts and funnels (``kinds.llm`` /
 **Tangible, not just counted.** Each kind carries a severity cut (the
 record's effective CVSS score — CNA first, ADP fallback — in the site's
 usual critical/high/medium/low buckets, ``unscored`` kept visible) and a
-funnel: credited -> high-or-critical -> public exploit code -> on CISA KEV.
-The stages are each a share of ``credited``, not nested. Small exploit and
-KEV numbers are expected and are not a verdict on their own:
-coordinated-disclosure bugs are patched before attackers meet them, the
-cohort is months old, and the exploit corpora lag publication.
+funnel: credited -> high-or-critical -> listed in the three exploit corpora
+-> on CISA KEV. The stages are each a share of ``credited``, not nested.
+None of them measures exploitation: absence from KEV or from three
+repositories is not absence of exploitation, the corpora lag publication,
+and the AI cohorts are far younger than the baseline (``profile`` carries
+each population's share published in the last 90 days so the page can show
+that). The comparison is descriptive — not adjusted for publication age,
+target mix or crediting practice.
 ``baseline`` publishes the same funnel for *every* credit-carrying CVE over
 the same window so the page compares like with like.
 
@@ -58,11 +66,12 @@ from __future__ import annotations
 import statistics
 from collections import Counter
 from dataclasses import dataclass, field
+from datetime import date, timedelta
 from typing import Iterable, Mapping, NamedTuple
 
-from .ai_credits_data import (CLAIMS, FINDERS, GROUPS, KINDS, WEAKNESS_KEYS,
-                              WEAKNESS_LABELS, classify,
-                              counts_toward_headline, kind_of,
+from .ai_credits_data import (CLAIMS, FINDERS, GROUPS, KINDS, TIERS,
+                              WEAKNESS_KEYS, WEAKNESS_LABELS, classify,
+                              counts_toward_headline, kind_of, stronger,
                               weakness_family)
 from .metrics import CveFacts, _pct, _r1, severity_bucket
 
@@ -70,6 +79,7 @@ COVERAGE_FROM_YEAR = 2018   # credits are near-absent from records before it
 TOP_CNAS = 3
 TOP_TARGETS = 10
 TOP_SHARE_N = 5             # "the top five products hold X%"
+RECENT_DAYS = 90            # profile.recent_pct: how young is the cohort?
 SEVERITIES = ("critical", "high", "medium", "low", "unscored")
 POPULATIONS = (*KINDS, "baseline")
 _PLACEHOLDER = frozenset({"", "n/a", "na", "unknown", "unspecified", "-"})
@@ -77,19 +87,23 @@ _PLACEHOLDER = frozenset({"", "n/a", "na", "unknown", "unspecified", "-"})
 _BY_KEY = {f.key: f for f in FINDERS}
 
 
-def _credit_strings(record: dict) -> list[str]:
-    """Every credit ``value`` in the record, CNA container first. ADP
-    containers may carry credits too (none did as of 2026-07)."""
+def _credits(record: dict) -> list[tuple[str, str]]:
+    """Every credit in the record as ``(value, role)``, CNA container first
+    (ADP containers may carry credits too; none did as of 2026-07). ``role``
+    is the CVE schema's credit ``type`` lower-cased, ``""`` when the record
+    gives none — about a fifth of credit lines."""
     containers = record.get("containers") or {}
     blocks = [containers.get("cna")] + list(containers.get("adp") or [])
-    out: list[str] = []
+    out: list[tuple[str, str]] = []
     for block in blocks:
         if not isinstance(block, dict):
             continue
         for credit in block.get("credits") or []:
             value = credit.get("value") if isinstance(credit, dict) else None
             if isinstance(value, str) and value.strip():
-                out.append(value)
+                role = credit.get("type")
+                out.append((value, role.strip().lower()
+                            if isinstance(role, str) else ""))
     return out
 
 
@@ -131,6 +145,7 @@ def _severity(facts: CveFacts) -> str:
 class Traits(NamedTuple):
     """What every cut needs from one credit-carrying record."""
     month: str                 # publication month "YYYY-MM"
+    published: str             # publication day "YYYY-MM-DD"
     severity: str              # one of SEVERITIES
     score: float | None        # effective CVSS base score
     cna_scored: bool           # the CNA (not an ADP) supplied a score
@@ -143,7 +158,8 @@ class Traits(NamedTuple):
 class CreditRow(NamedTuple):
     cve_id: str
     cna: str
-    found: dict[str, str]      # finder key -> tier
+    found: dict[str, str]      # finder key -> strongest tier
+    roles: dict[str, tuple[str, ...]]   # finder key -> credit roles seen
     target: str                # "" when the record names no product
     traits: Traits
 
@@ -172,12 +188,13 @@ class CreditCollector:
         if facts.state != "PUBLISHED" or not facts.date_published:
             return
         self.published_by_year[facts.year] += 1
-        credits = _credit_strings(record)
+        credits = _credits(record)
         if not credits:
             return
         self.credited_by_year[facts.year] += 1
         traits = Traits(
             month=facts.date_published[:7],
+            published=facts.date_published[:10],
             severity=_severity(facts),
             score=facts.effective_score,
             cna_scored=bool(facts.cna_scores),
@@ -187,14 +204,17 @@ class CreditCollector:
             has_poc=facts.cve_id in self.poc_ids)
         self.credited.append(traits)
         found: dict[str, str] = {}
-        for text in credits:
-            for key, tier in classify(text).items():
+        roles: dict[str, set[str]] = {}
+        for text, role in credits:
+            for key, tier in classify(text, role).items():
                 # strongest tier wins across a record's credit lines
-                if found.get(key) != "system":
-                    found[key] = tier
+                found[key] = stronger(found.get(key), tier)
+                roles.setdefault(key, set()).add(role or "unspecified")
         if found:
-            self.rows.append(CreditRow(facts.cve_id, facts.cna, found,
-                                       _target(record), traits))
+            self.rows.append(CreditRow(
+                facts.cve_id, facts.cna, found,
+                {k: tuple(sorted(v)) for k, v in roles.items()},
+                _target(record), traits))
 
 
 def _month_span(first: str, last: str) -> list[str]:
@@ -225,15 +245,20 @@ def _funnel(traits: list[Traits]) -> dict:
     kev = sum(t.in_kev for t in traits)
     return {"credited": credited, "scored": scored,
             "high_or_critical": serious,
-            "high_or_critical_pct": _pct(serious, scored),
+            "high_or_critical_pct": _pct(serious, credited),
             "poc": poc, "poc_pct": _pct(poc, credited),
             "kev": kev, "kev_pct": _pct(kev, credited)}
 
 
-def _profile(traits: list[Traits]) -> dict:
+def _profile(traits: list[Traits], today: str) -> dict:
     """One population's column in the side-by-side profile. Medians are
-    None on an empty population; every share sits beside ``n``."""
+    None on an empty population; every share sits beside ``n``.
+    ``recent_pct`` is the share published in the last RECENT_DAYS — the
+    exploit and KEV rows accumulate with age, so the page must be able to
+    show how unequal the populations' ages are."""
     n = len(traits)
+    cutoff = (date.fromisoformat(today)
+              - timedelta(days=RECENT_DAYS)).isoformat()
     scores = [t.score for t in traits if t.score is not None]
     pctiles = [t.epss_pctile for t in traits if t.epss_pctile is not None]
     cwes = Counter(t.cwe for t in traits if t.cwe)
@@ -244,6 +269,8 @@ def _profile(traits: list[Traits]) -> dict:
         "median_epss_pctile":
             _r1(100.0 * statistics.median(pctiles)) if pctiles else None,
         "epss_scored": len(pctiles),
+        "recent_days": RECENT_DAYS,
+        "recent_pct": _pct(sum(t.published >= cutoff for t in traits), n),
         "poc_pct": _pct(sum(t.has_poc for t in traits), n),
         "kev_pct": _pct(sum(t.in_kev for t in traits), n),
         "memory_pct": _pct(sum(weakness_family(t.cwe) == "memory"
@@ -336,7 +363,7 @@ def build_ai_credits(collector: CreditCollector, generated_at: str) -> dict:
     per: dict[str, dict] = {}
     for row in credited:
         for key, tier in row.found.items():
-            b = per.setdefault(key, {"system": 0, "org": 0, "months": [],
+            b = per.setdefault(key, {**dict.fromkeys(TIERS, 0), "months": [],
                                      "cnas": Counter(), "counted": []})
             b[tier] += 1
             b["months"].append(row.traits.month)
@@ -347,8 +374,9 @@ def build_ai_credits(collector: CreditCollector, generated_at: str) -> dict:
     board = [{"key": key, "label": _BY_KEY[key].label,
               "group": _BY_KEY[key].group,
               "kind": kind_of(_BY_KEY[key].group),
-              "cves": b["system"] + b["org"], "counted": len(b["counted"]),
-              "system": b["system"], "org": b["org"],
+              "cves": sum(b[t] for t in TIERS),
+              "counted": len(b["counted"]),
+              **{t: b[t] for t in TIERS},
               "severity": _severity_obj(b["counted"]),
               "poc": sum(t.has_poc for t in b["counted"]),
               "kev": sum(t.in_kev for t in b["counted"]),
@@ -381,7 +409,8 @@ def build_ai_credits(collector: CreditCollector, generated_at: str) -> dict:
                     "severity": _severity_obj(window)}
         populations = {**{k: [r.traits for r in kind_rows[k]] for k in KINDS},
                        "baseline": window}
-        profile = {name: _profile(populations[name]) for name in POPULATIONS}
+        profile = {name: _profile(populations[name], generated_at[:10])
+                   for name in POPULATIONS}
         families = {name: Counter(weakness_family(t.cwe)
                                   for t in populations[name])
                     for name in POPULATIONS}
@@ -407,3 +436,31 @@ def build_ai_credits(collector: CreditCollector, generated_at: str) -> dict:
             "baseline": baseline, "profile": profile,
             "weaknesses": weaknesses, "targets": targets,
             "coverage": coverage, "board": board, "claims": claims}
+
+
+
+def build_ai_credits_ledger(collector: CreditCollector,
+                            generated_at: str) -> dict:
+    """ai_credits_ledger.json — the record-level audit trail behind every
+    number in ai_credits.json: one row per CVE that names a registry entity,
+    with the matched finder, the tier the match earned, the CVE-schema
+    credit roles it was seen under, and the kinds it counts toward (empty
+    when it counts for nothing). No credit text: the raw strings carry
+    personal names and addresses, and the CVE id is enough to look one up."""
+    this_month = generated_at[:7]
+    rows = []
+    for row in collector.rows:
+        if row.traits.month > this_month:
+            continue
+        rows.append({
+            "cve": row.cve_id,
+            "published": row.traits.published,
+            "cna": row.cna,
+            "counts_for": sorted({kind_of(g)
+                                  for g in _counted_groups(row.found)}),
+            "matches": [{"finder": key, "tier": row.found[key],
+                         "roles": list(row.roles[key])}
+                        for key in sorted(row.found)],
+        })
+    rows.sort(key=lambda r: (r["published"], r["cve"]))
+    return {"generated_at": generated_at, "rows": rows}

@@ -22,6 +22,9 @@ const ROWS = [
   { id: "poc_pct", get: (p) => p.poc_pct, fmt: fmtPct, max: null },
   { id: "kev_pct", get: (p) => p.kev_pct, fmt: fmtPct, max: null },
   { id: "cna_scored_pct", get: (p) => p.cna_scored_pct, fmt: fmtPct, max: 100 },
+  // Last on purpose: the exploit-corpus and KEV rows accumulate with a
+  // record's age, and this row shows how unequal the populations' ages are.
+  { id: "recent_pct", get: (p) => p.recent_pct, fmt: fmtPct, max: 100 },
 ];
 
 const pos = (v, max) => `${Math.max(0, Math.min(100, max ? (v / max) * 100 : 0)).toFixed(1)}%`;

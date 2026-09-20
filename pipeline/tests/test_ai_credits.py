@@ -22,9 +22,12 @@ from pipeline.metrics import CveFacts
 GENERATED_AT = "2026-07-09T13:00:00Z"
 
 
-def _record(*credits: str, vendor: str | None = None,
+def _record(*credits, vendor: str | None = None,
             product: str | None = None) -> dict:
-    cna: dict = {"credits": [{"lang": "en", "value": c} for c in credits]}
+    """``credits`` are strings, or ``(value, schema role)`` pairs."""
+    cna: dict = {"credits": [
+        {"lang": "en", "value": c} if isinstance(c, str)
+        else {"lang": "en", "value": c[0], "type": c[1]} for c in credits]}
     if vendor is not None or product is not None:
         cna["affected"] = [{"vendor": vendor, "product": product}]
     return {"containers": {"cna": cna}}
@@ -118,10 +121,40 @@ def test_collector_strongest_tier_wins_across_credit_lines():
     (row,) = col.rows
     assert (row.cve_id, row.cna, row.found, row.target) == (
         "CVE-2026-0005", "mozilla", {"anthropic": "system"}, "")
+    assert row.roles == {"anthropic": ("unspecified",)}
     assert row.traits == acm.Traits(
-        month="2026-03", severity="unscored", score=None, cna_scored=False,
-        cwe=None, epss_pctile=None, in_kev=False, has_poc=False)
+        month="2026-03", published="2026-03-01", severity="unscored",
+        score=None, cna_scored=False, cwe=None, epss_pctile=None,
+        in_kev=False, has_poc=False)
     assert col.credited == [row.traits]     # the baseline keeps it too
+
+
+def test_a_remediation_credit_is_a_fix_not_a_find():
+    # CVE schema roles matter: "Claude" as remediation developer wrote the
+    # patch. It is recorded (tier fix) and never counted. Regression for
+    # the 2026-09-20 review: 31 Anthropic CVEs were counted this way.
+    col = acm.CreditCollector()
+    col(_facts("CVE-2026-0007", "2026-03-02", cna="misp", score=7.0),
+        _record(("Jane Doe", "finder"), ("Claude", "remediation developer")))
+    col(_facts("CVE-2026-0008", "2026-03-03", score=7.0),
+        _record(("Claude", "remediation reviewer"), ("Claude", "finder")))
+    fix, find = col.rows
+    assert fix.found == {"anthropic": "fix"}
+    assert find.found == {"anthropic": "system"}      # the find outranks it
+    assert find.roles == {"anthropic": ("finder", "remediation reviewer")}
+    obj = acm.build_ai_credits(col, GENERATED_AT)
+    row = obj["board"][0]
+    assert (row["cves"], row["counted"], row["fix"]) == (2, 1, 1)
+    assert obj["kinds"]["llm"]["headline"]["cves"] == 1
+
+
+def test_oss_fuzz_gen_is_matched_and_plain_oss_fuzz_is_not():
+    # CVE-2024-9143 (2024-10-16) credits "Google OSS-Fuzz-Gen" as finder —
+    # the counterexample to the page's first "no AI finder before 2025"
+    # headline. Classic OSS-Fuzz has been credited since 2017 and is not AI.
+    assert classify("Google OSS-Fuzz-Gen", "finder") == {"google": "system"}
+    assert classify("OSS-Fuzz", "finder") == {}
+    assert classify("Found by OSS-Fuzz in https://bugs.chromium.org/x") == {}
 
 
 def test_collector_never_keeps_the_raw_credit_string():
@@ -244,6 +277,9 @@ def test_profile_columns_describe_each_population():
     base = profile["baseline"]
     assert (base["n"], base["epss_scored"]) == (5, 3)
     assert base["poc_pct"] == 40.0
+    # cohort age: everything in the fixture predates 2026-07-09 by < 90 days
+    # except the February lab CVE
+    assert (llm["recent_days"], llm["recent_pct"]) == (90, 50.0)
 
 
 def test_weakness_families_add_back_up_to_each_population():
@@ -277,6 +313,37 @@ def test_target_never_returns_a_bare_placeholder():
     rhel = _record("x", vendor="Red Hat",
                    product="Red Hat Enterprise Linux 10")
     assert acm._target(rhel) == "Red Hat Enterprise Linux 10"
+
+
+# ------------------------------------------------------------------ ledger
+
+def test_ledger_lists_every_match_without_credit_text():
+    col = _collector()
+    ledger = acm.build_ai_credits_ledger(col, GENERATED_AT)
+    assert [r["cve"] for r in ledger["rows"]] == [
+        "CVE-2026-0010", "CVE-2026-0011", "CVE-2026-0012", "CVE-2026-0014"]
+    dual = ledger["rows"][2]
+    assert dual["counts_for"] == ["llm", "vendor"]
+    assert dual["matches"] == [
+        {"finder": "openai", "tier": "system", "roles": ["unspecified"]},
+        {"finder": "xbow", "tier": "system", "roles": ["unspecified"]}]
+    assert ledger["rows"][3]["counts_for"] == []    # lab named, not counted
+    assert "Gaynor" not in repr(ledger) and "Fort" not in repr(ledger)
+    contract.validate("ai_credits_ledger.json", ledger)
+
+
+@pytest.mark.parametrize("mutate", [
+    lambda o: o["rows"][0].update(credit="Jane Doe <jane@example.org>"),
+    lambda o: o["rows"][0]["matches"][0].update(tier="vibes"),
+    lambda o: o["rows"][0]["matches"][0].update(finder="somebody"),
+    lambda o: o["rows"][3].update(counts_for=["llm"]),
+    lambda o: o["rows"].reverse(),
+])
+def test_ledger_contract_rejects_tampering(mutate):
+    ledger = acm.build_ai_credits_ledger(_collector(), GENERATED_AT)
+    mutate(ledger)
+    with pytest.raises(ContractViolation):
+        contract.validate("ai_credits_ledger.json", ledger)
 
 
 # ------------------------------------------------------------------ claims

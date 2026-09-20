@@ -565,6 +565,9 @@ def run(args: argparse.Namespace) -> int:
     # tonight's KEV ids, exploit corpora and EPSS percentiles.
     outputs["ai_credits.json"] = ai_credits_metrics.build_ai_credits(
         credits, generated_at)
+    # ... and the record-level ledger behind it (ids, tiers, roles; no text).
+    outputs["ai_credits_ledger.json"] = \
+        ai_credits_metrics.build_ai_credits_ledger(credits, generated_at)
     # Single-upstream modules: build from tonight's fetch, or carry the
     # previous edition forward marked stale when that upstream is down.
     if hibp is not None:

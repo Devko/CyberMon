@@ -1,8 +1,8 @@
 // 03 — the finder board. Contract: site/data/ai_credits.json (board).
 // A sortable HTML table (no ECharts), mirroring charts/naming_board.js: the
-// counted-CVE bar in cell, each finder's own severity strip, and the
-// "named only" remainder the kind's counting rule leaves out.
-import { editorial } from "../editorial.js";
+// counted-CVE bar in cell, each finder's own severity strip, how many records
+// name the AI system itself, and what the kind's counting rule leaves out.
+import { editorial, tpl } from "../editorial.js";
 import { el, clear } from "../dom.js";
 import { sortHeader } from "../ui.js";
 import { fmtInt, fmtPct } from "../theme.js";
@@ -16,11 +16,26 @@ const COLS = [
   { key: "counted", labelKey: "colCounted", numeric: true, sortable: true },
   { key: "severity", labelKey: "colSeverity", numeric: false, sortable: false },
   { key: "serious", labelKey: "colSerious", numeric: true, sortable: true },
-  { key: "org", labelKey: "colNamedOnly", numeric: true, sortable: true },
+  { key: "system", labelKey: "colSystem", numeric: true, sortable: true },
+  { key: "uncounted", labelKey: "colNotCounted", numeric: true, sortable: true },
   { key: "kev", labelKey: "colKev", numeric: true, sortable: true },
   { key: "first_month", labelKey: "colSince", numeric: false, sortable: true },
   { key: "cnas", labelKey: "colCnas", numeric: false, sortable: false },
 ];
+
+// The uncounted number, with its make-up on hover: a lab named without its
+// model, and/or anyone credited only for the fix (tier "fix").
+function uncountedCell(r, ed) {
+  const td = el("td", "num", r.uncounted ? fmtInt(r.uncounted) : "—");
+  if (r.uncounted) {
+    const named = r.uncounted - r.fix;
+    const parts = [];
+    if (named > 0) parts.push(tpl(ed.uncountedNamed, { n: fmtInt(named) }));
+    if (r.fix) parts.push(tpl(ed.uncountedFix, { n: fmtInt(r.fix) }));
+    td.title = parts.join(" · ");
+  }
+  return td;
+}
 
 export function render(slots, data) {
   const ed = editorial.sections.credits_board;
@@ -32,9 +47,10 @@ export function render(slots, data) {
     return;
   }
 
-  // "named only" = recorded but not counted (a lab credited without its model)
+  // "not counted" = matched but outside the kind's rule: a lab named without
+  // its model, or anyone credited only for the fix (tier "fix").
   const rows = data.board.map((r) => ({
-    ...r, serious: seriousPct(r), org: r.cves - r.counted,
+    ...r, serious: seriousPct(r), uncounted: r.cves - r.counted,
   }));
   const maxCounted = Math.max(1, ...rows.map((r) => r.counted));
 
@@ -106,7 +122,8 @@ export function render(slots, data) {
 
       tr.append(
         el("td", "num", fmtPct(r.serious)),
-        el("td", "num", r.org ? fmtInt(r.org) : "—"),
+        el("td", "num", fmtInt(r.system)),
+        uncountedCell(r, ed),
         el("td", "num" + (r.kev ? " accent" : ""), r.kev ? fmtInt(r.kev) : "—"),
         el("td", "mono", r.first_month),
         el("td", "cna-list",

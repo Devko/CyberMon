@@ -17,10 +17,11 @@ import re
 from typing import Any, Callable
 
 from .ai_credits_data import (CLAIM_QUALIFIERS, CLAIM_UNIT_KINDS, FINDERS,
-                              GROUPS, KINDS, WEAKNESS_KEYS, WEAKNESS_LABELS,
+                              GROUPS, KINDS, TIERS, WEAKNESS_KEYS,
+                              WEAKNESS_LABELS, counts_toward_headline,
                               kind_of)
-from .ai_credits_metrics import (POPULATIONS, SEVERITIES, TOP_SHARE_N,
-                                 TOP_TARGETS)
+from .ai_credits_metrics import (POPULATIONS, RECENT_DAYS, SEVERITIES,
+                                 TOP_SHARE_N, TOP_TARGETS)
 from .contracts import (DATE_RE, _check_bool, _check_generated_at, _check_int,
                         _check_list, _check_num, _check_sorted, _check_str,
                         _fail, _get)
@@ -132,12 +133,16 @@ def _validate_ai_credits(obj: Any) -> None:
         if (r.get("label"), r.get("group"), r.get("kind")) != \
                 (finder.label, finder.group, kind_of(finder.group)):
             _fail(path, "label/group/kind must match the registry entry")
-        for k in ("cves", "counted", "system", "org", "poc", "kev"):
+        for k in ("cves", "counted", *TIERS, "poc", "kev"):
             _check_int(_get(r, k, path), f"{path}.{k}")
-        if r["cves"] < 1 or r["cves"] != r["system"] + r["org"]:
-            _fail(f"{path}.cves", "must be >= 1 and equal system + org")
-        if r["counted"] > r["cves"]:
-            _fail(f"{path}.counted", "cannot exceed cves")
+        if r["cves"] < 1 or r["cves"] != sum(r[t] for t in TIERS):
+            _fail(f"{path}.cves", f"must be >= 1 and equal the sum of {TIERS}")
+        # counted is exactly the tiers the kind's rule admits — a fix credit
+        # (patch, not find) can never be part of it
+        if r["counted"] != sum(r[t] for t in TIERS
+                               if counts_toward_headline(finder.group, t)):
+            _fail(f"{path}.counted",
+                  "must equal the tiers this finder's kind counts")
         if _check_severity(_get(r, "severity", path),
                            f"{path}.severity") != r["counted"]:
             _fail(f"{path}.severity", "must sum to counted")
@@ -247,8 +252,11 @@ def _validate_profile(profile: Any, obj: Any, sizes: dict) -> None:
         for k, hi in (("median_cvss", 10.0), ("median_epss_pctile", 100.0)):
             if _get(col, k, path) is not None:
                 _check_num(col[k], f"{path}.{k}", 0.0, hi)
-        for k in ("poc_pct", "kev_pct", "memory_pct", "cna_scored_pct"):
+        for k in ("poc_pct", "kev_pct", "memory_pct", "cna_scored_pct",
+                  "recent_pct"):
             _check_num(_get(col, k, path), f"{path}.{k}", 0.0, 100.0)
+        if _get(col, "recent_days", path) != RECENT_DAYS:
+            _fail(f"{path}.recent_days", f"must be {RECENT_DAYS}")
         for k in ("poc_pct", "kev_pct"):
             if col[k] != funnels[name][k]:
                 _fail(f"{path}.{k}", "must equal the funnel's share")
@@ -319,8 +327,54 @@ def _validate_targets(targets: Any, sizes: dict) -> None:
         _check_sorted(counts, f"{path}.projects (by n)", descending=True)
 
 
+def _validate_ledger(obj: Any) -> None:
+    """The record-level audit trail: ids, registry keys, tiers and schema
+    roles only. Every row must name a registry finder, and ``counts_for``
+    must be exactly what the counting rule derives from its matches."""
+    _check_generated_at(obj, "ai_credits_ledger")
+    rows = _check_list(_get(obj, "rows", "ai_credits_ledger"),
+                       "ai_credits_ledger.rows")
+    order = []
+    for i, r in enumerate(rows):
+        path = f"ai_credits_ledger.rows[{i}]"
+        if set(r) != {"cve", "published", "cna", "counts_for", "matches"}:
+            _fail(path, "unexpected keys (the ledger carries no credit text)")
+        _check_str(_get(r, "cve", path), f"{path}.cve", CVE_RE)
+        _check_str(_get(r, "published", path), f"{path}.published", DATE_RE)
+        _check_str(_get(r, "cna", path), f"{path}.cna")
+        matches = _check_list(_get(r, "matches", path), f"{path}.matches")
+        if not matches:
+            _fail(f"{path}.matches", "a ledger row must match something")
+        kinds = set()
+        for j, m in enumerate(matches):
+            mp = f"{path}.matches[{j}]"
+            if set(m) != {"finder", "tier", "roles"}:
+                _fail(mp, "unexpected keys")
+            if m["finder"] not in _FINDER_KEYS:
+                _fail(f"{mp}.finder", "is not in the committed registry")
+            if m["tier"] not in TIERS:
+                _fail(f"{mp}.tier", f"must be one of {TIERS}")
+            roles = _check_list(m["roles"], f"{mp}.roles")
+            if not roles:
+                _fail(f"{mp}.roles", "must list at least one role")
+            for k, role in enumerate(roles):
+                _check_str(role, f"{mp}.roles[{k}]")
+                if "@" in role or len(role) > 40:
+                    _fail(f"{mp}.roles[{k}]", "is not a schema role")
+            group = _FINDER_KEYS[m["finder"]].group
+            if counts_toward_headline(group, m["tier"]):
+                kinds.add(kind_of(group))
+        if _get(r, "counts_for", path) != sorted(kinds):
+            _fail(f"{path}.counts_for", "must follow from the row's matches")
+        order.append((r["published"], r["cve"]))
+    _check_sorted(order, "ai_credits_ledger.rows (by published, cve)")
+    if len({r["cve"] for r in rows}) != len(rows):
+        _fail("ai_credits_ledger.rows", "duplicate CVE ids")
+
+
 VALIDATORS: dict[str, Callable[[Any], None]] = {
     "ai_credits.json": _validate_ai_credits,
+    "ai_credits_ledger.json": _validate_ledger,
 }
 
 

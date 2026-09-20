@@ -423,9 +423,9 @@ export const editorial = {
         href: "credits.html",
         num: "22",
         label: "AI Credits",
-        headline: "AI finds thousands of bugs. The CVE record credits a few hundred.",
+        headline: "Thousands announced. Hundreds credited in CVE records.",
         blurb:
-          "Which CVE records say an AI found the bug? Every credit line in the " +
+          "Which CVE records credit an AI system or an AI vendor? Every credit in the " +
           "corpus is read against a curated registry of LLM labs and AI-security " +
           "vendors — kept strictly apart — then cut by severity, weakness " +
           "class and target, joined to EPSS, public exploit code and CISA KEV, " +
@@ -3156,91 +3156,108 @@ export const editorial = {
     },
 
     // --------------------------------- credits.html · 1 · hero
+    // House rule for this page's copy (2026-09-20, after an external review):
+    // the data is about ATTRIBUTION. Write "credited", never "found"; state
+    // what was measured, not why it happened; a number about this registry's
+    // matches is not a number about the world. No metaphors.
     credits_funnel: {
       num: "01",
-      kicker: "Claimed, credited, exploited",
-      source: "CVE List V5 (MITRE) · CISA KEV · finders' own announcements",
-      headline: "AI finds thousands of bugs. The CVE record credits a few hundred.",
+      kicker: "Announced, credited, catalogued",
+      source: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit · Nuclei · finders' own announcements",
+      headline: "Thousands announced. Hundreds credited in CVE records.",
       seeAlso: {
         text: "Did AI speed up exploitation?",
         href: "ai.html",
         label: "The AI Alibi →",
       },
       caption:
-        "Labs and vendors announce their finds in their own units — " +
-        "vulnerabilities found, reports submitted, advisories published. Follow " +
-        "those announcements into the public record and the numbers shrink at " +
-        "every step: a CVE has to be assigned, the record has to carry a credit, " +
-        "and the credit has to name the model or the vendor. What survives is a " +
-        "floor, not a census. The two columns are never added together: an LLM " +
-        "lab is counted only when the credit names its model, a vendor whenever " +
-        "it is named at all, because AI analysis is what the vendor sells. " +
-        "Hatched rows are the finder's own number, quoted with its unit and its " +
-        "source; solid rows are measured here, every night.",
+        "Labs and vendors report their results in their own units: " +
+        "vulnerabilities found, reports submitted, advisories published. This " +
+        "page counts something narrower — published CVE records whose credits " +
+        "name the lab's model or the vendor. The two are different sets, and one " +
+        "does not verify the other: an announced finding may still be " +
+        "undisclosed, may sit in private code that never receives a CVE, or may " +
+        "be published without a credit. An LLM lab is counted only when a " +
+        "credit for finding or reporting the bug names its model. A vendor is " +
+        "counted whenever such a credit names it, which is weaker evidence: " +
+        "about four in ten vendor credits name a person at the company and not " +
+        "the tool. The two columns are never added together. Hatched rows are the " +
+        "finder's own number with its unit and source; solid rows are measured " +
+        "here nightly.",
       kindLabels: { llm: "LLM labs", vendor: "AI-security vendors" },
       kindRules: {
-        llm: "counted when the credit names the model",
-        vendor: "counted whenever the vendor is named",
+        llm: "counted when a finding credit names the model",
+        vendor:
+          "counted when a finding credit names the vendor · {system_pct} of " +
+          "these records name the tool itself",
       },
       statTemplate:
         "{llm} CVEs credit an LLM lab's model · {vendor} credit an AI-security " +
-        "vendor · {kev} of them sit on CISA KEV",
-      claimsLabel: "What they say",
-      measuredLabel: "What the record shows",
-      claimCredited: "{n} credited here",
+        "vendor · {kev} of them are on CISA KEV",
+      claimsLabel: "What they announce",
+      measuredLabel: "What the CVE record shows",
+      claimCredited: "{n} credited here to date",
       claimLive: "running counter, read {date}",
-      claimUnitNote: "different unit — not drawn to scale",
+      claimUnitNote: "different unit, not drawn to scale",
       claimsNone: "No first-party number on file for this column's finders.",
       claimMoreTemplate: "+{n} more on the site",
       stageCredited: "Credited CVEs",
       stageSerious: "High or critical",
-      stagePoc: "Public exploit code",
+      stagePoc: "Exploit corpus",
       stageKev: "On CISA KEV",
       severityLabels: {
         critical: "Critical", high: "High", medium: "Medium", low: "Low",
         unscored: "Unscored",
       },
       baselineTemplate:
-        "Baseline — every CVE carrying any credit since {from}: {serious_pct} " +
-        "high or critical, {poc_pct} with public exploit code, {kev_pct} on KEV " +
+        "Baseline, every CVE carrying any credit since {from}: {serious_pct} " +
+        "high or critical, {poc_pct} in an exploit corpus, {kev_pct} on KEV " +
         "({kev} of {credited}).",
       kevNote:
-        "A small KEV number is what coordinated disclosure looks like, not a " +
-        "verdict: these bugs were reported to the maintainer and patched before " +
-        "an attacker met them, and the cohort is months old. KEV-listed here: " +
-        "{cves}.",
+        "KEV lists exploitation that CISA has confirmed and catalogued. A CVE " +
+        "that is not on it has not been shown to be unexploited, and these " +
+        "cohorts are young (last row of chart 02). KEV-listed here: {cves}.",
       kevNoteNone:
-        "A small KEV number is what coordinated disclosure looks like, not a " +
-        "verdict: these bugs were reported to the maintainer and patched before " +
-        "an attacker met them, and the cohort is months old.",
+        "KEV lists exploitation that CISA has confirmed and catalogued. A CVE " +
+        "that is not on it has not been shown to be unexploited, and these " +
+        "cohorts are young (last row of chart 02).",
+      ledgerNote:
+        "Every matched record, with its finder, evidence tier and credit role:",
+      ledgerLinkText: "ai_credits_ledger.json",
       nodata: "Not enough data yet.",
       methodology:
         "Every published record in the CVE List carries an optional credits " +
-        "field. Each credit line is matched against a hand-curated registry of " +
-        "AI finders committed in the pipeline (ai_credits_data.py) — narrow on " +
-        "purpose, because a loose net catches Capgemini, a researcher named Ai " +
-        "and every .ai vanity domain. A match is graded: the credit either names " +
-        "an AI system (Claude, Codex, Big Sleep, a self-described AI scanner) or " +
-        "names only the organisation as somebody's employer. LLM labs count at " +
-        "the first grade only — their staff also find bugs by hand — while " +
-        "AI-security vendors count at either, since their credits routinely name " +
-        "the human who triaged the finding. Severity is the record's newest CVSS " +
-        "base score, CNA first and CISA's enrichment as the fallback. Public " +
-        "exploit code means the CVE is referenced by Exploit-DB, a Metasploit " +
-        "module or a Nuclei template — the same three corpora as the Time to PoC " +
-        "module — and the KEV row is a join against tonight's CISA catalog. The " +
-        "measured rows are each a share of the credited CVEs, not nested inside " +
-        "one another: a medium-severity bug can carry exploit code. The exploit " +
-        "corpora lag publication, so that row drifts up for everyone as a cohort " +
-        "ages. The hatched rows are not " +
-        "measured here at all: they are each finder's own published figure, " +
-        "committed with its wording, date and source, and drawn to the measured " +
-        "scale only when the claimed unit is itself CVEs assigned. Raw credit " +
-        "text is never republished — it carries personal names and addresses. " +
-        "A disclosure, since one lab does well on this page: the registry and " +
-        "this copy were drafted with Claude, an Anthropic model. The registry, " +
-        "the counting rule and every quoted claim are committed in the repo for " +
-        "anyone to audit.",
+        "field. Each credit is matched against a hand-curated registry of AI " +
+        "finders committed in the pipeline (ai_credits_data.py). The registry " +
+        "is narrow because a loose match catches Capgemini, a researcher named " +
+        "Ai and every .ai domain, and it can only match names it knows: the " +
+        "first version missed Google's OSS-Fuzz-Gen. A match gets one of three " +
+        "tiers. “System” means the credit names an AI system such " +
+        "as Claude, Codex or Big Sleep. “Org” means it names only " +
+        "the organisation, usually as a person's employer. “Fix” " +
+        "means the name appears only under a credit role that is not about " +
+        "finding the bug — remediation developer, reviewer or verifier, " +
+        "coordinator, sponsor — and is never counted. LLM labs count at the " +
+        "system tier only; vendors count at system or org. None of this " +
+        "verifies how a bug was found: it records what the CVE record says. " +
+        "Severity is the record's newest CVSS base score, the CNA's first and " +
+        "CISA's enrichment otherwise. “In an exploit corpus” means " +
+        "the CVE is referenced by Exploit-DB, a Metasploit module or a Nuclei " +
+        "template; Nuclei templates are detection checks and only sometimes " +
+        "exploits, and exploit code published anywhere else is not seen. Every " +
+        "measured row is a share of the credited CVEs, and the rows are not " +
+        "nested. The hatched rows are not measured here: each is the finder's " +
+        "own published figure, committed with its wording, date and source, " +
+        "and drawn to the measured scale only when its unit is CVEs assigned. " +
+        "“Credited here to date” is this page's all-time count for " +
+        "that finder, set beside an announcement with its own cut-off date and " +
+        "its own list of CVEs, so the pair is not a verification rate. Credit " +
+        "text is never republished, because it carries personal names and " +
+        "addresses; the ledger linked above holds CVE ids, tiers and roles. " +
+        "Disclosure: the registry and this copy were drafted with Claude, an " +
+        "Anthropic model, and an outside review corrected an error that had " +
+        "inflated Anthropic's count. The registry, the counting rule and every " +
+        "quoted claim are in the repository.",
     },
 
     // --------------------------------- credits.html · 2
@@ -3248,16 +3265,21 @@ export const editorial = {
       num: "02",
       kicker: "Side by side",
       source: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
-      headline: "The labs find worse bugs. Nobody is exploiting them.",
+      headline: "Lab-credited CVEs score higher. On EPSS, exploit listings and KEV the columns barely differ.",
       caption:
-        "The same eight measurements for the three populations: CVEs crediting " +
-        "an LLM lab's model, CVEs crediting an AI-security vendor, and every CVE " +
-        "that carries a credit at all. Each bar has the baseline drawn into it " +
-        "as a tick, so the question on every row is the same — is this bar past " +
-        "its tick or short of it? The labs sit past it on severity and far past " +
-        "it on memory safety. On the rows that measure attacker interest — EPSS, " +
-        "public exploit code, KEV — nothing separates AI-found bugs from " +
-        "anybody else's, and the labs' column is the quietest of the three.",
+        "Nine measurements for three populations: CVEs crediting an LLM lab's " +
+        "model, CVEs crediting an AI-security vendor, and every CVE that " +
+        "carries a credit. The baseline is drawn into each bar as a tick. " +
+        "Lab-credited records have a higher median CVSS score and a much larger " +
+        "share of memory-safety weaknesses. On median EPSS percentile, listing " +
+        "in an exploit corpus and KEV membership, each AI column is within a " +
+        "handful of records of what the baseline rate would give a population " +
+        "its size. The comparison is descriptive. It is not adjusted for " +
+        "publication age, target mix or crediting practice, and the last row " +
+        "shows why age matters: the lab-credited cohort is much younger than " +
+        "the baseline, and exploit listings and KEV entries accumulate over " +
+        "time. The baseline is every credited CVE, not a human-only control " +
+        "group.",
       columns: {
         llm: "LLM labs",
         vendor: "AI-security vendors",
@@ -3267,12 +3289,13 @@ export const editorial = {
       rows: {
         median_cvss: "Median CVSS score",
         serious: "High or critical",
-        memory_pct: "Memory-safety bugs",
+        memory_pct: "Memory-safety weakness",
         top_cwe: "Most common weakness",
         median_epss_pctile: "Median EPSS percentile",
-        poc_pct: "Public exploit code",
+        poc_pct: "In an exploit corpus",
         kev_pct: "On CISA KEV",
         cna_scored_pct: "Scored by its own CNA",
+        recent_pct: "Published in the last 90 days",
       },
       cweNames: {
         "CWE-20": "input validation",
@@ -3296,18 +3319,24 @@ export const editorial = {
         "bar with its tick, not with the row above.",
       nodata: "Not enough data yet.",
       methodology:
-        "All three columns cover the same window, from the first month either " +
-        "kind is credited to tonight. The baseline is every published CVE whose " +
-        "record carries a credit, the AI-credited ones included — they are under " +
-        "two percent of it. Median CVSS uses each record's newest base score, " +
-        "CNA first. The EPSS row is the median of FIRST's published percentile, " +
-        "so 50 would mean a typical CVE; all three populations sit well under it " +
-        "because fresh, unexploited records score low. Memory-safety bugs are " +
-        "the first-listed CWE falling in the memory family defined for chart 05. " +
-        "“Scored by its own CNA” is the share whose CVSS score came " +
-        "from the assigning CNA rather than from CISA's enrichment — low where a " +
-        "CNA, like Mozilla's, publishes no scores. The two AI columns are small: " +
-        "a single CVE moves the labs' exploit-code row by half a point.",
+        "All three columns cover the same calendar window, from the first " +
+        "month either kind is credited to tonight, but not the same follow-up " +
+        "time: a record published last month has had a month to be listed " +
+        "anywhere. The baseline is every published CVE whose record carries a " +
+        "credit, the AI-credited ones included; they are under two percent of " +
+        "it, and it may contain AI-assisted finds whose credits do not say so. " +
+        "Median CVSS uses each record's newest base score. CVSS is assigned by " +
+        "the CNA or by CISA, so a higher median is a statement about recorded " +
+        "severity. EPSS is FIRST's forecast of exploitation probability; the " +
+        "row is the median of its published percentile, and all three medians " +
+        "are well under 50. “In an exploit corpus” covers " +
+        "Exploit-DB, Metasploit and Nuclei only. “Scored by its own " +
+        "CNA” is the share whose CVSS score came from the assigning CNA " +
+        "and not from CISA's enrichment; it is low where a CNA such as " +
+        "Mozilla's publishes no scores. The AI columns are small: one CVE " +
+        "moves the labs' exploit-corpus row by about half a point. A stronger " +
+        "comparison would measure outcomes a fixed number of days after " +
+        "publication and match on product and CNA. This page does not do that.",
     },
 
     // --------------------------------- credits.html · 3
@@ -3315,20 +3344,23 @@ export const editorial = {
       num: "03",
       kicker: "Month by month",
       source: "CVE List V5 (MITRE)",
-      headline: "Before 2025 the record names no AI finder at all.",
+      headline: "The registry matches one credit before 2025.",
       caption:
-        "CVEs whose credits name an AI finder, by publication month. Lab credits " +
-        "began as isolated bursts — one coordinated disclosure lands a dozen " +
-        "records in a single month and the months around it have none — before " +
-        "turning into a monthly stream during 2026. Vendor credits started " +
-        "earlier and ran steadier. Switch between the two; they are different " +
-        "populations counted under different rules, and the chart never stacks " +
-        "one on the other. The last bar is a partial month.",
+        "CVEs whose finding credits name a registry entity, by publication " +
+        "month. The earliest match is an OpenSSL CVE from October 2024 credited " +
+        "to Google's OSS-Fuzz-Gen. That is a fact about this registry. A credit " +
+        "naming a system the registry does not list is not counted, and the " +
+        "first version of this page missed that record and said there was none " +
+        "before 2025. Lab credits then arrive in single-month clusters with " +
+        "empty months between them, and appear in every month from February " +
+        "2026. Vendor credits begin in March 2025. The toggle switches kinds; " +
+        "the chart never stacks one on the other. The last bar is a partial " +
+        "month.",
       toggleLabels: ["LLM labs", "AI-security vendors"],
       laneLabels: {
         anthropic: "Anthropic (Claude)",
         openai: "OpenAI (Codex / GPT)",
-        google: "Google (Big Sleep)",
+        google: "Google (Big Sleep, OSS-Fuzz-Gen)",
         other_llm: "Other model makers",
         vendor: "AI-security vendors",
       },
@@ -3336,67 +3368,73 @@ export const editorial = {
       nodata: "Not enough data yet.",
       methodology:
         "One bar per publication month, from the first month any finder of that " +
-        "kind is credited through the current, partial month; empty months are " +
-        "kept so a gap reads as a gap. A CVE crediting two labs ticks both " +
-        "lanes, so a stacked bar can stand slightly taller than the month's " +
-        "distinct-CVE total, which is what the tooltip reports. Months are " +
-        "publication dates, not discovery dates: a bug found in January and " +
-        "disclosed in June is a June bar.",
+        "kind is matched through the current, partial month. Empty months are " +
+        "kept. A CVE crediting two labs adds to both lanes, so a stacked bar " +
+        "can stand slightly taller than the month's distinct-CVE total, which " +
+        "the tooltip reports. Months are publication dates, not discovery " +
+        "dates.",
     },
 
-    // --------------------------------- credits.html · 3
+    // --------------------------------- credits.html · 4
     credits_board: {
       num: "04",
-      kicker: "Who, and how bad",
+      kicker: "Who is credited",
       source: "CVE List V5 (MITRE) · CISA KEV",
-      headline: "Three finders lead the count. Their severity mixes have little in common.",
+      headline: "Three finders hold most of the credits, with very different severity mixes.",
       caption:
-        "Every finder the registry recognises, ranked by the CVEs that count " +
-        "under its kind's rule. Count alone flatters volume: ZAST.AI's list is " +
-        "almost entirely medium-severity findings filed through a single CNA, " +
-        "while Anthropic's row holds the most criticals on the board. The strip " +
-        "in each row is that finder's own severity mix. “Named only” " +
-        "is the column the headline leaves out — records that credit a lab " +
-        "without naming its model — and it cuts deepest for OpenAI, whose " +
-        "security team is credited far more often than Codex is.",
+        "Every registry entity matched in at least one record, ranked by the " +
+        "CVEs that count under its kind's rule. ZAST.AI's credits are almost " +
+        "all medium-severity records published through one CNA. Anthropic's row " +
+        "has the most criticals. “Names the AI” is how many of a " +
+        "row's records name the system itself; for several vendors that is a " +
+        "minority or none, because their credits name a person. “Not " +
+        "counted” is what the rule leaves out: for a lab, records that " +
+        "name the organisation but no model, and for any row, records that " +
+        "credit it only for the fix. OpenAI is named on several times more " +
+        "records than Codex is, mostly as a person's employer or as a " +
+        "collaborator.",
       colFinder: "Finder",
-      colKind: "kind",
       colCounted: "credited CVEs",
       colSeverity: "severity mix",
       colSerious: "high + critical",
-      colNamedOnly: "named only",
+      colSystem: "names the AI",
+      colNotCounted: "not counted",
       colKev: "KEV",
       colSince: "first credit",
       colCnas: "credited most by",
       kindShort: { llm: "lab", vendor: "vendor" },
+      uncountedNamed: "{n} name the organisation only",
+      uncountedFix: "{n} credit it for the fix only",
       nodata: "Not enough data yet.",
       methodology:
         "One row per registry finder that appears in at least one published " +
-        "record. “Credited CVEs” applies the kind's counting rule; the " +
-        "severity strip, the high-plus-critical share and the KEV column " +
-        "describe exactly those CVEs. “Named only” is the remainder: " +
-        "for a lab, credits that name the organisation but not a model; for a " +
-        "vendor it is always zero, because a vendor counts whenever it is named. " +
-        "“Credited most by” lists the CNAs whose records carry the " +
-        "credit — who is doing the thanking matters, since a vendor filing " +
-        "through its own CNA writes its own credit line.",
+        "record. “Credited CVEs” applies the kind's counting rule; " +
+        "the severity strip, the high-plus-critical share and the KEV column " +
+        "describe exactly those CVEs. “Names the AI” counts records " +
+        "at the system tier. “Not counted” is the remainder; hover " +
+        "a cell for its make-up. “Credited most by” lists the CNAs " +
+        "whose records carry the credit. That matters because the CNA writes " +
+        "the credit line, and a vendor that is its own CNA writes its own.",
     },
 
     // --------------------------------- credits.html · 5
     credits_weakness: {
       num: "05",
-      kicker: "What AI finds",
+      kicker: "Weakness classes",
       source: "CVE List V5 (MITRE)",
-      headline: "The models dig where the fuzzers dig: memory and crypto.",
+      headline: "Lab-credited CVEs are weighted to memory safety and crypto. The baseline's largest family is injection.",
       caption:
-        "Each CVE's first-listed weakness, grouped into families. The baseline " +
-        "tick shows what the industry at large reports: more than a third of " +
-        "credited CVEs are injection bugs — cross-site scripting and SQL " +
-        "injection in web applications. The LLM labs' record looks nothing like " +
-        "that. Memory-safety bugs are their largest family at several times the " +
-        "baseline share, crypto and certificate flaws run several times over as " +
-        "well, and injection all but disappears. The vendors sit in between: a " +
-        "web-scanner's diet with a memory-safety side.",
+        "Each CVE's first-listed weakness, grouped into six families. In the " +
+        "baseline, injection (cross-site scripting, SQL injection, command " +
+        "injection) is the largest family, at more than a third. Among " +
+        "lab-credited CVEs memory safety is the largest, at several times the " +
+        "baseline share; crypto and certificate weaknesses are also several " +
+        "times the baseline share, and injection is small. The vendor-credited " +
+        "population falls between the two on both memory safety and injection. " +
+        "This reflects what was examined as much as what the tools can do. The " +
+        "lab-credited records concentrate in a few projects (chart 06), and " +
+        "Anthropic has said its early work searched for memory-corruption bugs " +
+        "because they are easier to validate.",
       seriesLabels: {
         llm: "LLM labs",
         vendor: "AI-security vendors",
@@ -3406,69 +3444,70 @@ export const editorial = {
       nodata: "Not enough data yet.",
       methodology:
         "A record's first-listed CWE (the CNA's, else CISA's) is placed in one " +
-        "of six families by exact id — the family lists are committed in the " +
-        "pipeline (ai_credits_data.py) and are deliberately flat, not MITRE's " +
-        "view hierarchy. Anything unlisted is “Other CWE”; a record " +
-        "with no CWE is its own row. Bars are shares of each population, because " +
-        "the populations differ in size by two orders of magnitude; the tooltip " +
-        "carries the counts. What this measures is where the tools were aimed as " +
-        "much as what they are good at: the labs' record is dominated by C and " +
-        "C++ infrastructure and crypto libraries (chart 06), which is where " +
-        "memory-safety and certificate bugs live.",
+        "of six families by exact id. The family lists are committed in the " +
+        "pipeline (ai_credits_data.py) and are flat lists, not MITRE's view " +
+        "hierarchy. Anything unlisted is “Other CWE”, and a record " +
+        "with no CWE is its own row. Bars are shares of each population, " +
+        "because the populations differ in size by two orders of magnitude; " +
+        "the tooltip carries the counts. The Anthropic statement is from its " +
+        "February 2026 post on LLM-discovered zero-days, which is also the " +
+        "source of one of the claims in chart 01.",
     },
 
     // --------------------------------- credits.html · 6
     credits_targets: {
       num: "06",
-      kicker: "Where it was pointed",
+      kicker: "Affected products",
       source: "CVE List V5 (MITRE)",
-      headline: "Half the labs' record is five projects.",
+      headline: "Five products account for about half of the lab-credited CVEs.",
       caption:
-        "The affected product each record names first, ranked per kind. The lab " +
-        "column is a map of partnerships rather than of the internet: a browser, " +
-        "a Java crypto library, a threat-intel platform and an operating system " +
-        "account for most of it, each the result of one coordinated engagement. " +
-        "The vendor column is longer-tailed — its top five hold about a quarter " +
-        "— and its first row is a distribution, not a project: when Red Hat is " +
-        "the CNA, the product it lists is its own.",
+        "The affected product each record lists first, ranked per kind. The " +
+        "lab-credited records are concentrated: a browser, a Java crypto " +
+        "library and an operating system lead the list. The record does not say " +
+        "how those targets were chosen. The vendor-credited list is less " +
+        "concentrated, with its top five holding about a quarter. Its first row " +
+        "is Red Hat Enterprise Linux because Red Hat, acting as CNA, lists its " +
+        "own product for flaws in upstream packages.",
       shareTemplate:
         "top {top_n} hold {share} of the {named} CVEs naming a product · " +
         "{distinct} products in all",
       nodata: "Not enough data yet.",
       methodology:
         "The first entry of each record's affected list, vendor and product " +
-        "joined, placeholders such as n/a dropped and spellings folded " +
-        "case-insensitively. It is the CNA's framing, not the finder's: a " +
-        "distribution CNA lists its distribution even when the flaw is in an " +
-        "upstream library, so one upstream bug can surface under several " +
-        "product names. Shares are of the CVEs that name any product. The top " +
-        "five rows are drawn in the kind's colour; ten are listed.",
+        "joined, placeholders such as n/a dropped, a vendor the product name " +
+        "already starts with removed, and spellings folded case-insensitively. " +
+        "It is the CNA's description, not the finder's: a distribution CNA " +
+        "lists its distribution even when the flaw is in an upstream library, " +
+        "so one upstream bug can appear under several product names. Shares " +
+        "are of the CVEs that name any product. The top five rows are drawn in " +
+        "the kind's colour; ten are listed.",
     },
 
     // --------------------------------- credits.html · 7
     credits_coverage: {
       num: "07",
-      kicker: "The floor under every number",
+      kicker: "Credit coverage",
       source: "CVE List V5 (MITRE)",
-      headline: "Most CVEs thank no one.",
+      headline: "Fewer than half of published CVEs carry any credit.",
       caption:
-        "The share of published CVEs whose record carries any credit at all. It " +
-        "has climbed from almost nothing in 2018 to better than four in ten — " +
-        "which makes every number on this page a floor. An AI-found bug whose CNA " +
-        "wrote no credit, or credited only the person who filed the report, is " +
-        "invisible here. And part of any rise in AI credits is simply the rise " +
-        "in crediting.",
+        "The share of published CVEs whose record carries a credit of any kind. " +
+        "It has risen from almost nothing in 2018 to better than four in ten. " +
+        "Coverage is incomplete, so the counts on this page omit AI-assisted " +
+        "finds that were published without a recognised credit. The " +
+        "percentages, medians and rankings are affected as well, in either " +
+        "direction, because the missing records are not a random sample. Part " +
+        "of any rise in AI credits is also the general rise in crediting.",
       yAxis: "% of published CVEs with a credit",
       tooltipTemplate: "{with_credits} of {published} published CVEs carry a credit",
       nodata: "Not enough data yet.",
       methodology:
         "For each publication year, the published records with a non-empty " +
-        "credits list over all published records; rejected records and records " +
-        "without a publication date are out of both counts. The current year is " +
-        "partial but a share, so it is comparable as it stands. Credits are " +
-        "written by the CNA, not the finder, and conventions differ: some CNAs " +
-        "credit every reporter, some none, and a few write their own product " +
-        "into the line.",
+        "credits list over all published records. Rejected records and records " +
+        "without a publication date are out of both counts. The current year " +
+        "is partial, but the figure is a share, so it is comparable as it " +
+        "stands. Credits are written by the CNA, not the finder, and practice " +
+        "differs: some CNAs credit every reporter, some none, and a few write " +
+        "their own product into the line.",
     },
   },
 

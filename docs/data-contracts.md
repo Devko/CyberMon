@@ -2209,8 +2209,13 @@ public-exploit ids (`poc.all_ids`, module 19's three corpora) and EPSS
 percentiles.
 Every credit string is matched against the committed registry in
 `pipeline/ai_credits_data.py`; a match carries a **tier** — `system` (the
-credit names a model, agent or self-described AI scanner) or `org` (it names
-the lab or vendor only, as somebody's employer).
+credit names a model, agent or self-described AI scanner), `org` (it names
+the lab or vendor only, as somebody's employer) or `fix` (the name appears
+only under a CVE-schema credit role that is not about finding the bug:
+remediation developer / reviewer / verifier, coordinator, sponsor). The
+strongest tier across a record's credit lines wins, `system > org > fix`.
+**The module measures attribution**: a match says what the record credits,
+never how the bug was found.
 
 ```json
 {
@@ -2270,10 +2275,10 @@ the lab or vendor only, as somebody's employer).
 
 **The counting rule (the module's one editorial knob,
 `counts_toward_headline`, decided 2026-09-20).** Every match is *recorded*
-on the board (`cves = system + org`); what the page may *call* AI-credited —
+on the board (`cves = system + org + fix`); what the page may *call* AI-credited —
 headlines, lanes, severity, funnels, the board ranking — is `counted`:
-LLM labs count at the `system` tier only, vendors at either. The two kinds
-are never summed; a CVE crediting both appears once in each. Re-run
+LLM labs count at the `system` tier only, vendors at `system` or `org`,
+nobody at `fix`. The two kinds are never summed; a CVE crediting both appears once in each. Re-run
 `test_claims_credits.py` after changing the rule.
 
 **Severity** is `CveFacts.effective_score` (newest CVSS family, CNA first,
@@ -2284,7 +2289,9 @@ the high-or-critical and KEV shares. **`coverage`** is the floor caveat:
 published records with a non-empty `credits` list over all published
 records, per publication year from 2018.
 
-**The funnel's stages are shares of `credited`, not nested.** `poc` counts
+**The funnel's stages are all shares of `credited`** (including
+`high_or_critical_pct` — it was a share of `scored` until 2026-09-20) **and
+are not nested.** `poc` counts
 CVEs referenced by Exploit-DB, a Metasploit module or a Nuclei template
 (`PocData.all_ids`); a medium-severity CVE can carry exploit code, so `poc`
 is not a subset of `high_or_critical`. The corpora lag publication, so the
@@ -2293,7 +2300,10 @@ share drifts upward for every population as a cohort ages.
 **`profile`** has exactly the keys `llm`, `vendor`, `baseline`, in that
 order, each over the same population as that funnel (`n ==
 funnel.credited`; `poc_pct` / `kev_pct` must equal the funnel's).
-`median_cvss` and `median_epss_pctile` (0–100, FIRST's published
+`recent_pct` is the share published in the last `recent_days` (90) before
+the edition — the exploit-corpus and KEV rows accumulate with age, and the
+AI-credited cohorts are far younger than the baseline, so the page shows
+it. `median_cvss` and `median_epss_pctile` (0–100, FIRST's published
 percentile) are `null` on an empty population; `epss_scored` says how many
 records EPSS had a row for. `cna_scored_pct` is the share whose CVSS score
 came from the assigning CNA rather than an ADP. `top_cwe` is the commonest
@@ -2338,6 +2348,34 @@ severity cut, `kev_cves` length == `funnel.kev`, gap-free months, board
 rows and claims must resolve to registry finders, a board row's severity
 sums to its `counted`. Validator: `pipeline/ai_credits_contracts.py`
 (registered into `pipeline/contracts.py`'s dispatch).
+
+## site/data/ai_credits_ledger.json  (AI Credits — the record-level audit trail)
+
+One row per published CVE that names a registry entity, so every number in
+`ai_credits.json` can be recomputed and challenged record by record.
+
+```json
+{
+  "generated_at": "2026-09-20T17:02:11Z",
+  "rows": [
+    {"cve": "CVE-2024-9143", "published": "2024-10-16", "cna": "openssl",
+     "counts_for": ["llm"],
+     "matches": [{"finder": "google", "tier": "system",
+                  "roles": ["finder"]}]}
+  ]
+}
+```
+
+`matches[].finder` is a registry key, `tier` one of `system | org | fix`,
+`roles` the CVE-schema credit `type`s the name was seen under
+(`"unspecified"` when the record gives none). `counts_for` lists the kinds
+the row counts toward and must follow from its matches under
+`counts_toward_headline` (the contract recomputes it); it is empty for a
+lab named without its model and for a fix-only credit. Rows are sorted by
+`published`, then `cve`, and CVE ids are unique. **No credit text**: the
+contract rejects any key beyond these five, so a raw credit string — which
+carries personal names and addresses — has nowhere to live. Validator:
+`pipeline/ai_credits_contracts.py`.
 
 ## site/field/field.json + cves.<sha256>.bin.gz  (The Field instrument — NOT under site/data)
 

@@ -12,9 +12,25 @@ data — reviewable in a diff — and never as a clever regex. Each
   only as a person's affiliation ("Alex Gaynor (Anthropic)"). The record
   does not say a model found the bug; it says who employs the finder.
 
-A credit's tier is the strongest tier any pattern proved. Which tiers a
-page may headline as "AI-credited" is decided once, in
-:func:`counts_toward_headline` below.
+* ``fix`` — the registry entity is named, but only in a credit whose CVE
+  schema role is not about finding the bug: remediation developer, reviewer
+  or verifier, coordinator, sponsor. "Claude" as *remediation developer*
+  says a model wrote the patch, not that it found the flaw. Recorded, shown
+  on the board, never counted. (An external review on 2026-09-20 caught the
+  first version ignoring roles; 31 of Anthropic's then-177 counted CVEs were
+  fix credits.)
+
+A credit's tier is the strongest tier any pattern proved, in the order
+``system`` > ``org`` > ``fix``. Which tiers a page may headline as
+"AI-credited" is decided once, in :func:`counts_toward_headline` below.
+
+**What a match does and does not establish.** A ``system`` match means the
+record *says* an AI system was involved in finding or reporting the bug. It
+does not verify how the bug was found, and an ``org`` match says less
+still. The registry can also only match names it knows: the first version
+missed "Google OSS-Fuzz-Gen" (CVE-2024-9143, October 2024) and the page
+claimed no AI finder before 2025 on the strength of that gap. Statements
+about "the record" are statements about this registry's matches.
 
 Patterns are matched case-insensitively against the raw credit string and
 are deliberately narrow. A probe of the July 2026 corpus with a broad
@@ -29,7 +45,20 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-TIERS = ("system", "org")
+TIERS = ("system", "org", "fix")
+
+# CVE schema credit roles that are not about finding or reporting the bug.
+# Everything else — finder, reporter, analyst, tool, other, or no role at
+# all (a fifth of credit lines carry none) — is treated as discovery-side.
+NON_DISCOVERY_ROLES = frozenset({
+    "coordinator", "remediation developer", "remediation reviewer",
+    "remediation verifier", "sponsor"})
+_TIER_RANK = {tier: i for i, tier in enumerate(TIERS)}
+
+
+def stronger(a: str | None, b: str) -> str:
+    """The stronger of two tiers (``a`` may be None)."""
+    return b if a is None or _TIER_RANK[b] < _TIER_RANK[a] else a
 
 # Finder.group — the lanes the page draws. The three frontier labs get a
 # lane each, other model makers share one, and everything else is an
@@ -68,7 +97,10 @@ FINDERS: tuple[Finder, ...] = (
     Finder("google", "Google (Big Sleep)", "google",
            # bare "gemini" is a surname fragment and a gmail handle in this
            # corpus; only a model-shaped mention ("Gemini 2.5 Pro") counts
+           # OSS-Fuzz-Gen: LLM-written fuzz targets. Plain "OSS-Fuzz" is
+           # classic fuzzing and must not match (it is credited since 2017).
            system=(r"\bbig ?sleep\b", r"\bcodemender\b",
+                   r"\boss-?fuzz-?gen\b",
                    r"\bgemini[- ]?(\d|pro\b|ultra\b|flash\b)"),
            org=(r"\bdeepmind\b",)),
     # --- AI-native security vendors and tools ---------------------------
@@ -112,15 +144,18 @@ _COMPILED: tuple[tuple[Finder, tuple[re.Pattern[str], ...],
     for f in FINDERS)
 
 
-def classify(text: str) -> dict[str, str]:
-    """``{finder key: tier}`` for every registry entity one credit string
-    names. Empty for the overwhelming majority of credits."""
+def classify(text: str, role: str | None = None) -> dict[str, str]:
+    """``{finder key: tier}`` for every registry entity one credit line
+    names. Empty for the overwhelming majority of credits. ``role`` is the
+    credit's CVE-schema ``type``: a non-discovery role caps the match at
+    ``fix`` whatever the text says."""
+    fix_only = (role or "").strip().lower() in NON_DISCOVERY_ROLES
     found: dict[str, str] = {}
     for finder, system, org in _COMPILED:
         if any(p.search(text) for p in system):
-            found[finder.key] = "system"
+            found[finder.key] = "fix" if fix_only else "system"
         elif any(p.search(text) for p in org):
-            found[finder.key] = "org"
+            found[finder.key] = "fix" if fix_only else "org"
     return found
 
 
@@ -139,6 +174,8 @@ def counts_toward_headline(group: str, tier: str) -> bool:
       credits the human who triaged the finding, and reading that as
       "not AI" would drop 98 of its 103 CVEs on a formatting habit.
     """
+    if tier == "fix":       # credited for the patch, not the find
+        return False
     return tier == "system" or kind_of(group) == "vendor"
 
 

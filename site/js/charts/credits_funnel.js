@@ -71,9 +71,18 @@ function stageRow(label, n, max, share, accent) {
 function kindColumn(kind, data, ed) {
   const k = data.kinds[kind];
   const col = el("div", "funnel-col");
+  // How strong is the evidence behind this column? The share of its counted
+  // records that name the AI system itself; the rest name a person or the
+  // company. Summed over board rows — a CVE naming two finders of one kind is
+  // rare enough (2 in ~700) not to move one decimal.
+  const mine = data.board.filter((r) => r.kind === kind && r.counted);
+  const counted = mine.reduce((n, r) => n + r.counted, 0);
+  const system = mine.reduce((n, r) => n + Math.min(r.system, r.counted), 0);
   col.append(
     el("h3", "funnel-kind", ed.kindLabels[kind]),
-    el("p", "funnel-rule", ed.kindRules[kind])
+    el("p", "funnel-rule", tpl(ed.kindRules[kind], {
+      system_pct: fmtPct(counted ? (100 * system) / counted : null),
+    }))
   );
 
   col.append(el("p", "funnel-part", ed.claimsLabel));
@@ -158,5 +167,10 @@ export function render(slots, data) {
     ? withCveLinks(tpl(ed.kevNote, { cves: kevCves.join(", ") }))
     : ed.kevNoteNone);
   foot.append(kevNote);
+  // The audit trail: every matched record with its finder, tier and role.
+  const ledger = el("p", "panel-note");
+  ledger.append(ed.ledgerNote, " ");
+  ledger.append(link("data/ai_credits_ledger.json", ed.ledgerLinkText, "mono"));
+  foot.append(ledger);
   slots.extra.append(foot);
 }

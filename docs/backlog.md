@@ -123,9 +123,8 @@ backlog candidate — it started 2026-09-20 as a reader's question (what do
 Anthropic, OpenAI and Google actually have to show in the CVE record?) and
 earned a page because the answer needs computation no other module does: a
 graded match of every credit line against a committed finder registry.
-- **Thesis:** AI finds thousands of bugs; the CVE record credits a few
-  hundred — and who is counted, how severe and how exploited depends on
-  rules the page states out loud.
+- **Thesis:** thousands announced, hundreds credited in CVE records — and the page is about that
+  attribution record, not about what AI "really" found.
 - **Editorial decisions (2026-09-20):** LLM labs and AI-security vendors
   are split and never summed; labs count only when the credit names the
   model, vendors whenever named; finders' own announced numbers ARE drawn
@@ -142,6 +141,53 @@ graded match of every credit line against a committed finder registry.
   correlating monthly credits with module 02's hype lanes (a 15-month
   series; any correlation would be noise) and per-lab EPSS comparisons
   (OpenAI's column is 13 CVEs).
+- **External review (same day), all verified before acting:** (1) the
+  "no AI finder before 2025" headline was false — CVE-2024-9143 credits
+  "Google OSS-Fuzz-Gen" and the registry did not know the name; (2) credit
+  roles were ignored, so 31 records crediting Claude as *remediation
+  developer* were counted as finds — Anthropic 177 -> 146; (3) the copy read
+  attribution as discovery and KEV absence as non-exploitation. Fixed: the
+  `fix` tier, the OSS-Fuzz-Gen pattern, a cohort-age row, every funnel share
+  on one denominator, a published ledger, and a full copy rewrite under one
+  rule — write "credited", never "found"; state what was measured, not why.
+  Still open from that review: outcomes measured at a fixed follow-up (e.g.
+  90 days after publication) and matched on product and CNA; Nuclei
+  detection templates counted separately from exploit code.
+- **Open, as of close of day 2026-09-20** (in rough priority order):
+  1. *Fixed follow-up comparison.* The exploit-corpus and KEV rows compare
+     cohorts of very different ages (54% of lab-credited CVEs are under 90
+     days old vs 24% of the baseline). The page now says so, but the honest
+     fix is to measure outcomes N days after publication (KEV `dateAdded`
+     and the Exploit-DB / Metasploit dates exist; Nuclei has none) and to
+     match on product and CNA. Until then the comparison stays labelled
+     descriptive.
+  2. *Split Nuclei from exploit code.* "In an exploit corpus" lumps Nuclei
+     detection templates with Exploit-DB and Metasploit. `PocData` already
+     keeps the three id sets apart; emit them separately.
+  3. *Match announced CVE ids.* "Credited here to date" sits beside an
+     announcement with a different cut-off. OpenAI (14 ids), depthfirst (9)
+     and AISLE's discoveries page publish their CVE ids — commit those lists
+     and report the real overlap with the ledger instead of two loose totals.
+  4. *Vendor evidence rule — Roland's call.* Vendors count at the `org`
+     tier; 43% of vendor credits name a person, not the tool. The reviewer
+     would not promote those to AI-assisted. Options: keep (current, stated
+     on the page), add a system-tier-only toggle to the vendor funnel, or
+     count vendors like labs.
+  5. *Re-probe the registry.* OSS-Fuzz-Gen was missed because nobody looked
+     for it. Probe 2025-26 credits for other unlisted systems (Copilot,
+     Cursor, Devin, Jules, Amazon Q, Grok, DeepSeek, Qwen, "AI-assisted",
+     "LLM") and promote what is real. The pre-2025 probe found nothing else.
+  6. *Small:* the registry label "Google (Big Sleep)" should mention
+     OSS-Fuzz-Gen like the lanes label does; the printed board slide clips
+     its right-hand columns (KEV, first credit, CNAs); the copy review
+     covered credits.html only, not the rest of the site.
+  7. *Deploy race (site-wide, not this module).* A nightly that started
+     before a push deploys its older checkout after CI has deployed the
+     newer one — it happened 2026-09-20 16:19 UTC and blanked this page's
+     new sections until CI was re-run. Skip the nightly deploy when `main`
+     has moved past the run's checkout.
+  8. *The Alias Graph draft* (`site/alias.html`) still loads a
+     `js/alias.js` that is not in the repo.
 - **Upkeep:** `pipeline/ai_credits_data.py` is hand-curated. New finders
   appear monthly — re-probe the corpus with a broad net now and then and
   promote what is real. `CLAIMS` entries marked `live` (running counters)
