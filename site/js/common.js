@@ -95,6 +95,13 @@ export function buildSection(cfg, ed = null, opts = {}) {
     el("h2", "section-headline", ed.headline),
     caption
   );
+  // Optional pointer to a sibling module that answers the adjacent question
+  // (ed.seeAlso = { text, href, label }). Same tab: it is this site.
+  if (ed.seeAlso) {
+    const also = el("p", "section-seealso", ed.seeAlso.text + " ");
+    also.append(link(ed.seeAlso.href, ed.seeAlso.label, "mono", { sameTab: true }));
+    head.append(also);
+  }
 
   const stat = el("div", "section-stat");
   const panel = el("div", "panel");

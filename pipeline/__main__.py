@@ -39,8 +39,8 @@ from pathlib import Path
 from typing import Iterator
 
 from . import field_export
-from . import (adp_metrics, ai_metrics, attack_metrics, botnet_metrics,
-               breach_metrics, calendar_metrics, cna_roster,
+from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
+               botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
                epss_report_metrics, epss_volatility, extortion_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
@@ -459,7 +459,16 @@ def run(args: argparse.Namespace) -> int:
     print("aggregating CVE corpus ...")
     agg = metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.all_ids)
     field = field_export.FieldCollector() if args.field_out else None
-    agg.consume(records, observer=field)
+    # AI-credited CVEs reads each record's credits[] — a second observer on
+    # the same pass, never a second pass.
+    credits = ai_credits_metrics.CreditCollector(kev_ids=kev.cve_ids)
+    observers = [o for o in (field, credits) if o is not None]
+
+    def _observe(facts, record):
+        for observer in observers:
+            observer(facts, record)
+
+    agg.consume(records, observer=_observe)
     print(f"  {agg.cve_count} CVE records aggregated")
     if agg.withdrawn_reservations:
         print(f"  {agg.withdrawn_reservations} withdrawn reservations "
@@ -550,6 +559,9 @@ def run(args: argparse.Namespace) -> int:
                 agg, poc, kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
     }
+    # AI-credited CVEs: the credits observer above, joined to tonight's KEV.
+    outputs["ai_credits.json"] = ai_credits_metrics.build_ai_credits(
+        credits, generated_at)
     # Single-upstream modules: build from tonight's fetch, or carry the
     # previous edition forward marked stale when that upstream is down.
     if hibp is not None:

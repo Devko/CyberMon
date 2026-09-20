@@ -1,12 +1,13 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the twenty-one that exist today
+Candidate monitoring modules, beyond the twenty-two that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
 15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster,
-19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi — all live).
+19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi, 22 AI Credits — all
+live).
 
 ## Maintenance — one upstream outage costs the whole night — RESOLVED
 
@@ -115,6 +116,28 @@ Headline blocks are computed by the pipeline and cannot be rehearsed from
 committed data; those guards are the pinned ones above.
 
 ## Shipped outside the backlog
+
+### AI Credits — SHIPPED as module 22
+Live as **22 · AI Credits** ([credits.html](../site/credits.html)). Not a
+backlog candidate — it started 2026-09-20 as a reader's question (what do
+Anthropic, OpenAI and Google actually have to show in the CVE record?) and
+earned a page because the answer needs computation no other module does: a
+graded match of every credit line against a committed finder registry.
+- **Thesis:** AI finds thousands of bugs; the CVE record credits a few
+  hundred — and who is counted, how severe and how exploited depends on
+  rules the page states out loud.
+- **Editorial decisions (2026-09-20):** LLM labs and AI-security vendors
+  are split and never summed; labs count only when the credit names the
+  model, vendors whenever named; finders' own announced numbers ARE drawn
+  (hatched, sourced, to scale only when the unit is CVEs) — a deliberate
+  break from module 21's no-external-numbers rule, because the gap is the
+  thesis.
+- **Upkeep:** `pipeline/ai_credits_data.py` is hand-curated. New finders
+  appear monthly — re-probe the corpus with a broad net now and then and
+  promote what is real. `CLAIMS` entries marked `live` (running counters)
+  go stale by design; re-read them when editing. The claims guards in
+  `test_claims_credits.py` WILL trip as the record grows ("a few hundred"
+  first); that is a copy edit, not a bug.
 
 ### The AI Alibi — SHIPPED as module 21
 Live as **21 · The AI Alibi** ([ai.html](../site/ai.html)). Not a backlog

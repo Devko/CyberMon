@@ -226,6 +226,15 @@ code {
   font-size: 1.02rem;
 }
 
+/* pointer to a sibling module (buildSection's optional ed.seeAlso) */
+.section-seealso {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
+  max-width: var(--measure);
+  margin: -12px 0 26px;
+}
+
 /* ---- hero headline stat ---- */
 
 .section-stat { margin: 0 0 22px; }

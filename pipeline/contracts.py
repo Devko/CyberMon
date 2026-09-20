@@ -695,6 +695,9 @@ VALIDATORS.update(botnet_contracts.VALIDATORS)
 from . import ai_contracts  # noqa: E402
 
 VALIDATORS.update(ai_contracts.VALIDATORS)
+from . import ai_credits_contracts  # noqa: E402
+
+VALIDATORS.update(ai_credits_contracts.VALIDATORS)
 
 from . import field_contracts  # noqa: E402
 

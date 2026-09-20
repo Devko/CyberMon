@@ -173,6 +173,37 @@ body.carousel {
    carries links, which are dead on paper.) */
 .slide .verdict-table { display: none; }
 
+/* AI Credits funnel: on the page each claim carries its date, source link
+   and caveat; on paper the links are dead and nine annotated claims run to
+   three sheets. The slide keeps the two columns side by side with each
+   claim reduced to its number and track — the receipts live on the page
+   the deck links back to. */
+.slide-scale .funnel-cols { grid-template-columns: 1fr 1fr; gap: 0 22px; }
+.slide .claim-meta,
+.slide .claim-note,
+.slide .claim-more,
+.slide .funnel-rule,
+.slide .funnel-foot { display: none; }
+/* the stat line repeats the two credited counts the stage rows already show */
+.slide-credits_funnel .section-stat { display: none; }
+.slide-scale .claim { margin-bottom: 6px; }
+.slide .claim-more-note {
+  display: block;
+  margin: 3px 0 0;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--faint);
+}
+.slide-scale .claim-head { font-size: 11px; gap: 2px 6px; }
+.slide-scale .claim-who { font-size: 10px; }
+.slide-scale .funnel-track { height: 10px; margin-top: 4px; }
+.slide-scale .funnel-part { margin: 10px 0 6px; font-size: 9.5px; }
+.slide-scale .funnel-kind { font-size: 11.5px; }
+.slide-scale .funnel-rule { font-size: 10px; }
+.slide-scale .stage { grid-template-columns: 7.2em minmax(0, 1fr) auto; gap: 6px; font-size: 10px; }
+.slide-scale .stage-val { min-width: 0; }
+.slide-scale .sev-legend { font-size: 9.5px; gap: 2px 10px; }
+
 /* hero stats: the vw-clamped site sizes are tuned for a browser column,
    not a doubled 1080px sheet */
 .slide-scale .hero-stat { padding: 12px 0 14px; }

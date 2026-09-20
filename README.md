@@ -390,6 +390,33 @@ are not reproducible here, so they live in the repo as attributed prose
 (`ai_timeline_data.EXTERNAL_CONTEXT`) and a unit test asserts they never
 reach the payload. Stage `pipeline/ai_metrics.py`; no new upstream.
 
+### 22 · AI Credits — [credits.html](https://devko.github.io/CyberMon/credits.html) (live)
+
+*AI finds thousands of bugs. The CVE record credits a few hundred.* Every
+credit line in the corpus is matched against a hand-curated registry of AI
+finders (`pipeline/ai_credits_data.py`) — narrow on purpose, because a loose
+net catches Capgemini, a researcher named Ai and every `.ai` vanity domain.
+**LLM labs and AI-security vendors are kept strictly apart and never
+summed**: a lab counts only when the credit names its model ("Alex Gaynor
+(Anthropic)" proves an employer, not a model), a vendor whenever it is
+named, because AI analysis is the product. Four charts: the **funnel** per
+kind — each finder's own announced number, then credited CVEs, then high or
+critical, then on CISA KEV, with the same funnel over every credit-carrying
+CVE as the baseline; monthly lanes per lab; the finder board with each row's
+severity strip and the "named only" remainder the rule leaves out; and the
+share of published CVEs carrying any credit at all, which is what makes
+every number on the page **a floor, not a census**.
+
+The hatched claim rows are the one place CyberMon draws numbers it did not
+compute, deliberately unlike module 21: the gap between claimed and credited
+is the thesis. Each claim is committed with the finder's wording, date and
+first-party source, tagged with a `unit_kind`, and drawn to the measured
+scale **only** when its unit is itself "CVEs assigned". Raw credit strings
+carry personal names and e-mail addresses and are never emitted — the
+payload holds registry labels, counts, months, CNA short names and the
+KEV-listed CVE ids. No fetch of its own: `CreditCollector` rides the shared
+corpus pass as a second observer. Stage `pipeline/ai_credits_metrics.py`.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 
 *Every published CVE, one point each.* The Field explores the corpus by

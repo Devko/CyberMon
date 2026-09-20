@@ -6,10 +6,11 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import (ai_metrics, breach_metrics, calendar_metrics,
-                      concentration_metrics, epss_report_metrics,
-                      extortion_metrics, guards_metrics, kev_metrics,
-                      metrics, poc_metrics, quality_metrics, rescore_tracker)
+from pipeline import (ai_credits_metrics, ai_metrics, breach_metrics,
+                      calendar_metrics, concentration_metrics,
+                      epss_report_metrics, extortion_metrics, guards_metrics,
+                      kev_metrics, metrics, poc_metrics, quality_metrics,
+                      rescore_tracker)
 from pipeline.fetch_cvelist import iter_cve_records_from_dir
 from pipeline.fetch_epss import load_epss_file
 from pipeline.fetch_hibp import load_hibp_file
@@ -132,6 +133,13 @@ def outputs(agg, epss, kev, hibp, ransomwhere, poc) -> dict[str, dict]:
     # degraded path — which is exactly the path that must stay contracted.
     out["ai_alibi.json"] = ai_metrics.build_ai_alibi(
         out["time_to_poc.json"], GENERATED_AT, market=None)
+    # AI Credits rides the corpus pass as an observer in the real run;
+    # here it gets its own walk over the same fixture records.
+    credits = ai_credits_metrics.CreditCollector(kev_ids=kev.cve_ids)
+    metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.all_ids).consume(
+        iter_cve_records_from_dir(FIXTURES / "cvelist"), observer=credits)
+    out["ai_credits.json"] = ai_credits_metrics.build_ai_credits(
+        credits, GENERATED_AT)
     out["epss_report.json"] = epss_report
     out["meta.json"]["sources"]["epss_history"] = epss_history_source
     out["meta.json"]["sources"]["rescores"] = {

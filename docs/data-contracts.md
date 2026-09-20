@@ -2200,6 +2200,91 @@ asserts they never reach the payload. The charts stay 100%
 CyberMon-computed. Validator: `pipeline/ai_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
+## site/data/ai_credits.json  (AI Credits module, all 4 charts)
+
+Which CVE records say, in their own `credits` field, that an AI system or an
+AI lab found the bug. No fetch: `ai_credits_metrics.CreditCollector` is a
+second observer on the shared corpus pass, joined to the night's KEV ids.
+Every credit string is matched against the committed registry in
+`pipeline/ai_credits_data.py`; a match carries a **tier** — `system` (the
+credit names a model, agent or self-described AI scanner) or `org` (it names
+the lab or vendor only, as somebody's employer).
+
+```json
+{
+  "generated_at": "2026-09-20T15:06:24Z",
+  "kinds": {
+    "llm": {
+      "headline": {"cves": 216, "this_year": 2026, "cves_this_year": 199,
+                   "finders": 4, "first_month": "2025-07"},
+      "lanes": ["anthropic", "openai", "google", "other_llm"],
+      "months": [{"month": "2025-07", "anthropic": 0, "openai": 0,
+                  "google": 1, "other_llm": 0, "total": 1}],
+      "severity": {"critical": 30, "high": 103, "medium": 74, "low": 9,
+                   "unscored": 0},
+      "funnel": {"credited": 216, "scored": 216, "high_or_critical": 133,
+                 "high_or_critical_pct": 61.6, "kev": 0, "kev_pct": 0.0},
+      "kev_cves": []
+    },
+    "vendor": {"…": "same shape; lanes = [\"vendor\"]"}
+  },
+  "baseline": {"from_month": "2025-03", "credited": 47831, "scored": 47770,
+               "high_or_critical": 20444, "high_or_critical_pct": 42.8,
+               "kev": 62, "kev_pct": 0.1, "severity": {"…": "as above"}},
+  "coverage": [{"year": 2018, "published": 16510, "with_credits": 174,
+                "pct": 1.1}],
+  "board": [{"key": "aisle", "label": "AISLE", "group": "vendor",
+             "kind": "vendor", "cves": 216, "counted": 216, "system": 45,
+             "org": 171, "severity": {"…": "sums to counted"}, "kev": 0,
+             "first_month": "2025-09", "last_month": "2026-09",
+             "top_cnas": [{"cna": "redhat", "n": 76}]}],
+  "claims": [{"finder": "openai", "label": "OpenAI (Codex / GPT)",
+              "kind": "llm", "value": 14, "qualifier": "",
+              "unit": "CVEs assigned", "unit_kind": "cves",
+              "date": "2026-03-06", "live": false, "source": "https://…",
+              "note": "…", "credited": 13}]
+}
+```
+
+**The counting rule (the module's one editorial knob,
+`counts_toward_headline`, decided 2026-09-20).** Every match is *recorded*
+on the board (`cves = system + org`); what the page may *call* AI-credited —
+headlines, lanes, severity, funnels, the board ranking — is `counted`:
+LLM labs count at the `system` tier only, vendors at either. The two kinds
+are never summed; a CVE crediting both appears once in each. Re-run
+`test_claims_credits.py` after changing the rule.
+
+**Severity** is `CveFacts.effective_score` (newest CVSS family, CNA first,
+ADP fallback) in the site's usual buckets, `unscored` kept visible.
+**`baseline`** is the same funnel over *every* credit-carrying published CVE
+from the earliest kind's `first_month` — the like-for-like denominator for
+the high-or-critical and KEV shares. **`coverage`** is the floor caveat:
+published records with a non-empty `credits` list over all published
+records, per publication year from 2018.
+
+**`claims` are quoted, not measured** — committed in
+`ai_credits_data.CLAIMS` with the finder's wording, date, first-party
+source and a `unit_kind` (`cves` | `advisories` | `vulnerabilities` |
+`submissions`). The page draws a claim to the measured scale only when
+`unit_kind == "cves"`. `credited` repeats the board's `counted` for that
+finder (0 when the finder never appears) so claim and measurement sit in
+one row. `live: true` marks an undated running counter, dated by the day
+it was read.
+
+**Privacy red line:** credit strings carry personal names and e-mail
+addresses; nothing from the raw string is emitted or kept past
+classification (unit-tested). The payload holds registry labels, counts,
+months, CNA short names and KEV-listed CVE ids only.
+
+A record post-dated past the edition month is dropped whole, so lanes,
+severity and board cannot disagree. A kind with nothing counted has
+`headline: null`, empty `months` and a zero funnel; `baseline` is null only
+when both kinds are empty. The contract pins the arithmetic: funnel ==
+severity cut, `kev_cves` length == `funnel.kev`, gap-free months, board
+rows and claims must resolve to registry finders, a board row's severity
+sums to its `counted`. Validator: `pipeline/ai_credits_contracts.py`
+(registered into `pipeline/contracts.py`'s dispatch).
+
 ## site/field/field.json + cves.<sha256>.bin.gz  (The Field instrument — NOT under site/data)
 
 Built only with `--field-out`; validated by `pipeline/field_contracts.py`;

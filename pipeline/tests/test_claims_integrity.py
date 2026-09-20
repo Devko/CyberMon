@@ -50,6 +50,7 @@ ALWAYS = [
     "kev_latency.json", "cna_concentration.json", "advisory_quality.json",
     "cwe_distribution.json", "kev_ransomware.json", "kev_guards.json",
     "cve_calendar.json", "time_to_poc.json", "ai_alibi.json",
+    "ai_credits.json",
 ]
 
 # Single-upstream / stateful outputs: present exactly when their

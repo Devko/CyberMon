@@ -82,6 +82,10 @@ import { render as renderC2Today } from "./charts/c2_today.js";
 import { render as renderAiClock } from "./charts/ai_clock.js";
 import { render as renderAiBanked } from "./charts/ai_banked.js";
 import { render as renderAiAttention } from "./charts/ai_attention.js";
+import { render as renderCreditsFunnel } from "./charts/credits_funnel.js";
+import { render as renderCreditsLanes } from "./charts/credits_lanes.js";
+import { render as renderCreditsBoard } from "./charts/credits_board.js";
+import { render as renderCreditsCoverage } from "./charts/credits_coverage.js";
 import { render as renderC2Age } from "./charts/c2_age.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
@@ -264,6 +268,15 @@ const MODULES = {
       { id: "ai_clock", render: renderAiClock },
       { id: "ai_banked", render: renderAiBanked },
       { id: "ai_attention", render: renderAiAttention },
+    ],
+  },
+  credits: {
+    file: "data/ai_credits.json",
+    sections: [
+      { id: "credits_funnel", render: renderCreditsFunnel },
+      { id: "credits_lanes", render: renderCreditsLanes },
+      { id: "credits_board", render: renderCreditsBoard, table: true },
+      { id: "credits_coverage", render: renderCreditsCoverage },
     ],
   },
 };

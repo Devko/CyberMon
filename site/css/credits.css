@@ -1,0 +1,176 @@
+/* ============================================================================
+   CyberMon — credits.html-only styles (AI Credits): the claimed/credited/KEV
+   funnel columns and the in-row severity strip. Everything reusable lives in
+   css/shared.css. No new colours: severity fills are set inline from the
+   theme.js ramp, everything else comes from the shared custom properties.
+   ========================================================================== */
+
+/* ---------------------------------------- 1 · funnel: two kinds, side by side */
+
+.funnel-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 28px 36px;
+}
+
+.funnel-col { min-width: 0; }
+
+.funnel-kind {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.funnel-rule {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.funnel-part {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 22px 0 10px;
+}
+
+/* a finder's own number: hatched, never solid */
+.claim { margin: 0 0 14px; }
+
+.claim-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.claim-who { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+.claim-num { font-family: var(--mono); font-weight: 700; color: var(--ink); }
+
+.claim-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--faint);
+  margin-top: 4px;
+}
+
+.claim-meta a { color: var(--muted); }
+
+.claim-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; }
+
+/* print-only: the page shows every claim, so it has nothing to confess */
+.claim-more-note { display: none; }
+
+.funnel-track {
+  position: relative;
+  height: 16px;
+  margin-top: 6px;
+  background: var(--bg-deep);
+  border: 1px solid var(--rule);
+}
+
+.funnel-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  min-width: 2px;
+  background: var(--faint);
+}
+
+.funnel-fill.is-zero { min-width: 0; }
+
+.funnel-fill.accent { background: var(--accent); opacity: 0.85; }
+
+.funnel-fill.hatched,
+.funnel-track.hatched {
+  background: repeating-linear-gradient(
+    135deg, var(--rule-strong) 0 2px, transparent 2px 7px);
+}
+
+.funnel-track.hatched { border-style: dashed; border-color: var(--rule-strong); }
+
+.funnel-fill.hatched { border-right: 1px solid var(--muted); }
+
+/* the credited tick drawn over a to-scale claim */
+.funnel-fill.credited { background: var(--ink); opacity: 0.9; height: 6px; top: auto; }
+
+/* measured stages */
+.stage {
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.stage .funnel-track { margin-top: 0; }
+
+.stage-val { color: var(--ink); white-space: nowrap; min-width: 5.5em; text-align: right; }
+
+.stage-val .muted { margin-left: 6px; }
+
+/* severity strip + legend (funnel and board share it) */
+.sev-strip {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+  margin-top: 14px;
+}
+
+.sev-strip span { display: block; height: 100%; min-width: 2px; }
+
+.sev-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sev-legend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+
+.funnel-foot { margin-top: 22px; }
+
+/* ---------------------------------------- 3 · board ----------------------- */
+
+.credits-table .sev-strip { width: 150px; height: 10px; margin-top: 0; }
+
+.credits-table .kind-tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  border: 1px solid var(--rule-strong);
+  padding: 1px 5px;
+}
+
+.credits-table .kind-tag.is-llm { color: var(--ink); border-color: var(--muted); }
+
+.credits-table .cna-list { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .stage { grid-template-columns: 7.5em minmax(0, 1fr) auto; font-size: 11px; }
+  .credits-table .sev-strip { width: 96px; }
+}
