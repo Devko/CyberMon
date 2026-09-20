@@ -427,9 +427,10 @@ export const editorial = {
         blurb:
           "Which CVE records say an AI found the bug? Every credit line in the " +
           "corpus is read against a curated registry of LLM labs and AI-security " +
-          "vendors — kept strictly apart — then cut by severity, joined to " +
-          "CISA KEV, and set beside each finder's own announced numbers, unit " +
-          "and source attached.",
+          "vendors — kept strictly apart — then cut by severity, weakness " +
+          "class and target, joined to EPSS, public exploit code and CISA KEV, " +
+          "and set beside each finder's own announced numbers, unit and source " +
+          "attached.",
         live: true,
       },
     ],
@@ -3193,6 +3194,7 @@ export const editorial = {
       claimMoreTemplate: "+{n} more on the site",
       stageCredited: "Credited CVEs",
       stageSerious: "High or critical",
+      stagePoc: "Public exploit code",
       stageKev: "On CISA KEV",
       severityLabels: {
         critical: "Critical", high: "High", medium: "Medium", low: "Low",
@@ -3200,7 +3202,8 @@ export const editorial = {
       },
       baselineTemplate:
         "Baseline — every CVE carrying any credit since {from}: {serious_pct} " +
-        "high or critical, {kev_pct} on KEV ({kev} of {credited}).",
+        "high or critical, {poc_pct} with public exploit code, {kev_pct} on KEV " +
+        "({kev} of {credited}).",
       kevNote:
         "A small KEV number is what coordinated disclosure looks like, not a " +
         "verdict: these bugs were reported to the maintainer and patched before " +
@@ -3222,8 +3225,14 @@ export const editorial = {
         "the first grade only — their staff also find bugs by hand — while " +
         "AI-security vendors count at either, since their credits routinely name " +
         "the human who triaged the finding. Severity is the record's newest CVSS " +
-        "base score, CNA first and CISA's enrichment as the fallback. The KEV row " +
-        "is a join against tonight's CISA catalog. The hatched rows are not " +
+        "base score, CNA first and CISA's enrichment as the fallback. Public " +
+        "exploit code means the CVE is referenced by Exploit-DB, a Metasploit " +
+        "module or a Nuclei template — the same three corpora as the Time to PoC " +
+        "module — and the KEV row is a join against tonight's CISA catalog. The " +
+        "measured rows are each a share of the credited CVEs, not nested inside " +
+        "one another: a medium-severity bug can carry exploit code. The exploit " +
+        "corpora lag publication, so that row drifts up for everyone as a cohort " +
+        "ages. The hatched rows are not " +
         "measured here at all: they are each finder's own published figure, " +
         "committed with its wording, date and source, and drawn to the measured " +
         "scale only when the claimed unit is itself CVEs assigned. Raw credit " +
@@ -3235,8 +3244,75 @@ export const editorial = {
     },
 
     // --------------------------------- credits.html · 2
-    credits_lanes: {
+    credits_profile: {
       num: "02",
+      kicker: "Side by side",
+      source: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
+      headline: "The labs find worse bugs. Nobody is exploiting them.",
+      caption:
+        "The same eight measurements for the three populations: CVEs crediting " +
+        "an LLM lab's model, CVEs crediting an AI-security vendor, and every CVE " +
+        "that carries a credit at all. Each bar has the baseline drawn into it " +
+        "as a tick, so the question on every row is the same — is this bar past " +
+        "its tick or short of it? The labs sit past it on severity and far past " +
+        "it on memory safety. On the rows that measure attacker interest — EPSS, " +
+        "public exploit code, KEV — nothing separates AI-found bugs from " +
+        "anybody else's, and the labs' column is the quietest of the three.",
+      columns: {
+        llm: "LLM labs",
+        vendor: "AI-security vendors",
+        baseline: "All credited CVEs",
+      },
+      nTemplate: "{n} CVEs",
+      rows: {
+        median_cvss: "Median CVSS score",
+        serious: "High or critical",
+        memory_pct: "Memory-safety bugs",
+        top_cwe: "Most common weakness",
+        median_epss_pctile: "Median EPSS percentile",
+        poc_pct: "Public exploit code",
+        kev_pct: "On CISA KEV",
+        cna_scored_pct: "Scored by its own CNA",
+      },
+      cweNames: {
+        "CWE-20": "input validation",
+        "CWE-22": "path traversal",
+        "CWE-78": "command injection",
+        "CWE-79": "cross-site scripting",
+        "CWE-89": "SQL injection",
+        "CWE-121": "stack overflow",
+        "CWE-122": "heap overflow",
+        "CWE-125": "out-of-bounds read",
+        "CWE-352": "CSRF",
+        "CWE-416": "use-after-free",
+        "CWE-476": "NULL dereference",
+        "CWE-787": "out-of-bounds write",
+        "CWE-862": "missing authorization",
+        "CWE-918": "SSRF",
+      },
+      tickNote:
+        "The light tick in each bar is the baseline's value on that row. Rows " +
+        "with small shares are scaled to their own largest value, so compare a " +
+        "bar with its tick, not with the row above.",
+      nodata: "Not enough data yet.",
+      methodology:
+        "All three columns cover the same window, from the first month either " +
+        "kind is credited to tonight. The baseline is every published CVE whose " +
+        "record carries a credit, the AI-credited ones included — they are under " +
+        "two percent of it. Median CVSS uses each record's newest base score, " +
+        "CNA first. The EPSS row is the median of FIRST's published percentile, " +
+        "so 50 would mean a typical CVE; all three populations sit well under it " +
+        "because fresh, unexploited records score low. Memory-safety bugs are " +
+        "the first-listed CWE falling in the memory family defined for chart 05. " +
+        "“Scored by its own CNA” is the share whose CVSS score came " +
+        "from the assigning CNA rather than from CISA's enrichment — low where a " +
+        "CNA, like Mozilla's, publishes no scores. The two AI columns are small: " +
+        "a single CVE moves the labs' exploit-code row by half a point.",
+    },
+
+    // --------------------------------- credits.html · 3
+    credits_lanes: {
+      num: "03",
       kicker: "Month by month",
       source: "CVE List V5 (MITRE)",
       headline: "Before 2025 the record names no AI finder at all.",
@@ -3270,7 +3346,7 @@ export const editorial = {
 
     // --------------------------------- credits.html · 3
     credits_board: {
-      num: "03",
+      num: "04",
       kicker: "Who, and how bad",
       source: "CVE List V5 (MITRE) · CISA KEV",
       headline: "Three finders lead the count. Their severity mixes have little in common.",
@@ -3306,9 +3382,72 @@ export const editorial = {
         "through its own CNA writes its own credit line.",
     },
 
-    // --------------------------------- credits.html · 4
+    // --------------------------------- credits.html · 5
+    credits_weakness: {
+      num: "05",
+      kicker: "What AI finds",
+      source: "CVE List V5 (MITRE)",
+      headline: "The models dig where the fuzzers dig: memory and crypto.",
+      caption:
+        "Each CVE's first-listed weakness, grouped into families. The baseline " +
+        "tick shows what the industry at large reports: more than a third of " +
+        "credited CVEs are injection bugs — cross-site scripting and SQL " +
+        "injection in web applications. The LLM labs' record looks nothing like " +
+        "that. Memory-safety bugs are their largest family at several times the " +
+        "baseline share, crypto and certificate flaws run several times over as " +
+        "well, and injection all but disappears. The vendors sit in between: a " +
+        "web-scanner's diet with a memory-safety side.",
+      seriesLabels: {
+        llm: "LLM labs",
+        vendor: "AI-security vendors",
+        baseline: "All credited CVEs",
+      },
+      xAxis: "share of that population's CVEs",
+      nodata: "Not enough data yet.",
+      methodology:
+        "A record's first-listed CWE (the CNA's, else CISA's) is placed in one " +
+        "of six families by exact id — the family lists are committed in the " +
+        "pipeline (ai_credits_data.py) and are deliberately flat, not MITRE's " +
+        "view hierarchy. Anything unlisted is “Other CWE”; a record " +
+        "with no CWE is its own row. Bars are shares of each population, because " +
+        "the populations differ in size by two orders of magnitude; the tooltip " +
+        "carries the counts. What this measures is where the tools were aimed as " +
+        "much as what they are good at: the labs' record is dominated by C and " +
+        "C++ infrastructure and crypto libraries (chart 06), which is where " +
+        "memory-safety and certificate bugs live.",
+    },
+
+    // --------------------------------- credits.html · 6
+    credits_targets: {
+      num: "06",
+      kicker: "Where it was pointed",
+      source: "CVE List V5 (MITRE)",
+      headline: "Half the labs' record is five projects.",
+      caption:
+        "The affected product each record names first, ranked per kind. The lab " +
+        "column is a map of partnerships rather than of the internet: a browser, " +
+        "a Java crypto library, a threat-intel platform and an operating system " +
+        "account for most of it, each the result of one coordinated engagement. " +
+        "The vendor column is longer-tailed — its top five hold about a quarter " +
+        "— and its first row is a distribution, not a project: when Red Hat is " +
+        "the CNA, the product it lists is its own.",
+      shareTemplate:
+        "top {top_n} hold {share} of the {named} CVEs naming a product · " +
+        "{distinct} products in all",
+      nodata: "Not enough data yet.",
+      methodology:
+        "The first entry of each record's affected list, vendor and product " +
+        "joined, placeholders such as n/a dropped and spellings folded " +
+        "case-insensitively. It is the CNA's framing, not the finder's: a " +
+        "distribution CNA lists its distribution even when the flaw is in an " +
+        "upstream library, so one upstream bug can surface under several " +
+        "product names. Shares are of the CVEs that name any product. The top " +
+        "five rows are drawn in the kind's colour; ten are listed.",
+    },
+
+    // --------------------------------- credits.html · 7
     credits_coverage: {
-      num: "04",
+      num: "07",
       kicker: "The floor under every number",
       source: "CVE List V5 (MITRE)",
       headline: "Most CVEs thank no one.",

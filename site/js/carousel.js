@@ -83,7 +83,10 @@ import { render as renderAiClock } from "./charts/ai_clock.js";
 import { render as renderAiBanked } from "./charts/ai_banked.js";
 import { render as renderAiAttention } from "./charts/ai_attention.js";
 import { render as renderCreditsFunnel } from "./charts/credits_funnel.js";
+import { render as renderCreditsProfile } from "./charts/credits_profile.js";
 import { render as renderCreditsLanes } from "./charts/credits_lanes.js";
+import { render as renderCreditsWeakness } from "./charts/credits_weakness.js";
+import { render as renderCreditsTargets } from "./charts/credits_targets.js";
 import { render as renderCreditsBoard } from "./charts/credits_board.js";
 import { render as renderCreditsCoverage } from "./charts/credits_coverage.js";
 import { render as renderC2Age } from "./charts/c2_age.js";
@@ -274,8 +277,11 @@ const MODULES = {
     file: "data/ai_credits.json",
     sections: [
       { id: "credits_funnel", render: renderCreditsFunnel },
+      { id: "credits_profile", render: renderCreditsProfile, table: true },
       { id: "credits_lanes", render: renderCreditsLanes },
       { id: "credits_board", render: renderCreditsBoard, table: true },
+      { id: "credits_weakness", render: renderCreditsWeakness },
+      { id: "credits_targets", render: renderCreditsTargets },
       { id: "credits_coverage", render: renderCreditsCoverage },
     ],
   },

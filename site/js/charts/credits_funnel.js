@@ -1,4 +1,5 @@
-// Hero — claimed -> credited -> high/critical -> KEV, one column per kind.
+// Hero — claimed -> credited -> high/critical -> public exploit -> KEV, one
+// column per kind. Each measured stage is a share of credited, not nested.
 // Contract: site/data/ai_credits.json
 // Plain HTML (no ECharts): the two kinds are never on one axis, and a claim
 // is drawn to the measured scale ONLY when its unit is itself "CVEs
@@ -111,6 +112,7 @@ function kindColumn(kind, data, ed) {
   col.append(
     stageRow(ed.stageCredited, f.credited, f.credited, null, false),
     stageRow(ed.stageSerious, f.high_or_critical, f.credited, f.high_or_critical_pct, false),
+    stageRow(ed.stagePoc, f.poc, f.credited, f.poc_pct, false),
     stageRow(ed.stageKev, f.kev, f.credited, f.kev_pct, true),
     sevStrip(k.severity, ed.severityLabels),
     sevLegend(k.severity, ed.severityLabels)
@@ -144,6 +146,7 @@ export function render(slots, data) {
     foot.append(el("p", "panel-note", tpl(ed.baselineTemplate, {
       from: b.from_month,
       serious_pct: fmtPct(b.high_or_critical_pct),
+      poc_pct: fmtPct(b.poc_pct),
       kev_pct: fmtPct(b.kev_pct),
       kev: fmtInt(b.kev),
       credited: fmtInt(b.credited),

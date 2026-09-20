@@ -2200,11 +2200,13 @@ asserts they never reach the payload. The charts stay 100%
 CyberMon-computed. Validator: `pipeline/ai_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
-## site/data/ai_credits.json  (AI Credits module, all 4 charts)
+## site/data/ai_credits.json  (AI Credits module, all 7 charts)
 
 Which CVE records say, in their own `credits` field, that an AI system or an
 AI lab found the bug. No fetch: `ai_credits_metrics.CreditCollector` is a
-second observer on the shared corpus pass, joined to the night's KEV ids.
+second observer on the shared corpus pass, joined to the night's KEV ids,
+public-exploit ids (`poc.all_ids`, module 19's three corpora) and EPSS
+percentiles.
 Every credit string is matched against the committed registry in
 `pipeline/ai_credits_data.py`; a match carries a **tier** — `system` (the
 credit names a model, agent or self-described AI scanner) or `org` (it names
@@ -2223,14 +2225,34 @@ the lab or vendor only, as somebody's employer).
       "severity": {"critical": 30, "high": 103, "medium": 74, "low": 9,
                    "unscored": 0},
       "funnel": {"credited": 216, "scored": 216, "high_or_critical": 133,
-                 "high_or_critical_pct": 61.6, "kev": 0, "kev_pct": 0.0},
+                 "high_or_critical_pct": 61.6, "poc": 1, "poc_pct": 0.5,
+                 "kev": 0, "kev_pct": 0.0},
       "kev_cves": []
     },
     "vendor": {"…": "same shape; lanes = [\"vendor\"]"}
   },
   "baseline": {"from_month": "2025-03", "credited": 47831, "scored": 47770,
                "high_or_critical": 20444, "high_or_critical_pct": 42.8,
-               "kev": 62, "kev_pct": 0.1, "severity": {"…": "as above"}},
+               "poc": 748, "poc_pct": 1.6, "kev": 62, "kev_pct": 0.1,
+               "severity": {"…": "as above"}},
+  "profile": {
+    "llm": {"n": 216, "median_cvss": 7.5, "median_epss_pctile": 22.7,
+            "epss_scored": 216, "poc_pct": 0.5, "kev_pct": 0.0,
+            "memory_pct": 38.0, "cna_scored_pct": 69.4,
+            "top_cwe": {"cwe": "CWE-416", "n": 23, "pct": 10.6}},
+    "vendor": {"…": "same shape"}, "baseline": {"…": "same shape"}
+  },
+  "weaknesses": {"families": [
+    {"key": "memory", "label": "Memory safety",
+     "llm": {"n": 82, "pct": 38.0}, "vendor": {"n": 114, "pct": 22.6},
+     "baseline": {"n": 4778, "pct": 10.0}}
+  ]},
+  "targets": {
+    "llm": {"cves": 216, "named": 216, "distinct": 44, "top_share_n": 5,
+            "top_share_pct": 56.5,
+            "projects": [{"label": "MISP", "n": 40, "pct": 18.5}]},
+    "vendor": {"…": "same shape"}
+  },
   "coverage": [{"year": 2018, "published": 16510, "with_credits": 174,
                 "pct": 1.1}],
   "board": [{"key": "aisle", "label": "AISLE", "group": "vendor",
@@ -2262,6 +2284,37 @@ the high-or-critical and KEV shares. **`coverage`** is the floor caveat:
 published records with a non-empty `credits` list over all published
 records, per publication year from 2018.
 
+**The funnel's stages are shares of `credited`, not nested.** `poc` counts
+CVEs referenced by Exploit-DB, a Metasploit module or a Nuclei template
+(`PocData.all_ids`); a medium-severity CVE can carry exploit code, so `poc`
+is not a subset of `high_or_critical`. The corpora lag publication, so the
+share drifts upward for every population as a cohort ages.
+
+**`profile`** has exactly the keys `llm`, `vendor`, `baseline`, in that
+order, each over the same population as that funnel (`n ==
+funnel.credited`; `poc_pct` / `kev_pct` must equal the funnel's).
+`median_cvss` and `median_epss_pctile` (0–100, FIRST's published
+percentile) are `null` on an empty population; `epss_scored` says how many
+records EPSS had a row for. `cna_scored_pct` is the share whose CVSS score
+came from the assigning CNA rather than an ADP. `top_cwe` is the commonest
+first-listed CWE id, `null` when no record lists one.
+
+**`weaknesses.families`** lists every key of
+`ai_credits_data.WEAKNESS_KEYS` in registry order — six committed families
+by exact CWE id (flat lists, not MITRE's view hierarchy), then `other` and
+`none` — so each population's counts add back up to its size (the contract
+checks). Shares, because the populations differ by two orders of magnitude.
+
+**`targets`** ranks, per kind, the first `affected[]` entry of each record
+as `"vendor / product"` — placeholders (`n/a`, `unknown`) dropped, a vendor
+the product name already starts with folded away, spellings folded
+case-insensitively with the commonest casing as the label. It is the CNA's
+framing: a distro CNA lists its distro, not the upstream project. `named`
+is the CVEs naming any product and is the denominator of every `pct` and of
+`top_share_pct` (the top `top_share_n` = 5); `projects` lists the top 10.
+Product names are project identifiers, not credit text; the contract still
+refuses a label containing `@`.
+
 **`claims` are quoted, not measured** — committed in
 `ai_credits_data.CLAIMS` with the finder's wording, date, first-party
 source and a `unit_kind` (`cves` | `advisories` | `vulnerabilities` |
@@ -2278,8 +2331,9 @@ months, CNA short names and KEV-listed CVE ids only.
 
 A record post-dated past the edition month is dropped whole, so lanes,
 severity and board cannot disagree. A kind with nothing counted has
-`headline: null`, empty `months` and a zero funnel; `baseline` is null only
-when both kinds are empty. The contract pins the arithmetic: funnel ==
+`headline: null`, empty `months` and a zero funnel; `baseline`, `profile`,
+`weaknesses` and `targets` are null together, and only when both kinds are
+empty. The contract pins the arithmetic: funnel ==
 severity cut, `kev_cves` length == `funnel.kev`, gap-free months, board
 rows and claims must resolve to registry finders, a board row's severity
 sums to its `counted`. Validator: `pipeline/ai_credits_contracts.py`

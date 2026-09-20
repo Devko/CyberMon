@@ -461,7 +461,9 @@ def run(args: argparse.Namespace) -> int:
     field = field_export.FieldCollector() if args.field_out else None
     # AI-credited CVEs reads each record's credits[] — a second observer on
     # the same pass, never a second pass.
-    credits = ai_credits_metrics.CreditCollector(kev_ids=kev.cve_ids)
+    credits = ai_credits_metrics.CreditCollector(
+        kev_ids=kev.cve_ids, poc_ids=poc.all_ids,
+        epss_percentiles=epss.percentiles)
     observers = [o for o in (field, credits) if o is not None]
 
     def _observe(facts, record):
@@ -559,7 +561,8 @@ def run(args: argparse.Namespace) -> int:
                 agg, poc, kev.entries, generated_at,
                 **({"min_n": 1} if args.offline_fixtures else {})),
     }
-    # AI-credited CVEs: the credits observer above, joined to tonight's KEV.
+    # AI-credited CVEs: the credits observer above, already joined to
+    # tonight's KEV ids, exploit corpora and EPSS percentiles.
     outputs["ai_credits.json"] = ai_credits_metrics.build_ai_credits(
         credits, generated_at)
     # Single-upstream modules: build from tonight's fetch, or carry the

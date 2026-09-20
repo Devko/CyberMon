@@ -17,8 +17,10 @@ import re
 from typing import Any, Callable
 
 from .ai_credits_data import (CLAIM_QUALIFIERS, CLAIM_UNIT_KINDS, FINDERS,
-                              GROUPS, KINDS, kind_of)
-from .ai_credits_metrics import SEVERITIES
+                              GROUPS, KINDS, WEAKNESS_KEYS, WEAKNESS_LABELS,
+                              kind_of)
+from .ai_credits_metrics import (POPULATIONS, SEVERITIES, TOP_SHARE_N,
+                                 TOP_TARGETS)
 from .contracts import (DATE_RE, _check_bool, _check_generated_at, _check_int,
                         _check_list, _check_num, _check_sorted, _check_str,
                         _fail, _get)
@@ -38,9 +40,9 @@ def _check_severity(obj: Any, path: str) -> int:
 
 
 def _check_funnel(funnel: Any, severity: dict, path: str) -> None:
-    for k in ("credited", "scored", "high_or_critical", "kev"):
+    for k in ("credited", "scored", "high_or_critical", "poc", "kev"):
         _check_int(_get(funnel, k, path), f"{path}.{k}")
-    for k in ("high_or_critical_pct", "kev_pct"):
+    for k in ("high_or_critical_pct", "poc_pct", "kev_pct"):
         _check_num(_get(funnel, k, path), f"{path}.{k}", 0.0, 100.0)
     total = sum(severity.values())
     if funnel["credited"] != total:
@@ -49,8 +51,9 @@ def _check_funnel(funnel: Any, severity: dict, path: str) -> None:
         _fail(f"{path}.scored", "must equal credited minus unscored")
     if funnel["high_or_critical"] != severity["critical"] + severity["high"]:
         _fail(f"{path}.high_or_critical", "must equal critical + high")
-    if funnel["kev"] > funnel["credited"]:
-        _fail(f"{path}.kev", "cannot exceed credited")
+    for k in ("poc", "kev"):
+        if funnel[k] > funnel["credited"]:
+            _fail(f"{path}.{k}", "cannot exceed credited")
 
 
 def _validate_kind(kind: str, obj: Any, path: str) -> None:
@@ -129,7 +132,7 @@ def _validate_ai_credits(obj: Any) -> None:
         if (r.get("label"), r.get("group"), r.get("kind")) != \
                 (finder.label, finder.group, kind_of(finder.group)):
             _fail(path, "label/group/kind must match the registry entry")
-        for k in ("cves", "counted", "system", "org", "kev"):
+        for k in ("cves", "counted", "system", "org", "poc", "kev"):
             _check_int(_get(r, k, path), f"{path}.{k}")
         if r["cves"] < 1 or r["cves"] != r["system"] + r["org"]:
             _fail(f"{path}.cves", "must be >= 1 and equal system + org")
@@ -138,8 +141,9 @@ def _validate_ai_credits(obj: Any) -> None:
         if _check_severity(_get(r, "severity", path),
                            f"{path}.severity") != r["counted"]:
             _fail(f"{path}.severity", "must sum to counted")
-        if r["kev"] > r["counted"]:
-            _fail(f"{path}.kev", "cannot exceed counted")
+        for k in ("poc", "kev"):
+            if r[k] > r["counted"]:
+                _fail(f"{path}.{k}", "cannot exceed counted")
         for k in ("first_month", "last_month"):
             _check_str(_get(r, k, path), f"{path}.{k}", MONTH_RE)
         if r["first_month"] > r["last_month"]:
@@ -199,8 +203,9 @@ def _validate_ai_credits(obj: Any) -> None:
     baseline = _get(obj, "baseline", "ai_credits")
     any_headline = any(kinds[k]["headline"] for k in KINDS)
     if not any_headline:
-        if baseline is not None:
-            _fail("ai_credits.baseline", "must be null when nothing counts")
+        for name in ("baseline", "profile", "weaknesses", "targets"):
+            if _get(obj, name, "ai_credits") is not None:
+                _fail(f"ai_credits.{name}", "must be null when nothing counts")
         return
     if baseline is None:
         _fail("ai_credits.baseline", "must be present when CVEs count")
@@ -214,6 +219,104 @@ def _validate_ai_credits(obj: Any) -> None:
     if baseline["from_month"] != min(firsts):
         _fail("ai_credits.baseline.from_month",
               "must be the earliest kind's first_month")
+
+    sizes = {**{k: kinds[k]["funnel"]["credited"] for k in KINDS},
+             "baseline": baseline["credited"]}
+    _validate_profile(_get(obj, "profile", "ai_credits"), obj, sizes)
+    _validate_weaknesses(_get(obj, "weaknesses", "ai_credits"), sizes)
+    _validate_targets(_get(obj, "targets", "ai_credits"), sizes)
+
+
+def _validate_profile(profile: Any, obj: Any, sizes: dict) -> None:
+    """Side-by-side columns: sized like the funnels, and agreeing with them
+    wherever they restate a funnel share."""
+    if profile is None or list(profile) != list(POPULATIONS):
+        _fail("ai_credits.profile",
+              f"keys must be exactly {POPULATIONS}, in order")
+    funnels = {**{k: obj["kinds"][k]["funnel"] for k in KINDS},
+               "baseline": obj["baseline"]}
+    for name in POPULATIONS:
+        path = f"ai_credits.profile.{name}"
+        col = profile[name]
+        _check_int(_get(col, "n", path), f"{path}.n")
+        if col["n"] != sizes[name]:
+            _fail(f"{path}.n", "must equal that population's funnel.credited")
+        _check_int(_get(col, "epss_scored", path), f"{path}.epss_scored")
+        if col["epss_scored"] > col["n"]:
+            _fail(f"{path}.epss_scored", "cannot exceed n")
+        for k, hi in (("median_cvss", 10.0), ("median_epss_pctile", 100.0)):
+            if _get(col, k, path) is not None:
+                _check_num(col[k], f"{path}.{k}", 0.0, hi)
+        for k in ("poc_pct", "kev_pct", "memory_pct", "cna_scored_pct"):
+            _check_num(_get(col, k, path), f"{path}.{k}", 0.0, 100.0)
+        for k in ("poc_pct", "kev_pct"):
+            if col[k] != funnels[name][k]:
+                _fail(f"{path}.{k}", "must equal the funnel's share")
+        top = _get(col, "top_cwe", path)
+        if top is not None:
+            _check_str(_get(top, "cwe", f"{path}.top_cwe"),
+                       f"{path}.top_cwe.cwe")
+            _check_int(_get(top, "n", f"{path}.top_cwe"),
+                       f"{path}.top_cwe.n", minimum=1)
+            _check_num(_get(top, "pct", f"{path}.top_cwe"),
+                       f"{path}.top_cwe.pct", 0.0, 100.0)
+
+
+def _validate_weaknesses(weak: Any, sizes: dict) -> None:
+    """Every family, in registry order, and each population's family counts
+    must add back up to that population."""
+    families = _check_list(_get(weak, "families", "ai_credits.weaknesses"),
+                           "ai_credits.weaknesses.families")
+    if [f.get("key") for f in families] != list(WEAKNESS_KEYS):
+        _fail("ai_credits.weaknesses.families",
+              f"keys must be exactly {WEAKNESS_KEYS}, in order")
+    totals = dict.fromkeys(POPULATIONS, 0)
+    for i, fam in enumerate(families):
+        path = f"ai_credits.weaknesses.families[{i}]"
+        if fam.get("label") != WEAKNESS_LABELS[fam["key"]]:
+            _fail(f"{path}.label", "must match the committed family label")
+        for name in POPULATIONS:
+            cell = _get(fam, name, path)
+            _check_int(_get(cell, "n", f"{path}.{name}"), f"{path}.{name}.n")
+            _check_num(_get(cell, "pct", f"{path}.{name}"),
+                       f"{path}.{name}.pct", 0.0, 100.0)
+            totals[name] += cell["n"]
+    for name in POPULATIONS:
+        if totals[name] != sizes[name]:
+            _fail("ai_credits.weaknesses.families",
+                  f"{name} counts sum to {totals[name]}, not {sizes[name]}")
+
+
+def _validate_targets(targets: Any, sizes: dict) -> None:
+    if targets is None or list(targets) != list(KINDS):
+        _fail("ai_credits.targets", f"keys must be exactly {KINDS}, in order")
+    for kind in KINDS:
+        path = f"ai_credits.targets.{kind}"
+        t = targets[kind]
+        for k in ("cves", "named", "distinct", "top_share_n"):
+            _check_int(_get(t, k, path), f"{path}.{k}")
+        if t["cves"] != sizes[kind]:
+            _fail(f"{path}.cves", "must equal that kind's funnel.credited")
+        if t["named"] > t["cves"] or t["distinct"] > t["named"]:
+            _fail(path, "need distinct <= named <= cves")
+        if t["top_share_n"] != TOP_SHARE_N:
+            _fail(f"{path}.top_share_n", f"must be {TOP_SHARE_N}")
+        _check_num(_get(t, "top_share_pct", path),
+                   f"{path}.top_share_pct", 0.0, 100.0)
+        projects = _check_list(_get(t, "projects", path), f"{path}.projects")
+        if len(projects) != min(TOP_TARGETS, t["distinct"]):
+            _fail(f"{path}.projects",
+                  f"must list the top {TOP_TARGETS} (or every) product")
+        counts = []
+        for i, proj in enumerate(projects):
+            pp = f"{path}.projects[{i}]"
+            _check_str(_get(proj, "label", pp), f"{pp}.label")
+            if "@" in proj["label"]:
+                _fail(f"{pp}.label", "looks like an address, not a product")
+            _check_int(_get(proj, "n", pp), f"{pp}.n", minimum=1)
+            _check_num(_get(proj, "pct", pp), f"{pp}.pct", 0.0, 100.0)
+            counts.append(proj["n"])
+        _check_sorted(counts, f"{path}.projects (by n)", descending=True)
 
 
 VALIDATORS: dict[str, Callable[[Any], None]] = {

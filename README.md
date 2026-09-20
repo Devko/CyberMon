@@ -399,13 +399,20 @@ net catches Capgemini, a researcher named Ai and every `.ai` vanity domain.
 **LLM labs and AI-security vendors are kept strictly apart and never
 summed**: a lab counts only when the credit names its model ("Alex Gaynor
 (Anthropic)" proves an employer, not a model), a vendor whenever it is
-named, because AI analysis is the product. Four charts: the **funnel** per
-kind — each finder's own announced number, then credited CVEs, then high or
-critical, then on CISA KEV, with the same funnel over every credit-carrying
-CVE as the baseline; monthly lanes per lab; the finder board with each row's
-severity strip and the "named only" remainder the rule leaves out; and the
-share of published CVEs carrying any credit at all, which is what makes
-every number on the page **a floor, not a census**.
+named, because AI analysis is the product. Seven charts: the **funnel** per
+kind — each finder's own announced number, then credited CVEs, high or
+critical, public exploit code (the Time to PoC corpora), on CISA KEV, with
+the same funnel over every credit-carrying CVE as the baseline; a
+**side-by-side profile** of labs, vendors and that baseline on eight
+measurements, the baseline drawn into every bar as a tick; monthly lanes per
+lab; the finder board with each row's severity strip and the "named only"
+remainder the rule leaves out; **what AI finds** — first-listed CWEs in six
+committed families, where the labs run several times the baseline on memory
+safety and crypto and barely register on injection; **where it was
+pointed** — the first affected product per record, which for the labs is a
+map of partnerships (five products are half the record); and the share of
+published CVEs carrying any credit at all, which is what makes every number
+on the page **a floor, not a census**.
 
 The hatched claim rows are the one place CyberMon draws numbers it did not
 compute, deliberately unlike module 21: the gap between claimed and credited
@@ -415,7 +422,8 @@ scale **only** when its unit is itself "CVEs assigned". Raw credit strings
 carry personal names and e-mail addresses and are never emitted — the
 payload holds registry labels, counts, months, CNA short names and the
 KEV-listed CVE ids. No fetch of its own: `CreditCollector` rides the shared
-corpus pass as a second observer. Stage `pipeline/ai_credits_metrics.py`.
+corpus pass as a second observer and is handed the night's KEV ids, exploit
+corpora and EPSS percentiles. Stage `pipeline/ai_credits_metrics.py`.
 
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 

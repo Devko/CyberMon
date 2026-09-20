@@ -1,6 +1,6 @@
 // =============================================================================
-// credits.js — AI Credits tab (credits.html). Builds the four sections from
-// editorial.js. All four share ONE contract file (data/ai_credits.json),
+// credits.js — AI Credits tab (credits.html). Builds the seven sections from
+// editorial.js. All seven share ONE contract file (data/ai_credits.json),
 // fetched once and passed to each renderer. Each renderer runs inside its own
 // try/catch so one bad chart yields one inline error card, not a dead page.
 // Shared chrome comes from common.js.
@@ -8,8 +8,11 @@
 import { hookResize } from "./theme.js";
 import { initChrome, fetchJSON, buildSection, showError } from "./common.js";
 import { render as renderFunnel } from "./charts/credits_funnel.js";
+import { render as renderProfile } from "./charts/credits_profile.js";
 import { render as renderLanes } from "./charts/credits_lanes.js";
 import { render as renderBoard } from "./charts/credits_board.js";
+import { render as renderWeakness } from "./charts/credits_weakness.js";
+import { render as renderTargets } from "./charts/credits_targets.js";
 import { render as renderCoverage } from "./charts/credits_coverage.js";
 
 // RELATIVE paths only — must work under python -m http.server AND under a
@@ -18,8 +21,11 @@ const DATA_FILE = "data/ai_credits.json";
 
 const SECTIONS = [
   { id: "credits_funnel", render: renderFunnel, hero: true },
+  { id: "credits_profile", render: renderProfile },
   { id: "credits_lanes", render: renderLanes },
   { id: "credits_board", render: renderBoard },
+  { id: "credits_weakness", render: renderWeakness },
+  { id: "credits_targets", render: renderTargets },
   { id: "credits_coverage", render: renderCoverage },
 ];
 

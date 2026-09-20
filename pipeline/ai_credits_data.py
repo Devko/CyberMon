@@ -228,3 +228,53 @@ CLAIMS: tuple[Claim, ...] = (
           "https://depthfirst.com/research/21-zero-days-in-ffmpeg",
           "2026-09-20"),
 )
+
+
+# ------------------------------------------------------- weakness families
+
+# Coarse families for the "what AI finds" chart. A CVE's first-listed CWE
+# (CNA first, ADP fallback — CveFacts.cwe) lands in the first family that
+# lists it; everything else is ``other``, and a record with no CWE at all is
+# ``none``. Deliberately short and flat: the chart compares three
+# populations across a handful of classes, not the CWE tree. Membership is
+# by exact id — MITRE's own view hierarchy is not consulted, so a parent
+# pillar (CWE-664) counts only if it is listed here.
+WEAKNESS_FAMILIES: tuple[tuple[str, str, frozenset[int]], ...] = (
+    ("memory", "Memory safety", frozenset({
+        119, 120, 121, 122, 123, 124, 125, 126, 127, 129, 131, 170, 190,
+        191, 415, 416, 457, 466, 476, 590, 680, 761, 762, 763, 786, 787,
+        788, 789, 805, 822, 823, 824, 825, 843, 908})),
+    ("injection", "Injection (XSS, SQL, command)", frozenset({
+        74, 77, 78, 79, 80, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98,
+        113, 116, 643, 917, 943, 1236, 1336})),
+    ("access", "Access control and auth", frozenset({
+        250, 264, 266, 269, 276, 281, 284, 285, 287, 288, 290, 294, 302,
+        303, 304, 305, 306, 307, 346, 352, 425, 522, 639, 640, 732, 798,
+        862, 863, 1390})),
+    ("path", "Files, paths and requests", frozenset({
+        22, 23, 35, 36, 59, 61, 73, 434, 552, 601, 610, 611, 918})),
+    ("crypto", "Crypto and certificate checks", frozenset({
+        295, 296, 297, 310, 311, 319, 321, 326, 327, 328, 330, 331, 338,
+        345, 347, 354, 916})),
+    ("logic", "Input, state and resource handling", frozenset({
+        20, 134, 185, 248, 252, 362, 367, 369, 400, 401, 404, 459, 502,
+        617, 665, 667, 669, 670, 674, 682, 697, 704, 754, 755, 770, 772,
+        834, 835, 1284, 1333})),
+)
+WEAKNESS_KEYS = tuple(k for k, _, _ in WEAKNESS_FAMILIES) + ("other", "none")
+WEAKNESS_LABELS = {**{k: label for k, label, _ in WEAKNESS_FAMILIES},
+                   "other": "Other CWE", "none": "No CWE listed"}
+
+
+def weakness_family(cwe: str | None) -> str:
+    """Family key for a ``"CWE-416"``-style id (``none`` when absent)."""
+    if not cwe:
+        return "none"
+    try:
+        number = int(cwe.rsplit("-", 1)[-1])
+    except ValueError:
+        return "other"
+    for key, _, members in WEAKNESS_FAMILIES:
+        if number in members:
+            return key
+    return "other"

@@ -12,7 +12,9 @@ from pipeline import contracts  # noqa: F401
 from pipeline import ai_credits_contracts as contract  # noqa: E402
 from pipeline import ai_credits_metrics as acm
 from pipeline.ai_credits_data import (CLAIM_MAX_AGE_DAYS, CLAIM_QUALIFIERS,
-                                      CLAIM_UNIT_KINDS, CLAIMS, FINDERS, GROUPS, classify,
+                                      CLAIM_UNIT_KINDS, CLAIMS,
+                                      WEAKNESS_FAMILIES, WEAKNESS_KEYS,
+                                      weakness_family, FINDERS, GROUPS, classify,
                                       counts_toward_headline)
 from pipeline.contracts import ContractViolation
 from pipeline.metrics import CveFacts
@@ -20,16 +22,22 @@ from pipeline.metrics import CveFacts
 GENERATED_AT = "2026-07-09T13:00:00Z"
 
 
-def _record(*credits: str) -> dict:
-    return {"containers": {"cna": {
-        "credits": [{"lang": "en", "value": c} for c in credits]}}}
+def _record(*credits: str, vendor: str | None = None,
+            product: str | None = None) -> dict:
+    cna: dict = {"credits": [{"lang": "en", "value": c} for c in credits]}
+    if vendor is not None or product is not None:
+        cna["affected"] = [{"vendor": vendor, "product": product}]
+    return {"containers": {"cna": cna}}
 
 
 def _facts(cve_id: str, published: str | None, cna: str = "VendorX",
-           state: str = "PUBLISHED", score: float | None = None) -> CveFacts:
+           state: str = "PUBLISHED", score: float | None = None,
+           cwe: str | None = None, adp_score: float | None = None
+           ) -> CveFacts:
     return CveFacts(cve_id=cve_id, state=state, year=int(cve_id[4:8]),
-                    cna=cna, date_published=published,
-                    cna_scores={} if score is None else {"v3": score})
+                    cna=cna, date_published=published, cwe=cwe,
+                    cna_scores={} if score is None else {"v3": score},
+                    adp_scores={} if adp_score is None else {"v3": adp_score})
 
 
 # ---------------------------------------------------------------- registry
@@ -107,9 +115,13 @@ def test_collector_strongest_tier_wins_across_credit_lines():
     col = acm.CreditCollector()
     col(_facts("CVE-2026-0005", "2026-03-01", cna="mozilla"),
         _record("Alex Gaynor (Anthropic)", "found using Claude"))
-    assert col.rows == [acm.CreditRow("CVE-2026-0005", "2026-03", "mozilla",
-                                      {"anthropic": "system"}, "unscored",
-                                      False)]
+    (row,) = col.rows
+    assert (row.cve_id, row.cna, row.found, row.target) == (
+        "CVE-2026-0005", "mozilla", {"anthropic": "system"}, "")
+    assert row.traits == acm.Traits(
+        month="2026-03", severity="unscored", score=None, cna_scored=False,
+        cwe=None, epss_pctile=None, in_kev=False, has_poc=False)
+    assert col.credited == [row.traits]     # the baseline keeps it too
 
 
 def test_collector_never_keeps_the_raw_credit_string():
@@ -122,13 +134,22 @@ def test_collector_never_keeps_the_raw_credit_string():
 # ----------------------------------------------------------------- builder
 
 def _collector() -> acm.CreditCollector:
-    col = acm.CreditCollector(kev_ids=["CVE-2026-0012"])
-    col(_facts("CVE-2026-0010", "2026-02-10", cna="mozilla", score=9.8),
-        _record("Anthropic (automated discovery using Claude)"))
-    col(_facts("CVE-2026-0011", "2026-04-02", cna="openssl", score=5.3),
-        _record("Stanislav Fort (Aisle Research)"))
-    col(_facts("CVE-2026-0012", "2026-04-20", cna="apache", score=7.5),
-        _record("XBOW", "Quang Luong in collaboration with OpenAI Codex"))
+    col = acm.CreditCollector(
+        kev_ids=["CVE-2026-0012"], poc_ids=["CVE-2026-0011", "CVE-2026-0013"],
+        epss_percentiles={"CVE-2026-0010": 0.20, "CVE-2026-0012": 0.90,
+                          "CVE-2026-0011": 0.40})
+    col(_facts("CVE-2026-0010", "2026-02-10", cna="mozilla", score=9.8,
+               cwe="CWE-416"),
+        _record("Anthropic (automated discovery using Claude)",
+                vendor="Mozilla", product="Firefox"))
+    col(_facts("CVE-2026-0011", "2026-04-02", cna="openssl", score=5.3,
+               cwe="CWE-125"),
+        _record("Stanislav Fort (Aisle Research)",
+                vendor="OpenSSL", product="openssl"))
+    col(_facts("CVE-2026-0012", "2026-04-20", cna="apache", adp_score=7.5,
+               cwe="CWE-79"),
+        _record("XBOW", "Quang Luong in collaboration with OpenAI Codex",
+                vendor="n/a", product="OpenSSL"))
     col(_facts("CVE-2026-0013", "2026-04-21"), _record("Jane Doe"))
     col(_facts("CVE-2026-0014", "2026-05-01", score=8.1),
         _record("Alex Gaynor (Anthropic)"))     # lab org tier: board only
@@ -165,7 +186,12 @@ def test_severity_and_funnel_describe_counted_cves_only():
     assert llm["funnel"] == {"credited": 2, "scored": 2,
                              "high_or_critical": 2,
                              "high_or_critical_pct": 100.0,
+                             "poc": 0, "poc_pct": 0.0,
                              "kev": 1, "kev_pct": 50.0}
+    # the AISLE CVE has public exploit code; the stage is a share of
+    # credited, not nested under high-or-critical (it is a 5.3)
+    assert obj["kinds"]["vendor"]["funnel"]["poc"] == 1
+    assert obj["baseline"]["poc"] == 2
     assert llm["kev_cves"] == ["CVE-2026-0012"]
     anthropic = next(r for r in obj["board"] if r["key"] == "anthropic")
     assert (anthropic["cves"], anthropic["counted"]) == (2, 1)
@@ -191,6 +217,66 @@ def test_baseline_covers_every_credited_cve_in_the_window():
     assert base["kev"] == 1
     assert obj["coverage"] == [{"year": 2026, "published": 5,
                                 "with_credits": 5, "pct": 100.0}]
+
+
+# ---------------------------------------------- profile, weaknesses, targets
+
+def test_weakness_family_membership():
+    assert weakness_family("CWE-416") == "memory"
+    assert weakness_family("CWE-79") == "injection"
+    assert weakness_family("CWE-862") == "access"
+    assert weakness_family("CWE-9999") == "other"
+    assert weakness_family("NVD-CWE-noinfo") == "other"
+    assert weakness_family(None) == "none"
+    ids = [i for _, _, members in WEAKNESS_FAMILIES for i in members]
+    assert len(ids) == len(set(ids))        # a CWE lives in one family
+
+
+def test_profile_columns_describe_each_population():
+    profile = acm.build_ai_credits(_collector(), GENERATED_AT)["profile"]
+    assert list(profile) == ["llm", "vendor", "baseline"]
+    llm = profile["llm"]            # CVE-0010 (9.8, p20) + CVE-0012 (7.5, p90)
+    assert (llm["n"], llm["median_cvss"], llm["median_epss_pctile"]) == \
+        (2, 8.7, 55.0)
+    assert llm["memory_pct"] == 50.0
+    assert llm["cna_scored_pct"] == 50.0    # 0012 was scored by an ADP only
+    assert llm["top_cwe"] == {"cwe": "CWE-416", "n": 1, "pct": 50.0}
+    base = profile["baseline"]
+    assert (base["n"], base["epss_scored"]) == (5, 3)
+    assert base["poc_pct"] == 40.0
+
+
+def test_weakness_families_add_back_up_to_each_population():
+    obj = acm.build_ai_credits(_collector(), GENERATED_AT)
+    families = obj["weaknesses"]["families"]
+    assert [f["key"] for f in families] == list(WEAKNESS_KEYS)
+    for name, size in (("llm", 2), ("vendor", 2), ("baseline", 5)):
+        assert sum(f[name]["n"] for f in families) == size
+    memory = families[0]
+    assert (memory["llm"]["n"], memory["vendor"]["n"]) == (1, 1)
+    none = families[-1]
+    assert none["baseline"] == {"n": 2, "pct": 40.0}
+
+
+def test_targets_fold_spelling_and_drop_placeholder_vendors():
+    targets = acm.build_ai_credits(_collector(), GENERATED_AT)["targets"]
+    # "OpenSSL / openssl" folds to the product; "n/a" is not a vendor —
+    # so AISLE's and XBOW's records name the same target
+    assert targets["vendor"]["projects"] == [
+        {"label": "OpenSSL", "n": 2, "pct": 100.0}]
+    assert targets["vendor"]["top_share_pct"] == 100.0
+    assert targets["llm"]["projects"][0]["label"] in (
+        "Mozilla / Firefox", "OpenSSL")
+    assert targets["llm"]["distinct"] == 2
+
+
+def test_target_never_returns_a_bare_placeholder():
+    assert acm._target(_record("x", vendor="n/a", product="unknown")) == ""
+    assert acm._target(_record("x")) == ""
+    assert acm._target(_record("x", vendor="Acme", product=None)) == "Acme"
+    rhel = _record("x", vendor="Red Hat",
+                   product="Red Hat Enterprise Linux 10")
+    assert acm._target(rhel) == "Red Hat Enterprise Linux 10"
 
 
 # ------------------------------------------------------------------ claims
@@ -259,6 +345,15 @@ def test_contract_accepts_the_builder_output_and_the_empty_case():
     lambda o: o["claims"][0].update(credited=12345),
     lambda o: o["claims"][0].update(date="last Tuesday"),
     lambda o: o.update(baseline=None),
+    lambda o: o.update(profile=None),
+    lambda o: o["kinds"]["vendor"]["funnel"].update(poc=99),
+    lambda o: o["profile"]["llm"].update(n=7),
+    lambda o: o["profile"]["vendor"].update(poc_pct=12.3),
+    lambda o: o["weaknesses"]["families"].pop(0),
+    lambda o: o["weaknesses"]["families"][0]["llm"].update(n=5),
+    lambda o: o["targets"]["llm"]["projects"][0].update(
+        label="jane@example.org"),
+    lambda o: o["targets"]["vendor"].update(cves=99),
 ])
 def test_contract_rejects_inconsistent_output(mutate):
     obj = _valid()

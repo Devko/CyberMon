@@ -132,6 +132,16 @@ graded match of every credit line against a committed finder registry.
   (hatched, sourced, to scale only when the unit is CVEs) — a deliberate
   break from module 21's no-external-numbers rule, because the gap is the
   thesis.
+- **Second pass (same day):** an exploratory join against EPSS, the
+  exploit corpora, CWEs and affected products turned up three findings
+  worth charts — labs find memory-safety and crypto bugs at several times
+  the baseline rate, attacker interest (EPSS / exploit code / KEV) is flat
+  across all three populations, and half the lab record is five partnered
+  projects — so the page grew a profile table, a weakness chart, a targets
+  list and a public-exploit funnel stage. Considered and declined:
+  correlating monthly credits with module 02's hype lanes (a 15-month
+  series; any correlation would be noise) and per-lab EPSS comparisons
+  (OpenAI's column is 13 CVEs).
 - **Upkeep:** `pipeline/ai_credits_data.py` is hand-curated. New finders
   appear monthly — re-probe the corpus with a broad net now and then and
   promote what is real. `CLAIMS` entries marked `live` (running counters)

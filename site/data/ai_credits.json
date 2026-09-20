@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-20T15:34:24Z",
+ "generated_at": "2026-09-20T16:07:44Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -149,6 +149,8 @@
     "scored": 216,
     "high_or_critical": 133,
     "high_or_critical_pct": 61.6,
+    "poc": 1,
+    "poc_pct": 0.5,
     "kev": 0,
     "kev_pct": 0.0
    },
@@ -274,6 +276,8 @@
     "scored": 504,
     "high_or_critical": 182,
     "high_or_critical_pct": 36.1,
+    "poc": 13,
+    "poc_pct": 2.6,
     "kev": 2,
     "kev_pct": 0.4
    },
@@ -289,6 +293,8 @@
   "scored": 47770,
   "high_or_critical": 20444,
   "high_or_critical_pct": 42.8,
+  "poc": 748,
+  "poc_pct": 1.6,
   "kev": 62,
   "kev_pct": 0.1,
   "severity": {
@@ -297,6 +303,305 @@
    "medium": 25842,
    "low": 1484,
    "unscored": 61
+  }
+ },
+ "profile": {
+  "llm": {
+   "n": 216,
+   "median_cvss": 7.5,
+   "median_epss_pctile": 22.7,
+   "epss_scored": 216,
+   "poc_pct": 0.5,
+   "kev_pct": 0.0,
+   "memory_pct": 38.0,
+   "cna_scored_pct": 69.4,
+   "top_cwe": {
+    "cwe": "CWE-416",
+    "n": 23,
+    "pct": 10.6
+   }
+  },
+  "vendor": {
+   "n": 504,
+   "median_cvss": 6.3,
+   "median_epss_pctile": 27.6,
+   "epss_scored": 504,
+   "poc_pct": 2.6,
+   "kev_pct": 0.4,
+   "memory_pct": 22.6,
+   "cna_scored_pct": 84.1,
+   "top_cwe": {
+    "cwe": "CWE-79",
+    "n": 97,
+    "pct": 19.2
+   }
+  },
+  "baseline": {
+   "n": 47831,
+   "median_cvss": 6.9,
+   "median_epss_pctile": 24.2,
+   "epss_scored": 47831,
+   "poc_pct": 1.6,
+   "kev_pct": 0.1,
+   "memory_pct": 10.0,
+   "cna_scored_pct": 91.7,
+   "top_cwe": {
+    "cwe": "CWE-79",
+    "n": 8363,
+    "pct": 17.5
+   }
+  }
+ },
+ "weaknesses": {
+  "families": [
+   {
+    "key": "memory",
+    "label": "Memory safety",
+    "llm": {
+     "n": 82,
+     "pct": 38.0
+    },
+    "vendor": {
+     "n": 114,
+     "pct": 22.6
+    },
+    "baseline": {
+     "n": 4778,
+     "pct": 10.0
+    }
+   },
+   {
+    "key": "injection",
+    "label": "Injection (XSS, SQL, command)",
+    "llm": {
+     "n": 13,
+     "pct": 6.0
+    },
+    "vendor": {
+     "n": 147,
+     "pct": 29.2
+    },
+    "baseline": {
+     "n": 17494,
+     "pct": 36.6
+    }
+   },
+   {
+    "key": "access",
+    "label": "Access control and auth",
+    "llm": {
+     "n": 44,
+     "pct": 20.4
+    },
+    "vendor": {
+     "n": 64,
+     "pct": 12.7
+    },
+    "baseline": {
+     "n": 11765,
+     "pct": 24.6
+    }
+   },
+   {
+    "key": "path",
+    "label": "Files, paths and requests",
+    "llm": {
+     "n": 11,
+     "pct": 5.1
+    },
+    "vendor": {
+     "n": 60,
+     "pct": 11.9
+    },
+    "baseline": {
+     "n": 4472,
+     "pct": 9.3
+    }
+   },
+   {
+    "key": "crypto",
+    "label": "Crypto and certificate checks",
+    "llm": {
+     "n": 22,
+     "pct": 10.2
+    },
+    "vendor": {
+     "n": 26,
+     "pct": 5.2
+    },
+    "baseline": {
+     "n": 870,
+     "pct": 1.8
+    }
+   },
+   {
+    "key": "logic",
+    "label": "Input, state and resource handling",
+    "llm": {
+     "n": 21,
+     "pct": 9.7
+    },
+    "vendor": {
+     "n": 38,
+     "pct": 7.5
+    },
+    "baseline": {
+     "n": 3044,
+     "pct": 6.4
+    }
+   },
+   {
+    "key": "other",
+    "label": "Other CWE",
+    "llm": {
+     "n": 23,
+     "pct": 10.6
+    },
+    "vendor": {
+     "n": 53,
+     "pct": 10.5
+    },
+    "baseline": {
+     "n": 4653,
+     "pct": 9.7
+    }
+   },
+   {
+    "key": "none",
+    "label": "No CWE listed",
+    "llm": {
+     "n": 0,
+     "pct": 0.0
+    },
+    "vendor": {
+     "n": 2,
+     "pct": 0.4
+    },
+    "baseline": {
+     "n": 755,
+     "pct": 1.6
+    }
+   }
+  ]
+ },
+ "targets": {
+  "llm": {
+   "cves": 216,
+   "named": 216,
+   "distinct": 44,
+   "top_share_n": 5,
+   "top_share_pct": 56.5,
+   "projects": [
+    {
+     "label": "MISP",
+     "n": 40,
+     "pct": 18.5
+    },
+    {
+     "label": "Mozilla / Firefox",
+     "n": 31,
+     "pct": 14.4
+    },
+    {
+     "label": "Legion of the Bouncy Castle Inc. / BC-JAVA",
+     "n": 30,
+     "pct": 13.9
+    },
+    {
+     "label": "FreeBSD",
+     "n": 13,
+     "pct": 6.0
+    },
+    {
+     "label": "PostgreSQL",
+     "n": 8,
+     "pct": 3.7
+    },
+    {
+     "label": "Wireshark Foundation / Wireshark",
+     "n": 8,
+     "pct": 3.7
+    },
+    {
+     "label": "wolfSSL",
+     "n": 8,
+     "pct": 3.7
+    },
+    {
+     "label": "QuickJS",
+     "n": 7,
+     "pct": 3.2
+    },
+    {
+     "label": "The Document Foundation / LibreOffice",
+     "n": 7,
+     "pct": 3.2
+    },
+    {
+     "label": "FFmpeg",
+     "n": 6,
+     "pct": 2.8
+    }
+   ]
+  },
+  "vendor": {
+   "cves": 504,
+   "named": 504,
+   "distinct": 150,
+   "top_share_n": 5,
+   "top_share_pct": 26.6,
+   "projects": [
+    {
+     "label": "Red Hat Enterprise Linux 10",
+     "n": 63,
+     "pct": 12.5
+    },
+    {
+     "label": "OpenSSL",
+     "n": 23,
+     "pct": 4.6
+    },
+    {
+     "label": "curl",
+     "n": 17,
+     "pct": 3.4
+    },
+    {
+     "label": "OpenClaw",
+     "n": 16,
+     "pct": 3.2
+    },
+    {
+     "label": "SohuTV / CacheCloud",
+     "n": 15,
+     "pct": 3.0
+    },
+    {
+     "label": "Wireshark Foundation / Wireshark",
+     "n": 15,
+     "pct": 3.0
+    },
+    {
+     "label": "Apache Software Foundation / Apache HTTP Server",
+     "n": 14,
+     "pct": 2.8
+    },
+    {
+     "label": "atjiu / pybbs",
+     "n": 13,
+     "pct": 2.6
+    },
+    {
+     "label": "FFmpeg",
+     "n": 13,
+     "pct": 2.6
+    },
+    {
+     "label": "Frappe Framework",
+     "n": 12,
+     "pct": 2.4
+    }
+   ]
   }
  },
  "coverage": [
@@ -372,6 +677,7 @@
     "low": 11,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2025-09",
    "last_month": "2026-09",
@@ -406,6 +712,7 @@
     "low": 6,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-02",
    "last_month": "2026-09",
@@ -440,6 +747,7 @@
     "low": 2,
     "unscored": 0
    },
+   "poc": 4,
    "kev": 0,
    "first_month": "2025-07",
    "last_month": "2026-09",
@@ -470,6 +778,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-04",
    "last_month": "2026-09",
@@ -496,6 +805,7 @@
     "low": 1,
     "unscored": 0
    },
+   "poc": 1,
    "kev": 0,
    "first_month": "2025-07",
    "last_month": "2026-08",
@@ -530,6 +840,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-05",
    "last_month": "2026-08",
@@ -564,6 +875,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2025-09",
    "last_month": "2026-09",
@@ -598,6 +910,7 @@
     "low": 1,
     "unscored": 0
    },
+   "poc": 2,
    "kev": 1,
    "first_month": "2026-04",
    "last_month": "2026-06",
@@ -628,6 +941,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-03",
    "last_month": "2026-08",
@@ -654,6 +968,7 @@
     "low": 2,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-05",
    "last_month": "2026-08",
@@ -684,6 +999,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-06",
    "last_month": "2026-08",
@@ -714,6 +1030,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 1,
    "kev": 0,
    "first_month": "2026-05",
    "last_month": "2026-07",
@@ -744,6 +1061,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 2,
    "kev": 1,
    "first_month": "2025-06",
    "last_month": "2026-08",
@@ -778,6 +1096,7 @@
     "low": 1,
     "unscored": 0
    },
+   "poc": 3,
    "kev": 0,
    "first_month": "2025-03",
    "last_month": "2025-09",
@@ -812,6 +1131,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-02",
    "last_month": "2026-05",
@@ -846,6 +1166,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-04",
    "last_month": "2026-06",
@@ -876,6 +1197,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 1,
    "kev": 0,
    "first_month": "2026-03",
    "last_month": "2026-05",
@@ -910,6 +1232,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-03",
    "last_month": "2026-03",
@@ -936,6 +1259,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-04",
    "last_month": "2026-04",
@@ -962,6 +1286,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-04",
    "last_month": "2026-04",
@@ -988,6 +1313,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-05",
    "last_month": "2026-05",
@@ -1014,6 +1340,7 @@
     "low": 0,
     "unscored": 0
    },
+   "poc": 0,
    "kev": 0,
    "first_month": "2026-03",
    "last_month": "2026-03",

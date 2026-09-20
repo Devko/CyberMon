@@ -152,7 +152,84 @@
 
 .funnel-foot { margin-top: 22px; }
 
-/* ---------------------------------------- 3 · board ----------------------- */
+/* ---------------------------------------- 2 · profile: side by side ------- */
+
+.profile-table th { vertical-align: bottom; }
+
+.profile-table .profile-n {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--faint);
+  margin-top: 2px;
+}
+
+.profile-table th.profile-metric {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+  white-space: normal;
+  min-width: 11em;
+  cursor: default;
+}
+
+.profile-cell { min-width: 150px; white-space: nowrap; }
+
+.profile-track {
+  position: relative;
+  display: inline-block;
+  width: 96px;
+  height: 12px;
+  margin-right: 10px;
+  vertical-align: middle;
+  background: var(--bg-deep);
+  border: 1px solid var(--rule);
+}
+
+.profile-fill { position: absolute; inset: 0 auto 0 0; min-width: 1px; }
+
+/* the baseline, drawn into each bar's own track */
+.profile-tick {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--ink);
+}
+
+.profile-val { font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
+
+.profile-base .profile-val { color: var(--muted); }
+
+.profile-text { font-family: var(--mono); font-size: 12px; white-space: normal; }
+
+/* ---------------------------------------- 6 · targets --------------------- */
+
+.target-list { list-style: none; margin: 18px 0 0; padding: 0; }
+
+.target {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 7px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.target.is-top { color: var(--ink); }
+
+.target-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.target .funnel-track { margin-top: 0; height: 12px; }
+
+/* ---------------------------------------- 4 · board ----------------------- */
 
 .credits-table .sev-strip { width: 150px; height: 10px; margin-top: 0; }
 
@@ -173,4 +250,7 @@
 @media (max-width: 640px) {
   .stage { grid-template-columns: 7.5em minmax(0, 1fr) auto; font-size: 11px; }
   .credits-table .sev-strip { width: 96px; }
+  .profile-track { width: 56px; margin-right: 6px; }
+  .profile-cell { min-width: 104px; }
+  .profile-table th.profile-metric { min-width: 7.5em; }
 }

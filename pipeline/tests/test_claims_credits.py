@@ -169,6 +169,147 @@ def check_coverage_floor(d: dict) -> None:
     )
 
 
+def _family(d: dict, key: str) -> dict:
+    return next(f for f in d["weaknesses"]["families"] if f["key"] == key)
+
+
+def check_labs_worse_bugs_nobody_exploiting(d: dict) -> None:
+    # editorial.js (credits.html 02 headline): "The labs find worse bugs.
+    # Nobody is exploiting them."
+    llm, base = d["kinds"]["llm"]["funnel"], d["baseline"]
+    gap = llm["high_or_critical_pct"] - base["high_or_critical_pct"]
+    assert gap >= 10.0 and \
+        d["profile"]["llm"]["median_cvss"] > d["profile"]["baseline"]["median_cvss"], (
+            f"'The labs find worse bugs' needs the lab high-or-critical share "
+            f"10+ points over the baseline and a higher median CVSS; the gap "
+            f"is {gap:.1f} points"
+        )
+    assert llm["kev"] == 0 and llm["poc_pct"] <= base["poc_pct"], (
+        f"'Nobody is exploiting them' needs zero lab CVEs on KEV and a lab "
+        f"exploit-code share at or under the baseline; KEV {llm['kev']}, "
+        f"exploit code {llm['poc_pct']}% vs {base['poc_pct']}%"
+    )
+
+
+def check_attacker_interest_rows_flat_labs_quietest(d: dict) -> None:
+    # editorial.js (credits.html 02): "nothing separates AI-found bugs from
+    # anybody else's, and the labs' column is the quietest of the three"
+    p = d["profile"]
+    for kind in ("llm", "vendor"):
+        gap = abs(p[kind]["median_epss_pctile"]
+                  - p["baseline"]["median_epss_pctile"])
+        assert gap <= 10.0, (
+            f"'nothing separates AI-found bugs' needs the {kind} median EPSS "
+            f"percentile within 10 of the baseline; it is {gap:.1f} away"
+        )
+        assert p[kind]["poc_pct"] <= 5.0 and p[kind]["kev_pct"] <= 2.0, (
+            f"'nothing separates AI-found bugs' needs {kind} exploit-code and "
+            f"KEV shares to stay small; they are {p[kind]['poc_pct']}% and "
+            f"{p[kind]['kev_pct']}%"
+        )
+    for row in ("median_epss_pctile", "poc_pct", "kev_pct"):
+        assert p["llm"][row] == min(c[row] for c in p.values()), (
+            f"'the labs' column is the quietest of the three' fails on {row}: "
+            f"{ {k: c[row] for k, c in p.items()} }"
+        )
+
+
+def check_labs_far_past_baseline_on_memory_safety(d: dict) -> None:
+    # editorial.js (credits.html 02): "far past it on memory safety";
+    # (05): "Memory-safety bugs are their largest family at several times
+    # the baseline share"
+    memory = _family(d, "memory")
+    ratio = memory["llm"]["pct"] / memory["baseline"]["pct"]
+    largest = max(d["weaknesses"]["families"], key=lambda f: f["llm"]["n"])
+    assert ratio >= 2.5 and largest["key"] == "memory", (
+        f"'largest family at several times the baseline share' needs lab "
+        f"memory-safety at 2.5x+ the baseline and the labs' biggest family; "
+        f"ratio {ratio:.1f}, largest family {largest['key']}"
+    )
+
+
+def check_ai_credited_under_two_percent_of_baseline(d: dict) -> None:
+    # editorial.js (credits.html 02 methodology): "they are under two
+    # percent of it"
+    ai = sum(d["kinds"][k]["funnel"]["credited"] for k in ("llm", "vendor"))
+    pct = 100.0 * ai / d["baseline"]["credited"]
+    assert pct < 2.0, (
+        f"'under two percent of it' needs the AI-credited CVEs under 2% of "
+        f"the baseline; they are {pct:.2f}%"
+    )
+
+
+def check_one_cve_moves_lab_row_half_a_point(d: dict) -> None:
+    # editorial.js (credits.html 02 methodology): "a single CVE moves the
+    # labs' exploit-code row by half a point"
+    n = d["profile"]["llm"]["n"]
+    assert 150 <= n <= 280, (
+        f"'a single CVE moves the labs' exploit-code row by half a point' "
+        f"needs 150–280 lab CVEs (0.36–0.67 points each); there are {n}"
+    )
+
+
+def check_baseline_more_than_a_third_injection(d: dict) -> None:
+    # editorial.js (credits.html 05): "more than a third of credited CVEs
+    # are injection bugs"
+    pct = _family(d, "injection")["baseline"]["pct"]
+    assert 33.4 <= pct <= 45.0, (
+        f"'more than a third of credited CVEs are injection bugs' needs the "
+        f"baseline injection share in 33.4–45%; it is {pct}%"
+    )
+
+
+def check_lab_crypto_over_and_injection_gone(d: dict) -> None:
+    # editorial.js (credits.html 05 headline + caption): "memory and
+    # crypto"; "crypto and certificate flaws run several times over as
+    # well, and injection all but disappears"
+    crypto, injection = _family(d, "crypto"), _family(d, "injection")
+    ratio = crypto["llm"]["pct"] / crypto["baseline"]["pct"]
+    assert ratio >= 2.5 and injection["llm"]["pct"] <= 10.0, (
+        f"needs lab crypto at 2.5x+ the baseline and lab injection at 10% "
+        f"or less; crypto ratio {ratio:.1f}, injection "
+        f"{injection['llm']['pct']}%"
+    )
+
+
+def check_vendors_sit_in_between(d: dict) -> None:
+    # editorial.js (credits.html 05): "The vendors sit in between"
+    for key in ("memory", "injection"):
+        f = _family(d, key)
+        lo, hi = sorted((f["llm"]["pct"], f["baseline"]["pct"]))
+        assert lo <= f["vendor"]["pct"] <= hi, (
+            f"'The vendors sit in between' fails on {key}: labs "
+            f"{f['llm']['pct']}%, vendors {f['vendor']['pct']}%, baseline "
+            f"{f['baseline']['pct']}%"
+        )
+
+
+def check_half_the_lab_record_is_five_projects(d: dict) -> None:
+    # editorial.js (credits.html 06 headline): "Half the labs' record is
+    # five projects."
+    t = d["targets"]["llm"]
+    assert t["top_share_n"] == 5 and 45.0 <= t["top_share_pct"] <= 65.0, (
+        f"'Half the labs' record is five projects' needs the top-5 share in "
+        f"45–65%; it is {t['top_share_pct']}%"
+    )
+
+
+def check_vendor_tail_and_distribution_first(d: dict) -> None:
+    # editorial.js (credits.html 06): "its top five hold about a quarter —
+    # and its first row is a distribution, not a project: when Red Hat is
+    # the CNA"
+    t = d["targets"]["vendor"]
+    assert 20.0 <= t["top_share_pct"] <= 33.0, (
+        f"'its top five hold about a quarter' needs 20–33%; it is "
+        f"{t['top_share_pct']}%"
+    )
+    first = t["projects"][0]["label"]
+    assert "red hat" in first.lower(), (
+        f"'its first row is a distribution … when Red Hat is the CNA' — the "
+        f"first vendor row is now {first!r}"
+    )
+
+
 # --------------------------------------------------------------------------
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
@@ -217,6 +358,59 @@ CLAIMS = [
         "climbed from almost nothing in 2018 to better than four in ten",
         "ai_credits.json",
         check_coverage_floor,
+    ),
+    (
+        "The labs find worse bugs. Nobody is exploiting them.",
+        "ai_credits.json",
+        check_labs_worse_bugs_nobody_exploiting,
+    ),
+    (
+        "nothing separates AI-found bugs from anybody else's, and the labs' "
+        "column is the quietest of the three",
+        "ai_credits.json",
+        check_attacker_interest_rows_flat_labs_quietest,
+    ),
+    (
+        "Memory-safety bugs are their largest family at several times the "
+        "baseline share",
+        "ai_credits.json",
+        check_labs_far_past_baseline_on_memory_safety,
+    ),
+    (
+        "they are under two percent of it",
+        "ai_credits.json",
+        check_ai_credited_under_two_percent_of_baseline,
+    ),
+    (
+        "a single CVE moves the labs' exploit-code row by half a point",
+        "ai_credits.json",
+        check_one_cve_moves_lab_row_half_a_point,
+    ),
+    (
+        "more than a third of credited CVEs are injection bugs",
+        "ai_credits.json",
+        check_baseline_more_than_a_third_injection,
+    ),
+    (
+        "crypto and certificate flaws run several times over as well, and "
+        "injection all but disappears",
+        "ai_credits.json",
+        check_lab_crypto_over_and_injection_gone,
+    ),
+    (
+        "The vendors sit in between",
+        "ai_credits.json",
+        check_vendors_sit_in_between,
+    ),
+    (
+        "Half the labs' record is five projects.",
+        "ai_credits.json",
+        check_half_the_lab_record_is_five_projects,
+    ),
+    (
+        "its top five hold about a quarter",
+        "ai_credits.json",
+        check_vendor_tail_and_distribution_first,
     ),
 ]
 
