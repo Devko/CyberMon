@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-21T02:53:26Z",
+ "generated_at": "2026-09-21T06:48:45Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -7,6 +7,7 @@
    "date": "2022-11-30",
    "caption": "The month the public narrative starts: GPT-3.5 in everyone's browser.",
    "cut_year": 2021,
+   "post_start_year": 2023,
    "default": true
   },
   {
@@ -15,6 +16,7 @@
    "date": "2023-03-14",
    "caption": "The stricter test \u2014 the first model widely argued to be capable enough to matter offensively.",
    "cut_year": 2022,
+   "post_start_year": 2024,
    "default": false
   },
   {
@@ -23,6 +25,7 @@
    "date": "2025-08-27",
    "caption": "The most generous cutoff: the first vendor report of AI running real extortion operations, not just assisting.",
    "cut_year": 2024,
+   "post_start_year": 2026,
    "default": false
   }
  ],
@@ -167,138 +170,138 @@
     "years": [
      {
       "year": 1999,
-      "value": -800.0,
-      "n": 109
+      "value": -765.0,
+      "n": 107
      },
      {
       "year": 2000,
-      "value": -88.0,
-      "n": 553
+      "value": -87.0,
+      "n": 552
      },
      {
       "year": 2001,
       "value": -118.0,
-      "n": 431
+      "n": 430
      },
      {
       "year": 2002,
-      "value": -101.0,
+      "value": -100.5,
       "n": 430
      },
      {
       "year": 2003,
       "value": -14.0,
-      "n": 384
+      "n": 383
      },
      {
       "year": 2004,
-      "value": -21.5,
-      "n": 432
+      "value": -21.0,
+      "n": 427
      },
      {
       "year": 2005,
       "value": -6.0,
-      "n": 1957
+      "n": 1954
      },
      {
       "year": 2006,
       "value": -3.0,
-      "n": 2486
+      "n": 2484
      },
      {
       "year": 2007,
       "value": -3.0,
-      "n": 2750
+      "n": 2745
      },
      {
       "year": 2008,
       "value": -5.0,
-      "n": 2556
+      "n": 2550
      },
      {
       "year": 2009,
-      "value": -22.0,
-      "n": 2640
+      "value": -21.0,
+      "n": 2634
      },
      {
       "year": 2010,
       "value": -8.0,
-      "n": 1367
+      "n": 1362
      },
      {
       "year": 2011,
-      "value": -19.0,
-      "n": 719
+      "value": -16.0,
+      "n": 709
      },
      {
       "year": 2012,
-      "value": -30.0,
-      "n": 867
+      "value": -28.0,
+      "n": 854
      },
      {
       "year": 2013,
-      "value": -13.0,
-      "n": 593
+      "value": -7.0,
+      "n": 577
      },
      {
       "year": 2014,
-      "value": -9.0,
-      "n": 864
+      "value": -8.0,
+      "n": 837
      },
      {
       "year": 2015,
-      "value": -2.0,
-      "n": 697
+      "value": -1.0,
+      "n": 683
      },
      {
       "year": 2016,
-      "value": -1.0,
-      "n": 461
+      "value": 0.0,
+      "n": 452
      },
      {
       "year": 2017,
-      "value": -2.0,
-      "n": 1346
+      "value": -1.0,
+      "n": 1297
      },
      {
       "year": 2018,
-      "value": 0.0,
-      "n": 1100
+      "value": 1.0,
+      "n": 1066
      },
      {
       "year": 2019,
-      "value": -2.0,
-      "n": 828
+      "value": 0.0,
+      "n": 780
      },
      {
       "year": 2020,
-      "value": -2.0,
-      "n": 645
+      "value": 1.0,
+      "n": 526
      },
      {
       "year": 2021,
-      "value": 1.0,
-      "n": 336
+      "value": 8.0,
+      "n": 247
      },
      {
       "year": 2022,
-      "value": 4.0,
-      "n": 308
+      "value": 20.0,
+      "n": 220
      },
      {
       "year": 2023,
-      "value": 1.0,
-      "n": 393
+      "value": 15.5,
+      "n": 270
      },
      {
       "year": 2024,
-      "value": 2.5,
-      "n": 262
+      "value": 166.5,
+      "n": 154
      },
      {
       "year": 2025,
-      "value": -11.5,
-      "n": 506
+      "value": 38.0,
+      "n": 197
      }
     ]
    },
@@ -310,138 +313,138 @@
     "years": [
      {
       "year": 1999,
-      "value": 98.2,
-      "n": 109
+      "value": 97.2,
+      "n": 107
      },
      {
       "year": 2000,
-      "value": 97.8,
-      "n": 553
+      "value": 97.1,
+      "n": 552
      },
      {
       "year": 2001,
-      "value": 98.6,
-      "n": 431
+      "value": 98.1,
+      "n": 430
      },
      {
       "year": 2002,
-      "value": 96.5,
+      "value": 95.6,
       "n": 430
      },
      {
       "year": 2003,
-      "value": 95.6,
-      "n": 384
+      "value": 94.8,
+      "n": 383
      },
      {
       "year": 2004,
-      "value": 93.5,
-      "n": 432
+      "value": 91.3,
+      "n": 427
      },
      {
       "year": 2005,
-      "value": 94.5,
-      "n": 1957
+      "value": 93.4,
+      "n": 1954
      },
      {
       "year": 2006,
-      "value": 94.0,
-      "n": 2486
+      "value": 92.9,
+      "n": 2484
      },
      {
       "year": 2007,
-      "value": 97.2,
-      "n": 2750
+      "value": 96.2,
+      "n": 2745
      },
      {
       "year": 2008,
-      "value": 96.9,
-      "n": 2556
+      "value": 96.0,
+      "n": 2550
      },
      {
       "year": 2009,
-      "value": 97.1,
-      "n": 2640
+      "value": 95.5,
+      "n": 2634
      },
      {
       "year": 2010,
-      "value": 94.4,
-      "n": 1367
+      "value": 91.0,
+      "n": 1362
      },
      {
       "year": 2011,
-      "value": 91.9,
-      "n": 719
+      "value": 86.7,
+      "n": 709
      },
      {
       "year": 2012,
-      "value": 94.8,
-      "n": 867
+      "value": 88.8,
+      "n": 854
      },
      {
       "year": 2013,
-      "value": 85.3,
-      "n": 593
+      "value": 75.2,
+      "n": 577
      },
      {
       "year": 2014,
-      "value": 84.6,
-      "n": 864
+      "value": 80.3,
+      "n": 837
      },
      {
       "year": 2015,
-      "value": 77.2,
-      "n": 697
+      "value": 71.9,
+      "n": 683
      },
      {
       "year": 2016,
-      "value": 76.1,
-      "n": 461
+      "value": 71.2,
+      "n": 452
      },
      {
       "year": 2017,
-      "value": 83.5,
-      "n": 1346
+      "value": 80.6,
+      "n": 1297
      },
      {
       "year": 2018,
-      "value": 79.3,
-      "n": 1100
+      "value": 75.3,
+      "n": 1066
      },
      {
       "year": 2019,
-      "value": 79.6,
-      "n": 828
+      "value": 73.2,
+      "n": 780
      },
      {
       "year": 2020,
-      "value": 76.6,
-      "n": 645
+      "value": 65.6,
+      "n": 526
      },
      {
       "year": 2021,
-      "value": 64.9,
-      "n": 336
+      "value": 48.6,
+      "n": 247
      },
      {
       "year": 2022,
-      "value": 56.8,
-      "n": 308
+      "value": 35.9,
+      "n": 220
      },
      {
       "year": 2023,
-      "value": 62.1,
-      "n": 393
+      "value": 41.1,
+      "n": 270
      },
      {
       "year": 2024,
-      "value": 51.5,
-      "n": 262
+      "value": 13.0,
+      "n": 154
      },
      {
       "year": 2025,
-      "value": 75.1,
-      "n": 506
+      "value": 25.9,
+      "n": 197
      }
     ]
    },
@@ -453,138 +456,138 @@
     "years": [
      {
       "year": 1999,
-      "value": 98.2,
-      "n": 109
+      "value": 97.2,
+      "n": 107
      },
      {
       "year": 2000,
-      "value": 97.6,
-      "n": 553
+      "value": 96.9,
+      "n": 552
      },
      {
       "year": 2001,
-      "value": 98.4,
-      "n": 431
+      "value": 97.9,
+      "n": 430
      },
      {
       "year": 2002,
-      "value": 96.3,
+      "value": 95.3,
       "n": 430
      },
      {
       "year": 2003,
-      "value": 91.7,
-      "n": 384
+      "value": 90.3,
+      "n": 383
      },
      {
       "year": 2004,
-      "value": 89.1,
-      "n": 432
+      "value": 85.7,
+      "n": 427
      },
      {
       "year": 2005,
-      "value": 87.7,
-      "n": 1957
+      "value": 86.4,
+      "n": 1954
      },
      {
       "year": 2006,
-      "value": 88.0,
-      "n": 2486
+      "value": 86.8,
+      "n": 2484
      },
      {
       "year": 2007,
-      "value": 91.3,
-      "n": 2750
+      "value": 90.3,
+      "n": 2745
      },
      {
       "year": 2008,
-      "value": 94.6,
-      "n": 2556
+      "value": 93.6,
+      "n": 2550
      },
      {
       "year": 2009,
-      "value": 95.1,
-      "n": 2640
+      "value": 93.2,
+      "n": 2634
      },
      {
       "year": 2010,
-      "value": 90.8,
-      "n": 1367
+      "value": 87.4,
+      "n": 1362
      },
      {
       "year": 2011,
-      "value": 86.8,
-      "n": 719
+      "value": 81.0,
+      "n": 709
      },
      {
       "year": 2012,
-      "value": 88.6,
-      "n": 867
+      "value": 82.9,
+      "n": 854
      },
      {
       "year": 2013,
-      "value": 77.9,
-      "n": 593
+      "value": 67.1,
+      "n": 577
      },
      {
       "year": 2014,
-      "value": 79.3,
-      "n": 864
+      "value": 74.7,
+      "n": 837
      },
      {
       "year": 2015,
-      "value": 61.7,
-      "n": 697
+      "value": 55.3,
+      "n": 683
      },
      {
       "year": 2016,
-      "value": 53.6,
-      "n": 461
+      "value": 48.2,
+      "n": 452
      },
      {
       "year": 2017,
-      "value": 55.8,
-      "n": 1346
+      "value": 51.7,
+      "n": 1297
      },
      {
       "year": 2018,
-      "value": 46.4,
-      "n": 1100
+      "value": 41.0,
+      "n": 1066
      },
      {
       "year": 2019,
-      "value": 53.6,
-      "n": 828
+      "value": 46.0,
+      "n": 780
      },
      {
       "year": 2020,
-      "value": 54.6,
-      "n": 645
+      "value": 43.5,
+      "n": 526
      },
      {
       "year": 2021,
-      "value": 31.8,
-      "n": 336
+      "value": 12.6,
+      "n": 247
      },
      {
       "year": 2022,
-      "value": 38.3,
-      "n": 308
+      "value": 16.4,
+      "n": 220
      },
      {
       "year": 2023,
-      "value": 34.9,
-      "n": 393
+      "value": 22.6,
+      "n": 270
      },
      {
       "year": 2024,
-      "value": 30.2,
-      "n": 262
+      "value": 7.8,
+      "n": 154
      },
      {
       "year": 2025,
-      "value": 55.3,
-      "n": 506
+      "value": 4.1,
+      "n": 197
      }
     ]
    }
@@ -603,163 +606,163 @@
    {
     "year": 2000,
     "value": -44.0,
-    "n": 273,
+    "n": 270,
     "provisional": false
    },
    {
     "year": 2001,
-    "value": -51.0,
-    "n": 152,
+    "value": -51.5,
+    "n": 150,
     "provisional": false
    },
    {
     "year": 2002,
-    "value": -57.0,
-    "n": 184,
+    "value": -57.5,
+    "n": 182,
     "provisional": false
    },
    {
     "year": 2003,
     "value": -3.0,
-    "n": 223,
+    "n": 221,
     "provisional": false
    },
    {
     "year": 2004,
     "value": -8.0,
-    "n": 278,
+    "n": 274,
     "provisional": false
    },
    {
     "year": 2005,
     "value": -2.0,
-    "n": 1173,
+    "n": 1161,
     "provisional": false
    },
    {
     "year": 2006,
     "value": -3.0,
-    "n": 2330,
+    "n": 2311,
     "provisional": false
    },
    {
     "year": 2007,
     "value": -3.0,
-    "n": 2428,
+    "n": 2405,
     "provisional": false
    },
    {
     "year": 2008,
     "value": -5.0,
-    "n": 2377,
+    "n": 2354,
     "provisional": false
    },
    {
     "year": 2009,
     "value": -8.0,
-    "n": 1750,
+    "n": 1711,
     "provisional": false
    },
    {
     "year": 2010,
     "value": -6.0,
-    "n": 1062,
+    "n": 1036,
     "provisional": false
    },
    {
     "year": 2011,
-    "value": -7.0,
-    "n": 421,
+    "value": -6.0,
+    "n": 405,
     "provisional": false
    },
    {
     "year": 2012,
     "value": -6.0,
-    "n": 493,
+    "n": 467,
     "provisional": false
    },
    {
     "year": 2013,
-    "value": -6.0,
-    "n": 433,
+    "value": -5.0,
+    "n": 410,
     "provisional": false
    },
    {
     "year": 2014,
     "value": -5.0,
-    "n": 599,
+    "n": 579,
     "provisional": false
    },
    {
     "year": 2015,
-    "value": -2.0,
-    "n": 542,
+    "value": -1.0,
+    "n": 539,
     "provisional": false
    },
    {
     "year": 2016,
     "value": -1.0,
-    "n": 397,
+    "n": 378,
     "provisional": false
    },
    {
     "year": 2017,
     "value": 0.0,
-    "n": 1019,
+    "n": 996,
     "provisional": false
    },
    {
     "year": 2018,
-    "value": 0.0,
-    "n": 925,
+    "value": 1.0,
+    "n": 902,
     "provisional": false
    },
    {
     "year": 2019,
     "value": 0.0,
-    "n": 584,
+    "n": 557,
     "provisional": false
    },
    {
     "year": 2020,
-    "value": 1.0,
-    "n": 354,
+    "value": 4.5,
+    "n": 252,
     "provisional": false
    },
    {
     "year": 2021,
-    "value": 1.0,
-    "n": 267,
+    "value": 4.5,
+    "n": 186,
     "provisional": false
    },
    {
     "year": 2022,
-    "value": 1.0,
-    "n": 205,
+    "value": 7.0,
+    "n": 134,
     "provisional": false
    },
    {
     "year": 2023,
-    "value": 0.0,
-    "n": 326,
+    "value": 7.0,
+    "n": 213,
     "provisional": false
    },
    {
     "year": 2024,
-    "value": 0.0,
-    "n": 146,
+    "value": 11.0,
+    "n": 42,
     "provisional": false
    },
    {
     "year": 2025,
-    "value": 1.0,
-    "n": 221,
+    "value": 10.0,
+    "n": 134,
     "provisional": true
    },
    {
     "year": 2026,
-    "value": 1.0,
-    "n": 107,
+    "value": 36.0,
+    "n": 59,
     "provisional": true
    }
   ]
@@ -778,68 +781,71 @@
      {
       "era": "chatgpt",
       "cut_year": 2021,
+      "post_start_year": 2023,
       "early": {
-       "value": -32.6,
+       "value": -32.8,
        "years": 5,
-       "n": 1110
+       "n": 1097
       },
       "pre": {
-       "value": 0.4,
+       "value": 2.0,
        "years": 5,
-       "n": 3149
+       "n": 2893
       },
       "post": {
-       "value": 0.6,
-       "years": 5,
-       "n": 1005
+       "value": 9.0,
+       "years": 2,
+       "n": 255
       },
-      "era_shift": 0.2,
-      "pct_banked": 99.4,
-      "shift_share_pct": -0.6,
-      "verdict": "no_inflection"
+      "era_shift": 7.0,
+      "pct_banked": 83.3,
+      "shift_share_pct": -16.7,
+      "verdict": "decelerated"
      },
      {
       "era": "gpt4",
       "cut_year": 2022,
+      "post_start_year": 2024,
       "early": {
-       "value": -32.6,
+       "value": -32.8,
        "years": 5,
-       "n": 1110
+       "n": 1097
       },
       "pre": {
-       "value": 0.6,
+       "value": 3.4,
        "years": 5,
-       "n": 2335
+       "n": 2031
       },
       "post": {
-       "value": 0.5,
-       "years": 4,
-       "n": 800
+       "value": 11.0,
+       "years": 1,
+       "n": 42
       },
-      "era_shift": -0.1,
-      "pct_banked": 100.3,
-      "shift_share_pct": 0.3,
-      "verdict": "no_inflection"
+      "era_shift": 7.6,
+      "pct_banked": null,
+      "shift_share_pct": null,
+      "verdict": "insufficient"
      },
      {
       "era": "uplift",
       "cut_year": 2024,
+      "post_start_year": 2026,
       "early": {
-       "value": -32.6,
+       "value": -32.8,
        "years": 5,
-       "n": 1110
+       "n": 1097
       },
       "pre": {
-       "value": 0.6,
+       "value": 6.8,
        "years": 5,
-       "n": 1298
+       "n": 827
       },
       "post": {
-       "value": 1.0,
-       "years": 2,
-       "n": 328
+       "value": null,
+       "years": 0,
+       "n": 0
       },
-      "era_shift": 0.4,
+      "era_shift": null,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -856,68 +862,71 @@
      {
       "era": "chatgpt",
       "cut_year": 2021,
+      "post_start_year": 2023,
       "early": {
-       "value": -224.2,
+       "value": -216.9,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": -1.0,
+       "value": 1.8,
        "years": 5,
-       "n": 4255
+       "n": 3916
       },
       "post": {
-       "value": -1.0,
-       "years": 4,
-       "n": 1469
+       "value": 73.3,
+       "years": 3,
+       "n": 621
       },
-      "era_shift": 0.0,
-      "pct_banked": 100.0,
-      "shift_share_pct": -0.0,
-      "verdict": "no_inflection"
+      "era_shift": 71.5,
+      "pct_banked": 75.4,
+      "shift_share_pct": -24.6,
+      "verdict": "decelerated"
      },
      {
       "era": "gpt4",
       "cut_year": 2022,
+      "post_start_year": 2024,
       "early": {
-       "value": -224.2,
+       "value": -216.9,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 0.2,
+       "value": 6.0,
        "years": 5,
-       "n": 3217
+       "n": 2839
       },
       "post": {
-       "value": -2.7,
-       "years": 3,
-       "n": 1161
+       "value": 102.2,
+       "years": 2,
+       "n": 351
       },
-      "era_shift": -2.9,
-      "pct_banked": 101.3,
-      "shift_share_pct": 1.3,
-      "verdict": "no_inflection"
+      "era_shift": 96.2,
+      "pct_banked": 69.9,
+      "shift_share_pct": -30.1,
+      "verdict": "decelerated"
      },
      {
       "era": "uplift",
       "cut_year": 2024,
+      "post_start_year": 2026,
       "early": {
-       "value": -224.2,
+       "value": -216.9,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 1.3,
+       "value": 42.2,
        "years": 5,
-       "n": 1944
+       "n": 1417
       },
       "post": {
-       "value": -11.5,
-       "years": 1,
-       "n": 506
+       "value": null,
+       "years": 0,
+       "n": 0
       },
-      "era_shift": -12.8,
+      "era_shift": null,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -934,68 +943,71 @@
      {
       "era": "chatgpt",
       "cut_year": 2021,
+      "post_start_year": 2023,
       "early": {
-       "value": 97.3,
+       "value": 96.6,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 76.8,
+       "value": 68.7,
        "years": 5,
-       "n": 4255
+       "n": 3916
       },
       "post": {
-       "value": 61.4,
-       "years": 4,
-       "n": 1469
+       "value": 26.7,
+       "years": 3,
+       "n": 621
       },
-      "era_shift": -15.4,
-      "pct_banked": 57.1,
-      "shift_share_pct": -42.9,
+      "era_shift": -42.0,
+      "pct_banked": 39.9,
+      "shift_share_pct": -60.1,
       "verdict": "decelerated"
      },
      {
       "era": "gpt4",
       "cut_year": 2022,
+      "post_start_year": 2024,
       "early": {
-       "value": 97.3,
+       "value": 96.6,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 71.4,
+       "value": 59.7,
        "years": 5,
-       "n": 3217
+       "n": 2839
       },
       "post": {
-       "value": 62.9,
-       "years": 3,
-       "n": 1161
+       "value": 19.4,
+       "years": 2,
+       "n": 351
       },
-      "era_shift": -8.5,
-      "pct_banked": 75.3,
-      "shift_share_pct": -24.7,
+      "era_shift": -40.3,
+      "pct_banked": 47.8,
+      "shift_share_pct": -52.2,
       "verdict": "decelerated"
      },
      {
       "era": "uplift",
       "cut_year": 2024,
+      "post_start_year": 2026,
       "early": {
-       "value": 97.3,
+       "value": 96.6,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 62.4,
+       "value": 40.8,
        "years": 5,
-       "n": 1944
+       "n": 1417
       },
       "post": {
-       "value": 75.1,
-       "years": 1,
-       "n": 506
+       "value": null,
+       "years": 0,
+       "n": 0
       },
-      "era_shift": 12.7,
+      "era_shift": null,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1012,68 +1024,71 @@
      {
       "era": "chatgpt",
       "cut_year": 2021,
+      "post_start_year": 2023,
       "early": {
-       "value": 96.4,
+       "value": 95.5,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 48.4,
+       "value": 39.0,
        "years": 5,
-       "n": 4255
+       "n": 3916
       },
       "post": {
-       "value": 39.7,
-       "years": 4,
-       "n": 1469
+       "value": 11.5,
+       "years": 3,
+       "n": 621
       },
-      "era_shift": -8.7,
-      "pct_banked": 84.7,
-      "shift_share_pct": -15.3,
+      "era_shift": -27.5,
+      "pct_banked": 67.3,
+      "shift_share_pct": -32.7,
       "verdict": "decelerated"
      },
      {
       "era": "gpt4",
       "cut_year": 2022,
+      "post_start_year": 2024,
       "early": {
-       "value": 96.4,
+       "value": 95.5,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 44.9,
+       "value": 31.9,
        "years": 5,
-       "n": 3217
+       "n": 2839
       },
       "post": {
-       "value": 40.1,
-       "years": 3,
-       "n": 1161
+       "value": 5.9,
+       "years": 2,
+       "n": 351
       },
-      "era_shift": -4.8,
-      "pct_banked": 91.5,
-      "shift_share_pct": -8.5,
-      "verdict": "no_inflection"
+      "era_shift": -26.0,
+      "pct_banked": 71.0,
+      "shift_share_pct": -29.0,
+      "verdict": "decelerated"
      },
      {
       "era": "uplift",
       "cut_year": 2024,
+      "post_start_year": 2026,
       "early": {
-       "value": 96.4,
+       "value": 95.5,
        "years": 5,
-       "n": 1907
+       "n": 1902
       },
       "pre": {
-       "value": 38.0,
+       "value": 20.6,
        "years": 5,
-       "n": 1944
+       "n": 1417
       },
       "post": {
-       "value": 55.3,
-       "years": 1,
-       "n": 506
+       "value": null,
+       "years": 0,
+       "n": 0
       },
-      "era_shift": 17.3,
+      "era_shift": null,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1692,26 +1707,23 @@
   "clock": [
    {
     "year": 2021,
-    "value": 1.0
+    "value": 4.5
    },
    {
     "year": 2022,
-    "value": 4.0
+    "value": 7.0
    },
    {
     "year": 2023,
-    "value": 1.0
+    "value": 7.0
    },
    {
     "year": 2024,
-    "value": 2.5
-   },
-   {
-    "year": 2025,
-    "value": -11.5
+    "value": 11.0
    }
   ],
   "clock_unit": "days",
+  "clock_metric": "poc_like_for_like",
   "headline": {
    "term_id": "agentic_ai",
    "label": "Agentic AI",
@@ -1719,28 +1731,28 @@
    "index_last": 56.4,
    "month_first": "2021-10",
    "month_last": "2026-08",
-   "clock_min": -11.5,
-   "clock_max": 4.0,
-   "clock_mean": -0.6,
+   "clock_min": 4.5,
+   "clock_max": 11.0,
+   "clock_mean": 7.4,
    "clock_year_first": 2021,
-   "clock_year_last": 2025
+   "clock_year_last": 2024
   }
  },
  "headline": {
   "era": "chatgpt",
   "era_label": "ChatGPT",
   "cut_year": 2021,
-  "verdict": "no_inflection",
-  "pct_banked": 99.4,
-  "pre": 0.4,
-  "post": 0.6,
+  "verdict": "decelerated",
+  "pct_banked": 83.3,
+  "pre": 2.0,
+  "post": 9.0,
   "milestones": 14,
   "no_uplift_reports": 2,
   "cells": 12,
-  "judged": 8,
+  "judged": 7,
   "accelerated": 0,
-  "decelerated": 3,
-  "no_inflection": 5,
+  "decelerated": 7,
+  "no_inflection": 0,
   "pct_accelerated": 0.0
  }
 }

@@ -3,3294 +3,3843 @@
  "last_observed": "2026-09-21",
  "orgs": {
   "2N": {
+   "cna_id": "CNA-2025-0060",
    "country": "Czech Republic",
    "org": "2N Telekomunikace a.s.",
    "scope": "1d1efabbaa23",
    "type": "Vendor"
   },
   "42Gears": {
+   "cna_id": "CNA-2023-0024",
    "country": "India",
    "org": "42Gears Mobility Systems Pvt Ltd",
    "scope": "69aaab914b17",
    "type": "Vendor"
   },
   "9front": {
+   "cna_id": "CNA-2024-0049",
    "country": "USA",
    "org": "9front Systems",
    "scope": "21e64bc69e2d",
    "type": "Open Source"
   },
   "@huntr_ai": {
+   "cna_id": "CNA-2021-0018",
    "country": "USA",
    "org": "Protect AI (formerly huntr.dev)",
    "scope": "ab2fa63b12a3",
    "type": "Bug Bounty Provider + Open Source + Researcher"
   },
   "ABB": {
+   "cna_id": "CNA-2019-0013",
    "country": "Switzerland",
    "org": "Asea Brown Boveri Ltd. (ABB)",
    "scope": "90c696a7fcf7",
    "type": "Vendor"
   },
   "ADI": {
+   "cna_id": "CNA-2023-0059",
    "country": "USA",
    "org": "Analog Devices, Inc.",
    "scope": "c124583f9aa2",
    "type": "Vendor"
   },
   "AHA": {
+   "cna_id": "CNA-2023-0005",
    "country": "USA",
    "org": "Austin Hackers Anonymous",
    "scope": "3643d7cf8cde",
    "type": "Researcher"
   },
   "AISLE": {
+   "cna_id": "CNA-2026-0049",
    "country": "Netherlands",
    "org": "AISLE Incorporated",
    "scope": "d5a575cfc8a5",
    "type": "Researcher + Vendor"
   },
   "AMD": {
+   "cna_id": "CNA-2020-0013",
    "country": "USA",
    "org": "Advanced Micro Devices Inc.",
    "scope": "0ce14ccab6c8",
    "type": "Vendor"
   },
   "AMI": {
+   "cna_id": "CNA-2023-0031",
    "country": "USA",
    "org": "AMI",
    "scope": "d1180211a178",
    "type": "Open Source + Researcher + Vendor"
   },
   "AMZN": {
+   "cna_id": "CNA-2024-0045",
    "country": "USA",
    "org": "Amazon",
    "scope": "830d13e0cc35",
    "type": "Bug Bounty Provider + Open Source + Vendor"
   },
   "ARCON": {
+   "cna_id": "CNA-2023-0077",
    "country": "India",
    "org": "ARCON Techsolutions Private Limited",
    "scope": "7fc03db75546",
    "type": "Vendor"
   },
   "ASR": {
+   "cna_id": "CNA-2023-0079",
    "country": "China",
    "org": "ASR Microelectronics Co., Ltd.",
    "scope": "13c95709fab6",
    "type": "Vendor"
   },
   "ASRG": {
+   "cna_id": "CNA-2022-0006",
    "country": "USA",
    "org": "Automotive Security Research Group (ASRG)",
    "scope": "4bb3e06c3e95",
    "type": "Researcher"
   },
   "ASUS": {
+   "cna_id": "CNA-2024-0064",
    "country": "Taiwan",
    "org": "ASUSTeK Computer Incorporation",
    "scope": "78ed483cfbf9",
    "type": "Vendor"
   },
   "ASUSTOR": {
+   "cna_id": "CNA-2021-0048",
    "country": "Taiwan",
    "org": "ASUSTOR, Inc.",
    "scope": "f1f9c919776a",
    "type": "Vendor"
   },
   "ATIS": {
+   "cna_id": "CNA-2025-0007",
    "country": "Spain",
    "org": "ATISoluciones Dise\u00f1o de Sistemas Electr\u00f3nicos, S.L.",
    "scope": "969cdd0e87ac",
    "type": "Vendor"
   },
   "Absolute": {
+   "cna_id": "CNA-2021-0033",
    "country": "USA",
    "org": "Absolute Software",
    "scope": "f1ef73abc79d",
    "type": "Vendor"
   },
   "Acer": {
+   "cna_id": "CNA-2026-0018",
    "country": "Taiwan",
    "org": "Acer Inc.",
    "scope": "2bc59d931957",
    "type": "Vendor"
   },
   "Acronis": {
+   "cna_id": "CNA-2021-0053",
    "country": "Switzerland",
    "org": "Acronis International GmbH",
    "scope": "67d71e229a5c",
    "type": "Vendor"
   },
   "Airlock": {
+   "cna_id": "CNA-2026-0033",
    "country": "Switzerland",
    "org": "Airlock by Ergon",
    "scope": "66a217aba3a1",
    "type": "Vendor"
   },
   "Airoha": {
+   "cna_id": "CNA-2026-0063",
    "country": "Taiwan",
    "org": "Airoha Technology Corp.",
    "scope": "729f1192e8a6",
    "type": "Vendor"
   },
   "AlgoSec": {
+   "cna_id": "CNA-2023-0060",
    "country": "Israel",
    "org": "AlgoSec",
    "scope": "afa241f24354",
    "type": "Vendor"
   },
   "Alias": {
+   "cna_id": "CNA-2020-0004",
    "country": "Spain",
    "org": "Alias Robotics S.L.",
    "scope": "b4d3c9d054a3",
    "type": "Researcher + Vendor"
   },
   "Almaviva": {
+   "cna_id": "CNA-2025-0052",
    "country": "Italy",
    "org": "Almaviva S.p.A.",
    "scope": "d2810e512ce2",
    "type": "Hosted Service + Vendor"
   },
   "Altera": {
+   "cna_id": "CNA-2025-0058",
    "country": "USA",
    "org": "Altera",
    "scope": "73d35a241d2f",
    "type": "Vendor"
   },
   "Altium": {
+   "cna_id": "CNA-2025-0033",
    "country": "USA",
    "org": "Altium",
    "scope": "40433e87c25f",
    "type": "Vendor"
   },
   "Ampere": {
+   "cna_id": "CNA-2020-0006",
    "country": "USA",
    "org": "Ampere Computing",
    "scope": "abf618c19f99",
    "type": "Vendor"
   },
   "Anolis": {
+   "cna_id": "CNA-2022-0011",
    "country": "China",
    "org": "OpenAnolis",
    "scope": "59b1dfc913f1",
    "type": "Open Source + Vendor"
   },
   "Antenna": {
+   "cna_id": "CNA-2025-0042",
    "country": "USA",
    "org": "Antenna",
    "scope": "77c74867ab56",
    "type": "Open Source"
   },
   "Anthropic": {
+   "cna_id": "CNA-2026-0052",
    "country": "USA",
    "org": "Anthropic, PBC",
    "scope": "d900b630b0a9",
    "type": "AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor"
   },
   "AppCheck": {
+   "cna_id": "CNA-2021-0052",
    "country": "UK",
    "org": "AppCheck Ltd.",
    "scope": "9c28d17efb04",
    "type": "Researcher"
   },
   "Arista": {
+   "cna_id": "CNA-2021-0008",
    "country": "USA",
    "org": "Arista Networks, Inc.",
    "scope": "9c9b8ec7116a",
    "type": "Vendor"
   },
   "Arm": {
+   "cna_id": "CNA-2023-0036",
    "country": "UK",
    "org": "Arm Limited",
    "scope": "5543d7c52bd3",
    "type": "Open Source + Vendor"
   },
   "Armis": {
+   "cna_id": "CNA-2023-0074",
    "country": "USA",
    "org": "Armis, Inc.",
    "scope": "32b3d3d0ec26",
    "type": "Researcher + Vendor"
   },
   "Arteche": {
+   "cna_id": "CNA-2025-0037",
    "country": "Spain",
    "org": "Arteche",
    "scope": "e11329bbe2b6",
    "type": "Vendor"
   },
   "Arxscan": {
+   "cna_id": "CNA-2024-0062",
    "country": "USA",
    "org": "Arxscan, Inc.",
    "scope": "deac5964a59e",
    "type": "Vendor"
   },
   "Automox": {
+   "cna_id": "CNA-2024-0085",
    "country": "USA",
    "org": "Automox Inc.",
    "scope": "876ecf062510",
    "type": "Hosted Service + Vendor"
   },
   "Axis": {
+   "cna_id": "CNA-2021-0014",
    "country": "Sweden",
    "org": "Axis Communications AB",
    "scope": "b9c2a0d0a559",
    "type": "Vendor"
   },
   "AxxonSoft": {
+   "cna_id": "CNA-2025-0045",
    "country": "Ireland",
    "org": "AxxonSoft Limited",
    "scope": "33b031d2f44f",
    "type": "Hosted Service + Vendor"
   },
   "B.Braun": {
+   "cna_id": "CNA-2023-0007",
    "country": "Germany",
    "org": "B. Braun SE",
    "scope": "b3dfe9826298",
    "type": "Vendor"
   },
   "BAE": {
+   "cna_id": "CNA-2026-0031",
    "country": "USA",
    "org": "BAE Systems, Inc.",
    "scope": "9bd2c678d0a9",
    "type": "Hosted Service"
   },
   "BCNY": {
+   "cna_id": "CNA-2025-0054",
    "country": "USA",
    "org": "The Browser Company of New York",
    "scope": "519434db135a",
    "type": "Bug Bounty Provider + Vendor"
   },
   "BD": {
+   "cna_id": "CNA-2021-0021",
    "country": "USA",
    "org": "Becton, Dickinson and Company (BD)",
    "scope": "6c64671a245e",
    "type": "Vendor"
   },
   "BECDX": {
+   "cna_id": "CNA-2024-0077",
    "country": "USA",
    "org": "Beckman Coulter Diagnostics",
    "scope": "b9ec177c8bc4",
    "type": "Vendor"
   },
   "BECLS": {
+   "cna_id": "CNA-2024-0080",
    "country": "USA",
    "org": "Beckman Coulter Life Sciences",
    "scope": "2ac436332589",
    "type": "Vendor"
   },
   "BHV": {
+   "cna_id": "CNA-2023-0038",
    "country": "USA",
    "org": "Biohacking Village",
    "scope": "65001b7f7a23",
    "type": "Researcher"
   },
   "BLSOPS": {
+   "cna_id": "CNA-2023-0027",
    "country": "USA",
    "org": "Black Lantern Security",
    "scope": "370f70f9ecf8",
    "type": "Researcher"
   },
   "BT": {
+   "cna_id": "CNA-2024-0015",
    "country": "USA",
    "org": "BeyondTrust Inc.",
    "scope": "28ada0546f84",
    "type": "Vendor"
   },
   "Baidu": {
+   "cna_id": "CNA-2022-0052",
    "country": "China",
    "org": "Baidu, Inc.",
    "scope": "a37cf3e605e2",
    "type": "Open Source + Vendor"
   },
   "Baxter": {
+   "cna_id": "CNA-2022-0002",
    "country": "USA",
    "org": "Baxter Healthcare",
    "scope": "c81febc109c7",
    "type": "Vendor"
   },
   "Bitdefender": {
+   "cna_id": "CNA-2019-0008",
    "country": "Romania",
    "org": "Bitdefender",
    "scope": "79ddff410410",
    "type": "Researcher + Vendor"
   },
   "BlackDuck": {
+   "cna_id": "CNA-2021-0013",
    "country": "USA",
    "org": "Black Duck Software, Inc.",
    "scope": "d98fe0cfc5b8",
    "type": "Researcher + Vendor"
   },
   "BombadilSystems": {
+   "cna_id": "CNA-2026-0014",
    "country": "USA",
    "org": "Bombadil Systems LLC",
    "scope": "95e787d57b00",
    "type": "Researcher"
   },
   "Bugcrowd": {
+   "cna_id": "CNA-2022-0033",
    "country": "USA",
    "org": "Bugcrowd Inc.",
    "scope": "e127790c5d5d",
    "type": "Bug Bounty Provider + Open Source + Vendor"
   },
   "Bull": {
+   "cna_id": "CNA-2026-0045",
    "country": "France",
    "org": "Bull SAS",
    "scope": "111e4a228a7e",
    "type": "Vendor"
   },
   "ByteDance": {
+   "cna_id": "CNA-2026-0004",
    "country": "China",
    "org": "ByteDance, Ltd.",
    "scope": "09472dda26ba",
    "type": "Open Source + Vendor"
   },
   "CEP": {
+   "cna_id": "CNA-2024-0087",
    "country": "USA",
    "org": "Cepheid",
    "scope": "3702c33bcc11",
    "type": "Vendor"
   },
   "CERT-In": {
+   "cna_id": "CNA-2021-0050",
    "country": "India",
    "org": "Indian Computer Emergency Response Team (CERT-In)",
    "scope": "aefed5ff9979",
    "type": "CERT"
   },
   "CERT-PL": {
+   "cna_id": "CNA-2023-0046",
    "country": "Poland",
    "org": "CERT.PL",
    "scope": "4a5a64339ec6",
    "type": "CERT"
   },
   "CERTVDE": {
+   "cna_id": "CNA-2020-0010",
    "country": "Germany",
    "org": "CERT@VDE",
    "scope": "d00addb71365",
    "type": "CERT"
   },
   "CIRCL": {
+   "cna_id": "CNA-2026-0027",
    "country": "Luxembourg",
    "org": "Computer Incident Response Center Luxembourg (CIRCL)",
    "scope": "93b9752e546e",
    "type": "CERT"
   },
   "CISA": {
+   "cna_id": "CNA-2023-0047",
    "country": "USA",
    "org": "Cybersecurity and Infrastructure Security Agency (CISA)",
    "scope": "5d548df9b8fe",
    "type": "N/A"
   },
   "CODRA": {
+   "cna_id": "CNA-2026-0007",
    "country": "France",
    "org": "CODRA",
    "scope": "1ab36acb921f",
    "type": "Vendor"
   },
   "CPANSec": {
+   "cna_id": "CNA-2025-0012",
    "country": "Canada",
    "org": "CPAN Security Group",
    "scope": "c852d3c9e4e8",
    "type": "Open Source"
   },
   "CSA": {
+   "cna_id": "CNA-2024-0071",
    "country": "Singapore",
    "org": "Cyber Security Agency of Singapore",
    "scope": "a32484cefabf",
    "type": "CERT"
   },
   "CSAI": {
+   "cna_id": "CNA-2026-0025",
    "country": "USA",
    "org": "Cloud Security Alliance",
    "scope": "d8818cb47fd1",
    "type": "Vendor"
   },
   "CSW": {
+   "cna_id": "CNA-2020-0034",
    "country": "India",
    "org": "Cyber Security Works Pvt. Ltd.",
    "scope": "cbe7b7c411ff",
    "type": "Researcher"
   },
   "CTOne": {
+   "cna_id": "CNA-2025-0019",
    "country": "Taiwan",
    "org": "CTOne Inc.",
    "scope": "c4b1ead53e8a",
    "type": "Bug Bounty Provider + Researcher + Vendor"
   },
   "Caliptra": {
+   "cna_id": "CNA-2023-0065",
    "country": "USA",
    "org": "Caliptra Project",
    "scope": "0259877c775c",
    "type": "Open Source"
   },
   "Canon": {
+   "cna_id": "CNA-2022-0054",
    "country": "Japan",
    "org": "Canon Inc.",
    "scope": "6dd7e0b04ddb",
    "type": "Vendor"
   },
   "Canon_EMEA": {
+   "cna_id": "CNA-2023-0061",
    "country": "UK",
    "org": "Canon EMEA",
    "scope": "535815cf887c",
    "type": "Vendor"
   },
   "Canva": {
+   "cna_id": "CNA-2026-0019",
    "country": "Australia",
    "org": "Canva",
    "scope": "bd2806f23321",
    "type": "Open Source + Researcher + Vendor"
   },
   "Carrier": {
+   "cna_id": "CNA-2021-0054",
    "country": "USA",
    "org": "Carrier Global Corporation",
    "scope": "2d1df933fe81",
    "type": "Hosted Service + Vendor"
   },
   "Cato": {
+   "cna_id": "CNA-2024-0044",
    "country": "Israel",
    "org": "Cato Networks",
    "scope": "5d215c069416",
    "type": "Researcher + Vendor"
   },
   "Censys": {
+   "cna_id": "CNA-2021-0035",
    "country": "USA",
    "org": "Censys",
    "scope": "f26d7cff478c",
    "type": "Researcher + Vendor"
   },
   "Centreon": {
+   "cna_id": "CNA-2025-0006",
    "country": "France",
    "org": "Centreon",
    "scope": "d6d2c6bac5d7",
    "type": "Open Source + Vendor"
   },
   "Checkmarx": {
+   "cna_id": "CNA-2023-0078",
    "country": "Israel",
    "org": "Checkmarx",
    "scope": "d35051fcf6c1",
    "type": "Open Source + Researcher + Vendor"
   },
   "Checkmk": {
+   "cna_id": "CNA-2022-0055",
    "country": "Germany",
    "org": "Checkmk GmbH",
    "scope": "472e6f908a4e",
    "type": "Open Source + Vendor"
   },
   "Chrome": {
+   "cna_id": "CNA-2011-0003",
    "country": "USA",
    "org": "Chrome",
    "scope": "f2585cac3092",
    "type": "Open Source + Researcher + Vendor"
   },
   "ChromeOS": {
+   "cna_id": "CNA-2024-0004",
    "country": "USA",
    "org": "ChromeOS Project",
    "scope": "28def8ae1bd8",
    "type": "Bug Bounty Provider + Vendor"
   },
   "Ciena": {
+   "cna_id": "CNA-2023-0080",
    "country": "USA",
    "org": "Ciena Corporation",
    "scope": "c5bacd99c3a1",
    "type": "Vendor"
   },
   "Circutor": {
+   "cna_id": "CNA-2026-0060",
    "country": "Spain",
    "org": "Circutor",
    "scope": "d1f1ef7e2ea1",
    "type": "Vendor"
   },
   "Citrix": {
+   "cna_id": "CNA-2022-0003",
    "country": "USA",
    "org": "Citrix Systems, Inc.",
    "scope": "6d03a74de055",
    "type": "Vendor"
   },
   "ClickHouse": {
+   "cna_id": "CNA-2024-0037",
    "country": "USA",
    "org": "ClickHouse, Inc.",
    "scope": "640b6ea6916c",
    "type": "Open Source + Vendor"
   },
   "Commvault": {
+   "cna_id": "CNA-2025-0044",
    "country": "USA",
    "org": "Commvault Systems Inc.",
    "scope": "c5eda5362255",
    "type": "Hosted Service + Vendor"
   },
   "ConcreteCMS": {
+   "cna_id": "CNA-2024-0001",
    "country": "USA",
    "org": "Concrete CMS",
    "scope": "2a9566957ae7",
    "type": "Open Source"
   },
   "ConnectWise": {
+   "cna_id": "CNA-2024-0036",
    "country": "USA",
    "org": "ConnectWise LLC",
    "scope": "0065d965ab6e",
    "type": "Researcher + Vendor"
   },
   "CoolKit": {
+   "cna_id": "CNA-2024-0021",
    "country": "China",
    "org": "SHENZHEN CoolKit Technology CO., LTD.",
    "scope": "13211dc1fd20",
    "type": "Vendor"
   },
   "Crafter_CMS": {
+   "cna_id": "CNA-2020-0030",
    "country": "USA",
    "org": "Crafter CMS",
    "scope": "6ac237996121",
    "type": "Open Source + Vendor"
   },
   "Crestron": {
+   "cna_id": "CNA-2022-0027",
    "country": "USA",
    "org": "Crestron Electronics, Inc.",
    "scope": "93c28ff84cd8",
    "type": "Vendor"
   },
   "Cribl": {
+   "cna_id": "CNA-2026-0015",
    "country": "USA",
    "org": "Cribl, Inc.",
    "scope": "507e00a9d500",
    "type": "Vendor"
   },
   "CrowdStrike": {
+   "cna_id": "CNA-2023-0044",
    "country": "USA",
    "org": "CrowdStrike Holdings, Inc.",
    "scope": "3baa5a8befcc",
    "type": "Vendor"
   },
   "CyberArk": {
+   "cna_id": "CNA-2022-0031",
    "country": "Israel",
    "org": "CyberArk Labs",
    "scope": "6379561e7381",
    "type": "Researcher + Vendor"
   },
   "CyberDanube": {
+   "cna_id": "CNA-2023-0018",
    "country": "Austria",
    "org": "CyberDanube",
    "scope": "308a65a0f7f6",
    "type": "Researcher + Vendor"
   },
   "Cynet": {
+   "cna_id": "CNA-2026-0036",
    "country": "USA",
    "org": "Cynet Security Inc.",
    "scope": "9ae08ceafa64",
    "type": "Vendor"
   },
   "Cytiva": {
+   "cna_id": "CNA-2024-0061",
    "country": "USA",
    "org": "Cytiva",
    "scope": "9a7bdb357a94",
    "type": "Vendor"
   },
   "DEVOLUTIONS": {
+   "cna_id": "CNA-2021-0031",
    "country": "Canada",
    "org": "Devolutions Inc.",
    "scope": "816c962e9c31",
    "type": "Open Source + Vendor"
   },
   "DHIS2": {
+   "cna_id": "CNA-2023-0002",
    "country": "Norway",
    "org": "The HISP Centre at the University of Oslo",
    "scope": "fb2aebabc4f1",
    "type": "Open Source + Vendor"
   },
   "DIVD": {
+   "cna_id": "CNA-2022-0001",
    "country": "Netherlands",
    "org": "Dutch Institute for Vulnerability Disclosure (DIVD)",
    "scope": "b9f819564130",
    "type": "Researcher"
   },
   "DSF": {
+   "cna_id": "CNA-2025-0057",
    "country": "USA",
    "org": "Django Software Foundation",
    "scope": "5638d250b34a",
    "type": "Open Source + Vendor"
   },
   "DTEX": {
+   "cna_id": "CNA-2026-0009",
    "country": "USA",
    "org": "DTEX Systems, Inc.",
    "scope": "53504ee504d8",
    "type": "Hosted Service + Vendor"
   },
   "Danfoss": {
+   "cna_id": "CNA-2025-0010",
    "country": "Denmark",
    "org": "Danfoss",
    "scope": "c24211717c52",
    "type": "Vendor"
   },
   "Dassault_Systemes": {
+   "cna_id": "CNA-2022-0023",
    "country": "France",
    "org": "Dassault Syst\u00e8mes",
    "scope": "d73634fd8db7",
    "type": "Vendor"
   },
   "Delinea": {
+   "cna_id": "CNA-2024-0086",
    "country": "USA",
    "org": "Delinea, Inc.",
    "scope": "d8fac4a1524b",
    "type": "Hosted Service + Researcher + Vendor"
   },
   "Deltaww": {
+   "cna_id": "CNA-2024-0082",
    "country": "Taiwan",
    "org": "Delta Electronics, Inc.",
    "scope": "69a10c97bc75",
    "type": "Vendor"
   },
   "DevCycle": {
+   "cna_id": "CNA-2024-0017",
    "country": "Canada",
    "org": "DevCycle",
    "scope": "9c9da3bcbb1b",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "Dfinity": {
+   "cna_id": "CNA-2023-0072",
    "country": "Switzerland",
    "org": "DFINITY Foundation",
    "scope": "ca293d767663",
    "type": "Open Source + Vendor"
   },
   "Digi": {
+   "cna_id": "CNA-2025-0015",
    "country": "USA",
    "org": "Digi International Inc.",
    "scope": "e9b0b7f3cbb7",
    "type": "Vendor"
   },
   "Docker": {
+   "cna_id": "CNA-2022-0050",
    "country": "USA",
    "org": "Docker Inc.",
    "scope": "3bdff23ffcb6",
    "type": "Open Source + Vendor"
   },
   "Document_Fdn.": {
+   "cna_id": "CNA-2019-0002",
    "country": "Germany",
    "org": "Document Foundation, The",
    "scope": "ce92c7da5604",
    "type": "Open Source + Vendor"
   },
   "Dragos": {
+   "cna_id": "CNA-2022-0030",
    "country": "USA",
    "org": "Dragos, Inc.",
    "scope": "e28fae52c830",
    "type": "Researcher + Vendor"
   },
   "Dremio": {
+   "cna_id": "CNA-2024-0024",
    "country": "USA",
    "org": "Dremio Corporation",
    "scope": "2b19c005fb7e",
    "type": "Open Source + Vendor"
   },
   "DualVS": {
+   "cna_id": "CNA-2022-0032",
    "country": "USA",
    "org": "Dual Vipers LLC",
    "scope": "a8d420701a72",
    "type": "Hosted Service + Open Source + Researcher + Vendor"
   },
   "EA": {
+   "cna_id": "CNA-2020-0027",
    "country": "USA",
    "org": "Electronic Arts, Inc.",
    "scope": "87e170982a59",
    "type": "Vendor"
   },
   "EDB": {
+   "cna_id": "CNA-2023-0083",
    "country": "USA",
    "org": "EnterpriseDB Corporation",
    "scope": "52a3867132c9",
    "type": "Open Source + Vendor"
   },
   "EEF": {
+   "cna_id": "CNA-2025-0023",
    "country": "USA",
    "org": "Erlang Ecosystem Foundation",
    "scope": "d11849e9619c",
    "type": "Consortium + Open Source"
   },
   "ELAN": {
+   "cna_id": "CNA-2024-0003",
    "country": "Taiwan",
    "org": "ELAN Microelectronics Corp.",
    "scope": "ffa928833708",
    "type": "Vendor"
   },
   "ENISA": {
+   "cna_id": "CNA-2024-0008",
    "country": "Greece",
    "org": "EU Agency for Cybersecurity (ENISA)",
    "scope": "aeeef3808cf1",
    "type": "Consortium"
   },
   "ERIC": {
+   "cna_id": "CNA-2024-0010",
    "country": "Sweden",
    "org": "Ericsson",
    "scope": "c4109d0d5ad0",
    "type": "Vendor"
   },
   "ESET": {
+   "cna_id": "CNA-2021-0029",
    "country": "Slovak Republic",
    "org": "ESET, spol. s r.o.",
    "scope": "5f57778fce0b",
    "type": "Vendor"
   },
   "Eaton": {
+   "cna_id": "CNA-2019-0014",
    "country": "Ireland",
    "org": "Eaton",
    "scope": "d41c02b08ae8",
    "type": "Vendor"
   },
   "Echo": {
+   "cna_id": "CNA-2025-0047",
    "country": "Israel",
    "org": "Echo Software Ltd.",
    "scope": "8d00f01f47a9",
    "type": "Open Source + Researcher + Vendor"
   },
   "Edgewatch": {
+   "cna_id": "CNA-2024-0026",
    "country": "Spain",
    "org": "Edgewatch Security Intelligence",
    "scope": "d265247a3f76",
    "type": "Hosted Service + Researcher"
   },
   "Entrust": {
+   "cna_id": "CNA-2026-0024",
    "country": "USA",
    "org": "Entrust Corporation",
    "scope": "95d31d1bbc72",
    "type": "Hosted Service + Vendor"
   },
   "Esri": {
+   "cna_id": "CNA-2021-0011",
    "country": "USA",
    "org": "Environmental Systems Research Institute, Inc.",
    "scope": "e58cca781340",
    "type": "Vendor"
   },
   "Everpure": {
+   "cna_id": "CNA-2023-0052",
    "country": "USA",
    "org": "Everpure, Inc.",
    "scope": "b958cf3ce09e",
    "type": "Vendor"
   },
   "ExtremeNetworks": {
+   "cna_id": "CNA-2025-0026",
    "country": "USA",
    "org": "Extreme Networks, Inc.",
    "scope": "2a630cf52d70",
    "type": "Vendor"
   },
   "F5": {
+   "cna_id": "CNA-2016-0009",
    "country": "USA",
    "org": "F5, Inc.",
    "scope": "9cde41d503b4",
    "type": "Open Source + Vendor"
   },
   "FB": {
+   "cna_id": "CNA-2026-0017",
    "country": "Japan",
    "org": "Fujifilm Business Innovation Corp.",
    "scope": "73619448c8e1",
    "type": "Vendor"
   },
   "FERMAX": {
+   "cna_id": "CNA-2025-0032",
    "country": "Spain",
    "org": "Fermax Technologies SLU",
    "scope": "2c5861980235",
    "type": "Vendor"
   },
   "FSI": {
+   "cna_id": "CNA-2024-0012",
    "country": "South Korea",
    "org": "Financial Security Institute (FSI)",
    "scope": "dc9c31c756d0",
    "type": "Bug Bounty Provider + CERT + Researcher"
   },
   "FSOFT": {
+   "cna_id": "CNA-2021-0032",
    "country": "Vietnam",
    "org": "FPT Software Co., Ltd.",
    "scope": "a925d2cecead",
    "type": "Researcher + Vendor"
   },
   "FTI": {
+   "cna_id": "CNA-2026-0022",
    "country": "Germany",
    "org": "Fsas Technologies",
    "scope": "795af1f56be7",
    "type": "Vendor"
   },
   "FULL": {
+   "cna_id": "CNA-2022-0020",
    "country": "Brazil",
    "org": "FULL INTERNET",
    "scope": "f1531dd5ceaf",
    "type": "Bug Bounty Provider + Hosted Service + Researcher + Vendor"
   },
   "Fidelis": {
+   "cna_id": "CNA-2021-0026",
    "country": "USA",
    "org": "Fidelis Security, LLC",
    "scope": "9ddaefb78f14",
    "type": "Vendor"
   },
   "Fluid_Attacks": {
+   "cna_id": "CNA-2021-0020",
    "country": "Colombia",
    "org": "Fluid Attacks",
    "scope": "08569b9ec1f0",
    "type": "Researcher"
   },
   "Forescout": {
+   "cna_id": "CNA-2024-0048",
    "country": "USA",
    "org": "Forescout Technologies",
    "scope": "f9e87745e001",
    "type": "Researcher + Vendor"
   },
   "Fortra": {
+   "cna_id": "CNA-2023-0082",
    "country": "USA",
    "org": "Fortra, LLC",
    "scope": "c20758ea8318",
    "type": "Researcher + Vendor"
   },
   "Foxit": {
+   "cna_id": "CNA-2025-0055",
    "country": "USA",
    "org": "Foxit Software Incorporated",
    "scope": "80527038c1db",
    "type": "Vendor"
   },
   "GEN": {
+   "cna_id": "CNA-2020-0016",
    "country": "USA",
    "org": "Gen Digital Inc.",
    "scope": "e9941090e0b7",
    "type": "Vendor"
   },
   "GE_Healthcare": {
+   "cna_id": "CNA-2022-0018",
    "country": "USA",
    "org": "GE Healthcare",
    "scope": "6c4a64fb6836",
    "type": "Vendor"
   },
   "GE_Vernova": {
+   "cna_id": "CNA-2022-0009",
    "country": "USA",
    "org": "GE Vernova",
    "scope": "d59bde0a6b94",
    "type": "Vendor"
   },
   "GRAFANA": {
+   "cna_id": "CNA-2022-0048",
    "country": "USA",
    "org": "Grafana Labs",
    "scope": "499577634030",
    "type": "Open Source + Vendor"
   },
   "GV": {
+   "cna_id": "CNA-2025-0043",
    "country": "Taiwan",
    "org": "GeoVision Inc.",
    "scope": "dfe890553888",
    "type": "Vendor"
   },
   "Gallagher": {
+   "cna_id": "CNA-2020-0024",
    "country": "New Zealand",
    "org": "Gallagher Group Ltd.",
    "scope": "ceb4a3298376",
    "type": "Vendor"
   },
   "GandC": {
+   "cna_id": "CNA-2023-0015",
    "country": "USA",
    "org": "Glyph & Cog, LLC",
    "scope": "9a847aaad14a",
    "type": "Open Source + Vendor"
   },
   "Genetec": {
+   "cna_id": "CNA-2023-0004",
    "country": "Canada",
    "org": "Genetec Inc.",
    "scope": "710d938f3cf5",
    "type": "Hosted Service + Vendor"
   },
   "GitHub_M": {
+   "cna_id": "CNA-2019-0009",
    "country": "USA",
    "org": "GitHub, Inc.",
    "scope": "049da96d140b",
    "type": "Open Source + Researcher + Vendor"
   },
   "GitHub_P": {
+   "cna_id": "CNA-2020-0007",
    "country": "USA",
    "org": "GitHub, Inc. (Products Only)",
    "scope": "9941c30760d7",
    "type": "Vendor"
   },
   "GitLab": {
+   "cna_id": "CNA-2020-0018",
    "country": "USA",
    "org": "GitLab Inc.",
    "scope": "86695ed1ceca",
    "type": "Researcher + Vendor"
   },
   "Gitea": {
+   "cna_id": "CNA-2023-0039",
    "country": "China",
    "org": "Gitea Limited",
    "scope": "2c024f17a861",
    "type": "Open Source + Vendor"
   },
   "Go": {
+   "cna_id": "CNA-2022-0008",
    "country": "USA",
    "org": "Go Project",
    "scope": "29fd3b6dd0f1",
    "type": "Open Source + Vendor"
   },
   "Google": {
+   "cna_id": "CNA-2020-0005",
    "country": "USA",
    "org": "Google LLC",
    "scope": "010ff828da63",
    "type": "Open Source + Researcher + Vendor"
   },
   "GoogleCloud": {
+   "cna_id": "CNA-2025-0038",
    "country": "USA",
    "org": "Google Cloud",
    "scope": "4ade9f2e0df0",
    "type": "Vendor"
   },
   "Google_Devices": {
+   "cna_id": "CNA-2023-0040",
    "country": "USA",
    "org": "Google Devices",
    "scope": "c17dd4e60354",
    "type": "Vendor"
   },
   "Grayback": {
+   "cna_id": "CNA-2026-0059",
    "country": "Spain",
    "org": "Grayback Security",
    "scope": "b3e415a3cf7e",
    "type": "Bug Bounty Provider"
   },
   "GreenRocketSecurity": {
+   "cna_id": "CNA-2022-0039",
    "country": "USA",
    "org": "Green Rocket Security Inc.",
    "scope": "153fd20c5efe",
    "type": "Vendor"
   },
   "Gridware": {
+   "cna_id": "CNA-2024-0076",
    "country": "Australia",
    "org": "Gridware Cybersecurity",
    "scope": "363c0395e777",
    "type": "Researcher"
   },
   "HCL": {
+   "cna_id": "CNA-2019-0010",
    "country": "India",
    "org": "HCL Software",
    "scope": "b895220cfafd",
    "type": "Vendor"
   },
   "HDFG": {
+   "cna_id": "CNA-2026-0016",
    "country": "USA",
    "org": "The HDF Group",
    "scope": "bb804224ae18",
    "type": "Open Source"
   },
   "HDS": {
+   "cna_id": "CNA-2026-0048",
    "country": "Slovak Republic",
    "org": "HDS a.s.",
    "scope": "7096db6eef35",
    "type": "Vendor"
   },
   "HONA": {
+   "cna_id": "CNA-2026-0066",
    "country": "USA",
    "org": "Honeywell Aerospace",
    "scope": "6817a09bf9a8",
    "type": "Vendor"
   },
   "HYPR": {
+   "cna_id": "CNA-2022-0013",
    "country": "USA",
    "org": "HYPR Corp",
    "scope": "d08f6319c69b",
    "type": "Vendor"
   },
   "HackRTU": {
+   "cna_id": "CNA-2025-0046",
    "country": "Spain",
    "org": "HackRTU",
    "scope": "44453caf95b9",
    "type": "Researcher"
   },
   "Hackrate": {
+   "cna_id": "CNA-2026-0001",
    "country": "Hungary",
    "org": "Hackrate Kft.",
    "scope": "ca2cca0ba34f",
    "type": "Bug Bounty Provider"
   },
   "Halborn": {
+   "cna_id": "CNA-2023-0022",
    "country": "USA",
    "org": "Halborn",
    "scope": "c539b8e39b4d",
    "type": "Researcher"
   },
   "Hallo_Welt": {
+   "cna_id": "CNA-2022-0015",
    "country": "Germany",
    "org": "Hallo Welt! GmbH",
    "scope": "9a983204f83b",
    "type": "Vendor"
   },
   "Hanwha_Vision": {
+   "cna_id": "CNA-2023-0043",
    "country": "South Korea",
    "org": "Hanwha Vision Co., Ltd.",
    "scope": "0b3180708e81",
    "type": "Vendor"
   },
   "HashiCorp": {
+   "cna_id": "CNA-2022-0037",
    "country": "USA",
    "org": "HashiCorp Inc.",
    "scope": "795f0c4e4c03",
    "type": "Vendor"
   },
   "HemoCue": {
+   "cna_id": "CNA-2025-0004",
    "country": "Sweden",
    "org": "HemoCue AB",
    "scope": "aff89582361e",
    "type": "Vendor"
   },
   "HeroDevs": {
+   "cna_id": "CNA-2024-0041",
    "country": "USA",
    "org": "HeroDevs",
    "scope": "004b02a82e8a",
    "type": "Open Source + Researcher + Vendor"
   },
   "HiddenLayer": {
+   "cna_id": "CNA-2023-0084",
    "country": "USA",
    "org": "HiddenLayer, Inc.",
    "scope": "08c3c78bd1c0",
    "type": "Hosted Service + Researcher + Vendor"
   },
   "Hillstone": {
+   "cna_id": "CNA-2023-0009",
    "country": "China",
    "org": "Hillstone Networks Inc.",
    "scope": "a7cec4277d3d",
    "type": "Vendor"
   },
   "Hitachi": {
+   "cna_id": "CNA-2022-0014",
    "country": "Japan",
    "org": "Hitachi, Ltd.",
    "scope": "e34763632a03",
    "type": "Vendor"
   },
   "Hitachi_Energy": {
+   "cna_id": "CNA-2021-0028",
    "country": "Switzerland",
    "org": "Hitachi Energy",
    "scope": "f4ee8b9a944e",
    "type": "Vendor"
   },
   "Hitachi_Vantara": {
+   "cna_id": "CNA-2022-0017",
    "country": "USA",
    "org": "Hitachi Vantara",
    "scope": "47b5302e97f6",
    "type": "Vendor"
   },
   "Hologic": {
+   "cna_id": "CNA-2026-0032",
    "country": "USA",
    "org": "Hologic, Inc.",
    "scope": "0884e9e4e621",
    "type": "Vendor"
   },
   "Honeywell": {
+   "cna_id": "CNA-2022-0046",
    "country": "USA",
    "org": "Honeywell International Inc.",
    "scope": "6599edad29d4",
    "type": "Vendor"
   },
   "Honor": {
+   "cna_id": "CNA-2022-0045",
    "country": "China",
    "org": "Honor Device Co., Ltd.",
    "scope": "c7f9ac15d320",
    "type": "Vendor"
   },
   "Huntress": {
+   "cna_id": "CNA-2024-0047",
    "country": "USA",
    "org": "Huntress Labs Inc.",
    "scope": "daadc8a24202",
    "type": "Researcher + Vendor"
   },
   "ICT": {
+   "cna_id": "CNA-2023-0056",
    "country": "New Zealand",
    "org": "Integrated Control Technology LTD",
    "scope": "ef9343d7c01b",
    "type": "Vendor"
   },
   "IDBS": {
+   "cna_id": "CNA-2023-0042",
    "country": "UK",
    "org": "ID Business Solutions",
    "scope": "29ba3e59ccc1",
    "type": "Vendor"
   },
   "IDEMIA": {
+   "cna_id": "CNA-2023-0014",
    "country": "France",
    "org": "IDEMIA",
    "scope": "499488990079",
    "type": "Researcher + Vendor"
   },
   "IDT-DNA": {
+   "cna_id": "CNA-2025-0013",
    "country": "USA",
    "org": "Integrated DNA Technologies, Inc.",
    "scope": "7e75ad6df71b",
    "type": "Vendor"
   },
   "INCD": {
+   "cna_id": "CNA-2021-0030",
    "country": "Israel",
    "org": "Israel National Cyber Directorate (INCD)",
    "scope": "c539cc56c22d",
    "type": "CERT"
   },
   "INCIBE": {
+   "cna_id": "CNA-2020-0002",
    "country": "Spain",
    "org": "Spanish National Cybersecurity Institute, S.A. (INCIBE)",
    "scope": "b65168d70f95",
    "type": "CERT"
   },
   "IQSIGHT": {
+   "cna_id": "CNA-2026-0039",
    "country": "Netherlands",
    "org": "IQSIGHT B.V.",
    "scope": "1792898a15d1",
    "type": "Vendor"
   },
   "Illumio": {
+   "cna_id": "CNA-2023-0026",
    "country": "USA",
    "org": "Illumio",
    "scope": "9b2e30c7fa64",
    "type": "Vendor"
   },
   "Insyde": {
+   "cna_id": "CNA-2025-0022",
    "country": "USA",
    "org": "Insyde Software",
    "scope": "9dac6876432d",
    "type": "Researcher + Vendor"
   },
   "Intigriti": {
+   "cna_id": "CNA-2024-0052",
    "country": "Belgium",
    "org": "Intigriti",
    "scope": "30e13dee4f72",
    "type": "Bug Bounty Provider + Hosted Service + Vendor"
   },
   "IoT83": {
+   "cna_id": "CNA-2023-0028",
    "country": "USA",
    "org": "IoT83 Ltd",
    "scope": "0442311738ad",
    "type": "Vendor"
   },
   "JAMF": {
+   "cna_id": "CNA-2024-0025",
    "country": "USA",
    "org": "Jamf",
    "scope": "e7c5bd7b520d",
    "type": "Open Source + Vendor"
   },
   "JFrog": {
+   "cna_id": "CNA-2021-0039",
    "country": "Israel",
    "org": "JFrog",
    "scope": "f42b9bdda6d0",
    "type": "Researcher + Vendor"
   },
   "Jaspersoft": {
+   "cna_id": "CNA-2025-0020",
    "country": "USA",
    "org": "Jaspersoft",
    "scope": "1caadb724bf2",
    "type": "Vendor"
   },
   "JetBrains": {
+   "cna_id": "CNA-2022-0004",
    "country": "Czech Republic",
    "org": "JetBrains s.r.o.",
    "scope": "34cd4ba81c0f",
    "type": "Open Source + Vendor"
   },
   "Joomla": {
+   "cna_id": "CNA-2020-0036",
    "country": "USA",
    "org": "Joomla! Project",
    "scope": "d91a65d419b7",
    "type": "Open Source + Vendor"
   },
   "JupiterOne": {
+   "cna_id": "CNA-2026-0011",
    "country": "USA",
    "org": "JupiterOne, Inc.",
    "scope": "6a23b1ae48b3",
    "type": "Hosted Service + Researcher + Vendor"
   },
   "KCFTech": {
+   "cna_id": "CNA-2023-0068",
    "country": "USA",
    "org": "KCF Technologies, Inc.",
    "scope": "1af5e6d612dd",
    "type": "Hosted Service + Vendor"
   },
   "KNIME": {
+   "cna_id": "CNA-2022-0024",
    "country": "Switzerland",
    "org": "KNIME AG",
    "scope": "c9d2c6dac238",
    "type": "Vendor"
   },
   "Kaspersky": {
+   "cna_id": "CNA-2017-0027",
    "country": "Russia",
    "org": "Kaspersky",
    "scope": "54dc2465a5de",
    "type": "Researcher + Vendor"
   },
   "KeeperSecurity": {
+   "cna_id": "CNA-2023-0064",
    "country": "USA",
    "org": "Keeper Security, Inc.",
    "scope": "a826fa5760f8",
    "type": "Vendor"
   },
   "Kong": {
+   "cna_id": "CNA-2024-0042",
    "country": "USA",
    "org": "Kong Inc.",
    "scope": "cbe4850f87fb",
    "type": "Vendor"
   },
   "KoreLogic": {
+   "cna_id": "CNA-2024-0040",
    "country": "USA",
    "org": "KoreLogic Security",
    "scope": "d46d51790722",
    "type": "Researcher"
   },
   "KrakenD": {
+   "cna_id": "CNA-2022-0042",
    "country": "Spain",
    "org": "KrakenD, S.L.",
    "scope": "711006a825c0",
    "type": "Open Source + Vendor"
   },
   "LGE": {
+   "cna_id": "CNA-2021-0037",
    "country": "South Korea",
    "org": "LG Electronics",
    "scope": "da1245071158",
    "type": "Vendor"
   },
   "LMS": {
+   "cna_id": "CNA-2024-0034",
    "country": "Germany",
    "org": "Leica Microsystems",
    "scope": "18ae49455410",
    "type": "Vendor"
   },
   "LY-Corporation": {
+   "cna_id": "CNA-2020-0038",
    "country": "Japan",
    "org": "LY Corporation",
    "scope": "2d4ed98ac120",
    "type": "Open Source"
   },
   "LeicaBiosystems": {
+   "cna_id": "CNA-2024-0072",
    "country": "USA",
    "org": "Leica Biosystems",
    "scope": "cfc861f14279",
    "type": "Vendor"
   },
   "Leonardo": {
+   "cna_id": "CNA-2025-0050",
    "country": "Italy",
    "org": "Leonardo S.p.A.",
    "scope": "7c0613fe19bf",
    "type": "CERT + Vendor"
   },
   "Lexmark": {
+   "cna_id": "CNA-2023-0063",
    "country": "USA",
    "org": "Lexmark International Inc.",
    "scope": "a7acf5aee780",
    "type": "Vendor"
   },
   "Liferay": {
+   "cna_id": "CNA-2023-0016",
    "country": "USA",
    "org": "Liferay, Inc.",
    "scope": "033ca511cab8",
    "type": "Vendor"
   },
   "Linux": {
+   "cna_id": "CNA-2024-0016",
    "country": "USA",
    "org": "kernel.org",
    "scope": "4832d532f97e",
    "type": "Open Source + Vendor"
   },
   "Logitech": {
+   "cna_id": "CNA-2020-0032",
    "country": "Switzerland",
    "org": "Logitech",
    "scope": "2f8928b45d8b",
    "type": "Vendor"
   },
   "M-Files": {
+   "cna_id": "CNA-2021-0038",
    "country": "Finland",
    "org": "M-Files Corporation",
    "scope": "5666d41af50e",
    "type": "Vendor"
   },
   "MHV": {
+   "cna_id": "CNA-2025-0032",
    "country": "USA",
    "org": "Maritime Hacking Village",
    "scope": "903011201db3",
    "type": "Researcher"
   },
   "MIM": {
+   "cna_id": "CNA-2023-0041",
    "country": "USA",
    "org": "MIM Software Inc.",
    "scope": "ecb5d9e7ad27",
    "type": "Vendor"
   },
   "MON-CSIRT": {
+   "cna_id": "CNA-2024-0059",
    "country": "Australia",
    "org": "Monash University - Cyber Security Incident Response Team",
    "scope": "b478e06babb3",
    "type": "CERT + Open Source + Researcher"
   },
   "Mandiant": {
+   "cna_id": "CNA-2023-0051",
    "country": "USA",
    "org": "Mandiant Inc.",
    "scope": "5d9af2fac569",
    "type": "Researcher + Vendor"
   },
   "Mattermost": {
+   "cna_id": "CNA-2020-0028",
    "country": "USA",
    "org": "Mattermost, Inc.",
    "scope": "fb9a9bbb202e",
    "type": "Researcher + Vendor"
   },
   "Mautic": {
+   "cna_id": "CNA-2021-0005",
    "country": "USA",
    "org": "Mautic",
    "scope": "f1527b245b18",
    "type": "Open Source + Vendor"
   },
   "MediaTek": {
+   "cna_id": "CNA-2021-0043",
    "country": "Taiwan",
    "org": "MediaTek, Inc.",
    "scope": "dc46a503a705",
    "type": "Vendor"
   },
   "Medtronic": {
+   "cna_id": "CNA-2022-0005",
    "country": "USA",
    "org": "Medtronic",
    "scope": "86202ac7df7d",
    "type": "Vendor"
   },
   "Meta": {
+   "cna_id": "CNA-2018-0001",
    "country": "USA",
    "org": "Meta Platforms, Inc.",
    "scope": "214b7122de01",
    "type": "Open Source + Researcher + Vendor"
   },
   "Microchip": {
+   "cna_id": "CNA-2024-0028",
    "country": "USA",
    "org": "Microchip Technology",
    "scope": "8e8ed8fe57fa",
    "type": "Vendor"
   },
   "Mirantis": {
+   "cna_id": "CNA-2001-0062",
    "country": "USA",
    "org": "Mirantis",
    "scope": "82dfe4f68673",
    "type": "Open Source + Researcher + Vendor"
   },
   "Mitsubishi": {
+   "cna_id": "CNA-2020-0039",
    "country": "Japan",
    "org": "Mitsubishi Electric Corporation",
    "scope": "9942381b3c49",
    "type": "Vendor"
   },
   "MolDev": {
+   "cna_id": "CNA-2025-0001",
    "country": "USA",
    "org": "Molecular Devices",
    "scope": "0b244ed08a0e",
    "type": "Vendor"
   },
   "Moxa": {
+   "cna_id": "CNA-2023-0029",
    "country": "Taiwan",
    "org": "Moxa Inc.",
    "scope": "7ad0ed9a3922",
    "type": "Vendor"
   },
   "MyMMT": {
+   "cna_id": "CNA-2024-0066",
    "country": "USA",
    "org": "Mammotome",
    "scope": "1694b99ce501",
    "type": "Vendor"
   },
   "N-able": {
+   "cna_id": "CNA-2024-0030",
    "country": "USA",
    "org": "N-able",
    "scope": "b7ac05ab1799",
    "type": "Vendor"
   },
   "NCSC": {
+   "cna_id": "CNA-2026-0054",
    "country": "Belgium",
    "org": "NATO Cyber Security Centre",
    "scope": "1fbcec837286",
    "type": "Researcher"
   },
   "NCSC-FI": {
+   "cna_id": "CNA-2023-0033",
    "country": "Finland",
    "org": "National Cyber Security Centre Finland (NCSC-FI)",
    "scope": "ceb892a8c9ce",
    "type": "CERT"
   },
   "NCSC-NL": {
+   "cna_id": "CNA-2022-0022",
    "country": "Netherlands",
    "org": "National Cyber Security Centre Netherlands (NCSC-NL)",
    "scope": "12b3fbd43472",
    "type": "Vendor"
   },
   "NCSC.ch": {
+   "cna_id": "CNA-2021-0040",
    "country": "Switzerland",
    "org": "Switzerland National Cyber Security Centre (NCSC)",
    "scope": "dd156e59bdf3",
    "type": "CERT"
   },
   "NEC": {
+   "cna_id": "CNA-2021-0012",
    "country": "Japan",
    "org": "NEC Corporation",
    "scope": "ae21185093b3",
    "type": "Vendor"
   },
   "NETGEAR": {
+   "cna_id": "CNA-2025-0040",
    "country": "USA",
    "org": "NETGEAR",
    "scope": "d39f8becd2d7",
    "type": "Vendor"
   },
   "NI": {
+   "cna_id": "CNA-2023-0003",
    "country": "USA",
    "org": "National Instruments",
    "scope": "c561789f1de9",
    "type": "Vendor"
   },
   "NIBEGroup": {
+   "cna_id": "CNA-2026-0002",
    "country": "Sweden",
    "org": "NIBE Group",
    "scope": "12f7cdd191b7",
    "type": "Vendor"
   },
   "NLnet_Labs": {
+   "cna_id": "CNA-2020-0033",
    "country": "Netherlands",
    "org": "NLnet Labs",
    "scope": "622cf6cf930a",
    "type": "Open Source + Vendor"
   },
   "NX": {
+   "cna_id": "CNA-2023-0071",
    "country": "USA",
    "org": "Network Optix",
    "scope": "23fc5e0348c5",
    "type": "Open Source + Vendor"
   },
   "Neo4j": {
+   "cna_id": "CNA-2024-0073",
    "country": "Sweden",
    "org": "Neo4j",
    "scope": "19749e44feca",
    "type": "Open Source + Vendor"
   },
   "NetRise": {
+   "cna_id": "CNA-2022-0036",
    "country": "USA",
    "org": "NetRise",
    "scope": "0a2691afb8e7",
    "type": "Researcher"
   },
   "NetScaler": {
+   "cna_id": "CNA-2025-0061",
    "country": "USA",
    "org": "NetScaler",
    "scope": "9001fca93323",
    "type": "Vendor"
   },
   "Netskope": {
+   "cna_id": "CNA-2022-0007",
    "country": "USA",
    "org": "Netskope",
    "scope": "294f498089a9",
    "type": "Vendor"
   },
   "Nintendo": {
+   "cna_id": "CNA-2026-0005",
    "country": "Japan",
    "org": "Nintendo Co., Ltd.",
    "scope": "491dc9c33d08",
    "type": "Vendor"
   },
   "Nokia": {
+   "cna_id": "CNA-2023-0055",
    "country": "Finland",
    "org": "Nokia",
    "scope": "2ea16febc79a",
    "type": "Vendor"
   },
   "Nozomi": {
+   "cna_id": "CNA-2020-0029",
    "country": "USA",
    "org": "Nozomi Networks Inc.",
    "scope": "3b01b3f1ba7f",
    "type": "Researcher + Vendor"
   },
   "Nutanix": {
+   "cna_id": "CNA-2025-0056",
    "country": "USA",
    "org": "Nutanix",
    "scope": "8c3d47819f6c",
    "type": "Vendor"
   },
   "OAI": {
+   "cna_id": "CNA-2026-0026",
    "country": "USA",
    "org": "OpenAI",
    "scope": "308118b337e7",
    "type": "AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor"
   },
   "OB": {
+   "cna_id": "CNA-2024-0075",
    "country": "China",
    "org": "OceanBase",
    "scope": "46b3585e63ec",
    "type": "Vendor"
   },
   "OCD": {
+   "cna_id": "CNA-2026-0029",
    "country": "France",
    "org": "Orange Cyberdefense",
    "scope": "b291b25ba621",
    "type": "CERT + Researcher + Vendor"
   },
   "ODA": {
+   "cna_id": "CNA-2023-0037",
    "country": "USA",
    "org": "Open Design Alliance",
    "scope": "8340c3c45aab",
    "type": "Vendor"
   },
   "OMICRON": {
+   "cna_id": "CNA-2026-0038",
    "country": "Austria",
    "org": "OMICRON electronics",
    "scope": "6f06dc72ac04",
    "type": "Vendor"
   },
   "OMRON": {
+   "cna_id": "CNA-2024-0070",
    "country": "Japan",
    "org": "OMRON Corporation",
    "scope": "3ba86df552c4",
    "type": "Vendor"
   },
   "ONEKEY": {
+   "cna_id": "CNA-2022-0043",
    "country": "Germany",
    "org": "ONEKEY GmbH",
    "scope": "13df7e878770",
    "type": "Researcher + Vendor"
   },
   "OPPO": {
+   "cna_id": "CNA-2019-0006",
    "country": "China",
    "org": "OPPO Mobile Telecommunication Corp., Ltd.",
    "scope": "f8102e6745bd",
    "type": "Vendor"
   },
   "OS-S": {
+   "cna_id": "CNA-2024-0031",
    "country": "Germany",
    "org": "OpenSource Security GmbH",
    "scope": "20d16f468c6a",
    "type": "Researcher"
   },
   "OTRS": {
+   "cna_id": "CNA-2019-0015",
    "country": "Germany",
    "org": "OTRS AG",
    "scope": "6bbf08795c4a",
    "type": "Vendor"
   },
   "OX": {
+   "cna_id": "CNA-2023-0008",
    "country": "Germany",
    "org": "Open-Xchange",
    "scope": "dfef3142a63e",
    "type": "Open Source + Vendor"
   },
   "Octopus": {
+   "cna_id": "CNA-2021-0017",
    "country": "Australia",
    "org": "Octopus Deploy",
    "scope": "7755ac904f5d",
    "type": "Open Source + Vendor"
   },
   "Okta": {
+   "cna_id": "CNA-2021-0049",
    "country": "USA",
    "org": "Okta",
    "scope": "79d63b2d76fc",
    "type": "Vendor"
   },
   "Omnissa": {
+   "cna_id": "CNA-2024-0078",
    "country": "USA",
    "org": "Omnissa, LLC",
    "scope": "cae3cfcf9859",
    "type": "Vendor"
   },
   "OnLogic": {
+   "cna_id": "CNA-2024-0074",
    "country": "USA",
    "org": "OnLogic",
    "scope": "afb7e6ce2ff9",
    "type": "Vendor"
   },
   "OpenBMC": {
+   "cna_id": "CNA-2021-0066",
    "country": "USA",
    "org": "The OpenBMC Project",
    "scope": "fc1ab75c9ca2",
    "type": "Open Source + Vendor"
   },
   "OpenHarmony": {
+   "cna_id": "CNA-2022-0026",
    "country": "China",
    "org": "OpenHarmony",
    "scope": "de4dccf4a3de",
    "type": "Open Source"
   },
   "OpenNMS": {
+   "cna_id": "CNA-2022-0029",
    "country": "USA",
    "org": "The OpenNMS Group",
    "scope": "f67c6c447fdf",
    "type": "Open Source + Vendor"
   },
   "OpenText": {
+   "cna_id": "CNA-2014-0002",
    "country": "USA",
    "org": "OpenText (formerly Micro Focus)",
    "scope": "c5cc1cee366a",
    "type": "Vendor"
   },
   "OpenVPN": {
+   "cna_id": "CNA-2020-0017",
    "country": "USA",
    "org": "OpenVPN Inc.",
    "scope": "3b9412ae05eb",
    "type": "Open Source + Vendor"
   },
   "Opera": {
+   "cna_id": "CNA-2019-0017",
    "country": "Norway",
    "org": "Opera Norway AS",
    "scope": "78e7ca386de3",
    "type": "Open Source + Vendor"
   },
   "PRJBLK": {
+   "cna_id": "CNA-2026-0008",
    "country": "Australia",
    "org": "Project Black",
    "scope": "3806c3e04eb4",
    "type": "Researcher"
   },
   "PSF": {
+   "cna_id": "CNA-2023-0053",
    "country": "USA",
    "org": "Python Software Foundation",
    "scope": "4c40ee1d1bc6",
    "type": "Open Source + Vendor"
   },
   "PTC": {
+   "cna_id": "CNA-2025-0003",
    "country": "USA",
    "org": "PTC Inc.",
    "scope": "1dc636955c50",
    "type": "Vendor"
   },
   "Palantir": {
+   "cna_id": "CNA-2021-0041",
    "country": "USA",
    "org": "Palantir Technologies",
    "scope": "ebc53afeb5f6",
    "type": "Vendor"
   },
   "Pall": {
+   "cna_id": "CNA-2024-0065",
    "country": "USA",
    "org": "Pall Corporation",
    "scope": "ea088c165b85",
    "type": "Vendor"
   },
   "Panasonic_Holdings_Corporation": {
+   "cna_id": "CNA-2021-0057",
    "country": "Japan",
    "org": "Panasonic Holdings Corporation",
    "scope": "3581ce8c64ad",
    "type": "Vendor"
   },
   "PandoraFMS": {
+   "cna_id": "CNA-2021-0055",
    "country": "Spain",
    "org": "Pandora FMS",
    "scope": "4e772b59fb57",
    "type": "Vendor"
   },
   "PangeaCyber": {
+   "cna_id": "CNA-2025-0008",
    "country": "USA",
    "org": "Pangea Cyber Corporation",
    "scope": "e553fd30f6c2",
    "type": "Hosted Service + Researcher + Vendor"
   },
   "PaperCut": {
+   "cna_id": "CNA-2023-0066",
    "country": "Australia",
    "org": "PaperCut Software Pty Ltd",
    "scope": "84d68af43488",
    "type": "Vendor"
   },
   "Patchstack": {
+   "cna_id": "CNA-2021-0025",
    "country": "Estonia",
    "org": "Patchstack",
    "scope": "7902f499de4e",
    "type": "Bug Bounty Provider + Hosted Service + Open Source + Researcher + Vendor"
   },
   "Payara": {
+   "cna_id": "CNA-2023-0032",
    "country": "UK",
    "org": "Payara",
    "scope": "a45b9797626d",
    "type": "Open Source + Vendor"
   },
   "Pega": {
+   "cna_id": "CNA-2020-0012",
    "country": "USA",
    "org": "Pegasystems Inc.",
    "scope": "400914be8256",
    "type": "Vendor"
   },
   "Pentraze": {
+   "cna_id": "CNA-2024-0002",
    "country": "Dominican Republic",
    "org": "Pentraze Cybersecurity",
    "scope": "f5195fe932ee",
    "type": "Researcher"
   },
   "Perforce": {
+   "cna_id": "CNA-2016-0023",
    "country": "USA",
    "org": "Perforce",
    "scope": "c8723bf604f8",
    "type": "Open Source + Vendor"
   },
   "Philips": {
+   "cna_id": "CNA-2022-0012",
    "country": "Netherlands",
    "org": "Philips",
    "scope": "91a8589842cf",
    "type": "Vendor"
   },
   "Phoenix": {
+   "cna_id": "CNA-2023-0049",
    "country": "USA",
    "org": "Phoenix Technologies, Inc.",
    "scope": "795463482a50",
    "type": "Researcher + Vendor"
   },
   "PingCAP": {
+   "cna_id": "CNA-2024-0069",
    "country": "USA",
    "org": "PingCAP (US), Inc.",
    "scope": "2b065267221d",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "PingIdentity": {
+   "cna_id": "CNA-2021-0042",
    "country": "USA",
    "org": "Ping Identity Corporation",
    "scope": "1dfc8a42f66b",
    "type": "Bug Bounty Provider + Hosted Service + Researcher"
   },
   "PlexTrac": {
+   "cna_id": "CNA-2024-0063",
    "country": "USA",
    "org": "PlexTrac, Inc.",
    "scope": "c5dbb5616107",
    "type": "Vendor"
   },
   "PostgreSQL": {
+   "cna_id": "CNA-2024-0005",
    "country": "Canada",
    "org": "PostgreSQL",
    "scope": "046ff7d45bbc",
    "type": "Open Source"
   },
   "Profelis": {
+   "cna_id": "CNA-2021-0059",
    "country": "T\u00fcrkiye",
    "org": "Profelis IT Consultancy",
    "scope": "386421a42a6b",
    "type": "Vendor"
   },
   "Profisee": {
+   "cna_id": "CNA-2025-0029",
    "country": "USA",
    "org": "Profisee Group, Inc.",
    "scope": "271229d86ff0",
    "type": "Vendor"
   },
   "ProgressSoftware": {
+   "cna_id": "CNA-2023-0045",
    "country": "USA",
    "org": "Progress Software Corporation",
    "scope": "3ae13b03f50b",
    "type": "Vendor"
   },
   "Proofpoint": {
+   "cna_id": "CNA-2022-0051",
    "country": "USA",
    "org": "Proofpoint Inc.",
    "scope": "9a4397ae518f",
    "type": "Hosted Service + Vendor"
   },
   "Proton": {
+   "cna_id": "CNA-2024-0056",
    "country": "Switzerland",
    "org": "Proton AG",
    "scope": "0972cde835f6",
    "type": "Vendor"
   },
   "QCI": {
+   "cna_id": "CNA-2026-0020",
    "country": "Taiwan",
    "org": "Quanta Computer, Inc.",
    "scope": "942f15cf78a6",
    "type": "Vendor"
   },
   "Qt": {
+   "cna_id": "CNA-2025-0016",
    "country": "Finland",
    "org": "Qt Group",
    "scope": "1cc276a17a32",
    "type": "Vendor"
   },
   "Qualys": {
+   "cna_id": "CNA-2022-0047",
    "country": "USA",
    "org": "Qualys, Inc.",
    "scope": "8e5dd74db27d",
    "type": "Researcher + Vendor"
   },
   "RES": {
+   "cna_id": "CNA-2026-0067",
    "country": "USA",
    "org": "RedEye Security",
    "scope": "4d61db104385",
    "type": "Vendor"
   },
   "RTI": {
+   "cna_id": "CNA-2024-0068",
    "country": "USA",
    "org": "Real-Time Innovations, Inc.",
    "scope": "b0a273ced48e",
    "type": "Vendor"
   },
   "Radiometer": {
+   "cna_id": "CNA-2024-0081",
    "country": "Denmark",
    "org": "Radiometer Medical ApS",
    "scope": "d490f4d9a089",
    "type": "Vendor"
   },
   "RealPage": {
+   "cna_id": "CNA-2024-0046",
    "country": "USA",
    "org": "RealPage",
    "scope": "8068d7310180",
    "type": "Vendor"
   },
   "Replicated": {
+   "cna_id": "CNA-2020-0023",
    "country": "USA",
    "org": "Replicated, Inc.",
    "scope": "675568caacae",
    "type": "Vendor"
   },
   "Ribose": {
+   "cna_id": "CNA-2023-0023",
    "country": "UK",
    "org": "Ribose Limited",
    "scope": "8098ae5aad9e",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "Roche": {
+   "cna_id": "CNA-2024-0089",
    "country": "Switzerland",
    "org": "Roche Diagnostics",
    "scope": "3d8cbfe10267",
    "type": "Vendor"
   },
   "Rockwell": {
+   "cna_id": "CNA-2022-0028",
    "country": "USA",
    "org": "Rockwell Automation",
    "scope": "a63d1b391b49",
    "type": "Vendor"
   },
   "S21sec": {
+   "cna_id": "CNA-2024-0088",
    "country": "Spain",
    "org": "S21sec Cyber Solutions by Thales",
    "scope": "a4119615e869",
    "type": "Researcher"
   },
   "S4M": {
+   "cna_id": "CNA-2026-0062",
    "country": "Switzerland",
    "org": "Security4Media",
    "scope": "468c14055e6c",
    "type": "Researcher"
   },
   "SCHUTZWERK": {
+   "cna_id": "CNA-2025-0024",
    "country": "Germany",
    "org": "SCHUTZWERK GmbH",
    "scope": "e05790c404a0",
    "type": "Researcher"
   },
   "SCIEX": {
+   "cna_id": "CNA-2024-0033",
    "country": "USA",
    "org": "SCIEX",
    "scope": "8425d500bf68",
    "type": "Vendor"
   },
   "SDC": {
+   "cna_id": "CNA-2025-0018",
    "country": "USA",
    "org": "Sandisk",
    "scope": "7f1a018fa56b",
    "type": "Vendor"
   },
   "SEC-VLab": {
+   "cna_id": "CNA-2023-0073",
    "country": "Austria",
    "org": "SEC Consult Vulnerability Lab",
    "scope": "9fce3a750392",
    "type": "Researcher"
   },
   "SEL": {
+   "cna_id": "CNA-2023-0020",
    "country": "USA",
    "org": "Schweitzer Engineering Laboratories, Inc.",
    "scope": "63f3379fe438",
    "type": "Vendor"
   },
   "SICK_AG": {
+   "cna_id": "CNA-2019-0016",
    "country": "Germany",
    "org": "SICK AG",
    "scope": "8bd731040ed7",
    "type": "Vendor"
   },
   "SK-CERT": {
+   "cna_id": "CNA-2022-0034",
    "country": "Slovak Republic",
    "org": "National Cyber Security Centre SK-CERT",
    "scope": "724b702fc120",
    "type": "CERT"
   },
   "SN": {
+   "cna_id": "CNA-2023-0012",
    "country": "USA",
    "org": "ServiceNow",
    "scope": "f48e49c72f78",
    "type": "Hosted Service + Researcher + Vendor"
   },
   "SNOW": {
+   "cna_id": "CNA-2026-0021",
    "country": "USA",
    "org": "Snowflake",
    "scope": "bec51140f8ac",
    "type": "Vendor"
   },
   "SOCRadar": {
+   "cna_id": "CNA-2025-0002",
    "country": "USA",
    "org": "SOCRadar Cyber Intelligence Inc.",
    "scope": "1230d059324d",
    "type": "Researcher + Vendor"
   },
   "SRA": {
+   "cna_id": "CNA-2023-0035",
    "country": "USA",
    "org": "Security Risk Advisors (SRA)",
    "scope": "0fef2e6e6c12",
    "type": "Researcher"
   },
   "STAR_Labs": {
+   "cna_id": "CNA-2023-0010",
    "country": "Singapore",
    "org": "STAR Labs SG Pte. Ltd.",
    "scope": "05d3e74b0712",
    "type": "Researcher"
   },
   "SailPoint": {
+   "cna_id": "CNA-2022-0016",
    "country": "USA",
    "org": "SailPoint Technologies",
    "scope": "cfe2f31ae4db",
    "type": "Vendor"
   },
   "Salesforce": {
+   "cna_id": "CNA-2019-0007",
    "country": "USA",
    "org": "Salesforce, Inc.",
    "scope": "6fb07ff45d10",
    "type": "Vendor"
   },
   "Samsung_Mobile": {
+   "cna_id": "CNA-2021-0001",
    "country": "South Korea",
    "org": "Samsung Mobile",
    "scope": "8226c07c7b63",
    "type": "Vendor"
   },
   "Saviynt": {
+   "cna_id": "CNA-2025-0011",
    "country": "USA",
    "org": "Saviynt Inc.",
    "scope": "1cd599f00faa",
    "type": "Vendor"
   },
   "Scality": {
+   "cna_id": "CNA-2026-0050",
    "country": "France",
    "org": "Scality SA",
    "scope": "aaf8c51f71e4",
    "type": "Vendor"
   },
   "Seagate": {
+   "cna_id": "CNA-2022-0040",
    "country": "USA",
    "org": "Seagate Technology",
    "scope": "8cf51b7d1862",
    "type": "Open Source + Researcher + Vendor"
   },
   "Secomea": {
+   "cna_id": "CNA-2020-0037",
    "country": "Denmark",
    "org": "Secomea A/S",
    "scope": "6d71fcaf62b8",
    "type": "Vendor"
   },
   "Secur0": {
+   "cna_id": "CNA-2026-0041",
    "country": "Spain",
    "org": "Secur0",
    "scope": "d1e1a83a8841",
    "type": "Bug Bounty Provider"
   },
   "Securifera": {
+   "cna_id": "CNA-2023-0017",
    "country": "USA",
    "org": "Securifera, Inc.",
    "scope": "c3b52e7866f0",
    "type": "Researcher"
   },
   "Semtech": {
+   "cna_id": "CNA-2020-0015",
    "country": "Canada",
    "org": "Semtech Corporation",
    "scope": "17137906ae2d",
    "type": "Vendor"
   },
   "ShopBeat": {
+   "cna_id": "CNA-2023-0011",
    "country": "South Africa",
    "org": "Shop Beat Solutions (Pty) LTD",
    "scope": "ac0251244414",
    "type": "Hosted Service + Vendor"
   },
   "Silabs": {
+   "cna_id": "CNA-2021-0056",
    "country": "USA",
    "org": "Silicon Labs",
    "scope": "12370d44a33f",
    "type": "Vendor"
   },
   "Silver_Peak": {
+   "cna_id": "CNA-2020-0011",
    "country": "USA",
    "org": "Silver Peak Systems, Inc.",
    "scope": "9bd22f126572",
    "type": "Vendor"
   },
   "Simplinx": {
+   "cna_id": "CNA-2021-0007",
    "country": "T\u00fcrkiye",
    "org": "Simplinx Ltd.",
    "scope": "133fe9f58a31",
    "type": "Vendor"
   },
   "SmileDigitalHealth": {
+   "cna_id": "CNA-2023-0075",
    "country": "Canada",
    "org": "Smile CDR Inc. (doing business as \u201cSmile Digital Health\u201d)",
    "scope": "96536764d5c3",
    "type": "Open Source + Vendor"
   },
   "Snow": {
+   "cna_id": "CNA-2021-0036",
    "country": "Sweden",
    "org": "Snow Software",
    "scope": "7896b53e5447",
    "type": "Vendor"
   },
   "SoftIron": {
+   "cna_id": "CNA-2023-0058",
    "country": "USA",
    "org": "SoftIron",
    "scope": "b9c7c036e1b1",
    "type": "Vendor"
   },
   "Softing": {
+   "cna_id": "CNA-2025-0009",
    "country": "Germany",
    "org": "Softing",
    "scope": "8be8c064ed28",
    "type": "Vendor"
   },
   "SolarWinds": {
+   "cna_id": "CNA-2021-0027",
    "country": "USA",
    "org": "SolarWinds",
    "scope": "d957f1f955d4",
    "type": "Vendor"
   },
   "Solidigm": {
+   "cna_id": "CNA-2023-0025",
    "country": "USA",
    "org": "Solidigm",
    "scope": "7d07a2002e77",
    "type": "Vendor"
   },
   "Sonatype": {
+   "cna_id": "CNA-2024-0009",
    "country": "USA",
    "org": "Sonatype Inc.",
    "scope": "cb9a9fce7cd6",
    "type": "Researcher + Vendor"
   },
   "Sophos": {
+   "cna_id": "CNA-2021-0003",
    "country": "UK",
    "org": "Sophos Limited",
    "scope": "00fad0ffee2c",
    "type": "Vendor"
   },
   "Spotfire": {
+   "cna_id": "CNA-2025-0021",
    "country": "USA",
    "org": "Spotfire",
    "scope": "67cd6356beea",
    "type": "Vendor"
   },
   "Stackable": {
+   "cna_id": "CNA-2025-0025",
    "country": "Germany",
    "org": "Stackable GmbH",
    "scope": "4813c8d3e5b4",
    "type": "Open Source + Vendor"
   },
   "StrongDM": {
+   "cna_id": "CNA-2023-0019",
    "country": "USA",
    "org": "StrongDM",
    "scope": "f90b7f8aedb8",
    "type": "Vendor"
   },
   "Stryker": {
+   "cna_id": "CNA-2024-0053",
    "country": "USA",
    "org": "Stryker Corporation",
    "scope": "d1a48efac9bc",
    "type": "Researcher + Vendor"
   },
   "Supermicro": {
+   "cna_id": "CNA-2024-0058",
    "country": "USA",
    "org": "Super Micro Computer, Inc.",
    "scope": "2c22560fc2ab",
    "type": "Vendor"
   },
   "Swift": {
+   "cna_id": "CNA-2021-0004",
    "country": "USA",
    "org": "Swift Project",
    "scope": "875a942d5ef8",
    "type": "Open Source + Vendor"
   },
   "Synaptics": {
+   "cna_id": "CNA-2020-0021",
    "country": "USA",
    "org": "Synaptics, Inc.",
    "scope": "106dd76467b0",
    "type": "Vendor"
   },
   "Syncro": {
+   "cna_id": "CNA-2026-0056",
    "country": "Romania",
    "org": "Syncro Soft SRL",
    "scope": "8a8757873da5",
    "type": "Vendor"
   },
   "Synopsys": {
+   "cna_id": "CNA-2026-0023",
    "country": "USA",
    "org": "Synopsys, Inc.",
    "scope": "31615f729588",
    "type": "Vendor"
   },
   "TCL_Smart_Terminal": {
+   "cna_id": "CNA-2026-0006",
    "country": "China",
    "org": "TCL Electronics Holdings Limited",
    "scope": "e4a99d556b85",
    "type": "Vendor"
   },
   "TCS-CERT": {
+   "cna_id": "CNA-2025-0035",
    "country": "Belgium",
    "org": "TCS-CERT (Thales Cyber Solutions Customer\u2019s CERT)",
    "scope": "1312ede005a4",
    "type": "CERT"
   },
   "TECNOMobile": {
+   "cna_id": "CNA-2024-0020",
    "country": "China",
    "org": "TECNO Mobile Limited",
    "scope": "f435413e505f",
    "type": "Vendor"
   },
   "THA-PSIRT": {
+   "cna_id": "CNA-2021-0045",
    "country": "France",
    "org": "Thales Group",
    "scope": "f01b3193fe51",
    "type": "Researcher + Vendor"
   },
   "TMUS": {
+   "cna_id": "CNA-2025-0014",
    "country": "USA",
    "org": "T-Mobile US",
    "scope": "3d9414d432fc",
    "type": "Researcher + Vendor"
   },
   "TPLink": {
+   "cna_id": "CNA-2025-0017",
    "country": "USA",
    "org": "TP-Link Systems Inc.",
    "scope": "fee10266e050",
    "type": "Hosted Service + Vendor"
   },
   "TR-CERT": {
+   "cna_id": "CNA-2021-0034",
    "country": "T\u00fcrkiye",
    "org": "TR-CERT (Computer Emergency Response Team of the Republic of T\u00fcrkiye)",
    "scope": "c539cc56c22d",
    "type": "CERT"
   },
   "TRO": {
+   "cna_id": "CNA-2025-0028",
    "country": "Denmark",
    "org": "Teradyne Robotics",
    "scope": "1785b30fc928",
    "type": "Vendor"
   },
   "TXOne": {
+   "cna_id": "CNA-2024-0032",
    "country": "Taiwan",
    "org": "TXOne Networks, Inc.",
    "scope": "007f2e480a83",
    "type": "Researcher + Vendor"
   },
   "TYPO3": {
+   "cna_id": "CNA-2025-0034",
    "country": "Switzerland",
    "org": "TYPO3 Association",
    "scope": "3d0105c6d72d",
    "type": "Open Source"
   },
   "Tacit": {
+   "cna_id": "CNA-2026-0051",
    "country": "France",
    "org": "Tacit",
    "scope": "ebb31664555e",
    "type": "Hosted Service + Vendor"
   },
   "Tanium": {
+   "cna_id": "CNA-2025-0059",
    "country": "USA",
    "org": "Tanium Inc.",
    "scope": "6ae50ef0362c",
    "type": "Vendor"
   },
   "Tcpdump": {
+   "cna_id": "CNA-2020-0003",
    "country": "Canada",
    "org": "Tcpdump Group",
    "scope": "fa6de4d20972",
    "type": "Open Source + Vendor"
   },
   "TeamViewer": {
+   "cna_id": "CNA-2021-0060",
    "country": "Germany",
    "org": "TeamViewer Germany GmbH",
    "scope": "186a1a399bda",
    "type": "Vendor"
   },
   "Tego_Cyber": {
+   "cna_id": "CNA-2024-0029",
    "country": "USA",
    "org": "Tego Cyber, Inc.",
    "scope": "2b80d0b9a532",
    "type": "Researcher + Vendor"
   },
   "Temporal": {
+   "cna_id": "CNA-2023-0030",
    "country": "USA",
    "org": "Temporal Technologies Inc.",
    "scope": "c3094fa1def5",
    "type": "Hosted Service + Open Source"
   },
   "The_Missing_Link": {
+   "cna_id": "CNA-2022-0021",
    "country": "Australia",
    "org": "The Missing Link Australia (TML)",
    "scope": "8856230cf429",
    "type": "Researcher"
   },
   "ThinkstAppliedResearch": {
+   "cna_id": "CNA-2026-0034",
    "country": "South Africa",
    "org": "Thinkst Applied Research",
    "scope": "4471244d03e5",
    "type": "Vendor"
   },
   "TianoCore": {
+   "cna_id": "CNA-2020-0031",
    "country": "USA",
    "org": "TianoCore.org",
    "scope": "0e38ee5972ef",
    "type": "Open Source + Vendor"
   },
   "Tigera": {
+   "cna_id": "CNA-2019-0011",
    "country": "USA",
    "org": "Tigera, Inc.",
    "scope": "39f6426be525",
    "type": "Open Source + Vendor"
   },
   "Toreon": {
+   "cna_id": "CNA-2025-0031",
    "country": "Belgium",
    "org": "Toreon",
    "scope": "0345e00195fb",
    "type": "Researcher"
   },
   "Toshiba": {
+   "cna_id": "CNA-2021-0024",
    "country": "Japan",
    "org": "Toshiba Corporation",
    "scope": "314e5162f71e",
    "type": "Vendor"
   },
   "Trellix": {
+   "cna_id": "CNA-2016-0022",
    "country": "USA",
    "org": "Trellix",
    "scope": "81714743e0ee",
    "type": "Researcher + Vendor"
   },
   "TuranSec": {
+   "cna_id": "CNA-2026-0013",
    "country": "Uzbekistan",
    "org": "Turan Security",
    "scope": "db3f31694962",
    "type": "Researcher"
   },
   "Ubiquiti": {
+   "cna_id": "CNA-2026-0057",
    "country": "USA",
    "org": "Ubiquiti, Inc.",
    "scope": "abcb3494bc43",
    "type": "Vendor"
   },
   "Unisoc": {
+   "cna_id": "CNA-2022-0025",
    "country": "China",
    "org": "Unisoc (Shanghai) Technologies Co., Ltd.",
    "scope": "94c7b165008d",
    "type": "Vendor"
   },
   "Uniview": {
+   "cna_id": "CNA-2025-0048",
    "country": "China",
    "org": "Zhejiang Uniview Technologies Co., Ltd.",
    "scope": "5a5eb1bbfc4c",
    "type": "Vendor"
   },
   "VULSec": {
+   "cna_id": "CNA-2023-0050",
    "country": "Israel",
    "org": "VULSec Labs",
    "scope": "6b1ebb288bab",
    "type": "Researcher"
   },
   "Vaadin": {
+   "cna_id": "CNA-2021-0015",
    "country": "Finland",
    "org": "Vaadin Ltd.",
    "scope": "2bae1b636dad",
    "type": "Open Source + Vendor"
   },
   "Vantive": {
+   "cna_id": "CNA-2026-0003",
    "country": "USA",
    "org": "Vantive",
    "scope": "0a5459fb2b86",
    "type": "Vendor"
   },
   "Velneo": {
+   "cna_id": "CNA-2026-0061",
    "country": "Spain",
    "org": "Velneo",
    "scope": "e561fb63b95a",
    "type": "Vendor"
   },
   "Verizon": {
+   "cna_id": "CNA-2026-0043",
    "country": "USA",
    "org": "Verizon",
    "scope": "8291d6ce1863",
    "type": "Hosted Service + Open Source + Researcher + Vendor"
   },
   "Vestel": {
+   "cna_id": "CNA-2026-0010",
    "country": "T\u00fcrkiye",
    "org": "Vestel Electronics Industry & Trade Co.",
    "scope": "7f4055b9574d",
    "type": "Vendor"
   },
   "Vivo": {
+   "cna_id": "CNA-2020-0008",
    "country": "China",
    "org": "Vivo Mobile Communication Co., Ltd.",
    "scope": "68259d6f370f",
    "type": "Vendor"
   },
   "VulDB": {
+   "cna_id": "CNA-2001-0063",
    "country": "Switzerland",
    "org": "VulDB",
    "scope": "c927de2dbcec",
    "type": "Researcher"
   },
   "VulNow": {
+   "cna_id": "CNA-2026-0044",
    "country": "Netherlands",
    "org": "VulNow",
    "scope": "428a31ba1a8e",
    "type": "Researcher"
   },
   "VulnCheck": {
+   "cna_id": "CNA-2023-0021",
    "country": "USA",
    "org": "VulnCheck",
    "scope": "5b43acb0a0ac",
    "type": "Bug Bounty Provider + Researcher"
   },
   "WDC_PSIRT": {
+   "cna_id": "CNA-2021-0051",
    "country": "USA",
    "org": "Western Digital",
    "scope": "9a9ca96a632f",
    "type": "Vendor"
   },
   "WPScan": {
+   "cna_id": "CNA-2021-0002",
    "country": "France",
    "org": "WPScan",
    "scope": "55150b126a9b",
    "type": "Open Source + Vendor"
   },
   "WSO2": {
+   "cna_id": "CNA-2023-0076",
    "country": "USA",
    "org": "WSO2 LLC",
    "scope": "25c583c9433d",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "WatchGuard": {
+   "cna_id": "CNA-2023-0013",
    "country": "USA",
    "org": "WatchGuard Technologies, Inc.",
    "scope": "0aaa0eed4002",
    "type": "Vendor"
   },
   "WindRiver": {
+   "cna_id": "CNA-2024-0039",
    "country": "USA",
    "org": "Wind River Systems Inc.",
    "scope": "8c9686e2511f",
    "type": "Vendor"
   },
   "Wiz": {
+   "cna_id": "CNA-2024-0057",
    "country": "USA",
    "org": "Wiz, Inc.",
    "scope": "22a1feb1b239",
    "type": "Researcher + Vendor"
   },
   "Wordfence": {
+   "cna_id": "CNA-2021-0022",
    "country": "USA",
    "org": "Wordfence",
    "scope": "a950c3244d04",
    "type": "Researcher + Vendor"
   },
   "WrenSecurity": {
+   "cna_id": "CNA-2023-0067",
    "country": "Czech Republic",
    "org": "Wren Security",
    "scope": "f567822d831a",
    "type": "Open Source"
   },
   "XEN": {
+   "cna_id": "CNA-2021-0009",
    "country": "UK",
    "org": "Xen Project",
    "scope": "019773318d75",
    "type": "Open Source + Vendor"
   },
   "XI": {
+   "cna_id": "CNA-2023-0006",
    "country": "USA",
    "org": "Exodus Intelligence",
    "scope": "fa587fa57241",
    "type": "Bug Bounty Provider + Researcher"
   },
   "XONA": {
+   "cna_id": "CNA-2025-0053",
    "country": "USA",
    "org": "Xona Systems",
    "scope": "5cbd72653d5c",
    "type": "Vendor"
   },
   "Xerox": {
+   "cna_id": "CNA-2023-0057",
    "country": "USA",
    "org": "Xerox Corporation",
    "scope": "ce027864e542",
    "type": "Vendor"
   },
   "Xiaomi": {
+   "cna_id": "CNA-2020-0019",
    "country": "China",
    "org": "Xiaomi Technology Co., Ltd.",
    "scope": "a7b683a64761",
    "type": "Vendor"
   },
   "Xylem": {
+   "cna_id": "CNA-2021-0006",
    "country": "USA",
    "org": "Xylem",
    "scope": "d116566e8d2a",
    "type": "Vendor"
   },
   "YesWeHack": {
+   "cna_id": "CNA-2025-0049",
    "country": "France",
    "org": "YesWeHack",
    "scope": "5f825655d2bc",
    "type": "Bug Bounty Provider"
   },
   "Ygreky": {
+   "cna_id": "CNA-2026-0028",
    "country": "France",
    "org": "Ygreky SASU",
    "scope": "2bca3e047618",
    "type": "Bug Bounty Provider + Open Source + Researcher + Vendor"
   },
   "YokogawaGroup": {
+   "cna_id": "CNA-2023-0069",
    "country": "Japan",
    "org": "Yokogawa Group",
    "scope": "c61f6d8b7d2c",
    "type": "Vendor"
   },
   "Yugabyte": {
+   "cna_id": "CNA-2021-0047",
    "country": "USA",
    "org": "Yugabyte, Inc.",
    "scope": "5309693f2ec1",
    "type": "Hosted Service + Vendor"
   },
   "ZGR": {
+   "cna_id": "CNA-2021-0058",
    "country": "Spain",
    "org": "ZGR",
    "scope": "66a7ab49aa74",
    "type": "Vendor"
   },
   "ZTE": {
+   "cna_id": "CNA-2017-0019",
    "country": "China",
    "org": "ZTE Corporation",
    "scope": "bcb0f3a101c3",
    "type": "Vendor"
   },
   "ZUSO_ART": {
+   "cna_id": "CNA-2022-0010",
    "country": "Taiwan",
    "org": "ZUSO Advanced Research Team (ZUSO ART)",
    "scope": "7fea9daa104c",
    "type": "Researcher"
   },
   "Zabbix": {
+   "cna_id": "CNA-2020-0022",
    "country": "Latvia",
    "org": "Zabbix",
    "scope": "9e6ef3390f58",
    "type": "Vendor"
   },
   "Zenitel": {
+   "cna_id": "CNA-2026-0064",
    "country": "Norway",
    "org": "Zenitel Norway AS",
    "scope": "bf38ea3dbdf0",
    "type": "Vendor"
   },
   "Zohocorp": {
+   "cna_id": "CNA-2023-0081",
    "country": "India",
    "org": "Zohocorp",
    "scope": "58ea97eba57d",
    "type": "Vendor"
   },
   "Zoom": {
+   "cna_id": "CNA-2021-0016",
    "country": "USA",
    "org": "Zoom Communications, Inc.",
    "scope": "5055d16252a2",
    "type": "Vendor"
   },
   "Zowe": {
+   "cna_id": "CNA-2022-0044",
    "country": "USA",
    "org": "Zowe",
    "scope": "6f0d67de0a45",
    "type": "Open Source"
   },
   "Zscaler": {
+   "cna_id": "CNA-2020-0009",
    "country": "USA",
    "org": "Zscaler, Inc.",
    "scope": "651f8461a9f9",
    "type": "Vendor"
   },
   "Zyxel": {
+   "cna_id": "CNA-2021-0023",
    "country": "Taiwan",
    "org": "Zyxel Corporation",
    "scope": "ed83becaf1ec",
    "type": "Vendor"
   },
   "adobe": {
+   "cna_id": "CNA-2009-0001",
    "country": "USA",
    "org": "Adobe Systems Incorporated",
    "scope": "a94bcf8324ac",
    "type": "Vendor"
   },
   "airbus": {
+   "cna_id": "CNA-2017-0026",
    "country": "Netherlands",
    "org": "Airbus",
    "scope": "af1aa75f312e",
    "type": "Researcher + Vendor"
   },
   "alibaba": {
+   "cna_id": "CNA-2017-0024",
    "country": "China",
    "org": "Alibaba, Inc.",
    "scope": "3b9cb17b96d4",
    "type": "Open Source + Vendor"
   },
   "apache": {
+   "cna_id": "CNA-2016-0004",
    "country": "USA",
    "org": "Apache Software Foundation",
    "scope": "b61ffb129623",
    "type": "Open Source + Vendor"
   },
   "apple": {
+   "cna_id": "CNA-2009-0002",
    "country": "USA",
    "org": "Apple Inc.",
    "scope": "9390fe363dab",
    "type": "Vendor"
   },
   "arcinfo": {
+   "cna_id": "CNA-2023-0085",
    "country": "France",
    "org": "ARC Informatique",
    "scope": "65fe54127f7a",
    "type": "Vendor"
   },
   "atlassian": {
+   "cna_id": "CNA-2017-0015",
    "country": "Australia",
    "org": "Atlassian",
    "scope": "3f5eb8103169",
    "type": "Open Source + Vendor"
   },
   "autodesk": {
+   "cna_id": "CNA-2017-0025",
    "country": "USA",
    "org": "Autodesk",
    "scope": "20c29c330a13",
    "type": "Vendor"
   },
   "avaya": {
+   "cna_id": "CNA-2018-0008",
    "country": "USA",
    "org": "Avaya, Inc.",
    "scope": "d687a7107fc0",
    "type": "Vendor"
   },
   "azure-access": {
+   "cna_id": "CNA-2025-0051",
    "country": "USA",
    "org": "Azure Access Technology",
    "scope": "a5b45fc48d42",
    "type": "Vendor"
   },
   "bcorg": {
+   "cna_id": "CNA-2025-0039",
    "country": "Australia",
    "org": "Legion of the Bouncy Castle Inc.",
    "scope": "1f0b61f6822b",
    "type": "Open Source"
   },
   "bizerba": {
+   "cna_id": "CNA-2024-0083",
    "country": "Germany",
    "org": "Bizerba SE & Co. KG",
    "scope": "61ad35e253f8",
    "type": "Vendor"
   },
   "blackberry": {
+   "cna_id": "CNA-2014-0001",
    "country": "Canada",
    "org": "BlackBerry",
    "scope": "f36d2bce0eda",
    "type": "Vendor"
   },
   "bosch": {
+   "cna_id": "CNA-2019-0004",
    "country": "Germany",
    "org": "Robert Bosch GmbH",
    "scope": "fb80a81db09f",
    "type": "Vendor"
   },
   "brocade": {
+   "cna_id": "CNA-2016-0006",
    "country": "USA",
    "org": "Brocade Communications Systems LLC, a Broadcom Company",
    "scope": "1644ec410ce6",
    "type": "Vendor"
   },
   "ca": {
+   "cna_id": "CNA-2017-0013",
    "country": "USA",
    "org": "CA Technologies - A Broadcom Company",
    "scope": "0b82224c6b46",
    "type": "Vendor"
   },
   "canonical": {
+   "cna_id": "CNA-2005-0001",
    "country": "UK",
    "org": "Canonical Ltd.",
    "scope": "9a24331834f0",
    "type": "Open Source + Vendor"
   },
   "certcc": {
+   "cna_id": "CNA-2005-0002",
    "country": "USA",
    "org": "CERT/CC",
    "scope": "c539cc56c22d",
    "type": "CERT"
   },
   "checkpoint": {
+   "cna_id": "CNA-2016-0008",
    "country": "Israel",
    "org": "Check Point Software Ltd.",
    "scope": "c5a4ef21ced1",
    "type": "Researcher + Vendor"
   },
   "cirosec": {
+   "cna_id": "CNA-2024-0027",
    "country": "Germany",
    "org": "cirosec GmbH",
    "scope": "b3d1687c7717",
    "type": "Researcher"
   },
   "cisa-cg": {
+   "cna_id": "CNA-2023-0048",
    "country": "USA",
    "org": "Cybersecurity and Infrastructure Security Agency (CISA) U.S. Civilian Government",
    "scope": "a689847c7589",
    "type": "CERT"
   },
   "cisco": {
+   "cna_id": "CNA-2007-0001",
    "country": "USA",
    "org": "Cisco Systems, Inc.",
    "scope": "0d538040b6ba",
    "type": "Hosted Service + Open Source + Researcher + Vendor"
   },
   "cloudflare": {
+   "cna_id": "CNA-2018-0003",
    "country": "USA",
    "org": "Cloudflare, Inc.",
    "scope": "c755f9a5e6a0",
    "type": "Vendor"
   },
   "curl": {
+   "cna_id": "CNA-2024-0006",
    "country": "Sweden",
    "org": "curl",
    "scope": "de4c957807f6",
    "type": "Open Source"
   },
   "cygence": {
+   "cna_id": "CNA-2026-0012",
    "country": "Australia",
    "org": "Cygence Pty Ltd",
    "scope": "e58d56ca4ec2",
    "type": "Researcher"
   },
   "dahua": {
+   "cna_id": "CNA-2017-0014",
    "country": "China",
    "org": "Dahua Technologies",
    "scope": "7ee84123bbd9",
    "type": "Vendor"
   },
   "debian": {
+   "cna_id": "CNA-2005-0003",
    "country": "USA",
    "org": "Debian GNU/Linux",
    "scope": "da93b259fec5",
    "type": "Open Source + Vendor"
   },
   "dell": {
+   "cna_id": "CNA-2011-0004",
    "country": "USA",
    "org": "Dell",
    "scope": "18eed97420ed",
    "type": "Vendor"
   },
   "directcyber": {
+   "cna_id": "CNA-2024-0018",
    "country": "Australia",
    "org": "DirectCyber",
    "scope": "b4b61c79cb4a",
    "type": "Open Source + Researcher"
   },
   "dotCMS": {
+   "cna_id": "CNA-2023-0001",
    "country": "USA",
    "org": "dotCMS LLC",
    "scope": "aeb05fa55add",
    "type": "Hosted Service"
   },
   "drupal": {
+   "cna_id": "CNA-2017-0002",
    "country": "USA",
    "org": "Drupal.org",
    "scope": "deb40de80c5d",
    "type": "Open Source + Vendor"
   },
   "eclipse": {
+   "cna_id": "CNA-2017-0008",
    "country": "Belgium",
    "org": "Eclipse Foundation",
    "scope": "c9e9ac7c6b81",
    "type": "Open Source + Vendor"
   },
   "eclypsium": {
+   "cna_id": "CNA-2026-0035",
    "country": "USA",
    "org": "Eclypsium, Inc.",
    "scope": "06e2e19dd3be",
    "type": "Researcher + Vendor"
   },
   "elastic": {
+   "cna_id": "CNA-2017-0011",
    "country": "Netherlands",
    "org": "Elastic",
    "scope": "8bdf0551fce6",
    "type": "Vendor"
   },
   "esaqa": {
+   "cna_id": "CNA-2026-0065",
    "country": "Germany",
    "org": "esaqa GmbH",
    "scope": "04dc99abab8a",
    "type": "Vendor"
   },
   "fedora": {
+   "cna_id": "CNA-2017-0021",
    "country": "USA",
    "org": "Fedora Project",
    "scope": "14ee6b30294d",
    "type": "Open Source + Vendor"
   },
   "flexera": {
+   "cna_id": "CNA-2017-0004",
    "country": "USA",
    "org": "Flexera Software LLC",
    "scope": "679da4aa30c7",
    "type": "Open Source + Researcher + Vendor"
   },
   "floragunn": {
+   "cna_id": "CNA-2019-0005",
    "country": "Germany",
    "org": "floragunn GmbH",
    "scope": "f90d732b8517",
    "type": "Open Source + Vendor"
   },
   "forcepoint": {
+   "cna_id": "CNA-2017-0033",
    "country": "USA",
    "org": "Forcepoint",
    "scope": "e651de0a6a4a",
    "type": "Vendor"
   },
   "fortinet": {
+   "cna_id": "CNA-2016-0010",
    "country": "USA",
    "org": "Fortinet, Inc.",
    "scope": "f8d4017fcdaf",
    "type": "Vendor"
   },
   "freebsd": {
+   "cna_id": "CNA-2005-0004",
    "country": "USA",
    "org": "FreeBSD",
    "scope": "f2f47340c8b9",
    "type": "Open Source + Vendor"
   },
   "glibc": {
+   "cna_id": "CNA-2024-0013",
    "country": "USA",
    "org": "GNU C Library",
    "scope": "54fd8d09edf2",
    "type": "Open Source"
   },
   "google_android": {
+   "cna_id": "CNA-2011-0002",
    "country": "USA",
    "org": "Android (associated with Google Inc. or Open Handset Alliance)",
    "scope": "27e6083f941f",
    "type": "Open Source + Researcher + Vendor"
   },
   "graphql-java": {
+   "cna_id": "CNA-2024-0079",
    "country": "Australia",
    "org": "GraphQL Java",
    "scope": "63a8986257de",
    "type": "Open Source + Vendor"
   },
   "gvision-it": {
+   "cna_id": "CNA-2026-0030",
    "country": "Italy",
    "org": "GVision Italia S.r.l.",
    "scope": "ce04a6515d08",
    "type": "Vendor"
   },
   "hackerone": {
+   "cna_id": "CNA-2016-0011",
    "country": "USA",
    "org": "HackerOne",
    "scope": "2f1f2fb9a4dc",
    "type": "Bug Bounty Provider"
   },
   "harborist": {
+   "cna_id": "CNA-2025-0027",
    "country": "USA",
    "org": "Harborist",
    "scope": "20c05220200e",
    "type": "Open Source"
   },
   "hikvision": {
+   "cna_id": "CNA-2018-0002",
    "country": "China",
    "org": "Hangzhou Hikvision Digital Technology Co., Ltd.",
    "scope": "35b48d83a1d8",
    "type": "Vendor"
   },
   "hp": {
+   "cna_id": "CNA-2009-0003",
    "country": "USA",
    "org": "HP Inc.",
    "scope": "e4e02d10bc6e",
    "type": "Vendor"
   },
   "hpe": {
+   "cna_id": "CNA-2016-0003",
    "country": "USA",
    "org": "Hewlett Packard Enterprise (HPE)",
    "scope": "b19e64d30616",
    "type": "Vendor"
   },
   "hsi": {
+   "cna_id": "CNA-2026-0053",
    "country": "USA",
    "org": "Haverford Systems, Inc.",
    "scope": "81a10cd6a9b0",
    "type": "Researcher + Vendor"
   },
   "huawei": {
+   "cna_id": "CNA-2016-0012",
    "country": "China",
    "org": "Huawei Technologies",
    "scope": "b19cfd2ab13d",
    "type": "Vendor"
   },
   "iManage": {
+   "cna_id": "CNA-2024-0084",
    "country": "USA",
    "org": "iManage LLC",
    "scope": "a413bbfd631f",
    "type": "Vendor"
   },
   "ibm": {
+   "cna_id": "CNA-2011-0007",
    "country": "USA",
    "org": "IBM Corporation",
    "scope": "97e05a92c2ce",
    "type": "Open Source + Vendor"
   },
   "icscert": {
+   "cna_id": "CNA-2012-0001",
    "country": "USA",
    "org": "Cybersecurity and Infrastructure Security Agency (CISA) Industrial Control Systems (ICS)",
    "scope": "8966c4aa958a",
    "type": "CERT"
   },
   "illumos": {
+   "cna_id": "CNA-2026-0046",
    "country": "USA",
    "org": "The illumos project",
    "scope": "1b0637acf674",
    "type": "Open Source"
   },
   "imaginationtech": {
+   "cna_id": "CNA-2024-0051",
    "country": "UK",
    "org": "Imagination Technologies",
    "scope": "51bd320a3b6d",
    "type": "Open Source + Vendor"
   },
   "intel": {
+   "cna_id": "CNA-2016-0005",
    "country": "USA",
    "org": "Intel Corporation",
    "scope": "03069e3c6a3a",
    "type": "Open Source + Vendor"
   },
   "isc": {
+   "cna_id": "CNA-2016-0020",
    "country": "USA",
    "org": "Internet Systems Consortium (ISC)",
    "scope": "30f91e39c671",
    "type": "Open Source + Vendor"
   },
   "ivanti": {
+   "cna_id": "CNA-2024-0050",
    "country": "USA",
    "org": "Ivanti",
    "scope": "bab6526ec496",
    "type": "Vendor"
   },
   "jci": {
+   "cna_id": "CNA-2019-0001",
    "country": "USA",
    "org": "Johnson Controls",
    "scope": "77932f897c9d",
    "type": "Vendor"
   },
   "jenkins": {
+   "cna_id": "CNA-2018-0015",
    "country": "USA",
    "org": "Jenkins Project",
    "scope": "1f980bfce90e",
    "type": "Open Source"
   },
   "jpcert": {
+   "cna_id": "CNA-2010-0001",
    "country": "Japan",
    "org": "JPCERT/CC",
    "scope": "2c69e7dfbc47",
    "type": "CERT"
   },
   "juniper": {
+   "cna_id": "CNA-2016-0001",
    "country": "USA",
    "org": "Juniper Networks, Inc.",
    "scope": "fb4de653c763",
    "type": "Open Source + Vendor"
   },
   "krcert": {
+   "cna_id": "CNA-2016-0021",
    "country": "South Korea",
    "org": "KrCERT/CC",
    "scope": "c539cc56c22d",
    "type": "CERT"
   },
   "kubernetes": {
+   "cna_id": "CNA-2017-0022",
    "country": "USA",
    "org": "Kubernetes",
    "scope": "5c9eedf0323c",
    "type": "Open Source + Vendor"
   },
   "larry_cashdollar": {
+   "cna_id": "CNA-2016-0007",
    "country": "USA",
    "org": "Larry Cashdollar",
    "scope": "38f8c1fcd68a",
    "type": "Researcher"
   },
   "lenovo": {
+   "cna_id": "CNA-2016-0013",
    "country": "USA",
    "org": "Lenovo Group Ltd.",
    "scope": "a4a5225d39c2",
    "type": "Vendor"
   },
   "libreswan": {
+   "cna_id": "CNA-2023-0070",
    "country": "n/a",
    "org": "Libreswan Project",
    "scope": "671416f3d25e",
    "type": "Open Source + Vendor"
   },
   "linqi": {
+   "cna_id": "CNA-2026-0037",
    "country": "Germany",
    "org": "linqi GmbH",
    "scope": "7b8090688daf",
    "type": "Vendor"
   },
   "microsoft": {
+   "cna_id": "CNA-2005-0005",
    "country": "USA",
    "org": "Microsoft Corporation",
    "scope": "3d96e07cd6cb",
    "type": "Vendor"
   },
   "milestonesys": {
+   "cna_id": "CNA-2024-0007",
    "country": "Denmark",
    "org": "Milestone Systems A/S",
    "scope": "5e4c18979451",
    "type": "Vendor"
   },
   "mitre": {
+   "cna_id": "CNA-1999-0001",
    "country": "USA",
    "org": "MITRE Corporation",
    "scope": "6ae42b8ba055",
    "type": "N/A"
   },
   "mongodb": {
+   "cna_id": "CNA-2018-0013",
    "country": "USA",
    "org": "MongoDB, Inc.",
    "scope": "2f401594623d",
    "type": "Open Source + Vendor"
   },
   "mozilla": {
+   "cna_id": "CNA-2012-0002",
    "country": "USA",
    "org": "Mozilla Corporation",
    "scope": "9bc492f01b31",
    "type": "Open Source + Vendor"
   },
   "naver": {
+   "cna_id": "CNA-2018-0007",
    "country": "South Korea",
    "org": "Naver Corporation",
    "scope": "e798cf4d0c09",
    "type": "Vendor"
   },
   "netapp": {
+   "cna_id": "CNA-2017-0035",
    "country": "USA",
    "org": "NetApp, Inc.",
    "scope": "bfff17cee2e4",
    "type": "Vendor"
   },
   "netflix": {
+   "cna_id": "CNA-2017-0016",
    "country": "USA",
    "org": "Netflix, Inc.",
    "scope": "c4ca38c24cde",
    "type": "Open Source + Vendor"
   },
   "nodejs": {
+   "cna_id": "CNA-2017-0036",
    "country": "USA",
    "org": "Node.js",
    "scope": "4719ff9205ef",
    "type": "Open Source + Vendor"
   },
   "nvidia": {
+   "cna_id": "CNA-2016-0015",
    "country": "USA",
    "org": "NVIDIA Corporation",
    "scope": "7739bcb5ab6b",
    "type": "Vendor"
   },
   "obdev": {
+   "cna_id": "CNA-2016-0016",
    "country": "Austria",
    "org": "Objective Development Software GmbH",
    "scope": "6b4783004ac9",
    "type": "Vendor"
   },
   "odoo": {
+   "cna_id": "CNA-2018-0009",
    "country": "Belgium",
    "org": "Odoo",
    "scope": "605bd0917025",
    "type": "Vendor"
   },
   "openEuler": {
+   "cna_id": "CNA-2020-0020",
    "country": "China",
    "org": "openEuler",
    "scope": "bc03107941b7",
    "type": "Open Source + Vendor"
   },
   "openGauss": {
+   "cna_id": "CNA-2022-0019",
    "country": "China",
    "org": "openGauss Community",
    "scope": "f358160d0e9a",
    "type": "Open Source"
   },
   "openam-jp": {
+   "cna_id": "CNA-2024-0022",
    "country": "Japan",
    "org": "OpenAM Consortium",
    "scope": "a6605e7c80f0",
    "type": "Consortium + Open Source"
   },
   "openjs": {
+   "cna_id": "CNA-2025-0030",
    "country": "USA",
    "org": "OpenJS Foundation",
    "scope": "710fbe1d44b7",
    "type": "Open Source"
   },
   "openssl": {
+   "cna_id": "CNA-2016-0019",
    "country": "USA",
    "org": "OpenSSL Software Foundation",
    "scope": "adbb34eca4be",
    "type": "Open Source + Vendor"
   },
   "oracle": {
+   "cna_id": "CNA-2008-0001",
    "country": "USA",
    "org": "Oracle",
    "scope": "5e9b2ce53cba",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "palo_alto": {
+   "cna_id": "CNA-2018-0005",
    "country": "USA",
    "org": "Palo Alto Networks, Inc.",
    "scope": "c9340a5924d1",
    "type": "Researcher + Vendor"
   },
   "php": {
+   "cna_id": "CNA-2018-0014",
    "country": "USA",
    "org": "PHP Group",
    "scope": "c3a79533bf03",
    "type": "Open Source + Vendor"
   },
   "postiz": {
+   "cna_id": "CNA-2026-0055",
    "country": "USA",
    "org": "Postiz",
    "scope": "0dfa36939001",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "qnap": {
+   "cna_id": "CNA-2017-0030",
    "country": "Taiwan",
    "org": "QNAP Systems, Inc.",
    "scope": "97075b6e2edb",
    "type": "Vendor"
   },
   "qualcomm": {
+   "cna_id": "CNA-2017-0007",
    "country": "USA",
    "org": "Qualcomm, Inc.",
    "scope": "9d3bbbaaaa41",
    "type": "Vendor"
   },
   "rami.io": {
+   "cna_id": "CNA-2024-0023",
    "country": "Germany",
    "org": "rami.io GmbH",
    "scope": "b9c2344f6a2e",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "rapid7": {
+   "cna_id": "CNA-2016-0024",
    "country": "USA",
    "org": "Rapid7, Inc.",
    "scope": "7e3dcc5b3d5b",
    "type": "Open Source + Researcher + Vendor"
   },
   "redhat": {
+   "cna_id": "CNA-2005-0006",
    "country": "USA",
    "org": "Red Hat, Inc.",
    "scope": "6cbcea456d72",
    "type": "Open Source + Vendor"
   },
   "runZero": {
+   "cna_id": "CNA-2025-0062",
    "country": "USA",
    "org": "runZero, Inc.",
    "scope": "476f4edc708a",
    "type": "Hosted Service + Open Source + Researcher + Vendor"
   },
   "rust": {
+   "cna_id": "CNA-2025-0036",
    "country": "USA",
    "org": "The Rust Project",
    "scope": "387957f0fecf",
    "type": "Open Source + Vendor"
   },
   "samsung.tv_appliance": {
+   "cna_id": "CNA-2023-0034",
    "country": "South Korea",
    "org": "Samsung TV & Appliance",
    "scope": "cb669246f142",
    "type": "Open Source + Researcher + Vendor"
   },
   "sap": {
+   "cna_id": "CNA-2017-0038",
    "country": "Germany",
    "org": "SAP SE",
    "scope": "4ba658b16e88",
    "type": "Hosted Service + Open Source + Vendor"
   },
   "sba-research": {
+   "cna_id": "CNA-2024-0038",
    "country": "Austria",
    "org": "SBA Research gGmbH",
    "scope": "0d690e8cfa8b",
    "type": "Researcher"
   },
   "schneider": {
+   "cna_id": "CNA-2017-0009",
    "country": "France",
    "org": "Schneider Electric",
    "scope": "b8d3c1e63f16",
    "type": "Vendor"
   },
   "seal": {
+   "cna_id": "CNA-2024-0060",
    "country": "USA",
    "org": "Seal Security",
    "scope": "57689ec26de3",
    "type": "Open Source + Vendor"
   },
   "sec1": {
+   "cna_id": "CNA-2024-0019",
    "country": "India",
    "org": "Sec1",
    "scope": "3d86db471e1e",
    "type": "Vendor"
   },
   "securepoint": {
+   "cna_id": "CNA-2025-0005",
    "country": "Germany",
    "org": "Securepoint GmbH",
    "scope": "a245bd927534",
    "type": "Vendor"
   },
   "securin": {
+   "cna_id": "CNA-2023-0054",
    "country": "USA",
    "org": "Securin",
    "scope": "07adbe6055d4",
    "type": "Open Source + Researcher + Vendor"
   },
   "senhasegura": {
+   "cna_id": "CNA-2022-0041",
    "country": "Brazil",
    "org": "senhasegura",
    "scope": "bc128b8e0478",
    "type": "Researcher + Vendor"
   },
   "siemens": {
+   "cna_id": "CNA-2017-0006",
    "country": "Germany",
    "org": "Siemens",
    "scope": "d706fc7939ad",
    "type": "Vendor"
   },
   "sirius": {
+   "cna_id": "CNA-2026-0042",
    "country": "USA",
    "org": "Sirius Computer, Inc.",
    "scope": "8edfd8714b16",
    "type": "Vendor"
   },
   "snyk": {
+   "cna_id": "CNA-2017-0029",
    "country": "UK",
    "org": "Snyk",
    "scope": "7411f246e035",
    "type": "Open Source + Researcher"
   },
   "sonicwall": {
+   "cna_id": "CNA-2018-0004",
    "country": "USA",
    "org": "SonicWall, Inc.",
    "scope": "0dd2d3980ce9",
    "type": "Vendor"
   },
   "spartans-security": {
+   "cna_id": "CNA-2025-0041",
    "country": "Australia",
    "org": "Spartans Security",
    "scope": "f9c1d2993f24",
    "type": "Researcher"
   },
   "suse": {
+   "cna_id": "CNA-2014-0003",
    "country": "USA",
    "org": "SUSE",
    "scope": "4ad5475cf29a",
    "type": "Open Source + Researcher + Vendor"
   },
   "symantec": {
+   "cna_id": "CNA-2012-0003",
    "country": "USA",
    "org": "Symantec - A Division of Broadcom",
    "scope": "c31bc1e25d66",
    "type": "Researcher + Vendor"
   },
   "synology": {
+   "cna_id": "CNA-2017-0012",
    "country": "Taiwan",
    "org": "Synology Inc.",
    "scope": "e9c2fc7514d9",
    "type": "Vendor"
   },
   "systemd": {
+   "cna_id": "CNA-2026-0040",
    "country": "Germany",
    "org": "The systemd project",
    "scope": "540edb9cf7b9",
    "type": "Open Source + Vendor"
   },
   "talos": {
+   "cna_id": "CNA-2016-0017",
    "country": "USA",
    "org": "Talos",
    "scope": "ac51cdfe0f94",
    "type": "Researcher"
   },
   "tenable": {
+   "cna_id": "CNA-2017-0023",
    "country": "USA",
    "org": "Tenable Network Security, Inc.",
    "scope": "a38433c738cf",
    "type": "Vendor"
   },
   "tibco": {
+   "cna_id": "CNA-2017-0001",
    "country": "USA",
    "org": "TIBCO Software Inc.",
    "scope": "49c72dc0460f",
    "type": "Vendor"
   },
   "tlt_net": {
+   "cna_id": "CNA-2024-0011",
    "country": "Lithuania",
    "org": "Teltonika Networks",
    "scope": "ad4da98ed7a0",
    "type": "Vendor"
   },
   "trendmicro": {
+   "cna_id": "CNA-2017-0017",
    "country": "Japan",
    "org": "Trend Micro, Inc.",
    "scope": "98ade7a6cd49",
    "type": "Vendor"
   },
   "tuxcare": {
+   "cna_id": "CNA-2026-0047",
    "country": "USA",
    "org": "Tuxcare Inc.",
    "scope": "eb5ca3fd197a",
    "type": "Open Source + Vendor"
   },
   "twcert": {
+   "cna_id": "CNA-2018-0012",
    "country": "Taiwan",
    "org": "TWCERT/CC",
    "scope": "c539cc56c22d",
    "type": "CERT"
   },
   "upKeeper": {
+   "cna_id": "CNA-2024-0043",
    "country": "Sweden",
    "org": "upKeeper Solutions",
    "scope": "886b4259a74a",
    "type": "Vendor"
   },
   "vmware": {
+   "cna_id": "CNA-2016-0025",
    "country": "USA",
    "org": "VMware by Broadcom",
    "scope": "83ad7804ae44",
    "type": "Open Source + Vendor"
   },
   "vx": {
+   "cna_id": "CNA-2024-0035",
    "country": "USA",
    "org": "VotingWorks",
    "scope": "1b6eef19b208",
    "type": "Open Source + Vendor"
   },
   "watchdog": {
+   "cna_id": "CNA-2024-0054",
    "country": "USA",
    "org": "WatchDogDevelopment.com, LLC",
    "scope": "c438e4257663",
    "type": "Vendor"
   },
   "wibu": {
+   "cna_id": "CNA-2026-0058",
    "country": "Germany",
    "org": "WIBU-SYSTEMS AG",
    "scope": "076daf5bdb40",
    "type": "Vendor"
   },
   "wikimedia-foundation": {
+   "cna_id": "CNA-2024-0067",
    "country": "USA",
    "org": "The Wikimedia Foundation",
    "scope": "8ce42dfffd30",
    "type": "Open Source"
   },
   "wolfSSL": {
+   "cna_id": "CNA-2022-0049",
    "country": "USA",
    "org": "wolfSSL Inc.",
    "scope": "8db89f05849a",
    "type": "Open Source + Vendor"
   },
   "yandex": {
+   "cna_id": "CNA-2016-0018",
    "country": "Russia",
    "org": "Yandex N.V.",
    "scope": "f900372af821",
    "type": "Vendor"
   },
   "zdi": {
+   "cna_id": "CNA-2017-0018",
    "country": "Japan",
    "org": "Zero Day Initiative",
    "scope": "f0e92ae0d3d4",
    "type": "Bug Bounty Provider + Researcher"
   },
   "zephyr": {
+   "cna_id": "CNA-2017-0032",
    "country": "USA",
    "org": "Zephyr Project",
    "scope": "66aaba2f227a",

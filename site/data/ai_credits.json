@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-21T02:53:26Z",
+ "generated_at": "2026-09-21T06:48:45Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -365,7 +365,7 @@
   "scored": 56248,
   "high_or_critical": 23560,
   "high_or_critical_pct": 41.9,
-  "poc": 912,
+  "poc": 913,
   "poc_pct": 1.6,
   "kev": 74,
   "kev_pct": 0.1,

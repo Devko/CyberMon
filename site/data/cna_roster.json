@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-21T02:53:26Z",
+ "generated_at": "2026-09-21T06:48:45Z",
  "roster_size": {
   "min_n": 2,
   "current": 549,
@@ -266,24 +266,28 @@
     "month": "2026-07",
     "onboarded": 3,
     "departed": 0,
+    "renamed": 0,
     "scope_changed": 1
    },
    {
     "month": "2026-08",
     "onboarded": 11,
     "departed": 1,
+    "renamed": 0,
     "scope_changed": 4
    },
    {
     "month": "2026-09",
     "onboarded": 6,
     "departed": 0,
+    "renamed": 0,
     "scope_changed": 1
    }
   ],
   "totals": {
    "onboarded": 20,
    "departed": 1,
+   "renamed": 0,
    "scope_changed": 6
   },
   "events_total": 27,
@@ -327,6 +331,32 @@
    {
     "label": "N/A",
     "n": 2
+   }
+  ],
+  "by_role": [
+   {
+    "label": "CNA",
+    "n": 546
+   },
+   {
+    "label": "Root",
+    "n": 8
+   },
+   {
+    "label": "CNA-LR",
+    "n": 3
+   },
+   {
+    "label": "Top-Level Root",
+    "n": 2
+   },
+   {
+    "label": "ADP",
+    "n": 1
+   },
+   {
+    "label": "Secretariat",
+    "n": 1
    }
   ],
   "by_tlr": [
@@ -563,6 +593,7 @@
   "country_count": 43,
   "root_count": 7,
   "mitre_n": 459,
-  "cisa_n": 88
+  "cisa_n": 88,
+  "assigning_n": 548
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-21T02:53:26Z",
+ "generated_at": "2026-09-21T06:48:45Z",
  "min_n": 10,
  "months": [
   {
@@ -617,6 +617,8 @@
    "p75_days": 768.0
   },
   "step_month": "2023-12",
+  "step_month_flips": 206,
+  "total_after_step": 110,
   "lag_post_step": {
    "n": 110,
    "median_days": 437.5,
@@ -790,6 +792,6 @@
  "headline": {
   "edits_total": 2945,
   "edits_per_100_entries": 171.6,
-  "pct_flag_flips": 10.7
+  "pct_flag_flips": 4.0
  }
 }

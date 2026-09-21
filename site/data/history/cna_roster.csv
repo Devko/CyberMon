@@ -1,28 +1,28 @@
-observed_date,short_name,change_type,org,country,type
-2026-07-21,AISLE,onboarded,AISLE Incorporated,Netherlands,Vendor
-2026-07-21,Scality,onboarded,Scality SA,France,Vendor
-2026-07-21,Tacit,onboarded,Tacit,France,Hosted Service + Vendor
-2026-07-21,NCSC.ch,scope_changed,Switzerland National Cyber Security Centre (NCSC),Switzerland,CERT
-2026-08-05,Anthropic,onboarded,"Anthropic, PBC",USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor
-2026-08-05,NCSC,onboarded,NATO Cyber Security Centre,Belgium,Researcher
-2026-08-05,Qt,onboarded,Qt Group,Finland,Vendor
-2026-08-05,Syncro,onboarded,Syncro Soft SRL,Romania,Vendor
-2026-08-05,hsi,onboarded,"Haverford Systems, Inc.",USA,Researcher + Vendor
-2026-08-05,postiz,onboarded,Postiz,Israel,Hosted Service + Open Source + Vendor
-2026-08-05,TQtC,departed,The Qt Company,Finland,Vendor
-2026-08-05,OAI,scope_changed,OpenAI,USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor
-2026-08-12,NCSC,scope_changed,NATO Cyber Security Centre,Belgium,Researcher
-2026-08-19,Ubiquiti,onboarded,"Ubiquiti, Inc.",USA,Vendor
-2026-08-26,Circutor,onboarded,Circutor,Spain,Vendor
-2026-08-26,Grayback,onboarded,Grayback Security,Spain,Bug Bounty Provider
-2026-08-26,Velneo,onboarded,Velneo,Spain,Vendor
-2026-08-26,wibu,onboarded,WIBU-SYSTEMS AG,Germany,Vendor
-2026-08-26,AISLE,scope_changed,AISLE Incorporated,Netherlands,Researcher + Vendor
-2026-08-26,ENISA,scope_changed,EU Agency for Cybersecurity (ENISA),Greece,Consortium
-2026-09-02,S4M,onboarded,Security4Media,Switzerland,Researcher
-2026-09-10,Airoha,onboarded,Airoha Technology Corp.,Taiwan,Vendor
-2026-09-10,HONA,onboarded,Honeywell Aerospace,USA,Vendor
-2026-09-10,Zenitel,onboarded,Zenitel Norway AS,Norway,Vendor
-2026-09-10,esaqa,onboarded,esaqa GmbH,Germany,Vendor
-2026-09-16,RES,onboarded,RedEye Security,USA,Vendor
-2026-09-16,schneider,scope_changed,Schneider Electric,France,Vendor
+observed_date,short_name,change_type,org,country,type,from_short_name
+2026-07-21,AISLE,onboarded,AISLE Incorporated,Netherlands,Vendor,
+2026-07-21,Scality,onboarded,Scality SA,France,Vendor,
+2026-07-21,Tacit,onboarded,Tacit,France,Hosted Service + Vendor,
+2026-07-21,NCSC.ch,scope_changed,Switzerland National Cyber Security Centre (NCSC),Switzerland,CERT,
+2026-08-05,Anthropic,onboarded,"Anthropic, PBC",USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor,
+2026-08-05,NCSC,onboarded,NATO Cyber Security Centre,Belgium,Researcher,
+2026-08-05,Qt,onboarded,Qt Group,Finland,Vendor,
+2026-08-05,Syncro,onboarded,Syncro Soft SRL,Romania,Vendor,
+2026-08-05,hsi,onboarded,"Haverford Systems, Inc.",USA,Researcher + Vendor,
+2026-08-05,postiz,onboarded,Postiz,Israel,Hosted Service + Open Source + Vendor,
+2026-08-05,TQtC,departed,The Qt Company,Finland,Vendor,
+2026-08-05,OAI,scope_changed,OpenAI,USA,AI Researcher (Frontier AI Researcher CVE Numbering Authorities (CNAs) Pilot) + Vendor,
+2026-08-12,NCSC,scope_changed,NATO Cyber Security Centre,Belgium,Researcher,
+2026-08-19,Ubiquiti,onboarded,"Ubiquiti, Inc.",USA,Vendor,
+2026-08-26,Circutor,onboarded,Circutor,Spain,Vendor,
+2026-08-26,Grayback,onboarded,Grayback Security,Spain,Bug Bounty Provider,
+2026-08-26,Velneo,onboarded,Velneo,Spain,Vendor,
+2026-08-26,wibu,onboarded,WIBU-SYSTEMS AG,Germany,Vendor,
+2026-08-26,AISLE,scope_changed,AISLE Incorporated,Netherlands,Researcher + Vendor,
+2026-08-26,ENISA,scope_changed,EU Agency for Cybersecurity (ENISA),Greece,Consortium,
+2026-09-02,S4M,onboarded,Security4Media,Switzerland,Researcher,
+2026-09-10,Airoha,onboarded,Airoha Technology Corp.,Taiwan,Vendor,
+2026-09-10,HONA,onboarded,Honeywell Aerospace,USA,Vendor,
+2026-09-10,Zenitel,onboarded,Zenitel Norway AS,Norway,Vendor,
+2026-09-10,esaqa,onboarded,esaqa GmbH,Germany,Vendor,
+2026-09-16,RES,onboarded,RedEye Security,USA,Vendor,
+2026-09-16,schneider,scope_changed,Schneider Electric,France,Vendor,
