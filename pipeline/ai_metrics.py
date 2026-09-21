@@ -62,13 +62,16 @@ WINDOW_YEARS = 5
 # (pipeline/tests/test_claims_ai.py) after you do.
 INFLECTION_THRESHOLD_PCT = 10.0
 
-# Complete years required AFTER a cutoff before the module will judge
-# that era at all. One year is not an era: the 2025 cohort alone swings
-# the gap median by double digits (a batch of old CVEs picking up PoC
-# references drags the p25 to -4452 days), and a verdict resting on it
-# would be an artifact with a headline. Eras younger than this report
-# "insufficient" and say so on the page — a judgment this module earns
-# back as the record accumulates, not one it fakes now.
+# Complete, SETTLED years required AFTER a cutoff before the module will
+# judge that era at all. One year is not an era: the 2025 cohort alone
+# swings the gap median by double digits (a batch of old CVEs picking up
+# PoC references drags the p25 to -4452 days), and a verdict resting on
+# it would be an artifact with a headline. Years the trackers are still
+# indexing (``provisional`` rows of the like-for-like series) do not
+# count toward this minimum: a cohort known to read biased cannot stand
+# in for a settled one. Eras younger than this report "insufficient" and
+# say so on the page — a judgment this module earns back as the record
+# accumulates, not one it fakes now.
 MIN_POST_YEARS = 2
 
 # Below this much total travelled distance, the "share banked" ratio is
@@ -112,14 +115,31 @@ ATTENTION_TERMS = ("ai_security", "agentic_ai")
 
 
 def cut_year_for(era: Era) -> int:
-    """Last calendar year ending entirely BEFORE the era's date.
+    """Last calendar year ending entirely BEFORE the era's date: the
+    final year of the PRE window.
 
     No charted year may straddle a cutoff — a year that contains the
-    cutoff belongs to neither side, so it is excluded from both. For
-    ChatGPT (2022-11-30) that is 2021; a reader who thinks 2022 should
-    count as pre-AI can say so, but they cannot say the split is rigged.
+    cutoff belongs to neither side, so it is excluded from both (the post
+    window starts at :func:`post_start_year_for`). For ChatGPT
+    (2022-11-30) the pre window ends in 2021 and the post window starts
+    in 2023; a reader who thinks 2022 should count as pre-AI can say so,
+    but they cannot say the split is rigged.
     """
     return date.fromisoformat(era.date).year - 1
+
+
+def post_start_year_for(era: Era) -> int:
+    """First calendar year beginning entirely AFTER the era's date: the
+    first year of the POST window.
+
+    The year containing the cutoff belongs to neither side, so this is
+    normally the cutoff year plus one. The one exception is a cutoff
+    dated January 1, which contains no pre-cutoff day at all: that year
+    is entirely post-era and is the post window's first year, so the
+    two windows stay adjacent instead of skipping a year for nothing.
+    """
+    d = date.fromisoformat(era.date)
+    return d.year if (d.month, d.day) == (1, 1) else d.year + 1
 
 
 def _plot_date(m: Milestone) -> str:
@@ -171,8 +191,9 @@ def _verdict(early: float | None, pre: float | None, post: float | None,
                            INFLECTION_THRESHOLD_PCT of the total travel;
       ``accelerated``    — the era moved the metric toward faster;
       ``decelerated``    — the era moved it toward slower;
-      ``insufficient``   — a level is missing, or the era is younger than
-                           MIN_POST_YEARS complete years.
+      ``insufficient``   — a level is missing, or the era has fewer than
+                           MIN_POST_YEARS complete settled years behind
+                           it (``post_years`` counts only those).
     """
     if early is None or pre is None or post is None:
         return "insufficient", None, None
@@ -203,7 +224,7 @@ def _verdict(early: float | None, pre: float | None, post: float | None,
 
 
 def _build_like_for_like(poc: dict) -> dict:
-    """The censoring-free clock, lifted from time_to_poc's `arming`.
+    """The fixed-window clock, lifted from time_to_poc's `arming`.
 
     Kept OUT of ``clock.metrics`` deliberately. Those three share one
     cohort and one span, and the contract enforces that. This is a
@@ -212,8 +233,9 @@ def _build_like_for_like(poc: dict) -> dict:
     like-for-like statistic can measure a part-finished year that the
     raw series cannot. Structuring the difference rather than hiding it
     is what stops a reader treating four numbers as four equal numbers:
-    this one is immune to the bias the other three carry, and the page
-    says which is which.
+    this one removes the cohort-maturity bias the other three carry (not
+    tracker ingestion lag — its ``provisional`` rows own that), and the
+    page says which is which.
     """
     arming = poc.get("arming") or {}
     rows = arming.get("years") or []
@@ -279,27 +301,32 @@ def _build_banked(clock: dict, eras: list[dict],
         era_blocks = []
         for era in eras:
             cut = era["cut_year"]
+            post_start = era["post_start_year"]
             pre_v, pre_y, pre_n = _window(
                 rows, "value", start=cut - WINDOW_YEARS + 1, end=cut)
+            # The year containing the cutoff sits between the two
+            # windows and belongs to neither: it is excluded here as
+            # deliberately as it is from the pre window above.
             post_v, post_y, post_n = _window(
-                rows, "value", start=cut + 1, end=last_year)
-            # A verdict standing entirely on cohorts the trackers have
-            # not finished indexing is not a verdict. Those years read
+                rows, "value", start=post_start, end=last_year)
+            # A verdict standing on cohorts the trackers have not
+            # finished indexing is not a verdict. Those years read
             # slower than they will finally prove to be, so publishing
             # one would print a "slowdown" that is an artifact — and on
             # this page, any spurious movement inside the AI band is the
-            # single most likely thing to be misread.
+            # single most likely thing to be misread. Only settled years
+            # count toward the MIN_POST_YEARS bar; the level itself
+            # still reports every charted year, so the audit trail
+            # shows what was withheld and why.
             settled_post = [r for r in rows
-                            if cut < r["year"] <= last_year
+                            if post_start <= r["year"] <= last_year
                             and not r.get("provisional")]
-            if post_y and not settled_post:
-                verdict, pct_banked, shift_share = "insufficient", None, None
-            else:
-                verdict, pct_banked, shift_share = _verdict(
-                    early_v, pre_v, post_v, unit=m["unit"],
-                    faster=m["faster"], post_years=post_y)
+            verdict, pct_banked, shift_share = _verdict(
+                early_v, pre_v, post_v, unit=m["unit"],
+                faster=m["faster"], post_years=len(settled_post))
             era_blocks.append({
                 "era": era["id"], "cut_year": cut,
+                "post_start_year": post_start,
                 "early": _level(early_v, early_y, early_n),
                 "pre": _level(pre_v, pre_y, pre_n),
                 "post": _level(post_v, post_y, post_n),
@@ -413,6 +440,7 @@ def build_ai_alibi(poc: dict, generated_at: str,
 
     eras = [{"id": e.id, "label": e.label, "date": e.date,
              "caption": e.caption, "cut_year": cut_year_for(e),
+             "post_start_year": post_start_year_for(e),
              "default": e.id == DEFAULT_ERA} for e in ERAS]
 
     milestones = [{"date": m.date, "plot_date": _plot_date(m),
@@ -432,7 +460,7 @@ def build_ai_alibi(poc: dict, generated_at: str,
     # ``judged`` is reported alongside so a reader can see how much of
     # the grid was thin enough to withhold.
     # The headline quotes the PRIMARY metric when there is one — the
-    # censoring-free clock — falling back to the raw median otherwise.
+    # fixed-window clock — falling back to the raw median otherwise.
     default_era = next(e for e in eras if e["default"])
     gap = next((m for m in banked["metrics"] if m.get("primary")),
                next((m for m in banked["metrics"] if m["id"] == "poc_gap"),

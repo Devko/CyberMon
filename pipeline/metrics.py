@@ -10,7 +10,9 @@ Score-selection rules (per docs/data-contracts.md):
 * **CNA score** (charts 1 and 5): CNA-assigned base score from the record's
   ``containers.cna.metrics``. If a record carries several CVSS versions it
   appears in each per-version series, but exactly once in ``blended`` using
-  the newest version's score (v4 > v3 > v2; 3.0 and 3.1 both count as "v3").
+  the newest version's score (v4 > v3 > v2; 3.0 and 3.1 both count as "v3"
+  for the per-version series, while the rescore fingerprint keeps the
+  exact version label, "v3.0" vs "v3.1").
 * **Effective score** (charts 2 and 3): newest-version base score found
   *anywhere in the record* (CNA container preferred, ADP containers as
   fallback) — chart 2's contract defines "unscored" as "no base score
@@ -37,8 +39,14 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Iterable
 
-CVSS_BUCKETS = ["0.1-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
-EPSS_BUCKETS = ["<0.1%", "0.1-1%", "1-10%", ">10%"]
+# Grid bucket labels (chart 3). Both scales are lower-edge inclusive, and
+# the labels say so: a base score of exactly 0.0 is "low" (severity_bucket)
+# and lands in "0.0-3.9"; an EPSS of exactly 0.10 lands in the top bucket,
+# so that bucket is ">= 10%" (spelled with the site's glyph), not ">10%".
+# Records with no score at all are a separate "unscored" state, never a
+# bucket.
+CVSS_BUCKETS = ["0.0-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
+EPSS_BUCKETS = ["<0.1%", "0.1-1%", "1-10%", "≥10%"]
 ANNOTATIONS = [
     {"year": 2015, "label": "CVSS v3.0 released"},
     {"year": 2023, "label": "CVSS v4.0 released"},
@@ -77,13 +85,13 @@ def severity_bucket(score: float) -> str:
 def cvss_bucket(score: float) -> str:
     """Grid CVSS bucket label for a base score."""
     return {"critical": "9.0-10.0", "high": "7.0-8.9",
-            "medium": "4.0-6.9", "low": "0.1-3.9"}[severity_bucket(score)]
+            "medium": "4.0-6.9", "low": "0.0-3.9"}[severity_bucket(score)]
 
 
 def epss_bucket(epss: float) -> str:
     """Grid EPSS bucket label for a 0-1 probability (lower edges inclusive)."""
     if epss >= 0.1:
-        return ">10%"
+        return "≥10%"
     if epss >= 0.01:
         return "1-10%"
     if epss >= 0.001:
@@ -160,6 +168,9 @@ class CveFacts:
     year: int
     cna: str
     cna_scores: dict[str, float] = field(default_factory=dict)  # family -> score
+    # family -> exact version label ("v3.1") of the score in cna_scores;
+    # absent entries fall back to the family label (hand-built facts).
+    cna_versions: dict[str, str] = field(default_factory=dict)
     adp_scores: dict[str, float] = field(default_factory=dict)
     date_published: str | None = None  # day precision "YYYY-MM-DD"
     cwe: str | None = None  # first cweId in the record (CNA preferred)
@@ -175,14 +186,19 @@ class CveFacts:
 
     @property
     def newest_cna_fingerprint(self) -> tuple[str, float] | None:
-        """(version family, score) of the newest CVSS version carrying a
-        CNA-assigned base score — the Silent Rescores fingerprint.
-        :attr:`newest_cna_score` is derived from this, so the inflation
-        chart and the rescore diff can never disagree on what "the CNA
-        score" of a record is."""
+        """(exact CVSS version, score) of the newest CVSS version family
+        carrying a CNA-assigned base score — the Silent Rescores
+        fingerprint. The family picks the entry (v4 > v3 > v2, the same
+        rule as the blended series); the label is the exact version the
+        metric key names ("v3.0", "v3.1", "v4.0", "v2.0"), so a record
+        moving from cvssV3_0 to cvssV3_1 reads as a version change, never
+        as a same-version rescore. :attr:`newest_cna_score` is derived
+        from this, so the inflation chart and the rescore diff can never
+        disagree on what "the CNA score" of a record is."""
         for family in _FAMILY_ORDER:
             if family in self.cna_scores:
-                return family, self.cna_scores[family]
+                return (self.cna_versions.get(family, family),
+                        self.cna_scores[family])
         return None
 
     @property
@@ -226,9 +242,24 @@ def _family(metric_key: str) -> str | None:
     return None
 
 
-def _scores_from_metrics(metrics: Any) -> dict[str, float]:
-    """family -> base score. Within a family, the highest minor version wins
-    (cvssV3_1 over cvssV3_0 — key strings sort correctly)."""
+def exact_version(metric_key: str) -> str | None:
+    """The exact CVSS version a metric key names: "cvssV3_1" -> "v3.1",
+    "cvssV3_0" -> "v3.0", "cvssV4_0" -> "v4.0", "cvssV2_0" -> "v2.0". A key
+    in a known family without a parsable minor version falls back to the
+    family label ("v3"); a key outside the CVSS families is None."""
+    family = _family(metric_key)
+    if family is None:
+        return None
+    major, sep, minor = metric_key[len("cvssV"):].partition("_")
+    if sep and major.isdigit() and minor.isdigit():
+        return f"v{int(major)}.{int(minor)}"
+    return family
+
+
+def _versioned_scores_from_metrics(metrics: Any) -> dict[str, tuple[str, float]]:
+    """family -> (exact version label, base score). Within a family, the
+    highest minor version wins (cvssV3_1 over cvssV3_0 — key strings sort
+    correctly)."""
     best: dict[str, tuple[str, float]] = {}
     if not isinstance(metrics, list):
         return {}
@@ -245,7 +276,14 @@ def _scores_from_metrics(metrics: Any) -> dict[str, float]:
             prev = best.get(family)
             if prev is None or key > prev[0]:
                 best[family] = (key, float(score))
-    return {family: score for family, (_key, score) in best.items()}
+    return {family: (exact_version(key) or family, score)
+            for family, (key, score) in best.items()}
+
+
+def _scores_from_metrics(metrics: Any) -> dict[str, float]:
+    """family -> base score (see :func:`_versioned_scores_from_metrics`)."""
+    return {family: score for family, (_version, score)
+            in _versioned_scores_from_metrics(metrics).items()}
 
 
 def _first_cwe(container: Any) -> str | None:
@@ -386,6 +424,7 @@ def extract_facts(record: dict) -> CveFacts | None:
 
     containers = record.get("containers") or {}
     cna = containers.get("cna") or {}
+    cna_versioned = _versioned_scores_from_metrics(cna.get("metrics"))
     adps = [a for a in (containers.get("adp") or []) if isinstance(a, dict)]
     adp_scores: dict[str, float] = {}
     for adp in adps:
@@ -441,7 +480,8 @@ def extract_facts(record: dict) -> CveFacts | None:
         state=str(meta.get("state", "PUBLISHED")).upper(),
         year=year,
         cna=str(meta.get("assignerShortName") or "unknown"),
-        cna_scores=_scores_from_metrics(cna.get("metrics")),
+        cna_scores={f: s for f, (_v, s) in cna_versioned.items()},
+        cna_versions={f: v for f, (v, _s) in cna_versioned.items()},
         adp_scores=adp_scores,
         date_published=(date_published[:10]
                         if isinstance(date_published, str)
@@ -462,7 +502,8 @@ class Aggregator:
     six output builders need. Never stores whole records."""
 
     def __init__(self, kev_ids: Iterable[str] = (),
-                 poc_ids: Iterable[str] = ()) -> None:
+                 poc_ids: Iterable[str] = (),
+                 detection_ids: Iterable[str] = ()) -> None:
         self.cve_count = 0
         self.published_by_year: Counter[int] = Counter()
         self.rejected_by_year: Counter[int] = Counter()
@@ -473,14 +514,20 @@ class Aggregator:
         # KEV latency join: KEV-listed ids -> day-precision publish date
         self.kev_ids: frozenset[str] = frozenset(kev_ids)
         self.kev_published_dates: dict[str, str] = {}
-        # Time to PoC join (poc_metrics.py): ids referenced by any public
-        # PoC corpus -> day-precision publish date, the exact mirror of the
-        # KEV join above; plus, per publication year, how many PUBLISHED
-        # records with a PoC reference fall in each severity bucket — read
-        # against ``flood`` for the coverage-by-CVSS-bucket chart.
+        # Time to PoC join (poc_metrics.py): ids with tracked public
+        # EXPLOIT CODE (PocData.exploit_ids) -> day-precision publish date,
+        # the exact mirror of the KEV join above; plus, per publication
+        # year, how many PUBLISHED records with exploit code fall in each
+        # severity bucket — read against ``flood`` for the
+        # coverage-by-CVSS-bucket chart. ``detection_ids`` is the separate
+        # detection-template set (Nuclei): tallied the same way into
+        # ``detection_flood`` and never merged into the exploit tally,
+        # because a check is not an exploit.
         self.poc_ids: frozenset[str] = frozenset(poc_ids)
         self.poc_published_dates: dict[str, str] = {}
         self.poc_flood: dict[int, Counter[str]] = defaultdict(Counter)
+        self.detection_ids: frozenset[str] = frozenset(detection_ids)
+        self.detection_flood: dict[int, Counter[str]] = defaultdict(Counter)
         # CNA concentration: year -> Counter of records per CNA
         self.cna_year_published: dict[int, Counter[str]] = defaultdict(Counter)
         self.cna_year_rejected: dict[int, Counter[str]] = defaultdict(Counter)
@@ -519,7 +566,8 @@ class Aggregator:
         # without a datePublished simply don't join the day tally.
         self.calendar_days: dict[int, Counter[str]] = defaultdict(Counter)
         # Silent Rescores module (rescore_tracker.py), published records
-        # only: cve_id -> (cna, version family or None, CNA score or None).
+        # only: cve_id -> (cna, exact CVSS version label or None, CNA score
+        # or None).
         # The fingerprint is CveFacts.newest_cna_fingerprint — the exact
         # extraction the inflation chart's blended series uses — so the two
         # modules can never disagree about a record's CNA score. Unscored
@@ -611,6 +659,10 @@ class Aggregator:
         # two must bucket identically or the coverage rates would lie.
         if facts.cve_id in self.poc_ids:
             self.poc_flood[facts.year][
+                "unscored" if effective is None
+                else severity_bucket(effective)] += 1
+        if facts.cve_id in self.detection_ids:
+            self.detection_flood[facts.year][
                 "unscored" if effective is None
                 else severity_bucket(effective)] += 1
 

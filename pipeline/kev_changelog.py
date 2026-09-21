@@ -1,8 +1,12 @@
-"""KEV Changelog: the diff history CISA does not publish (kev_changelog.json).
+"""KEV Changelog: a per-field event ledger of CISA's KEV edits (kev_changelog.json).
 
 CISA edits the Known Exploited Vulnerabilities catalog in place — due dates
-move, ransomware flags flip, descriptions get rewritten, entries vanish —
-and publishes no changelog. This stage keeps one:
+move, ransomware flags flip, descriptions get rewritten, entries vanish.
+The catalog page and its CSV/JSON feeds carry no changelog; CISA's public
+``cisagov/kev-data`` git repository does hold the files with commit-level
+history (synchronized with the catalog on weekdays), but a commit is a
+whole-file diff, not a searchable record of which field changed on which
+entry. This stage keeps that normalized, per-field ledger:
 
 * ``site/data/history/kev_state.json`` — a compact fingerprint of every
   catalog entry (tracked fields verbatim, free-text fields as short stable
@@ -10,10 +14,12 @@ and publishes no changelog. This stage keeps one:
   entries. Committed, like the NVD backlog history.
 * ``site/data/history/kev_changelog.csv`` — the append-only event log.
   Like ``history/nvd_backlog.csv``, this file is an **original dataset
-  accumulated by this project and CANNOT be regenerated**: CISA publishes
-  only the current catalog snapshot, so a lost event log is lost history
-  (the pre-launch backfill from Wayback captures is reconstructable at
-  capture granularity; everything observed live is not).
+  accumulated by this project**: the catalog feeds publish only the
+  current snapshot, so the nightly observation dates on live events exist
+  nowhere else — a lost event log is lost history (the pre-launch backfill
+  from Wayback captures is reconstructable at capture granularity; a
+  re-derivation from kev-data commits would be a different record with
+  its own dating).
 
 Diff rules (the site methodology quotes them):
 
@@ -563,10 +569,25 @@ def build_kev_changelog(state: dict, events: list[dict],
     post_lags: list[float] = []
     # The month the flag column first appears in the captures flips every
     # already-flagged entry at once (206 of the first 308 flips on record
-    # sat in 2023-12). That step is a property of the capture history, not
-    # of CISA's cadence, so the lag is published twice: pooled, and for
-    # flips observed after the step month.
+    # sat in 2023-12). That step is schema initialization — a property of
+    # the capture history, not an assessment change by CISA — so it is
+    # counted separately (``step_month_flips``), the headline count and
+    # share (``total_after_step``, ``headline.pct_flag_flips``) exclude it,
+    # and the lag is published twice: pooled, and for flips observed after
+    # the step month. ``total`` and ``by_month`` stay ledger-faithful: every
+    # logged flip event, step month included.
+    # The step exists only in a capture-seeded record: the first month with
+    # flips is the step when a capture-dated flip sits in it. A record
+    # built from nightly diffs alone (no Wayback prefix) has no step — its
+    # first flips are ordinary reassessments, so nothing is set apart.
     step_month = min(flips_by_month) if flips_by_month else None
+    if step_month is not None and not any(
+            e.get("granularity") == "capture"
+            and _month(e["observed_date"]) == step_month for e in flips):
+        step_month = None
+    step_month_flips = flips_by_month.get(step_month, 0) \
+        if step_month is not None else 0
+    total_after_step = len(flips) - step_month_flips
     entries, removed = state["entries"], state["removed"]
     for e in flips:
         fp = entries.get(e["cve"]) or removed.get(e["cve"])
@@ -577,8 +598,8 @@ def build_kev_changelog(state: dict, events: list[dict],
         except ValueError:
             continue
         lags.append(float(delta))
-        if step_month is not None and _month(e["observed_date"]) > step_month:
-            post_lags.append(float(delta))
+        if step_month is None or _month(e["observed_date"]) > step_month:
+            post_lags.append(float(delta))  # no step: nothing to exclude
 
     def _lag_stats(values: list[float]) -> dict:
         if len(values) >= min_n:
@@ -593,6 +614,8 @@ def build_kev_changelog(state: dict, events: list[dict],
     flips_block = {"total": len(flips), "reversals": reversals,
                    "by_month": cumulative, "lag": lag_block,
                    "step_month": step_month,
+                   "step_month_flips": step_month_flips,
+                   "total_after_step": total_after_step,
                    "lag_post_step": _lag_stats(post_lags)}
 
     # ---- section 3: the receipts board --------------------------------------
@@ -633,13 +656,18 @@ def build_kev_changelog(state: dict, events: list[dict],
 
     # Headline: edits per catalog entry over the whole record — a scale
     # number, not a trend (the partial-month rule has no purchase here).
+    # ``pct_flag_flips`` is the flag-flip share of edits with the step
+    # month's flips taken out of BOTH numerator and denominator: the share
+    # of assessment changes that were ransomware reassessments, not the
+    # share inflated by one month of schema initialization.
     headline = None
     if catalog["entries"] and edits:
         headline = {
             "edits_total": len(edits),
             "edits_per_100_entries": _r1(100.0 * len(edits)
                                          / catalog["entries"]),
-            "pct_flag_flips": _pct(len(flips), len(edits)),
+            "pct_flag_flips": _pct(total_after_step,
+                                   len(edits) - step_month_flips),
         }
 
     return {

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from pipeline.fetch_poc import (MIN_DATE, _cve_ids, _clean_date,
+from pipeline.fetch_poc import (MIN_DATE, PocData, _cve_ids, _clean_date,
                                 load_poc_files, parse_exploitdb,
                                 parse_metasploit, parse_nuclei)
 
@@ -61,12 +61,60 @@ def test_parse_exploitdb_fails_loudly_on_zero_cve_rows():
 def test_parse_metasploit_placeholder_dates_cover_but_never_date():
     obj = json.loads((FIXTURES / "metasploit.json")
                      .read_text(encoding="utf-8"))
-    dates, ids, total, with_cve = parse_metasploit(obj)
-    assert total == 4 and with_cve == 3
-    # 1900-01-01 module: its CVE is covered but carries no date
-    assert "CVE-2023-0003" in ids
-    assert "CVE-2023-0003" not in dates
-    assert dates["CVE-2012-0002"] == "2012-06-05"
+    msf = parse_metasploit(obj)
+    assert msf.total_modules == 4 and msf.modules_with_cve == 3
+    assert msf.exploit_modules_with_cve == 2
+    # 1900-01-01 auxiliary module: its CVE is covered as a non-exploit
+    # artifact and carries no date
+    assert "CVE-2023-0003" in msf.other_ids
+    assert "CVE-2023-0003" not in msf.disclosure_dates
+    assert msf.disclosure_dates["CVE-2012-0002"] == "2012-06-05"
+
+
+def test_parse_metasploit_classifies_modules_by_type():
+    # Only exploit modules are exploit code. A scanner referencing a CVE
+    # is a check for it, and a CVE covered by both lands on the exploit
+    # side (an exploit exists) rather than being counted twice.
+    obj = {
+        "e": {"type": "exploit", "references": ["CVE-2020-0001"],
+              "disclosure_date": "2020-01-01"},
+        "s": {"type": "auxiliary", "references": ["CVE-2020-0002",
+                                                  "CVE-2020-0001"],
+              "disclosure_date": "2020-02-01"},
+        "p": {"type": "post", "references": ["CVE-2020-0003"]},
+        "untyped": {"references": ["CVE-2020-0004"]},
+    }
+    msf = parse_metasploit(obj)
+    assert msf.exploit_ids == {"CVE-2020-0001"}
+    assert msf.other_ids == {"CVE-2020-0002", "CVE-2020-0003",
+                             "CVE-2020-0004"}
+    assert msf.modules_with_cve == 4 and msf.exploit_modules_with_cve == 1
+    # disclosure dates are collected over every module type, audit only
+    assert msf.disclosure_dates["CVE-2020-0002"] == "2020-02-01"
+
+
+def test_metasploit_disclosure_dates_never_date_the_clock():
+    # The one rule the clock depends on: a Metasploit disclosure_date is
+    # the vulnerability's disclosure, not the module's publication, so a
+    # CVE dated only by Metasploit has NO first-public-PoC date, and an
+    # Exploit-DB date is never pulled earlier by a Metasploit one.
+    poc = PocData(edb_dates={"CVE-2020-0001": "2020-03-01"},
+                  msf_disclosure_dates={"CVE-2020-0001": "2020-01-01",
+                                        "CVE-2020-0002": "2020-01-01"},
+                  edb_ids=frozenset({"CVE-2020-0001"}),
+                  msf_ids=frozenset({"CVE-2020-0001", "CVE-2020-0002"}))
+    assert poc.first_poc_dates == {"CVE-2020-0001": "2020-03-01"}
+    assert "CVE-2020-0002" in poc.exploit_ids  # covered, undated
+
+
+def test_detection_templates_are_not_exploit_code():
+    poc = PocData(edb_ids=frozenset({"CVE-2020-0001"}),
+                  msf_ids=frozenset({"CVE-2020-0002"}),
+                  msf_other_ids=frozenset({"CVE-2020-0003"}),
+                  nuclei_ids=frozenset({"CVE-2020-0004"}))
+    assert poc.exploit_ids == {"CVE-2020-0001", "CVE-2020-0002"}
+    assert poc.all_ids == {"CVE-2020-0001", "CVE-2020-0002",
+                           "CVE-2020-0003", "CVE-2020-0004"}
 
 
 def test_parse_metasploit_fails_loudly_without_cves():
@@ -97,11 +145,17 @@ def test_load_poc_files_assembles_union_and_first_dates():
                          FIXTURES / "nuclei_cves.json")
     # union spans all three sources, coverage wider than dating
     assert "CVE-2023-9001" in poc.all_ids       # Nuclei only, undated
-    assert "CVE-2023-0003" in poc.all_ids       # MSF placeholder date
+    assert "CVE-2023-9001" not in poc.exploit_ids  # a template is a check
+    assert "CVE-2023-0003" in poc.all_ids       # MSF auxiliary module
+    assert "CVE-2023-0003" not in poc.exploit_ids
     assert "CVE-2023-0003" not in poc.first_poc_dates
-    # first PoC = min across dated sources (EDB 2023-01-10 < MSF 2023-01-20)
+    # first PoC = Exploit-DB's own publication date; Metasploit's
+    # disclosure_date (2023-01-20 here) never competes for it
     assert poc.first_poc_dates["CVE-2023-0001"] == "2023-01-10"
-    assert poc.first_poc_dates["CVE-2012-0002"] == "2012-06-05"  # MSF only
+    # exploit module, disclosure-dated only: covered but undated
+    assert "CVE-2012-0002" in poc.exploit_ids
+    assert "CVE-2012-0002" not in poc.first_poc_dates
+    assert poc.msf_disclosure_dates["CVE-2012-0002"] == "2012-06-05"
     assert poc.nuclei_templates == 3
 
 

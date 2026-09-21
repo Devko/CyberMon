@@ -32,9 +32,13 @@ offset  type  meaning
 14      u16   CWE number (79 for CWE-79); 0 when untagged/non-numeric
 16      u16   vendor index into ``vendors`` (0 = "other" / unknown)
 18      u16   KEV dateAdded, days since EPOCH; 0 when not in KEV
-20      u16   earliest dated public PoC (Exploit-DB / Metasploit), days
-              since EPOCH; 0 when none is dated (Nuclei carries no dates)
-22      u8    flags — bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5
+20      u16   earliest dated public exploit code (Exploit-DB
+              date_published), days since EPOCH; 0 when none is dated
+              (Metasploit dates the disclosure, not the module; Nuclei
+              carries no dates)
+22      u8    flags — bit0 KEV, bit1 ransomware, bit2 public exploit code
+              (Exploit-DB entry or Metasploit exploit module; never a
+              Nuclei detection template or a non-exploit module), bits3-5
               NVD status code, bit6 CNA score changed in the last 30 days,
               bit7 EPSS crossed the 1% line in the last 30 days (layout v3)
 23      u8    exact EPSS bucket: 0 absent; 1 <0.1%; 2 <1%; 3 <10%; 4 >=10%

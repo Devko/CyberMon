@@ -108,6 +108,39 @@ def check_flag_arrives_late(d: dict) -> None:
     )
 
 
+def check_step_is_set_apart(d: dict) -> None:
+    # editorial.js (changelog.html flag section stat note): "not counting
+    # the {step_flips} flips logged together in {step_month}, the month
+    # the flag column first appears in the captures" — the headline count
+    # is the record minus the step. The step must be real (trial: 206 of
+    # the first 308 flips in 2023-12) and what remains a real cohort, not
+    # an anecdote. Editions before 2026-09-20 lack the split keys; the
+    # site derives the same split from by_month, so the audit does too.
+    flips = d["flips"]
+    step_month = flips.get("step_month")
+    assert step_month, (
+        "the note names the step month, but the record has none"
+    )
+    first = flips["by_month"][0]
+    step_flips = flips.get("step_month_flips", first["flips"])
+    after = flips.get("total_after_step", flips["total"] - step_flips)
+    assert first["month"] == step_month and step_flips == first["flips"], (
+        f"the step month {step_month} must be the first month of the "
+        f"series with {first['flips']} flips (got {step_flips})"
+    )
+    assert step_flips >= 25, (
+        f"'flips logged together in {step_month}' describes a schema step, "
+        f"not {step_flips} flips"
+    )
+    assert after >= 25, (
+        f"'entries flipped to Known after they were already listed' needs "
+        f"a real cohort beyond the step ({after} flips is an anecdote)"
+    )
+    assert step_flips + after == flips["total"], (
+        "the step and the headline count must reconcile with the ledger"
+    )
+
+
 def check_every_edit_kind_exists(d: dict) -> None:
     # editorial.js (module card 12 blurb): "due dates that moved,
     # ransomware flags that flipped, descriptions that were rewritten,
@@ -175,6 +208,12 @@ def check_removals_are_named(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     ("The ransomware flag arrives late", check_flag_arrives_late),
+    (
+        "not counting the {step_flips} flips logged together in "
+        "{step_month}, the month the flag column first appears in the "
+        "captures",
+        check_step_is_set_apart,
+    ),
     (
         "due dates that moved, ransomware flags that flipped, descriptions "
         "that were rewritten, entries that quietly vanished",

@@ -1,9 +1,12 @@
 // Time to PoC 3 — PoC coverage by CVSS bucket, latest complete year.
 // Contract: site/data/time_to_poc.json (shared; exploits.js fetches it
-// once). Bars: the share of the window year's published records that any
-// of the three trackers references, per severity bucket, with unscored
-// records as a muted extra bar — they attract exploits too, and hiding
-// them would flatter the scored corpus.
+// once). Bars: the share of the window year's published records with
+// tracked public EXPLOIT CODE (an Exploit-DB entry or a Metasploit exploit
+// module), per severity bucket, with unscored records as a muted extra
+// bar — they attract exploits too, and hiding them would flatter the
+// scored corpus. Nuclei detection templates are a separate count
+// (`with_detection`, editions since 2026-09-20) shown in the tooltip only:
+// a check is not an exploit, so it never joins the bar.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
@@ -43,8 +46,11 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>` +
-          `<strong>${fmtPct(r.pct)}</strong> have a public PoC or template<br>` +
-          `${fmtInt(r.with_poc)} of ${fmtInt(r.total)} records published in ${cov.window_year}`
+          `<strong>${fmtPct(r.pct)}</strong> have public exploit code<br>` +
+          `${fmtInt(r.with_poc)} of ${fmtInt(r.total)} records published in ${cov.window_year}` +
+          (Number.isFinite(r.with_detection)
+            ? `<br>${fmtInt(r.with_detection)} have a Nuclei detection template (counted separately)`
+            : "")
         );
       },
     },

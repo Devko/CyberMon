@@ -22,6 +22,12 @@ def test_severity_bucket_edges():
 
 
 def test_cvss_bucket_edges():
+    # a base score of exactly 0.0 is "low" and lands in the bottom bucket,
+    # which is why that bucket reads "0.0-3.9" (missing scores are the
+    # separate "unscored" state, never a bucket)
+    assert cvss_bucket(0.0) == "0.0-3.9"
+    assert cvss_bucket(3.9) == "0.0-3.9"
+    assert cvss_bucket(4.0) == "4.0-6.9"
     assert cvss_bucket(6.9) == "4.0-6.9"
     assert cvss_bucket(7.0) == "7.0-8.9"
     assert cvss_bucket(8.9) == "7.0-8.9"
@@ -33,8 +39,10 @@ def test_epss_bucket_edges():
     assert epss_bucket(0.001) == "0.1-1%"
     assert epss_bucket(0.0099) == "0.1-1%"
     assert epss_bucket(0.01) == "1-10%"
-    assert epss_bucket(0.1) == ">10%"
-    assert epss_bucket(0.97) == ">10%"
+    # exactly 0.10 is inside the top bucket (lower edge inclusive), which
+    # is why that bucket reads ">= 10%" and not ">10%"
+    assert epss_bucket(0.1) == "≥10%"
+    assert epss_bucket(0.97) == "≥10%"
 
 
 # -------------------------------------------------------- facts extraction
@@ -211,7 +219,7 @@ def test_grid_cells_and_headline(agg, epss, kev):
     cells = {(c["cvss_bucket"], c["epss_bucket"]): c["n"] for c in out["grid"]}
     assert len(cells) == 16  # every cell present, even empty ones
     assert cells[("9.0-10.0", "0.1-1%")] == 1   # CVE-2023-0001
-    assert cells[("9.0-10.0", ">10%")] == 2     # CVE-2024-0001, CVE-2025-0001
+    assert cells[("9.0-10.0", "≥10%")] == 2     # CVE-2024-0001, CVE-2025-0001
     assert cells[("4.0-6.9", "0.1-1%")] == 1    # CVE-2023-0003 (epss 0.001 edge)
     assert cells[("7.0-8.9", "<0.1%")] == 1     # CVE-2023-0002
     assert cells[("4.0-6.9", "1-10%")] == 1     # CVE-2014-0001
@@ -233,7 +241,7 @@ def test_kev_cut(agg, epss, kev):
     assert out["kev"]["pct_below_high"] == 50.0
     dist = {d["bucket"]: d["n"] for d in out["kev"]["cvss_distribution"]}
     # the unscored KEV entry is not in the distribution
-    assert dist == {"0.1-3.9": 0, "4.0-6.9": 1, "7.0-8.9": 0, "9.0-10.0": 1}
+    assert dist == {"0.0-3.9": 0, "4.0-6.9": 1, "7.0-8.9": 0, "9.0-10.0": 1}
 
 
 # ------------------------------------------------- chart 5: CNA leaderboard

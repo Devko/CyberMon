@@ -44,11 +44,44 @@ def gap_block(out: dict, era: str = "chatgpt") -> dict:
 
 def test_cut_year_never_straddles_the_cutoff_date():
     # The whole pre/post split rests on this: a year containing the cutoff
-    # belongs to neither side.
+    # belongs to neither side — the pre window ends the year before it
+    # and the post window starts the year after it.
     by_id = {e.id: e for e in ERAS}
     assert ai_metrics.cut_year_for(by_id["chatgpt"]) == 2021  # 2022-11-30
     assert ai_metrics.cut_year_for(by_id["gpt4"]) == 2022     # 2023-03-14
     assert ai_metrics.cut_year_for(by_id["uplift"]) == 2024   # 2025-08-27
+    assert ai_metrics.post_start_year_for(by_id["chatgpt"]) == 2023
+    assert ai_metrics.post_start_year_for(by_id["gpt4"]) == 2024
+    assert ai_metrics.post_start_year_for(by_id["uplift"]) == 2026
+
+
+def test_january_first_cutoff_keeps_the_windows_adjacent():
+    # A cutoff dated January 1 contains no pre-cutoff day, so its year is
+    # entirely post-era: it starts the post window instead of being
+    # skipped. Any other date in the year straddles it.
+    from pipeline.ai_timeline_data import Era
+    jan1 = Era("x", "X", "2020-01-01", "c")
+    jan2 = Era("y", "Y", "2020-01-02", "c")
+    assert ai_metrics.cut_year_for(jan1) == 2019
+    assert ai_metrics.post_start_year_for(jan1) == 2020
+    assert ai_metrics.cut_year_for(jan2) == 2019
+    assert ai_metrics.post_start_year_for(jan2) == 2021
+
+
+def test_straddling_year_is_excluded_from_both_windows():
+    # The ChatGPT cutoff (2022-11-30) sits inside 2022. A wild 2022 value
+    # must move NEITHER the pre level (2017-2021) nor the post level
+    # (2023 onward): the year belongs to no side of the arithmetic.
+    base = flat_years(5.0, 2000, 2025)
+    out_flat = ai_metrics.build_ai_alibi(poc_payload(base), GENERATED_AT)
+    wild = {**base, 2022: 900.0}
+    out_wild = ai_metrics.build_ai_alibi(poc_payload(wild), GENERATED_AT)
+    flat, spiked = gap_block(out_flat), gap_block(out_wild)
+    assert spiked["post_start_year"] == 2023
+    assert spiked["pre"] == flat["pre"]
+    assert spiked["post"] == flat["post"]
+    assert spiked["post"]["years"] == 3  # 2023, 2024, 2025
+    assert spiked["verdict"] == "no_inflection"
 
 
 def test_exactly_one_default_era():
@@ -116,10 +149,12 @@ def test_collapse_before_the_cutoff_banks_before_it():
 
 
 def test_young_era_is_withheld_not_judged():
-    # 2024 cutoff with only 2025 complete: one year is not an era.
+    # GPT-4 cutoff (2023-03-14): 2023 straddles it, so with 2024 the last
+    # complete year the post window holds 2024 alone — one year is not
+    # an era.
     out = ai_metrics.build_ai_alibi(
-        poc_payload(flat_years(5.0, 2000, 2025)), GENERATED_AT)
-    block = gap_block(out, era="uplift")
+        poc_payload(flat_years(5.0, 2000, 2024)), "2025-07-09T00:00:00Z")
+    block = gap_block(out, era="gpt4")
     assert block["post"]["years"] == 1
     assert block["verdict"] == "insufficient"
     assert block["pct_banked"] is None
@@ -297,16 +332,25 @@ def test_banked_withholds_when_every_post_cutoff_year_is_provisional():
                               provisional_from=2022)}
     out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
     block = lfl_block(out)
-    assert block["post"]["years"] == 4          # the levels still report
+    assert block["post"]["years"] == 3          # 2023-2025: levels report
     assert block["verdict"] == "insufficient"
     assert block["pct_banked"] is None and block["shift_share_pct"] is None
     # The headline quotes the primary metric, so it withholds too.
     assert out["headline"]["verdict"] == "insufficient"
 
-    # One settled post-cutoff year is enough to judge again.
+    # One settled post-cutoff year is still under the two-year minimum:
+    # a provisional year cannot stand in for a settled one.
     payload["arming"]["years"] = arming_years(
         flat_years(100.0, 2000, 2021) | flat_years(2.0, 2022, 2025),
-        provisional_from=2023)
+        provisional_from=2024)
+    out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
+    assert lfl_block(out)["post"]["years"] == 3
+    assert lfl_block(out)["verdict"] == "insufficient"
+
+    # Two settled post-cutoff years (2023, 2024) are enough to judge.
+    payload["arming"]["years"] = arming_years(
+        flat_years(100.0, 2000, 2021) | flat_years(2.0, 2022, 2025),
+        provisional_from=2025)
     out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
     assert lfl_block(out)["verdict"] == "accelerated"
 

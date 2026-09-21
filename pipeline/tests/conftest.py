@@ -32,7 +32,8 @@ def poc():
 @pytest.fixture()
 def agg(kev, poc) -> metrics.Aggregator:
     aggregator = metrics.Aggregator(kev_ids=kev.cve_ids,
-                                    poc_ids=poc.all_ids)
+                                    poc_ids=poc.exploit_ids,
+                                    detection_ids=poc.nuclei_ids)
     aggregator.consume(iter_cve_records_from_dir(FIXTURES / "cvelist"))
     return aggregator
 

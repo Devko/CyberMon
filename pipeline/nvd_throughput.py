@@ -35,8 +35,13 @@ Transition semantics (per nightly diff, previous state vs synced state):
 * ``analyzed_from_awaiting`` — left "Awaiting Analysis" or "Undergoing
   Analysis" for "Analyzed"; when the since-date of the status it left is
   known, the observed days spent there join ``queue_durations``. Every
-  duration is a lower bound: the clock starts at our first observation
-  of that status, and an Awaiting→Undergoing hop restarts it.
+  duration is a lower bound: the clock starts at our first sighting of
+  the CVE in the queue. "Awaiting Analysis" and "Undergoing Analysis"
+  are one queue episode — a hop between them carries the since-date
+  forward instead of restarting it — so the measured wait spans the
+  whole visible stay in the queue, not just its last status segment.
+  Any other transition (a fresh entry, a Received→Awaiting step, a
+  Deferred→Awaiting return) stamps a new since-date.
 * ``deferred_from_awaiting`` — left a live-queue status for "Deferred".
 * ``modified_re``       — re-entered "Modified" (logged, not persisted).
 
@@ -107,8 +112,10 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
 
     Returns ``{"counts": {...}, "durations": [int...], "status_since":
     {...}, "resweep": bool}``. ``status_since`` is the map to persist on
-    the new state: carried forward for unchanged statuses, set to
-    ``today`` for observed changes, absent (unknown) everywhere else.
+    the new state: carried forward for unchanged statuses and for hops
+    between the two ``_PRE_ANALYZED`` statuses (one queue episode, one
+    clock), set to ``today`` for every other observed change, absent
+    (unknown) everywhere else.
 
     Never crashes on an old-format state: a missing/foreign
     ``status_since`` reads as "all since-dates unknown", and durations
@@ -142,8 +149,17 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
                 status_since[cve_id] = carried
             continue
         # observed change (or first appearance): the one honest moment to
-        # stamp a since-date.
-        status_since[cve_id] = today
+        # stamp a since-date — except inside the queue episode. An
+        # Awaiting↔Undergoing hop is the same wait continuing, so the
+        # since-date of the episode's first sighting is carried forward
+        # (when known; an unknown one is stamped today, still a lower
+        # bound). Everything else restarts the clock.
+        carried = prev_since.get(cve_id)
+        if prev in _PRE_ANALYZED and status in _PRE_ANALYZED \
+                and isinstance(carried, str):
+            status_since[cve_id] = carried
+        else:
+            status_since[cve_id] = today
         if status == "Received":
             counts["received_new"] += 1
         elif status == "Awaiting Analysis":

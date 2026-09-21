@@ -152,7 +152,8 @@ consumers must never derive either year themselves.
 }
 ```
 
-Buckets: critical ≥9.0, high 7.0–8.9, medium 4.0–6.9, low 0.1–3.9,
+Buckets: critical ≥9.0, high 7.0–8.9, medium 4.0–6.9, low 0.0–3.9 (a base
+score of exactly 0.0 is low),
 `unscored` = published that year with no base score anywhere in the record.
 `projection` (optional; see "Pace projections" above): the current year's
 published total — the sum across all five buckets, `unscored` included,
@@ -178,8 +179,8 @@ Absent when no charted year clears the threshold (tiny fixture corpora);
   "grid": [
     {"cvss_bucket": "9.0-10.0", "epss_bucket": "<0.1%", "n": 18234}
   ],
-  "cvss_buckets": ["0.1-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"],
-  "epss_buckets": ["<0.1%", "0.1-1%", "1-10%", ">10%"],
+  "cvss_buckets": ["0.0-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"],
+  "epss_buckets": ["<0.1%", "0.1-1%", "1-10%", "≥10%"],
   "headline": {"pct_critical_epss_below_1pct": 83.4, "n_critical_with_epss": 45210},
   "kev": {
     "total": 1402,
@@ -191,7 +192,12 @@ Absent when no charted year clears the threshold (tiny fixture corpora);
 ```
 
 `grid` covers scored CVEs that have a current EPSS score; every
-(cvss_bucket, epss_bucket) cell present, `n` ≥ 0.
+(cvss_bucket, epss_bucket) cell present, `n` ≥ 0. Both bucket scales are
+lower-edge inclusive and the labels say so: a base score of exactly 0.0
+sits in `0.0-3.9` and an EPSS of exactly 0.10 sits in `≥10%` (the labels
+read `0.1-3.9` / `>10%` until 2026-09-20; the same cells under corrected
+names). `kev.cvss_distribution` and `time_to_poc.json` use the same CVSS
+labels. Records without a score are never in a bucket.
 
 ## site/data/nvd_decay.json  (chart 4)
 
@@ -234,10 +240,16 @@ publishes totals only, never flow. **Every figure is observed-by-CyberMon,
 not an official NVD number**: a "transition" is a status difference
 between two of our snapshots (multiple hops between snapshots read as
 one), and a queue wait is the span between our first sighting of the
-entry status and our sighting of the exit — lower-bounded by the nightly
-cadence. Since-dates are never invented: statuses recorded before the
+CVE in the queue and our sighting of the exit — lower-bounded by the
+nightly cadence. "Awaiting Analysis" and "Undergoing Analysis" are one
+queue episode: a hop between them carries the since-date forward (the
+clock keeps running), so a wait covers the CVE's whole visible stay in
+the queue rather than its last status segment; any other transition
+(a fresh entry, Received→Awaiting, Deferred→Awaiting) restarts the
+clock. Since-dates are never invented: statuses recorded before the
 tracker shipped have no entry date, so their transitions count in the
-flow but never contribute a duration.
+flow but never contribute a duration, and a queue hop whose episode
+start was never observed is stamped at the hop.
 
 `queue.median_days`/`n_known_duration` are cumulative over the whole
 record; the median is null until `min_known_duration` timed exits have
@@ -493,14 +505,21 @@ Transitional: a published file may still declare the pre-v1.1
 keys) until the first five-source nightly rewrites it — the validator
 accepts precisely those two shapes, never a mix.
 
-`yoy[source]` is `null` unless the pair has ≥ 24 populated months, a
-nonzero prior-12-month sum, AND at least 30 raw hits across the two
-compared windows (`MIN_YOY_VOLUME` — a percentage of almost nothing is a
-rumor, not a rate); `pct_change` is computed on raw counts.
-`divergence` is `null` unless both `gdelt` and `arxiv` have ≥ 3 populated
-months AND ≥ 10 raw hits across each source's three averaged months
-(`MIN_DIVERGENCE_VOLUME` — two papers against a two-paper peak is an
-index of 100 and a fabricated headline, not a divergence);
+`yoy[source]` is `null` unless the pair has EVERY one of the 24 calendar
+months ending at `latest_month` populated (since 2026-09-20 the windows
+are fixed calendar spans anchored at the latest complete month — the
+month before the generation month — for every term and source; a gap
+inside the span withholds the figure rather than sliding the window back
+over it, which until then could compare mismatched periods under one
+label), a nonzero prior-12-month sum, AND at least 30 raw hits across the
+two compared windows (`MIN_YOY_VOLUME` — a percentage of almost nothing
+is a rumor, not a rate); `pct_change` is computed on raw counts and
+`latest_month` is the anchor. `divergence` is `null` unless both `gdelt`
+and `arxiv` have all three months ending at that same anchor AND ≥ 10 raw
+hits across those three months (`MIN_DIVERGENCE_VOLUME` — two papers
+against a two-paper peak is an index of 100 and a fabricated headline,
+not a divergence; before 2026-09-20 each source's own three most recent
+months were averaged, which could compare different periods);
 `research_vs_media_index` = arxiv 3-month index average minus gdelt's —
 divergence deliberately stays gdelt-vs-arxiv after v1.1: those two
 remain the cleanest media-vs-research pair (Wikipedia mixes both
@@ -717,9 +736,11 @@ HHI. Validator: `pipeline/tier1_contracts.py`.
     "calendar_pct": 3.3,
     "years": [
       {"year": 2025, "n": 48168, "on_pt": 4737, "pct": 9.8,
+       "tuesday_baseline_pct": 5.7,
        "top_day": {"date": "2025-02-26", "n": 790}}
     ],
-    "headline": {"latest_year": 2025, "pct_latest": 9.8}
+    "headline": {"latest_year": 2025, "pct_latest": 9.8,
+                 "tuesday_baseline_latest": 5.7}
   }
 }
 ```
@@ -757,6 +778,17 @@ UTC; there are exactly 12 such days every year. `calendar_pct` is pinned
 to 3.3 (= 12/365 rounded to 1 decimal; 12/366 rounds to the same 3.3) —
 the uniform-calendar baseline the site draws, so every chart states the
 comparison it is making: these are days holding N× their calendar share.
+That baseline alone over-credits the release train — Tuesday is the
+busiest day of the CVE week regardless — so since 2026-09-20 each year
+also carries `tuesday_baseline_pct` (optional on older editions; null when
+the window holds no other Tuesday): the share those patch Tuesdays would
+carry as ORDINARY Tuesdays — records on the year's other Tuesdays,
+averaged per Tuesday over the year's observation window (first to last
+dated record, Tuesdays counted from the actual dates), times the window's
+patch-Tuesday count, as a share of `n`. `headline.tuesday_baseline_latest`
+mirrors the latest year's value (validator-enforced). The gap between
+`pct` and it is what the release train adds beyond the generic Tuesday
+effect — a residual, not an isolated cause.
 `top_day` (tooltip only, never copy) is the year's single busiest
 publication day, ties broken by earliest date. This section charts
 exactly the `weekday` years — both derive from one day tally. Years with
@@ -797,9 +829,15 @@ here is a share, already normalized to its year. Validator:
 }
 ```
 
-Source: CyberMon's own nightly diffs of the cvelistV5 corpus. Each night,
-the streaming pass collects a per-published-CVE **fingerprint** — the
-newest-version CNA-assigned base score as `(version family, score)`,
+Source: CyberMon's own nightly diffs of the cvelistV5 corpus. The CVE
+record carries no changelog of its own; the upstream record of every edit
+is the cvelistV5 git history, and what this module adds is a normalized
+nightly diff of the *effective* CNA score, not unique possession of the
+history. Each night, the streaming pass collects a per-published-CVE
+**fingerprint** — the newest-version CNA-assigned base score as
+`(exact CVSS version, score)`, the version being the label the metric key
+names (`v2.0`, `v3.0`, `v3.1`, `v4.0`; the family still picks the newest
+entry, v4 > v3 > v2),
 extracted by the SAME property the severity-inflation chart's blended
 series reads (`CveFacts.newest_cna_fingerprint`), so the two modules can
 never disagree about a record's score — and diffs it against last night's
@@ -816,10 +854,11 @@ distinguishable from a brand-new record.
 Event taxonomy — the boundaries are the module's honesty rules:
 `rescore` = same CVSS version, different score (the ONLY type with an
 up/down direction and the only population the magnitude section reads);
-`version_shift` = the record's newest scored CVSS version changed —
-score comparison across versions is NOT a rescore (different scales), so
-shifts are logged separately and never charted as up/down, even when the
-number moved; `first_score` = a record already on last night's log gained
+`version_shift` = the record's newest scored CVSS version changed, the
+exact version — a 3.0 → 3.1 re-issue is a version shift, never a rescore
+delta — and score comparison across versions is NOT a rescore (different
+scales), so shifts are logged separately and never charted as up/down,
+even when the number moved; `first_score` = a record already on last night's log gained
 its first in-record CNA score — backfill-scoring, counted separately,
 never an edit; `score_removed` = the score disappeared from a
 still-published record. Brand-new records and records leaving the
@@ -828,10 +867,25 @@ published corpus produce no event.
 Events append to **`site/data/history/rescore_log.csv`** (columns:
 `observed_date,cve,cna,change_type,version_old,score_old,version_new,
 score_new`; empty cells = not applicable, scores at 1 decimal, dates
-non-decreasing). Like `nvd_backlog.csv`, this file is an **original
-dataset accumulated by this project and CANNOT be regenerated** — no
-upstream publishes score-edit history; the weekly `data-backup-*` tags
-are its rollback insurance. `rescore_log.json` is rebuilt from the full
+non-decreasing; `cna` is the assigner named on the record the night the
+edit was observed). Like `nvd_backlog.csv`, this file is an **original
+dataset accumulated by this project and is not regenerated** — the raw
+edits could in principle be replayed from cvelistV5's git history, but
+this normalized nightly diff exists nowhere else; the weekly
+`data-backup-*` tags are its rollback insurance.
+
+**Version-label migration (2026-09-20).** Rows and state written before
+that date carry the version *family* only (`v3`, `v4`, `v2`); rows since
+carry the exact label (`v3.1`). The committed rows are never rewritten.
+On the first diff after the change, a stored family label against an
+exact label of the same family counts as the same version
+(`rescore_tracker.same_version`): an equal score emits nothing and the
+state simply upgrades to the exact label; a changed score is a `rescore`
+whose `version_old` is the family label as stored and `version_new` the
+exact one (the only shape of rescore row whose two version cells differ —
+they always share a family). A different family is a `version_shift` as
+before. That one night cannot tell a genuine 3.0 → 3.1 re-issue from a
+same-version edit; every night after it can. `rescore_log.json` is rebuilt from the full
 CSV nightly; the CSV is written only after every output validates.
 
 Self-healing and re-run safety: a missing/unreadable state rebuilds from
@@ -853,7 +907,8 @@ gap-filled between the first and last observed week, sorted, unique;
 types count whole (direction-free by design). Weekly counts must sum to
 `catalog.totals` per type. `magnitude` covers rescore events only
 (`n == catalog.totals.rescore`; `up + down == n`): signed deltas
-`score_new − score_old` (same version by construction) in the fixed
+`score_new − score_old` (same exact version by construction, the
+migration night's family-labelled rows included) in the fixed
 buckets `<=-4.0, -3.9..-2.0, -1.9..-0.1, +0.1..+1.9, +2.0..+3.9, >=+4.0`
 (a delta of exactly 0 cannot occur). `buckets` and `median_delta` are
 null exactly while `n < min_n` (production 30; fixture mode 1) — the site
@@ -1480,10 +1535,10 @@ anywhere in this file. Validator: `pipeline/guards_contracts.py`
      "pct_above_10pct": 18.8, "ungradeable": 21, "pending": 6}
   ],
   "distribution": {
-    "buckets": ["<0.1%", "0.1-1%", "1-10%", ">10%"],
+    "buckets": ["<0.1%", "0.1-1%", "1-10%", "≥10%"],
     "by_model": [
       {"model": "v3", "n": 340,
-       "counts": {"<0.1%": 88, "0.1-1%": 112, "1-10%": 84, ">10%": 56}}
+       "counts": {"<0.1%": 88, "0.1-1%": 112, "1-10%": 84, "≥10%": 56}}
     ]
   },
   "percentiles": {
@@ -1591,7 +1646,11 @@ requests. Changing the per-entry shape therefore REQUIRES updating
     "total": 285, "reversals": 0,
     "by_month": [{"month": "2023-12", "flips": 206, "cumulative": 206}],
     "lag": {"n": 285, "median_days": 626.0,
-            "p25_days": 400.0, "p75_days": 768.0}
+            "p25_days": 400.0, "p75_days": 768.0},
+    "step_month": "2023-12", "step_month_flips": 206,
+    "total_after_step": 79,
+    "lag_post_step": {"n": 79, "median_days": 437.5,
+                      "p25_days": 124.2, "p75_days": 1107.0}
   },
   "board": {
     "most_edited": [
@@ -1617,8 +1676,12 @@ requests. Changing the per-entry shape therefore REQUIRES updating
 }
 ```
 
-CISA edits the KEV catalog in place and publishes no changelog; this
-module keeps one. Every run fingerprints each catalog entry — `dueDate`,
+CISA edits the KEV catalog in place. The catalog page and its feeds carry
+no changelog; CISA's public `cisagov/kev-data` git repository holds the
+CSV/JSON with commit-level history (synchronized on weekdays), which is
+whole-file diffs, not a per-entry, per-field record. This module keeps
+that normalized, searchable event ledger (seeded from Wayback captures
+before the nightly diffs). Every run fingerprints each catalog entry — `dueDate`,
 `knownRansomwareCampaignUse` (normalized Known/Unknown; a missing field
 never reads as Known), `vendorProject`, `product`, `vulnerabilityName`
 verbatim; `shortDescription`, `requiredAction`, `notes` as 12-hex-char
@@ -1632,10 +1695,13 @@ catalog against the committed state. Each difference is one event:
 * `kev_changelog.csv` — the append-only event log (columns:
   `observed_date,cve,change_type,field,old,new,granularity`). Like
   `nvd_backlog.csv`, this is an **original dataset accumulated by this
-  project and it CANNOT be regenerated**: CISA publishes only the current
-  snapshot. The Wayback-seeded prefix could be rebuilt from the Internet
-  Archive at capture granularity; everything observed live has this repo
-  as its only copy (the weekly `data-backup-*` tags cover it).
+  project and it CANNOT be regenerated as it stands**: the catalog feeds
+  publish only the current snapshot, so the nightly observation dates on
+  live events exist nowhere else (a re-derivation from `kev-data`
+  commits would be a different record with its own dating). The
+  Wayback-seeded prefix could be rebuilt from the Internet Archive at
+  capture granularity; everything observed live has this repo as its
+  only copy (the weekly `data-backup-*` tags cover it).
 * `kev_state.json` — the compact per-entry fingerprint state
   (`version`, `baseline_date`, `last_observed`, `backfill`
   `{captures, watermark, complete}`, `entries`, and a `removed` ledger
@@ -1666,20 +1732,29 @@ charted as edits** (catalog growth is the system working; the exclusion
 is disclosed as `catalog.additions_excluded`, and
 `edits_total + additions_excluded == events_total` always).
 
-`flips`: Unknown→Known changes of the ransomware flag. Since 2026-09-08 the
-block also carries `step_month` (the first month with flips — the month the
-flag column first appears in the captures, `"2023-12"` in production) and
-`lag_post_step`, the same `{n, median_days, p25_days, p75_days}` shape as
-`lag` over flips observed AFTER that month (null stats below `min_n`);
-editions before that date lack both and the site falls back to the pooled
-note. `by_month` is the
-cumulative series (running sum ends at `total`); `lag` measures
+`flips`: Unknown→Known changes of the ransomware flag. `total` and
+`by_month` are ledger-faithful (every logged flip event; `by_month` is the
+cumulative series whose running sum ends at `total`); `lag` measures
 `observed_date − dateAdded` in days per flip — `median/p25/p75` are
 published only with `n >= min_n` flips (production 10; fixture mode 1),
 null below (thin data renders honestly). Known→Unknown changes are
-counted as `reversals`, disclosed, never netted. Note the structural
-step: CISA added the flag column in October 2023, so the first capture
-carrying it flips every already-flagged entry at once.
+counted as `reversals`, disclosed, never netted.
+
+The structural step: CISA added the flag column in October 2023, so the
+first capture carrying it flips every already-flagged entry at once —
+schema initialization, not reassessments. Since 2026-09-08 the block
+carries `step_month` (the first month with flips, `"2023-12"` in
+production; since 2026-09-20 it is set only when that month holds a
+capture-dated flip, and is null for a record built from nightly diffs
+alone) and `lag_post_step`, the same `{n, median_days, p25_days,
+p75_days}` shape as `lag` over flips observed AFTER the step month (equal
+to `lag` when there is no step; null stats below `min_n`). Since
+2026-09-20 it also carries (optional; older editions lack them and the
+site derives the same split from `by_month`) `step_month_flips` — the
+step month's flip count, equal to `by_month[0].flips` when `step_month`
+is set and 0 otherwise — and `total_after_step` (`total −
+step_month_flips`), the headline count on the site. The validator
+requires the two to reconcile with `total`.
 
 `board`: `most_edited` — top entries by logged edit count (field changes
 + text revisions; additions/removals never inflate it), sorted
@@ -1687,7 +1762,11 @@ descending, ties by CVE id, with `last_change`; `removals` — every entry
 in the state's removed ledger (`listed` may be an empty string when the
 removed entry's dateAdded was unusable), sorted by removal date, one row
 per CVE, `len == catalog.removed_total`. `headline` is null iff there
-are no entries or no edits. Validator:
+are no entries or no edits; `headline.pct_flag_flips` is the flag-flip
+share of edits with the step month's flips taken out of both numerator
+and denominator (`total_after_step / (edits_total − step_month_flips)`) —
+since 2026-09-20; earlier editions divided every flip by every edit, so
+the committed value drops at the first rebuild. Validator:
 `pipeline/kev_changelog_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
@@ -1704,27 +1783,32 @@ are no entries or no edits. Validator:
   },
   "roster_flux": {
     "months": [{"month": "2026-07", "onboarded": 0, "departed": 0,
-                "scope_changed": 0}],
-    "totals": {"onboarded": 0, "departed": 0, "scope_changed": 0},
+                "renamed": 0, "scope_changed": 0}],
+    "totals": {"onboarded": 0, "departed": 0, "renamed": 0,
+               "scope_changed": 0},
     "events_total": 0, "first_observed": null
   },
   "roster_mix": {
     "total": 530,
     "by_type": [{"label": "Vendor", "n": 432},
                 {"label": "Open Source", "n": 142}],
+    "by_role": [{"label": "CNA", "n": 529}, {"label": "Root", "n": 12}],
     "by_tlr": [{"label": "mitre", "n": 443}, {"label": "CISA", "n": 85}],
     "by_root": [{"label": "n/a", "n": 382}, {"label": "icscert", "n": 83}],
     "by_country": [{"label": "USA", "n": 281}, {"label": "Germany", "n": 26}]
   },
   "headline": {"roster_total": 530, "top_type": "Vendor", "top_type_n": 432,
                "country_count": 44, "root_count": 7, "mitre_n": 443,
-               "cisa_n": 85}
+               "cisa_n": 85, "assigning_n": 529}
 }
 ```
 
-The CVE Program publishes its current CNA/root roster but no history —
-accreditation dates, onboardings, departures and scope changes are recorded
-nowhere upstream. This module makes CyberMon that record. Source: the
+The CVE Program publishes its current CNA/root roster and no accreditation
+dates. The roster file carries no changelog of its own, but it lives in the
+CVEProject/cve-website git repository, whose commit history is the upstream
+record of every edit; what exists nowhere else is a normalized ledger of
+onboardings, departures, renames and scope changes, which this module
+accumulates from its first snapshot. Source: the
 roster JSON that powers cve.org's List of Partners
 (`raw.githubusercontent.com/CVEProject/cve-website/dev/src/assets/data/CNAsList.json`,
 ~530 orgs; the `cveawg.mitre.org/api/org` CVE Services endpoint requires an
@@ -1733,21 +1817,27 @@ and `cve.org/api/?action=getOrgs` returns only the SPA HTML shell). Roster
 data is CVE Program data — the same source family as the CVE List this site
 already aggregates — and the program's terms permit reuse of the published
 data. Fields read: `shortName` (the natural key — unique; the assigner id
-CVE records carry; `cnaID` is NOT unique and is only an identity attribute),
-`organizationName`, `scope`, `country`, `CNA.type`, `CNA.roles`, `CNA.TLR`
-and `CNA.root`.
+CVE records carry; `cnaID` is NOT guaranteed unique and is an identity
+attribute — where it IS unique on both sides of a diff it lets a shortName
+change be recognised as a rename), `organizationName`, `scope`, `country`,
+`CNA.type`, `CNA.roles` (only `CNA` and `CNA-LR` assign CVE IDs —
+`fetch_cna_roster.ASSIGNING_ROLES`), `CNA.TLR` and `CNA.root`.
 
 **Committed history files (both under `site/data/history/`):**
 
 * `cna_roster.csv` — the append-only churn log (columns
-  `observed_date,short_name,change_type,org,country,type`). Like
-  `nvd_backlog.csv`, this is an **original dataset accumulated by this
-  project and it CANNOT be regenerated**: the upstream publishes only
-  today's roster (the weekly `data-backup-*` tags cover it).
+  `observed_date,short_name,change_type,org,country,type,from_short_name`;
+  the last column, added 2026-09-20, is filled for `renamed` rows only and
+  read as empty from files written before it existed). Like
+  `nvd_backlog.csv`, this is a **normalized dataset accumulated by this
+  project**; the raw roster edits could be replayed from the roster file's
+  git history, but this ledger is not regenerated and the weekly
+  `data-backup-*` tags cover it.
 * `cna_roster_state.json` — the compact state: the per-org fingerprint
-  (org name, country, type label, and a 12-hex-char scope hash) as of the
-  last snapshot, the `size_history` series (one `[date, size]` per observed
-  date — chart 1 is drawn from it), and the baseline/last-observed dates.
+  (org name, country, type label, a 12-hex-char scope hash and, since
+  2026-09-20, the `cnaID`) as of the last snapshot, the `size_history`
+  series (one `[date, size]` per observed date — chart 1 is drawn from it),
+  and the baseline/last-observed dates.
 
 Both are written by `__main__.run()` **only after every output validates**
 (the `nvd_backlog.csv` discipline), via `pipeline.cna_roster.persist`. A
@@ -1758,6 +1848,11 @@ Event taxonomy: `onboarded` = a `shortName` observed for the first time —
 **first-observed, not accredited-on**, because no accreditation date is
 published, so the very first run logs ZERO events (no prior snapshot to
 diff); `departed` = a `shortName` present last snapshot, gone now;
+`renamed` (added 2026-09-20) = a departed and an onboarded `shortName` that
+are one organization — same `cnaID`, unique within both snapshots, and
+agreeing on organization name, scope hash, or country plus type — logged
+as one row (`from_short_name` = the old key) instead of the pair;
+fingerprints stored before the `cnaID` landed never pair;
 `scope_changed` = an org present in both whose `scope` text changed
 (compared by the stable hash — the event records that the scope moved, not
 the prose).
@@ -1768,16 +1863,20 @@ sorted, unique dates, `current == series[-1].size`,
 may be negative) is null exactly while the series holds fewer than `min_n`
 points (production 2) — the record starts as a single point tonight and the
 site renders the thin-start placeholder rather than a fake trend.
-`roster_flux`: onboardings/departures/scope changes per calendar month,
-contiguous ascending labels (gap months at zero); per-month counts sum to
-`totals` per type, `totals` sum to `events_total`; `first_observed` is null
-exactly when the log is empty. `roster_mix` (real from day one): today's
-composition. `by_type` is a **flattened** tally (an org counts once per type
-it claims, so it may sum above `total`); `by_tlr`, `by_root`, `by_country`
+`roster_flux`: onboardings/departures/renames/scope changes per calendar
+month, contiguous ascending labels (gap months at zero); per-month counts
+sum to `totals` per type, `totals` sum to `events_total`; `first_observed`
+is null exactly when the log is empty (`renamed` keys are optional on
+editions before 2026-09-20 and read as 0). `roster_mix` (real from day
+one): today's composition. `by_type` and `by_role` (optional before
+2026-09-20) are **flattened** tallies (an org counts once per type / role
+it holds, so they may sum above `total`); `by_tlr`, `by_root`, `by_country`
 are clean partitions that sum to `total`; each breakdown is `[{label, n}]`
 sorted by `n` descending, `n >= 1`, unique labels. `headline` summarizes the
 composition (always present — the roster is never empty): `roster_total ==
-roster_mix.total`, `top_type`/`top_type_n` mirror `by_type[0]`,
+roster_mix.total` counts every org LISTED while `assigning_n` (optional
+before 2026-09-20, `<= total`) counts those holding an assigning role, CNA
+or CNA-LR; `top_type`/`top_type_n` mirror `by_type[0]`,
 `country_count == len(by_country)` minus the `n/a` bucket when one is
 present (orgs that list no country stay visible in `by_country` but are not
 a country), and `mitre_n + cisa_n <= total`.
@@ -1824,9 +1923,9 @@ volume grew from ~5,700 to ~40,000 — a coverage story (which the
 `coverage` section already tells) masquerading as a speed one.
 
 **Bias it does NOT fix**, carried in the page copy: tracker INGESTION
-lag. Exploit-DB and Metasploit add entries for older disclosures over
-time, so the newest cohort is missing arming that will surface later and
-reads slightly slow. The newest cutoff's verdict is provisional for this
+lag. Exploit-DB adds entries for older disclosures over time, so the
+newest cohort is missing arming that will surface later and reads
+slightly slow. The newest cutoff's verdict is provisional for this
 reason. `pct_negative <= pct_within_week` is enforced here as on the
 hero cohort (every negative gap is also under seven days).
 
@@ -1861,17 +1960,22 @@ hero cohort (every negative gap is also under seven days).
   "coverage": {
     "window_year": 2025,
     "buckets": [
-      {"bucket": "9.0-10.0", "total": 3955, "with_poc": 328, "pct": 8.3}
+      {"bucket": "9.0-10.0", "total": 3955, "with_poc": 328, "pct": 8.3,
+       "with_detection": 410}
     ],
-    "unscored": {"total": 4398, "with_poc": 2, "pct": 0.0}
+    "unscored": {"total": 4398, "with_poc": 2, "pct": 0.0,
+                 "with_detection": 1}
   },
   "catalog": {
     "exploitdb": {"entries": 47108, "with_cve": 27384, "cves": 25041,
                   "dated_cves": 25041},
-    "metasploit": {"modules": 7110, "with_cve": 3078, "cves": 3169,
-                   "dated_cves": 3007},
+    "metasploit": {"modules": 7110, "with_cve": 3078,
+                   "exploit_modules_with_cve": 2410, "cves": 2530,
+                   "other_cves": 640, "dated_cves": 0,
+                   "disclosure_dated_cves": 3007},
     "nuclei": {"templates": 4222, "cves": 4222},
-    "union_cves": 29360, "dated_cves": 26182, "matched_in_corpus": 29293
+    "exploit_cves": 26900, "union_cves": 29360, "dated_cves": 25041,
+    "matched_in_corpus": 26850
   "c2_weather": {
     "first_observed": "2026-07-21",
     "families": ["Emotet", "QakBot"],
@@ -1922,26 +2026,38 @@ cached per UTC day in `.cache/poc/`, ~23 MB total; `pipeline/fetch_poc.py`):
   archive); the choice is stated in the page methodology.
 * **Metasploit module metadata**
   (`raw.githubusercontent.com/rapid7/metasploit-framework/master/db/modules_metadata_base.json`,
-  ~11 MB, ~7.1k modules) — CVE ids from `references`;
-  `disclosure_date` dates the DISCLOSURE the module targets, not the
-  module's merge (module merge dates would need git history, which the
-  pipeline never clones) — a conservative dated lower bound on public
-  tooling, stated as such. Placeholder dates (`1900-01-01`, anything
-  before 1988-01-01) contribute coverage but never a date.
+  ~11 MB, ~7.1k modules) — CVE ids from `references`, classified by the
+  module's `type`: only `exploit` modules are exploit code
+  (`catalog.metasploit.cves`, `exploit_modules_with_cve`); auxiliary
+  scanners, post modules and the rest are a separate non-exploit
+  artifact set (`other_cves`, in `union_cves` but never in
+  `exploit_cves`). `disclosure_date` dates the DISCLOSURE the module
+  targets, not the module's merge (module merge dates would need git
+  history, which the pipeline never clones), so it is a
+  vulnerability-disclosure date: reported as `disclosure_dated_cves` for
+  the audit and **never used to date exploit code** — `dated_cves` is 0
+  by construction and the validator enforces it. (Until 2026-09-20 it
+  fed the first-PoC clock as a stand-in; that mixed a disclosure event
+  into an artifact clock and was removed. Editions before the split lack
+  the new keys and carry the old mixed dating.) Placeholder dates
+  (`1900-01-01`, anything before 1988-01-01) are ignored.
 * **Nuclei templates CVE index**
   (`raw.githubusercontent.com/projectdiscovery/nuclei-templates/main/cves.json`,
-  ~2 MB JSONL, ~4.2k CVE-keyed templates) — NO dates published, so
-  Nuclei contributes to `coverage` only, never to dating; stated
-  honestly in the methodology.
+  ~2 MB JSONL, ~4.2k CVE-keyed templates) — DETECTION templates, not
+  exploits, and NO dates published: Nuclei contributes only the separate
+  `with_detection` count in `coverage`, never exploit coverage or dating.
 
 Parsing is lenient per row/line but a source yielding zero CVE-linked
 entries fails the run loudly (`ValueError`). Per CVE, the **first public
-PoC date** = the minimum over the dated sources. The corpus join reuses
-the shared streaming pass: `Aggregator.poc_published_dates` (ids
-referenced by any source → `datePublished`, the exact mirror of the KEV
-join) and `Aggregator.poc_flood` (per publication year, PoC-covered
-records per severity bucket — the same bucket assignment as `flood`, so
-coverage can never re-bucket).
+PoC date** = the earliest Exploit-DB `date_published`, the one source
+that dates the artifact itself. The corpus join reuses the shared
+streaming pass: `Aggregator.poc_published_dates` (ids with tracked
+exploit code — `PocData.exploit_ids`, an Exploit-DB entry or a Metasploit
+exploit module → `datePublished`, the exact mirror of the KEV join),
+`Aggregator.poc_flood` (per publication year, exploit-covered records per
+severity bucket — the same bucket assignment as `flood`, so coverage can
+never re-bucket) and `Aggregator.detection_flood` (the same tally over
+`PocData.nuclei_ids`, kept apart).
 
 `hero`: gap = first PoC date − `datePublished`, in days, grouped by CVE
 publication year; **negative gaps are kept** (the KEV-latency rule — a
@@ -1951,9 +2067,9 @@ p25 values run to thousands of negative days). A year plots only with
 `min_n` (production 10) matched CVEs. `matched_cves + unmatched_cves ==
 dated_cves` (enforced); the headline never leans on the partial current
 year and prefers a ten-year-lookback baseline. Honesty, owned in the
-copy: public PoC in three trackers is a lower bound on tooling; the
-cohort is self-selected (~8% of records ever match); recent years are
-right-censored.
+copy: public exploit code one archive dates is a lower bound on tooling;
+the cohort is self-selected (a few percent of records ever match); recent
+years are right-censored.
 
 `kev_preempt`: a KEV entry is *preempted* when its first PoC date
 **strictly** predates `dateAdded` (same-day does not count). Denominator
@@ -2099,11 +2215,17 @@ small hand-committed milestone table (the `cwe_top25_data.py` precedent)
 where every row carries a source URL.
 
 `eras`: the three candidate "the AI era started here" cutoffs, offered as
-a chart control rather than picked for the reader. **`cut_year` is derived
-and re-derived by the validator** — it must be exactly the last calendar
-year ending entirely BEFORE the era date, so no charted year ever
-straddles a cutoff and lands on both sides of the arithmetic.
-Chronological, exactly one `default`.
+a chart control rather than picked for the reader. **`cut_year` and
+`post_start_year` are derived and re-derived by the validator** —
+`cut_year` must be exactly the last calendar year ending entirely BEFORE
+the era date (the pre window's last year) and `post_start_year` the first
+calendar year beginning entirely AFTER it (the post window's first year;
+a January-1 cutoff starts its own year), so the year containing a cutoff
+is charted but counts for neither side of the arithmetic. Before
+2026-09-20 the post window mistakenly began at `cut_year + 1`, i.e. WITH
+the straddling year; `post_start_year` is optional on editions written
+before the fix and every era block repeats it. Chronological, exactly one
+`default`.
 
 `milestones`: chronological by `plot_date`, which is itself **derived and
 re-checked** — day-precision rows plot on their own date, month-precision
@@ -2144,15 +2266,17 @@ share both mean "faster".
 `verdict` is `no_inflection` when the era moved the level by less than
 `inflection_threshold_pct` of total travel, `accelerated`/`decelerated`
 otherwise, and `insufficient` when a level is missing or the era has fewer
-than `ai_metrics.MIN_POST_YEARS` (2) complete years behind it — one year
-is not an era, and the 2025 cohort alone swings the gap median by double
-digits. The validator enforces that arithmetic both ways: `insufficient`
+than `ai_metrics.MIN_POST_YEARS` (2) complete SETTLED years behind it —
+one year is not an era, the 2025 cohort alone swings the gap median by
+double digits, and a `provisional` like-for-like year (still being
+indexed) does not count toward the minimum, though the level still
+reports it. The validator enforces that arithmetic both ways: `insufficient`
 is the ONLY verdict allowed to carry a missing level or a thin
 post-window, an unjudged cell may carry no share at all, `era_shift` must
 equal `post - pre`, and `shift_share_pct`'s sign may never contradict the
 verdict that names that direction in words.
 
-`like_for_like`: the censoring-free clock, lifted from `time_to_poc`'s
+`like_for_like`: the fixed-window clock, lifted from `time_to_poc`'s
 `arming` section. Kept OUT of `clock.metrics` on purpose — those three
 share one cohort and one span and the contract enforces it, while this
 is a different instrument on a different span: it starts later (the
@@ -2397,7 +2521,7 @@ gitignored and shipped inside the Pages artifact (see README, "The Field").
 | `sample` | bool | true for fixture outputs; rejected by deployment |
 | `n` | int ≥ 1 | records placed (PUBLISHED, dated on/after epoch) |
 | `first_day`, `last_day` | int | day range of the placed records |
-| `counts.kev/poc/poc_dated/scored/epss` | int ≤ n | join tallies (`poc_dated` = records with a dated Exploit-DB/Metasploit PoC) |
+| `counts.kev/poc/poc_dated/scored/epss` | int ≤ n | join tallies (`poc` = records with tracked public exploit code, `PocData.exploit_ids`; `poc_dated` = those with a dated Exploit-DB entry) |
 | `cnas` | list | assignerShortName by descending volume (u16 index) |
 | `vendors` | list | `["other", …]`, all first non-placeholder affected vendor names (u16 index); fail if the dictionary exceeds 65,536 entries |
 | `skipped.rejected`, `skipped.undated` | int | records not placed |
@@ -2411,9 +2535,11 @@ Record layout v4 (little-endian, 24 bytes; v4 adds an exact EPSS bucket
 at previously reserved byte 23; the page requires v4): u16 ID year · u32 ID sequence ·
 u16 datePublished day · u8 score×10 · u8 CVSS family (0/2/3/4) · u16
 EPSS×10000 · u16 CNA index · u16 CWE number · u16 vendor index · u16 KEV
-dateAdded day (0 = not in KEV) · u16 earliest dated public PoC day (0 =
-none dated; `PocData.first_poc_dates`, the Time to PoC join) · u8 flags
-(bit0 KEV, bit1 ransomware, bit2 public PoC, bits3-5 NVD status code, bit6
+dateAdded day (0 = not in KEV) · u16 earliest dated public exploit-code
+day (0 = none dated; `PocData.first_poc_dates`, Exploit-DB only — the Time
+to PoC join) · u8 flags (bit0 KEV, bit1 ransomware, bit2 public exploit
+code — an Exploit-DB entry or Metasploit exploit module, never a Nuclei
+template or scanner module — bits3-5 NVD status code, bit6
 a CNA score added/raised/lowered within the window — from the committed
 rescore log, so a lost cache never blanks it; bit7 EPSS crossed the 1% line
 within the window — from the volatility state's rolling `recent_crossings`

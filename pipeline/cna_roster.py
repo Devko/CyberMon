@@ -1,11 +1,14 @@
 """CNA Roster History: the CVE federation's growth and churn (cna_roster.json).
 
-The CVE Program publishes its current roster of CNAs and roots but no
-history — accreditation dates, onboardings, departures and scope changes are
-recorded nowhere upstream. This stage makes CyberMon that record. Every
-night it fingerprints today's roster (from ``fetch_cna_roster``), diffs it
-against the committed state, appends events to an append-only committed CSV,
-and emits three sections:
+The CVE Program publishes its current roster of CNAs and roots and no
+accreditation dates. The roster file carries no changelog of its own; it
+lives in the CVEProject/cve-website git repository, whose commit history
+is the upstream record of every edit and importable roster history for
+anyone who replays it. This stage keeps a normalized nightly ledger
+instead, starting at CyberMon's first snapshot. Every night it
+fingerprints today's roster (from ``fetch_cna_roster``), diffs it against
+the committed state, appends events to an append-only committed CSV, and
+emits three sections:
 
 * ``roster_size`` — roster size over time, from the committed size history.
   It starts as a single point (tonight's count) and deepens one nightly
@@ -16,8 +19,10 @@ and emits three sections:
   snapshots**, because no accreditation date is published, so the very first
   run logs ZERO events (there is no prior snapshot to diff against).
 * ``roster_mix`` — the CURRENT roster composition (by type, top-level root,
-  reporting root, country). Fully populated from tonight's fetch on day one —
-  the one section that is real immediately.
+  reporting root, country, and — since 2026-09-20 — by program role, with
+  the count of orgs holding an assigning role, CNA or CNA-LR, reported
+  beside the total of orgs listed). Fully populated from tonight's fetch
+  on day one — the one section that is real immediately.
 
 Event taxonomy (``CHANGE_TYPES``):
 
@@ -25,18 +30,30 @@ Event taxonomy (``CHANGE_TYPES``):
   not accredited-on: the date is when CyberMon first saw the org, and the
   methodology says so.
 * ``departed`` — a ``shortName`` present last snapshot, gone this one.
+* ``renamed`` — a departed ``shortName`` and an onboarded one that are the
+  same organization: their ``cnaID`` matches, that ``cnaID`` is unique in
+  both snapshots (the roster occasionally shares one between orgs, so a
+  shared id proves nothing), and the identity agrees on at least one more
+  axis — organization name, scope text, or country plus type. One event
+  (``from_short_name`` -> ``short_name``) replaces the departed/onboarded
+  pair. Fingerprints stored before 2026-09-20 carry no ``cnaID``, so a
+  rename straddling that first night still logs as the pair.
 * ``scope_changed`` — an org present in both whose stated ``scope`` text
   changed (compared by a short stable hash, like the KEV changelog's
   text fields; the event records that the scope moved, not the prose).
 
 Committed history (both under ``site/data/history/``, the nvd_backlog.csv
-discipline — an original dataset this project accumulates and CANNOT be
-regenerated, since the upstream keeps no history):
+discipline — an original dataset this project accumulates and does not
+regenerate; the raw edits could be replayed from the roster file's git
+history, this normalized ledger exists nowhere else):
 
 * ``cna_roster.csv`` — the append-only event log (columns
-  ``observed_date,short_name,change_type,org,country,type``).
+  ``observed_date,short_name,change_type,org,country,type,from_short_name``;
+  the last column, added 2026-09-20, is filled for ``renamed`` rows only
+  and read as empty from files written before it existed).
 * ``cna_roster_state.json`` — the compact state: the per-org fingerprint
-  (org name, country, type label, scope hash) as of the last snapshot, the
+  (org name, country, type label, scope hash, and since 2026-09-20 the
+  ``cnaID``) as of the last snapshot, the
   ``size_history`` series (one ``[date, size]`` per observed date), and the
   baseline/last-observed dates.
 
@@ -57,7 +74,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
-from .fetch_cna_roster import RosterOrg, RosterSnapshot
+from .fetch_cna_roster import ASSIGNING_ROLES, RosterOrg, RosterSnapshot  # noqa: F401
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 
@@ -66,8 +83,10 @@ STATE_FILENAME = "cna_roster_state.json"
 CSV_FILENAME = "cna_roster.csv"
 
 CSV_COLUMNS = ("observed_date", "short_name", "change_type",
-               "org", "country", "type")
-CHANGE_TYPES = ("onboarded", "departed", "scope_changed")
+               "org", "country", "type", "from_short_name")
+# Columns a committed log may lack (added later); read as "" when absent.
+_OPTIONAL_CSV_COLUMNS = {"from_short_name": ""}
+CHANGE_TYPES = ("onboarded", "departed", "renamed", "scope_changed")
 
 DEFAULT_MIN_N = 2  # roster-size observations before a net-change is reported
 
@@ -90,9 +109,10 @@ def scope_hash(scope: str) -> str:
 def fingerprint(org: RosterOrg) -> dict:
     """One compact state record for an org: enough to render it after it
     departs (name, country, type label) plus the scope hash used to detect
-    scope changes."""
+    scope changes and the ``cnaID`` used to recognise a rename."""
     return {"org": org.org_name, "country": org.country,
-            "type": org.type_label, "scope": scope_hash(org.scope)}
+            "type": org.type_label, "scope": scope_hash(org.scope),
+            "cna_id": org.cna_id}
 
 
 def fingerprint_roster(snapshot: RosterSnapshot) -> dict[str, dict]:
@@ -102,32 +122,96 @@ def fingerprint_roster(snapshot: RosterSnapshot) -> dict[str, dict]:
 
 # ------------------------------------------------------------------- diffing
 
+def _norm_name(name: str) -> str:
+    return " ".join((name or "").split()).casefold()
+
+
+def _identity_agrees(prev_fp: dict, curr_fp: dict) -> bool:
+    """Whether two fingerprints look like one organization beyond the
+    shared ``cnaID``: same organization name, same scope text (hash), or
+    same country and type label. One agreeing axis is enough — a rename
+    usually changes the display name too (The Qt Company -> Qt Group),
+    while country, type and scope stay put."""
+    if _norm_name(prev_fp.get("org", "")) == _norm_name(curr_fp.get("org", "")):
+        return True
+    if prev_fp.get("scope") and prev_fp.get("scope") == curr_fp.get("scope"):
+        return True
+    return (prev_fp.get("country", "") == curr_fp.get("country", "")
+            and prev_fp.get("type", "") == curr_fp.get("type", ""))
+
+
+def rename_pairs(prev: dict[str, dict], curr: dict[str, dict]
+                 ) -> list[tuple[str, str]]:
+    """``(old_short, new_short)`` pairs among the shortNames that left and
+    arrived between ``prev`` and ``curr`` that are the same organization
+    under a new key. The rule (all three must hold): the ``cnaID`` matches
+    and is non-empty; that ``cnaID`` is unique within ``prev`` AND within
+    ``curr`` (the roster occasionally shares an id between orgs — a shared
+    id identifies nobody); and :func:`_identity_agrees`. Fingerprints
+    without a ``cna_id`` (state written before 2026-09-20) never pair.
+    Sorted by the new shortName, deterministic."""
+    departed = set(prev) - set(curr)
+    onboarded = set(curr) - set(prev)
+    if not departed or not onboarded:
+        return []
+    prev_ids = Counter(fp.get("cna_id") for fp in prev.values())
+    curr_ids = Counter(fp.get("cna_id") for fp in curr.values())
+    by_id = {curr[s].get("cna_id"): s for s in onboarded
+             if curr[s].get("cna_id")}
+    pairs: list[tuple[str, str]] = []
+    for old in departed:
+        cna_id = prev[old].get("cna_id")
+        new = by_id.get(cna_id) if cna_id else None
+        if new is None or prev_ids[cna_id] != 1 or curr_ids[cna_id] != 1:
+            continue
+        if _identity_agrees(prev[old], curr[new]):
+            pairs.append((old, new))
+    pairs.sort(key=lambda p: p[1])
+    return pairs
+
+
 def diff_orgs(prev: dict[str, dict], snapshot: RosterSnapshot,
               curr: dict[str, dict], observed_date: str) -> list[dict]:
     """Events turning ``prev`` into ``curr``, dated ``observed_date``.
 
-    Deterministic order: onboardings, departures, then scope changes, each
-    block sorted by shortName. Re-running the same diff yields the same rows.
-    Onboarded / scope-changed rows carry today's org profile; departed rows
-    carry the profile from the state (the org is gone from today's roster).
+    Deterministic order: onboardings, departures, renames, then scope
+    changes, each block sorted by shortName (renames by the new one).
+    Re-running the same diff yields the same rows. Onboarded / renamed /
+    scope-changed rows carry today's org profile; departed rows carry the
+    profile from the state (the org is gone from today's roster). A
+    rename (see :func:`rename_pairs`) is one row, with the previous
+    shortName in ``from_short_name``, in place of a departed/onboarded
+    pair; a renamed org whose scope also changed logs the scope change
+    too, under the new shortName.
     """
     by_short = {o.short_name: o for o in snapshot.orgs}
     events: list[dict] = []
 
     def _row(short: str, change: str, org: str, country: str,
-             type_label: str) -> dict:
+             type_label: str, from_short: str = "") -> dict:
         return {"observed_date": observed_date, "short_name": short,
                 "change_type": change, "org": org, "country": country,
-                "type": type_label}
+                "type": type_label, "from_short_name": from_short}
 
-    for short in sorted(set(curr) - set(prev)):
+    renames = rename_pairs(prev, curr)
+    renamed_old = {old for old, _new in renames}
+    renamed_new = {new for _old, new in renames}
+
+    for short in sorted(set(curr) - set(prev) - renamed_new):
         o = by_short[short]
         events.append(_row(short, "onboarded", o.org_name, o.country,
                            o.type_label))
-    for short in sorted(set(prev) - set(curr)):
+    for short in sorted(set(prev) - set(curr) - renamed_old):
         fp = prev[short]
         events.append(_row(short, "departed", fp.get("org", short),
                            fp.get("country", ""), fp.get("type", "")))
+    for old, new in renames:
+        o = by_short[new]
+        events.append(_row(new, "renamed", o.org_name, o.country,
+                           o.type_label, from_short=old))
+        if prev[old].get("scope", "") != curr[new].get("scope", ""):
+            events.append(_row(new, "scope_changed", o.org_name, o.country,
+                               o.type_label))
     for short in sorted(set(prev) & set(curr)):
         if prev[short].get("scope", "") != curr[short].get("scope", ""):
             o = by_short[short]
@@ -210,7 +294,9 @@ def read_events(path: Path) -> list[dict]:
     with path.open("r", newline="", encoding="utf-8") as f:
         for lineno, raw in enumerate(csv.DictReader(f), start=2):
             try:
-                row = {col: raw[col] for col in CSV_COLUMNS}
+                row = {col: (raw[col] if col not in _OPTIONAL_CSV_COLUMNS
+                             else raw.get(col) or _OPTIONAL_CSV_COLUMNS[col])
+                       for col in CSV_COLUMNS}
             except KeyError as exc:
                 raise ValueError(f"{path}:{lineno}: malformed roster row "
                                  f"{raw!r}") from exc
@@ -232,7 +318,7 @@ def write_events(path: Path, rows: list[dict]) -> None:
     with tmp.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows({**_OPTIONAL_CSV_COLUMNS, **row} for row in rows)
     tmp.replace(path)
 
 
@@ -283,10 +369,13 @@ def _breakdown(counter: Counter) -> list[dict]:
 
 def build_roster_mix(snapshot: RosterSnapshot) -> tuple[dict, dict]:
     """(roster_mix section, headline block) from today's snapshot — the one
-    section that is real from day one. ``by_type`` is a flattened tally (an
-    org counts once per type it claims, so it may sum above the total);
-    ``by_tlr`` / ``by_root`` / ``by_country`` are clean partitions that sum to
-    the total."""
+    section that is real from day one. ``by_type`` and ``by_role`` are
+    flattened tallies (an org counts once per type / role it holds, so
+    they may sum above the total); ``by_tlr`` / ``by_root`` /
+    ``by_country`` are clean partitions that sum to the total. ``total``
+    is every org LISTED; ``headline.assigning_n`` is how many of them hold
+    an assigning role (CNA or CNA-LR) — roots, ADPs and the secretariat
+    sit on the same list without one."""
     orgs = snapshot.orgs
     total = len(orgs)
 
@@ -295,6 +384,12 @@ def build_roster_mix(snapshot: RosterSnapshot) -> tuple[dict, dict]:
         for t in (o.types or ("N/A",)):
             type_counts[t] += 1
     by_type = _breakdown(type_counts)
+    role_counts: Counter = Counter()
+    for o in orgs:
+        for r in (o.roles or ("N/A",)):
+            role_counts[r] += 1
+    by_role = _breakdown(role_counts)
+    assigning_n = sum(1 for o in orgs if o.is_assigner)
     by_tlr = _breakdown(Counter(o.tlr for o in orgs))
     by_root = _breakdown(Counter(o.root for o in orgs))
     by_country = _breakdown(Counter(o.country for o in orgs))
@@ -304,8 +399,8 @@ def build_roster_mix(snapshot: RosterSnapshot) -> tuple[dict, dict]:
     cisa_n = sum(n for k, n in tlr_counts.items() if k.lower() == "cisa")
     root_count = sum(1 for k in by_root if k["label"].lower() != "n/a")
 
-    mix = {"total": total, "by_type": by_type, "by_tlr": by_tlr,
-           "by_root": by_root, "by_country": by_country}
+    mix = {"total": total, "by_type": by_type, "by_role": by_role,
+           "by_tlr": by_tlr, "by_root": by_root, "by_country": by_country}
     headline = {
         "roster_total": total,
         "top_type": by_type[0]["label"],
@@ -317,6 +412,8 @@ def build_roster_mix(snapshot: RosterSnapshot) -> tuple[dict, dict]:
         "root_count": root_count,
         "mitre_n": mitre_n,
         "cisa_n": cisa_n,
+        # orgs holding an assigning role (CNA / CNA-LR), out of `total` listed
+        "assigning_n": assigning_n,
     }
     return mix, headline
 
@@ -348,9 +445,7 @@ def build_cna_roster(state: dict, events: list[dict], snapshot: RosterSnapshot,
         for label in _month_range(min(by_month), max(by_month)):
             counts = by_month.get(label, Counter())
             months.append({"month": label,
-                           "onboarded": counts.get("onboarded", 0),
-                           "departed": counts.get("departed", 0),
-                           "scope_changed": counts.get("scope_changed", 0)})
+                           **{t: counts.get(t, 0) for t in CHANGE_TYPES}})
     totals = {t: sum(1 for e in events if e["change_type"] == t)
               for t in CHANGE_TYPES}
     roster_flux = {

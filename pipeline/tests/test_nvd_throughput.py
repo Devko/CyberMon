@@ -52,6 +52,53 @@ def test_queue_days_only_for_known_since_dates():
     assert t["durations"] == [8]  # but only the known since yields days
 
 
+def test_awaiting_to_undergoing_hop_keeps_the_queue_clock_running():
+    """Awaiting -> Undergoing -> Analyzed is one queue episode: the wait is
+    clocked from the first Awaiting sighting, not from the hop."""
+    day1 = _state({"CVE-1": "Awaiting Analysis"}, since={"CVE-1": "2026-07-01"})
+    day2 = _state({"CVE-1": "Undergoing Analysis"})
+    hop = nvd_throughput.diff_transitions(day1, day2, "2026-07-05")
+    assert hop["status_since"] == {"CVE-1": "2026-07-01"}  # not restamped
+    assert hop["durations"] == []
+    assert hop["counts"]["analyzed_from_awaiting"] == 0
+    nvd_throughput.attach_tracking(day2, day1, hop)
+    day3 = _state({"CVE-1": "Analyzed"})
+    exit_ = nvd_throughput.diff_transitions(day2, day3, TODAY)
+    assert exit_["counts"]["analyzed_from_awaiting"] == 1
+    assert exit_["durations"] == [8]  # 07-01 -> 07-09, the full episode
+    assert exit_["status_since"] == {"CVE-1": TODAY}
+
+
+def test_queue_hop_with_unknown_since_stamps_today():
+    """A hop inside the queue whose episode start was never observed gets
+    stamped at the hop — the first sighting we actually have, still a
+    lower bound; never a backfilled date."""
+    prev = _state({"CVE-1": "Undergoing Analysis",
+                   "CVE-2": "Awaiting Analysis"})
+    now = _state({"CVE-1": "Awaiting Analysis",
+                  "CVE-2": "Undergoing Analysis"})
+    t = nvd_throughput.diff_transitions(prev, now, TODAY)
+    assert t["status_since"] == {"CVE-1": TODAY, "CVE-2": TODAY}
+
+
+def test_transitions_outside_the_queue_episode_still_restamp():
+    """Only Awaiting<->Undergoing carries the clock. Received -> Awaiting
+    starts a queue episode; Deferred -> Awaiting starts a new one; a
+    queue -> Deferred exit ends it."""
+    prev = _state({"CVE-1": "Received",             # -> Awaiting
+                   "CVE-2": "Deferred",             # -> Awaiting (return)
+                   "CVE-3": "Undergoing Analysis"},  # -> Deferred
+                  since={"CVE-1": "2026-07-01", "CVE-2": "2026-07-01",
+                         "CVE-3": "2026-07-01"})
+    now = _state({"CVE-1": "Awaiting Analysis", "CVE-2": "Awaiting Analysis",
+                  "CVE-3": "Deferred"})
+    t = nvd_throughput.diff_transitions(prev, now, TODAY)
+    assert t["status_since"] == {"CVE-1": TODAY, "CVE-2": TODAY,
+                                 "CVE-3": TODAY}
+    assert t["counts"]["entered_awaiting"] == 2
+    assert t["counts"]["deferred_from_awaiting"] == 1
+
+
 def test_old_format_state_migrates_cleanly():
     """A pre-tracker state (plain statuses, no status_since) must diff
     without crashing: transitions count, all since-dates read unknown, no

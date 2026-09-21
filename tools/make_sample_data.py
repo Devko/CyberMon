@@ -82,14 +82,14 @@ def main() -> None:
     write("nine_eight_flood.json", {"generated_at": GENERATED_AT, "years": flood})
 
     # --- score_vs_reality.json ---
-    cvss_buckets = ["0.1-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
-    epss_buckets = ["<0.1%", "0.1-1%", "1-10%", ">10%"]
+    cvss_buckets = ["0.0-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
+    epss_buckets = ["<0.1%", "0.1-1%", "1-10%", "≥10%"]
     # rows: share of each cvss bucket falling in each epss bucket
-    shape = {"0.1-3.9": [0.80, 0.15, 0.04, 0.01],
+    shape = {"0.0-3.9": [0.80, 0.15, 0.04, 0.01],
              "4.0-6.9": [0.68, 0.24, 0.06, 0.02],
              "7.0-8.9": [0.55, 0.30, 0.11, 0.04],
              "9.0-10.0": [0.52, 0.31, 0.11, 0.06]}
-    totals = {"0.1-3.9": 14200, "4.0-6.9": 96100, "7.0-8.9": 92400, "9.0-10.0": 45210}
+    totals = {"0.0-3.9": 14200, "4.0-6.9": 96100, "7.0-8.9": 92400, "9.0-10.0": 45210}
     grid = [{"cvss_bucket": cb, "epss_bucket": eb, "n": int(totals[cb] * share)}
             for cb in cvss_buckets for eb, share in zip(epss_buckets, shape[cb])]
     write("score_vs_reality.json", {

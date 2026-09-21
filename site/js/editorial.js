@@ -279,7 +279,7 @@ export const editorial = {
         href: "changelog.html",
         num: "12",
         label: "KEV Changelog",
-        headline: "CISA edits the exploited list without a changelog. CyberMon keeps the diffs.",
+        headline: "CISA edits the exploited list in place. CyberMon keeps the diffs, field by field.",
         blurb:
           "Every night the Known Exploited Vulnerabilities catalog is diffed " +
           "against the last observed one: due dates that moved, ransomware flags " +
@@ -365,7 +365,7 @@ export const editorial = {
         href: "roster.html",
         num: "18",
         label: "CNA Roster",
-        headline: "The CVE federation grows and churns. Nobody keeps the history.",
+        headline: "The CVE federation grows and churns. Nobody publishes the dates.",
         blurb:
           "The CVE Program publishes who can assign a CVE today but no record " +
           "of how the roster got there. CyberMon snapshots it every night and " +
@@ -381,11 +381,12 @@ export const editorial = {
         label: "Time to PoC",
         headline: "The exploit is usually public before the paperwork settles.",
         blurb:
-          "Days from CVE publication to the first public exploit code in " +
-          "Exploit-DB or Metasploit — a clock that often starts in the " +
+          "Days from CVE publication to the first public exploit code " +
+          "Exploit-DB dates — a clock that often starts in the " +
           "negative — the share of CISA's exploited list the code beat to " +
           "the announcement, and which severity buckets attract public " +
-          "PoCs at all, with Nuclei template coverage riding along. " +
+          "exploit code at all, with Nuclei detection-template coverage " +
+          "counted beside it, never inside it. " +
           "Rebuilt nightly from the trackers' published indexes.",
         live: true,
       },
@@ -523,9 +524,10 @@ export const editorial = {
       headline: "Same twelve months, opposite direction.",
       caption:
         "Year-over-year change in mention volume, term by term and source by source — the " +
-        "last twelve collected months against the twelve before that. A term can rise in " +
-        "the press while falling on Hacker News; the board keeps sources separate on " +
-        "purpose, because hype and adoption are not the same claim.",
+        "twelve calendar months ending with the latest complete month against the twelve " +
+        "before them, the same twenty-four months for every row on the board. A term can " +
+        "rise in the press while falling on Hacker News; the board keeps sources separate " +
+        "on purpose, because hype and adoption are not the same claim.",
       statRiserLabel: "Steepest riser",
       statFallerLabel: "Steepest faller",
       statTemplate: "{label} · {source}",
@@ -534,16 +536,22 @@ export const editorial = {
       colChange: "YoY change",
       colVolume: "Last 12 months",
       eligibilityNote:
-        "Rows need a full two years of collected data and a minimum volume to post a YoY " +
-        "figure; terms whose fetch hasn't completed for a source — new, mid-backfill, or " +
-        "waiting out an upstream rate limit — are omitted until then.",
+        "Rows need every one of the last twenty-four calendar months collected and a " +
+        "minimum volume to post a YoY figure; terms whose fetch hasn't completed for a " +
+        "source — new, mid-backfill, waiting out an upstream rate limit, or missing a " +
+        "month inside the window — are omitted until then.",
       methodology:
-        "For each (term, source) pair, sum raw monthly counts for the most recent twelve " +
-        "populated complete months (the month in progress never counts) and the twelve months before that; YoY change is the percentage " +
-        "difference between the two sums. Pairs with fewer than twenty-four populated " +
-        "months, a zero-count prior-year baseline, or fewer than thirty raw hits across " +
-        "both windows are excluded — a percentage computed on a handful of hits means " +
-        "nothing. Sort any column; default is steepest riser first.",
+        "For each (term, source) pair, sum raw monthly counts over the twelve calendar " +
+        "months ending with the latest complete month (the month in progress never " +
+        "counts) and over the twelve months before those; YoY change is the percentage " +
+        "difference between the two sums. Both windows are fixed calendar spans anchored " +
+        "at that month for every term and source — a pair missing any month inside them " +
+        "posts nothing, because a missing month is unknown, not zero, and the window " +
+        "never slides back over a gap to find twenty-four months that exist (until " +
+        "2026-09-20 it did, which could compare mismatched periods under one label). " +
+        "Pairs with a gap in the window, a zero-count prior-year baseline, or fewer than " +
+        "thirty raw hits across both windows are excluded — a percentage computed on a " +
+        "handful of hits means nothing. Sort any column; default is steepest riser first.",
     },
 
     // ------------------------------------------- market.html · 3
@@ -572,16 +580,19 @@ export const editorial = {
         "plot; the rest join as collection fills in.",
       methodology:
         "Each axis is the term's own attention index (see Hype curves methodology), " +
-        "averaged over the three most recent populated complete months (the month in progress never counts), for GDELT (x) and arXiv " +
-        "(y). Of the five collected sources, this chart deliberately stays with GDELT " +
+        "averaged over the same three calendar months for both sources — the three " +
+        "ending with the latest complete month (the month in progress never counts) — " +
+        "for GDELT (x) and arXiv (y); a term missing any of those months in either " +
+        "source is omitted rather than averaged over whichever months each source " +
+        "happens to have. Of the five collected sources, this chart deliberately stays with GDELT " +
         "versus arXiv: they remain the cleanest media-versus-research pair — Wikipedia " +
         "pageviews mix both audiences, SEC filings track investor language, and Hacker " +
         "News sits somewhere between all of them, so none of the three sharpens the " +
         "comparison. A term's divergence score is the y-axis value minus the x-axis value, in " +
         "index points; scores beyond ±10 are labeled “research leads” or “media leads,” " +
         "everything inside that band is “aligned” — a deliberately wide dead zone, since " +
-        "both indices carry real month-to-month noise. Terms missing three recent " +
-        "populated months in either source — usually a source still waiting on " +
+        "both indices carry real month-to-month noise. Terms missing any of the three " +
+        "anchor months in either source — usually a source still waiting on " +
         "collection — are omitted, as are terms with fewer than ten raw hits across a " +
         "source's three averaged months: a couple of papers against a tiny peak makes " +
         "an index of 100, not a divergence.",
@@ -708,8 +719,9 @@ export const editorial = {
       caption:
         "NVD's job is to enrich CVEs — analyze, score, tag. The bars show every CVE by NVD's " +
         "own status label; the live queue is the sliver at the bottom, and it looks small for " +
-        "a reason: tens of thousands of CVEs were quietly stamped “Deferred” — analysis not " +
-        "pending, analysis cancelled. The queue wasn't worked off; it was reclassified away. " +
+        "a reason: tens of thousands of CVEs were quietly stamped “Deferred” — set aside from " +
+        "enrichment, no analysis scheduled. The queue wasn't worked off; it was reclassified " +
+        "out of the line. " +
         "The line tracks the remaining queue, one nightly snapshot at a time. When the " +
         "referee stops grading, the industry grades itself.",
       note:
@@ -748,7 +760,7 @@ export const editorial = {
         "duration is a lower bound.",
       lineTitle: "CVEs moved per day, one point per nightly diff",
       seriesAnalyzed: "Analyzed (left the queue)",
-      seriesDeferred: "Deferred (waved off)",
+      seriesDeferred: "Deferred (set aside)",
       seriesReceived: "Newly received",
       statMedianLabel: "median observed wait in the analysis queue",
       statMedianBig: "{days} days",
@@ -919,9 +931,18 @@ export const editorial = {
         "is excluded here (see the callout): it launched by inheriting a backlog of years-old " +
         "CVEs and kept importing back-catalog through 2022, which would flatten the whole " +
         "trend into one artificial spike. What's left is the catalog's actual cadence since — " +
-        "and its middle has drifted out, from a median of twelve days for 2023 listings to " +
-        "twenty-six for 2025, while the share listed more than a year late has edged down: " +
-        "slower in the middle, tighter at the tail.",
+        "its middle has {middle_verb}, from a median of {baseline_median} days for " +
+        "{baseline_year} listings to {latest_median} for {latest_year}, while the share " +
+        "listed more than a year late has {tail_verb}: {middle_word} in the middle, " +
+        "{tail_word} at the tail.",
+      // The caption's verbs are chosen from the data by kev_latency.js, so
+      // a reversed trend rewrites the sentence instead of contradicting it.
+      captionWords: {
+        middle: { up: ["drifted out", "slower"], down: ["pulled in", "faster"],
+                  flat: ["held", "steady"] },
+        tail: { up: ["edged up", "looser"], down: ["edged down", "tighter"],
+                flat: ["held", "steady"] },
+      },
       statLabel: "Median days from CVE publication to KEV listing",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -936,8 +957,8 @@ export const editorial = {
         "datePublished, in days. The trend cohort starts in 2023: the catalog launched in " +
         "November 2021 by inheriting a backlog of years-old CVEs and kept bulk-importing its " +
         "back-catalog through 2022 (the data shows the regime change — the seeding era's " +
-        "pooled median 'latency', in the callout, runs near two and a half years; of 2023 " +
-        "additions, twelve days), so a seeding-era entry's " +
+        "pooled median 'latency', in the callout, runs near two and a half years; of " +
+        "{baseline_year} additions, {baseline_median} days), so a seeding-era entry's " +
         "nominal latency measures the age of the backlog, not the speed of triage — it is " +
         "reported in the callout, never plotted in the trend. Negative " +
         "latencies are kept as negative, not floored at zero: a KEV listing that predates its " +
@@ -982,8 +1003,11 @@ export const editorial = {
         "interquartile range per year of listing. Unlike the latency chart, the seeding era " +
         "belongs here — the deadline is set the day the entry lands, back-catalog included, " +
         "so this is a policy timeline, not a backlog artifact. The early catalog handed out " +
-        "months; from 2022 through 2025 the standing rule was three weeks — and the 2026 " +
-        "listings are coming in at two.",
+        "months; the {latest_year} listings carried a median of {latest_median} days" +
+        "{current_clause}.",
+      // Filled by kev_remediation.js from the data; the clause is empty when
+      // the generation year has no listings yet.
+      captionCurrentClause: " — and the {current_year} listings so far are coming in at {current_median}",
       methodology:
         "Remediation span is the KEV dueDate minus dateAdded, in days, for every catalog " +
         "entry carrying both fields — no CVE match is needed, so this covers the catalog " +
@@ -1096,8 +1120,9 @@ export const editorial = {
       headline: "Who rejects more than they publish?",
       caption:
         "Over the last {window_years} years, each CNA's published records against its " +
-        "rejected ones — reservations formally withdrawn, duplicates collapsed, assignments " +
-        "walked back. A high rate isn't necessarily bad practice: rejection is the system's " +
+        "rejected ones — records that shipped and were later marked REJECTED: duplicates " +
+        "collapsed, assignments walked back, disputes lost. A high rate isn't necessarily " +
+        "bad practice: rejection is the system's " +
         "error-correction working in public, and a CNA that never rejects anything may " +
         "simply never re-check its own work. The board exists because the rate varies by an " +
         "order of magnitude across the program, and nobody publishes it.",
@@ -1821,7 +1846,7 @@ export const editorial = {
       num: "03",
       kicker: "Patch Tuesday",
       source: "cvelistV5 (MITRE)",
-      headline: "Twelve days carry triple their calendar share.",
+      headline: "Twelve days carry more than their calendar share — and more than an ordinary Tuesday's.",
       caption:
         "The second Tuesday of the month is Microsoft's release day, and a good part " +
         "of the industry schedules disclosure around it. Bars show the share of each " +
@@ -1829,15 +1854,23 @@ export const editorial = {
         "marks what twelve days out of 365 would hold if publication ignored the " +
         "calendar — 3.3 percent. The latest complete year put two to three times that " +
         "share on them, and the bar has cleared the line in every complete year " +
-        "since 2014.",
+        "since 2014. But Tuesday is the busiest day of the CVE week whatever the " +
+        "date, so a second, dotted line marks what those twelve days would carry as " +
+        "ordinary Tuesdays; the gap between the bar and that line is what the release " +
+        "train adds beyond the generic Tuesday effect — a residual, not an isolated " +
+        "cause — and the bar still clears what an ordinary Tuesday would carry.",
       note:
         "The comparison, stated exactly: twelve specific UTC days per year against " +
-        "a uniform-calendar baseline of 3.3% — a bar at 9.9% means those days held " +
-        "three times their share of the calendar, and says nothing about how severe " +
-        "or exploited the records were.",
+        "two baselines — a uniform calendar (3.3%) and the year's own ordinary " +
+        "Tuesdays, scaled to twelve days. A bar at 9.9% means those days held three " +
+        "times their calendar share and (against a 6% Tuesday line) half again what " +
+        "any other Tuesday would; it says nothing about how severe or exploited the " +
+        "records were.",
       baselineLabel: "uniform calendar · {pct}",
+      tuesdayBaselineLabel: "as ordinary Tuesdays · {pct}",
       tooltipShare: "{pct} of the year's dated records",
       tooltipCount: "{on_pt} of {n} on patch Tuesdays",
+      tooltipTuesday: "as ordinary Tuesdays they would carry {pct}",
       tooltipTopDay: "busiest single day: {date} ({n} records)",
       methodology:
         "A record counts as a patch-Tuesday publication when its UTC datePublished " +
@@ -1846,9 +1879,16 @@ export const editorial = {
         "Bars are the share of each year's dated records on those days. The dashed " +
         "baseline is 3.3%: 12 of 365 days (12 of 366 in a leap year rounds to the " +
         "same figure), i.e. what those days would carry under a calendar-blind " +
-        "uniform flow. The chart claims exactly that multiple and nothing more — " +
-        "publication concentrating on release days says nothing about severity or " +
-        "exploitation. The tooltip also names the year's single busiest publication " +
+        "uniform flow. The dotted baseline is the ordinary-Tuesday share: within the " +
+        "year's observation window (first to last dated record), the records that " +
+        "landed on the OTHER Tuesdays, averaged per Tuesday, times the window's " +
+        "count of patch Tuesdays, as a share of the year's dated records — Tuesdays " +
+        "counted from the actual dates, never assumed to be 52, and unknown rather " +
+        "than zero when the window holds no other Tuesday. The chart claims those " +
+        "two multiples and nothing more — the residual above the Tuesday line is not " +
+        "attributed to a cause, and publication concentrating on release days says " +
+        "nothing about severity or exploitation. The tooltip also names the year's " +
+        "single busiest publication " +
         "day for context; it is frequently a batch-conversion or mass-import day " +
         "rather than a patch Tuesday, and it is never ranked or editorialized. UTC " +
         "day boundaries as in the weekday chart. A year plots only with at least " +
@@ -1865,12 +1905,13 @@ export const editorial = {
       caption:
         "A CVE record stays editable after it ships, and the severity score is no " +
         "exception: the assigning CNA can raise it, lower it, add one years later, or " +
-        "withdraw it — on the live record, with no changelog attached. Every night " +
-        "CyberMon re-reads the whole corpus and diffs each record's CNA-assigned score " +
-        "against the night before. Bars above the line are scores revised upward, bars " +
-        "below are revisions downward; backfilled first scores and CVSS version changes " +
-        "ride along as separate muted counts, because bookkeeping and edits must never " +
-        "blend. This record starts at first deploy and deepens nightly.",
+        "withdraw it — on the live record, which carries no changelog of its own. " +
+        "Every night CyberMon re-reads the whole corpus and diffs each record's " +
+        "CNA-assigned score against the night before. Bars above the line are scores " +
+        "revised upward, bars below are revisions downward; backfilled first scores " +
+        "and CVSS version changes ride along as separate muted counts, because " +
+        "bookkeeping and edits must never blend. This record starts at first deploy " +
+        "and deepens nightly.",
       legendUp: "Score raised",
       legendDown: "Score lowered",
       legendFirst: "First score backfilled",
@@ -1881,11 +1922,14 @@ export const editorial = {
       // {first_date} is filled from the data (the log's first observed
       // date); the empty variant renders while the log has no events yet.
       note:
-        "No upstream publishes score-edit history — CyberMon has kept this record " +
-        "since {first_date}.",
+        "The CVE record itself carries no score-edit history; the raw record of every " +
+        "edit is the cvelistV5 git history, and this is its nightly diff of the " +
+        "effective score — CyberMon has kept it since {first_date}.",
       noteEmpty:
-        "No upstream publishes score-edit history — CyberMon's record starts with " +
-        "tonight's corpus. Edits appear once there are two nights to compare.",
+        "The CVE record itself carries no score-edit history; the raw record of every " +
+        "edit is the cvelistV5 git history, and this is its nightly diff of the " +
+        "effective score — CyberMon's record starts with tonight's corpus. Edits " +
+        "appear once there are two nights to compare.",
       emptyChart:
         "No diff nights on the log yet — the record starts now, and the first " +
         "comparable night fills the first bar.",
@@ -1899,13 +1943,21 @@ export const editorial = {
         "detected and skipped, so nothing double-counts). A changed score on the same " +
         "CVSS version is a rescore, raised or lowered. A record whose newest scored " +
         "version changed is a version shift, logged separately and never charted as up " +
-        "or down: v2, v3 and v4 are different scales, and reading a v3-to-v4 move as a " +
-        "raise would manufacture an edit out of a methodology change. A record gaining " +
+        "or down — and the version is the exact one the record names, so a 3.0-to-3.1 " +
+        "re-issue is a version shift too, never a rescore delta: v2, v3 and v4 are " +
+        "different scales, and reading a v3-to-v4 move as a raise would manufacture " +
+        "an edit out of a methodology change. (Until 2026-09-20 the fingerprint kept " +
+        "only the version family, so older rows read v3 and v4; the first night on " +
+        "exact labels compares a family-only label with its own family as the same " +
+        "version rather than logging a shift for every scored record.) A record gaining " +
         "its first in-record score is backfill-scoring, counted separately — filling a " +
         "blank is not editing a judgment; a score disappearing from a live record logs " +
         "as removed. Brand-new records produce no event at all: first assignment is the " +
-        "inflation chart's subject. Events append to a committed CSV " +
-        "(data/history/rescore_log.csv) that no upstream can replace, and the diffing " +
+        "inflation chart's subject. What CyberMon adds is not possession of the " +
+        "history — cvelistV5 is a public git repository and its commits are the " +
+        "upstream record of every edit — but a normalized nightly diff of the " +
+        "effective score, readable without replaying commits. Events append to a " +
+        "committed CSV (data/history/rescore_log.csv), and the diffing " +
         "state is committed right beside it — the two can no longer diverge (the one " +
         "night they did, in July 2026, taught this module that lesson and left a " +
         "deduplicated scar on the log). If the state is ever lost it is rebuilt from " +
@@ -1923,8 +1975,9 @@ export const editorial = {
       headline: "How far a score moves when it moves.",
       caption:
         "Each rescore's arithmetic: the new score minus the old, always on the same " +
-        "CVSS version — an edit that changes version is a version shift and never lands " +
-        "here. A half-point correction and a four-point rewrite are different events, " +
+        "CVSS version — an edit that changes version, 3.0 to 3.1 included, is a version " +
+        "shift and never lands here. A half-point correction and a four-point rewrite " +
+        "are different events, " +
         "and this chart exists to keep them apart. Until the log holds enough rescores " +
         "to distribute honestly, the panel reports exactly how many it has instead of " +
         "plotting a histogram of anecdotes.",
@@ -1942,7 +1995,8 @@ export const editorial = {
       yAxisLabel: "rescore events",
       methodology:
         "Delta is the new score minus the old per rescore event — same CVSS version by " +
-        "construction, so every delta compares like with like; version shifts are " +
+        "construction, the exact version rather than the family, so every delta " +
+        "compares like with like; version shifts, a 3.0-to-3.1 re-issue among them, are " +
         "excluded from this chart entirely, because a difference across scoring scales " +
         "is not a measurement. Deltas land in fixed signed buckets (−4 and under, over −4 to −2, " +
         "under −2 to −0.1, +0.1 to under +2, +2 to under +4, +4 and over) at the " +
@@ -1959,10 +2013,12 @@ export const editorial = {
       num: "03",
       kicker: "Who edits",
       source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
-      headline: "Every edit has an author.",
+      headline: "Every edit has a name on the record.",
       caption:
-        "The CNAs that assign scores are the ones who revise them, and the log records " +
-        "which. The board counts rescore events per CNA — same version, new number — " +
+        "Each rescore is filed under the CNA named as assigner on the record the night " +
+        "the edit was seen — the party responsible for the score, which is usually but " +
+        "not provably the party that typed the change. The board counts rescore " +
+        "events per CNA — same version, new number — " +
         "split into raised and lowered. Expect it to start sparse: a board of " +
         "after-the-fact edits can only fill at the speed the ecosystem edits, and the " +
         "line above the board states exactly how much record it stands on.",
@@ -1998,9 +2054,11 @@ export const editorial = {
       caption:
         "CISA's Known Exploited Vulnerabilities catalog is the closest thing " +
         "the industry has to an official list of what attackers actually use — " +
-        "and it changes in place, with no published changelog. CyberMon diffs " +
-        "every fresh catalog against the last observed one and keeps the " +
-        "ledger. Bars count edits per month: remediation deadlines that moved, " +
+        "and it changes in place. The catalog page and feed carry no changelog; " +
+        "CISA's kev-data repository keeps the files' commit history, and CyberMon " +
+        "turns those edits into a normalized, per-field, searchable ledger: every " +
+        "fresh catalog is diffed against the last observed one and every difference " +
+        "is kept. Bars count edits per month: remediation deadlines that moved, " +
         "ransomware flags that flipped, wording that was rewritten, and " +
         "entries that vanished outright. New listings are deliberately not " +
         "counted — a growing catalog is the system working; this chart counts " +
@@ -2029,8 +2087,9 @@ export const editorial = {
         "The fresh catalog is diffed against the stored fingerprints; each " +
         "difference is one event in an append-only CSV " +
         "(data/history/kev_changelog.csv — like the NVD backlog history, an " +
-        "original dataset this project accumulates, because CISA publishes " +
-        "only the current snapshot). A missing ransomware flag reads as " +
+        "original dataset this project accumulates: the catalog feeds carry only " +
+        "the current snapshot, and CISA's kev-data git repository keeps whole-file " +
+        "commits, not per-field events). A missing ransomware flag reads as " +
         "“Unknown,” the same rule every KEV module on this site applies — so " +
         "the day CISA added that column to the feed did not log a fake edit " +
         "wave. Additions are logged but never charted as edits, and removals " +
@@ -2062,13 +2121,19 @@ export const editorial = {
         "after listing the flip typically lands.",
       statBig: "{n}",
       statLead: "entries flipped to “Known” after they were already listed",
+      // With a capture-seeded record the step month is set apart from the
+      // headline count: statNote/statNotePooled name it; statNoteNoStep is
+      // for a record built from nightly diffs alone (no step to name).
       statNote:
-        "median gap from listing to observed flip: {median} days pooled, {post_median} days " +
-        "for flips observed after the {step_month} step where the flag column first appears " +
-        "in the captures",
+        "not counting the {step_flips} flips logged together in {step_month}, the month the " +
+        "flag column first appears in the captures — schema initialization, not " +
+        "reassessments. Median gap from listing to observed flip: {post_median} days; " +
+        "{median} days pooled with the step",
       statNotePooled:
-        "median gap from listing to observed flip: {median} days — includes the {step_month} " +
-        "step where the flag column first appears in the captures",
+        "not counting the {step_flips} flips logged together in {step_month}, the month the " +
+        "flag column first appears in the captures — median gap from listing to observed " +
+        "flip: {median} days pooled with the step",
+      statNoteNoStep: "median gap from listing to observed flip: {median} days",
       statNoteThin:
         "too few observed flips to state a typical gap yet — counts ship in " +
         "the data file either way",
@@ -2138,12 +2203,15 @@ export const editorial = {
       caption:
         "MITRE files each tracked threat group under a single name and records " +
         "the aliases every other vendor uses. The most-renamed answer to a dozen " +
-        "or more names apiece — the same actor rebranded in each shop's house " +
-        "style, so APT28 is also Fancy Bear, Forest Blizzard, Sofacy and " +
-        "STRONTIUM. This board counts the names besides the canonical one. " +
-        "ATT&CK's alias list is MITRE's own editorial call, not a full census of " +
-        "the industry, and roughly four in ten tracked groups carry no second " +
-        "name at all — the leaderboard belongs to the famous few.",
+        "or more names apiece — MITRE's associated names, each shop's house " +
+        "style for what it takes to be the same actor, so APT28 is also Fancy " +
+        "Bear, Forest Blizzard, Sofacy and STRONTIUM. MITRE itself says an " +
+        "associated name may describe an overlapping activity cluster rather " +
+        "than an exact identity. This board counts the names besides the " +
+        "canonical one. ATT&CK's alias list is MITRE's own editorial call, not " +
+        "a full census of the industry, and roughly four in ten tracked groups " +
+        "carry no second name in ATT&CK — which says nothing about what other " +
+        "vendors call them — so the leaderboard belongs to the famous few.",
       statTemplate:
         "ATT&CK v{version} · the {shown} most-renamed of {with_aliases} groups " +
         "that answer to another name, out of {total} tracked",
@@ -2200,9 +2268,10 @@ export const editorial = {
         "actually earns from raw prevalence in the CVE corpus: how often that " +
         "class is the first-listed CWE on a published record. The two orders " +
         "pull apart, and a few never crack the 25 most common weaknesses we " +
-        "actually measure. One caveat kept in plain view: MITRE builds the list " +
-        "partly from the same CVE and exploited-vulnerability data, so this is a " +
-        "disagreement about ranking, not two independent worlds.",
+        "actually measure. One caveat kept in plain view: MITRE's rank weighs " +
+        "each class's NVD frequency by the average CVSS severity of its CVEs over " +
+        "a single year, while ours counts bare frequency over five, so this is a " +
+        "disagreement of definitions, not a correction.",
       statTemplate:
         "MITRE CWE Top 25 ({year}) · measured prevalence {start}–{end} · " +
         "{in_top25} of {total} also rank in the measured top 25",
@@ -2225,12 +2294,18 @@ export const editorial = {
         "Prevalence is that class's share of all CWE-tagged published records in " +
         "the window. KEV hits count the class among CISA Known Exploited " +
         "Vulnerabilities entries that match a corpus record. One honest limit, " +
-        "stated plainly: MITRE's own Top-25 formula is derived from NVD CVEs " +
-        "joined to CISA KEV and re-scored, so it is not an independent oracle — " +
-        "there is partial circularity with our KEV column. That is exactly why " +
-        "the story is the DIVERGENCE between the published order and raw " +
-        "prevalence, not the list itself. Recomputed nightly; the newest " +
-        "committed official list wins. Sort any column.",
+        "stated plainly: MITRE's published methodology scores each CWE by " +
+        "combining its normalized frequency among NVD CVEs in a one-year window " +
+        "(June 1, 2024 through June 1, 2025 for the 2025 list) with the average " +
+        "CVSS v3 base severity of those CVEs, after a mapping review that " +
+        "considers multiple CWE mappings per record; KEV counts are shown beside " +
+        "MITRE's list but are not an input to its score. Our measured rank is a " +
+        "different objective on a different population — first-listed-CWE " +
+        "frequency alone, over five calendar years of cvelistV5 — so the " +
+        "DIVERGENCE between the two orders is a disagreement of definitions, not " +
+        "a correction of MITRE, and that divergence is the story, not the list " +
+        "itself. Recomputed nightly; the newest committed official list wins. " +
+        "Sort any column.",
     },
 
     // --------------------------------- top25.html · 2
@@ -2449,7 +2524,8 @@ export const editorial = {
         "one CVE in eight moved and then moved straight back. Every " +
         "quarantined night is listed with its reason in the data file's " +
         "catalog block. This is a stability " +
-        "measurement, not an accuracy one — the EPSS Report Card grades " +
+        "measurement, not an accuracy one — the EPSS Report Card describes " +
+        "where scores stood the day before a KEV listing, without judging " +
         "whether the model was right; this asks how much it moves. Two honesty " +
         "notes: the record starts at first deploy, so it is thin by design and " +
         "deepens nightly; and the moat is soft — FIRST's dated daily snapshots " +
@@ -2552,12 +2628,15 @@ export const editorial = {
       num: "01",
       kicker: "Roster over time",
       source: "CVE.org organization roster · CyberMon nightly snapshots",
-      headline: "The roster changes. Nobody keeps the history.",
+      headline: "The roster changes. Nobody publishes the dates.",
       caption:
-        "The CVE Program lists every organization allowed to assign a CVE today, " +
-        "but publishes no history of the list: not when an assigner joined, not " +
-        "when one left, not when its remit changed. CyberMon reads the roster " +
-        "every night and keeps the diff. This line is the federation's headcount " +
+        "The CVE Program lists every organization on its roster today — assigners " +
+        "and the roots, ADPs and secretariat listed beside them — but publishes " +
+        "no accreditation dates: not when an assigner joined, not when one left, " +
+        "not when its remit changed. The roster file lives in a public git " +
+        "repository whose commits record every edit; what nobody keeps is a " +
+        "normalized ledger of those events, so CyberMon reads the roster every " +
+        "night and keeps the diff. This line is the roster's headcount " +
         "over time — it begins as a single point tonight and deepens one snapshot " +
         "at a time, because the record can only start when the snapshots do.",
       yAxis: "organizations",
@@ -2567,10 +2646,10 @@ export const editorial = {
       // {first_date} is filled from the data (the record's first snapshot
       // date); the empty variant renders while there is only one snapshot.
       note:
-        "No upstream publishes roster history — CyberMon has snapshotted the " +
+        "No upstream publishes accreditation dates — CyberMon has snapshotted the " +
         "roster since {first_date}, and the line deepens one night at a time.",
       noteEmpty:
-        "No upstream publishes roster history — CyberMon's record starts with " +
+        "No upstream publishes accreditation dates — CyberMon's record starts with " +
         "tonight's snapshot. The curve begins to move once there are two nights " +
         "to compare.",
       emptyChart:
@@ -2583,7 +2662,9 @@ export const editorial = {
         "of organizations is appended to a committed size history " +
         "(data/history/cna_roster_state.json), and the line is drawn from it. " +
         "The record starts at first deploy: the program publishes no " +
-        "accreditation dates, so there is no earlier history to import, and the " +
+        "accreditation dates, and while the roster file's git history " +
+        "(CVEProject/cve-website) could in principle be replayed for earlier " +
+        "snapshots, this ledger has not imported it, so the " +
         "series honestly begins as a single point rather than faking depth. A " +
         "broken fetch that returns a fraction of the roster is refused rather " +
         "than charted. Roster data is CVE Program data, the same source family " +
@@ -2598,17 +2679,21 @@ export const editorial = {
       source: "CVE.org organization roster · CyberMon nightly snapshots",
       headline: "Who joins, who leaves.",
       caption:
-        "Each month's new assigners and departures, with scope changes to " +
-        "existing organizations riding alongside. Because the program publishes " +
+        "Each month's newly listed organizations and departures, with scope " +
+        "changes and renames to existing organizations riding alongside. Because " +
+        "the program publishes " +
         "no accreditation date, an onboarding here means first seen in " +
         "CyberMon's snapshots — a floor that starts at first deploy, not a claim " +
         "about when an organization was actually accredited. Bars above the line " +
         "are organizations that appeared; below, ones that vanished; scope " +
-        "changes are counted apart, never blended into either.",
+        "changes and renames are counted apart, never blended into either — a " +
+        "shortName that changes while the organization stays is one rename, not " +
+        "a departure plus a newcomer.",
       statOnboarded: "organizations joined · {departed} left the roster",
       legendOnboarded: "Joined (first observed)",
       legendDeparted: "Departed",
       legendScope: "Scope changed",
+      legendRenamed: "Renamed (same organization, new shortName)",
       note:
         "{events} roster changes recorded since {first_date}.",
       noteEmpty:
@@ -2623,10 +2708,15 @@ export const editorial = {
         "onboarding; present last time but gone now is a departure; present in " +
         "both with a changed scope statement is a scope change (compared by a " +
         "short stable hash of the text, so the event records that the scope " +
-        "moved without republishing the prose). Events append to a committed, " +
-        "append-only log (data/history/cna_roster.csv) — like the NVD backlog " +
-        "history, an original dataset this project accumulates, because the " +
-        "upstream keeps only today's roster. Bars group by calendar month of " +
+        "moved without republishing the prose). A departed and an onboarded " +
+        "shortName that share a cnaID unique on both nights, and agree on name, " +
+        "scope or country and type, are logged as one rename rather than a " +
+        "departure and a newcomer; a cnaID the roster shares between " +
+        "organizations proves nothing and never pairs. Events append to a " +
+        "committed, append-only log (data/history/cna_roster.csv) — like the " +
+        "NVD backlog history, a normalized ledger this project accumulates; the " +
+        "roster file's own git history holds the raw edits, this log the " +
+        "events. Bars group by calendar month of " +
         "the observation date, gap-filled so the axis never skips time. " +
         "Onboarding is first-observed, not accredited-on: with no published " +
         "accreditation dates, the log dates each organization to the night " +
@@ -2645,11 +2735,13 @@ export const editorial = {
         "authority it claims — vendor, open-source project, researcher, CERT, " +
         "bug-bounty platform. Most CNAs are vendors scoped to their own " +
         "products; a shorter tail covers everyone else. Organizations can hold " +
-        "more than one type, so the bars sum above the roster total. Above them " +
-        "all sit two top-level roots, MITRE and CISA, that vouch for the rest.",
+        "more than one type, so the bars sum above the roster total, and the " +
+        "total counts everything listed — the roots, ADPs and secretariat " +
+        "included, so the assigner count beside it is the smaller number. Above " +
+        "them all sit two top-level roots, MITRE and CISA, that vouch for the rest.",
       statTemplate:
-        "{total} organizations · {countries} countries · top-level roots " +
-        "MITRE {mitre} / CISA {cisa}",
+        "{total} organizations listed, {assigning} with an assigning role · " +
+        "{countries} countries · top-level roots MITRE {mitre} / CISA {cisa}",
       xAxis: "organizations",
       nodata: "Not enough data yet.",
       methodology:
@@ -2658,7 +2750,10 @@ export const editorial = {
         "organization's CNA.type list is tallied — an organization that lists " +
         "several types (a vendor that is also an open-source steward) counts " +
         "once in each, so the bars sum above the roster headcount by design. " +
-        "The data file also carries the same roster split by top-level root " +
+        "The data file also carries the same roster split by program role (CNA, " +
+        "CNA-LR, Root, Top-Level Root, ADP, Secretariat — flattened like the " +
+        "types), with the count of organizations holding an assigning role, CNA " +
+        "or CNA-LR, reported beside the headcount; and by top-level root " +
         "(MITRE or CISA), by reporting root, and by country, each a clean " +
         "partition that sums to the total, for anyone who wants to read the " +
         "federation a different way. A snapshot of today's roster, not a trend " +
@@ -2673,7 +2768,7 @@ export const editorial = {
       source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE)",
       headline: "The exploit rarely waits for the record.",
       caption:
-        "For every CVE that a public exploit tracker references and dates, the gap from " +
+        "For every CVE with dated public exploit code, the gap from " +
         "the CVE record's publication to the first public exploit code — median and " +
         "interquartile range per publication year. In the program's first years the " +
         "median ran deeply negative: early CVE records were cataloguing an arsenal that " +
@@ -2690,40 +2785,44 @@ export const editorial = {
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
       note:
-        "{dated} CVEs carry a dated public exploit across Exploit-DB and Metasploit; " +
+        "{dated} CVEs carry a dated public exploit in Exploit-DB; " +
         "{matched} matched a CVE record in the corpus and are charted — {unmatched} " +
         "found no record to join.",
       methodology:
-        "For every CVE id referenced by the Exploit-DB index or Metasploit's module " +
-        "metadata, the first public PoC date is the earliest date either offers: " +
-        "Exploit-DB's date_published (the archive's record of when the exploit was " +
-        "published, which can predate its addition to the archive) and Metasploit's " +
-        "disclosure_date (the module author's record of when the vulnerability was " +
-        "publicly disclosed — module metadata does not publish the module's own merge " +
-        "date, so this is a conservative stand-in, stated as such). Nuclei templates " +
-        "carry no usable date and never contribute to dating — they count only toward " +
-        "coverage in the chart below. The gap is that first date minus the CVE record's " +
+        "The clock is dated by the one source that dates the artifact itself: " +
+        "Exploit-DB's date_published, the archive's record of when the exploit was " +
+        "published (which can predate its addition to the archive), earliest entry per " +
+        "CVE. Metasploit's module metadata carries a disclosure_date, but that is the " +
+        "module author's record of when the VULNERABILITY was disclosed, not when the " +
+        "module shipped (the merge date would need the repository's git history, which " +
+        "this pipeline never clones) — so a Metasploit exploit module covers its CVE " +
+        "as public exploit code but never dates it, and a CVE with only a Metasploit " +
+        "module is absent from this chart. Until 2026-09-20 that disclosure date stood " +
+        "in for a code date here; it does not any more, and the series was rebuilt. " +
+        "Nuclei templates are detection checks, not exploits, and carry no date: they " +
+        "count toward a separate detection line in the coverage chart below and nowhere " +
+        "else. The gap is the Exploit-DB date minus the CVE record's " +
         "datePublished, in days, grouped by the CVE's publication year; a year plots " +
         "only with at least 10 matched CVEs. Negative gaps are kept as negative, the " +
         "KEV-latency rule: exploit code published before the CVE record exists is a " +
         "real event — an advisory shipping with its exploit, or an old exploit assigned " +
         "a CVE years later — and flooring it would flatter the system. Placeholder " +
-        "dates (Metasploit's 1900-01-01) are treated as absent. Two honesty notes: " +
-        "this measures public PoC code in three trackers, a lower bound on tooling " +
+        "dates are treated as absent. Two honesty notes: " +
+        "this measures public exploit code one archive dates, a lower bound on tooling " +
         "that undercounts private exploits and everything published elsewhere; and the " +
         "cohort is self-selected — only a few percent of records ever get a tracked " +
         "public exploit, so the chart describes the CVEs somebody bothered to arm, and " +
         "recent years are additionally right-censored (a young CVE has had less time " +
         "to attract code). A third: the collection channel itself has thinned — the dated " +
         "cohort per year is now well under a fifth of its late-2000s size — so a trend here " +
-        "is also a trend in what Exploit-DB and Metasploit still index.",
+        "is also a trend in what Exploit-DB still indexes.",
     },
 
     // --------------------------------- exploits.html · 2
     poc_preempt: {
       num: "02",
       kicker: "Before the government confirms",
-      source: "CISA KEV · Exploit-DB (OffSec) · Metasploit (Rapid7)",
+      source: "CISA KEV · Exploit-DB (OffSec)",
       headline: "The code was public before the confirmation.",
       caption:
         "CISA's Known Exploited Vulnerabilities catalog is the government's confirmation " +
@@ -2738,7 +2837,8 @@ export const editorial = {
         "public PoC saw that code published before the listing day.",
       methodology:
         "Every KEV entry is joined to the first-public-PoC date built for the hero " +
-        "chart (Exploit-DB and Metasploit; Nuclei is undated and never used here). An " +
+        "chart (Exploit-DB's date_published; Metasploit dates the disclosure rather " +
+        "than the module and Nuclei is undated, so neither is used here). An " +
         "entry counts as preempted when that date strictly predates the catalog's " +
         "dateAdded — a same-day PoC does not count. The denominator is entries with a " +
         "dated PoC, roughly four in ten of the catalog: an entry with no tracked public " +
@@ -2760,9 +2860,11 @@ export const editorial = {
       source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei templates (ProjectDiscovery) · cvelistV5 (MITRE)",
       headline: "Severity predicts attention, if nothing else.",
       caption:
-        "Take the latest complete year of CVE records and ask which ones any of the " +
-        "three trackers touched — an Exploit-DB entry, a Metasploit module, a Nuclei " +
-        "template. Coverage is thin everywhere: the overwhelming majority of records " +
+        "Take the latest complete year of CVE records and ask which ones carry tracked " +
+        "public exploit code — an Exploit-DB entry or a Metasploit exploit module. " +
+        "Nuclei detection templates are counted in the tooltip as a separate line, " +
+        "because a check is not an exploit. Coverage is thin everywhere: the " +
+        "overwhelming majority of records " +
         "never attract tracked public exploit code at all. But it climbs the scale " +
         "steeply — criticals draw public exploit attention at several times the rate of " +
         "the middle of the scale — which makes this the one place the score does what " +
@@ -2776,11 +2878,12 @@ export const editorial = {
         "For the latest complete calendar year, every published CVE record is bucketed " +
         "by the same effective score the Score-vs-Reality grid uses (the newest-version " +
         "base score anywhere in the record; records without one count as unscored) and " +
-        "marked covered when any of the three sources references its id: an Exploit-DB " +
-        "entry or Metasploit module with or without a usable date, or a Nuclei CVE " +
-        "template — which contributes coverage precisely because dating it would " +
-        "require the repository's git history, and this pipeline reads only published " +
-        "index files. Buckets with fewer than 10 records are withheld. Coverage is a " +
+        "marked covered when tracked public exploit code references its id: an " +
+        "Exploit-DB entry, with or without a usable date, or a Metasploit module whose " +
+        "type is exploit — auxiliary scanners and post modules reference CVEs without " +
+        "being exploits for them and do not count. Nuclei CVE templates are detection " +
+        "checks; they are tallied separately and shown in the tooltip, never folded " +
+        "into the bar. Buckets with fewer than 10 records are withheld. Coverage is a " +
         "share of that year's published records, so the chart inherits the corpus's own " +
         "composition — the unscored bar is dominated by records nobody has touched, " +
         "tracker or scorer. The window is one complete year, stated on the chart, and " +
@@ -2873,24 +2976,25 @@ export const editorial = {
       num: "03",
       kicker: "Infrastructure age",
       source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
-      headline: "How long a C2 lives.",
+      headline: "How long a C2 stays on the list.",
       caption:
         "For every server on tonight's blocklist, the time since Feodo " +
-        "Tracker first saw it. Fresh buckets mean a campaign standing up " +
-        "new infrastructure; the old tail is machinery that has stayed " +
-        "listed through months of quiet — compromised hosts and rented " +
-        "servers nobody has reclaimed. The median moves with the weather, " +
-        "and tonight's value sits above the chart.",
-      statLabel: "Median age of tonight's C2s",
+        "Tracker first saw it — time on the list, not proof it still " +
+        "answers. Fresh buckets mean a campaign standing up new " +
+        "infrastructure; the old tail is machinery that has stayed listed " +
+        "through months of quiet — compromised hosts and rented servers " +
+        "nobody has reclaimed, some long gone dark. The median moves with " +
+        "the weather, and tonight's value sits above the chart.",
+      statLabel: "Median time on the list for tonight's C2s",
       statValue: "{median} days",
-      statWhen: "oldest survivor {oldest} days",
+      statWhen: "longest-listed {oldest} days",
       yAxis: "C2 servers",
       nodata: "Nothing on the blocklist tonight — no infrastructure to age.",
       methodology:
         "Age is the number of whole days between a server's first_seen " +
         "stamp on Feodo Tracker and tonight's snapshot date, bucketed on a " +
         "fixed scale from under 30 days to over 2 years. The median and the " +
-        "oldest survivor are computed over every listed server, online or " +
+        "longest-listed server are computed over every listed server, online or " +
         "dark — a server that stopped answering but remains listed is still " +
         "infrastructure on the record. Like the composition chart, this " +
         "reads entirely from tonight's snapshot and is meaningful from the " +
@@ -2986,7 +3090,7 @@ export const editorial = {
         "reproduced from this pipeline, so they appear as attributed prose in the " +
         "repo (pipeline/ai_timeline_data.EXTERNAL_CONTEXT) and never on an axis " +
         "here. Three caveats this module inherits and does not fix. First, the " +
-        "clock measures public exploit code in three trackers over a " +
+        "clock measures public exploit code one archive dates over a " +
         "self-selected cohort — a floor rather than a census. Second, recent " +
         "years are right-censored: a CVE only enters the cohort once it HAS a " +
         "public exploit, so a 2024 record whose exploit lands in 2027 is missing " +
@@ -3089,11 +3193,14 @@ export const editorial = {
         "start of the record, the five years ending at the cutoff, and everything " +
         "since. Single years would be indefensible here — the 1999 cohort is 109 " +
         "CVEs at a -800-day median, and anchoring a ratio on it is exactly the " +
-        "cherry-pick this module exists to refute. A cutoff's cut year is always " +
-        "the last year ending entirely BEFORE its date, so no charted year " +
-        "straddles a cutoff and lands on both sides. A shift smaller than 10% of " +
+        "cherry-pick this module exists to refute. A cutoff's pre window ends with " +
+        "the last year ending entirely BEFORE its date and its post window starts " +
+        "with the first year beginning entirely AFTER it, so the year containing " +
+        "the cutoff (2022 for ChatGPT) is charted but counts for neither side. A " +
+        "shift smaller than 10% of " +
         "the metric's total travelled distance is reported as no inflection rather " +
-        "than a trend, and an era with fewer than 2 complete years behind it is " +
+        "than a trend, and an era with fewer than 2 complete, settled years behind " +
+        "it — years the trackers are still indexing do not count — is " +
         "not judged at all — a verdict this module earns back as the record " +
         "accumulates rather than faking now. The direction sign is computed in " +
         "the pipeline, not the chart, because a falling gap and a rising " +

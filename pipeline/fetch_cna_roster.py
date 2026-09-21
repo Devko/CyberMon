@@ -1,9 +1,12 @@
 """CVE.org / CVE Program organization roster (the CNA partner list).
 
 The CVE federation publishes its **current** roster of participating
-organizations, but no history: accreditation dates, onboardings, departures
-and scope changes are not recorded anywhere upstream. The roster is the JSON
-that powers cve.org's "Partner Information -> List of Partners" page —
+organizations and no accreditation dates. The roster file itself carries
+no changelog, but it lives in the CVEProject/cve-website git repository,
+whose commit history is the upstream record of every roster edit (and
+importable roster history, should anyone replay it); CyberMon's own
+ledger starts at its first nightly snapshot. The roster is the JSON that
+powers cve.org's "Partner Information -> List of Partners" page —
 
     https://raw.githubusercontent.com/CVEProject/cve-website/dev/
         src/assets/data/CNAsList.json
@@ -28,16 +31,23 @@ Upstream shape relied on — each element is::
 
 Fields this module reads (the rest — contact, disclosurePolicy,
 securityAdvisories, resources — are ignored): ``shortName`` is the natural
-key (unique across the roster; the assigner id CVE records carry — ``cnaID``
-is NOT unique, several orgs share one, so it is only an identity attribute
-here). ``organizationName`` is the display name; ``scope`` is the org's
-stated scope of authority (tracked for scope-change events); ``country``,
-``CNA.type`` (Vendor / Open Source / Researcher / CERT / Bug Bounty Provider
-/ Hosted Service / Consortium / N/A — an org may claim several), ``CNA.roles``
-(CNA / CNA-LR / Root / Top-Level Root / ADP / Secretariat), ``CNA.TLR`` (the
-top-level root: mitre or CISA) and ``CNA.root`` (the reporting root) are the
-composition dimensions. **No accreditation date is published — that absence
-is the whole point of the CNA Roster History module.**
+key (unique across the roster; the assigner id CVE records carry).
+``cnaID`` is NOT guaranteed unique — orgs occasionally share one — so it is
+an identity attribute, not a key; where it IS unique on both sides of a
+diff it lets ``cna_roster`` recognise a shortName change as a rename
+rather than a departure plus an onboarding. ``organizationName`` is the
+display name; ``scope`` is the org's stated scope of authority (tracked for
+scope-change events); ``country``, ``CNA.type`` (Vendor / Open Source /
+Researcher / CERT / Bug Bounty Provider / Hosted Service / Consortium /
+N/A — an org may claim several), ``CNA.roles`` (CNA / CNA-LR / Root /
+Top-Level Root / ADP / Secretariat), ``CNA.TLR`` (the top-level root: mitre
+or CISA) and ``CNA.root`` (the reporting root) are the composition
+dimensions. Only the ``CNA`` and ``CNA-LR`` roles assign CVE IDs
+(:data:`ASSIGNING_ROLES`); a pure root, top-level root, ADP or secretariat
+is listed on the roster without being an assigner, which is why the
+roster headcount and the assigner count are reported as two numbers.
+**No accreditation date is published** — an onboarding can only ever be
+dated to the night CyberMon first saw the org.
 
 Licensing: the roster is CVE Program data (the CVE List is already an
 upstream this site republishes aggregates of); the CVE Program terms permit
@@ -64,6 +74,12 @@ from .fetch_http import USER_AGENT, get_with_retry  # noqa: F401
 ROSTER_URL = ("https://raw.githubusercontent.com/CVEProject/cve-website/dev/"
               "src/assets/data/CNAsList.json")
 
+# The roles that may assign CVE IDs. Root / Top-Level Root / ADP /
+# Secretariat are program roles listed on the same roster without an
+# assigning remit (an org may hold several roles, so a root is usually an
+# assigner too; CISA — Top-Level Root + ADP — is the live roster's one
+# non-assigning entry).
+ASSIGNING_ROLES = frozenset({"CNA", "CNA-LR"})
 
 
 @dataclass
@@ -82,6 +98,12 @@ class RosterOrg:
     tlr: str = "n/a"
     root: str = "n/a"
     is_root: bool = False
+
+    @property
+    def is_assigner(self) -> bool:
+        """True when the org holds a role that assigns CVE IDs (CNA or
+        CNA-LR); roots, ADPs and the secretariat without one are not."""
+        return any(r in ASSIGNING_ROLES for r in self.roles)
 
     @property
     def type_label(self) -> str:

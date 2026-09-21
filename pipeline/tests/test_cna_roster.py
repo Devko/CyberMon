@@ -42,7 +42,83 @@ def test_fingerprint_keeps_display_fields_and_scope_hash():
     fp = cr.fingerprint(org("acme", types=("Open Source", "Vendor"),
                             scope="Acme."))
     assert fp == {"org": "Acme", "country": "USA",
-                  "type": "Open Source + Vendor", "scope": cr.scope_hash("Acme.")}
+                  "type": "Open Source + Vendor", "scope": cr.scope_hash("Acme."),
+                  "cna_id": "CNA-2020-0001"}
+
+
+# --------------------------------------------------------------- renames
+
+def _org_id(short, cna_id, **kw) -> RosterOrg:
+    o = org(short, **kw)
+    return RosterOrg(**{**o.__dict__, "cna_id": cna_id})
+
+
+def test_rename_is_one_event_not_a_departure_plus_an_onboarding():
+    # Same stable cnaID, new shortName, same display name: a rename.
+    prev = cr.fingerprint_roster(snap(_org_id("qt", "CNA-2020-0007",
+                                              name="The Qt Company"),
+                                      _org_id("keep", "CNA-2020-0001")))
+    today = snap(_org_id("qtgroup", "CNA-2020-0007", name="Qt Group"),
+                 _org_id("keep", "CNA-2020-0001"))
+    curr = cr.fingerprint_roster(today)
+    events = cr.diff_orgs(prev, today, curr, "2026-07-18")
+    assert [(e["short_name"], e["change_type"], e["from_short_name"])
+            for e in events] == [("qtgroup", "renamed", "qt")]
+
+
+def test_rename_needs_a_unique_cna_id_on_both_sides():
+    # The roster occasionally shares one cnaID between orgs; a shared id
+    # identifies nobody, so the pair stays a departure and an onboarding.
+    shared = "CNA-2020-0001"
+    prev = cr.fingerprint_roster(snap(_org_id("a", shared),
+                                      _org_id("b", shared)))
+    today = snap(_org_id("a", shared), _org_id("c", shared))
+    events = cr.diff_orgs(prev, today, cr.fingerprint_roster(today),
+                          "2026-07-18")
+    assert [(e["short_name"], e["change_type"]) for e in events] == [
+        ("c", "onboarded"), ("b", "departed")]
+
+
+def test_rename_needs_the_identity_to_agree_beyond_the_id():
+    # Same unique cnaID but nothing else in common (name, scope, country
+    # and type all differ): not enough to call it one organization.
+    prev = cr.fingerprint_roster(snap(
+        _org_id("a", "CNA-2020-0009", name="Alpha", scope="alpha scope",
+                country="USA", types=("Vendor",))))
+    today = snap(_org_id("b", "CNA-2020-0009", name="Beta", scope="beta",
+                         country="France", types=("Researcher",)))
+    events = cr.diff_orgs(prev, today, cr.fingerprint_roster(today),
+                          "2026-07-18")
+    assert [(e["short_name"], e["change_type"]) for e in events] == [
+        ("b", "onboarded"), ("a", "departed")]
+
+
+def test_legacy_state_without_cna_id_never_pairs():
+    # Fingerprints stored before the cnaID landed cannot prove a rename.
+    prev = {"qt": {"org": "Qt", "country": "USA", "type": "Vendor",
+                   "scope": cr.scope_hash("scope.")}}
+    today = snap(_org_id("qtgroup", "CNA-2020-0007", name="Qt"))
+    events = cr.diff_orgs(prev, today, cr.fingerprint_roster(today),
+                          "2026-07-18")
+    assert [(e["short_name"], e["change_type"]) for e in events] == [
+        ("qtgroup", "onboarded"), ("qt", "departed")]
+
+
+def test_renamed_events_roundtrip_and_legacy_csv_reads_without_the_column(
+        tmp_path):
+    path = tmp_path / "cna_roster.csv"
+    prev = cr.fingerprint_roster(snap(_org_id("qt", "CNA-2020-0007")))
+    today = snap(_org_id("qtgroup", "CNA-2020-0007", name="Qt"))
+    events = cr.diff_orgs(prev, today, cr.fingerprint_roster(today),
+                          "2026-07-18")
+    cr.write_events(path, events)
+    assert cr.read_events(path) == events
+    # A log written before the column existed still reads, from_short_name
+    # empty.
+    path.write_text("observed_date,short_name,change_type,org,country,type\n"
+                    "2026-07-18,acme,onboarded,Acme,USA,Vendor\n",
+                    encoding="utf-8")
+    assert cr.read_events(path)[0]["from_short_name"] == ""
 
 
 # ------------------------------------------------------------------- diffing
@@ -150,6 +226,24 @@ def test_build_roster_mix_breakdowns_and_headline():
     assert h["country_count"] == 2  # USA, Germany — never the n/a bucket
     assert h["mitre_n"] == 3 and h["cisa_n"] == 1
     assert h["root_count"] == 1  # only icscert is a non-"n/a" reporting root
+    # every fixture org holds the CNA role, so all four assign
+    assert h["assigning_n"] == 4
+    assert mix["by_role"] == [{"label": "CNA", "n": 4}]
+
+
+def test_roster_mix_counts_assigners_apart_from_listed_orgs():
+    # A pure Top-Level Root + ADP (CISA on the live roster) is listed
+    # without an assigning role; the headcount and the assigner count are
+    # two different numbers.
+    s = snap(org("a"), org("b", roles=("CNA", "Root")),
+             org("cisa", roles=("Top-Level Root", "ADP"), tlr="CISA"))
+    state = cr.new_state("2026-07-18")
+    cr.advance_state(state, cr.fingerprint_roster(s), "2026-07-18")
+    obj = _built(state, [], s)
+    assert obj["roster_mix"]["total"] == 3
+    assert obj["headline"]["assigning_n"] == 2
+    assert {d["label"]: d["n"] for d in obj["roster_mix"]["by_role"]} == {
+        "CNA": 2, "Root": 1, "Top-Level Root": 1, "ADP": 1}
 
 
 def test_build_roster_size_net_change_gated_by_min_n():
@@ -186,8 +280,10 @@ def test_build_roster_flux_months_gap_filled_and_totals():
     assert [m["month"] for m in flux["months"]] == ["2026-05", "2026-06",
                                                     "2026-07"]
     assert flux["months"][1] == {"month": "2026-06", "onboarded": 0,
-                                 "departed": 0, "scope_changed": 0}
-    assert flux["totals"] == {"onboarded": 1, "departed": 1, "scope_changed": 1}
+                                 "departed": 0, "renamed": 0,
+                                 "scope_changed": 0}
+    assert flux["totals"] == {"onboarded": 1, "departed": 1, "renamed": 0,
+                              "scope_changed": 1}
     assert flux["events_total"] == 3
     assert flux["first_observed"] == "2026-05-10"
 
@@ -263,7 +359,7 @@ def test_run_stage_live_diff_logs_and_persists(tmp_path):
         snapshot=snap(*changed), offline_fixtures=False)
     contracts.validate("cna_roster.json", obj)
     assert obj["roster_flux"]["totals"] == {"onboarded": 1, "departed": 1,
-                                            "scope_changed": 1}
+                                            "renamed": 0, "scope_changed": 1}
     assert obj["roster_size"]["net_change"] == 0  # 8 -> 8 (one in, one out)
     cr.persist(tmp_path, pending, log=lambda *_: None)
     events = cr.read_events(cr.csv_path(tmp_path))
@@ -279,7 +375,7 @@ def test_run_stage_offline_seeds_fixture_state(tmp_path):
     contracts.validate("cna_roster.json", obj)
     # the fixture prior state produces the full event mix in one run
     assert obj["roster_flux"]["totals"] == {"onboarded": 2, "departed": 1,
-                                            "scope_changed": 1}
+                                            "renamed": 0, "scope_changed": 1}
     assert obj["roster_size"]["series"][0]["date"] == "2026-07-01"
     assert obj["roster_size"]["net_change"] == 1   # 7 -> 8
     cr.persist(tmp_path, pending, log=lambda *_: None)

@@ -12,11 +12,11 @@ from pathlib import Path
 import pytest
 
 from pipeline import rescore_tracker
-from pipeline.metrics import CveFacts
+from pipeline.metrics import CveFacts, exact_version, extract_facts
 from pipeline.rescore_tracker import (build_rescore_log, delta_bucket,
                                       diff_events, load_state, make_state,
-                                      read_events, run_stage, state_path,
-                                      write_events, write_state)
+                                      read_events, run_stage, same_version,
+                                      state_path, write_events, write_state)
 
 DAY1 = "2026-07-10"
 
@@ -34,9 +34,15 @@ def _ev(change_type, *, observed_date=DAY1, cve="CVE-2024-0001",
 
 def test_fingerprint_and_inflation_score_cannot_disagree():
     facts = CveFacts(cve_id="CVE-2024-1", state="PUBLISHED", year=2024,
-                     cna="x", cna_scores={"v2": 5.0, "v3": 7.1, "v4": 6.3})
-    assert facts.newest_cna_fingerprint == ("v4", 6.3)
+                     cna="x", cna_scores={"v2": 5.0, "v3": 7.1, "v4": 6.3},
+                     cna_versions={"v2": "v2.0", "v3": "v3.1", "v4": "v4.0"})
+    # the family picks the entry (v4 first); the label is the exact version
+    assert facts.newest_cna_fingerprint == ("v4.0", 6.3)
     assert facts.newest_cna_score == 6.3  # derived from the fingerprint
+    # hand-built facts without version labels fall back to the family
+    bare = CveFacts(cve_id="CVE-2024-3", state="PUBLISHED", year=2024,
+                    cna="x", cna_scores={"v3": 7.1})
+    assert bare.newest_cna_fingerprint == ("v3", 7.1)
 
     unscored = CveFacts(cve_id="CVE-2024-2", state="PUBLISHED", year=2024,
                         cna="x")
@@ -49,8 +55,10 @@ def test_aggregator_collects_published_fingerprints(agg):
     # published records only: the fixture corpus has 11 records, 1 REJECTED
     assert len(fps) == 10
     assert "CVE-2024-0003" not in fps  # the REJECTED record
-    # scored record: (cna, newest family, that family's score)
-    assert fps["CVE-2023-0001"] == ("VendorX", "v3", 9.8)
+    # scored record: (cna, exact newest version, that version's score)
+    assert fps["CVE-2023-0001"] == ("VendorX", "v3.1", 9.8)
+    # the exact label comes from the metric key: cvssV3_0 reads "v3.0"
+    assert fps["CVE-2024-0004"][1] == "v3.0"
     # unscored published records are kept with a null fingerprint — that is
     # what makes first_score distinguishable from a brand-new record
     assert any(family is None and score is None
@@ -102,6 +110,25 @@ def test_diff_every_change_type_and_every_no_event_case():
     assert all(e["observed_date"] == DAY1 for e in events)
 
 
+def test_extract_facts_records_exact_versions_and_prefers_3_1_over_3_0():
+    record = {
+        "cveMetadata": {"cveId": "CVE-2024-0009", "state": "PUBLISHED",
+                        "assignerShortName": "x",
+                        "datePublished": "2024-03-01T00:00:00Z"},
+        "containers": {"cna": {"metrics": [
+            {"cvssV3_0": {"baseScore": 5.0}},
+            {"cvssV3_1": {"baseScore": 6.0}},
+            {"cvssV2_0": {"baseScore": 4.0}}]}},
+    }
+    facts = extract_facts(record)
+    assert facts.cna_scores == {"v3": 6.0, "v2": 4.0}
+    assert facts.cna_versions == {"v3": "v3.1", "v2": "v2.0"}
+    assert facts.newest_cna_fingerprint == ("v3.1", 6.0)
+    assert exact_version("cvssV4_0") == "v4.0"
+    assert exact_version("cvssV3") == "v3"      # no minor: family label
+    assert exact_version("other") is None
+
+
 def test_version_shift_never_carries_a_direction_reading():
     # A score change riding a version change is ONE version_shift event,
     # never a rescore: v3 7.5 and v4 9.1 are different scales.
@@ -112,6 +139,50 @@ def test_version_shift_never_carries_a_direction_reading():
     events = diff_events({"CVE-2024-0001": ["v4", 9.1]},
                          {"CVE-2024-0001": ("x", "v3", 7.5)}, DAY1)
     assert [e["change_type"] for e in events] == ["version_shift"]
+
+
+def test_minor_version_change_is_a_version_shift_not_a_rescore():
+    # 3.0 -> 3.1 with a score change: a re-issue under a revised spec is a
+    # version shift, never a same-version rescore delta (the copy promises
+    # every rescore compares like with like).
+    events = diff_events({"CVE-2024-0001": ["v3.0", 7.5]},
+                         {"CVE-2024-0001": ("x", "v3.1", 8.1)}, DAY1)
+    assert [(e["change_type"], e["version_old"], e["version_new"])
+            for e in events] == [("version_shift", "v3.0", "v3.1")]
+    # 3.0 -> 3.1 with the same score is still a version shift
+    events = diff_events({"CVE-2024-0001": ["v3.0", 7.5]},
+                         {"CVE-2024-0001": ("x", "v3.1", 7.5)}, DAY1)
+    assert [e["change_type"] for e in events] == ["version_shift"]
+    # exact same version, changed score: the ordinary rescore
+    events = diff_events({"CVE-2024-0001": ["v3.1", 7.5]},
+                         {"CVE-2024-0001": ("x", "v3.1", 8.1)}, DAY1)
+    assert [e["change_type"] for e in events] == ["rescore"]
+
+
+def test_legacy_family_label_migrates_without_spurious_shifts():
+    # State written before 2026-09-20 stores the family only ("v3"). The
+    # first night on exact labels must not file every scored CVE as a
+    # version shift: same family + same score is no event ...
+    assert same_version("v3", "v3.1") and same_version("v3.1", "v3")
+    assert not same_version("v3.0", "v3.1")
+    assert not same_version("v3", "v4.0")
+    old = {"CVE-2024-0001": ["v3", 9.8],   # equal score -> nothing
+           "CVE-2024-0002": ["v3", 9.8],   # changed score -> rescore
+           "CVE-2024-0003": ["v3", 7.5],   # other family -> version_shift
+           "CVE-2024-0004": ["v4", 6.9]}   # equal score -> nothing
+    new = {"CVE-2024-0001": ("x", "v3.1", 9.8),
+           "CVE-2024-0002": ("x", "v3.1", 7.5),
+           "CVE-2024-0003": ("x", "v4.0", 9.1),
+           "CVE-2024-0004": ("x", "v4.0", 6.9)}
+    events = diff_events(old, new, DAY1)
+    assert [(e["cve"], e["change_type"]) for e in events] == [
+        ("CVE-2024-0002", "rescore"), ("CVE-2024-0003", "version_shift")]
+    # ... and the migrated rescore keeps the labels as they were seen
+    assert events[0]["version_old"] == "v3"
+    assert events[0]["version_new"] == "v3.1"
+    # tonight's state stores the exact label: the migration is one night
+    state = make_state("r2", new, DAY1)
+    assert state["fingerprints"]["CVE-2024-0001"] == ["v3.1", 9.8]
 
 
 # -------------------------------------------------------------------- state

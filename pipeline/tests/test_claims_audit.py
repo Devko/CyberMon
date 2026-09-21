@@ -110,9 +110,9 @@ def check_severity_gradient(d: dict) -> None:
     hi: dict[str, int] = {}
     for cell in d["grid"]:
         tot[cell["cvss_bucket"]] = tot.get(cell["cvss_bucket"], 0) + cell["n"]
-        if cell["epss_bucket"] == ">10%":
+        if cell["epss_bucket"] == "≥10%":
             hi[cell["cvss_bucket"]] = hi.get(cell["cvss_bucket"], 0) + cell["n"]
-    low = 100.0 * hi.get("0.1-3.9", 0) / tot["0.1-3.9"]
+    low = 100.0 * hi.get("0.0-3.9", 0) / tot["0.0-3.9"]
     crit = 100.0 * hi.get("9.0-10.0", 0) / tot["9.0-10.0"]
     assert low > 0, "no Low-rated CVE above 10% EPSS — the ratio is undefined"
     ratio = crit / low
@@ -225,41 +225,40 @@ def check_kev_three_years_late(d: dict) -> None:
 
 
 def check_kev_getting_slower(d: dict) -> None:
-    # editorial.js (kev.html trend): "its middle has drifted out, from a
-    # median of twelve days for 2023 listings to twenty-six for 2025, while
-    # the share listed more than a year late has edged down" — named years;
-    # the old "getting slower, not faster" read three medians whose tail
-    # (pct_over_365d) was shortening.
+    # editorial.js (kev.html trend): "its middle has {middle_verb}, from a
+    # median of {baseline_median} days for {baseline_year} listings to
+    # {latest_median} for {latest_year}, while the share listed more than a
+    # year late has {tail_verb}". Since 2026-09-20 the numbers AND the
+    # verbs are filled from the payload by kev_latency.js, so the sentence
+    # cannot go stale; what this guards is that the inputs it names exist
+    # and describe two different charted years, with the over-a-year tail
+    # present for both.
+    h = d["headline"]
     by_year = {r["year"]: r for r in d["latency_by_year"]}
-    assert 8 <= by_year[2023]["median_days"] <= 16, (
-        f"'a median of twelve days for 2023 listings' vs {by_year[2023]['median_days']}d"
+    assert h["baseline_year"] in by_year and h["latest_year"] in by_year, (
+        f"the caption names {h['baseline_year']} and {h['latest_year']}, "
+        f"but the charted years are {sorted(by_year)}"
     )
-    assert 22 <= by_year[2025]["median_days"] <= 30, (
-        f"'twenty-six for 2025' vs {by_year[2025]['median_days']}d"
+    assert h["baseline_year"] < h["latest_year"], (
+        "the caption compares an earlier baseline year to the latest one"
     )
-    assert by_year[2025]["pct_over_365d"] <= by_year[2023]["pct_over_365d"], (
-        f"'the share listed more than a year late has edged down' vs "
-        f"2023 {by_year[2023]['pct_over_365d']}% -> 2025 {by_year[2025]['pct_over_365d']}%"
-    )
+    for y in (h["baseline_year"], h["latest_year"]):
+        assert "pct_over_365d" in by_year[y], f"{y} lacks the tail share"
 
 
 def check_kev_three_week_rule(d: dict) -> None:
-    # editorial.js (kev.html remediation): "from 2022 through 2025 the
-    # standing rule was three weeks — and the 2026 listings are coming in
-    # at two." Pinned to named years so the January rollover cannot move
-    # the claim; 2026's row is judged whether partial or complete.
+    # editorial.js (kev.html remediation): "The early catalog handed out
+    # months; the {latest_year} listings carried a median of
+    # {latest_median} days". The numbers are filled from the payload by
+    # kev_remediation.js; the one typed claim left is that the EARLY
+    # catalog (the 2021 launch cohort) handed out months, which the launch
+    # year's median must still support.
     by_year = {r["year"]: r for r in d["remediation_span_by_year"]}
-    for y in (2022, 2023, 2024, 2025):
-        assert 14 <= by_year[y]["median_days"] <= 28, (
-            f"'from 2022 through 2025 the standing rule was three weeks' vs "
-            f"{by_year[y]['median_days']}d in {y}"
-        )
-    assert 7 <= by_year[2026]["median_days"] <= 21, (
-        f"'the 2026 listings are coming in at two' (weeks) vs "
-        f"{by_year[2026]['median_days']}d"
+    first = min(by_year)
+    assert by_year[first]["median_days"] >= 60, (
+        f"'The early catalog handed out months' vs a {first} median of "
+        f"{by_year[first]['median_days']} days"
     )
-
-
 def check_more_assignors_than_ever(d: dict) -> None:
     # editorial.js (concentration.html): "More assignors than ever."
     rows = complete_years(d["years"])
@@ -448,12 +447,12 @@ CLAIMS = [
         check_kev_three_years_late,
     ),
     (
-        "its middle has drifted out, from a median of twelve days for 2023 listings to twenty-six for 2025",
+        "from a median of {baseline_median} days for {baseline_year} listings to {latest_median} for {latest_year}",
         "kev_latency.json",
         check_kev_getting_slower,
     ),
     (
-        "from 2022 through 2025 the standing rule was three weeks — and the 2026 listings are coming in at two",
+        "The early catalog handed out months; the {latest_year} listings carried a median of {latest_median} days",
         "kev_latency.json",
         check_kev_three_week_rule,
     ),

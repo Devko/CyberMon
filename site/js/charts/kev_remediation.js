@@ -4,11 +4,13 @@
 // This cohort INCLUDES the 2021 launch batch on purpose: deadlines are set
 // on the listing date, so they measure policy, not backlog age.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, fmtInt, escapeHtml, MONO } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 const fmtDays = (v) => `${fmtInt(Math.round(v))}d`;
 
 export function render(slots, data) {
+  const ed = editorial.sections.remediation;
   const rows = data.remediation_span_by_year || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
@@ -18,6 +20,26 @@ export function render(slots, data) {
 
   // The generation year plots but is partial — mark it (volume.js pattern).
   const genYear = Number(data.generated_at.slice(0, 4));
+
+  // ---- caption: the latest complete year's median, and the partial
+  // current year's when it has listings — from the data, never typed in.
+  if (slots.caption) {
+    const complete = rows.filter((r) => r.year < genYear);
+    const latest = complete[complete.length - 1];
+    const current = rows.find((r) => r.year === genYear);
+    if (latest) {
+      slots.caption.textContent = tpl(ed.caption, {
+        latest_year: latest.year,
+        latest_median: fmtInt(Math.round(latest.median_days)),
+        current_clause: current
+          ? tpl(ed.captionCurrentClause, {
+              current_year: current.year,
+              current_median: fmtDays(current.median_days),
+            })
+          : "",
+      });
+    }
+  }
   const cats = rows.map((r) => (r.year === genYear ? `${r.year}*` : String(r.year)));
 
   const medianName = "Median deadline span";

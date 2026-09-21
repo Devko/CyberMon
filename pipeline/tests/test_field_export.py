@@ -248,7 +248,7 @@ def test_exact_epss_buckets_survive_display_rounding():
     probabilities = [0, 0.000949, 0.00096, 0.001, 0.00996, 0.01, 0.09996, 0.1, 1]
     rows = [fe.FieldRow(2026, i + 1, 1, 40, 3, 'CNA', 79, 'vendor') for i in range(len(probabilities))]
     blob, _ = fe.encode(rows, epss_scores={f'CVE-2026-{i + 1:04d}': p for i, p in enumerate(probabilities)}, kev_entries=[], poc_ids=[], nvd_statuses={})
-    labels = [None, '<0.1%', '0.1-1%', '1-10%', '>10%']
+    labels = [None, '<0.1%', '0.1-1%', '1-10%', '≥10%']
     for row, probability in zip(fe.decode(blob), probabilities):
         assert labels[row[12]] == epss_bucket(probability)
 

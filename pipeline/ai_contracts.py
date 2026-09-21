@@ -13,7 +13,8 @@ Module-specific rules beyond the shared helpers:
   ``plot_date`` is re-derived here and compared, so a hand-edit to
   ai_timeline_data.py can never silently move a marker;
 * **era cutoffs may not straddle** — ``cut_year`` must be exactly the
-  year before the era date, the rule that keeps the pre/post split
+  year before the era date and ``post_start_year`` (when present) the
+  first year beginning after it, the rule that keeps the pre/post split
   honest, and eras must be chronological with exactly one default;
 * **levels may legitimately be NEGATIVE and shares may exceed 100** —
   the gap metric measures exploit code that predates the CVE record, and
@@ -30,7 +31,7 @@ from __future__ import annotations
 
 from typing import Any, Callable
 
-from .ai_metrics import MIN_POST_YEARS, cut_year_for
+from .ai_metrics import MIN_POST_YEARS, cut_year_for, post_start_year_for
 from .ai_timeline_data import ERAS, VALID_KINDS
 from .contracts import (_check_generated_at, _check_int, _check_list,
                         _check_num, _check_sorted, _check_str, _fail, _get)
@@ -101,6 +102,17 @@ def _validate_ai_alibi(obj: Any) -> None:
                   f"era {era_id!r} dated {row['date']} must cut at "
                   f"{expected} (the last year ending before it), got {cut}")
         cut_years.append(cut)
+        # Optional only for editions written before the post window was
+        # emitted explicitly; re-derived rather than trusted when present.
+        if "post_start_year" in row:
+            start = row["post_start_year"]
+            _check_int(start, f"{path}.post_start_year", minimum=1988)
+            expected_start = post_start_year_for(known[era_id])
+            if start != expected_start:
+                _fail(f"{path}.post_start_year",
+                      f"era {era_id!r} dated {row['date']} must start its "
+                      f"post window at {expected_start} (the first year "
+                      f"beginning after it), got {start}")
         if not isinstance(_get(row, "default", path), bool):
             _fail(f"{path}.default", "must be a bool")
         defaults += bool(row["default"])
@@ -208,7 +220,7 @@ def _validate_ai_alibi(obj: Any) -> None:
                       f"({week[year]}%), but every negative gap is also "
                       f"<= 7 days — the two fields have drifted apart")
 
-    # ---- like_for_like (the censoring-free clock) -------------------------
+    # ---- like_for_like (the fixed-window clock) ---------------------------
     # Its own section, NOT a fourth entry in clock.metrics: those three
     # share one cohort and one span by contract, and this one legitimately
     # spans differently — later start, later end, because a like-for-like
@@ -306,6 +318,12 @@ def _validate_ai_alibi(obj: Any) -> None:
             if b["cut_year"] != cut_years[j]:
                 _fail(f"{bpath}.cut_year",
                       f"must equal the era's own cut_year ({cut_years[j]})")
+            if "post_start_year" in b:
+                expected_start = post_start_year_for(known[era_ids[j]])
+                if b["post_start_year"] != expected_start:
+                    _fail(f"{bpath}.post_start_year",
+                          f"must equal the era's own post window start "
+                          f"({expected_start})")
             early = _check_level(_get(b, "early", bpath), f"{bpath}.early",
                                  unit)
             pre = _check_level(_get(b, "pre", bpath), f"{bpath}.pre", unit)

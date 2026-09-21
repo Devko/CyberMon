@@ -127,6 +127,20 @@ def check_patch_tuesday_multiple(d: dict) -> None:
     )
 
 
+def check_patch_tuesday_clears_an_ordinary_tuesday(d: dict) -> None:
+    # editorial.js (calendar.html patch tuesday): "the bar still clears what
+    # an ordinary Tuesday would carry". The ordinary-Tuesday baseline landed
+    # 2026-09-20; an edition without it has nothing to judge.
+    h = d["patch_tuesday"]["headline"]
+    if h is None or h.get("tuesday_baseline_latest") is None:
+        pytest.skip("edition predates tuesday_baseline_latest")
+    assert h["pct_latest"] > h["tuesday_baseline_latest"], (
+        f"'the bar still clears what an ordinary Tuesday would carry' vs "
+        f"{h['pct_latest']}% on patch Tuesdays against a "
+        f"{h['tuesday_baseline_latest']}% ordinary-Tuesday baseline"
+    )
+
+
 CLAIMS = [
     (
         "a decade earlier the peak sat later in the week",
@@ -144,6 +158,11 @@ CLAIMS = [
         "of all records",
         "cve_calendar.json",
         check_tuesday_peak,
+    ),
+    (
+        "the bar still clears what an ordinary Tuesday would carry",
+        "cve_calendar.json",
+        check_patch_tuesday_clears_an_ordinary_tuesday,
     ),
     (
         "The latest complete year put two to three times that share on them",

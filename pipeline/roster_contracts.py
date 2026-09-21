@@ -21,7 +21,11 @@ from .contracts import (DATE_RE, _check_generated_at, _check_int,
 # Must match cna_roster.CHANGE_TYPES. Hardcoded here on purpose (the
 # calendar_contracts precedent): the contract states what the site may rely
 # on, independently of the builder.
-CHANGE_TYPES = ("onboarded", "departed", "scope_changed")
+CHANGE_TYPES = ("onboarded", "departed", "renamed", "scope_changed")
+# Editions written before 2026-09-20 carry no ``renamed`` counts (the
+# type did not exist); a missing key reads as 0. Every other type must be
+# present.
+_OPTIONAL_CHANGE_TYPES = frozenset({"renamed"})
 MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
 
 
@@ -72,6 +76,11 @@ def _validate_cna_roster(obj: Any) -> None:
         _check_breakdown(_get(mix, key, "cna_roster.roster_mix"),
                          f"cna_roster.roster_mix.{key}", total=total,
                          partition=True)
+    # Program roles (added 2026-09-20; optional on older editions): a
+    # flattened tally like by_type — an org holds several roles.
+    if "by_role" in mix:
+        _check_breakdown(mix["by_role"], "cna_roster.roster_mix.by_role",
+                         total=total, partition=False)
 
     # ---- roster_size (committed size history — thin at launch) ---------------
     size = _get(obj, "roster_size", "cna_roster")
@@ -122,9 +131,12 @@ def _validate_cna_roster(obj: Any) -> None:
     # ---- roster_flux (the event log — empty at launch) -----------------------
     flux = _get(obj, "roster_flux", "cna_roster")
     totals = _get(flux, "totals", "cna_roster.roster_flux")
-    if set(totals) != set(CHANGE_TYPES):
+    required = set(CHANGE_TYPES) - _OPTIONAL_CHANGE_TYPES
+    if not (required <= set(totals) <= set(CHANGE_TYPES)):
         _fail("cna_roster.roster_flux.totals",
-              f"must carry exactly the keys {sorted(CHANGE_TYPES)}")
+              f"must carry the keys {sorted(required)} (plus optionally "
+              f"{sorted(_OPTIONAL_CHANGE_TYPES)}), got {sorted(totals)}")
+    totals = {t: totals.get(t, 0) for t in CHANGE_TYPES}
     for t in CHANGE_TYPES:
         _check_int(totals[t], f"cna_roster.roster_flux.totals.{t}")
     events_total = _get(flux, "events_total", "cna_roster.roster_flux")
@@ -143,7 +155,7 @@ def _validate_cna_roster(obj: Any) -> None:
         _check_str(label, f"{p}.month", MONTH_RE)
         labels.append(label)
         for t in CHANGE_TYPES:
-            v = _get(m, t, p)
+            v = m.get(t, 0) if t in _OPTIONAL_CHANGE_TYPES else _get(m, t, p)
             _check_int(v, f"{p}.{t}")
             month_sums[t] += v
     _check_sorted(labels, "cna_roster.roster_flux.months")
@@ -168,6 +180,13 @@ def _validate_cna_roster(obj: Any) -> None:
                    f"cna_roster.headline.{k}")
     _check_str(_get(headline, "top_type", "cna_roster.headline"),
                "cna_roster.headline.top_type")
+    # Orgs holding an assigning role (CNA / CNA-LR), a subset of the
+    # roster; added 2026-09-20, optional on older editions.
+    if "assigning_n" in headline:
+        _check_int(headline["assigning_n"], "cna_roster.headline.assigning_n")
+        if headline["assigning_n"] > total:
+            _fail("cna_roster.headline.assigning_n",
+                  "cannot exceed the roster total")
     if headline["roster_total"] != total:
         _fail("cna_roster.headline.roster_total",
               "must equal roster_mix.total")

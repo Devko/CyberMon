@@ -18,25 +18,30 @@ def _facts(cve_id: str, date_published: str | None, year: int,
                     date_published=date_published)
 
 
-def _poc(edb_dates=None, msf_dates=None, nuclei=(), **counts) -> PocData:
+def _poc(edb_dates=None, msf_dates=None, nuclei=(), msf_other=(),
+         **counts) -> PocData:
+    """``msf_dates`` are Metasploit EXPLOIT modules with a disclosure
+    date: they cover their CVE as exploit code but never date it."""
     edb_dates = edb_dates or {}
     msf_dates = msf_dates or {}
     defaults = dict(edb_entries=len(edb_dates),
                     edb_entries_with_cve=len(edb_dates),
-                    msf_modules=len(msf_dates),
-                    msf_modules_with_cve=len(msf_dates),
+                    msf_modules=len(msf_dates) + len(msf_other),
+                    msf_modules_with_cve=len(msf_dates) + len(msf_other),
+                    msf_exploit_modules_with_cve=len(msf_dates),
                     nuclei_templates=len(nuclei))
     defaults.update(counts)
-    return PocData(edb_dates=edb_dates, msf_dates=msf_dates,
+    return PocData(edb_dates=edb_dates, msf_disclosure_dates=msf_dates,
                    edb_ids=frozenset(edb_dates),
                    msf_ids=frozenset(msf_dates),
+                   msf_other_ids=frozenset(msf_other),
                    nuclei_ids=frozenset(nuclei), **defaults)
 
 
 def _build(facts_list, poc, kev_entries=(), min_n=1, arming_min_n=None,
            generated_at=GENERATED_AT):
     agg = Aggregator(kev_ids=[e.cve_id for e in kev_entries],
-                     poc_ids=poc.all_ids)
+                     poc_ids=poc.exploit_ids, detection_ids=poc.nuclei_ids)
     for facts in facts_list:
         agg.add(facts)
     return poc_metrics.build_time_to_poc(agg, poc, kev_entries,
@@ -54,11 +59,22 @@ def test_negative_gaps_are_kept_never_floored():
     assert row["pct_within_week"] == 100.0  # negative is trivially within
 
 
-def test_first_poc_is_min_over_dated_sources():
+def test_first_poc_is_exploitdb_only_never_a_metasploit_disclosure():
+    # Metasploit's earlier disclosure_date (2020-02-01) is the
+    # vulnerability's disclosure, not the module's publication: the
+    # clock must read Exploit-DB's 2020-03-01, a 60-day gap, not 31.
     poc = _poc(edb_dates={"CVE-2020-0001": "2020-03-01"},
                msf_dates={"CVE-2020-0001": "2020-02-01"})
     out = _build([_facts("CVE-2020-0001", "2020-01-01", 2020)], poc)
-    assert out["hero"]["years"][0]["median_days"] == 31.0  # vs MSF date
+    assert out["hero"]["years"][0]["median_days"] == 60.0
+    # A CVE covered only by a disclosure-dated Metasploit module is
+    # exploit-covered but has no code date, so it is not in the cohort.
+    poc = _poc(msf_dates={"CVE-2020-0002": "2020-02-01"})
+    out = _build([_facts("CVE-2020-0002", "2020-01-01", 2020)], poc)
+    assert out["hero"]["years"] == []
+    assert out["hero"]["matched"]["dated_cves"] == 0
+    assert out["catalog"]["metasploit"]["dated_cves"] == 0
+    assert out["catalog"]["metasploit"]["disclosure_dated_cves"] == 1
 
 
 def test_min_n_gates_hero_years():
@@ -133,13 +149,18 @@ def test_kev_preempt_same_day_listing_is_not_preempted():
 
 
 def test_coverage_uses_latest_complete_year_and_flood_buckets():
+    # Exploit code is Exploit-DB or a Metasploit exploit module; a
+    # Nuclei template is detection coverage, tallied beside it and never
+    # inside it; a Metasploit auxiliary module is neither.
     poc = _poc(edb_dates={"CVE-2025-0001": "2025-02-01"},
-               nuclei={"CVE-2025-0002"})
+               msf_dates={"CVE-2025-0003": "2025-01-01"},
+               nuclei={"CVE-2025-0002", "CVE-2025-0003"},
+               msf_other={"CVE-2025-0004"})
     facts = [
         _facts("CVE-2025-0001", "2025-01-01", 2025, score=9.8),
-        _facts("CVE-2025-0002", "2025-01-01", 2025, score=9.1),
-        _facts("CVE-2025-0003", "2025-01-01", 2025, score=9.0),  # uncovered
-        _facts("CVE-2025-0004", "2025-01-01", 2025, score=5.0),  # uncovered
+        _facts("CVE-2025-0002", "2025-01-01", 2025, score=9.1),  # template
+        _facts("CVE-2025-0003", "2025-01-01", 2025, score=9.0),  # msf+nuclei
+        _facts("CVE-2025-0004", "2025-01-01", 2025, score=5.0),  # scanner
         _facts("CVE-2025-0005", "2025-01-01", 2025),             # unscored
         _facts("CVE-2026-0001", "2026-01-01", 2026, score=9.9),  # partial yr
     ]
@@ -148,9 +169,12 @@ def test_coverage_uses_latest_complete_year_and_flood_buckets():
     assert cov["window_year"] == 2025
     rows = {r["bucket"]: r for r in cov["buckets"]}
     assert rows["9.0-10.0"] == {"bucket": "9.0-10.0", "total": 3,
-                                "with_poc": 2, "pct": 66.7}
+                                "with_poc": 2, "pct": 66.7,
+                                "with_detection": 2}
     assert rows["4.0-6.9"]["with_poc"] == 0
-    assert cov["unscored"] == {"total": 1, "with_poc": 0, "pct": 0.0}
+    assert rows["4.0-6.9"]["with_detection"] == 0
+    assert cov["unscored"] == {"total": 1, "with_poc": 0, "pct": 0.0,
+                               "with_detection": 0}
 
 
 def test_coverage_min_n_drops_thin_buckets():
@@ -168,7 +192,8 @@ def test_catalog_carries_the_join_audit():
     out = _build([_facts("CVE-2020-0001", "2020-01-01", 2020)], poc)
     cat = out["catalog"]
     assert cat["union_cves"] == 3
-    assert cat["dated_cves"] == 2
+    assert cat["exploit_cves"] == 2   # EDB entry + MSF exploit module
+    assert cat["dated_cves"] == 1     # only Exploit-DB dates code
     assert cat["matched_in_corpus"] == 1
     assert cat["dated_cves"] == out["hero"]["matched"]["dated_cves"]
 

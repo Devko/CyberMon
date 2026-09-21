@@ -14,11 +14,18 @@ Sources (verbatim rank order transcribed from these pages):
   (the older 2024_cwe_top25.html URL now serves a JS tab shell)
 * 2023: https://cwe.mitre.org/top25/archive/2023/2023_cwe_top25.html
 
-The MITRE Top-25 methodology itself is derived from NVD CVEs joined to
-CISA KEV, re-scored by a data-driven formula — so it is NOT an independent
-oracle. That partial circularity is exactly why the module compares the
-official *rank* against raw first-listed-CWE prevalence and KEV membership:
-the DIVERGENCE from the published order is the story, not the list itself.
+MITRE's published methodology (2025: cwe.mitre.org/top25/archive/2025/
+2025_methodology.html) scores each CWE by combining its normalized frequency
+among NVD CVEs in a one-year window (June 1, 2024 through June 1, 2025 for
+the 2025 list) with the average CVSS v3.0/v3.1 base severity of those CVEs,
+after a mapping review and refinement step that considers multiple CWE
+mappings per CVE. KEV counts are displayed alongside the list but are NOT an
+input to the score. CyberMon's measured cut is a different objective on a
+different population — first-listed-CWE frequency, unweighted by severity,
+over the last five complete calendar years of cvelistV5 — so where the two
+orders disagree it is a disagreement of definitions, not a correction of
+MITRE. That DIVERGENCE from the published order is the story, not the list
+itself.
 """
 from __future__ import annotations
 

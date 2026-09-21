@@ -167,9 +167,16 @@ def test_negative_days_metric_allowed():
 def test_verdict_on_a_thin_era_rejected():
     # The MIN_POST_YEARS guard exists so one anomalous year can't produce
     # a headline; the contract refuses to publish a verdict that ignores it.
-    obj = valid_obj()
-    block = obj["banked"]["metrics"][0]["eras"][-1]
+    # Built a year earlier than valid_obj(): 2024 is then the last
+    # complete year, 2023 straddles the GPT-4 cutoff, and that era's post
+    # window holds a single complete year — so the builder withheld it.
+    gaps = {**{y: 200.0 for y in range(2000, 2005)},
+            **{y: 5.0 for y in range(2005, 2025)}}
+    obj = ai_metrics.build_ai_alibi(poc_payload(gaps),
+                                    "2025-07-09T00:00:00Z")
+    block = obj["banked"]["metrics"][0]["eras"][1]
     assert block["verdict"] == "insufficient", "fixture assumption"
+    assert block["post"]["years"] == 1, "fixture assumption"
     block["verdict"] = "accelerated"
     block["era_shift"] = 0.0
     with pytest.raises(ContractViolation, match="post-cutoff year"):

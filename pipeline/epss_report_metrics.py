@@ -52,8 +52,9 @@ from .metrics import _pct, _r1
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 
 # Log-ish probability buckets, identical to score_vs_reality's EPSS axis
-# (contracts.EPSS_BUCKETS); lower edges inclusive.
-DIST_BUCKETS = ["<0.1%", "0.1-1%", "1-10%", ">10%"]
+# (contracts.EPSS_BUCKETS); lower edges inclusive, so an exact 0.10 is in
+# the top bucket and that bucket reads ">= 10%" (the site's glyph).
+DIST_BUCKETS = ["<0.1%", "0.1-1%", "1-10%", "≥10%"]
 
 # Day-before percentile buckets (percentiles are 0-1 upstream, presented
 # 0-100); lower edges inclusive.
@@ -74,7 +75,7 @@ def dist_bucket(epss: float) -> str:
         return "0.1-1%"
     if epss < 0.1:
         return "1-10%"
-    return ">10%"
+    return "≥10%"
 
 
 def percentile_bucket(percentile: float) -> str:

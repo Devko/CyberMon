@@ -124,6 +124,11 @@ def _validate_cve_calendar(obj: Any) -> None:
         if on_pt > n:
             _fail(f"{path}.on_pt", f"on_pt ({on_pt}) exceeds n ({n})")
         _check_num(_get(e, "pct", path), f"{path}.pct", 0.0, 100.0)
+        # Additive (editions before 2026-09-20 lack it): the ordinary-
+        # Tuesday baseline, null only when the window has no other Tuesday.
+        if "tuesday_baseline_pct" in e and e["tuesday_baseline_pct"] is not None:
+            _check_num(e["tuesday_baseline_pct"],
+                       f"{path}.tuesday_baseline_pct", 0.0, 100.0)
         top = _get(e, "top_day", path)
         _check_str(_get(top, "date", f"{path}.top_day"),
                    f"{path}.top_day.date", DATE_RE)
@@ -148,6 +153,16 @@ def _validate_cve_calendar(obj: Any) -> None:
                         "cve_calendar.patch_tuesday.headline"),
                    "cve_calendar.patch_tuesday.headline.pct_latest",
                    0.0, 100.0)
+        # Additive (editions before 2026-09-20 lack it); must mirror the
+        # latest year's own row, null only when that row's baseline is.
+        if "tuesday_baseline_latest" in headline:
+            latest_row = next(e for e in entries
+                              if e["year"] == headline["latest_year"])
+            if headline["tuesday_baseline_latest"] != \
+                    latest_row.get("tuesday_baseline_pct"):
+                _fail("cve_calendar.patch_tuesday.headline."
+                      "tuesday_baseline_latest",
+                      "must equal the latest year's tuesday_baseline_pct")
 
 
 VALIDATORS: dict[str, Callable[[Any], None]] = {

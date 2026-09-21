@@ -16,12 +16,16 @@ gets exploited. Three views of the same 25 CWE ids:
 Like the rest of the codebase this reads aggregates the core streaming pass
 already collects; it adds no second sweep over the corpus.
 
-Honesty note (also in the site methodology): MITRE's own Top-25 formula is
-derived from NVD CVEs joined to CISA KEV, so it is not an independent
-oracle — there is partial circularity with our KEV cut. Our measured cut is
-plain first-listed-CWE prevalence and our exploited cut is plain KEV
-membership; the DIVERGENCE from the official *rank* is the story, and the
-measured window is stated explicitly (``window`` in the payload).
+Honesty note (also in the site methodology): MITRE's own Top-25 score
+combines each CWE's normalized frequency among NVD CVEs in a one-year
+window with the average CVSS v3 base severity of those CVEs, after mapping
+review; KEV counts are shown beside the list but are not a score input.
+Our measured cut is plain first-listed-CWE prevalence over five calendar
+years of cvelistV5 (a different objective on a different population) and
+our exploited cut is plain KEV membership, so the DIVERGENCE from the
+official *rank* is a disagreement of definitions, not a correction — and
+that divergence is the story. The measured window is stated explicitly
+(``window`` in the payload).
 """
 from __future__ import annotations
 

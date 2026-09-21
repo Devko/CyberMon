@@ -106,8 +106,35 @@ def test_patch_tuesday_share_and_top_day(obj):
     assert pt[2023]["top_day"] == {"date": "2023-01-15", "n": 1}
     assert pt[2024]["top_day"] == {"date": "2024-02-13", "n": 1}
     assert obj["patch_tuesday"]["calendar_pct"] == 3.3
-    assert obj["patch_tuesday"]["headline"] == {"latest_year": 2025,
-                                                "pct_latest": 0.0}
+    # 2025 holds one dated record on a Monday: no other Tuesday in a
+    # one-day window, so the ordinary-Tuesday baseline is unknowable.
+    assert obj["patch_tuesday"]["headline"] == {
+        "latest_year": 2025, "pct_latest": 0.0,
+        "tuesday_baseline_latest": None}
+    assert pt[2025]["tuesday_baseline_pct"] is None
+
+
+def test_tuesday_baseline_scales_other_tuesdays_to_the_patch_tuesdays():
+    from datetime import date
+    from pipeline.calendar_metrics import tuesday_baseline_pct
+    # A complete year holds 52 Tuesdays (2025: 12 patch, 40 other). With
+    # 400 records on the other Tuesdays (10 per ordinary Tuesday) out of
+    # 2,000 dated records, twelve ordinary Tuesdays would carry 120, i.e.
+    # 6.0% — nearly twice the calendar-blind 3.3%.
+    pct = tuesday_baseline_pct(date(2025, 1, 1), date(2025, 12, 31),
+                               on_tuesdays=520, on_pt=120, n=2000)
+    assert pct == 6.0
+    # The window's own Tuesdays are counted, never an assumed 52: a
+    # five-week window in January 2025 (1st-31st) has one patch Tuesday
+    # (the 14th) and three other Tuesdays.
+    pct = tuesday_baseline_pct(date(2025, 1, 1), date(2025, 1, 31),
+                               on_tuesdays=90, on_pt=60, n=200)
+    assert pct == 5.0  # 30 on 3 other Tuesdays -> 10 each -> 1 patch day
+    # No other Tuesday to average from, or nothing dated: unknown, not 0.
+    assert tuesday_baseline_pct(date(2025, 1, 14), date(2025, 1, 14),
+                                on_tuesdays=5, on_pt=5, n=5) is None
+    assert tuesday_baseline_pct(date(2025, 1, 1), date(2025, 1, 31),
+                                on_tuesdays=0, on_pt=0, n=0) is None
 
 
 def test_min_n_filters_each_section_on_its_own_denominator(agg):

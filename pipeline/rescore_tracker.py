@@ -1,13 +1,15 @@
 """Silent Rescores: nightly diffs of CNA-assigned scores on live records.
 
 Thesis: severity is not just assigned — it is edited after the fact,
-quietly, on live CVE records. No upstream publishes that edit history, so
-this module keeps it: every night, the corpus pass collects a per-CVE
-fingerprint (``Aggregator.rescore_fingerprints`` — the newest-version
-CNA-assigned base score, extracted by ``CveFacts.newest_cna_fingerprint``,
-the same property the inflation chart's blended series reads, so the two
-can never disagree), the previous night's fingerprints are loaded from
-cached state, and the differences become events on an append-only log.
+quietly, on live CVE records. The CVE record carries no changelog of its
+own; the upstream record of every edit is the cvelistV5 git history, and
+what this module adds is a normalized nightly diff of the *effective* CNA
+score: every night, the corpus pass collects a per-CVE fingerprint
+(``Aggregator.rescore_fingerprints`` — the newest-version CNA-assigned
+base score, extracted by ``CveFacts.newest_cna_fingerprint``, the same
+property the inflation chart's blended series reads, so the two can never
+disagree), the previous night's fingerprints are loaded from cached
+state, and the differences become events on an append-only log.
 
 Event taxonomy (``CHANGE_TYPES``) — the boundaries are the honesty rules:
 
@@ -15,9 +17,13 @@ Event taxonomy (``CHANGE_TYPES``) — the boundaries are the honesty rules:
   direction (up/down); the only type the magnitude chart may read.
 * ``version_shift`` — the record's newest scored CVSS version changed
   (normally a newer version's score arriving; a newer score being
-  withdrawn also lands here). Score comparison across versions is NOT a
-  rescore — v2/v3/v4 are different scales — so shifts are logged
-  separately and never charted as up/down, even when the number moved.
+  withdrawn also lands here). The version is the EXACT one the metric
+  key names ("v3.0", "v3.1", "v4.0", "v2.0"), so a 3.0 -> 3.1 move is a
+  version shift too, even inside the v3 family. Score comparison across
+  versions is NOT a rescore — v2/v3/v4 are different scales, and a 3.0
+  -> 3.1 re-issue is a re-evaluation under a revised spec — so shifts
+  are logged separately and never charted as up/down, even when the
+  number moved.
 * ``first_score`` — a record already on last night's log gained its first
   in-record CNA score. That is backfill-scoring, not an edit of an
   existing judgment; counted separately. (Only possible because the
@@ -33,7 +39,22 @@ produces no event.
 State (``site/data/history/rescore_state.json``, COMMITTED next to the
 log — the kev_changelog pattern, plain JSON, atomic tmp+replace):
 ``{"release": <corpus tag>, "last_observed": <YYYY-MM-DD>,
-"fingerprints": {cve: [version, score]}}``. The state used to live in
+"fingerprints": {cve: [version, score]}}``.
+
+Legacy-label migration: until 2026-09-20 the fingerprint carried only the
+version FAMILY ("v3"), so a stored "v3" cannot say whether the record
+was on 3.0 or 3.1. On the first night after the change every scored CVE
+would otherwise diff "v3" -> "v3.1" and log a spurious version shift.
+:func:`same_version` therefore treats a legacy family label against an
+exact label of the same family as the same version: equal scores emit
+nothing, a changed score is a rescore (logged with the labels as they
+were seen, old "v3", new "v3.1" — the one shape of rescore row whose two
+version cells differ), and tonight's state stores the exact label, so
+the migration is a one-night affair. A different family stays a version
+shift. Committed rows dated before the migration keep their family
+labels; the log is the record and is never rewritten.
+
+The state used to live in
 ``.cache`` behind actions/cache, and that corrupted the log once: cache
 saves only on job success, so two failing nights kept restoring a stale
 state and re-diffing the same corpus transition — the same events were
@@ -103,6 +124,25 @@ def delta_bucket(delta: float) -> str:
 
 # ------------------------------------------------------------------ diffing
 
+def version_family(label: str) -> str:
+    """The family of a fingerprint version label: "v3.1" -> "v3", the
+    legacy family label "v3" -> "v3"."""
+    return label.split(".", 1)[0]
+
+
+def same_version(old: str, new: str) -> bool:
+    """Whether two fingerprint version labels count as the same CVSS
+    version for event classification. Exact labels must match exactly
+    ("v3.0" vs "v3.1" is a version shift). A legacy family-only label
+    ("v3", as every state stored before 2026-09-20) matches an exact
+    label of the same family — the migration rule in the module
+    docstring — because the legacy label never knew the minor version."""
+    if old == new:
+        return True
+    legacy = "." not in old or "." not in new
+    return legacy and version_family(old) == version_family(new)
+
+
 def diff_events(old: Mapping[str, list],
                 new: Mapping[str, tuple[str, str | None, float | None]],
                 observed_date: str) -> list[dict]:
@@ -110,6 +150,8 @@ def diff_events(old: Mapping[str, list],
 
     ``old``: cve -> [version|None, score|None] (the persisted state).
     ``new``: cve -> (cna, version|None, score|None) (tonight's corpus).
+    Versions are exact labels ("v3.1"); a legacy family label in ``old``
+    is compared by :func:`same_version` (see the module docstring).
     CVEs only in ``new`` are brand-new records (no event — first
     assignment is the inflation chart's subject, not an edit); CVEs only
     in ``old`` left the published corpus (no event). Events are sorted by
@@ -127,7 +169,7 @@ def diff_events(old: Mapping[str, list],
             change = "first_score"
         elif new_version is None:
             change = "score_removed"
-        elif old_version != new_version:
+        elif not same_version(old_version, new_version):
             change = "version_shift"
         elif old_score != new_score:
             change = "rescore"
@@ -359,8 +401,9 @@ def build_rescore_log(rows: list[dict], *, state_size: int, release: str,
     exactly how much record exists; nothing here fakes depth).
 
     * ``weeks`` — per-ISO-week counts (see :func:`_weekly_rows`).
-    * ``magnitude`` — signed deltas of rescore events only (same-version
-      by construction; cross-version deltas never exist as rescores).
+    * ``magnitude`` — signed deltas of rescore events only (same CVSS
+      version by construction, 3.0 vs 3.1 included; cross-version deltas
+      never exist as rescores).
       ``buckets``/``median_delta`` are null until at least ``min_n``
       rescore events have accumulated — below that a distribution is an
       anecdote, and the site renders the placeholder from ``n``.

@@ -76,55 +76,101 @@ def test_index_series_zero_peak_yields_all_zero_indexes():
 
 # ------------------------------------------------------------ year-over-year
 
+# Every _monthly(...) window below starts at 2024-01, so its 24 months
+# end at ANCHOR — the latest complete month every comparison is pinned to.
+ANCHOR = "2025-12"
+
+
 def test_yoy_needs_24_populated_months():
-    assert yoy(_monthly([10] * 23)) is None
-    assert yoy({}) is None
+    assert yoy(_monthly([10] * 23), ANCHOR) is None
+    assert yoy({}, ANCHOR) is None
 
 
 def test_yoy_needs_nonzero_prior_baseline():
-    assert yoy(_monthly([0] * 12 + [10] * 12)) is None
+    assert yoy(_monthly([0] * 12 + [10] * 12), ANCHOR) is None
 
 
 def test_yoy_needs_minimum_volume():
     # 11 prior hits shrinking to 4 is noise, not a -63.6% market move.
-    assert yoy(_monthly([1] * 11 + [0] + [1] * 4 + [0] * 8)) is None
+    assert yoy(_monthly([1] * 11 + [0] + [1] * 4 + [0] * 8), ANCHOR) is None
     # exactly at the floor (15 + 15 = 30) a percentage may post
-    at_floor = yoy(_monthly([2] * 3 + [1] * 9 + [1] * 9 + [2] * 3))
+    at_floor = yoy(_monthly([2] * 3 + [1] * 9 + [1] * 9 + [2] * 3), ANCHOR)
     assert at_floor is not None and at_floor["pct_change"] == 0.0
 
 
 def test_yoy_change_on_raw_counts():
-    out = yoy(_monthly([10] * 12 + [15] * 12, start="2024-07"))
+    out = yoy(_monthly([10] * 12 + [15] * 12, start="2024-07"), "2026-06")
     assert out == {"latest_month": "2026-06", "pct_change": 50.0,
                    "n_latest_12m": 180, "n_prior_12m": 120}
 
 
-def test_yoy_uses_only_the_latest_24_populated_months():
+def test_yoy_uses_only_the_24_months_ending_at_the_anchor():
     # six huge early months must not leak into either window
-    out = yoy(_monthly([100] * 6 + [10] * 12 + [15] * 12, start="2024-01"))
+    out = yoy(_monthly([100] * 6 + [10] * 12 + [15] * 12, start="2024-01"),
+              "2026-06")
     assert out["pct_change"] == 50.0
     assert out["n_prior_12m"] == 120 and out["n_latest_12m"] == 180
+
+
+def test_yoy_gapped_months_cannot_pass_as_a_contiguous_window():
+    # 25 populated months with one hole inside the 24-month window: the
+    # old positional rule would silently take the 24 that exist and
+    # compare mismatched periods. A missing month is unknown, not zero,
+    # and never skipped over.
+    monthly = _monthly([10] * 25, start="2024-06")          # ..2026-06
+    del monthly["2025-03"]
+    assert len(monthly) == 24
+    assert yoy(monthly, "2026-06") is None
+    # A hole OUTSIDE the window is irrelevant.
+    assert yoy(_monthly([10] * 24, start="2024-07"), "2026-06") is not None
+
+
+def test_yoy_anchor_month_itself_must_be_populated():
+    # A lane that has not published the anchor month posts nothing,
+    # rather than a "latest twelve months" ending somewhere earlier.
+    monthly = _monthly([10] * 24, start="2024-06")          # ..2026-05
+    assert yoy(monthly, "2026-06") is None
+    assert yoy(monthly, "2026-05")["latest_month"] == "2026-05"
 
 
 # -------------------------------------------------------------- divergence
 
 def test_divergence_needs_3_populated_months_in_each_source():
-    assert divergence(_series([50.0, 60.0]), _series([10.0, 20.0, 30.0])) is None
-    assert divergence(_series([50.0] * 3), _series([10.0, 20.0])) is None
-    assert divergence([], []) is None
+    # _series starts at 2026-01, so three points cover 2026-01..03.
+    assert divergence(_series([50.0, 60.0]), _series([10.0, 20.0, 30.0]),
+                      "2026-03") is None
+    assert divergence(_series([50.0] * 3), _series([10.0, 20.0]),
+                      "2026-03") is None
+    assert divergence([], [], "2026-03") is None
 
 
-def test_divergence_averages_only_the_3_most_recent_months():
+def test_divergence_averages_the_same_three_months_for_both_sources():
+    # GDELT runs 2026-01..04, arXiv 2026-02..04: anchored at 2026-04 both
+    # average 02..04, so GDELT's 0.0 January point is outside the window.
     out = divergence(_series([0.0, 90.0, 95.0, 100.0]),
-                     _series([10.0, 20.0, 30.0]))
+                     _series([10.0, 20.0, 30.0], start_month=2), "2026-04")
     assert out == {"gdelt_index_avg3m": 95.0, "arxiv_index_avg3m": 20.0,
                    "research_vs_media_index": -75.0,
                    "direction": "media_leads"}
 
 
+def test_divergence_refuses_non_overlapping_recent_windows():
+    # Each source's "three most recent months" is a different period:
+    # GDELT ends in April, arXiv in June. The old rule averaged both and
+    # called it a current divergence; now a month either side lacks
+    # withholds the whole figure.
+    gdelt = _series([50.0, 50.0, 50.0], start_month=2)   # 2026-02..04
+    arxiv = _series([80.0, 80.0, 80.0], start_month=4)   # 2026-04..06
+    assert divergence(gdelt, arxiv, "2026-06") is None
+    assert divergence(gdelt, arxiv, "2026-04") is None   # arXiv lacks 02, 03
+    both = _series([50.0] * 5, start_month=2)             # 2026-02..06
+    assert divergence(both, arxiv, "2026-06") is not None
+
+
 def test_divergence_directions_and_dead_zone_edges():
     def rvm(gdelt_idx, arxiv_idx):
-        return divergence(_series([gdelt_idx] * 3), _series([arxiv_idx] * 3))
+        return divergence(_series([gdelt_idx] * 3), _series([arxiv_idx] * 3),
+                          "2026-03")
 
     assert rvm(50.0, 80.0)["direction"] == "research_leads"
     assert rvm(80.0, 50.0)["direction"] == "media_leads"
@@ -143,13 +189,13 @@ def test_divergence_needs_minimum_volume_per_source():
     # 2 papers against a 2-paper peak is an index of 100, not a divergence.
     thin = [{"month": f"2026-{m:02d}", "n": n, "index": i}
             for m, n, i in ((4, 0, 0.0), (5, 2, 100.0), (6, 2, 100.0))]
-    fat = _series([50.0, 50.0, 50.0])
-    assert divergence(fat, thin) is None   # arXiv side under the floor
-    assert divergence(thin, fat) is None   # GDELT side under the floor
+    fat = _series([50.0, 50.0, 50.0], start_month=4)      # 2026-04..06
+    assert divergence(fat, thin, "2026-06") is None   # arXiv under the floor
+    assert divergence(thin, fat, "2026-06") is None   # GDELT under the floor
     # exactly at the floor (10 hits over the three months) it may post
     at_floor = [{"month": f"2026-{m:02d}", "n": n, "index": i}
                 for m, n, i in ((4, 3, 30.0), (5, 3, 30.0), (6, 4, 40.0))]
-    assert divergence(fat, at_floor) is not None
+    assert divergence(fat, at_floor, "2026-06") is not None
 
 
 # ---------------------------------------------------------------- headline
@@ -467,7 +513,9 @@ def test_partial_previous_month_is_withheld_when_lane_was_down_at_rollover():
 def test_partial_month_rule_is_independent_of_staleness():
     # Two days into July with a June-30 stamp: fresh (not stale), yet the
     # June cell was fetched before June closed — withheld from the series
-    # and therefore from the "latest twelve populated months" YoY window.
+    # and therefore the anchored YoY window (which ends at the closed
+    # month, 2026-06) cannot be filled: no YoY that night, rather than a
+    # window quietly ending a month earlier under the same label.
     monthly = _monthly([10] * 13 + [20] * 12, start="2024-06")  # ..2026-06
     state = _state({"aaa": {"gdelt": monthly}})
     state["last_success"] = _stamps(gdelt="2026-06-30T12:00:00Z")
@@ -475,9 +523,7 @@ def test_partial_month_rule_is_independent_of_staleness():
     assert obj["stale_sources"] == []
     term = obj["terms"][0]
     assert term["series"]["gdelt"][-1]["month"] == "2026-05"
-    assert term["yoy"]["gdelt"] == {
-        "latest_month": "2026-05", "pct_change": 91.7,
-        "n_latest_12m": 230, "n_prior_12m": 120}
+    assert term["yoy"]["gdelt"] is None
     # a stamp on the first second of the month means June was fetched whole
     state["last_success"] = _stamps(gdelt="2026-07-01T00:00:00Z")
     obj = build_market_hype(state, [_term("aaa")], "2026-07-02T00:00:00Z")

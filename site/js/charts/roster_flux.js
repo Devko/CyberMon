@@ -48,6 +48,10 @@ export function render(slots, data) {
       value: (m) => -m.departed },
     { name: ed.legendScope, stack: "context", color: C.sev.medium,
       value: (m) => m.scope_changed },
+    // A rename (same organization under a new shortName; editions since
+    // 2026-09-20) is neither a join nor a departure — its own context bar.
+    { name: ed.legendRenamed, stack: "context", color: C.sev.low,
+      value: (m) => m.renamed || 0 },
   ];
 
   const chart = mkChart(slots.chart);
@@ -63,7 +67,7 @@ export function render(slots, data) {
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(m.month)}</div>`;
-        const counts = [m.onboarded, m.departed, m.scope_changed];
+        const counts = [m.onboarded, m.departed, m.scope_changed, m.renamed || 0];
         const body = SERIES.map(({ name, color }, i) =>
           `<div style="display:flex;gap:10px;justify-content:space-between;align-items:baseline;">` +
           `<span><span style="display:inline-block;width:8px;height:8px;background:${color};margin-right:6px;"></span>` +

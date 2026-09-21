@@ -33,7 +33,7 @@ const ARRANGE = {
   grid: {
     k: "Severity × predicted exploitation",
     thesis: "EPSS estimates exploitation probability; CVSS describes severity. These are different dimensions, with no expected diagonal. KEV is the separate observed-exploitation overlay.",
-    method: "The same sixteen buckets as chart 3 on the CVE Ecosystem page (CVSS 0.1–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no in-record score and a column for records without a current EPSS score. Pile height is the base score.",
+    method: "The same sixteen buckets as chart 3 on the CVE Ecosystem page (CVSS 0.0–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no in-record score and a column for records without a current EPSS score. Pile height is the base score.",
   },
   cna: {
     k: "By assigner",
@@ -53,7 +53,7 @@ const ARRANGE = {
   clock: {
     k: "The clock · publication → PoC → KEV",
     thesis: "How long the record had. Front lane: days from publication to the first public proof of concept. Back lane: days to the KEV listing. Left of zero, the exploit came first.",
-    method: "Only records with a dated event are placed. x is the signed gap in days on a log scale (±10 years at the edges); y is the base score. PoC date is the earliest dated Exploit-DB or Metasploit entry (Nuclei publishes no dates); KEV date is CISA's dateAdded. A record with both sits in the KEV lane and the hover shows both gaps — the same joins the Time to PoC and KEV Latency modules use.",
+    method: "Only records with a dated event are placed. x is the signed gap in days on a log scale (±10 years at the edges); y is the base score. PoC date is the earliest Exploit-DB entry, the one source that dates the exploit itself (Metasploit dates the disclosure, not the module; Nuclei publishes no dates); KEV date is CISA's dateAdded. A record with both sits in the KEV lane and the hover shows both gaps — the same joins the Time to PoC and KEV Latency modules use.",
   },
   vendor: {
     k: "By vendor",

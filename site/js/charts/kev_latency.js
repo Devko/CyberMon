@@ -10,11 +10,46 @@ import { el } from "../dom.js";
 // that predates its own CVE record is a real (and alarming) event.
 const fmtDays = (v) => `${fmtInt(Math.round(v))}d`;
 
+// Direction of a change, with a dead band so a hair's difference is not a
+// trend: "up" / "down" / "flat".
+function direction(from, to, band) {
+  if (!Number.isFinite(from) || !Number.isFinite(to)) return "flat";
+  if (to - from > band) return "up";
+  if (from - to > band) return "down";
+  return "flat";
+}
+
 export function render(slots, data) {
   const ed = editorial.sections.latency;
 
   // ---- headline stat --------------------------------------------------------
   const h = data.headline || {};
+
+  // ---- caption + methodology: numbers and verbs from the data ---------------
+  // The caption compares the baseline year to the latest complete year and
+  // names the direction of the median and of the over-a-year tail; its
+  // verbs come from ed.captionWords so a reversed trend rewrites the
+  // sentence rather than contradicting the chart.
+  if (slots.caption && Number.isFinite(h.median_days_latest) &&
+      Number.isFinite(h.median_days_baseline)) {
+    const rows = data.latency_by_year || [];
+    const byYear = new Map(rows.map((r) => [r.year, r]));
+    const tailFrom = byYear.get(h.baseline_year)?.pct_over_365d;
+    const tailTo = byYear.get(h.latest_year)?.pct_over_365d;
+    const mid = direction(h.median_days_baseline, h.median_days_latest, 2);
+    const tail = direction(tailFrom, tailTo, 1);
+    const words = ed.captionWords;
+    const vars = {
+      baseline_year: h.baseline_year,
+      baseline_median: fmtInt(Math.round(h.median_days_baseline)),
+      latest_year: h.latest_year,
+      latest_median: fmtInt(Math.round(h.median_days_latest)),
+      middle_verb: words.middle[mid][0], middle_word: words.middle[mid][1],
+      tail_verb: words.tail[tail][0], tail_word: words.tail[tail][1],
+    };
+    slots.caption.textContent = tpl(ed.caption, vars);
+    if (slots.methodText) slots.methodText.textContent = tpl(ed.methodology, vars);
+  }
   const stat = el("div", "hero-stat");
   stat.append(el("div", "hero-stat-label", ed.statLabel));
   const row = el("div", "hero-stat-row");

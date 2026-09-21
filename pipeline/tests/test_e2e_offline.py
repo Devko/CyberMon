@@ -102,30 +102,40 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
                  "cna_concentration.json", "breach_ledger.json"):
         assert "projection" not in _load(tmp_path, name), name
 
-    # Time to PoC: 8 dated CVEs across Exploit-DB/Metasploit, 7 matched
-    # in the corpus (CVE-2099-0001 is deliberately absent), the earliest
-    # date winning per CVE (Exploit-DB 2023-01-10 beats Metasploit
-    # 2023-01-20 for CVE-2023-0001, gap -5 vs publish 2023-01-15). KEV:
-    # the trend cohort matches two entries, one preempted; the seeding
-    # era matches none (its only covered id carries a placeholder date).
+    # Time to PoC: 7 CVEs dated by Exploit-DB (the only source that dates
+    # the artifact itself), 6 matched in the corpus (CVE-2099-0001 is
+    # deliberately absent). Metasploit's disclosure_date never competes:
+    # Exploit-DB's 2023-01-10 dates CVE-2023-0001 even though the module
+    # says 2023-01-20, and CVE-2012-0002 (a Metasploit exploit module
+    # only) is exploit-covered but undated, so the 2014 cohort holds one
+    # CVE, not two. KEV: the trend cohort matches two entries, one
+    # preempted; the seeding era matches none (its only covered id is an
+    # auxiliary module with a placeholder date).
     poc = _load(tmp_path, "time_to_poc.json")
-    assert poc["hero"]["matched"] == {"dated_cves": 8, "matched_cves": 7,
+    assert poc["hero"]["matched"] == {"dated_cves": 7, "matched_cves": 6,
                                       "unmatched_cves": 1}
     assert [(y["year"], y["n"], y["median_days"])
             for y in poc["hero"]["years"]] == [
-        (2014, 2, -348.0), (2023, 2, 12.5), (2024, 2, 77.0), (2025, 1, 30.0)]
+        (2014, 1, 30.0), (2023, 2, 12.5), (2024, 2, 77.0), (2025, 1, 30.0)]
     assert poc["kev_preempt"]["trend"] == {"with_poc_date": 2,
                                            "preempted": 1,
                                            "pct_preempted": 50.0}
     assert poc["kev_preempt"]["seeding"]["with_poc_date"] == 0
     assert poc["coverage"]["window_year"] == 2025
+    # Exploit code and detection templates are tallied apart.
+    assert [(b["bucket"], b["with_poc"], b["with_detection"])
+            for b in poc["coverage"]["buckets"]] == [
+        ("7.0-8.9", 1, 1), ("9.0-10.0", 0, 1)]
     assert poc["catalog"]["union_cves"] == 11
-    assert poc["catalog"]["metasploit"] == {"modules": 4, "with_cve": 3,
-                                            "cves": 3, "dated_cves": 2}
+    assert poc["catalog"]["exploit_cves"] == 8
+    assert poc["catalog"]["metasploit"] == {
+        "modules": 4, "with_cve": 3, "exploit_modules_with_cve": 2,
+        "cves": 2, "other_cves": 1, "dated_cves": 0,
+        "disclosure_dated_cves": 2}
     assert meta["sources"]["exploitdb"] == {
         "fetched_at": meta["generated_at"], "entry_count": 8, "cve_count": 7}
     assert meta["sources"]["metasploit"] == {
-        "fetched_at": meta["generated_at"], "module_count": 4, "cve_count": 3}
+        "fetched_at": meta["generated_at"], "module_count": 4, "cve_count": 2}
     assert meta["sources"]["nuclei"] == {
         "fetched_at": meta["generated_at"], "cve_count": 3}
 
@@ -342,6 +352,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert roster["roster_mix"]["total"] == 8
     assert roster["roster_mix"]["by_type"][0] == {"label": "Vendor", "n": 4}
     assert roster["roster_flux"]["totals"] == {"onboarded": 2, "departed": 1,
+                                               "renamed": 0,
                                                "scope_changed": 1}
     assert roster["roster_flux"]["events_total"] == 4
     assert roster["roster_size"]["net_change"] == 1  # 7 -> 8

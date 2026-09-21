@@ -22,8 +22,22 @@ over the corpus.
   published on the month's second Tuesday (the Tuesday falling on day
   8-14, UTC). Twelve such days exist every year: 12/365 ≈ 3.3% of the
   calendar (3.28% in a leap year — the same 3.3 at one decimal), shipped
-  as ``calendar_pct`` so the chart can draw the honest baseline. The top
-  single publication day per year rides along for tooltips only.
+  as ``calendar_pct`` so the chart can draw the honest baseline. That
+  baseline alone over-credits the release train, because Tuesday is the
+  busiest day of the CVE week regardless: the weekday chart puts it near
+  a quarter of all records. So a second baseline ships per year,
+  ``tuesday_baseline_pct`` — the share those Patch Tuesdays would carry
+  if they were ordinary Tuesdays. Defined precisely: take the year's
+  observation window (first to last dated record of that year,
+  inclusive); count its Tuesdays and split them into Patch Tuesdays and
+  other Tuesdays; average the records that landed on the other Tuesdays
+  per other Tuesday; multiply by the window's Patch Tuesday count
+  (twelve in a complete year, fewer in the partial current one, so the
+  scaling matches the window the bar itself is measured on); divide by
+  the year's dated records. Null when the window holds no other Tuesday.
+  The gap between the bar and this line is what Patch Tuesday adds on
+  top of the generic Tuesday effect — a residual, not an isolated cause.
+  The top single publication day per year rides along for tooltips only.
 
 Only records with a day-precision ``datePublished`` join the weekday and
 patch-Tuesday tallies (the ID-age chart needs only the year), so those two
@@ -35,7 +49,7 @@ never feeds a headline or comparison year.
 from __future__ import annotations
 
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
 
 from .metrics import Aggregator, _pct
 
@@ -54,6 +68,31 @@ def is_patch_tuesday(d: date) -> bool:
     """True on the second Tuesday of ``d``'s month (UTC dates in, so the
     judgment is UTC too): the only Tuesday whose day-of-month is 8-14."""
     return d.weekday() == 1 and 8 <= d.day <= 14
+
+
+def tuesday_baseline_pct(first: date, last: date, on_tuesdays: int,
+                         on_pt: int, n: int) -> float | None:
+    """The share of ``n`` dated records the window's Patch Tuesdays would
+    carry as ordinary Tuesdays (module docstring): records on the other
+    Tuesdays, per other Tuesday, times the window's Patch Tuesday count.
+    ``first``..``last`` is the observation window (inclusive), and the
+    Tuesdays in it are counted from the actual dates — never assumed 52.
+    None when there is no other Tuesday to average, or nothing dated."""
+    if n <= 0 or last < first:
+        return None
+    patch, other = 0, 0
+    day = first
+    while day <= last:
+        if day.weekday() == 1:
+            if is_patch_tuesday(day):
+                patch += 1
+            else:
+                other += 1
+        day += timedelta(days=1)
+    if other == 0:
+        return None
+    expected = (on_tuesdays - on_pt) / other * patch
+    return round(100.0 * expected / n, 1)
 
 
 def _parse_day(s: str) -> date | None:
@@ -129,6 +168,8 @@ def build_cve_calendar(agg: Aggregator, generated_at: str, *,
         on_pt = 0
         n = 0
         top_day: tuple[str, int] | None = None
+        first_day: date | None = None
+        last_day: date | None = None
         # Counter iteration order is insertion order; sort so the top-day
         # tie-break (earliest date wins) is deterministic.
         for day_str, day_n in sorted(agg.calendar_days[year].items()):
@@ -141,8 +182,14 @@ def build_cve_calendar(agg: Aggregator, generated_at: str, *,
                 on_pt += day_n
             if top_day is None or day_n > top_day[1]:
                 top_day = (day_str, day_n)
+            if first_day is None or d < first_day:
+                first_day = d
+            if last_day is None or d > last_day:
+                last_day = d
         if n < min_n:
             continue
+        tue_baseline = tuesday_baseline_pct(first_day, last_day, counts[1],
+                                            on_pt, n)
         weekday_years.append({
             "year": year, "n": n,
             "counts": counts,
@@ -152,6 +199,7 @@ def build_cve_calendar(agg: Aggregator, generated_at: str, *,
             "year": year, "n": n,
             "on_pt": on_pt,
             "pct": _pct(on_pt, n),
+            "tuesday_baseline_pct": tue_baseline,
             "top_day": {"date": top_day[0], "n": top_day[1]},
         })
 
@@ -165,10 +213,11 @@ def build_cve_calendar(agg: Aggregator, generated_at: str, *,
     pt_headline = None
     latest = _latest_complete([row["year"] for row in pt_years], current_year)
     if latest is not None:
+        latest_row = next(r for r in pt_years if r["year"] == latest)
         pt_headline = {
             "latest_year": latest,
-            "pct_latest": next(r["pct"] for r in pt_years
-                               if r["year"] == latest),
+            "pct_latest": latest_row["pct"],
+            "tuesday_baseline_latest": latest_row["tuesday_baseline_pct"],
         }
 
     return {

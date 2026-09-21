@@ -56,6 +56,15 @@ def _check_coverage_row(obj: Any, path: str) -> None:
         _fail(f"{path}.with_poc",
               f"with_poc ({with_poc}) exceeds total ({total})")
     _check_num(_get(obj, "pct", path), f"{path}.pct", 0.0, 100.0)
+    # Detection-template coverage (Nuclei) is tallied beside exploit
+    # coverage, never inside it. Optional only for editions written
+    # before the split.
+    if "with_detection" in obj:
+        with_detection = obj["with_detection"]
+        _check_int(with_detection, f"{path}.with_detection")
+        if with_detection > total:
+            _fail(f"{path}.with_detection",
+                  f"with_detection ({with_detection}) exceeds total ({total})")
 
 
 def _validate_time_to_poc(obj: Any) -> None:
@@ -248,6 +257,22 @@ def _validate_time_to_poc(obj: Any) -> None:
     if msf["dated_cves"] > msf["cves"]:
         _fail("time_to_poc.catalog.metasploit.dated_cves",
               "cannot exceed cves (dating is a subset of coverage)")
+    # Since 2026-09-20 Metasploit dates nothing (disclosure_date is the
+    # vulnerability's, not the module's) and only exploit modules count
+    # as coverage; editions carrying the split keys must obey it.
+    # Optional only for editions written before the split.
+    if "exploit_modules_with_cve" in msf:
+        for key in ("exploit_modules_with_cve", "other_cves",
+                    "disclosure_dated_cves"):
+            _check_int(_get(msf, key, "time_to_poc.catalog.metasploit"),
+                       f"time_to_poc.catalog.metasploit.{key}")
+        if msf["exploit_modules_with_cve"] > msf["with_cve"]:
+            _fail("time_to_poc.catalog.metasploit.exploit_modules_with_cve",
+                  "cannot exceed with_cve")
+        if msf["dated_cves"] != 0:
+            _fail("time_to_poc.catalog.metasploit.dated_cves",
+                  "Metasploit disclosure dates never date exploit code; "
+                  "dated_cves must be 0")
     nuc = _get(cat, "nuclei", "time_to_poc.catalog")
     for key in ("templates", "cves"):
         _check_int(_get(nuc, key, "time_to_poc.catalog.nuclei"),
@@ -260,6 +285,18 @@ def _validate_time_to_poc(obj: Any) -> None:
     _check_int(matched_corpus, "time_to_poc.catalog.matched_in_corpus")
     if dated_cat > union:
         _fail("time_to_poc.catalog.dated_cves", "cannot exceed union_cves")
+    # Optional only for editions written before the exploit/detection
+    # split: exploit code is a subset of every tracked artifact, and
+    # everything dated is exploit code.
+    if "exploit_cves" in cat:
+        exploit_cat = _get(cat, "exploit_cves", "time_to_poc.catalog")
+        _check_int(exploit_cat, "time_to_poc.catalog.exploit_cves")
+        if exploit_cat > union:
+            _fail("time_to_poc.catalog.exploit_cves",
+                  "cannot exceed union_cves")
+        if dated_cat > exploit_cat:
+            _fail("time_to_poc.catalog.dated_cves",
+                  "cannot exceed exploit_cves (only exploit code is dated)")
     if matched_corpus > union:
         _fail("time_to_poc.catalog.matched_in_corpus",
               "cannot exceed union_cves")

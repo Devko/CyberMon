@@ -457,7 +457,8 @@ def run(args: argparse.Namespace) -> int:
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
-    agg = metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.all_ids)
+    agg = metrics.Aggregator(kev_ids=kev.cve_ids, poc_ids=poc.exploit_ids,
+                             detection_ids=poc.nuclei_ids)
     field = field_export.FieldCollector() if args.field_out else None
     # AI-credited CVEs reads each record's credits[] — a second observer on
     # the same pass, never a second pass.
@@ -824,7 +825,7 @@ def run(args: argparse.Namespace) -> int:
     # validated module outputs already on disk.
     if field is not None:
         _write_field(args, field, generated_at, release=release, epss=epss,
-                     kev=kev, poc_ids=poc.all_ids,
+                     kev=kev, poc_ids=poc.exploit_ids,
                      poc_dates=poc.first_poc_dates, nvd_source=nvd_source,
                      rescore_rows=rescore_rows, epssvol_state=epssvol_state)
     return 0

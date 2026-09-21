@@ -365,6 +365,12 @@ def test_build_kev_changelog_shapes_and_contract():
     assert obj["flips"]["lag"] == {"n": 1, "median_days": 1125.0,
                                    "p25_days": 1125.0, "p75_days": 1125.0}
     assert obj["flips"]["by_month"][-1]["cumulative"] == 1
+    # a nightly-only record has no capture step: nothing is set apart
+    assert obj["flips"]["step_month"] is None
+    assert obj["flips"]["step_month_flips"] == 0
+    assert obj["flips"]["total_after_step"] == 1
+    assert obj["flips"]["lag_post_step"] == obj["flips"]["lag"]
+    assert obj["headline"]["pct_flag_flips"] == 25.0  # 1 of 4 edits
 
     # board: edits counted per cve (removals separate), removal listed
     assert obj["board"]["most_edited"][0]["cve"] == "CVE-2023-0001"
@@ -381,6 +387,89 @@ def test_build_lag_stats_null_below_min_n():
     validate("kev_changelog.json", obj)
     assert obj["flips"]["lag"] == {"n": 1, "median_days": None,
                                    "p25_days": None, "p75_days": None}
+
+
+def _flip(cve: str, day: str, granularity: str = "daily") -> dict:
+    return {"observed_date": day, "cve": cve, "change_type": "field_changed",
+            "field": "knownRansomwareCampaignUse", "old": "Unknown",
+            "new": "Known", "granularity": granularity}
+
+
+def test_capture_step_month_is_set_apart_from_the_headline():
+    """The first capture carrying the flag column flips every already-
+    flagged entry at once — schema initialization, not reassessments. The
+    ledger keeps every event (total, by_month), the step is counted apart
+    (step_month_flips) and the headline count and share exclude it."""
+    state = kc.new_state("2023-12-04")
+    kc.apply_snapshot(state, catalog(
+        *[entry(f"CVE-2022-000{i}", date_added="2022-06-01")
+          for i in range(1, 6)]), "2023-12-04")
+    events = [_flip(f"CVE-2022-000{i}", "2023-12-04", "capture")
+              for i in range(1, 4)]                      # the step: 3 at once
+    events += [_flip("CVE-2022-0004", "2024-02-12"),     # two reassessments
+               _flip("CVE-2022-0005", "2024-05-20"),
+               {"observed_date": "2024-05-20", "cve": "CVE-2022-0001",
+                "change_type": "field_changed", "field": "dueDate",
+                "old": "a", "new": "b", "granularity": "daily"}]
+    obj = kc.build_kev_changelog(state, events, "2026-07-11T00:00:00Z",
+                                 min_n=1)
+    validate("kev_changelog.json", obj)
+    flips = obj["flips"]
+    assert flips["total"] == 5                       # ledger-faithful
+    assert flips["by_month"][0] == {"month": "2023-12", "flips": 3,
+                                    "cumulative": 3}
+    assert flips["step_month"] == "2023-12"
+    assert flips["step_month_flips"] == 3
+    assert flips["total_after_step"] == 2
+    assert flips["lag"]["n"] == 5
+    assert flips["lag_post_step"]["n"] == 2
+    # 2 reassessment flips of the 3 edits that are not the step
+    assert obj["headline"]["pct_flag_flips"] == 66.7
+    assert obj["headline"]["edits_total"] == 6
+
+
+def test_step_month_needs_a_capture_dated_flip():
+    """A nightly-only record whose first flips happen to share a month is
+    not a schema step — nothing is set apart, and the post-step lag is
+    the pooled lag."""
+    state = kc.new_state("2026-01-05")
+    kc.apply_snapshot(state, catalog(
+        entry("CVE-2025-0001", date_added="2025-01-01"),
+        entry("CVE-2025-0002", date_added="2025-01-01")), "2026-01-05")
+    events = [_flip("CVE-2025-0001", "2026-02-01"),
+              _flip("CVE-2025-0002", "2026-02-01")]
+    obj = kc.build_kev_changelog(state, events, "2026-07-11T00:00:00Z",
+                                 min_n=1)
+    validate("kev_changelog.json", obj)
+    assert obj["flips"]["step_month"] is None
+    assert obj["flips"]["step_month_flips"] == 0
+    assert obj["flips"]["total_after_step"] == 2
+    assert obj["flips"]["lag_post_step"] == obj["flips"]["lag"]
+    assert obj["headline"]["pct_flag_flips"] == 100.0
+
+
+def test_contract_reconciles_step_keys_and_tolerates_their_absence():
+    state, events = _state_with_events()
+    obj = kc.build_kev_changelog(state, events, "2026-07-11T00:00:00Z",
+                                 min_n=1)
+    validate("kev_changelog.json", obj)
+    obj["flips"]["total_after_step"] = 5           # 0 + 5 != total 1
+    with pytest.raises(ContractViolation, match="total_after_step"):
+        validate("kev_changelog.json", obj)
+    # a step count with no step month is a contradiction
+    obj["flips"]["step_month_flips"], obj["flips"]["total_after_step"] = 1, 0
+    with pytest.raises(ContractViolation, match="step_month_flips"):
+        validate("kev_changelog.json", obj)
+    # with a step month, the step count must be that month's flips
+    obj["flips"]["step_month"] = "2026-03"
+    validate("kev_changelog.json", obj)
+    obj["flips"]["step_month_flips"], obj["flips"]["total_after_step"] = 0, 1
+    with pytest.raises(ContractViolation, match="step_month_flips"):
+        validate("kev_changelog.json", obj)
+    obj["flips"]["step_month"] = None
+    del obj["flips"]["step_month_flips"]
+    del obj["flips"]["total_after_step"]           # an edition before the keys
+    validate("kev_changelog.json", obj)
 
 
 def test_build_empty_record_validates():

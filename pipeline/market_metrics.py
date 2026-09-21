@@ -7,17 +7,24 @@ this module is pure math plus stage orchestration on top of it:
 * :func:`index_series` — a term/source month->count map, normalized to an
   index-to-peak (100 = the series' own busiest month) so a 40k-article
   GDELT series and a 30-paper arXiv series share one 0-100 y-axis;
-* :func:`yoy` — year-over-year change on *raw* counts, latest 12 populated
-  months vs the 12 populated months before those;
+* :func:`yoy` — year-over-year change on *raw* counts over the 24
+  CONTIGUOUS calendar months ending at the anchor month (the latest
+  complete month), the last 12 against the 12 before them; a gap anywhere
+  in that span withholds the figure;
 * :func:`divergence` — is research (arXiv) running ahead of the media
-  narrative (GDELT) for a term, on recent index levels;
+  narrative (GDELT) for a term, on the SAME three calendar months ending
+  at the anchor for both sources;
 * :func:`build_market_hype` — assembles the market_hype.json object;
 * :func:`run_stage` — the __main__-facing stage: offline fixtures,
   --skip carry-forward, or a live sync via ``fetch_market``.
 
 A "populated month" is a month present in the state (fetched, possibly
 with a zero count). Missing months are unknown, not zero — they are never
-invented. Likewise every computed stat is None when its eligibility bar
+invented, and (since 2026-09-20) never skipped over either: the YoY and
+divergence windows are fixed calendar spans anchored at the latest
+complete month, so two sources always compare the same months and a
+gapped series posts nothing rather than reaching further back to fill
+its window. Likewise every computed stat is None when its eligibility bar
 is not met, and headline entries are None when no term qualifies: the
 site renders "not enough history yet" rather than a fabricated mover.
 
@@ -80,6 +87,15 @@ def _previous_month(month: str) -> str:
     return f"{year:04d}-{mon:02d}"
 
 
+def _months_ending(anchor: str, n: int) -> list[str]:
+    """The ``n`` consecutive calendar months ending at ``anchor``
+    (inclusive), ascending — the fixed window every comparison uses."""
+    months = [anchor]
+    while len(months) < n:
+        months.append(_previous_month(months[-1]))
+    return months[::-1]
+
+
 def lane_freshness(state: dict, generated_at: str
                    ) -> tuple[list[str], set[str]]:
     """``(stale_sources, partial_previous_month)`` from the state's
@@ -130,50 +146,62 @@ def index_series(monthly: dict[str, int]) -> list[dict]:
             for month in sorted(monthly)]
 
 
-def yoy(monthly: dict[str, int]) -> dict | None:
-    """Year-over-year change on raw counts: the latest 12 populated months
-    vs the 12 populated months before those.
+def yoy(monthly: dict[str, int], anchor: str) -> dict | None:
+    """Year-over-year change on raw counts over a fixed calendar window:
+    the 12 months ending at ``anchor`` (the latest complete month)
+    against the 12 months before those.
 
-    None (never 0) when fewer than 24 months are populated, when the prior
-    window sums to zero (a YoY against an empty baseline would be an
-    invented number), or when the two windows together carry fewer than
+    Every one of those 24 calendar months must be populated. A missing
+    month is unknown, not zero, and the window never slides back over a
+    gap to find 24 populated months — that would compare mismatched
+    periods under the same label (the pre-2026-09-20 behaviour). So None
+    (never 0) when any window month is absent, when the prior window
+    sums to zero (a YoY against an empty baseline would be an invented
+    number), or when the two windows together carry fewer than
     ``MIN_YOY_VOLUME`` raw hits (a percentage of almost nothing is a
     rumor, not a rate).
     """
-    months = sorted(monthly)
-    if len(months) < 24:
+    window = _months_ending(anchor, 24)
+    if any(m not in monthly for m in window):
         return None
-    n_prior = sum(monthly[m] for m in months[-24:-12])
-    n_latest = sum(monthly[m] for m in months[-12:])
+    n_prior = sum(monthly[m] for m in window[:12])
+    n_latest = sum(monthly[m] for m in window[12:])
     if n_prior <= 0 or n_prior + n_latest < MIN_YOY_VOLUME:
         return None
-    return {"latest_month": months[-1],
+    return {"latest_month": anchor,
             "pct_change": _r1(100.0 * (n_latest - n_prior) / n_prior),
             "n_latest_12m": n_latest,
             "n_prior_12m": n_prior}
 
 
-def divergence(gdelt_series: list[dict],
-               arxiv_series: list[dict]) -> dict | None:
+def divergence(gdelt_series: list[dict], arxiv_series: list[dict],
+               anchor: str) -> dict | None:
     """Research-vs-media divergence from the two *index* series (one entry
-    per populated month, as built by :func:`index_series`).
+    per populated month, as built by :func:`index_series`), over the
+    SAME three calendar months for both: the three ending at ``anchor``.
 
-    Averages each source's index over its 3 most recent populated months;
+    Averages each source's index over those months;
     ``research_vs_media_index`` = arXiv average minus GDELT average, so
     positive means research runs closer to its own peak than the media
-    narrative does. None when either source has fewer than 3 populated
-    months, or fewer than ``MIN_DIVERGENCE_VOLUME`` raw hits across the
-    three averaged months (an index built on a couple of papers is an
-    artifact, not a divergence). Direction is "aligned" inside the
-    +/-``DIVERGENCE_DEAD_ZONE``.
+    narrative does. None when either source is missing any of the three
+    months (each source's "three most recent" could otherwise be
+    different periods, the pre-2026-09-20 behaviour), or when either
+    carries fewer than ``MIN_DIVERGENCE_VOLUME`` raw hits across them (an
+    index built on a couple of papers is an artifact, not a divergence).
+    Direction is "aligned" inside the +/-``DIVERGENCE_DEAD_ZONE``.
     """
-    if len(gdelt_series) < 3 or len(arxiv_series) < 3:
+    window = _months_ending(anchor, 3)
+    gdelt = {p["month"]: p for p in gdelt_series}
+    arxiv = {p["month"]: p for p in arxiv_series}
+    if any(m not in gdelt or m not in arxiv for m in window):
         return None
-    if (sum(p["n"] for p in gdelt_series[-3:]) < MIN_DIVERGENCE_VOLUME
-            or sum(p["n"] for p in arxiv_series[-3:]) < MIN_DIVERGENCE_VOLUME):
+    gdelt_pts = [gdelt[m] for m in window]
+    arxiv_pts = [arxiv[m] for m in window]
+    if (sum(p["n"] for p in gdelt_pts) < MIN_DIVERGENCE_VOLUME
+            or sum(p["n"] for p in arxiv_pts) < MIN_DIVERGENCE_VOLUME):
         return None
-    gdelt_avg = _r1(sum(p["index"] for p in gdelt_series[-3:]) / 3.0)
-    arxiv_avg = _r1(sum(p["index"] for p in arxiv_series[-3:]) / 3.0)
+    gdelt_avg = _r1(sum(p["index"] for p in gdelt_pts) / 3.0)
+    arxiv_avg = _r1(sum(p["index"] for p in arxiv_pts) / 3.0)
     rvm = _r1(arxiv_avg - gdelt_avg)
     if rvm > DIVERGENCE_DEAD_ZONE:
         direction = "research_leads"
@@ -230,11 +258,13 @@ def build_market_hype(state: dict, terms: list[TermDef],
     """Assemble the full market_hype.json object from sync state, for the
     given terms (in the given order). A term/source absent from the state
     simply yields an empty series and null stats. The generation month is
-    excluded everywhere (series, YoY, divergence) until it completes, and
-    the lane freshness rules of :func:`lane_freshness` apply: stale lanes
-    publish their series (flagged in ``stale_sources``) but no YoY or
-    divergence; a lane down since before the month rolled over also
-    withholds its previous-month cell."""
+    excluded everywhere (series, YoY, divergence) until it completes; the
+    previous month is the anchor every YoY and divergence window ends at,
+    so all sources and terms compare the same calendar months. The lane
+    freshness rules of :func:`lane_freshness` apply: stale lanes publish
+    their series (flagged in ``stale_sources``) but no YoY or divergence;
+    a lane down since before the month rolled over also withholds its
+    previous-month cell — and with it, that night, its anchored windows."""
     all_series = state.get("series", {})
     # The month in progress is collected (the sync must keep refreshing it)
     # but never published: ten days of a month charted next to complete
@@ -259,10 +289,12 @@ def build_market_hype(state: dict, terms: list[TermDef],
             "id": term.id,
             "label": term.label,
             "series": series,
-            "yoy": {s: None if s in stale else yoy(per_source.get(s, {}))
+            "yoy": {s: None if s in stale
+                    else yoy(per_source.get(s, {}), previous_month)
                     for s in SOURCES},
             "divergence": (None if stale & {"gdelt", "arxiv"} else
-                           divergence(series["gdelt"], series["arxiv"])),
+                           divergence(series["gdelt"], series["arxiv"],
+                                      previous_month)),
         })
     return {
         "generated_at": generated_at,

@@ -20,6 +20,9 @@ Arithmetic identities enforced here (the file's audit trail):
 * ``flips.by_month`` is cumulative and ends at ``flips.total``;
   ``flips.lag`` ships its stats only at ``n >= min_n`` (below that the
   count is published and the stats are null — thin data renders honestly).
+* optional ``flips.step_month_flips`` + ``flips.total_after_step`` ==
+  ``flips.total``, and the step count equals the first month's flips —
+  the step is set apart from the headline, never dropped from the ledger.
 """
 from __future__ import annotations
 
@@ -129,6 +132,29 @@ def _check_flips(obj: Any, min_n: int, edits_total: int) -> int:
         step = flips.get("step_month")
         if step is not None:
             _check_str(step, f"{path}.step_month", MONTH_RE)
+    # Additive (editions before 2026-09-20 lack them): the step month's
+    # flips counted apart (schema initialization, not reassessments) and
+    # the headline count without them. Both are derived from the same
+    # ledger as ``total``/``by_month``, so they must reconcile with it.
+    if "step_month_flips" in flips or "total_after_step" in flips:
+        step_n = _get(flips, "step_month_flips", path)
+        after_n = _get(flips, "total_after_step", path)
+        _check_int(step_n, f"{path}.step_month_flips")
+        _check_int(after_n, f"{path}.total_after_step")
+        if step_n + after_n != total:
+            _fail(f"{path}.total_after_step",
+                  f"step_month_flips {step_n} + total_after_step {after_n} "
+                  f"must equal total {total}")
+        step = flips.get("step_month")
+        if step is None:
+            if step_n != 0:
+                _fail(f"{path}.step_month_flips",
+                      f"{step_n} step-month flips with no step_month")
+        elif not rows or rows[0]["month"] != step \
+                or step_n != rows[0]["flips"]:
+            _fail(f"{path}.step_month_flips",
+                  f"{step_n} does not equal the flips of step_month {step}, "
+                  f"which must be the first month of by_month")
     return total
 
 

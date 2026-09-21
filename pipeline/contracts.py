@@ -20,8 +20,11 @@ from typing import Any, Callable
 ISO_UTC_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
-CVSS_BUCKETS = ["0.1-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
-EPSS_BUCKETS = ["<0.1%", "0.1-1%", "1-10%", ">10%"]
+# Lower-edge-inclusive labels (metrics.cvss_bucket / metrics.epss_bucket):
+# a 0.0 base score is in "0.0-3.9", an EPSS of exactly 0.10 is in the top
+# bucket, hence ">= 10%" spelled with the site's glyph.
+CVSS_BUCKETS = ["0.0-3.9", "4.0-6.9", "7.0-8.9", "9.0-10.0"]
+EPSS_BUCKETS = ["<0.1%", "0.1-1%", "1-10%", "≥10%"]
 SEVERITY_KEYS = ["critical", "high", "medium", "low", "unscored"]
 
 

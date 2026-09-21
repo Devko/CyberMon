@@ -86,11 +86,11 @@ def test_build_grades_bands_and_pending(rich_state, rich_kev):
     dist = {row["model"]: row for row in obj["distribution"]["by_model"]}
     assert dist["v1"]["counts"] == {"<0.1%": 1,   # 0.0005 = 0.05%
                                     "0.1-1%": 0, "1-10%": 0,
-                                    ">10%": 1}    # 0.35064
+                                    "≥10%": 1}    # 0.35064
     assert dist["v3"]["counts"] == {"<0.1%": 0,
                                     "0.1-1%": 1,  # 0.002 = 0.2%
                                     "1-10%": 1,   # 0.05 = 5%
-                                    ">10%": 0}
+                                    "≥10%": 0}
 
 
 def test_bucket_arithmetic_matches_score_vs_reality():
@@ -99,7 +99,7 @@ def test_bucket_arithmetic_matches_score_vs_reality():
     assert erm.dist_bucket(0.0099) == "0.1-1%"
     assert erm.dist_bucket(0.01) == "1-10%"
     assert erm.dist_bucket(0.0999) == "1-10%"
-    assert erm.dist_bucket(0.1) == ">10%"
+    assert erm.dist_bucket(0.1) == "≥10%"
 
 
 def test_percentile_buckets_lower_edge_inclusive():

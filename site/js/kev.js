@@ -37,11 +37,16 @@ async function boot() {
   // file -> the sections rendered from that file (one fetch per file).
   const byFile = new Map();
   for (const cfg of SECTIONS) {
-    const { section, slots } = buildSection(cfg, null, { noteKeys: ["backfillNote"] });
+    const { section, slots, caption, methodText } =
+      buildSection(cfg, null, { noteKeys: ["backfillNote"] });
     main.append(section);
     const file = cfg.file ?? DATA_FILE;
     if (!byFile.has(file)) byFile.set(file, []);
-    byFile.get(file).push({ cfg, slots });
+    // caption/methodText travel with the slots so the latency and
+    // remediation renderers can fill their {placeholders} from the data
+    // (the concentration.js pattern) — the numbers in that prose are
+    // nightly-rebuilt, never typed in.
+    byFile.get(file).push({ cfg, slots: { ...slots, caption, methodText } });
   }
 
   for (const [file, built] of byFile) {

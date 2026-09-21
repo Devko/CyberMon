@@ -1,10 +1,14 @@
 """Time-to-PoC metrics (time_to_poc.json).
 
-The attacker's clock: for every CVE that any public exploit tracker
-references, the gap in days from the CVE record's publication to the
-FIRST dated public PoC — the minimum over the dated sources (Exploit-DB
-``date_published``, Metasploit ``disclosure_date``; Nuclei carries no
-dates and contributes coverage only, see pipeline/fetch_poc.py).
+The attacker's clock: for every CVE with dated public exploit code, the
+gap in days from the CVE record's publication to the FIRST dated public
+exploit. Only Exploit-DB dates the artifact itself (``date_published``),
+so only Exploit-DB dates the clock. Metasploit's ``disclosure_date`` is
+the vulnerability's disclosure, not the module's publication, and is
+reported in the audit block but never used as a code date (it was, as a
+stand-in, before 2026-09-20). Nuclei templates are detection checks with
+no dates: they contribute a separate detection-coverage count, never
+exploit coverage or dating. See pipeline/fetch_poc.py.
 
 Three sections:
 
@@ -23,9 +27,11 @@ Three sections:
   back-catalog import of years-old CVEs is trivially preempted by
   equally old exploit code, which measures backlog age, not the race.
 * **coverage** — share of the latest complete year's published records
-  that any of the three sources references, per CVSS severity bucket
-  (the effective score the Score-vs-Reality chart uses, same bucketing
-  as ``Aggregator.flood`` — coverage reuses that tally, never rebuckets).
+  with tracked public exploit code (an Exploit-DB entry or a Metasploit
+  exploit module), per CVSS severity bucket (the effective score the
+  Score-vs-Reality chart uses, same bucketing as ``Aggregator.flood`` —
+  coverage reuses that tally, never rebuckets). Detection-template
+  coverage (Nuclei) rides beside it as ``with_detection``, kept apart.
 
 Years/buckets below ``min_n`` never plot (a median of three gaps is an
 anecdote). ``catalog`` is the audit block: per-source totals, extraction
@@ -79,7 +85,7 @@ FIXTURE_MIN_N = 1
 
 # Severity-bucket key (Aggregator.flood) -> grid CVSS bucket label, in
 # chart order (metrics.cvss_bucket's mapping, spelled once here).
-_SEVERITY_TO_BUCKET = (("low", "0.1-3.9"), ("medium", "4.0-6.9"),
+_SEVERITY_TO_BUCKET = (("low", "0.0-3.9"), ("medium", "4.0-6.9"),
                        ("high", "7.0-8.9"), ("critical", "9.0-10.0"))
 
 
@@ -291,6 +297,7 @@ def build_time_to_poc(agg: Aggregator, poc: PocData,
         max(agg.published_by_year, default=0)
     totals = agg.flood.get(window_year, {})
     covered = agg.poc_flood.get(window_year, {})
+    detected = agg.detection_flood.get(window_year, {})
     buckets = []
     for severity, bucket in _SEVERITY_TO_BUCKET:
         total = totals.get(severity, 0)
@@ -299,7 +306,8 @@ def build_time_to_poc(agg: Aggregator, poc: PocData,
         with_poc = covered.get(severity, 0)
         buckets.append({"bucket": bucket, "total": total,
                         "with_poc": with_poc,
-                        "pct": _pct(with_poc, total)})
+                        "pct": _pct(with_poc, total),
+                        "with_detection": detected.get(severity, 0)})
     unscored_total = totals.get("unscored", 0)
     coverage = {
         "window_year": window_year,
@@ -307,7 +315,8 @@ def build_time_to_poc(agg: Aggregator, poc: PocData,
         "unscored": {"total": unscored_total,
                      "with_poc": covered.get("unscored", 0),
                      "pct": _pct(covered.get("unscored", 0),
-                                 unscored_total)},
+                                 unscored_total),
+                     "with_detection": detected.get("unscored", 0)},
     }
 
     # ---- catalog (audit block) -------------------------------------------
@@ -316,12 +325,24 @@ def build_time_to_poc(agg: Aggregator, poc: PocData,
                       "with_cve": poc.edb_entries_with_cve,
                       "cves": len(poc.edb_ids),
                       "dated_cves": len(poc.edb_dates)},
+        # ``cves`` and the dated count describe EXPLOIT modules; the
+        # disclosure dates are the vulnerability's, kept for the audit
+        # only, and ``dated_cves`` is 0 by construction: no Metasploit
+        # date ever dates the clock.
         "metasploit": {"modules": poc.msf_modules,
                        "with_cve": poc.msf_modules_with_cve,
+                       "exploit_modules_with_cve":
+                           poc.msf_exploit_modules_with_cve,
                        "cves": len(poc.msf_ids),
-                       "dated_cves": len(poc.msf_dates)},
+                       "other_cves": len(poc.msf_other_ids),
+                       "dated_cves": 0,
+                       "disclosure_dated_cves":
+                           len(poc.msf_disclosure_dates)},
         "nuclei": {"templates": poc.nuclei_templates,
                    "cves": len(poc.nuclei_ids)},
+        # exploit_cves is the coverage/Field join (exploit code only);
+        # union_cves is every tracked artifact of any kind.
+        "exploit_cves": len(poc.exploit_ids),
         "union_cves": len(poc.all_ids),
         "dated_cves": len(first_poc),
         "matched_in_corpus": len(agg.poc_published_dates),

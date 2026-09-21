@@ -26,6 +26,9 @@ export function render(slots, data) {
   // from the data file, never hardcoded.
   slots.stat.append(el("div", "table-context", tpl(ed.statTemplate, {
     total: fmtInt(h.roster_total),
+    // assigning_n arrived 2026-09-20; an older edition shows a dash, never
+    // the headcount dressed up as the assigner count.
+    assigning: Number.isFinite(h.assigning_n) ? fmtInt(h.assigning_n) : "—",
     countries: fmtInt(h.country_count),
     mitre: fmtInt(h.mitre_n),
     cisa: fmtInt(h.cisa_n),

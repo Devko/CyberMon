@@ -140,11 +140,14 @@ everything derives from the KEV feed the pipeline already fetches.
 
 ### 10 · EPSS Report Card — [epss.html](https://devko.github.io/CyberMon/epss.html) (live)
 
-*The industry's exploit forecast rarely gets an outside grade. CyberMon grades it.*
-Three charts grading EPSS — the site's own yardstick for CVSS — against
-the outcome it exists to predict: for every CVE that CISA later confirmed
-exploited (KEV), the EPSS score published **the day before** the listing.
-Grade bands (under 1% / 1–10% / 10%+) per catalog year, the day-before
+*What the industry's exploit forecast said the day before the catalog caught up.*
+Three charts describing EPSS — the site's own yardstick for CVSS — on the
+eve of the outcome it exists to predict: for every CVE that CISA later
+confirmed exploited (KEV), the EPSS score published **the day before** the
+listing. A retrospective description of a selected cohort, not a measure of
+forecast accuracy — KEV supplies no exploitation date, so it cannot test the
+30-day forecast or establish calibration.
+Probability bands (under 1% / 1–10% / 10%+) per catalog year, the day-before
 score distribution split by EPSS model version (v1–v5 are different
 models and are never pooled silently), and the percentile view — the one
 scale comparable across model eras. Entries listed before their CVE even
@@ -234,7 +237,8 @@ series (aliases per release) is a documented follow-up.
 *The official worst-bugs list, checked against what actually ships and gets
 exploited.* Two charts set MITRE's annual **CWE Top 25** — a small,
 hand-committed static list (`pipeline/cwe_top25_data.py`, the module's only
-new source; 2023 and 2024 transcribed from cwe.mitre.org) — against the
+new source; the 2023, 2024 and 2025 lists transcribed from cwe.mitre.org,
+with the newest committed year, 2025, the one compared) — against the
 corpus: a board pairing each class's official rank with the rank it earns
 from raw first-listed-CWE prevalence over the last five complete calendar
 years (an official pick can rank anywhere, or fall right out), and a bar
@@ -289,7 +293,8 @@ probabilities moved, and moved back — three of them in August 2026 supplied
 nine in ten of every material crossing on record until this rule existed). **No upstream keeps a
 per-CVE EPSS change log, so the record starts at first deploy — thin by
 design, deeper every night.** Distinct from the EPSS Report Card (module
-10), which grades the model's accuracy; this measures its stability. Honest
+10), which describes where scores stood the day before a KEV listing; this
+measures the model's stability, and neither measures its accuracy. Honest
 caveat kept in the copy: FIRST's dated daily snapshots are publicly
 archived, so this is the only *maintained* per-CVE churn log, not the only
 possible source.
@@ -318,18 +323,20 @@ stage `pipeline/cna_roster.py`; no shared upstream.
 *The only deadline that matters is the gap between disclosure and public
 exploit code.* Three charts joining the public exploit trackers to the CVE
 corpus — the third leg of the exploitation trilogy (KEV Latency is the
-government's clock, EPSS Report Card the forecast's grade, this the
+government's clock, EPSS Report Card the forecast's day-before snapshot, this the
 attacker's): the gap from CVE publication to the first dated public PoC
 (median/IQR per publication year, negative gaps kept — since the mid-2000s
 the median hugs zero, and half the PoC'd cohort has code out before the
 record), the share of KEV listings whose exploit code predates the listing
 (seeding era split out, KEV-Latency style), and PoC coverage per CVSS
 bucket for the latest complete year — the one place severity predicts
-attention. Sources: the Exploit-DB index CSV (`date_published`),
-Metasploit's `modules_metadata_base.json` (`disclosure_date` — the
-disclosure, not the module merge; documented), and the Nuclei templates
-CVE index (undated upstream, so coverage only — no repo histories are
-cloned). All three publish full history, so the stage refetches
+attention. Sources: the Exploit-DB index CSV (`date_published`, the one
+date that dates the exploit itself and therefore the only clock input),
+Metasploit's `modules_metadata_base.json` (module `type` decides what is
+exploit code; `disclosure_date` is the vulnerability's disclosure, not the
+module merge, so it never dates the clock), and the Nuclei templates CVE
+index (detection checks, undated upstream, counted as a separate
+detection-coverage line — no repo histories are cloned). All three publish full history, so the stage refetches
 statelessly every night (`pipeline/fetch_poc.py`, day-cached in
 `.cache/poc/`); honesty notes — public-tracker lower bound, self-selected
 cohort, right-censored recent years — live in the page methodology.

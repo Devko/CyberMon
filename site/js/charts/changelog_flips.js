@@ -12,29 +12,45 @@ export function render(slots, data) {
   const flips = data.flips || {};
   const lag = flips.lag || {};
 
+  const rows = flips.by_month || [];
+
   // ---- stat (hygiene_spread statBig pattern) -------------------------------
+  // The step month (the first capture carrying the flag column flips every
+  // already-flagged entry at once) is schema initialization, not a
+  // reassessment, so the headline count leaves it out. Editions from
+  // 2026-09-20 ship step_month_flips/total_after_step; older ones that
+  // carry step_month get the same split derived from by_month, since the
+  // step month is by construction the first month of the series.
+  const stepMonth = flips.step_month || null;
+  const stepFlips = flips.step_month_flips
+    ?? (stepMonth && rows.length && rows[0].month === stepMonth ? rows[0].flips : 0);
+  const headlineN = flips.total_after_step ?? Math.max(0, (flips.total ?? 0) - stepFlips);
   const stat = el("div", "hero-stat");
   const row = el("div", "hero-stat-row");
   row.append(
-    el("span", "hero-num accent", tpl(ed.statBig, { n: fmtInt(flips.total ?? 0) })),
+    el("span", "hero-num accent", tpl(ed.statBig, { n: fmtInt(headlineN) })),
     el("span", "hero-when", ed.statLead)
   );
   stat.append(row);
   // Post-step median (editions from 2026-09-08) beside the pooled one; the
-  // pooled-only note covers older editions and thin post-step cohorts.
+  // pooled-only note covers older editions and thin post-step cohorts; a
+  // record with no capture step names none.
   const post = flips.lag_post_step || {};
   const hasPooled = lag.median_days !== null && lag.median_days !== undefined;
-  const hasPost = post.median_days !== null && post.median_days !== undefined;
+  const hasPost = stepMonth && post.median_days !== null && post.median_days !== undefined;
+  const vars = { median: fmtInt(lag.median_days), post_median: fmtInt(post.median_days),
+                 step_month: stepMonth, step_flips: fmtInt(stepFlips) };
   stat.append(el("div", "hero-stat-label",
-    hasPooled && hasPost
-      ? tpl(ed.statNote, { median: fmtInt(lag.median_days), post_median: fmtInt(post.median_days), step_month: flips.step_month || "2023-12" })
-      : hasPooled
-        ? tpl(ed.statNotePooled, { median: fmtInt(lag.median_days), step_month: flips.step_month || "2023-12" })
-        : ed.statNoteThin));
+    !hasPooled
+      ? ed.statNoteThin
+      : !stepMonth
+        ? tpl(ed.statNoteNoStep, vars)
+        : hasPost
+          ? tpl(ed.statNote, vars)
+          : tpl(ed.statNotePooled, vars)));
   slots.stat.append(stat);
 
   // ---- chart ----------------------------------------------------------------
-  const rows = flips.by_month || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
     slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
