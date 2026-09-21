@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-20T15:34:24Z",
+ "generated_at": "2026-09-21T02:53:26Z",
  "years": [
   {
    "year": 1999,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "cna_count": 380,
-   "newcomer_count": 49,
-   "top5_share": 46.8,
+   "cna_count": 381,
+   "newcomer_count": 50,
+   "top5_share": 46.9,
    "top10_share": 68.8,
-   "hhi": 604.6
+   "hhi": 604.4
   }
  ],
  "rejection_leaderboard": {
@@ -280,7 +280,7 @@
    },
    {
     "cna": "Joomla",
-    "total": 437,
+    "total": 441,
     "rejected": 26,
     "rejected_rate_pct": 5.9
    },
@@ -382,7 +382,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 7504,
+    "total": 7513,
     "rejected": 91,
     "rejected_rate_pct": 1.2
    },
@@ -424,7 +424,7 @@
    },
    {
     "cna": "mitre",
-    "total": 28400,
+    "total": 28402,
     "rejected": 276,
     "rejected_rate_pct": 1.0
    },
@@ -562,7 +562,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 16630,
+    "total": 16694,
     "rejected": 41,
     "rejected_rate_pct": 0.2
    },
@@ -658,7 +658,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4720,
+    "total": 4740,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -1089,6 +1089,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "zte",
+    "total": 95,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "WSO2",
     "total": 93,
     "rejected": 0,
@@ -1103,12 +1109,6 @@
    {
     "cna": "bosch",
     "total": 92,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "zte",
-    "total": 90,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1383,7 +1383,7 @@
  },
  "projection": {
   "year": 2026,
-  "newcomers": 68,
-  "elapsed": 0.721
+  "newcomers": 69,
+  "elapsed": 0.723
  }
 }

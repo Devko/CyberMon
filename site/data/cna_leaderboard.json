@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-20T15:34:24Z",
+ "generated_at": "2026-09-21T02:53:26Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -33,11 +33,11 @@
   {
    "cna": "Joomla",
    "org": "Joomla",
-   "n": 259,
+   "n": 263,
    "avg_cvss": 7.7,
    "median_cvss": 8.2,
-   "pct_geq_9": 26.3,
-   "pct_geq_7": 57.9
+   "pct_geq_9": 27.0,
+   "pct_geq_7": 58.6
   },
   {
    "cna": "talos",
@@ -168,11 +168,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 7381,
+   "n": 7390,
    "avg_cvss": 7.5,
    "median_cvss": 8.3,
    "pct_geq_9": 15.4,
-   "pct_geq_7": 64.2
+   "pct_geq_7": 64.3
   },
   {
    "cna": "CERT-PL",
@@ -355,6 +355,15 @@
    "pct_geq_7": 35.7
   },
   {
+   "cna": "mitre",
+   "org": "mitre",
+   "n": 1626,
+   "avg_cvss": 6.1,
+   "median_cvss": 6.1,
+   "pct_geq_9": 9.5,
+   "pct_geq_7": 37.2
+  },
+  {
    "cna": "Arista",
    "org": "Arista",
    "n": 105,
@@ -362,15 +371,6 @@
    "median_cvss": 7.0,
    "pct_geq_9": 9.5,
    "pct_geq_7": 55.2
-  },
-  {
-   "cna": "mitre",
-   "org": "mitre",
-   "n": 1624,
-   "avg_cvss": 6.1,
-   "median_cvss": 6.1,
-   "pct_geq_9": 9.4,
-   "pct_geq_7": 37.1
   },
   {
    "cna": "WPScan",
@@ -699,7 +699,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 13804,
+   "n": 13868,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.1,
