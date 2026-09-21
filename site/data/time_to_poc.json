@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-20T15:34:24Z",
+ "generated_at": "2026-09-21T02:53:26Z",
  "hero": {
   "matched": {
    "dated_cves": 26255,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-06-22",
+  "observed_through": "2026-06-23",
   "min_n": 30,
   "years": [
    {
@@ -484,10 +484,10 @@
    },
    {
     "year": 2026,
-    "n": 106,
-    "median_days": 2.0,
-    "pct_within_week": 53.8,
-    "pct_negative": 20.8,
+    "n": 107,
+    "median_days": 1.0,
+    "pct_within_week": 54.2,
+    "pct_negative": 20.6,
     "provisional": true
    }
   ]
