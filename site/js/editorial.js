@@ -3292,9 +3292,10 @@ export const editorial = {
         "credit for finding or reporting the bug names its model. A vendor is " +
         "counted whenever such a credit names it, which is weaker evidence: " +
         "about four in ten vendor credits name a person at the company and not " +
-        "the tool. The two columns are never added together. Hatched rows are the " +
-        "finder's own number with its unit and source; solid rows are measured " +
-        "here nightly.",
+        "the tool. The two columns are never added together. Under each finder, " +
+        "its own announced numbers sit with their unit and source, and only a " +
+        "number that is itself a CVE count is drawn against the credited count; " +
+        "the measured rows below them are rebuilt here nightly.",
       kindLabels: { llm: "LLM labs", vendor: "AI-security vendors" },
       kindRules: {
         llm: "counted when a finding credit names the model",
@@ -3307,9 +3308,12 @@ export const editorial = {
         "vendor · {kev} of them are on CISA KEV",
       claimsLabel: "What they announce",
       measuredLabel: "What the CVE record shows",
-      claimCredited: "{n} credited here to date",
+      claimCredited: "{n} CVEs credited here to date",
       claimLive: "running counter, read {date}",
-      claimUnitNote: "different unit, not drawn to scale",
+      claimUnitNote: "different unit",
+      compareAnnounced: "announced",
+      compareCredited: "credited here",
+      stageSeverity: "Severity",
       claimsNone: "No first-party number on file for this column's finders.",
       claimMoreTemplate: "+{n} more on the site",
       stageCredited: "Credited CVEs",

@@ -42,39 +42,84 @@
   margin: 22px 0 10px;
 }
 
-/* a finder's own number: hatched, never solid */
-.claim { margin: 0 0 14px; }
+/* a finder's announcements, grouped under its name and its one measured
+   number; each claim is a number, its unit and a receipt line */
+.finder { margin: 0 0 18px; }
+
+.finder-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2px 12px;
+  padding: 6px 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+
+.finder-name { color: var(--ink); font-weight: 700; }
+
+.finder-credited { color: var(--muted); }
+
+.claim { margin: 6px 0 0 0; padding-left: 12px; border-left: 2px solid var(--rule); }
+
+.claim.is-comparable { border-left-color: var(--rule-strong); }
 
 .claim-head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 10px;
-  font-size: 14px;
+  gap: 2px 8px;
+  font-size: 14.5px;
   line-height: 1.35;
 }
 
 .claim-who { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 
-.claim-num { font-family: var(--mono); font-weight: 700; color: var(--ink); }
+.claim-num { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--ink); }
+
+.claim-unit { color: var(--ink); }
 
 .claim-meta {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--faint);
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .claim-meta a { color: var(--muted); }
 
-.claim-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; }
+.claim-unit-note { color: var(--faint); }
+
+.claim-note { font-size: 12.5px; color: var(--muted); margin: 3px 0 0; }
 
 /* print-only: the page shows every claim, so it has nothing to confess */
 .claim-more-note { display: none; }
 
+/* announced vs credited on one scale, when the unit allows it */
+.claim-compare { margin: 6px 0 2px; }
+
+.cmp-row {
+  display: grid;
+  grid-template-columns: 8.5em minmax(0, 1fr) 3.5em;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 3px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.cmp-row .funnel-track { margin-top: 0; height: 10px; }
+
+.cmp-label { white-space: nowrap; }
+
+.cmp-val { color: var(--ink); text-align: right; white-space: nowrap; }
+
 .funnel-track {
   position: relative;
-  height: 16px;
+  height: 14px;
   margin-top: 6px;
   background: var(--bg-deep);
   border: 1px solid var(--rule);
@@ -91,18 +136,16 @@
 
 .funnel-fill.accent { background: var(--accent); opacity: 0.85; }
 
-.funnel-fill.hatched,
-.funnel-track.hatched {
+/* the announced figure: outlined and hatched, never solid — it is the
+   finder's number, not one measured here */
+.funnel-fill.hatched {
   background: repeating-linear-gradient(
-    135deg, var(--rule-strong) 0 2px, transparent 2px 7px);
+    135deg, var(--rule-strong) 0 2px, transparent 2px 6px);
+  border-right: 1px solid var(--muted);
 }
 
-.funnel-track.hatched { border-style: dashed; border-color: var(--rule-strong); }
-
-.funnel-fill.hatched { border-right: 1px solid var(--muted); }
-
-/* the credited tick drawn over a to-scale claim */
-.funnel-fill.credited { background: var(--ink); opacity: 0.9; height: 6px; top: auto; }
+/* the credited count drawn on the same scale */
+.funnel-fill.credited { background: var(--ink); opacity: 0.9; }
 
 /* measured stages */
 .stage {
@@ -121,6 +164,12 @@
 .stage-val { color: var(--ink); white-space: nowrap; min-width: 5.5em; text-align: right; }
 
 .stage-val .muted { margin-left: 6px; }
+
+.stage-sev { align-items: start; margin-top: 12px; }
+
+.stage-sev .sev-strip { margin-top: 3px; }
+
+.stage-sev .stage-val { min-width: 5.5em; }
 
 /* severity strip + legend (funnel and board share it) */
 .sev-strip {

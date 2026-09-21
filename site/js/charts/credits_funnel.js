@@ -1,9 +1,11 @@
 // Hero — claimed -> credited -> high/critical -> public exploit -> KEV, one
 // column per kind. Each measured stage is a share of credited, not nested.
 // Contract: site/data/ai_credits.json
-// Plain HTML (no ECharts): the two kinds are never on one axis, and a claim
-// is drawn to the measured scale ONLY when its unit is itself "CVEs
-// assigned" — every other claim gets a hatched, unscaled track that says so.
+// Plain HTML (no ECharts): the two kinds are never on one axis. Claims are
+// grouped per finder under the one measured number that applies to all of
+// them, and a claim is drawn to the measured scale ONLY when its unit is
+// itself "CVEs assigned" — every other claim is a number with its unit and
+// receipt, and no bar, because a track that encodes nothing is noise.
 import { fmtInt, fmtPct } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el, link, withCveLinks } from "../dom.js";
@@ -19,38 +21,53 @@ function claimValue(c) {
   return `${c.qualifier ? c.qualifier + " " : ""}${fmtInt(c.value)}`;
 }
 
-function claimRow(c, ed) {
-  const row = el("div", "claim");
-  const head = el("div", "claim-head");
+// One finder's announcements, grouped under one head: the finder's name
+// and the one measured number that applies to all of its claims (CVEs
+// credited here), stated once instead of under every claim. Each claim is
+// its own number + unit + receipt. A claim is drawn to the measured scale
+// ONLY when its unit is itself "CVEs assigned": announced and credited
+// share one axis and read as two labelled bars. Every other unit gets no
+// bar at all — a track that encodes nothing is noise, so the mismatch is
+// said in words instead.
+function finderGroup(finder, claims, ed) {
+  const group = el("div", "finder");
+  const head = el("div", "finder-head");
   head.append(
-    el("span", "claim-who", c.label),
-    el("span", "claim-num", claimValue(c)),
-    el("span", null, c.unit)
+    el("span", "finder-name", claims[0].label),
+    el("span", "finder-credited", tpl(ed.claimCredited, { n: fmtInt(claims[0].credited) }))
   );
+  group.append(head);
+  for (const c of claims) group.append(claimRow(c, ed));
+  return group;
+}
+
+function claimRow(c, ed) {
+  const row = el("div", "claim" + (c.unit_kind === "cves" ? " is-comparable" : ""));
+  const head = el("div", "claim-head");
+  head.append(el("span", "claim-num", claimValue(c)), el("span", "claim-unit", c.unit));
   row.append(head);
 
-  const track = el("div", "funnel-track");
   if (c.unit_kind === "cves") {
-    // Same unit as the measured count: claimed (hatched) and credited
-    // (solid tick) share one scale.
-    const max = Math.max(c.value, c.credited);
-    const claimed = el("div", "funnel-fill hatched");
-    claimed.style.width = pctWidth(c.value, max);
-    const credited = el("div", "funnel-fill credited" + (c.credited ? "" : " is-zero"));
-    credited.style.width = pctWidth(c.credited, max);
-    track.append(claimed, credited);
-  } else {
-    track.classList.add("hatched");
+    // Same unit as the measured count: announced and credited on one scale.
+    const max = Math.max(c.value, c.credited, 1);
+    const cmp = el("div", "claim-compare");
+    for (const [label, n, cls] of [[ed.compareAnnounced, c.value, "hatched"],
+                                   [ed.compareCredited, c.credited, "credited"]]) {
+      const line = el("div", "cmp-row");
+      const track = el("div", "funnel-track");
+      const fill = el("div", "funnel-fill " + cls + (n ? "" : " is-zero"));
+      fill.style.width = pctWidth(n, max);
+      track.append(fill);
+      line.append(el("span", "cmp-label", label), track, el("span", "cmp-val", fmtInt(n)));
+      cmp.append(line);
+    }
+    row.append(cmp);
   }
-  row.append(track);
 
   const meta = el("div", "claim-meta");
-  meta.append(
-    tpl(ed.claimCredited, { n: fmtInt(c.credited) }), " · ",
-    c.live ? tpl(ed.claimLive, { date: c.date }) : c.date, " · "
-  );
+  meta.append(c.live ? tpl(ed.claimLive, { date: c.date }) : c.date, " · ");
   meta.append(link(c.source, new URL(c.source).hostname.replace(/^www\./, "")));
-  if (c.unit_kind !== "cves") meta.append(" · ", ed.claimUnitNote);
+  if (c.unit_kind !== "cves") meta.append(" · ", el("span", "claim-unit-note", ed.claimUnitNote));
   row.append(meta);
   if (c.note) row.append(el("p", "claim-note", c.note));
   return row;
@@ -100,15 +117,25 @@ function kindColumn(kind, data, ed) {
       primary.set(c.finder, c);
     }
   }
+  // Group by finder, in order of first appearance (the payload is ordered
+  // by the registry, so this is stable night to night).
+  const byFinder = new Map();
   for (const c of claims) {
-    const row = claimRow(c, ed);
-    if (primary.get(c.finder) !== c) {
-      row.classList.add("claim-more");
-    } else {
-      const more = claims.filter((x) => x.finder === c.finder).length - 1;
-      if (more) row.append(el("p", "claim-more-note", tpl(ed.claimMoreTemplate, { n: more })));
-    }
-    col.append(row);
+    if (!byFinder.has(c.finder)) byFinder.set(c.finder, []);
+    byFinder.get(c.finder).push(c);
+  }
+  for (const [finder, mine] of byFinder) {
+    const group = finderGroup(finder, mine, ed);
+    const rows = [...group.querySelectorAll(".claim")];
+    rows.forEach((row, i) => {
+      const c = mine[i];
+      if (primary.get(finder) !== c) {
+        row.classList.add("claim-more");
+      } else if (mine.length > 1) {
+        row.append(el("p", "claim-more-note", tpl(ed.claimMoreTemplate, { n: mine.length - 1 })));
+      }
+    });
+    col.append(group);
   }
   if (!claims.length) col.append(el("p", "claim-note", ed.claimsNone));
 
@@ -122,10 +149,15 @@ function kindColumn(kind, data, ed) {
     stageRow(ed.stageCredited, f.credited, f.credited, null, false),
     stageRow(ed.stageSerious, f.high_or_critical, f.credited, f.high_or_critical_pct, false),
     stageRow(ed.stagePoc, f.poc, f.credited, f.poc_pct, false),
-    stageRow(ed.stageKev, f.kev, f.credited, f.kev_pct, true),
-    sevStrip(k.severity, ed.severityLabels),
-    sevLegend(k.severity, ed.severityLabels)
+    stageRow(ed.stageKev, f.kev, f.credited, f.kev_pct, true)
   );
+  // The severity split as one more labelled row, in the same grid as the
+  // stages, so the strip reads as part of the measured block.
+  const sev = el("div", "stage stage-sev");
+  const sevCell = el("div");
+  sevCell.append(sevStrip(k.severity, ed.severityLabels), sevLegend(k.severity, ed.severityLabels));
+  sev.append(el("span", null, ed.stageSeverity), sevCell, el("span", "stage-val"));
+  col.append(sev);
   return col;
 }
 
