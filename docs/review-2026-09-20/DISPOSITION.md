@@ -73,6 +73,39 @@ here (the pipeline needs the live corpora). What changes on the next nightly:
   ADP only).
 - Bucket relabels change no number.
 
+## What the corrected clock actually showed (2026-09-21)
+
+The first nightly after the merge built cleanly and then refused to
+publish: five editorial claims calibrated on the old mixed clock failed
+the claims audit. Rebuilt locally from the live corpora (cvelistV5 at
+HEAD, Exploit-DB, Metasploit, Nuclei, KEV via CISA's kev-data mirror):
+
+| Measure | Old mixed clock (edition 2026-09-21 03:36) | Exploit-DB-dated clock |
+| --- | --- | --- |
+| Dated CVEs / matched | 26,182 / 26,139 | 25,086 / 25,043 |
+| Hero median, 2021–2025 | 1, 4, 1, 2.5, −11.5 d | 8, 20, 15.5, 166.5, 38 d |
+| Hero cohort, 2024 / 2025 | 262 / 504 | 154 / 197 |
+| KEV listings preempted (trend cohort) | 80.7% of 247 | 55.4% of 121 |
+| Like-for-like, settled 2005–2024 | −8 to +14.5 d | −8 to +11 d |
+| AI Alibi, ChatGPT cutoff (like-for-like) | no inflection | slowed: pre 2 d, settled post 9 d |
+| Judged cells accelerated | 0 of 6 | 0 of 7 (all 7 slowed) |
+
+Copy withdrawn or narrowed accordingly: "Since the mid-2000s the median
+has hugged zero" (now: within a month of zero through 2020, weeks after
+publication since 2021, 2024 an outlier at months); "the 2025 cohort is
+twice 2024's with a lower quartile years in the negative" (gone);
+"roughly four in five listings … beaten to the announcement" (now: just
+over half); "The clock stopped moving before the models arrived" (now:
+did not speed up when the models arrived); "a line that does nothing in
+particular once it enters" (now: moves later if it moves at all);
+"Nothing bends at the cutoff" (now: nothing bends toward faster);
+"inside a fortnight-wide band since 2005" (now: every settled year since
+2005 inside a three-week band); the attention overlay now uses the
+settled like-for-like clock rather than the raw median, whose newest
+cohorts are a few hundred CVEs each. Two pipeline follow-ups landed with
+it: the AI Alibi's post-cutoff level averages settled years only, and the
+new claim checks skip on editions that predate the corrected clock.
+
 ## Verification
 
 Run on 2026-09-21 in the implementation container (Python 3.11; CI uses 3.12):

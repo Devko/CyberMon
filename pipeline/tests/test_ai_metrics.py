@@ -332,7 +332,10 @@ def test_banked_withholds_when_every_post_cutoff_year_is_provisional():
                               provisional_from=2022)}
     out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
     block = lfl_block(out)
-    assert block["post"]["years"] == 3          # 2023-2025: levels report
+    # The post level is a mean over SETTLED years only, so with every
+    # post-cutoff cohort provisional there is no level to report at all.
+    assert block["post"]["years"] == 0
+    assert block["post"]["value"] is None
     assert block["verdict"] == "insufficient"
     assert block["pct_banked"] is None and block["shift_share_pct"] is None
     # The headline quotes the primary metric, so it withholds too.
@@ -344,7 +347,7 @@ def test_banked_withholds_when_every_post_cutoff_year_is_provisional():
         flat_years(100.0, 2000, 2021) | flat_years(2.0, 2022, 2025),
         provisional_from=2024)
     out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
-    assert lfl_block(out)["post"]["years"] == 3
+    assert lfl_block(out)["post"]["years"] == 1      # 2023 only
     assert lfl_block(out)["verdict"] == "insufficient"
 
     # Two settled post-cutoff years (2023, 2024) are enough to judge.

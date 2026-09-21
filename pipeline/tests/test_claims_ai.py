@@ -88,31 +88,31 @@ def check_collapse_finished_a_decade_left_of_the_band(d: dict) -> None:
 
 
 def check_nothing_bends_at_the_cutoff(d: dict) -> None:
-    # editorial.js (ai.html · 2 headline): "Nothing bends at the cutoff."
-    # (Committed edition 2026-08: 0 of 3 judged metric-era cells at the
-    # default cutoff accelerated; across all cutoffs, 0 of 6.)
+    # editorial.js (ai.html · 2 headline): "Nothing bends toward faster at
+    # the cutoff." (Exploit-DB-dated clock, 2026-09-21: 0 of 7 judged
+    # metric-era cells accelerated; all 7 read "slowed".)
     head = d["headline"]
     assert head["judged"] >= 1, (
-        "'Nothing bends at the cutoff' needs at least one judged cell to "
-        "be a statement about anything"
+        "'Nothing bends toward faster at the cutoff' needs at least one "
+        "judged cell to be a statement about anything"
     )
     assert head["accelerated"] == 0, (
-        f"'Nothing bends at the cutoff' is falsified: "
+        f"'Nothing bends toward faster at the cutoff' is falsified: "
         f"{head['accelerated']} of {head['judged']} judged metric-era "
         f"cells accelerated. Rewrite the page — the data changed sides."
     )
 
 
 def check_headline_metric_shows_no_inflection(d: dict) -> None:
-    # editorial.js (ai.html hero): "a line that does nothing in particular
-    # once it enters". (Committed edition 2026-08: the gap metric's
-    # verdict at the default ChatGPT cutoff is no_inflection, on a shift
-    # of +0.1% of its total travel.)
+    # editorial.js (ai.html hero): "a line that, once it enters, moves
+    # later if it moves at all". (Exploit-DB-dated clock, 2026-09-21: the
+    # like-for-like verdict at the default ChatGPT cutoff is decelerated,
+    # a pre level of 2 days against a settled post level of 9.)
     head = d["headline"]
     assert head["verdict"] in {"no_inflection", "decelerated"}, (
-        f"'a line that does nothing in particular once it enters' needs "
-        f"the headline metric to show no acceleration at the default "
-        f"cutoff; verdict is {head['verdict']!r}"
+        f"'moves later if it moves at all' needs the headline metric to "
+        f"show no acceleration at the default cutoff; verdict is "
+        f"{head['verdict']!r}"
     )
 
 
@@ -144,8 +144,12 @@ def check_attention_multiplied_clock_did_not(d: dict) -> None:
             f"grew {ratio:.1f}x"
         )
 
+    # The overlaid clock is the settled like-for-like series (editions
+    # since 2026-09-21), so "a band of days" is a claim about it.
+    if att.get("clock_metric") is None:
+        pytest.skip("edition predates the like-for-like attention clock")
     band = head["clock_max"] - head["clock_min"]
-    assert band <= 45.0, (
+    assert band <= 21.0, (
         f"'The other stayed inside a band of days' needs the clock's "
         f"annual median inside a narrow band over the same window; it "
         f"spans {band:.0f} days ({head['clock_min']:.0f} to "
@@ -209,20 +213,24 @@ def check_newest_milestones_sit_past_the_testable_edge(d: dict) -> None:
 
 
 def check_like_for_like_holds_a_narrow_band(d: dict) -> None:
-    # editorial.js (ai.html hero): "it has sat inside a fortnight-wide
-    # band since 2005". The like-for-like clock is the page's strongest
-    # evidence, so its headline description gets a hard check.
-    # (Committed edition 2026-08: every annual median from 2005 on sits
-    # between -8d and +14.5d, a 22.5-day spread.)
+    # editorial.js (ai.html hero): "every settled year since 2005 has sat
+    # inside a three-week band around zero". The like-for-like clock is
+    # the page's strongest evidence, so its headline description gets a
+    # hard check — over SETTLED years only, because the copy says so and
+    # a cohort still being indexed reads slow by construction.
+    # (Exploit-DB-dated clock, 2026-09-21: settled 2005-2024 medians run
+    # -8d to +11d, a 19-day spread.)
+    if d.get("attention", {}).get("clock_metric") is None:
+        pytest.skip("edition predates the Exploit-DB-only clock")
     rows = [r for r in d.get("like_for_like", {}).get("years", [])
-            if r["year"] >= 2005]
+            if r["year"] >= 2005 and not r.get("provisional")]
     if len(rows) < 5:
         pytest.skip("like-for-like series too short to judge")
     lo = min(r["value"] for r in rows)
     hi = max(r["value"] for r in rows)
-    assert hi - lo <= 30.0, (
-        f"'inside a fortnight-wide band since 2005' needs the like-for-like "
-        f"medians to stay in a narrow band; they span {lo:+.0f}d to "
+    assert hi - lo <= 21.0, (
+        f"'inside a three-week band' needs the settled like-for-like "
+        f"medians within 21 days of each other; they span {lo:+.0f}d to "
         f"{hi:+.0f}d ({hi - lo:.0f} days)"
     )
     # And the band must straddle zero — "arming happens at disclosure" is
@@ -239,12 +247,12 @@ CLAIMS = [
         check_collapse_finished_a_decade_left_of_the_band,
     ),
     (
-        "Nothing bends at the cutoff.",
+        "Nothing bends toward faster at the cutoff.",
         "ai_alibi.json",
         check_nothing_bends_at_the_cutoff,
     ),
     (
-        "a line that does nothing in particular once it enters",
+        "moves later if it moves at all",
         "ai_alibi.json",
         check_headline_metric_shows_no_inflection,
     ),
@@ -271,7 +279,7 @@ CLAIMS = [
         check_newest_milestones_sit_past_the_testable_edge,
     ),
     (
-        "it has sat inside a fortnight-wide band since 2005",
+        "every settled year since 2005 has sat inside a three-week band",
         "ai_alibi.json",
         check_like_for_like_holds_a_narrow_band,
     ),

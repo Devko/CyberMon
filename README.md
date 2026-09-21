@@ -363,7 +363,7 @@ enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
 
 ### 21 · The AI Alibi — [ai.html](https://devko.github.io/CyberMon/ai.html) (live)
 
-*The industry blames AI for a clock that stopped moving a decade ago.*
+*The industry blames AI for a clock that did not speed up when the models arrived.*
 Exploitation got fast long before the models did, and this module tests
 that claim instead of asserting it. Three charts: the whole
 publication-to-first-public-exploit record (1999 onward) with the AI

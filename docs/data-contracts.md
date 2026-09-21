@@ -2312,7 +2312,15 @@ own peak, so that mean is a mean of comparable 0-100 series and a
 late-starting lane is not penalised for the gap; `sources` travels with
 every point. `available: false` is the honest degraded state when the
 market upstream did not land, and it must then carry no terms — that costs
-this module one section, never the page.
+this module one section, never the page. `attention.clock` is, since
+2026-09-21, the like-for-like series over SETTLED years only (the one
+measure built to be comparable across years; a cohort still being indexed
+cannot draw a swing here), named in `clock_metric` as
+`poc_like_for_like`; an edition without an arming section falls back to
+the raw gap median (`poc_gap`), and editions before the key carry the raw
+median. In `banked`, the post level of every metric is likewise a mean
+over settled post-cutoff years only (provisional like-for-like rows drop
+out of the level, not just the eligibility count).
 
 **Never emitted:** `ai_timeline_data.EXTERNAL_CONTEXT` — widely cited
 vendor figures (Mandiant's 63-to-5-day time-to-exploit series, the DBIR's

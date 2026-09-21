@@ -409,7 +409,7 @@ export const editorial = {
         href: "ai.html",
         num: "21",
         label: "The AI Alibi",
-        headline: "The industry blames AI for a clock that stopped moving a decade ago.",
+        headline: "The industry blames AI for a clock that did not speed up when the models arrived.",
         blurb:
           "Exploitation got fast long before the models did. This module puts " +
           "the AI timeline on top of CyberMon's own exploitation-speed series " +
@@ -2772,15 +2772,16 @@ export const editorial = {
         "the CVE record's publication to the first public exploit code — median and " +
         "interquartile range per publication year. In the program's first years the " +
         "median ran deeply negative: early CVE records were cataloguing an arsenal that " +
-        "already existed. Since the mid-2000s the median has hugged zero, and in most " +
-        "years it is negative — for the CVEs that get public exploit code at all, the " +
-        "code tends to exist by the time the record lands. The gap is measured in days, " +
-        "not months, and the band below zero is disclosure culture in the raw: exploits " +
-        "that shipped with the advisory, or years before a CVE id was finally assigned. " +
-        "Read the newest complete year with care: the 2025 cohort is twice 2024's with a " +
-        "lower quartile years in the negative — old vulnerabilities finally receiving CVE " +
-        "ids, not anything getting faster — which is why the AI Alibi page withholds it " +
-        "from judgment.",
+        "already existed. From the mid-2000s through 2020 the median sat within a month " +
+        "of zero, and in most of those years it was negative — for the CVEs that got " +
+        "public exploit code at all, the code tended to exist by the time the record " +
+        "landed. The band below zero is disclosure culture in the raw: exploits that " +
+        "shipped with the advisory, or years before a CVE id was finally assigned. " +
+        "Since 2021 the median has moved the other way, to weeks after publication, " +
+        "on cohorts a fraction of their former size. Read those newest years with care: " +
+        "a few hundred CVEs each, still being indexed by the archive, so their medians " +
+        "are provisional and the AI Alibi page treats them as such — the 2024 cohort, " +
+        "at months rather than weeks, is the outlier to watch, not a trend.",
       statLabel: "Median days from CVE publication to first public exploit code",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -2830,8 +2831,8 @@ export const editorial = {
         "carries a dated public exploit, the bars show how often that exploit code was " +
         "public before the day CISA listed it. The 2021–22 seeding years plot muted: a " +
         "launch-era import of years-old CVEs is trivially beaten by equally old exploit " +
-        "code, so the figure that matters is the trend since — and even there, roughly " +
-        "four in five listings with a dated PoC were beaten to the announcement.",
+        "code, so the figure that matters is the trend since — and even there, just " +
+        "over half of the listings with a dated PoC were beaten to the announcement.",
       note:
         "Since {cutoff_year}: {trend_pct} of the {trend_n} KEV listings with a dated " +
         "public PoC saw that code published before the listing day.",
@@ -3006,7 +3007,7 @@ export const editorial = {
       num: "01",
       kicker: "The alibi",
       source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE) · CyberMon AI timeline",
-      headline: "The clock stopped moving before the models arrived.",
+      headline: "The clock did not speed up when the models arrived.",
       seeAlso: {
         text: "What is AI actually credited with finding?",
         href: "credits.html",
@@ -3021,13 +3022,14 @@ export const editorial = {
         "and the first documented cases of AI running real operations. Every dot " +
         "is dated, categorised and linked below the chart. The shaded band is the " +
         "AI era on whichever start date you pick. What the picture shows is a " +
-        "collapse that finished a decade to the left of that band, and a line that " +
-        "does nothing in particular once it enters. The pale line is the same " +
+        "collapse that finished a decade to the left of that band, and a line that, " +
+        "once it enters, moves later if it moves at all. The pale line is the same " +
         "question asked so that every year answers it on equal terms: only " +
         "exploits landing within 90 days either side of publication, and only " +
         "cohorts old enough to have had all 90 days. That version reaches the " +
         "current year, because a like-for-like measure can read a part-finished " +
-        "one — and it has sat inside a fortnight-wide band since 2005. Read the " +
+        "one — and every settled year since 2005 has sat inside a three-week band " +
+        "around zero. Read the " +
         "vertical axis before drawing anything from the right-hand edge: UP here " +
         "means the exploit arrived LATER, so the small rise into the current " +
         "year is the window getting WIDER, not narrower. That point is also " +
@@ -3113,7 +3115,7 @@ export const editorial = {
       num: "02",
       kicker: "The inflection test",
       source: "Exploit-DB (OffSec) · Metasploit (Rapid7) · cvelistV5 (MITRE)",
-      headline: "Nothing bends at the cutoff.",
+      headline: "Nothing bends toward faster at the cutoff.",
       caption:
         "The eyeball test made arithmetic. The top bar is the like-for-like " +
         "clock — the one measure here immune to the bias that recent cohorts " +
@@ -3218,7 +3220,8 @@ export const editorial = {
         "The solid lines are how loudly the industry has been talking about AI " +
         "security — the same five attention lanes the Security Market module " +
         "tracks, averaged per term and indexed to each lane's own peak. The dashed " +
-        "line is the exploitation clock over the same window, held flat across " +
+        "line is the like-for-like exploitation clock — the hero's pale line, " +
+        "settled years only — over the same window, held flat across " +
         "each year because it is measured annually. One of these multiplied. The " +
         "other stayed inside a band of days. If the models had rewritten the " +
         "physics of attack, this is the chart where it would show, and it is the " +
@@ -3242,21 +3245,22 @@ export const editorial = {
         "normalizes every lane to its own peak, that mean is a mean of comparable " +
         "0-100 series, and a term whose Wikipedia lane starts late is not punished " +
         "for the gap. The month count behind every point travels in the payload. " +
-        "The clock is the same annual median as the hero chart, drawn as a step " +
+        "The clock is the hero chart's like-for-like series — exploits within 90 " +
+        "days either side of publication, settled cohorts only, so a year still " +
+        "being indexed cannot draw a swing here — drawn as a step " +
         "rather than interpolated: spreading an annual median across twelve months " +
         "would draw values nobody measured and a slope that reads as motion. The " +
         "two series share no unit and no sampling rate, so they are on separate " +
         "axes and this chart asserts no correlation — it shows one line climbing " +
         "while the other sits still. The clock's axis is pinned to at least plus " +
         "or minus 90 days rather than fitted to the data, a disclosed editorial " +
-        "choice with a reason: the clock's whole range over this window is about " +
-        "16 days, and an auto-fitted axis would stretch that wobble to full height " +
-        "and draw a cliff — the chart would then argue the opposite of what it " +
-        "measures. A quarter is the reference because a clock that moved less " +
-        "than one did not move in any sense a defender would feel; the axis still " +
-        "grows if the data ever does. The single deepest point, 2025, is the " +
-        "anomalous cohort described in the first chart's methodology, not a " +
-        "collapse. The window is the market module's own 60 " +
+        "choice with a reason: the clock's whole range over this window is a " +
+        "handful of days, and an auto-fitted axis would stretch that wobble to " +
+        "full height and draw a cliff — the chart would then argue the opposite " +
+        "of what it measures. A quarter is the reference because a clock that " +
+        "moved less than one did not move in any sense a defender would feel; " +
+        "the axis still grows if the data ever does. The window is the market " +
+        "module's own 60 " +
         "months, which means it opens roughly a year before ChatGPT: enough of a " +
         "pre-release baseline to see a step change, not enough to carry the " +
         "long-run argument, which is what the two charts above are for.",

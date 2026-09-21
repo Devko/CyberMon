@@ -314,16 +314,18 @@ def _build_banked(clock: dict, eras: list[dict],
             # slower than they will finally prove to be, so publishing
             # one would print a "slowdown" that is an artifact — and on
             # this page, any spurious movement inside the AI band is the
-            # single most likely thing to be misread. Only settled years
-            # count toward the MIN_POST_YEARS bar; the level itself
-            # still reports every charted year, so the audit trail
-            # shows what was withheld and why.
+            # single most likely thing to be misread. So the post level
+            # is a mean over SETTLED years only (a provisional row would
+            # drag it in the direction most likely to be misread), and
+            # only settled years count toward the MIN_POST_YEARS bar.
             settled_post = [r for r in rows
                             if post_start <= r["year"] <= last_year
                             and not r.get("provisional")]
+            post_v, post_y, post_n = _window(
+                settled_post, "value", start=post_start, end=last_year)
             verdict, pct_banked, shift_share = _verdict(
                 early_v, pre_v, post_v, unit=m["unit"],
-                faster=m["faster"], post_years=len(settled_post))
+                faster=m["faster"], post_years=post_y)
             era_blocks.append({
                 "era": era["id"], "cut_year": cut,
                 "post_start_year": post_start,
@@ -346,8 +348,16 @@ def _build_banked(clock: dict, eras: list[dict],
             "metrics": metrics}
 
 
-def _build_attention(market: dict | None, clock: dict) -> dict:
+def _build_attention(market: dict | None, clock: dict,
+                     like_for_like: dict | None = None) -> dict:
     """AI-security attention (module 02's lanes) against the clock.
+
+    The clock overlaid here is the LIKE-FOR-LIKE series (settled years
+    only), when the edition carries one: it is the one measure built to
+    be comparable across years, and the raw annual median's newest
+    cohorts are a few hundred CVEs each and still being indexed, so their
+    swings are the artifact this page exists to warn about. Editions
+    without an arming section fall back to the raw gap median.
 
     The composite per term is the mean of that term's per-source indexes
     for the month, over the sources that HAVE a value there — module 02
@@ -386,10 +396,16 @@ def _build_attention(market: dict | None, clock: dict) -> dict:
     # unit so the chart can label the second axis honestly.
     window_years = sorted({int(p["month"][:4])
                            for t in terms for p in t["months"]})
-    gap = next((m for m in clock["metrics"] if m["id"] == "poc_gap"), None)
-    clock_rows = [] if gap is None else [
-        {"year": r["year"], "value": r["value"]}
-        for r in gap["years"] if r["year"] in set(window_years)]
+    lfl_rows = [r for r in (like_for_like or {}).get("years", [])
+                if not r.get("provisional")]
+    if lfl_rows:
+        source_rows = lfl_rows
+    else:
+        gap = next((m for m in clock["metrics"] if m["id"] == "poc_gap"),
+                   None)
+        source_rows = [] if gap is None else gap["years"]
+    clock_rows = [{"year": r["year"], "value": r["value"]}
+                  for r in source_rows if r["year"] in set(window_years)]
 
     headline = None
     if terms and clock_rows:
@@ -420,7 +436,10 @@ def _build_attention(market: dict | None, clock: dict) -> dict:
     attention = {"available": True,
                  "window_months": int(market.get("window_months", 0)),
                  "terms": terms, "clock": clock_rows,
-                 "clock_unit": "days", "headline": headline}
+                 "clock_unit": "days",
+                 "clock_metric": ("poc_like_for_like" if lfl_rows
+                                  else "poc_gap"),
+                 "headline": headline}
     if market.get("stale") is True:
         attention["stale"] = True
     return attention
@@ -451,7 +470,7 @@ def build_ai_alibi(poc: dict, generated_at: str,
     clock = _build_clock(poc, current_year)
     like_for_like = _build_like_for_like(poc)
     banked = _build_banked(clock, eras, like_for_like)
-    attention = _build_attention(market, clock)
+    attention = _build_attention(market, clock, like_for_like)
 
     # Headline: the default era's verdict on the headline metric, plus
     # the scoreboard across every judgeable metric-by-era cell. The

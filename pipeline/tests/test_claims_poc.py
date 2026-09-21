@@ -51,18 +51,56 @@ def load(name: str) -> dict:
 # --------------------------------------------------------------------------
 
 
-def check_median_hugs_zero_since_mid_2000s(d: dict) -> None:
-    # editorial.js (exploits.html hero): "Since the mid-2000s the median
-    # has hugged zero". (Live fetch 2026-07: every complete-year median
-    # from 2005 on sits between -30 and +4 days.)
-    modern = [r for r in d["hero"]["years"]
-              if 2005 <= r["year"] < GENERATION_YEAR]
-    assert modern, "no complete years charted — the claim has no subject"
-    worst = max(abs(r["median_days"]) for r in modern)
-    assert worst <= 45, (
-        f"'Since the mid-2000s the median has hugged zero' needs every "
-        f"complete-year median from 2005 on inside +/-45 days; the worst "
-        f"year is {worst} days out"
+def _require_exploit_dated_clock(d: dict) -> None:
+    # Editions before 2026-09-21 dated the clock with Metasploit disclosure
+    # dates as well; the claims below describe the Exploit-DB-dated clock
+    # and have nothing to judge on the older mixed one.
+    if "exploit_cves" not in d.get("catalog", {}):
+        pytest.skip("edition predates the Exploit-DB-only clock")
+
+
+def check_median_within_a_month_of_zero_2005_2020(d: dict) -> None:
+    _require_exploit_dated_clock(d)
+    # editorial.js (exploits.html hero): "From the mid-2000s through 2020
+    # the median sat within a month of zero, and in most of those years it
+    # was negative". (Exploit-DB-dated clock, 2026-09-21: 2005-2020 medians
+    # run -28 to +1 days, 13 of 16 negative or zero.)
+    span = [r for r in d["hero"]["years"] if 2005 <= r["year"] <= 2020]
+    assert len(span) >= 12, "the 2005-2020 span is not charted"
+    worst = max(abs(r["median_days"]) for r in span)
+    assert worst <= 31, (
+        f"'within a month of zero' needs every 2005-2020 median inside "
+        f"+/-31 days; the worst year is {worst} days out"
+    )
+    negative = sum(1 for r in span if r["median_days"] < 0)
+    assert negative > len(span) / 2, (
+        f"'in most of those years it was negative' vs {negative} of "
+        f"{len(span)} years negative"
+    )
+
+
+def check_median_moved_to_weeks_after_since_2021(d: dict) -> None:
+    _require_exploit_dated_clock(d)
+    # editorial.js (exploits.html hero): "Since 2021 the median has moved
+    # the other way, to weeks after publication" and "the 2024 cohort, at
+    # months rather than weeks, is the outlier". (2026-09-21: 2021-2025
+    # medians 8, 20, 15.5, 166.5, 38 days.)
+    recent = {r["year"]: r for r in d["hero"]["years"]
+              if 2021 <= r["year"] < GENERATION_YEAR}
+    assert len(recent) >= 3, "too few complete years since 2021 to judge"
+    assert all(r["median_days"] >= 7 for r in recent.values()), (
+        f"'to weeks after publication' needs every complete-year median "
+        f"since 2021 at a week or more; data says "
+        f"{[(y, r['median_days']) for y, r in sorted(recent.items())]}"
+    )
+    assert 2024 in recent and recent[2024]["median_days"] >= 60, (
+        f"'the 2024 cohort, at months rather than weeks' vs "
+        f"{recent.get(2024, {}).get('median_days')} days"
+    )
+    others = [r["median_days"] for y, r in recent.items() if y != 2024]
+    assert max(others) < 90, (
+        f"'is the outlier' needs every other recent median under three "
+        f"months; data says {others}"
     )
 
 
@@ -80,14 +118,16 @@ def check_early_records_catalogued_an_arsenal(d: dict) -> None:
     )
 
 
-def check_four_in_five_kev_preempted(d: dict) -> None:
-    # editorial.js (exploits.html #2): "roughly four in five listings with
-    # a dated PoC were beaten to the announcement". (Live 2026-07: 80.7%.)
+def check_just_over_half_kev_preempted(d: dict) -> None:
+    _require_exploit_dated_clock(d)
+    # editorial.js (exploits.html #2): "just over half of the listings with
+    # a dated PoC were beaten to the announcement". (Exploit-DB-dated clock,
+    # 2026-09-21: 55.4% over 121 entries; the old mixed clock read 80.7%.)
     pct = d["kev_preempt"]["trend"]["pct_preempted"]
     n = d["kev_preempt"]["trend"]["with_poc_date"]
-    assert 65 <= pct <= 92, (
-        f"'roughly four in five listings with a dated PoC were beaten to "
-        f"the announcement' claims ~80%; data says {pct}% (over {n} entries)"
+    assert 50 <= pct <= 66, (
+        f"'just over half of the listings with a dated PoC were beaten to "
+        f"the announcement' claims 50-65%; data says {pct}% (over {n} entries)"
     )
 
 
@@ -150,17 +190,17 @@ def check_few_percent_ever_get_a_poc(d: dict) -> None:
     )
 
 
-def check_2025_cohort_is_the_anomaly(d: dict) -> None:
-    # editorial.js (exploits.html hero): "the 2025 cohort is twice 2024's
-    # with a lower quartile years in the negative" — n 504 vs 262, p25
-    # -4,448 d on the 2026-09-08 edition.
-    by_year = {r["year"]: r for r in d["hero"]["years"]}
-    a, b = by_year[2024], by_year[2025]
-    assert b["n"] >= 1.6 * a["n"], (
-        f"'the 2025 cohort is twice 2024's' vs {b['n']} against {a['n']}"
-    )
-    assert b["p25_days"] <= -365, (
-        f"'a lower quartile years in the negative' vs p25 {b['p25_days']} d"
+def check_newest_cohorts_are_a_few_hundred(d: dict) -> None:
+    _require_exploit_dated_clock(d)
+    # editorial.js (exploits.html hero): "Read those newest years with
+    # care: a few hundred CVEs each". (2026-09-21: 2021-2025 cohorts run
+    # 154-270 CVEs against 2,000+ in the late 2000s.)
+    recent = [r for r in d["hero"]["years"]
+              if 2021 <= r["year"] < GENERATION_YEAR]
+    assert recent, "no complete years since 2021"
+    assert all(50 <= r["n"] < 1000 for r in recent), (
+        f"'a few hundred CVEs each' vs "
+        f"{[(r['year'], r['n']) for r in recent]}"
     )
 
 
@@ -179,9 +219,14 @@ def check_channel_thinned(d: dict) -> None:
 
 CLAIMS = [
     (
-        "the 2025 cohort is twice 2024's with a lower quartile years in the negative",
+        "Read those newest years with care: a few hundred CVEs each",
         "time_to_poc.json",
-        check_2025_cohort_is_the_anomaly,
+        check_newest_cohorts_are_a_few_hundred,
+    ),
+    (
+        "Since 2021 the median has moved the other way, to weeks after publication",
+        "time_to_poc.json",
+        check_median_moved_to_weeks_after_since_2021,
     ),
     (
         "the dated cohort per year is now well under a fifth of its late-2000s size",
@@ -189,9 +234,9 @@ CLAIMS = [
         check_channel_thinned,
     ),
     (
-        "Since the mid-2000s the median has hugged zero",
+        "From the mid-2000s through 2020 the median sat within a month of zero",
         "time_to_poc.json",
-        check_median_hugs_zero_since_mid_2000s,
+        check_median_within_a_month_of_zero_2005_2020,
     ),
     (
         "early CVE records were cataloguing an arsenal that already existed",
@@ -199,9 +244,9 @@ CLAIMS = [
         check_early_records_catalogued_an_arsenal,
     ),
     (
-        "roughly four in five listings with a dated PoC were beaten to the announcement",
+        "just over half of the listings with a dated PoC were beaten to the announcement",
         "time_to_poc.json",
-        check_four_in_five_kev_preempted,
+        check_just_over_half_kev_preempted,
     ),
     (
         "roughly four in ten of the catalog",
