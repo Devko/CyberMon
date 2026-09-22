@@ -234,23 +234,31 @@ every item keeps the house rules — open data only, every number reproducible,
 copy guarded by the claims audit, and time shown as the kind of time it is
 (event, publication, or first observation by CyberMon).
 
-### 23 · Disputed CVEs — the record's own tags
-- **Thesis:** the CVE program's fastest-growing category is argument. The
-  record format lets a CNA tag a CVE `disputed` (a party — often the vendor —
-  says it is not a vulnerability) or `unsupported-when-assigned` (the
-  software was already out of support when the id was issued); nobody
-  charts either.
-- **Signals:** tagged share of each year's published records, per tag; the
-  CNAs that apply each tag (volume floor, like the CNA board); what the
-  disputed records are (CWE mix, severity) against the year's baseline.
+### 23 · Record Tags — CVEs for software nobody supports
+- **Thesis (revised after the count probe):** more and more CVE ids are
+  issued for software its vendor had already stopped supporting. The record
+  format lets a CNA tag a CVE `unsupported-when-assigned`; those tags went
+  from 21 records (2020) to 423 (2025) and 373 by 2026-09-22. The `disputed`
+  tag — the first-draft thesis, "argument is the fastest-growing category" —
+  is flat: 85–137 records a year, ~0.3% of the corpus. The page says so
+  rather than hiding it.
+- **Probe (corpus cve_2026-09-22_0200Z, published records, CNA container):**
+  `x_open-source` 2,442 · `x_freeware` 1,870 · `disputed` 1,499 ·
+  `unsupported-when-assigned` 1,237 · `exclusively-hosted-service` 397 ·
+  `x_known-exploited-vulnerability` 154; ADP containers carry only
+  `x_bundling-flagged-by-CVE-Program` (39). The three unprefixed tags are
+  the schema's; `x_` tags are CNA-private and reported only as context.
+- **Signals:** per-year count and share for each schema tag; the CNAs that
+  apply `unsupported-when-assigned` and `disputed` (who tags, and how
+  concentrated tagging is); tagged records' severity against the year's
+  baseline.
 - **Source:** `containers.cna.tags` in the cvelistV5 corpus already read
-  every night (plus `exclusively-hosted-service`, reported as context).
-- **Caveats for the copy:** a tag records that a dispute or an end-of-life
-  status was *noted*, not that it is correct; untagged is not "undisputed".
-  CyberMon has no history of when a tag was added (the record carries no
-  tag date), so no "time disputed" chart until our own snapshots accrue.
-- **Feasibility:** easy — one more field in the corpus pass. Count probe
-  against the 2026-09-22 corpus before copy is written.
+  nightly.
+- **Caveats for the copy:** a tag records that a dispute or end-of-life
+  status was *noted by the CNA*, not that it is correct; untagged is not
+  "supported" or "undisputed" — most CNAs never use the tags. The record
+  carries no tag date, so no "time disputed" chart until CyberMon's own
+  snapshots accrue.
 
 ### 24 · Incident Clock — SEC cyber-incident filings
 - **Thesis:** since December 2023 a US public company must disclose a
@@ -302,7 +310,9 @@ copy guarded by the claims audit, and time shown as the kind of time it is
 - **Thesis:** CVSS 4.0 shipped in November 2023; the record shows who
   actually moved to it.
 - **Signals:** share of each month's newly published records carrying a
-  v4.0 score (v4 only / v3 and v4 / v3 only / neither); the CNAs that
+  v4.0 score (v4 only / v3 and v4 / v3 only / neither) — probe: 30 records
+  in 2022, 3,577 in 2024, 12,419 in 2025, 21,509 of 68,708 (31%) in 2026 so
+  far; the CNAs that
   switched; on records scored in both, how v4 compares with v3.
 - **Source:** the corpus pass (metrics already separates the versions).
 
@@ -315,8 +325,9 @@ copy guarded by the claims audit, and time shown as the kind of time it is
   flag-flip section); capture-granularity dates are upper bounds.
 
 ### Linux-kernel toggle — modules 01 and 04
-- **Thesis check, not a thesis:** the kernel became a CNA in 2024 and now
-  publishes more records than any other assigner. A toggle that removes it
+- **Thesis check, not a thesis:** the kernel became a CNA in 2024 and
+  published 4,287 records that year, 5,675 in 2025 and 6,547 in 2026 so far
+  (~9.5% of the year). A toggle that removes it
   shows which trends survive without it.
 - **Where:** the additive charts only — volume curve, the 9.8 flood, CNA
   concentration (top-5/top-10 share, HHI). Medians are not subtractable and
