@@ -1,0 +1,437 @@
+{
+ "generated_at": "2026-09-22T02:50:21Z",
+ "schema_tags": [
+  "unsupported-when-assigned",
+  "disputed",
+  "exclusively-hosted-service"
+ ],
+ "years": [
+  {
+   "year": 2004,
+   "published": 1612,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 1,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2005,
+   "published": 6708,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 39,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2006,
+   "published": 6885,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 124,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2007,
+   "published": 7211,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 128,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2008,
+   "published": 5673,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 22,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2009,
+   "published": 5732,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 13,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2010,
+   "published": 4639,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 11,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2011,
+   "published": 4150,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 8,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2012,
+   "published": 5288,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 63,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2013,
+   "published": 5187,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 10,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2014,
+   "published": 7928,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 11,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2015,
+   "published": 6494,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 1,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2016,
+   "published": 6457,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 9,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2017,
+   "published": 14642,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 61,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2018,
+   "published": 16510,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 144,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2019,
+   "published": 17308,
+   "counts": {
+    "unsupported-when-assigned": 0,
+    "disputed": 123,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2020,
+   "published": 18363,
+   "counts": {
+    "unsupported-when-assigned": 21,
+    "disputed": 86,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2021,
+   "published": 20177,
+   "counts": {
+    "unsupported-when-assigned": 70,
+    "disputed": 85,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2022,
+   "published": 25000,
+   "counts": {
+    "unsupported-when-assigned": 48,
+    "disputed": 106,
+    "exclusively-hosted-service": 0
+   }
+  },
+  {
+   "year": 2023,
+   "published": 28847,
+   "counts": {
+    "unsupported-when-assigned": 130,
+    "disputed": 127,
+    "exclusively-hosted-service": 1
+   }
+  },
+  {
+   "year": 2024,
+   "published": 39924,
+   "counts": {
+    "unsupported-when-assigned": 172,
+    "disputed": 131,
+    "exclusively-hosted-service": 30
+   }
+  },
+  {
+   "year": 2025,
+   "published": 48153,
+   "counts": {
+    "unsupported-when-assigned": 423,
+    "disputed": 137,
+    "exclusively-hosted-service": 148
+   }
+  },
+  {
+   "year": 2026,
+   "published": 68708,
+   "counts": {
+    "unsupported-when-assigned": 373,
+    "disputed": 59,
+    "exclusively-hosted-service": 218
+   }
+  }
+ ],
+ "window": {
+  "from": 2022,
+  "to": 2026,
+  "years": 5
+ },
+ "boards": {
+  "unsupported-when-assigned": {
+   "total": 1146,
+   "cna_count": 49,
+   "active_cnas": 471,
+   "top1_share_pct": 38.7,
+   "top3_share_pct": 68.5,
+   "min_n": 5,
+   "cnas": [
+    {
+     "cna": "VulDB",
+     "n": 444,
+     "share_pct": 38.7,
+     "cna_published": 16685,
+     "rate_pct": 2.7
+    },
+    {
+     "cna": "VulnCheck",
+     "n": 227,
+     "share_pct": 19.8,
+     "cna_published": 7450,
+     "rate_pct": 3.0
+    },
+    {
+     "cna": "mitre",
+     "n": 114,
+     "share_pct": 9.9,
+     "cna_published": 28161,
+     "rate_pct": 0.4
+    },
+    {
+     "cna": "CERT-PL",
+     "n": 44,
+     "share_pct": 3.8,
+     "cna_published": 523,
+     "rate_pct": 8.4
+    },
+    {
+     "cna": "icscert",
+     "n": 42,
+     "share_pct": 3.7,
+     "cna_published": 1825,
+     "rate_pct": 2.3
+    },
+    {
+     "cna": "apache",
+     "n": 34,
+     "share_pct": 3.0,
+     "cna_published": 1771,
+     "rate_pct": 1.9
+    },
+    {
+     "cna": "INCIBE",
+     "n": 30,
+     "share_pct": 2.6,
+     "cna_published": 1102,
+     "rate_pct": 2.7
+    },
+    {
+     "cna": "TR-CERT",
+     "n": 25,
+     "share_pct": 2.2,
+     "cna_published": 804,
+     "rate_pct": 3.1
+    },
+    {
+     "cna": "jpcert",
+     "n": 23,
+     "share_pct": 2.0,
+     "cna_published": 1331,
+     "rate_pct": 1.7
+    },
+    {
+     "cna": "Zyxel",
+     "n": 18,
+     "share_pct": 1.6,
+     "cna_published": 157,
+     "rate_pct": 11.5
+    },
+    {
+     "cna": "twcert",
+     "n": 17,
+     "share_pct": 1.5,
+     "cna_published": 665,
+     "rate_pct": 2.6
+    },
+    {
+     "cna": "TPLink",
+     "n": 13,
+     "share_pct": 1.1,
+     "cna_published": 187,
+     "rate_pct": 7.0
+    }
+   ]
+  },
+  "disputed": {
+   "total": 560,
+   "cna_count": 12,
+   "active_cnas": 471,
+   "top1_share_pct": 82.1,
+   "top3_share_pct": 97.9,
+   "min_n": 5,
+   "cnas": [
+    {
+     "cna": "mitre",
+     "n": 460,
+     "share_pct": 82.1,
+     "cna_published": 28161,
+     "rate_pct": 1.6
+    },
+    {
+     "cna": "VulDB",
+     "n": 86,
+     "share_pct": 15.4,
+     "cna_published": 16685,
+     "rate_pct": 0.5
+    }
+   ]
+  }
+ },
+ "severity": {
+  "all": {
+   "critical": 19872,
+   "high": 71154,
+   "medium": 86805,
+   "low": 8026,
+   "unscored": 24775
+  },
+  "unsupported-when-assigned": {
+   "tagged": {
+    "critical": 199,
+    "high": 431,
+    "medium": 432,
+    "low": 40,
+    "unscored": 44
+   },
+   "same_cnas_untagged": {
+    "critical": 9735,
+    "high": 25428,
+    "medium": 39477,
+    "low": 2813,
+    "unscored": 10093
+   }
+  },
+  "disputed": {
+   "tagged": {
+    "critical": 76,
+    "high": 112,
+    "medium": 166,
+    "low": 44,
+    "unscored": 162
+   },
+   "same_cnas_untagged": {
+    "critical": 6167,
+    "high": 13666,
+    "medium": 23967,
+    "low": 2186,
+    "unscored": 9159
+   }
+  }
+ },
+ "context": {
+  "private_tags": [
+   {
+    "tag": "x_open-source",
+    "n": 2442
+   },
+   {
+    "tag": "x_freeware",
+    "n": 1870
+   },
+   {
+    "tag": "x_known-exploited-vulnerability",
+    "n": 154
+   },
+   {
+    "tag": "x_Charger",
+    "n": 9
+   },
+   {
+    "tag": "x_F5",
+    "n": 9
+   },
+   {
+    "tag": "x_ICS",
+    "n": 9
+   }
+  ],
+  "private_tag_count": 41,
+  "adp_tags": [
+   {
+    "tag": "x_bundling-flagged-by-CVE-Program",
+    "n": 39
+   }
+  ],
+  "schema_totals": {
+   "unsupported-when-assigned": 1237,
+   "disputed": 1499,
+   "exclusively-hosted-service": 397
+  }
+ },
+ "headline": {
+  "latest_year": 2025,
+  "unsupported_first_year": 2020,
+  "unsupported_first": 21,
+  "unsupported_latest": 423,
+  "unsupported_latest_share_pct": 0.9,
+  "current_year": 2026,
+  "unsupported_current": 373,
+  "disputed_from": 2020,
+  "disputed_to": 2025,
+  "disputed_min": 85,
+  "disputed_max": 137,
+  "disputed_share_pct": 0.4
+ }
+}

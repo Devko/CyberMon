@@ -23,7 +23,7 @@ as the site nav (both fold over the `group` tags in `site/js/editorial.js`).
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
-*CVE severity has become meaningless — here are the receipts.* Nine charts:
+*CVE severity has become meaningless — here are the receipts.* Ten charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't
@@ -49,6 +49,17 @@ as the site nav (both fold over the `group` tags in `site/js/editorial.js`).
    itself.
 9. **Bug-class inertia** — the top-8 weakness classes of the last decade
    and each one's share of the year's CWE-tagged records.
+10. **CVSS 4.0 adoption** — each month's new records by the CVSS versions
+    their CNA scored (v4.0 only / v3.x and v4.0 / v3.x only / neither;
+    ADP scores deliberately not counted), the largest v4.0 adopters, and
+    on records scored in both, the v4.0 − v3.x difference. Stage
+    `pipeline/cvss_v4_metrics.py`.
+
+The volume curve and the 9.8 flood carry a **Linux-kernel toggle**: the
+kernel CNA (assigner `Linux`, a CNA since 2024) publishes thousands of
+records a year, so both additive charts ship a `without_linux` variant with
+its own pace projection. Medians cannot be taken apart this way; every
+other chart keeps all records.
 
 ### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
 
@@ -78,6 +89,8 @@ signal they are.
 *The CVE database is becoming a handful of vendors grading themselves at
 scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
 concentration index, newcomer counts, and a rejection-rate leaderboard.
+The trend chart takes the same Linux-kernel toggle as module 01 (shares
+and HHI recomputed without the kernel CNA).
 
 ### 05 · Breach Ledger — [breaches.html](https://devko.github.io/CyberMon/breaches.html) (live)
 
@@ -439,6 +452,22 @@ fetch of its own: `CreditCollector` rides the shared corpus pass as a second
 observer. Stage `pipeline/ai_credits_metrics.py`. The copy was rewritten and
 the role handling fixed on 2026-09-20 after an external review; the page's
 methodology discloses that it was drafted with Claude, an Anthropic model.
+
+### 23 · Record Tags — [tags.html](https://devko.github.io/CyberMon/tags.html) (live)
+
+*More CVEs are issued for products the vendor no longer supports.* The CVE
+record lets the CNA tag its container; three values are defined by the
+schema — `unsupported-when-assigned`, `disputed`,
+`exclusively-hosted-service` (`x_` tags are CNA-private and listed only as
+context). Three charts: each schema tag per publication year as a count and
+as a share of the year (the first climbs; `disputed` is flat and says so);
+who sets `unsupported-when-assigned` and `disputed` over the last five
+years and how few of the active CNAs use them at all; and the severity mix
+of tagged records against the same CNAs' other records and against every
+record. A tag is what the CNA noted, not a verdict; untagged is not
+"supported". The record carries no tag date, so everything is by
+publication year. No fetch of its own — the tallies ride the shared
+corpus pass (`Aggregator._add_tags`). Stage `pipeline/tags_metrics.py`.
 
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 

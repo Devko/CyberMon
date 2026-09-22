@@ -24,11 +24,25 @@ export function render(slots, data) {
   const years = data.years.map((d) =>
     d.year === genYear ? `${d.year}*` : String(d.year));
 
+  // The Linux-kernel toggle swaps in the additive without_linux variant —
+  // its own bucket counts and its own pace projection, never the all-CNA
+  // projection over a reduced series.
+  const edl = editorial.linuxToggle;
+  const variants = [data];
+  if (data.without_linux?.years?.length === data.years.length) {
+    variants.push(data.without_linux);
+  }
+  let rows = data.years;
   // Optional full-year pace projection of the current-year total (absolute
   // view only — shares are already normalized, so they never project).
-  const proj = data.projection;
-  const projIdx = proj ? data.years.findIndex((d) => d.year === proj.year) : -1;
-  const hasProj = projIdx > 0;
+  let proj, projIdx, hasProj;
+  const pickVariant = (i) => {
+    rows = variants[i].years;
+    proj = variants[i].projection;
+    projIdx = proj ? rows.findIndex((d) => d.year === proj.year) : -1;
+    hasProj = projIdx > 0;
+  };
+  pickVariant(0);
 
   // Era marker: everything left of this line was scored (if at all) in
   // NVD's database, not in the CVE record — the near-empty severity bands
@@ -57,7 +71,7 @@ export function render(slots, data) {
       symbol: "none",
       emphasis: { focus: "series" },
       ...(i === 0 && eraMarkLine ? { markLine: eraMarkLine } : {}),
-      data: data.years.map((row) => {
+      data: rows.map((row) => {
         if (!normalized) return row[key];
         const total = BUCKETS.reduce((s, b) => s + row[b.key], 0);
         return total ? +((row[key] / total) * 100).toFixed(2) : 0;
@@ -72,7 +86,7 @@ export function render(slots, data) {
   const projMarker = () => ({
     name: "_projected total",
     type: "line",
-    data: data.years.map((d, i) =>
+    data: rows.map((d, i) =>
       i === projIdx - 1 || i === projIdx ? proj.total : null),
     color: C.ink,
     symbol: "none",
@@ -92,8 +106,12 @@ export function render(slots, data) {
   });
 
   const chart = mkChart(slots.chart);
+  const projNote = el("p", "panel-note", edp.note);
+  const linuxNote = el("p", "panel-note", `${edl.note} ${ed.linuxNote}`);
+  let normalizedNow = false;
 
   const setMode = (normalized) => {
+    normalizedNow = normalized;
     chart.setOption(
       {
         grid: { ...baseGrid, left: 54, top: 44 },
@@ -126,11 +144,21 @@ export function render(slots, data) {
       },
       { replaceMerge: ["series", "yAxis"] }
     );
+    projNote.hidden = normalized || !hasProj;
   };
 
   slots.controls.append(
     mkToggle([ed.toggleAbsolute, ed.toggleShare], (idx) => setMode(idx === 1))
   );
+  if (variants.length > 1) {
+    slots.controls.append(mkToggle(edl.labels, (idx) => {
+      pickVariant(idx);
+      linuxNote.hidden = idx === 0;
+      setMode(normalizedNow);
+    }));
+    linuxNote.hidden = true;
+    slots.extra.append(linuxNote);
+  }
+  slots.extra.append(projNote);
   setMode(false);
-  if (hasProj) slots.extra.append(el("p", "panel-note", edp.note));
 }

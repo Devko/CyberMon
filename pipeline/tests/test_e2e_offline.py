@@ -35,7 +35,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
 
     meta = _load(tmp_path, "meta.json")
     assert meta["sample"] is False  # fixture runs are real pipeline runs
-    assert meta["sources"]["cvelist"] == {"release": "fixtures", "cve_count": 11}
+    assert meta["sources"]["cvelist"] == {"release": "fixtures", "cve_count": 12}
     assert meta["sources"]["epss"]["row_count"] == 7
     assert meta["sources"]["kev"]["count"] == 7
     assert meta["sources"]["hibp"]["breach_count"] == 9
@@ -267,7 +267,8 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     ages = {y["year"]: y for y in cal["id_age"]["years"]}
     assert ages[2014]["two_plus"] == 1   # CVE-2012-0002, published 2014
     assert ages[2025]["one_year"] == 1   # CVE-2024-0005, published 2025
-    assert ages[2025]["n"] == 2 and ages[2025]["pct_prior_year"] == 50.0
+    # ... and the datePublished-less CVE-2025-0200 (Linux) is same-year
+    assert ages[2025]["n"] == 3 and ages[2025]["pct_prior_year"] == 33.3
     assert cal["id_age"]["clamped_negative"] == 0
     wk = {y["year"]: y for y in cal["weekday"]["years"]}
     assert wk[2025]["n"] == 1                       # undated record excluded
@@ -281,7 +282,7 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     # plus the header-only committed-log CSV.
     rescores = _load(tmp_path, "rescore_log.json")
     assert rescores["catalog"] == {
-        "state_size": 10,  # the corpus's 10 published records; REJECTED out
+        "state_size": 11,  # the corpus's 11 published records; REJECTED out
         "corpus_release": "fixtures",
         "totals": {"rescore": 0, "version_shift": 0,
                    "first_score": 0, "score_removed": 0},
@@ -401,6 +402,56 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert ledger["families"]["unattributed"] == {"usd": 50000, "payments": 1}
     assert ledger["headline"]["peak_quarter"] == {"year": 2022, "quarter": 3,
                                                   "usd": 50000}
+
+
+def test_offline_run_emits_record_tags_v4_and_linux_variants(tmp_path,
+                                                            capsys):
+    """Module 23 (cve_tags.json), the CVSS 4.0 section (cvss_v4.json) and
+    the additive without_linux variants, from the fixture corpus: one
+    unsupported-when-assigned record (CVE-2024-0001, GitHub_M), one
+    disputed record carrying a CNA-private x_ tag too (CVE-2023-0002,
+    VendorX), one v3.1+v4.0 record (CVE-2024-0001) and one unscored Linux
+    kernel record with no datePublished (CVE-2025-0200)."""
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    for name in ("cve_tags.json", "cvss_v4.json"):
+        contracts.validate(name, _load(tmp_path, name))
+
+    tags = _load(tmp_path, "cve_tags.json")
+    by_year = {r["year"]: r for r in tags["years"]}
+    assert sorted(by_year) == [2023, 2024, 2025]  # first tagged year on
+    assert by_year[2023]["counts"]["disputed"] == 1
+    assert by_year[2024]["counts"]["unsupported-when-assigned"] == 1
+    assert by_year[2024]["published"] == 3
+    board = tags["boards"]["unsupported-when-assigned"]
+    assert board["cnas"] == [{"cna": "GitHub_M", "n": 1, "share_pct": 100.0,
+                              "cna_published": 2, "rate_pct": 50.0}]
+    assert tags["severity"]["unsupported-when-assigned"]["tagged"][
+        "critical"] == 1  # v4 9.0 is the newest-version score
+    assert tags["context"]["private_tags"] == [{"tag": "x_open-source",
+                                                "n": 1}]
+
+    v4 = _load(tmp_path, "cvss_v4.json")
+    years = {r["year"]: r for r in v4["years"]}
+    assert years[2024]["both"] == 1 and years[2024]["v4_cnas"] == 1
+    # the Linux record has no CNA score -> neither (and no ADP score)
+    assert years[2025]["neither"] == 2 and years[2025]["neither_adp"] == 1
+    assert v4["compare"]["n"] == 1 and v4["compare"]["v4_higher"] == 1
+    assert v4["compare"]["median_delta"] == 0.1  # 9.0 - 8.9
+    assert v4["adopters"]["cnas"][0]["cna"] == "GitHub_M"
+
+    vol = _load(tmp_path, "volume_curve.json")
+    full = {r["year"]: r for r in vol["years"]}
+    wl = {r["year"]: r for r in vol["without_linux"]["years"]}
+    assert vol["without_linux"]["cna"] == "Linux"
+    assert full[2025]["published"] - wl[2025]["published"] == 1
+    assert full[2024] == wl[2024]
+    flood = _load(tmp_path, "nine_eight_flood.json")
+    fwl = {r["year"]: r for r in flood["without_linux"]["years"]}
+    assert fwl[2025]["unscored"] == 0  # the Linux record was the unscored one
+    conc = _load(tmp_path, "cna_concentration.json")
+    cwl = {r["year"]: r for r in conc["without_linux"]["years"]}
+    assert cwl[2025] == {"year": 2025, "cna_count": 1, "top5_share": 100.0,
+                         "top10_share": 100.0, "hhi": 10000.0}
 
 
 def test_offline_rerun_replaces_todays_history_row(tmp_path, capsys):

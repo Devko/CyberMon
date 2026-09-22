@@ -34,6 +34,20 @@ a flow. The math assumes the flow is uniform through the year and ignores
 seasonality and late-year backfill; the site must render projections
 visually distinct (dashed/hollow) and labeled.
 
+Linux-kernel variants (optional `"without_linux"` key, added 2026-09-22):
+exactly three files — `volume_curve.json`, `nine_eight_flood.json`,
+`cna_concentration.json` — carry the same year series with the Linux kernel
+CNA's records (assigner shortName exactly `"Linux"`) removed:
+`{"cna": "Linux", "years": [...], "projection": {...}}`. `years` aligns
+index for index with the parent `years`. Count series (volume, flood) are
+exact subtractions — the contract fails any value above the parent's; the
+concentration variant recomputes `top5_share`, `top10_share`, `hhi` and
+`cna_count` over the remaining CNAs (newcomers are not recomputed). A
+count variant carries its OWN optional `projection` (same rules as above,
+paced from the reduced count); the site must never draw the parent's
+projection over the reduced series. Only additive series get a variant: a
+median cannot be taken apart by subtracting one CNA.
+
 ## site/data/meta.json
 
 ```json
@@ -410,6 +424,120 @@ Shares describe the tagged subset only — `n_tagged`, `n_published` and
 `pct_tagged` ship per year so consumers can state the coverage. Years
 with fewer than `min_n` tagged records are omitted (production 500;
 fixture mode 1).
+
+## site/data/cvss_v4.json  (CVE Ecosystem, chart 10 — CVSS 4.0 adoption)
+
+```json
+{
+  "generated_at": "...",
+  "since_month": "2023-11", "container": "cna",
+  "classes": ["v4_only", "both", "v3_only", "neither"],
+  "months": [{"month": "2023-11", "published": 2443, "v4_only": 1,
+              "both": 6, "v3_only": 1762, "neither": 674}],
+  "years": [{"year": 2023, "published": 28847, "v4_only": 3, "both": 48,
+             "v3_only": 17274, "neither": 11522, "neither_adp": 5829,
+             "v4_cnas": 6}],
+  "adopters": {"window_from": "2023-11", "min_v4": 50,
+               "window_published": 161901, "window_v4": 37517,
+               "adopter_count": 300, "top_share_pct": 80.6,
+               "cnas": [{"cna": "VulDB", "published": 14165, "v4": 12778,
+                         "v4_only": 2, "v4_share_pct": 90.2,
+                         "v4_only_share_pct": 0.0}]},
+  "compare": {"n": 23584, "median_delta": -0.1, "same_band": 16298,
+              "v4_higher": 3410, "v4_lower": 3876, "same_band_pct": 69.1,
+              "v4_higher_pct": 14.5, "v4_lower_pct": 16.4,
+              "bins": [{"center": -3.0, "lo": -10.0, "hi": -2.8, "n": 149}],
+              "min_n": 100,
+              "cnas": [{"cna": "VulDB", "n": 12798, "median_delta": -0.4,
+                        "same_band_pct": 60.5, "v4_higher_pct": 14.9,
+                        "v4_lower_pct": 24.6}]},
+  "headline": {"current_year": 2026, "current_month": "2026-09",
+               "v4_share_current_pct": 31.3, "v4_current": 21509,
+               "published_current": 68708, "latest_year": 2025,
+               "v4_share_latest_pct": 25.8, "v4_cnas_current": 251}
+}
+```
+
+Published records only, **CNA container only**: every record falls in
+exactly one class — `v4_only` (CNA v4.0 score, no v3.x), `both`,
+`v3_only` (3.0 and 3.1 alike), `neither` (no CNA v3.x/v4.0 score; a
+v2-only record lands here); the contract fails a row whose classes don't
+sum to `published`. ADP scores (CISA-ADP adds v3.1) are deliberately not
+coverage here — the 9.8 flood's effective-score rule counts them because it
+asks what severity a record carries, not who scored it; `neither_adp`
+(per year) counts the "neither" records an ADP did score. `months` are
+publication months from `since_month`, gap-filled, empty on a corpus with
+no records since then; `years` run from 2023. `adopters` covers records
+published since `window_from`, CNAs with ≥ `min_v4` v4.0-scored records
+(production 50, fixture 1), top 15 by v4 volume; `top_share_pct` is those
+15's share of all v4.0-scored records in the window. `compare` takes every
+record whose CNA gave both a v4.0 and a v3.x base score (highest 3.x minor
+version): `median_delta` is v4.0 − v3.x; band agreement uses the site's
+severity bands; `bins` are half-point bins centred −3.0 … +3.0 (a bin
+covers centre ± 0.2), the end bins open to ±10.0, summing to `n`; `cnas`
+lists dual scorers with ≥ `min_n` records (production 100), top 8.
+`headline` shares are v4.0-scored (v4_only + both) over published.
+
+## site/data/cve_tags.json  (Record Tags module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "schema_tags": ["unsupported-when-assigned", "disputed",
+                  "exclusively-hosted-service"],
+  "years": [{"year": 2004, "published": 1612,
+             "counts": {"unsupported-when-assigned": 0, "disputed": 1,
+                        "exclusively-hosted-service": 0}}],
+  "window": {"from": 2022, "to": 2026, "years": 5},
+  "boards": {"unsupported-when-assigned": {
+      "total": 1146, "cna_count": 49, "active_cnas": 471,
+      "top1_share_pct": 38.7, "top3_share_pct": 68.5, "min_n": 5,
+      "cnas": [{"cna": "VulDB", "n": 444, "share_pct": 38.7,
+                "cna_published": 16685, "rate_pct": 2.7}]},
+    "disputed": {"...": "same shape"}},
+  "severity": {"all": {"critical": 19872, "high": 71154, "medium": 86805,
+                       "low": 8026, "unscored": 24775},
+               "unsupported-when-assigned": {
+                 "tagged": {"critical": 199, "...": "..."},
+                 "same_cnas_untagged": {"critical": 9735, "...": "..."}},
+               "disputed": {"...": "same shape"}},
+  "context": {"private_tags": [{"tag": "x_open-source", "n": 2442}],
+              "private_tag_count": 41,
+              "adp_tags": [{"tag": "x_bundling-flagged-by-CVE-Program", "n": 39}],
+              "schema_totals": {"unsupported-when-assigned": 1237,
+                                "disputed": 1499,
+                                "exclusively-hosted-service": 397}},
+  "headline": {"latest_year": 2025, "unsupported_first_year": 2020,
+               "unsupported_first": 21, "unsupported_latest": 423,
+               "unsupported_latest_share_pct": 0.9, "current_year": 2026,
+               "unsupported_current": 373, "disputed_from": 2020,
+               "disputed_to": 2025, "disputed_min": 85, "disputed_max": 137,
+               "disputed_share_pct": 0.4}
+}
+```
+
+Published records only, `containers.cna.tags`, each distinct tag counted
+once per record, by publication year. `years` runs gap-filled from the
+first year any schema tag appears to the newest publication year (empty
+when the corpus carries none — the page shows its no-data card); the site
+computes shares from `counts` / `published` so sub-1% shares keep their
+precision. `x_`-prefixed tags are CNA-private: tallied only in `context`
+(top 6), never charted; `adp_tags` tallies ADP containers' tags (top 6).
+`window` = the last `years` publication years ending at the newest one,
+partial current year included. `boards` (`unsupported-when-assigned`,
+`disputed`): `total` tagged records in the window, `cna_count` CNAs that
+set the tag at all, `active_cnas` every CNA with a published record in the
+window, `cnas` = up to 12 CNAs with ≥ `min_n` tagged records (production 5,
+fixture 1) sorted by `n` desc, `rate_pct` = tagged over the CNA's own
+published records in the window. `severity` buckets by the flood's
+effective-score rule (newest version, CNA first then ADP): `all` = every
+published record in the window, `tagged` (its total must equal the board's
+`total`), `same_cnas_untagged` = every record of the CNAs that set the tag
+in the window minus the tagged ones. `headline`: growth from the tag's first
+year to the latest COMPLETE year (the partial current year quoted
+separately as `unsupported_current`); the disputed range is over the last
+six complete years. The record carries no tag date — nothing here is by
+tagging time.
 
 ## site/data/kev_ransomware.json  (KEV Latency module, chart 4)
 

@@ -55,11 +55,11 @@ def test_shrink_below_the_floor_is_refused_with_a_clear_message(tmp_path):
 
 
 def test_offline_fixture_run_skips_the_floor(tmp_path, capsys):
-    """Fixture corpora are eleven records; the floor is a production
+    """Fixture corpora are twelve records; the floor is a production
     guard and must not fire under --offline-fixtures even when a huge
     previous edition sits in the out dir."""
     _write_meta(tmp_path, cve_count=1_000_000)
     assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
     meta = json.loads((tmp_path / "meta.json").read_text(encoding="utf-8"))
-    assert meta["sources"]["cvelist"]["cve_count"] == 11
+    assert meta["sources"]["cvelist"]["cve_count"] == 12
     assert "corpus shrank" not in capsys.readouterr().err

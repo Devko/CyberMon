@@ -131,6 +131,34 @@ def _check_year_stat(entry: Any, path: str, int_keys: list[str],
     return year
 
 
+def _check_without_cna(obj: Any, path: str, keys: list[str]) -> dict | None:
+    """Optional ``without_linux`` block of an additive chart: the same
+    series with one CNA's records removed. Checks ``cna`` is a non-empty
+    string, ``years`` aligns with the parent's years index for index, and
+    every listed count is an int no larger than the parent's — removing a
+    CNA can never add records. Returns the block (None when absent) so the
+    caller can check its own projection."""
+    if "without_linux" not in obj:
+        return None
+    block = obj["without_linux"]
+    bp = f"{path}.without_linux"
+    _check_str(_get(block, "cna", bp), f"{bp}.cna")
+    rows = _check_list(_get(block, "years", bp), f"{bp}.years")
+    parent = obj["years"]
+    if len(rows) != len(parent):
+        _fail(f"{bp}.years", "must align with the parent years series")
+    for i, (row, full) in enumerate(zip(rows, parent)):
+        rp = f"{bp}.years[{i}]"
+        if _get(row, "year", rp) != full["year"]:
+            _fail(f"{rp}.year", "must align with the parent years series")
+        for k in keys:
+            v = _get(row, k, rp)
+            _check_int(v, f"{rp}.{k}")
+            if v > full[k]:
+                _fail(f"{rp}.{k}", f"{v} exceeds the parent's {full[k]}")
+    return block
+
+
 # ---------------------------------------------------------------- meta.json
 
 def _validate_meta(obj: Any) -> None:
@@ -423,6 +451,14 @@ def _validate_nine_eight_flood(obj: Any) -> None:
             _fail("nine_eight_flood.record_era.min_share",
                   "must be a float in (0, 1)")
 
+    # Optional: the same series without the Linux kernel CNA's records,
+    # carrying its own projection (never the parent's).
+    block = _check_without_cna(obj, "nine_eight_flood", SEVERITY_KEYS)
+    if block is not None and "projection" in block:
+        _check_pace_projection(block["projection"],
+                               "nine_eight_flood.without_linux.projection",
+                               obj["generated_at"], {"total": 1})
+
 
 # ---------------------------------------------------- score_vs_reality.json
 
@@ -600,6 +636,13 @@ def _validate_volume_curve(obj: Any) -> None:
                                obj["generated_at"],
                                {"published": 1, "rejected": 0})
 
+    block = _check_without_cna(obj, "volume_curve", ["published", "rejected"])
+    if block is not None and "projection" in block:
+        _check_pace_projection(block["projection"],
+                               "volume_curve.without_linux.projection",
+                               obj["generated_at"],
+                               {"published": 1, "rejected": 0})
+
 
 VALIDATORS: dict[str, Callable[[Any], None]] = {
     "meta.json": _validate_meta,
@@ -705,3 +748,7 @@ VALIDATORS.update(ai_credits_contracts.VALIDATORS)
 from . import field_contracts  # noqa: E402
 
 VALIDATORS.update(field_contracts.VALIDATORS)
+
+from . import tags_contracts  # noqa: E402
+
+VALIDATORS.update(tags_contracts.VALIDATORS)

@@ -1,0 +1,632 @@
+{
+ "generated_at": "2026-09-22T02:50:21Z",
+ "since_month": "2023-11",
+ "container": "cna",
+ "classes": [
+  "v4_only",
+  "both",
+  "v3_only",
+  "neither"
+ ],
+ "months": [
+  {
+   "month": "2023-11",
+   "published": 2443,
+   "v4_only": 1,
+   "both": 6,
+   "v3_only": 1762,
+   "neither": 674
+  },
+  {
+   "month": "2023-12",
+   "published": 2673,
+   "v4_only": 0,
+   "both": 5,
+   "v3_only": 1665,
+   "neither": 1003
+  },
+  {
+   "month": "2024-01",
+   "published": 2591,
+   "v4_only": 0,
+   "both": 6,
+   "v3_only": 1644,
+   "neither": 941
+  },
+  {
+   "month": "2024-02",
+   "published": 2784,
+   "v4_only": 0,
+   "both": 6,
+   "v3_only": 1819,
+   "neither": 959
+  },
+  {
+   "month": "2024-03",
+   "published": 3299,
+   "v4_only": 0,
+   "both": 9,
+   "v3_only": 2223,
+   "neither": 1067
+  },
+  {
+   "month": "2024-04",
+   "published": 3604,
+   "v4_only": 0,
+   "both": 53,
+   "v3_only": 2450,
+   "neither": 1101
+  },
+  {
+   "month": "2024-05",
+   "published": 4991,
+   "v4_only": 28,
+   "both": 282,
+   "v3_only": 3071,
+   "neither": 1610
+  },
+  {
+   "month": "2024-06",
+   "published": 3080,
+   "v4_only": 76,
+   "both": 162,
+   "v3_only": 1988,
+   "neither": 854
+  },
+  {
+   "month": "2024-07",
+   "published": 3113,
+   "v4_only": 87,
+   "both": 303,
+   "v3_only": 1657,
+   "neither": 1066
+  },
+  {
+   "month": "2024-08",
+   "published": 2895,
+   "v4_only": 97,
+   "both": 435,
+   "v3_only": 1483,
+   "neither": 880
+  },
+  {
+   "month": "2024-09",
+   "published": 2514,
+   "v4_only": 138,
+   "both": 247,
+   "v3_only": 1293,
+   "neither": 836
+  },
+  {
+   "month": "2024-10",
+   "published": 3566,
+   "v4_only": 177,
+   "both": 350,
+   "v3_only": 2044,
+   "neither": 995
+  },
+  {
+   "month": "2024-11",
+   "published": 4054,
+   "v4_only": 190,
+   "both": 397,
+   "v3_only": 2511,
+   "neither": 956
+  },
+  {
+   "month": "2024-12",
+   "published": 3433,
+   "v4_only": 229,
+   "both": 305,
+   "v3_only": 2187,
+   "neither": 712
+  },
+  {
+   "month": "2025-01",
+   "published": 4273,
+   "v4_only": 170,
+   "both": 327,
+   "v3_only": 2631,
+   "neither": 1145
+  },
+  {
+   "month": "2025-02",
+   "published": 3673,
+   "v4_only": 174,
+   "both": 350,
+   "v3_only": 1844,
+   "neither": 1305
+  },
+  {
+   "month": "2025-03",
+   "published": 4001,
+   "v4_only": 278,
+   "both": 542,
+   "v3_only": 2301,
+   "neither": 880
+  },
+  {
+   "month": "2025-04",
+   "published": 4033,
+   "v4_only": 219,
+   "both": 649,
+   "v3_only": 2505,
+   "neither": 660
+  },
+  {
+   "month": "2025-05",
+   "published": 3980,
+   "v4_only": 289,
+   "both": 882,
+   "v3_only": 1685,
+   "neither": 1124
+  },
+  {
+   "month": "2025-06",
+   "published": 3682,
+   "v4_only": 305,
+   "both": 868,
+   "v3_only": 1904,
+   "neither": 605
+  },
+  {
+   "month": "2025-07",
+   "published": 3774,
+   "v4_only": 422,
+   "both": 774,
+   "v3_only": 1777,
+   "neither": 801
+  },
+  {
+   "month": "2025-08",
+   "published": 3629,
+   "v4_only": 540,
+   "both": 800,
+   "v3_only": 1646,
+   "neither": 643
+  },
+  {
+   "month": "2025-09",
+   "published": 4319,
+   "v4_only": 459,
+   "both": 752,
+   "v3_only": 1913,
+   "neither": 1195
+  },
+  {
+   "month": "2025-10",
+   "published": 4274,
+   "v4_only": 714,
+   "both": 650,
+   "v3_only": 1946,
+   "neither": 964
+  },
+  {
+   "month": "2025-11",
+   "published": 3020,
+   "v4_only": 406,
+   "both": 443,
+   "v3_only": 1412,
+   "neither": 759
+  },
+  {
+   "month": "2025-12",
+   "published": 5495,
+   "v4_only": 546,
+   "both": 860,
+   "v3_only": 2608,
+   "neither": 1481
+  },
+  {
+   "month": "2026-01",
+   "published": 4302,
+   "v4_only": 647,
+   "both": 825,
+   "v3_only": 2180,
+   "neither": 650
+  },
+  {
+   "month": "2026-02",
+   "published": 4616,
+   "v4_only": 838,
+   "both": 1147,
+   "v3_only": 2000,
+   "neither": 631
+  },
+  {
+   "month": "2026-03",
+   "published": 6236,
+   "v4_only": 975,
+   "both": 1343,
+   "v3_only": 2950,
+   "neither": 968
+  },
+  {
+   "month": "2026-04",
+   "published": 5813,
+   "v4_only": 689,
+   "both": 1456,
+   "v3_only": 2689,
+   "neither": 979
+  },
+  {
+   "month": "2026-05",
+   "published": 6936,
+   "v4_only": 902,
+   "both": 1376,
+   "v3_only": 2894,
+   "neither": 1764
+  },
+  {
+   "month": "2026-06",
+   "published": 7949,
+   "v4_only": 1029,
+   "both": 1341,
+   "v3_only": 3505,
+   "neither": 2074
+  },
+  {
+   "month": "2026-07",
+   "published": 9759,
+   "v4_only": 1081,
+   "both": 1388,
+   "v3_only": 5307,
+   "neither": 1983
+  },
+  {
+   "month": "2026-08",
+   "published": 12260,
+   "v4_only": 1378,
+   "both": 2141,
+   "v3_only": 6209,
+   "neither": 2532
+  },
+  {
+   "month": "2026-09",
+   "published": 10837,
+   "v4_only": 922,
+   "both": 2031,
+   "v3_only": 5309,
+   "neither": 2575
+  }
+ ],
+ "years": [
+  {
+   "year": 2023,
+   "published": 28847,
+   "v4_only": 3,
+   "both": 48,
+   "v3_only": 17274,
+   "neither": 11522,
+   "neither_adp": 5829,
+   "v4_cnas": 6
+  },
+  {
+   "year": 2024,
+   "published": 39924,
+   "v4_only": 1022,
+   "both": 2555,
+   "v3_only": 24370,
+   "neither": 11977,
+   "neither_adp": 9761,
+   "v4_cnas": 121
+  },
+  {
+   "year": 2025,
+   "published": 48153,
+   "v4_only": 4522,
+   "both": 7897,
+   "v3_only": 24172,
+   "neither": 11562,
+   "neither_adp": 8607,
+   "v4_cnas": 216
+  },
+  {
+   "year": 2026,
+   "published": 68708,
+   "v4_only": 8461,
+   "both": 13048,
+   "v3_only": 33043,
+   "neither": 14156,
+   "neither_adp": 10476,
+   "v4_cnas": 251
+  }
+ ],
+ "adopters": {
+  "window_from": "2023-11",
+  "min_v4": 50,
+  "window_published": 161901,
+  "window_v4": 37517,
+  "adopter_count": 300,
+  "top_share_pct": 80.6,
+  "cnas": [
+   {
+    "cna": "VulDB",
+    "published": 14165,
+    "v4": 12778,
+    "v4_only": 2,
+    "v4_share_pct": 90.2,
+    "v4_only_share_pct": 0.0
+   },
+   {
+    "cna": "VulnCheck",
+    "published": 7440,
+    "v4": 7364,
+    "v4_only": 1126,
+    "v4_share_pct": 99.0,
+    "v4_only_share_pct": 15.1
+   },
+   {
+    "cna": "GitHub_M",
+    "published": 15722,
+    "v4": 5052,
+    "v4_only": 5052,
+    "v4_share_pct": 32.1,
+    "v4_only_share_pct": 32.1
+   },
+   {
+    "cna": "icscert",
+    "published": 1040,
+    "v4": 831,
+    "v4_only": 132,
+    "v4_share_pct": 79.9,
+    "v4_only_share_pct": 12.7
+   },
+   {
+    "cna": "siemens",
+    "published": 704,
+    "v4": 584,
+    "v4_only": 0,
+    "v4_share_pct": 83.0,
+    "v4_only_share_pct": 0.0
+   },
+   {
+    "cna": "intel",
+    "published": 860,
+    "v4": 566,
+    "v4_only": 106,
+    "v4_share_pct": 65.8,
+    "v4_only_share_pct": 12.3
+   },
+   {
+    "cna": "INCIBE",
+    "published": 971,
+    "v4": 548,
+    "v4_only": 547,
+    "v4_share_pct": 56.4,
+    "v4_only_share_pct": 56.3
+   },
+   {
+    "cna": "CERT-PL",
+    "published": 520,
+    "v4": 468,
+    "v4_only": 468,
+    "v4_share_pct": 90.0,
+    "v4_only_share_pct": 90.0
+   },
+   {
+    "cna": "jpcert",
+    "published": 845,
+    "v4": 434,
+    "v4_only": 0,
+    "v4_share_pct": 51.4,
+    "v4_only_share_pct": 0.0
+   },
+   {
+    "cna": "qnap",
+    "published": 428,
+    "v4": 310,
+    "v4_only": 310,
+    "v4_share_pct": 72.4,
+    "v4_only_share_pct": 72.4
+   },
+   {
+    "cna": "EEF",
+    "published": 305,
+    "v4": 305,
+    "v4_only": 305,
+    "v4_share_pct": 100.0,
+    "v4_only_share_pct": 100.0
+   },
+   {
+    "cna": "juniper",
+    "published": 300,
+    "v4": 273,
+    "v4_only": 0,
+    "v4_share_pct": 91.0,
+    "v4_only_share_pct": 0.0
+   },
+   {
+    "cna": "Joomla",
+    "published": 380,
+    "v4": 263,
+    "v4_only": 263,
+    "v4_share_pct": 69.2,
+    "v4_only_share_pct": 69.2
+   },
+   {
+    "cna": "twcert",
+    "published": 488,
+    "v4": 256,
+    "v4_only": 1,
+    "v4_share_pct": 52.5,
+    "v4_only_share_pct": 0.2
+   },
+   {
+    "cna": "mongodb",
+    "published": 248,
+    "v4": 204,
+    "v4_only": 2,
+    "v4_share_pct": 82.3,
+    "v4_only_share_pct": 0.8
+   }
+  ]
+ },
+ "compare": {
+  "n": 23584,
+  "median_delta": -0.1,
+  "same_band": 16298,
+  "v4_higher": 3410,
+  "v4_lower": 3876,
+  "same_band_pct": 69.1,
+  "v4_higher_pct": 14.5,
+  "v4_lower_pct": 16.4,
+  "bins": [
+   {
+    "center": -3.0,
+    "lo": -10.0,
+    "hi": -2.8,
+    "n": 149
+   },
+   {
+    "center": -2.5,
+    "lo": -2.7,
+    "hi": -2.3,
+    "n": 172
+   },
+   {
+    "center": -2.0,
+    "lo": -2.2,
+    "hi": -1.8,
+    "n": 219
+   },
+   {
+    "center": -1.5,
+    "lo": -1.7,
+    "hi": -1.3,
+    "n": 471
+   },
+   {
+    "center": -1.0,
+    "lo": -1.2,
+    "hi": -0.8,
+    "n": 4108
+   },
+   {
+    "center": -0.5,
+    "lo": -0.7,
+    "hi": -0.3,
+    "n": 5366
+   },
+   {
+    "center": 0.0,
+    "lo": -0.2,
+    "hi": 0.2,
+    "n": 3115
+   },
+   {
+    "center": 0.5,
+    "lo": 0.3,
+    "hi": 0.7,
+    "n": 3385
+   },
+   {
+    "center": 1.0,
+    "lo": 0.8,
+    "hi": 1.2,
+    "n": 2727
+   },
+   {
+    "center": 1.5,
+    "lo": 1.3,
+    "hi": 1.7,
+    "n": 2428
+   },
+   {
+    "center": 2.0,
+    "lo": 1.8,
+    "hi": 2.2,
+    "n": 455
+   },
+   {
+    "center": 2.5,
+    "lo": 2.3,
+    "hi": 2.7,
+    "n": 927
+   },
+   {
+    "center": 3.0,
+    "lo": 2.8,
+    "hi": 10.0,
+    "n": 62
+   }
+  ],
+  "min_n": 100,
+  "cnas": [
+   {
+    "cna": "VulDB",
+    "n": 12798,
+    "median_delta": -0.4,
+    "same_band_pct": 60.5,
+    "v4_higher_pct": 14.9,
+    "v4_lower_pct": 24.6
+   },
+   {
+    "cna": "VulnCheck",
+    "n": 6238,
+    "median_delta": 0.4,
+    "same_band_pct": 79.1,
+    "v4_higher_pct": 13.2,
+    "v4_lower_pct": 7.7
+   },
+   {
+    "cna": "icscert",
+    "n": 700,
+    "median_delta": 0.4,
+    "same_band_pct": 84.6,
+    "v4_higher_pct": 10.7,
+    "v4_lower_pct": 4.7
+   },
+   {
+    "cna": "siemens",
+    "n": 619,
+    "median_delta": 0.1,
+    "same_band_pct": 84.3,
+    "v4_higher_pct": 12.9,
+    "v4_lower_pct": 2.7
+   },
+   {
+    "cna": "intel",
+    "n": 460,
+    "median_delta": -0.4,
+    "same_band_pct": 84.6,
+    "v4_higher_pct": 9.1,
+    "v4_lower_pct": 6.3
+   },
+   {
+    "cna": "jpcert",
+    "n": 434,
+    "median_delta": 0.6,
+    "same_band_pct": 86.6,
+    "v4_higher_pct": 9.7,
+    "v4_lower_pct": 3.7
+   },
+   {
+    "cna": "juniper",
+    "n": 273,
+    "median_delta": 0.7,
+    "same_band_pct": 65.6,
+    "v4_higher_pct": 32.6,
+    "v4_lower_pct": 1.8
+   },
+   {
+    "cna": "twcert",
+    "n": 255,
+    "median_delta": 0.0,
+    "same_band_pct": 87.1,
+    "v4_higher_pct": 12.2,
+    "v4_lower_pct": 0.8
+   }
+  ]
+ },
+ "headline": {
+  "current_year": 2026,
+  "current_month": "2026-09",
+  "v4_share_current_pct": 31.3,
+  "v4_current": 21509,
+  "published_current": 68708,
+  "latest_year": 2025,
+  "v4_share_latest_pct": 25.8,
+  "v4_cnas_current": 251
+ }
+}

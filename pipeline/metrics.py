@@ -67,6 +67,24 @@ ADP_CISA_ORGID = "134c704f-9b21-4f2e-91b3-4a467353bcc0"
 # than enriching fresh ones.
 ADP_LEGACY_GAP_YEARS = 2
 
+# The Linux kernel CNA (assigner shortName exactly "Linux"). It became a CNA
+# in 2024 and publishes several thousand records a year, so the additive
+# charts (volume curve, 9.8 flood, CNA concentration) also ship a variant
+# with its records removed — which trends survive without it. Medians and
+# other non-additive statistics are never recomputed this way.
+LINUX_CNA = "Linux"
+
+# Record tags (pipeline/tags_metrics.py). The three unprefixed values the CVE
+# record schema defines for ``containers.cna.tags``; anything prefixed
+# ``x_`` is a CNA-private tag, tallied only as context.
+SCHEMA_TAGS = ("unsupported-when-assigned", "disputed",
+               "exclusively-hosted-service")
+
+# CVSS 4.0 adoption (pipeline/cvss_v4_metrics.py): the spec was published
+# in November 2023; the monthly coverage curve and the adopters window start
+# at this publication month.
+V4_SINCE_MONTH = "2023-11"
+
 
 # ------------------------------------------------------------- bucket math
 
@@ -183,6 +201,10 @@ class CveFacts:
     adp_added: frozenset[str] = frozenset()   # subset of {ssvc, cvss, cwe}
     adp_providers: tuple[str, ...] = ()       # every ADP provider shortName
     adp_substantive: tuple[str, ...] = ()     # ADP providers that added SSVC/CVSS/CWE
+    # Record tags (tags_metrics.py): distinct string values of the CNA
+    # container's ``tags`` and of every ADP container's ``tags``.
+    tags: tuple[str, ...] = ()
+    adp_tags: tuple[str, ...] = ()
 
     @property
     def newest_cna_fingerprint(self) -> tuple[str, float] | None:
@@ -358,6 +380,17 @@ def _adp_is_substantive(adp: Any) -> bool:
             or _first_cwe(adp) is not None)
 
 
+def _tags(container: Any) -> tuple[str, ...]:
+    """Distinct non-empty string values of a container's ``tags`` array,
+    in first-seen order; () when absent or malformed."""
+    if not isinstance(container, dict):
+        return ()
+    raw = container.get("tags")
+    if not isinstance(raw, list):
+        return ()
+    return tuple(dict.fromkeys(t for t in raw if isinstance(t, str) and t))
+
+
 def _year_month(value: Any) -> str | None:
     """The ``"YYYY-MM"`` prefix of an ISO timestamp, or None when it isn't
     one with a 01-12 month. stdlib-only (no ``re`` import in this module)."""
@@ -494,6 +527,8 @@ def extract_facts(record: dict) -> CveFacts | None:
         adp_added=adp_added,
         adp_providers=adp_providers,
         adp_substantive=adp_substantive,
+        tags=_tags(cna),
+        adp_tags=tuple(dict.fromkeys(t for a in adps for t in _tags(a))),
     )
 
 
@@ -590,6 +625,42 @@ class Aggregator:
         # that added SSVC/CVSS/CWE), so the reference-only CVE-program root
         # never tops it despite riding on most records.
         self.adp_provider_substantive: Counter[str] = Counter()
+        # Per-CNA severity tally (published records): cna -> year -> the
+        # same bucket counts as ``flood``. Feeds the Linux-excluded 9.8
+        # flood (subtract LINUX_CNA's rows) and the record-tag severity
+        # baselines (the tagging CNAs' own records).
+        self.cna_year_flood: dict[str, dict[int, Counter[str]]] = \
+            defaultdict(lambda: defaultdict(Counter))
+        # Record tags (tags_metrics.py), published records only. Every CNA
+        # tag by publication year; for the schema tags also who applied
+        # them and the severity bucket of each tagged record; ADP tags as
+        # a flat tally (context only).
+        self.tag_year_counts: dict[str, Counter[int]] = defaultdict(Counter)
+        self.tag_year_cna: dict[str, dict[int, Counter[str]]] = {
+            t: defaultdict(Counter) for t in SCHEMA_TAGS}
+        self.tag_year_flood: dict[str, dict[int, Counter[str]]] = {
+            t: defaultdict(Counter) for t in SCHEMA_TAGS}
+        self.adp_tag_counts: Counter[str] = Counter()
+        # CVSS 4.0 adoption (cvss_v4_metrics.py), published records, CNA
+        # container only. Coverage class per record: "v4_only", "both"
+        # (v3.x and v4.0), "v3_only", "neither" (no v3.x/v4.0 CNA score —
+        # a v2-only record lands here). Yearly by publication year (plus
+        # "neither_adp": neither, yet an ADP container carries a v3/v4
+        # score); monthly by publication month from V4_SINCE_MONTH.
+        self.v4_year: dict[int, Counter[str]] = defaultdict(Counter)
+        self.v4_month: dict[str, Counter[str]] = defaultdict(Counter)
+        # year -> Counter of v4-scored records per CNA (distinct adopters)
+        self.v4_year_cna: dict[int, Counter[str]] = defaultdict(Counter)
+        # cna -> {"n", "v4", "v4_only"} over records published since
+        # V4_SINCE_MONTH (the adopters board)
+        self.v4_window_cna: dict[str, Counter[str]] = defaultdict(Counter)
+        # Records the CNA scored under both v3.x and v4.0: v4 - v3 base
+        # score in tenths (ints, exact), overall and per CNA, and whether
+        # the severity band agrees ("same" / "v4_higher" / "v4_lower").
+        self.v4_delta_tenths: Counter[int] = Counter()
+        self.v4_delta_cna: dict[str, Counter[int]] = defaultdict(Counter)
+        self.v4_band: Counter[str] = Counter()
+        self.v4_band_cna: dict[str, Counter[str]] = defaultdict(Counter)
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
@@ -648,12 +719,16 @@ class Aggregator:
             self.cna_year_scores[facts.cna][facts.year].append(newest)
 
         effective = facts.effective_score
+        bucket = "unscored" if effective is None \
+            else severity_bucket(effective)
+        self.flood[facts.year][bucket] += 1
+        self.cna_year_flood[facts.cna][facts.year][bucket] += 1
         if effective is None:
-            self.flood[facts.year]["unscored"] += 1
             self.quality_missing[facts.year]["cvss"] += 1
         else:
-            self.flood[facts.year][severity_bucket(effective)] += 1
             self.effective_by_cve[facts.cve_id] = effective
+        self._add_tags(facts, bucket)
+        self._add_v4(facts)
         # PoC coverage tally: the same bucket assignment as ``flood``, over
         # the subset of published records any PoC corpus references — the
         # two must bucket identically or the coverage rates would lie.
@@ -695,6 +770,51 @@ class Aggregator:
                     self.adp_month_added[month][field_] += 1
                 if facts.adp_cisa_legacy:
                     self.adp_month_legacy[month] += 1
+
+    def _add_tags(self, facts: CveFacts, bucket: str) -> None:
+        """Record-tag tallies for one PUBLISHED record (``bucket`` is its
+        ``flood`` severity bucket, so tagged and baseline mixes agree)."""
+        for tag in facts.tags:
+            self.tag_year_counts[tag][facts.year] += 1
+            if tag in self.tag_year_cna:
+                self.tag_year_cna[tag][facts.year][facts.cna] += 1
+                self.tag_year_flood[tag][facts.year][bucket] += 1
+        for tag in facts.adp_tags:
+            self.adp_tag_counts[tag] += 1
+
+    def _add_v4(self, facts: CveFacts) -> None:
+        """CVSS 4.0 adoption tallies for one PUBLISHED record (CNA
+        container scores only — see the attribute comments above)."""
+        scores = facts.cna_scores
+        has_v4, has_v3 = "v4" in scores, "v3" in scores
+        cls = ("both" if has_v3 else "v4_only") if has_v4 else \
+            ("v3_only" if has_v3 else "neither")
+        self.v4_year[facts.year][cls] += 1
+        if cls == "neither" and ("v4" in facts.adp_scores
+                                 or "v3" in facts.adp_scores):
+            self.v4_year[facts.year]["neither_adp"] += 1
+        if has_v4:
+            self.v4_year_cna[facts.year][facts.cna] += 1
+        month = facts.date_published[:7] if facts.date_published else None
+        if month is not None and month >= V4_SINCE_MONTH:
+            self.v4_month[month][cls] += 1
+            window = self.v4_window_cna[facts.cna]
+            window["n"] += 1
+            if has_v4:
+                window["v4"] += 1
+                if not has_v3:
+                    window["v4_only"] += 1
+        if has_v4 and has_v3:
+            tenths = round(scores["v4"] * 10) - round(scores["v3"] * 10)
+            self.v4_delta_tenths[tenths] += 1
+            self.v4_delta_cna[facts.cna][tenths] += 1
+            order = ("low", "medium", "high", "critical")
+            b4 = order.index(severity_bucket(scores["v4"]))
+            b3 = order.index(severity_bucket(scores["v3"]))
+            band = "same" if b4 == b3 else \
+                ("v4_higher" if b4 > b3 else "v4_lower")
+            self.v4_band[band] += 1
+            self.v4_band_cna[facts.cna][band] += 1
 
     def consume(self, records: Iterable[dict],
                 observer: Callable[[CveFacts, dict], None] | None = None
@@ -832,7 +952,33 @@ def build_nine_eight_flood(agg: Aggregator, generated_at: str) -> dict:
     if projected is not None:
         out["projection"] = {"year": current_year, "total": projected,
                              "elapsed": round(year_elapsed(generated_at), 3)}
+    out["without_linux"] = _flood_without_cna(agg, years, LINUX_CNA,
+                                              generated_at)
     return out
+
+
+def _flood_without_cna(agg: Aggregator, years: list[dict], cna: str,
+                       generated_at: str) -> dict:
+    """The 9.8 flood with one CNA's records subtracted, bucket by bucket
+    (counts are additive, so the difference is exact). Carries its own
+    pace projection, computed from the reduced current-year total — the
+    all-records projection must never be shown against this series."""
+    removed = agg.cna_year_flood.get(cna) or {}
+    rows = []
+    for row in years:
+        gone = removed.get(row["year"]) or {}
+        rows.append({"year": row["year"],
+                     **{k: row[k] - gone.get(k, 0) for k in
+                        ("critical", "high", "medium", "low", "unscored")}})
+    block: dict = {"cna": cna, "years": rows}
+    current_year = int(generated_at[:4])
+    total = sum(sum(v for k, v in r.items() if k != "year")
+                for r in rows if r["year"] == current_year)
+    projected = pace_projection(total, generated_at)
+    if projected is not None:
+        block["projection"] = {"year": current_year, "total": projected,
+                               "elapsed": round(year_elapsed(generated_at), 3)}
+    return block
 
 
 def build_score_vs_reality(agg: Aggregator, epss_scores: dict[str, float],
@@ -962,7 +1108,36 @@ def build_volume_curve(agg: Aggregator, generated_at: str) -> dict:
                 agg.rejected_by_year.get(current_year, 0), generated_at) or 0,
             "elapsed": round(year_elapsed(generated_at), 3),
         }
+    out["without_linux"] = _volume_without_cna(agg, LINUX_CNA, generated_at)
     return out
+
+
+def _volume_without_cna(agg: Aggregator, cna: str,
+                        generated_at: str) -> dict:
+    """The volume curve with one CNA's published and rejected records
+    subtracted (same year span, so the two series align index for index),
+    plus its own pace projection under the same rules as the full curve."""
+    rows = []
+    for year in agg.year_span():
+        pub = (agg.cna_year_published.get(year) or {}).get(cna, 0)
+        rej = (agg.cna_year_rejected.get(year) or {}).get(cna, 0)
+        rows.append({"year": year,
+                     "published": agg.published_by_year.get(year, 0) - pub,
+                     "rejected": agg.rejected_by_year.get(year, 0) - rej})
+    block: dict = {"cna": cna, "years": rows}
+    current_year = int(generated_at[:4])
+    current = next((r for r in rows if r["year"] == current_year), None)
+    projected = pace_projection(current["published"] if current else 0,
+                                generated_at)
+    if projected is not None:
+        block["projection"] = {
+            "year": current_year,
+            "published": projected,
+            "rejected": pace_projection(current["rejected"],
+                                        generated_at) or 0,
+            "elapsed": round(year_elapsed(generated_at), 3),
+        }
+    return block
 
 
 def build_meta(generated_at: str, *, cvelist_release: str, cve_count: int,

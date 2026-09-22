@@ -42,11 +42,12 @@ def test_id_age_buckets_from_fixture_corpus(obj):
     assert by_year[2014]["two_plus"] == 1
     assert by_year[2014]["pct_prior_year"] == 50.0
     # CVE-2024-0005 published 2025 -> one-year; the datePublished-less
-    # CVE-2025-0001 dates itself FROM its ID -> same-year by construction.
+    # CVE-2025-0001 and CVE-2025-0200 date themselves FROM their IDs ->
+    # same-year by construction.
     assert by_year[2025] == {
-        "year": 2025, "n": 2, "same_year": 1, "one_year": 1, "two_plus": 0,
-        "pct_same_year": 50.0, "pct_one_year": 50.0, "pct_two_plus": 0.0,
-        "pct_prior_year": 50.0}
+        "year": 2025, "n": 3, "same_year": 2, "one_year": 1, "two_plus": 0,
+        "pct_same_year": 66.7, "pct_one_year": 33.3, "pct_two_plus": 0.0,
+        "pct_prior_year": 33.3}
     # all-same-year years
     assert by_year[2023]["same_year"] == 3 and by_year[2023]["n"] == 3
     assert obj["id_age"]["clamped_negative"] == 0
@@ -56,7 +57,7 @@ def test_id_age_headline_skips_partial_year_and_names_baseline(obj):
     # GENERATED_AT is 2026 -> 2025 is the latest complete charted year;
     # 2015 isn't charted, so the baseline falls back to the earliest (2014).
     assert obj["id_age"]["headline"] == {
-        "latest_year": 2025, "pct_prior_year_latest": 50.0,
+        "latest_year": 2025, "pct_prior_year_latest": 33.3,
         "baseline_year": 2014, "pct_prior_year_baseline": 50.0}
 
 
@@ -92,7 +93,8 @@ def test_weekday_counts_are_monday_first_utc(obj):
 
 
 def test_undated_record_joins_id_age_but_not_the_day_tally(obj):
-    # CVE-2025-0001 has no datePublished: id_age 2025 n=2, weekday n=1.
+    # CVE-2025-0001 and CVE-2025-0200 have no datePublished: id_age 2025
+    # n=3, weekday n=1.
     wk = {y["year"]: y for y in obj["weekday"]["years"]}
     assert wk[2025]["n"] == 1
     assert wk[2025]["counts"] == [1, 0, 0, 0, 0, 0, 0]  # 2025-05-05, a Monday

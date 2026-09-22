@@ -255,10 +255,10 @@ def test_offline_pipeline_run_emits_valid_adp_coverage(tmp_path):
                               "cvss": 1, "cwe": 1, "legacy": 0,
                               "backfill": False}]
     assert obj["adds"]["total"] == 1 and obj["adds"]["pct_ssvc"] == 100.0
-    assert obj["providers"] == [{"provider": "CISA-ADP", "n": 1, "pct": 10.0}]
+    assert obj["providers"] == [{"provider": "CISA-ADP", "n": 1, "pct": 9.1}]
     h = obj["headline"]
-    assert h["total_published"] == 10 and h["total_cisa"] == 1
-    assert h["pct_cisa"] == 10.0 and h["sole_enricher"] == "CISA-ADP"
+    assert h["total_published"] == 11 and h["total_cisa"] == 1
+    assert h["pct_cisa"] == 9.1 and h["sole_enricher"] == "CISA-ADP"
     assert h["peak_month"] == "2025-03" and h["backfill_month_count"] == 0
 
     meta = json.loads((tmp_path / "meta.json").read_text("utf-8"))

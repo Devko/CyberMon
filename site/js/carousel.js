@@ -90,6 +90,10 @@ import { render as renderCreditsTargets } from "./charts/credits_targets.js";
 import { render as renderCreditsBoard } from "./charts/credits_board.js";
 import { render as renderCreditsCoverage } from "./charts/credits_coverage.js";
 import { render as renderC2Age } from "./charts/c2_age.js";
+import { render as renderCvss4 } from "./charts/cvss4.js";
+import { render as renderTagsTrend } from "./charts/tags_trend.js";
+import { render as renderTagsBoard } from "./charts/tags_board.js";
+import { render as renderTagsSeverity } from "./charts/tags_severity.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -109,6 +113,7 @@ const MODULES = {
       { id: "volume", file: "data/volume_curve.json", render: renderVolume },
       { id: "quality", file: "data/advisory_quality.json", render: renderQuality },
       { id: "cwe", file: "data/cwe_distribution.json", render: renderCweShare },
+      { id: "cvss4", file: "data/cvss_v4.json", render: renderCvss4 },
     ],
   },
   market: {
@@ -283,6 +288,14 @@ const MODULES = {
       { id: "credits_weakness", render: renderCreditsWeakness },
       { id: "credits_targets", render: renderCreditsTargets },
       { id: "credits_coverage", render: renderCreditsCoverage },
+    ],
+  },
+  tags: {
+    file: "data/cve_tags.json",
+    sections: [
+      { id: "tags_trend", render: renderTagsTrend },
+      { id: "tags_board", render: renderTagsBoard, table: true },
+      { id: "tags_severity", render: renderTagsSeverity },
     ],
   },
 };

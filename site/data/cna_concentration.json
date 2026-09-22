@@ -1385,5 +1385,206 @@
   "year": 2026,
   "newcomers": 69,
   "elapsed": 0.726
+ },
+ "without_linux": {
+  "cna": "Linux",
+  "years": [
+   {
+    "year": 1999,
+    "cna_count": 1,
+    "top5_share": 100.0,
+    "top10_share": 100.0,
+    "hhi": 10000.0
+   },
+   {
+    "year": 2000,
+    "cna_count": 1,
+    "top5_share": 100.0,
+    "top10_share": 100.0,
+    "hhi": 10000.0
+   },
+   {
+    "year": 2001,
+    "cna_count": 1,
+    "top5_share": 100.0,
+    "top10_share": 100.0,
+    "hhi": 10000.0
+   },
+   {
+    "year": 2002,
+    "cna_count": 1,
+    "top5_share": 100.0,
+    "top10_share": 100.0,
+    "hhi": 10000.0
+   },
+   {
+    "year": 2003,
+    "cna_count": 1,
+    "top5_share": 100.0,
+    "top10_share": 100.0,
+    "hhi": 10000.0
+   },
+   {
+    "year": 2004,
+    "cna_count": 1,
+    "top5_share": 100.0,
+    "top10_share": 100.0,
+    "hhi": 10000.0
+   },
+   {
+    "year": 2005,
+    "cna_count": 7,
+    "top5_share": 99.9,
+    "top10_share": 100.0,
+    "hhi": 8841.6
+   },
+   {
+    "year": 2006,
+    "cna_count": 8,
+    "top5_share": 99.4,
+    "top10_share": 100.0,
+    "hhi": 8539.3
+   },
+   {
+    "year": 2007,
+    "cna_count": 10,
+    "top5_share": 99.6,
+    "top10_share": 100.0,
+    "hhi": 8725.2
+   },
+   {
+    "year": 2008,
+    "cna_count": 9,
+    "top5_share": 98.4,
+    "top10_share": 100.0,
+    "hhi": 7919.8
+   },
+   {
+    "year": 2009,
+    "cna_count": 13,
+    "top5_share": 97.9,
+    "top10_share": 99.9,
+    "hhi": 7352.7
+   },
+   {
+    "year": 2010,
+    "cna_count": 15,
+    "top5_share": 87.8,
+    "top10_share": 98.8,
+    "hhi": 3948.8
+   },
+   {
+    "year": 2011,
+    "cna_count": 15,
+    "top5_share": 80.5,
+    "top10_share": 96.9,
+    "hhi": 2850.0
+   },
+   {
+    "year": 2012,
+    "cna_count": 17,
+    "top5_share": 79.1,
+    "top10_share": 94.0,
+    "hhi": 2223.9
+   },
+   {
+    "year": 2013,
+    "cna_count": 19,
+    "top5_share": 68.4,
+    "top10_share": 88.0,
+    "hhi": 1250.7
+   },
+   {
+    "year": 2014,
+    "cna_count": 20,
+    "top5_share": 76.1,
+    "top10_share": 91.5,
+    "hhi": 1769.1
+   },
+   {
+    "year": 2015,
+    "cna_count": 21,
+    "top5_share": 63.8,
+    "top10_share": 87.7,
+    "hhi": 1397.3
+   },
+   {
+    "year": 2016,
+    "cna_count": 37,
+    "top5_share": 60.6,
+    "top10_share": 86.3,
+    "hhi": 1125.0
+   },
+   {
+    "year": 2017,
+    "cna_count": 73,
+    "top5_share": 65.3,
+    "top10_share": 80.9,
+    "hhi": 2210.3
+   },
+   {
+    "year": 2018,
+    "cna_count": 77,
+    "top5_share": 60.7,
+    "top10_share": 74.5,
+    "hhi": 2084.7
+   },
+   {
+    "year": 2019,
+    "cna_count": 100,
+    "top5_share": 60.8,
+    "top10_share": 74.6,
+    "hhi": 2120.8
+   },
+   {
+    "year": 2020,
+    "cna_count": 123,
+    "top5_share": 56.8,
+    "top10_share": 69.9,
+    "hhi": 1692.0
+   },
+   {
+    "year": 2021,
+    "cna_count": 162,
+    "top5_share": 48.4,
+    "top10_share": 61.8,
+    "hhi": 1169.8
+   },
+   {
+    "year": 2022,
+    "cna_count": 203,
+    "top5_share": 47.3,
+    "top10_share": 59.8,
+    "hhi": 1068.9
+   },
+   {
+    "year": 2023,
+    "cna_count": 262,
+    "top5_share": 45.3,
+    "top10_share": 58.1,
+    "hhi": 682.5
+   },
+   {
+    "year": 2024,
+    "cna_count": 306,
+    "top5_share": 53.5,
+    "top10_share": 66.1,
+    "hhi": 691.5
+   },
+   {
+    "year": 2025,
+    "cna_count": 366,
+    "top5_share": 57.5,
+    "top10_share": 68.1,
+    "hhi": 764.7
+   },
+   {
+    "year": 2026,
+    "cna_count": 380,
+    "top5_share": 46.5,
+    "top10_share": 67.6,
+    "hhi": 630.2
+   }
+  ]
  }
 }

@@ -226,6 +226,172 @@ milestone overlay alone would have been module 19 with annotations.
   classifier, and keyword-matching product names is a real landmine, so
   it belongs in its own pass. See the Tier 1 candidate note below.
 
+## Scheduled 2026-09-22 — the next build round
+
+Chosen by the owner from the 2026-09-22 ideas pass. Four new modules, three
+additions to existing pages, and one instrument. Numbering continues from 22;
+every item keeps the house rules — open data only, every number reproducible,
+copy guarded by the claims audit, and time shown as the kind of time it is
+(event, publication, or first observation by CyberMon).
+
+### 23 · Record Tags — CVEs for software nobody supports — SHIPPED as module 23
+Live as **23 · Record Tags** ([tags.html](../site/tags.html)), data
+`cve_tags.json`, stage `pipeline/tags_metrics.py` (tallies ride the shared
+corpus pass). Three charts: schema tags per year (count / share toggle,
+x_ and ADP tags listed as context only); who tags (board per tag over the
+last five years — 49 of 471 active CNAs set unsupported-when-assigned,
+mitre sets 82% of disputed); severity of tagged records against the same
+CNAs' other records (17.4% Critical vs 11.1%) and all records (9.4%).
+Probe counts reproduced exactly from the checkout. Open: a "time
+disputed" view needs CyberMon's own tag snapshots (the record has no tag
+date). Original entry:
+- **Thesis (revised after the count probe):** more and more CVE ids are
+  issued for software its vendor had already stopped supporting. The record
+  format lets a CNA tag a CVE `unsupported-when-assigned`; those tags went
+  from 21 records (2020) to 423 (2025) and 373 by 2026-09-22. The `disputed`
+  tag — the first-draft thesis, "argument is the fastest-growing category" —
+  is flat: 85–137 records a year, ~0.3% of the corpus. The page says so
+  rather than hiding it.
+- **Probe (corpus cve_2026-09-22_0200Z, published records, CNA container):**
+  `x_open-source` 2,442 · `x_freeware` 1,870 · `disputed` 1,499 ·
+  `unsupported-when-assigned` 1,237 · `exclusively-hosted-service` 397 ·
+  `x_known-exploited-vulnerability` 154; ADP containers carry only
+  `x_bundling-flagged-by-CVE-Program` (39). The three unprefixed tags are
+  the schema's; `x_` tags are CNA-private and reported only as context.
+- **Signals:** per-year count and share for each schema tag; the CNAs that
+  apply `unsupported-when-assigned` and `disputed` (who tags, and how
+  concentrated tagging is); tagged records' severity against the year's
+  baseline.
+- **Source:** `containers.cna.tags` in the cvelistV5 corpus already read
+  nightly.
+- **Caveats for the copy:** a tag records that a dispute or end-of-life
+  status was *noted by the CNA*, not that it is correct; untagged is not
+  "supported" or "undisputed" — most CNAs never use the tags. The record
+  carries no tag date, so no "time disputed" chart until CyberMon's own
+  snapshots accrue.
+
+### 24 · Incident Clock — SEC cyber-incident filings — SHIPPED as module 24
+- **Shipped 2026-09-22 (first edition pending):** `incidents.html`, group
+  "industry". Fetcher `pipeline/fetch_sec_incidents.py` (module 02's EDGAR
+  URL + User-Agent, 0.25s pacing, bounded retry; month windows halved at the
+  10,000-hit cap; paged by `from`; dedup by accession number), stage
+  `pipeline/sec_incidents_metrics.py`, contract
+  `pipeline/sec_incidents_contracts.py`. Queries: `q="Item 1.05"`
+  forms `8-K,8-K/A`, counted by EDGAR's item list; `q="cybersecurity
+  incident"` forms `8-K`, counted when items hold 8.01 and not 1.05 and the
+  phrase hit the primary document. Three sections: monthly/quarterly
+  filings, amendment lag (CIK + nearest prior original, first amendment),
+  receipts board with EDGAR links. The build sandbox could not reach
+  efts.sec.gov, so the committed edition is `status: "empty"` (nodata cards,
+  meta `{"status": "empty"}`) and the response shape is assumed from the
+  documented EFTS format.
+- **Open:** (1) the first nightly must confirm the assumed response shape
+  — read `diagnostics` in `sec_incidents.json`: `phrase_fallback_*` should
+  be 0 (items present), `dropped_*` ~0, `hits_* > filings_*` (one hit per
+  document), `filings_105`/`filings_801` plausible, `requests` in the low
+  hundreds; spot-check a handful of receipt links. (2) The 8.01 phrase is a
+  first definition; tune it only with a before/after count in the commit.
+  (3) Once real, add tolerant claims guards for any prose that states a
+  trend (the thesis's "trickle" and "drift toward 8.01" are deliberately
+  not asserted in the copy yet). (4) The footer disclaimer now names the
+  receipts board as the one place an affected organisation is named —
+  owner to confirm that editorial line.
+- **Thesis:** since December 2023 a US public company must disclose a
+  material cybersecurity incident on Form 8-K Item 1.05 within four business
+  days of deciding it is material. The filing record shows how the rule is
+  actually used: a trickle of Item 1.05 filings, amendments that arrive
+  months later, and a drift toward voluntary Item 8.01 disclosures after the
+  SEC's May 2024 guidance.
+- **Signals:** Item 1.05 8-Ks per month/quarter; 8-K/A amendments and the lag
+  from the original filing to its amendment; Item 8.01 cyber-incident
+  filings beside them; distinct companies filing.
+- **Source:** EDGAR full-text search (`efts.sec.gov/LATEST/search-index`),
+  already used by module 02's EDGAR lane (same client, User-Agent and pacing
+  rules). No key.
+- **Caveats:** full-text matching finds filings that *mention* the item; the
+  item list EDGAR indexes per filing is the filter. The incident date is
+  prose, not a field, so the page measures filing cadence and amendment lag,
+  never "time from breach to disclosure".
+- **Feasibility:** medium — pagination and de-duplication by accession
+  number; carry-forward on an EDGAR outage like HIBP/Ransomwhere.
+
+### 25 · Advisory Gap — GitHub advisories vs CVE
+- **Thesis:** the software ecosystems grade their own vulnerabilities now.
+  A large share of GitHub-reviewed advisories never gets a CVE id, so a
+  program that watches only CVE misses them (the "registries are faster"
+  framing was tested earlier and killed — this is about coverage, not speed).
+- **Signals:** reviewed GHSA advisories per year and ecosystem, split by
+  whether a CVE alias exists; the no-CVE share by ecosystem; severity of
+  advisories with and without a CVE.
+- **Source:** OSV per-ecosystem exports
+  (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`), which
+  carry GitHub-reviewed advisories with their aliases. Reachable, no key.
+- **Caveats:** OSV mirrors reviewed advisories only; a CVE alias can be added
+  later, so a young advisory's "no CVE" can change (young cohorts flagged).
+- **Feasibility:** medium — shares one fetcher with module 26.
+
+### 26 · Registry Malware — malicious packages
+- **Thesis:** package registries are the new watering hole, and the takedown
+  log is public.
+- **Signals:** `MAL-*` reports per ecosystem per month (npm, PyPI, crates.io,
+  RubyGems, NuGet, Go…); withdrawn reports; share of the year's reports by
+  ecosystem.
+- **Source:** the same OSV exports (OpenSSF malicious-packages feed).
+- **Caveats:** counts reports, not installs or victims; a report's date is
+  when it was published to the feed, not when the package went live.
+- **Feasibility:** easy once module 25's fetcher exists.
+
+### CVSS 4.0 adoption — a section on module 01 — SHIPPED as section 10 of module 01
+Live on [cve.html](../site/cve.html) (section 10), data `cvss_v4.json`,
+stage `pipeline/cvss_v4_metrics.py`. Monthly/yearly coverage classes from
+the CNA container (ADP scores not counted; `neither_adp` shows the gap),
+the adopters board, and the v4.0 − v3.x histogram with band agreement
+(69% same band, median −0.1). Headline filled from data. Probe counts
+reproduced (21,509 of 68,708 in 2026 on the checkout). Original entry:
+- **Thesis:** CVSS 4.0 shipped in November 2023; the record shows who
+  actually moved to it.
+- **Signals:** share of each month's newly published records carrying a
+  v4.0 score (v4 only / v3 and v4 / v3 only / neither) — probe: 30 records
+  in 2022, 3,577 in 2024, 12,419 in 2025, 21,509 of 68,708 (31%) in 2026 so
+  far; the CNAs that
+  switched; on records scored in both, how v4 compares with v3.
+- **Source:** the corpus pass (metrics already separates the versions).
+
+### Ransomware-flag lag — a section on module 12
+- **Thesis:** CISA's "known ransomware use" flag is often set long after an
+  entry is listed; the changelog already logs every flip.
+- **Signals:** days from `dateAdded` to the Unknown→Known flip, as a
+  distribution and per listing year; flips that went back.
+- **Caveats:** the 2023-12 column-introduction step is excluded (as in the
+  flag-flip section); capture-granularity dates are upper bounds.
+
+### Linux-kernel toggle — modules 01 and 04 — SHIPPED
+Additive `without_linux` blocks in `volume_curve.json`,
+`nine_eight_flood.json` (each with its own pace projection) and
+`cna_concentration.json` (shares/HHI recomputed); a toggle beside the
+existing controls on those three charts, with the "medians are not
+subtractable" note. Findings on the page, claims-guarded: nearly every
+unscored record since 2024 is the kernel's; the post-2023 top-5
+re-concentration survives without it. Original entry:
+- **Thesis check, not a thesis:** the kernel became a CNA in 2024 and
+  published 4,287 records that year, 5,675 in 2025 and 6,547 in 2026 so far
+  (~9.5% of the year). A toggle that removes it
+  shows which trends survive without it.
+- **Where:** the additive charts only — volume curve, the 9.8 flood, CNA
+  concentration (top-5/top-10 share, HHI). Medians are not subtractable and
+  stay as they are; the toggle says so.
+
+### Mutation Observatory — instrument
+- **What:** a per-CVE event trail built from the histories CyberMon keeps:
+  rescores (`rescore_log.csv`), KEV additions / edits / removals
+  (`kev_changelog.csv`), and the nightly biggest EPSS move
+  (`epss_volatility.csv`). A daily event stream you can brush, a CVE search
+  that shows one record's trail, and the events in the brushed window as a
+  table with CSV export.
+- **Rule:** every event is dated by first observation, labelled as such;
+  nothing is drawn before monitoring began, and the page says which
+  histories start when.
+
 ## Fresh candidates — probed 2026-07-18
 
 Six ideas probed live this round (every endpoint fetched, not taken from
