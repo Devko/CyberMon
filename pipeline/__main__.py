@@ -18,8 +18,9 @@ is omitted for this run and ``meta.json`` omits ``sources.nvd``
 (contracts.py allows that).
 
 Single-module upstreams degrade instead of aborting (documented choice):
-HIBP, Ransomwhere and APNIC each feed exactly one module, so a sustained
-outage there carries that module's previous edition forward marked
+HIBP, Ransomwhere, APNIC and SEC EDGAR (the Incident Clock) each feed
+exactly one module, so a sustained outage there carries that module's
+previous edition forward marked
 ``"stale": true`` — the site renders "(carried forward)" — while the run
 continues. Core sources (the cvelistV5 corpus, EPSS, KEV) still fail the
 run: they feed almost every module, and half a dashboard is worse than a
@@ -46,7 +47,7 @@ from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
                kev_metrics, market_metrics, metrics, naming_metrics,
                nvd_throughput, poc_metrics, quality_metrics, rescore_tracker,
-               top25_metrics)
+               sec_incidents_metrics, top25_metrics)
 from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_feodo import fetch_blocklist, load_blocklist_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -56,6 +57,7 @@ from .fetch_hibp import HibpData, fetch_hibp, load_hibp_file
 from .fetch_kev import KevData, fetch_kev, load_kev_file
 from .fetch_poc import fetch_poc, load_poc_files
 from .fetch_ransomwhere import fetch_ransomwhere, load_ransomwhere_file
+from .fetch_sec_incidents import fetch_sec_incidents, load_sec_incidents_file
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
 DEFAULT_MIN_CVES = 100
@@ -354,6 +356,36 @@ def _carry_forward_source(out_dir: Path, key: str) -> dict | None:
     return {**block, "stale": True}
 
 
+def _sec_incidents_outputs(out_dir: Path, sec, failure: str | None,
+                           generated_at: str) -> tuple[dict, dict]:
+    """(sec_incidents.json, meta.sources.sec_incidents) for tonight.
+
+    Fresh fetch: build it. Failed fetch: carry the previous edition forward
+    stale when it holds counts (status "ok") and its source block does;
+    otherwise there is nothing to carry — re-emit the honest empty edition
+    ("the first nightly fills this page") with the ``{"status": "empty"}``
+    source, which has no fetched_at because nothing was ever fetched."""
+    if sec is not None:
+        obj = sec_incidents_metrics.build_sec_incidents(sec, generated_at)
+        return obj, sec_incidents_metrics.source_block(obj, generated_at)
+    prior_path = out_dir / "sec_incidents.json"
+    try:
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        prior = None
+    if isinstance(prior, dict) and prior.get("status") == "ok":
+        source = _carry_forward_source(out_dir, "sec_incidents")
+        if source is not None and "fetched_at" in source:
+            carried = _carry_forward(out_dir, "sec_incidents.json",
+                                     generated_at, failure)
+            if carried is not None:
+                return carried, source
+    _warn(f"{failure}; no counted sec_incidents.json to carry forward — "
+          f"emitting the empty edition")
+    return (sec_incidents_metrics.build_empty(generated_at, "fetch_failed"),
+            dict(sec_incidents_metrics.EMPTY_SOURCE))
+
+
 # A CVE corpus only grows: tonight's record count below this share of last
 # night's means a truncated download, a delta release mistaken for the
 # corpus, or a zip that mostly failed to decode — never a real shrink.
@@ -400,7 +432,7 @@ def run(args: argparse.Namespace) -> int:
     # ---- gather ----------------------------------------------------------
     release, records = _gather_records(args)
     # Set when a single-module upstream fails; drives the carry-forward.
-    hibp_failure = ransomwhere_failure = apnic_failure = None
+    hibp_failure = ransomwhere_failure = apnic_failure = sec_failure = None
     if args.offline_fixtures:
         epss = load_epss_file(FIXTURES_DIR / "epss_scores.csv")
         kev = load_kev_file(FIXTURES_DIR / "kev.json")
@@ -411,6 +443,7 @@ def run(args: argparse.Namespace) -> int:
                              FIXTURES_DIR / "metasploit.json",
                              FIXTURES_DIR / "nuclei_cves.json")
         feodo = load_blocklist_file(FIXTURES_DIR / "feodo_c2.json")
+        sec = load_sec_incidents_file(FIXTURES_DIR / "sec_incidents.json")
     else:
         print("fetching EPSS scores ...")
         epss = fetch_epss()
@@ -453,6 +486,14 @@ def run(args: argparse.Namespace) -> int:
         feodo = fetch_blocklist()
         print(f"  Feodo Tracker: {feodo.entry_count} C2s listed "
               f"({feodo.online_count} online)")
+        # SEC EDGAR feeds only the Incident Clock: an outage (or SEC's
+        # block page) degrades that one module, like HIBP/Ransomwhere.
+        print("fetching SEC EDGAR 8-K cybersecurity-incident filings ...")
+        try:
+            sec = fetch_sec_incidents(end=today)
+        except (OSError, ValueError) as exc:
+            sec = None
+            sec_failure = f"SEC EDGAR fetch failed ({exc!r})"
     nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args, today)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
@@ -718,6 +759,11 @@ def run(args: argparse.Namespace) -> int:
         args.out, generated_at, snapshot=feodo,
         offline_fixtures=args.offline_fixtures)
     outputs["botnet_weather.json"] = botnet_obj
+    # Incident Clock: a stateless re-read of the whole window, or — on an
+    # EDGAR outage — last night's edition carried forward stale.
+    sec_obj, sec_source = _sec_incidents_outputs(args.out, sec, sec_failure,
+                                                 generated_at)
+    outputs["sec_incidents.json"] = sec_obj
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -786,6 +832,7 @@ def run(args: argparse.Namespace) -> int:
     outputs["meta.json"]["sources"]["nuclei"] = {
         "fetched_at": generated_at, "cve_count": len(poc.nuclei_ids)}
     outputs["meta.json"]["sources"]["feodo"] = feodo_source
+    outputs["meta.json"]["sources"]["sec_incidents"] = sec_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

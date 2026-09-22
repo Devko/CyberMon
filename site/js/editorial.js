@@ -98,6 +98,7 @@ export const editorial = {
     { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackmap" },
     { id: "ai", href: "ai.html", label: "The AI Alibi", group: "exploitation" },
     { id: "credits", href: "credits.html", label: "AI Credits", group: "machine" },
+    { id: "incidents", href: "incidents.html", label: "Incident Clock", group: "industry" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -435,6 +436,22 @@ export const editorial = {
           "attached.",
         live: true,
       },
+      {
+        id: "incidents",
+        href: "incidents.html",
+        num: "24",
+        label: "Incident Clock",
+        headline: "The SEC's incident-disclosure rule, counted filing by filing.",
+        blurb:
+          "Since December 2023 a US public company must disclose a material " +
+          "cybersecurity incident on Form 8-K under Item 1.05. The Incident " +
+          "Clock counts those filings on EDGAR by month and quarter, the " +
+          "amendments that follow and how long they take to arrive, and the " +
+          "voluntary Item 8.01 incident filings beside them — with a receipts " +
+          "board linking the latest filings. Re-read from SEC EDGAR full-text " +
+          "search every night.",
+        live: true,
+      },
     ],
   },
 
@@ -541,6 +558,9 @@ export const editorial = {
     credits_weakness: "ai_credits_metrics.py",
     credits_targets: "ai_credits_metrics.py",
     credits_coverage: "ai_credits_metrics.py",
+    incidents_clock: "sec_incidents_metrics.py",
+    incidents_amend: "sec_incidents_metrics.py",
+    incidents_receipts: "sec_incidents_metrics.py",
   },
 
   // Shared by every chart that draws a full-year pace projection for the
@@ -3721,6 +3741,145 @@ export const editorial = {
         "differs: some CNAs credit every reporter, some none, and a few write " +
         "their own product into the line.",
     },
+
+    // --------------------------------- incidents.html · 1 (hero)
+    // Every count on this page is filled from data/sec_incidents.json. Until
+    // the first nightly EDGAR read lands, the edition is status "empty" and
+    // each section shows `nodata` — no zeros are drawn for counts nobody made.
+    incidents_clock: {
+      num: "01",
+      kicker: "The filing clock",
+      source: "SEC EDGAR full-text search (Forms 8-K, 8-K/A)",
+      headline: "Material cyber incidents, counted by the filing.",
+      caption:
+        "Since 18 December 2023, a US public company that decides a " +
+        "cybersecurity incident is material must file a Form 8-K under " +
+        "Item 1.05 within four business days of that decision. The bars " +
+        "count those filings per month by filing date — the day the 8-K " +
+        "reached EDGAR, not the day of the incident, which a filing gives " +
+        "only in its text, if at all. Amendments (8-K/A) are their own " +
+        "series. Beside them: Item 8.01 filings that describe a " +
+        "cybersecurity incident — the voluntary route the SEC pointed " +
+        "companies to in May 2024 for incidents not, or not yet, judged " +
+        "material.",
+      statLabel: "Item 1.05 incident disclosures on EDGAR (original 8-Ks)",
+      statWhen:
+        "from {companies} companies since {start} · {amendments} amendments · " +
+        "{voluntary} Item 8.01 cyber filings · latest Item 1.05 filed {latest}",
+      legendOriginals: "Item 1.05 · original 8-K",
+      legendAmendments: "Item 1.05 · amendment (8-K/A)",
+      legendVoluntary: "Item 8.01 · cyber incident (voluntary)",
+      toggleMonthly: "Monthly",
+      toggleQuarterly: "Quarterly",
+      guidanceMark: "SEC 8.01 guidance",
+      partialTooltip: "partial period",
+      yAxis: "Filings",
+      note:
+        "Hollow bars are partial periods: the rule took effect on 18 " +
+        "December 2023, and the current month is still filling.",
+      nodata:
+        "No edition yet — the first nightly fills this page. The pipeline " +
+        "re-reads EDGAR's full-text search every night; until that first " +
+        "read lands, nothing has been counted, so nothing is drawn as zero.",
+      // {q105}/{forms105}/... fill from the edition's own `definitions` —
+      // the query IS the measurement, so the page prints the one it ran.
+      methodology:
+        "Two queries against SEC EDGAR full-text search (efts.sec.gov), " +
+        "re-run over the whole window every night one calendar month at a " +
+        "time. Item 1.05: the phrase {q105} in forms {forms105}. The phrase " +
+        "only finds candidates — a filing can mention Item 1.05 without " +
+        "being filed under it — so a filing counts when EDGAR's own item " +
+        "list for it contains Item {item105}; form 8-K is an original " +
+        "disclosure, 8-K/A an amendment. Item 8.01: the phrase {q801} in " +
+        "form {forms801} originals; a filing counts when its item list " +
+        "contains Item {item801} and not Item 1.05, and the phrase appears " +
+        "in the 8-K itself rather than only in an attached exhibit, where " +
+        "press-release risk language would otherwise count routine " +
+        "announcements. Full-text search returns one hit per document, so " +
+        "filings are de-duplicated by accession number, and companies are " +
+        "counted once per primary filer (CIK). Months are calendar months " +
+        "of the filing date EDGAR records; the first month counts from the " +
+        "rule's effective date. Where a response lacks a filing's item " +
+        "list, the phrase match decides, and the edition records how many " +
+        "filings rested on that fallback. An EDGAR outage carries the " +
+        "previous edition forward, marked in the footer.",
+    },
+
+    // --------------------------------- incidents.html · 2
+    incidents_amend: {
+      num: "02",
+      kicker: "The amendment lag",
+      source: "SEC EDGAR full-text search (Forms 8-K, 8-K/A)",
+      headline: "From disclosure to amendment.",
+      caption:
+        "The rule expects a first filing to be incomplete: a company that " +
+        "does not yet know an incident's scope or impact when it files under " +
+        "Item 1.05 must amend the 8-K once it does. Each Item 1.05 amendment " +
+        "is matched to the same company's most recent Item 1.05 original " +
+        "filed on or before it, and the bars count the days from each " +
+        "original to its first amendment.",
+      statLabel: "Median days from an Item 1.05 filing to its first amendment",
+      statValue: "{median} days",
+      statWhen: "{amended} of {originals} disclosures amended so far · longest {max} days",
+      unmatched:
+        "{unmatched} amendment(s) had no Item 1.05 original from the same " +
+        "filer in the window and are left out of the lag.",
+      xAxis: "Days from original to first amendment",
+      yAxis: "Disclosures",
+      note:
+        "Right-censored: a recent disclosure has had little time to be " +
+        "amended, so both the share amended and the median understate what " +
+        "the record will eventually show.",
+      noAmend: "No Item 1.05 filing in this edition has been amended yet.",
+      nodata:
+        "No edition yet — the first nightly fills this page. The pipeline " +
+        "re-reads EDGAR's full-text search every night; until that first " +
+        "read lands, there is no lag to measure.",
+      methodology:
+        "Amendments are Item 1.05 filings on form 8-K/A. Each is matched to " +
+        "the latest Item 1.05 original (form 8-K) from the same primary " +
+        "filer CIK filed on or before the amendment's date; a company with " +
+        "two incidents therefore has each amendment attached to the nearer " +
+        "one. The lag is whole calendar days between the two filing dates, " +
+        "taken from each original's first amendment only — later " +
+        "amendments to the same original count as filings on the clock " +
+        "above but not again here. An amendment whose filer has no earlier " +
+        "Item 1.05 original since 18 December 2023 is counted as unmatched " +
+        "and left out. Filing dates, not incident dates: nothing on this " +
+        "page measures time from breach to disclosure.",
+    },
+
+    // --------------------------------- incidents.html · 3
+    incidents_receipts: {
+      num: "03",
+      kicker: "The receipts",
+      source: "SEC EDGAR (sec.gov/Archives)",
+      headline: "The latest Item 1.05 filings, each linked to EDGAR.",
+      caption:
+        "The most recent Item 1.05 filings, originals and amendments, each " +
+        "linked to its filing index on EDGAR — the filing date is the " +
+        "link. These are the companies' own public disclosures, listed " +
+        "under the filer's name as EDGAR records it. The incident's own " +
+        "date, where the company gives one, is in the filing's text.",
+      colDate: "Filed",
+      colForm: "Form",
+      colCompany: "Filer",
+      colLag: "Days after original",
+      // The filing date is the link; this names it for screen readers.
+      linkLabel: "— filing index on EDGAR",
+      nodata:
+        "No edition yet — the first nightly fills this page with the latest " +
+        "Item 1.05 filings and their EDGAR links.",
+      noRows: "No Item 1.05 filing in this edition's window.",
+      methodology:
+        "Up to the 25 newest Item 1.05 filings in the window, newest first " +
+        "(ties by accession number). The filer is the first company on the " +
+        "filing, its ticker as EDGAR's display name carries it; the link is " +
+        "built from the filer's CIK and the accession number " +
+        "(sec.gov/Archives/edgar/data/<CIK>/<accession>/<accession>-index.htm). " +
+        "For an amendment, “days after original” is the lag to the " +
+        "original it was matched to, as in the chart above.",
+    },
   },
 
   footer: {
@@ -3741,7 +3900,12 @@ export const editorial = {
       "Metasploit metadata ({metasploit_modules} modules) · " +
       "Nuclei CVE templates ({nuclei_cves}) · " +
       "Feodo Tracker: {feodo_listed} C2s listed ({feodo_online} online) " +
-      "fetched {feodo_fetched}",
+      "fetched {feodo_fetched} · " +
+      "SEC EDGAR 8-K incident filings: {sec_incidents}",
+    // {sec_incidents} fill: counts once fetched; the pending line before the
+    // first nightly EDGAR read (meta.sources.sec_incidents.status "empty").
+    secFetched: "{filings_105} Item 1.05 / {filings_801} Item 8.01 fetched {fetched}",
+    secPending: "pending the first nightly read",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
@@ -3749,7 +3913,9 @@ export const editorial = {
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, or the Internet " +
       "Archive. Charts aggregate public data; no individual CVE is news here, no victim " +
-      "is identified or identifiable anywhere on this site, and no attacker " +
+      "is identified or identifiable anywhere on this site — the one exception is the " +
+      "Incident Clock's receipts, which link public companies' own SEC filings under " +
+      "the filer's name as EDGAR records it — and no attacker " +
       "infrastructure is republished — C2 servers appear only as aggregate counts, " +
       "never as addresses.",
     reuseNote:
@@ -3887,6 +4053,7 @@ export const editorial = {
       c2: "abuse.ch Feodo Tracker (CC0) · CyberMon nightly snapshots",
       ai: "Exploit-DB · Metasploit · cvelistV5 (MITRE) · CyberMon AI timeline",
       credits: "CVE List V5 (MITRE) · CISA KEV · finders' own announcements",
+      incidents: "SEC EDGAR full-text search (Forms 8-K, 8-K/A)",
     },
   },
 };

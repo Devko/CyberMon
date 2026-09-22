@@ -1,0 +1,26 @@
+{
+ "generated_at": "2026-09-22T02:50:21Z",
+ "status": "empty",
+ "status_reason": "not_fetched",
+ "window": {
+  "start": "2023-12-18",
+  "end": "2026-09-22"
+ },
+ "definitions": {
+  "item_105": {
+   "q": "\"Item 1.05\"",
+   "forms": "8-K,8-K/A",
+   "item": "1.05"
+  },
+  "item_801": {
+   "q": "\"cybersecurity incident\"",
+   "forms": "8-K",
+   "item": "8.01"
+  }
+ },
+ "monthly": [],
+ "quarterly": [],
+ "totals": null,
+ "amendment_lag": null,
+ "recent": []
+}

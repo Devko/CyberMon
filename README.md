@@ -440,6 +440,30 @@ observer. Stage `pipeline/ai_credits_metrics.py`. The copy was rewritten and
 the role handling fixed on 2026-09-20 after an external review; the page's
 methodology discloses that it was drafted with Claude, an Anthropic model.
 
+### 24 · Incident Clock — [incidents.html](https://devko.github.io/CyberMon/incidents.html) (live; first edition pending)
+
+*The SEC's incident-disclosure rule, counted filing by filing.* Since
+18 December 2023 a US public company must disclose a material cybersecurity
+incident on Form 8-K under Item 1.05. Every night the pipeline re-reads SEC
+EDGAR full-text search (the client, User-Agent and pacing of module 02's
+EDGAR lane) month by month over the whole window and counts, **by filing
+date**: Item 1.05 originals, Item 1.05 amendments (8-K/A), and Item 8.01
+filings describing a cybersecurity incident — the voluntary route after the
+SEC's May 2024 guidance. A filing counts by EDGAR's own item list; the
+full-text phrase only finds candidates, and the 8.01 phrase must hit the
+8-K itself, not just a press-release exhibit (both queries are printed on
+the page and in `docs/data-contracts.md`). Three charts: filings per
+month/quarter; the amendment lag (days from an original to its first
+amendment, matched by filer CIK, right-censored); and a receipts board of
+the latest Item 1.05 filings linked to EDGAR — companies' own public
+filings, the one place the site names an affected organisation. The
+incident date is prose, not a field, so nothing here measures
+breach-to-disclosure time. Stateless (no history, no cache); an EDGAR
+outage carries the last counted edition forward stale. The committed
+edition is an honest empty one (`status: "empty"`) until the first nightly
+read. Fetcher `pipeline/fetch_sec_incidents.py`, stage
+`pipeline/sec_incidents_metrics.py`.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 
 *Every published CVE, one point each.* The Field explores the corpus by
@@ -522,7 +546,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
 | [Wikimedia Pageviews REST API](https://wikimedia.org/api/rest_v1/) | Monthly pageviews of one curated en.wikipedia article per tracked term (`agent=user`, bot traffic excluded); the term→article mapping is reviewable data in `pipeline/market_terms.py` | Aggregate pageview data is [CC0](https://creativecommons.org/publicdomain/zero/1.0/); accessed per the [Wikimedia API policy](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_API_Policy) (descriptive User-Agent with contact info) |
-| [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; corpus reaches back to 2001) | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
+| [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; corpus reaches back to 2001); for the Incident Clock, the paged hits of two 8-K queries (Item 1.05, Item 8.01 cyber incident) since 2023-12-18 — accession number, filer CIK/name, filing date, form, item list | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |

@@ -349,6 +349,21 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.feodo.online")
         if fd["online"] > fd["listed"]:
             _fail("meta.sources.feodo.online", "exceeds listed")
+    # Incident Clock (SEC EDGAR 8-K filings): a fetched edition's counts,
+    # or {"status": "empty"} before the first successful fetch — with no
+    # fetched_at, because nothing was fetched.
+    if "sec_incidents" in src:
+        sec = src["sec_incidents"]
+        path = "meta.sources.sec_incidents"
+        if "status" in sec:
+            if sec["status"] != "empty" or "fetched_at" in sec:
+                _fail(path, "status may only be 'empty', and an empty "
+                            "block carries no fetched_at")
+        else:
+            _check_str(_get(sec, "fetched_at", path), f"{path}.fetched_at",
+                       ISO_UTC_RE)
+            for key in ("filings_105", "amendments_105", "filings_801"):
+                _check_int(_get(sec, key, path), f"{path}.{key}")
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -701,6 +716,9 @@ VALIDATORS.update(ai_contracts.VALIDATORS)
 from . import ai_credits_contracts  # noqa: E402
 
 VALIDATORS.update(ai_credits_contracts.VALIDATORS)
+from . import sec_incidents_contracts  # noqa: E402
+
+VALIDATORS.update(sec_incidents_contracts.VALIDATORS)
 
 from . import field_contracts  # noqa: E402
 

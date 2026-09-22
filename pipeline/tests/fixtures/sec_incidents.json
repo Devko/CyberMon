@@ -1,0 +1,531 @@
+{
+ "_comment": "SYNTHETIC FIXTURE for pipeline tests and --offline-fixtures only. Every company, CIK (999xxxx) and accession number (0009999999-...) is invented. Pages mimic the EDGAR full-text search (efts.sec.gov/LATEST/search-index) response shape. Never site data.",
+ "start": "2023-12-18",
+ "end": "2025-09-01",
+ "pages": {
+  "item_105": [
+   {
+    "took": 1,
+    "hits": {
+     "total": {
+      "value": 14,
+      "relation": "eq"
+     },
+     "max_score": 1.0,
+     "hits": [
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000001:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990001"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co A  (SYNA)  (CIK 0009990001)"
+        ],
+        "file_date": "2024-01-10",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000001",
+        "file_type": "8-K",
+        "period_ending": "2024-01-10",
+        "items": [
+         "1.05",
+         "9.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000001:ex99.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990001"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co A  (SYNA)  (CIK 0009990001)"
+        ],
+        "file_date": "2024-01-10",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000001",
+        "file_type": "EX-99.1",
+        "period_ending": "2024-01-10",
+        "items": [
+         "1.05",
+         "9.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000002:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990002"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co B  (SYNB)  (CIK 0009990002)"
+        ],
+        "file_date": "2024-02-20",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000002",
+        "file_type": "8-K",
+        "period_ending": "2024-02-20",
+        "items": [
+         "1.05"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000003:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990003"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co C  (SYNC)  (CIK 0009990003)"
+        ],
+        "file_date": "2024-05-03",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000003",
+        "file_type": "8-K",
+        "period_ending": "2024-05-03",
+        "items": [
+         "1.05",
+         "7.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000004:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990004"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co D  (SYND)  (CIK 0009990004)"
+        ],
+        "file_date": "2024-09-15",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000004",
+        "file_type": "8-K",
+        "period_ending": "2024-09-15",
+        "items": [
+         "1.05"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000005:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990005"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co E  (SYNE)  (CIK 0009990005)"
+        ],
+        "file_date": "2025-03-01",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000005",
+        "file_type": "8-K",
+        "period_ending": "2025-03-01",
+        "items": [
+         "1.05"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000006:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990001"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co A  (SYNA)  (CIK 0009990001)"
+        ],
+        "file_date": "2025-06-12",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000006",
+        "file_type": "8-K",
+        "period_ending": "2025-06-12",
+        "items": [
+         "1.05"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000007:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990001"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co A  (SYNA)  (CIK 0009990001)"
+        ],
+        "file_date": "2024-02-19",
+        "form": "8-K/A",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000007",
+        "file_type": "8-K/A",
+        "period_ending": "2024-02-19",
+        "items": [
+         "1.05"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   {
+    "took": 1,
+    "hits": {
+     "total": {
+      "value": 14,
+      "relation": "eq"
+     },
+     "max_score": 1.0,
+     "hits": [
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000008:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990001"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co A  (SYNA)  (CIK 0009990001)"
+        ],
+        "file_date": "2024-06-01",
+        "form": "8-K/A",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000008",
+        "file_type": "8-K/A",
+        "period_ending": "2024-06-01",
+        "items": [
+         "1.05"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000009:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990003"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co C  (SYNC)  (CIK 0009990003)"
+        ],
+        "file_date": "2024-11-20",
+        "form": "8-K/A",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000009",
+        "file_type": "8-K/A",
+        "period_ending": "2024-11-20",
+        "items": [
+         "1.05",
+         "9.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000010:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990006"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co F  (SYNF)  (CIK 0009990006)"
+        ],
+        "file_date": "2024-04-04",
+        "form": "8-K/A",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000010",
+        "file_type": "8-K/A",
+        "period_ending": "2024-04-04",
+        "items": [
+         "1.05"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000011:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990007"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co G  (SYNG)  (CIK 0009990007)"
+        ],
+        "file_date": "2024-07-07",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000011",
+        "file_type": "8-K",
+        "period_ending": "2024-07-07",
+        "items": [
+         "8.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000012:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990008"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co H  (SYNH)  (CIK 0009990008)"
+        ],
+        "file_date": "2025-08-08",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000012",
+        "file_type": "8-K",
+        "period_ending": "2025-08-08"
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "garbage",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990002"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co B  (SYNB)  (CIK 0009990002)"
+        ],
+        "file_date": "2024-03-03",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "file_type": "8-K",
+        "period_ending": "2024-03-03",
+        "items": [
+         "1.05"
+        ]
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "item_801": [
+   {
+    "took": 1,
+    "hits": {
+     "total": {
+      "value": 6,
+      "relation": "eq"
+     },
+     "max_score": 1.0,
+     "hits": [
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000013:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990007"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co G  (SYNG)  (CIK 0009990007)"
+        ],
+        "file_date": "2024-07-08",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000013",
+        "file_type": "8-K",
+        "period_ending": "2024-07-08",
+        "items": [
+         "8.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000014:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990006"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co F  (SYNF)  (CIK 0009990006)"
+        ],
+        "file_date": "2024-06-10",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000014",
+        "file_type": "8-K",
+        "period_ending": "2024-06-10",
+        "items": [
+         "8.01",
+         "9.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000015:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990005"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co E  (SYNE)  (CIK 0009990005)"
+        ],
+        "file_date": "2025-01-15",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000015",
+        "file_type": "8-K",
+        "period_ending": "2025-01-15",
+        "items": [
+         "8.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000016:ex99.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990004"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co D  (SYND)  (CIK 0009990004)"
+        ],
+        "file_date": "2024-10-01",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000016",
+        "file_type": "EX-99.1",
+        "period_ending": "2024-10-01",
+        "items": [
+         "8.01",
+         "9.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000017:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990002"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co B  (SYNB)  (CIK 0009990002)"
+        ],
+        "file_date": "2024-12-12",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000017",
+        "file_type": "8-K",
+        "period_ending": "2024-12-12",
+        "items": [
+         "7.01",
+         "9.01"
+        ]
+       }
+      },
+      {
+       "_index": "edgar_file",
+       "_id": "0009999999-24-000001:d000000d8k.htm",
+       "_score": 1.0,
+       "_source": {
+        "ciks": [
+         "0009990001"
+        ],
+        "display_names": [
+         "Synthetic Fixture Co A  (SYNA)  (CIK 0009990001)"
+        ],
+        "file_date": "2024-01-10",
+        "form": "8-K",
+        "root_forms": [
+         "8-K"
+        ],
+        "adsh": "0009999999-24-000001",
+        "file_type": "8-K",
+        "period_ending": "2024-01-10",
+        "items": [
+         "1.05",
+         "9.01"
+        ]
+       }
+      }
+     ]
+    }
+   }
+  ]
+ }
+}

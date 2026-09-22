@@ -2513,6 +2513,104 @@ contract rejects any key beyond these five, so a raw credit string — which
 carries personal names and addresses — has nowhere to live. Validator:
 `pipeline/ai_credits_contracts.py`.
 
+## site/data/sec_incidents.json  (Incident Clock module, all 3 charts)
+
+SEC Form 8-K cybersecurity-incident filings, re-read nightly from EDGAR
+full-text search (`efts.sec.gov/LATEST/search-index`) over the whole window
+from the Item 1.05 effective date (2023-12-18) to the edition date.
+Stateless: no history file, no cache. Fetcher
+`pipeline/fetch_sec_incidents.py`, builder `pipeline/sec_incidents_metrics.py`,
+validator `pipeline/sec_incidents_contracts.py`.
+
+**Measurement definition** (the two queries; the edition carries them in
+`definitions` and the page's methodology prints them from there):
+
+| id | `q` | `forms` | a filing counts when |
+|---|---|---|---|
+| `item_105` | `"Item 1.05"` | `8-K,8-K/A` | EDGAR's item list for it contains `1.05` (8-K = original, 8-K/A = amendment) |
+| `item_801` | `"cybersecurity incident"` | `8-K` | item list contains `8.01` and not `1.05`, the phrase hit the primary 8-K document (not only an exhibit), and the accession number is not already an Item 1.05 filing |
+
+Requests add `dateRange=custom&startdt=..&enddt=..` (one calendar month per
+window, halved down to a single day whenever `hits.total` reaches the
+10,000-hit Elasticsearch cap or reports `relation != "eq"`) and `from=<offset>`
+to page. **Assumed response shape — not yet observed from the pipeline's
+own network (the build sandbox could not reach efts.sec.gov):**
+`hits.total.{value,relation}`; `hits.hits[]` with `_id = "<adsh>:<file>"` and
+`_source.{adsh, ciks[], display_names[], file_date, form, file_type, items[]}`.
+One hit per document → filings are de-duplicated by accession number
+(`_source.adsh`, else the `_id` prefix). A hit without accession number,
+filing date, form or CIK is dropped and counted; more than half dropped
+raises. A missing `items` list falls back to the phrase match
+(`diagnostics.phrase_fallback_*`); a missing `file_type` leaves "primary
+document" unknown, which the 8.01 rule accepts.
+
+Two legal editions:
+
+```json
+{
+  "generated_at": "2026-09-22T02:50:21Z",
+  "status": "empty",
+  "status_reason": "not_fetched",
+  "window": {"start": "2023-12-18", "end": "2026-09-22"},
+  "definitions": {"item_105": {"q": "\"Item 1.05\"", "forms": "8-K,8-K/A", "item": "1.05"},
+                  "item_801": {"q": "\"cybersecurity incident\"", "forms": "8-K", "item": "8.01"}},
+  "monthly": [], "quarterly": [], "totals": null, "amendment_lag": null, "recent": []
+}
+```
+
+`status: "empty"` is the edition before the first successful fetch (and
+what a failed fetch re-emits while no counted edition exists): no series,
+no receipts, and `totals` / `amendment_lag` **null, never zeros** — nothing
+was counted. `status_reason` is `not_fetched` or `fetch_failed`. The page
+renders "no edition yet — the first nightly fills this page" cards.
+
+```json
+{
+  "generated_at": "...", "status": "ok", "window": {...}, "definitions": {...},
+  "monthly": [{"month": "2023-12", "originals": 0, "amendments": 0,
+               "voluntary": 0, "partial": true}, ...],
+  "quarterly": [{"quarter": "2023-Q4", "originals": 0, "amendments": 0,
+                 "voluntary": 0, "partial": true}, ...],
+  "totals": {"originals": 7, "amendments": 4, "voluntary": 3,
+             "companies_105": 7, "companies_801": 3, "latest_105": "2025-08-08"},
+  "amendment_lag": {"originals": 7, "amended": 2, "matched_amendments": 3,
+                    "unmatched_amendments": 1, "median_days": 120.5,
+                    "max_days": 201,
+                    "buckets": [{"label": "0–7 days", "n": 0}, ...]},
+  "recent": [{"date": "2024-11-20", "form": "8-K/A", "company": "...",
+              "ticker": "...", "cik": "1234567", "adsh": "0001234567-24-000009",
+              "url": "https://www.sec.gov/Archives/edgar/data/1234567/000123456724000009/0001234567-24-000009-index.htm",
+              "original_date": "2024-05-03", "lag_days": 201}, ...],
+  "diagnostics": {"hits_105": 14, "hits_801": 6, "filings_105": 12,
+                  "filings_801": 6, "dropped_105": 1, "dropped_801": 0,
+                  "phrase_fallback_105": 1, "phrase_fallback_801": 0,
+                  "requests": 70}
+}
+```
+
+(numbers above are from the synthetic test fixture, not EDGAR.) Months are
+contiguous from `2023-12` through the edition month, by **filing date**
+(never the incident date); only the first (from the 18th) and the edition
+month/quarter are `partial`. `originals` = Item 1.05 8-Ks, `amendments` =
+Item 1.05 8-K/As, `voluntary` = Item 8.01 cyber 8-Ks. Quarterly rows are
+exact sums of their months; `totals` equal the series sums; companies are
+distinct primary CIKs. Amendment lag: each amendment is matched to the same
+CIK's latest Item 1.05 original filed on or before it; `amended` counts
+originals with a matched amendment and the buckets (fixed labels
+`0–7 days, 8–30 days, 31–90 days, 91–180 days, 181–365 days, over a year`)
+partition their FIRST-amendment lags; `matched + unmatched = amendments`;
+`median_days` (1 decimal) / `max_days` are null when nothing was amended.
+`recent`: up to 25 newest Item 1.05 filings, newest first by
+`(date, adsh)`, unique accession numbers, `url` exactly the EDGAR index link
+for `cik` + `adsh`, `lag_days`/`original_date` only on matched amendments.
+`diagnostics` is informational (not contracted).
+
+`meta.sources.sec_incidents`: `{fetched_at, filings_105, amendments_105,
+filings_801}` for a fetched edition (plus `stale: true` when carried
+forward on an EDGAR outage — only a counted `status: "ok"` edition is ever
+carried; the footer then shows "(carried forward)"), or exactly
+`{"status": "empty"}` — no `fetched_at`, because nothing was fetched.
+
 ## site/field/field.json + cves.<sha256>.bin.gz  (The Field instrument — NOT under site/data)
 
 Built only with `--field-out`; validated by `pipeline/field_contracts.py`;

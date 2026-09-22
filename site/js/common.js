@@ -402,6 +402,14 @@ function renderMeta(meta) {
       feodo_listed: (s.feodo?.listed ?? 0).toLocaleString("en-US"),
       feodo_online: (s.feodo?.online ?? 0).toLocaleString("en-US"),
       feodo_fetched: s.feodo?.fetched_at ?? "?",
+      sec_incidents: s.sec_incidents?.fetched_at
+        ? tpl(editorial.footer.secFetched, {
+            filings_105: (s.sec_incidents.filings_105 ?? 0).toLocaleString("en-US"),
+            filings_801: (s.sec_incidents.filings_801 ?? 0).toLocaleString("en-US"),
+            fetched: s.sec_incidents.fetched_at +
+              (s.sec_incidents.stale ? " (carried forward)" : ""),
+          })
+        : editorial.footer.secPending,
     }))
   );
 }

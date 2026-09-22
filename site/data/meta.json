@@ -99,6 +99,9 @@
    "fetched_at": "2026-09-22T02:50:21Z",
    "listed": 5,
    "online": 1
+  },
+  "sec_incidents": {
+   "status": "empty"
   }
  }
 }

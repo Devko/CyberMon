@@ -90,6 +90,9 @@ import { render as renderCreditsTargets } from "./charts/credits_targets.js";
 import { render as renderCreditsBoard } from "./charts/credits_board.js";
 import { render as renderCreditsCoverage } from "./charts/credits_coverage.js";
 import { render as renderC2Age } from "./charts/c2_age.js";
+import { render as renderIncidentsClock } from "./charts/incidents_clock.js";
+import { render as renderIncidentsAmend } from "./charts/incidents_amend.js";
+import { render as renderIncidentsReceipts } from "./charts/incidents_receipts.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -283,6 +286,14 @@ const MODULES = {
       { id: "credits_weakness", render: renderCreditsWeakness },
       { id: "credits_targets", render: renderCreditsTargets },
       { id: "credits_coverage", render: renderCreditsCoverage },
+    ],
+  },
+  incidents: {
+    file: "data/sec_incidents.json",
+    sections: [
+      { id: "incidents_clock", render: renderIncidentsClock },
+      { id: "incidents_amend", render: renderIncidentsAmend },
+      { id: "incidents_receipts", render: renderIncidentsReceipts, table: true },
     ],
   },
 };

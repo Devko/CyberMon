@@ -260,7 +260,32 @@ copy guarded by the claims audit, and time shown as the kind of time it is
   carries no tag date, so no "time disputed" chart until CyberMon's own
   snapshots accrue.
 
-### 24 · Incident Clock — SEC cyber-incident filings
+### 24 · Incident Clock — SEC cyber-incident filings — SHIPPED as module 24
+- **Shipped 2026-09-22 (first edition pending):** `incidents.html`, group
+  "industry". Fetcher `pipeline/fetch_sec_incidents.py` (module 02's EDGAR
+  URL + User-Agent, 0.25s pacing, bounded retry; month windows halved at the
+  10,000-hit cap; paged by `from`; dedup by accession number), stage
+  `pipeline/sec_incidents_metrics.py`, contract
+  `pipeline/sec_incidents_contracts.py`. Queries: `q="Item 1.05"`
+  forms `8-K,8-K/A`, counted by EDGAR's item list; `q="cybersecurity
+  incident"` forms `8-K`, counted when items hold 8.01 and not 1.05 and the
+  phrase hit the primary document. Three sections: monthly/quarterly
+  filings, amendment lag (CIK + nearest prior original, first amendment),
+  receipts board with EDGAR links. The build sandbox could not reach
+  efts.sec.gov, so the committed edition is `status: "empty"` (nodata cards,
+  meta `{"status": "empty"}`) and the response shape is assumed from the
+  documented EFTS format.
+- **Open:** (1) the first nightly must confirm the assumed response shape
+  — read `diagnostics` in `sec_incidents.json`: `phrase_fallback_*` should
+  be 0 (items present), `dropped_*` ~0, `hits_* > filings_*` (one hit per
+  document), `filings_105`/`filings_801` plausible, `requests` in the low
+  hundreds; spot-check a handful of receipt links. (2) The 8.01 phrase is a
+  first definition; tune it only with a before/after count in the commit.
+  (3) Once real, add tolerant claims guards for any prose that states a
+  trend (the thesis's "trickle" and "drift toward 8.01" are deliberately
+  not asserted in the copy yet). (4) The footer disclaimer now names the
+  receipts board as the one place an affected organisation is named —
+  owner to confirm that editorial line.
 - **Thesis:** since December 2023 a US public company must disclose a
   material cybersecurity incident on Form 8-K Item 1.05 within four business
   days of deciding it is material. The filing record shows how the rule is
