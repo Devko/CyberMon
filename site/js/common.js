@@ -426,6 +426,9 @@ function renderMeta(meta) {
               (s.sec_incidents.stale ? " (carried forward)" : ""),
           })
         : editorial.footer.secPending,
+      osv_ghsa: (s.osv?.ghsa_advisories ?? 0).toLocaleString("en-US"),
+      osv_mal: (s.osv?.mal_reports ?? 0).toLocaleString("en-US"),
+      osv_fetched: (s.osv?.fetched_at ?? "?") + (s.osv?.stale ? " (carried forward)" : ""),
     }))
   );
 }

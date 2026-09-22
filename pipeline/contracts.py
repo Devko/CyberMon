@@ -365,6 +365,21 @@ def _validate_meta(obj: Any) -> None:
             for key in ("filings_105", "amendments_105", "filings_801"):
                 _check_int(_get(sec, key, path), f"{path}.{key}")
 
+    # Optional (older committed meta files predate the OSV modules, and an
+    # OSV outage with no previous edition omits it). One source block feeds
+    # both advisory_gap.json and registry_malware.json.
+    if "osv" in src:
+        ov = src["osv"]
+        _check_str(_get(ov, "fetched_at", "meta.sources.osv"),
+                   "meta.sources.osv.fetched_at", ISO_UTC_RE)
+        for k in ("ghsa_advisories", "mal_reports", "ecosystems",
+                  "downloaded", "not_modified"):
+            _check_int(_get(ov, k, "meta.sources.osv"),
+                       f"meta.sources.osv.{k}")
+        if ov["downloaded"] + ov["not_modified"] != ov["ecosystems"]:
+            _fail("meta.sources.osv",
+                  "downloaded + not_modified must equal ecosystems")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -726,3 +741,7 @@ VALIDATORS.update(field_contracts.VALIDATORS)
 from . import observatory_contracts  # noqa: E402
 
 VALIDATORS.update(observatory_contracts.VALIDATORS)
+
+from . import osv_contracts  # noqa: E402
+
+VALIDATORS.update(osv_contracts.VALIDATORS)

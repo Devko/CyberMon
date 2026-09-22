@@ -1,0 +1,27 @@
+{
+ "schema_version": "1.5.0",
+ "id": "MAL-2025-9201",
+ "published": "2025-12-01T08:00:00Z",
+ "modified": "2025-12-01T08:00:00Z",
+ "summary": "Malicious code in fixture-pkg (VSCode:https://open-vsx.org)",
+ "details": "Synthetic fixture report.",
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-pkg",
+    "ecosystem": "VSCode:https://open-vsx.org"
+   },
+   "versions": [
+    "0.0.1"
+   ]
+  }
+ ],
+ "database_specific": {
+  "malicious-packages-origins": [
+   {
+    "source": "socket",
+    "import_time": "2025-12-01T08:00:00Z"
+   }
+  ]
+ }
+}

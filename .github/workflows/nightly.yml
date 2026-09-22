@@ -183,6 +183,20 @@ jobs:
           restore-keys: |
             epss-volatility-state-
 
+      # OSV export state (Advisory Gap + Registry Malware): each
+      # ecosystem export's ETag / Last-Modified plus the compact summary
+      # the two modules aggregate (~0.5 MB gzipped). A hit turns every
+      # unchanged export into a 304; a miss costs one full download of all
+      # thirteen exports (~290 MB, npm alone ~215 MB) and nothing else —
+      # the exports carry the whole record, so no number depends on it.
+      - name: Restore OSV export state
+        uses: actions/cache@v4
+        with:
+          path: .cache/osv_state.json.gz
+          key: osv-state-${{ github.run_id }}
+          restore-keys: |
+            osv-state-
+
       # NOTE: the silent-rescores diff state deliberately has NO cache
       # entry here — it is committed at site/data/history/rescore_state.json
       # next to its append-only log (an actions/cache copy once restored a

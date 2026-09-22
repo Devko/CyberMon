@@ -1,0 +1,29 @@
+{
+ "schema_version": "1.7.3",
+ "id": "GHSA-fx01-cccc-0009",
+ "published": "2025-09-09T10:00:00Z",
+ "modified": "2025-09-09T10:00:00Z",
+ "summary": "Synthetic fixture advisory",
+ "details": "Synthetic fixture record for the offline pipeline run.",
+ "aliases": [
+  "CVE-2025-0009"
+ ],
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-crates.io",
+    "ecosystem": "crates.io"
+   },
+   "database_specific": {
+    "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/09/GHSA-fx01-cccc-0009/GHSA-fx01-cccc-0009.json"
+   }
+  }
+ ],
+ "database_specific": {
+  "cwe_ids": [],
+  "github_reviewed": true,
+  "github_reviewed_at": "2025-09-09T10:00:00Z",
+  "severity": "LOW",
+  "nvd_published_at": "2025-09-09T12:00:00Z"
+ }
+}

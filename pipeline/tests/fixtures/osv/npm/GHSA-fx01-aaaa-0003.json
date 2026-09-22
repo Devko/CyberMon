@@ -1,0 +1,29 @@
+{
+ "schema_version": "1.7.3",
+ "id": "GHSA-fx01-aaaa-0003",
+ "published": "2025-06-01T10:00:00Z",
+ "modified": "2025-06-01T10:00:00Z",
+ "summary": "Synthetic fixture advisory",
+ "details": "Synthetic fixture record for the offline pipeline run.",
+ "aliases": [
+  "CVE-2025-0003"
+ ],
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-npm",
+    "ecosystem": "npm"
+   },
+   "database_specific": {
+    "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2025/06/GHSA-fx01-aaaa-0003/GHSA-fx01-aaaa-0003.json"
+   }
+  }
+ ],
+ "database_specific": {
+  "cwe_ids": [],
+  "github_reviewed": true,
+  "github_reviewed_at": "2025-06-01T10:00:00Z",
+  "severity": "MODERATE",
+  "nvd_published_at": "2025-11-20T10:00:00Z"
+ }
+}

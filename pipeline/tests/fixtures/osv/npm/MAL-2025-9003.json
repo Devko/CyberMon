@@ -1,0 +1,27 @@
+{
+ "schema_version": "1.5.0",
+ "id": "MAL-2025-9003",
+ "published": "2025-11-20T08:00:00Z",
+ "modified": "2025-11-20T08:00:00Z",
+ "summary": "Malicious code in fixture-pkg (npm)",
+ "details": "Synthetic fixture report.",
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-pkg",
+    "ecosystem": "npm"
+   },
+   "versions": [
+    "0.0.1"
+   ]
+  }
+ ],
+ "database_specific": {
+  "malicious-packages-origins": [
+   {
+    "source": "reversing-labs",
+    "import_time": "2025-11-20T08:00:00Z"
+   }
+  ]
+ }
+}

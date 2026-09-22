@@ -1,0 +1,28 @@
+{
+ "schema_version": "1.5.0",
+ "id": "MAL-2024-9005",
+ "published": "2024-06-12T08:00:00Z",
+ "modified": "2024-06-12T08:00:00Z",
+ "summary": "Malicious code in fixture-pkg (npm)",
+ "details": "Synthetic fixture report.",
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-pkg",
+    "ecosystem": "npm"
+   },
+   "versions": [
+    "0.0.1"
+   ]
+  }
+ ],
+ "database_specific": {
+  "malicious-packages-origins": [
+   {
+    "source": "checkmarx",
+    "import_time": "2024-06-12T08:00:00Z"
+   }
+  ]
+ },
+ "withdrawn": "2024-06-20T00:00:00Z"
+}

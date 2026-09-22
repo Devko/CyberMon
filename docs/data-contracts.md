@@ -2694,6 +2694,97 @@ forward on an EDGAR outage — only a counted `status: "ok"` edition is ever
 carried; the footer then shows "(carried forward)"), or exactly
 `{"status": "empty"}` — no `fetched_at`, because nothing was fetched.
 
+## site/data/advisory_gap.json  (Advisory Gap module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "as_of": "2026-09-22",
+  "ecosystems_read": ["GitHub Actions", "Go", "Hex", "..."],
+  "young_days": 90, "young_since": "2026-06-24", "min_n": 50,
+  "catalog": {"advisories": 34677, "with_cve": 31773, "without_cve": 2904,
+              "without_cve_young": 222, "without_cve_pct": 8.4,
+              "withdrawn_excluded": 1092, "not_reviewed": 0,
+              "multi_ecosystem": 298, "first_year": 2017, "last_year": 2026},
+  "years": [{"year": 2017, "total": 217, "with_cve": 217, "without_cve": 0,
+             "without_cve_young": 0, "without_cve_pct": 0.0,
+             "partial": false}],
+  "ecosystems": [{"ecosystem": "npm", "total": 7086, "with_cve": 6018,
+                  "without_cve": 1068, "without_cve_young": 56,
+                  "without_cve_pct": 15.1,
+                  "years": [{"year": 2017, "total": 0, "...": 0}]}],
+  "severity": [{"level": "CRITICAL", "with_cve": 3933, "without_cve": 643,
+                "with_cve_pct": 12.4, "without_cve_pct": 22.1}],
+  "cve_lag": {"n": 26826, "later_30d": 201, "later_90d": 113,
+              "later_365d": 31}
+}
+```
+
+Source: OSV.dev per-ecosystem exports, records whose id starts `GHSA-`,
+merged by id across the twelve exports (an advisory affecting several
+ecosystems sits in several). Only live (not withdrawn) records carrying
+`database_specific.github_reviewed: true` are counted; `not_reviewed`
+counts live records without the flag (0 at launch — OSV mirrors reviewed
+advisories only). "With a CVE" = OSV lists a `CVE-` alias. `year` is the
+advisory's `published` year (GitHub's publication). `partial` marks the
+`as_of` year (never `generated_at`, so a carried-forward edition stays
+valid across New Year). `without_cve_young` = no-CVE advisories published
+on or after `young_since` (`as_of` − `young_days`) — provisional, a CVE can
+be added later. Ecosystem rows count an advisory once per affected
+ecosystem, so their totals can exceed `catalog.advisories` only through
+`multi_ecosystem` ids; `without_cve_pct` is null below `min_n`.
+`severity` lists exactly CRITICAL, HIGH, MODERATE, LOW, UNRATED (GitHub's
+rating; percentages are of the with-CVE / without-CVE totals). `cve_lag`:
+of the CVE-aliased advisories with an `nvd_published_at`, how many saw it
+more than 30 / 90 / 365 days after the advisory (non-increasing).
+An empty edition (zero advisories, empty `years` and `ecosystems`) is legal.
+Validator: `pipeline/osv_contracts.py`.
+
+## site/data/registry_malware.json  (Registry Malware module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "as_of": "2026-09-22",
+  "ecosystems_read": ["Go", "Maven", "NuGet", "..."],
+  "catalog": {"reports": 238022, "withdrawn": 356, "withdrawn_pct": 0.1,
+              "ecosystems": 9, "first_month": "2021-11",
+              "last_month": "2026-09", "peak_month": "2025-11",
+              "peak_reports": 142256, "peak_share_pct": 59.8,
+              "median_month": 1129, "median_window": ["2024-09", "2026-08"],
+              "this_year": 16407},
+  "ecosystems": [{"ecosystem": "npm", "reports": 221790, "withdrawn": 331,
+                  "withdrawn_pct": 0.1}],
+  "months": [{"month": "2021-11", "total": 1, "withdrawn": 0,
+              "by_ecosystem": {"npm": 1}, "partial": false}],
+  "years": [{"year": 2021, "total": 5, "withdrawn": 0,
+             "by_ecosystem": {"npm": 5}, "partial": false}],
+  "bursts": [{"month": "2025-11", "reports": 142256, "share_pct": 59.8,
+              "top_source": "amazon-inspector",
+              "top_source_reports": 142153, "top_ecosystem": "npm"}],
+  "sources": [{"source": "amazon-inspector", "reports": 153450}]
+}
+```
+
+Source: the same exports, records whose id starts `MAL-` (OpenSSF
+malicious-packages). A report counts once, in the export of the one
+ecosystem it names (a `VSCode:<registry>` suffix is folded to `VSCode`),
+in the month of its `published` date — when it entered the feed. Withdrawn
+reports are in every total and counted separately. `months` run
+consecutively from the first report to the `as_of` month (gap-filled
+zeros); `partial` marks the `as_of` month / year. `median_month` is the
+median over the last 24 complete months (`median_window`). `bursts` are the
+three largest months; `top_source` is the contributor credited most often
+in that month (`unattributed` for reports with no origins block).
+`sources` credits a report to every contributor it names, so it sums to at
+least `reports`. Every partition (months, years, ecosystems, by_ecosystem
+maps) must add up to the catalog. Validator: `pipeline/osv_contracts.py`.
+
+`meta.json` carries `sources.osv`: `{fetched_at, ghsa_advisories,
+mal_reports, ecosystems, downloaded, not_modified}` (downloaded +
+not_modified = ecosystems — the conditional-GET accounting), marked
+`"stale": true` when an OSV outage carried both modules forward.
+
 ## site/field/field.json + cves.<sha256>.bin.gz  (The Field instrument — NOT under site/data)
 
 Built only with `--field-out`; validated by `pipeline/field_contracts.py`;

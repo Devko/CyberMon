@@ -467,6 +467,33 @@ edition is an honest empty one (`status: "empty"`) until the first nightly
 read. Fetcher `pipeline/fetch_sec_incidents.py`, stage
 `pipeline/sec_incidents_metrics.py`.
 
+### 25 · Advisory Gap — [advisories.html](https://devko.github.io/CyberMon/advisories.html) (live)
+
+*Most reviewed advisories get a CVE. A quarter of Rust's do not.*
+GitHub-reviewed security advisories (GHSA ids) for open-source packages, read
+from OSV.dev's per-ecosystem exports for the twelve GitHub advisory
+ecosystems, withdrawn ones excluded and multi-ecosystem advisories counted
+once. Three charts: advisories per GitHub publication year split by whether
+they carry a CVE alias (with an ecosystem picker and a share view; the
+no-CVE advisories of the last 90 days drawn as provisional, since a CVE can
+be added later), the no-CVE share per ecosystem, and GitHub's severity
+rating with vs without a CVE. OSV mirrors only reviewed advisories — the
+pipeline checks the flag on every record and a claims test guards it.
+Fetcher `pipeline/fetch_osv.py` (shared with module 26), stage
+`pipeline/osv_metrics.py`.
+
+### 26 · Registry Malware — [malware.html](https://devko.github.io/CyberMon/malware.html) (live)
+
+*Six in ten of the feed's reports landed in one month.*
+The OpenSSF malicious-packages feed (MAL ids), from the same OSV exports:
+reports per registry per month of feed publication (stacked, or one line
+per registry on a log scale), each year's reports by registry, and the
+withdrawn reports. Counts are reports, not installs or victims; the date
+is when the report entered the feed. One OSV fetch feeds both modules; the
+nightly sends conditional GETs (ETag / Last-Modified, state cached in
+`.cache/osv_state.json.gz`), streams only the changed zips and keeps a
+compact summary, and an OSV outage carries both modules forward stale.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 
 *Every published CVE, one point each.* The Field explores the corpus by
@@ -585,6 +612,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Metasploit Framework](https://github.com/rapid7/metasploit-framework) (Rapid7) | Module metadata (`db/modules_metadata_base.json`): `disclosure_date` and CVE `references` per module — the disclosure date, not the module merge date, documented as such | [BSD-3-Clause](https://github.com/rapid7/metasploit-framework/blob/master/LICENSE); Metasploit is a Rapid7 project (credited in the site footer) |
 | [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template — coverage only, the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
 | [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS — snapshotted nightly for the Botnet Weather count record; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
+| [OSV.dev ecosystem exports](https://google.github.io/osv.dev/data/#data-dumps) (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`) | GitHub-reviewed advisories (GHSA ids: publication date, aliases, GitHub severity, withdrawn flag) and OpenSSF malicious-packages reports (MAL ids: publication date, withdrawn flag, contributing sources) — aggregates only, no package names republished | GitHub Advisory Database: [CC-BY 4.0](https://github.com/github/advisory-database/blob/main/LICENSE.md); OpenSSF malicious-packages: [Apache-2.0](https://github.com/ossf/malicious-packages/blob/main/LICENSE); both credited in the site footer. No key |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached
 sync state (`.cache/nvd_status_state.json.gz`, cached across CI runs), and

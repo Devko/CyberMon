@@ -1,0 +1,31 @@
+{
+ "schema_version": "1.5.0",
+ "id": "MAL-2025-9002",
+ "published": "2025-11-04T08:00:00Z",
+ "modified": "2025-11-04T08:00:00Z",
+ "summary": "Malicious code in fixture-pkg (npm)",
+ "details": "Synthetic fixture report.",
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-pkg",
+    "ecosystem": "npm"
+   },
+   "versions": [
+    "0.0.1"
+   ]
+  }
+ ],
+ "database_specific": {
+  "malicious-packages-origins": [
+   {
+    "source": "amazon-inspector",
+    "import_time": "2025-11-04T08:00:00Z"
+   },
+   {
+    "source": "ghsa-malware",
+    "import_time": "2025-11-04T08:00:00Z"
+   }
+  ]
+ }
+}

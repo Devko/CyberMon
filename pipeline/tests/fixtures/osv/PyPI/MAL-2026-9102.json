@@ -1,0 +1,27 @@
+{
+ "schema_version": "1.5.0",
+ "id": "MAL-2026-9102",
+ "published": "2026-03-01T08:00:00Z",
+ "modified": "2026-03-01T08:00:00Z",
+ "summary": "Malicious code in fixture-pkg (PyPI)",
+ "details": "Synthetic fixture report.",
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-pkg",
+    "ecosystem": "PyPI"
+   },
+   "versions": [
+    "0.0.1"
+   ]
+  }
+ ],
+ "database_specific": {
+  "malicious-packages-origins": [
+   {
+    "source": "kam193",
+    "import_time": "2026-03-01T08:00:00Z"
+   }
+  ]
+ }
+}
