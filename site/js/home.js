@@ -14,16 +14,20 @@ function moduleCard(mod, ed) {
   const card = el("a", "module-card" + (mod.live ? "" : " is-pending"));
   card.href = mod.href; // relative — works under GitHub Pages subpaths
 
-  // A tag only where it says something: every module is live, so "LIVE" on
-  // each card was noise; pending modules and instruments keep theirs.
-  const row = el("div", "module-card-row");
-  row.append(el("span", "module-card-num mono", mod.num));
+  // A tag row only where it says something. Every module is live, so a
+  // "LIVE" tag on each card was noise; and the module numbers are build
+  // order (01, 04, 11 … under one theme), which read as a broken sequence
+  // on a page grouped by theme. Pending modules and instruments keep theirs.
   if (!mod.live || mod.tagged) {
-    row.append(el("span", "tag" + (mod.live ? " tag-live" : ""), mod.live ? ed.statusLive : ed.statusSoon));
+    const row = el("div", "module-card-row");
+    row.append(
+      el("span", "module-card-num mono", mod.num),
+      el("span", "tag" + (mod.live ? " tag-live" : ""), mod.live ? ed.statusLive : ed.statusSoon)
+    );
+    card.append(row);
   }
 
   card.append(
-    row,
     el("h3", "module-card-label", mod.label),
     el("p", "module-card-headline", mod.headline),
     el("p", "module-card-blurb", mod.blurb)

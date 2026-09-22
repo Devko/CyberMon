@@ -96,6 +96,7 @@ export function render(slots, data) {
         } else if (col.key === "entries") {
           const td = el("td", "num");
           const cell = el("div", "cellbar");
+          cell.style.setProperty("--cellbar-val-w", "4ch"); // entry counts
           const fill = el("div", "cellbar-fill" + (flagged ? " accent" : ""));
           fill.style.width = `${((100 * r.entries) / maxEntries).toFixed(1)}%`;
           cell.append(fill, el("span", "cellbar-val", fmtInt(r.entries)));

@@ -19,6 +19,11 @@ const FAMILY_COLORS = [
   C.versions.v4, C.sev.low,
 ];
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const isMonday = (iso) => new Date(`${iso}T00:00:00Z`).getUTCDay() === 1;
+const shortDate = (iso) => `${MONTHS[Number(iso.slice(5, 7)) - 1]} ${Number(iso.slice(8, 10))}`;
+
 export function render(slots, data) {
   const ed = editorial.sections.c2_weather;
   const weather = data.c2_weather || {};
@@ -109,8 +114,15 @@ export function render(slots, data) {
         return head + (rows || "") + totals;
       },
     },
+    // Weekly ticks: one label per Monday, unrotated ("Jul 27"). Daily
+    // labels at 45° crowded into each other and clipped at the left edge.
     xAxis: catAxis(dates, {
-      axisLabel: { ...catAxis([]).axisLabel, rotate: dates.length > 10 ? 45 : 0 },
+      axisTick: { show: true, alignWithLabel: true, interval: (i) => isMonday(dates[i]), lineStyle: { color: C.rule } },
+      axisLabel: {
+        ...catAxis([]).axisLabel,
+        interval: (i) => dates.length <= 10 || isMonday(dates[i]),
+        formatter: (v) => shortDate(v),
+      },
     }),
     yAxis: valAxis({
       name: ed.yAxis,

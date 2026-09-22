@@ -93,15 +93,19 @@ export function render(slots, data) {
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
     }),
     series: [
-      { // invisible IQR base (p25)
+      // IQR band: a light fill with dashed p25 / p75 edges so the middle
+      // half keeps a visible boundary on the dark ground (fill alone vanished).
+      { // IQR base (p25): its line is the band's lower edge
         name: "_p25", type: "line", stack: "iqr",
         data: rows.map((r) => r.p25_days),
-        lineStyle: { opacity: 0 }, symbol: "none", silent: true, emphasis: { disabled: true },
+        lineStyle: { color: C.accent, width: 1, type: [3, 3], opacity: 0.55 },
+        symbol: "none", silent: true, emphasis: { disabled: true },
       },
-      { // IQR band = (p75 − p25) stacked on the base
+      { // IQR band = (p75 − p25) stacked on the base; its line is the p75 edge
         name: "_iqr", type: "line", stack: "iqr",
         data: rows.map((r) => +(r.p75_days - r.p25_days).toFixed(1)),
-        lineStyle: { opacity: 0 }, areaStyle: { color: C.accent, opacity: 0.13 },
+        lineStyle: { color: C.accent, width: 1, type: [3, 3], opacity: 0.55 },
+        areaStyle: { color: C.accent, opacity: 0.12 },
         symbol: "none", silent: true, emphasis: { disabled: true },
       },
       {

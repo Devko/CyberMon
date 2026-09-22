@@ -140,6 +140,7 @@ export function render(slots, data) {
         } else if (col.bar) {
           const td = el("td", "num");
           const cell = el("div", "cellbar cellbar-diverging");
+          cell.style.setProperty("--cellbar-val-w", "8.5ch"); // "+1234.5%"
           const clipped = Math.min(Math.abs(r.pct_change), BAR_CAP_PCT);
           const fill = el("div", r.pct_change >= 0 ? "pos" : "neg");
           fill.style.width = `${((clipped / scaleMax) * 50).toFixed(1)}%`;

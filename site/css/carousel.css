@@ -261,7 +261,7 @@ body.carousel {
 .slide-tablebox .cna-table td { padding: 13px 16px 13px 0; }
 .slide-tablebox .cna-short { font-size: 19px; }
 .slide-tablebox .cna-org { font-size: 13px; }
-.slide-tablebox .cellbar { width: 150px; height: 26px; }
+.slide-tablebox .cellbar { width: 120px; height: 26px; font-size: 16px; }
 .slide-tablebox .cellbar-diverging { width: 150px; }
 .slide-tablebox .cellbar-val { font-size: 16px; }
 .slide-tablebox .market-table .term-source { font-size: 15px; }

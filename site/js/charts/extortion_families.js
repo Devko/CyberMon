@@ -96,6 +96,7 @@ export function render(slots, data) {
           const td = el("td", "num");
           if (col.bar) {
             const cell = el("div", "cellbar");
+            cell.style.setProperty("--cellbar-val-w", "12.5ch"); // "$139,502,184"
             const fill = el("div", "cellbar-fill accent");
             fill.style.width = `${((100 * r.usd) / maxUsd).toFixed(1)}%`;
             cell.append(fill, el("span", "cellbar-val", fmtCell(col, r[col.key])));

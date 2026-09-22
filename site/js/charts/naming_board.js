@@ -96,6 +96,7 @@ export function render(slots, data) {
 
       const tdCount = el("td", "num");
       const cell = el("div", "cellbar");
+      cell.style.setProperty("--cellbar-val-w", "3ch"); // alias counts: two digits
       const fill = el("div", "cellbar-fill accent");
       fill.style.width =
         `${Math.max(0, Math.min(100, (r.alt_count / maxAlt) * 100)).toFixed(1)}%`;

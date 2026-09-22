@@ -112,6 +112,7 @@ export function render(slots, data) {
           const up = r.delta >= 0;
           const td = el("td", "num");
           const cell = el("div", "cellbar");
+          cell.style.setProperty("--cellbar-val-w", "9.5ch"); // "▲ 86.6 pp"
           const fill = el("div", "cellbar-fill" + (up ? " accent" : ""));
           fill.style.width = `${((100 * absDelta(r.delta)) / maxDelta).toFixed(1)}%`;
           cell.append(fill, el("span", "cellbar-val",

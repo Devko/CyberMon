@@ -190,10 +190,10 @@ export function groupNav() {
   return { leading, groups: groups.filter((g) => g.tabs.length) };
 }
 
-// Grouped nav: one centered row of standalone tabs (Overview), then one row
-// per group — group label on the left of its tabs, rows separated by
-// hairlines, tabs wrapping within their row. Plain <a> elements throughout:
-// navigation needs no JS beyond this render (progressive enhancement only).
+// Grouped nav. Phones: one row per group (label over its tabs) inside a
+// fold. Desktop: a single bar of group buttons, with one group's pages open
+// beneath it. Every destination is a plain <a>; the buttons only choose
+// which row is visible.
 function renderNav(activeId) {
   const nav = document.getElementById("site-nav");
   if (!nav) return;
@@ -208,21 +208,51 @@ function renderNav(activeId) {
 
   const { leading, groups } = groupNav();
 
+  // Phones get every row stacked (inside the fold below); desktop shows one
+  // line of groups and opens ONE group's pages beneath it — the current
+  // page's group by default, none on the landing page, whose cards are the
+  // directory. The rows are the same either way; CSS picks the layout.
+  const activeGroup = groups.find((g) => g.tabs.some((t) => t.id === activeId))?.id ?? null;
+  const groupBar = el("div", "site-nav-row site-nav-groups");
+  for (const tab of leading) groupBar.append(tabEl(tab));
+  const buttons = new Map();
+  const rows = new Map();
+  const showGroup = (id) => {
+    for (const [gid, row] of rows) {
+      const on = gid === id;
+      row.classList.toggle("is-shown", on);
+      buttons.get(gid).setAttribute("aria-expanded", String(on));
+    }
+  };
+  for (const g of groups) {
+    const btn = el("button", "site-nav-group-btn" + (g.id === activeGroup ? " is-current" : ""), g.label);
+    btn.type = "button";
+    btn.setAttribute("aria-controls", `site-nav-row-${g.id}`);
+    btn.addEventListener("click", () =>
+      showGroup(btn.getAttribute("aria-expanded") === "true" ? null : g.id));
+    buttons.set(g.id, btn);
+    groupBar.append(btn);
+  }
+  groupBar.append(link("field.html", "The Field →", "site-nav-tab site-nav-field", { sameTab: true }));
+
+  const instruments = el("div", "site-nav-row site-nav-row-instruments");
+  instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab", { sameTab: true }));
+  nav.append(groupBar, instruments);
+
   if (leading.length) {
     const row = el("div", "site-nav-row site-nav-row-lead");
     for (const tab of leading) row.append(tabEl(tab));
     nav.append(row);
   }
   for (const g of groups) {
-    const active = g.tabs.some((t) => t.id === activeId);
-    const row = el("div", "site-nav-row" + (active ? " is-active" : ""));
+    const row = el("div", "site-nav-row site-nav-group-row" + (g.id === activeGroup ? " is-active" : ""));
+    row.id = `site-nav-row-${g.id}`;
     row.append(el("span", "site-nav-group-label", g.label));
     for (const tab of g.tabs) row.append(tabEl(tab));
+    rows.set(g.id, row);
     nav.append(row);
   }
-  const instruments = el("div", "site-nav-row");
-  instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab", { sameTab: true }));
-  nav.prepend(instruments);
+  showGroup(activeGroup);
 
   // Phones: 27 links would fill the whole first screen before any content,
   // so the rows fold behind one summary naming the current page. Desktop

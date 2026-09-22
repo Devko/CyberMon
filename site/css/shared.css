@@ -181,6 +181,38 @@ code {
   border-bottom-color: var(--accent);
 }
 
+/* ---- desktop nav: one bar of groups, one group's pages open beneath ---- */
+
+.site-nav-group-btn {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 11px 14px 9px;
+  cursor: pointer;
+}
+.site-nav-group-btn::after { content: " ▾"; color: var(--faint); }
+.site-nav-group-btn[aria-expanded="true"]::after { content: " ▴"; color: var(--accent); }
+.site-nav-group-btn:hover,
+.site-nav-group-btn[aria-expanded="true"] { color: var(--ink); }
+.site-nav-group-btn.is-current { border-bottom-color: var(--accent); }
+.site-nav-group-btn:focus-visible,
+.site-nav-tab:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
+.site-nav-groups .site-nav-field { margin-left: 10px; padding-left: 20px; border-left: 1px solid var(--rule); }
+.site-nav-groups + .site-nav-row-instruments { border-top: none; }
+
+@media (min-width: 721px) {
+  .site-nav-row-instruments,
+  .site-nav-row-lead,
+  .site-nav-group-row:not(.is-shown) { display: none; }
+  .site-nav-group-row .site-nav-group-label { display: none; }
+  .site-nav-group-row.is-shown { background: var(--bg-deep); }
+}
+
 /* ---- compact masthead on module pages: the wordmark and thesis stay, the
    kicker and manifesto paragraph live on the landing page only ---------- */
 
@@ -580,14 +612,21 @@ code {
   white-space: normal;
 }
 
+/* In-cell bar with its value BESIDE it, never on it: a value drawn over the
+   fill was unreadable wherever the fill reached it (avg CVSS, 100.0%). The
+   value column is reserved as a right margin, --cellbar-val-w wide (a board
+   with longer labels sets it on its cells), so digits align down the column. */
 .cellbar {
   position: relative;
   display: inline-block;
   width: 110px;
   height: 18px;
+  margin-right: calc(var(--cellbar-val-w, 7ch) + 8px);
   background: var(--bg-deep);
   border: 1px solid var(--rule);
   vertical-align: middle;
+  font-family: var(--mono);
+  font-size: 11.5px;
 }
 
 .cellbar-fill {
@@ -601,14 +640,16 @@ code {
 
 .cellbar-val {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: calc(100% + 8px);
+  width: var(--cellbar-val-w, 7ch);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 6px;
-  font-size: 11.5px;
+  white-space: nowrap;
+  font-size: inherit;
   color: var(--ink);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .tag {
@@ -772,6 +813,8 @@ code {
   }
   .site-nav-row-lead .site-nav-tab { padding-top: 11px; }
 
+  .site-nav-groups { display: none; }
+
   /* folded nav: one tappable line naming the current page */
   .site-nav-summary {
     display: flex;
@@ -809,7 +852,8 @@ code {
 
   .hero-stat-row { gap: 10px; }
 
-  .cellbar { width: 76px; }
+  /* narrower track on phones: the value column now sits beside it */
+  .cellbar { width: 52px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

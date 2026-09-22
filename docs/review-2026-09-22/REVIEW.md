@@ -80,6 +80,19 @@ limitation the code keeps; **Open** = verified, left for a follow-up.
 | "Grading" wording | Prose in `epss_report_metrics.py`, `epss_volatility.py` and `epss_grade.js` reworded; the `graded` / `ungradeable` field names are contract names and stay. |
 | Rescores hero stat | Left as is (label accurate; the chart now separates backfills from rescores). |
 
+## UI pass (same day)
+
+| Change | Why |
+| --- | --- |
+| Module pages: compact masthead (kicker and manifesto paragraph only on the landing page); wordmark links home. | The full masthead repeated on every page. |
+| Nav, phones: folds behind "All modules ▾ / current page". | 27 links filled the first 940 px of a 390 px screen; content now starts at ~350 px. |
+| Nav, desktop: one bar of theme groups; the current page's group opens beneath it (none on the landing page); other groups open on click. | Six wrapping rows (~310 px) with orphaned items become two lines. |
+| "On this page" jump list on module pages with 3+ sections. | The CVE page is ~15,000 px tall on a phone. |
+| Home cards: no "LIVE" tag, no build-order module numbers (01, 04, 11 … under one theme). | Identical on every card / read as a broken sequence. |
+| Table bars: the value sits beside the bar, right-aligned, never on the fill (shared `.cellbar`; per-board value width). | Values over the fill were unreadable (avg CVSS, 100.0 %, the EPSS movers). |
+| IQR bands (KEV latency, KEV remediation, breach lag): dashed p25 / p75 edges. | The band had no visible boundary on the dark ground. |
+| C2 weather: weekly Monday labels, unrotated ("Jul 27"). | 60 rotated daily labels overlapped and clipped. |
+
 ## What moves in the published data
 
 Only `site/data/ai_alibi.json` was regenerated here (from the committed

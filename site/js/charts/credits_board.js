@@ -109,6 +109,7 @@ export function render(slots, data) {
 
       const tdCount = el("td", "num");
       const cell = el("div", "cellbar");
+      cell.style.setProperty("--cellbar-val-w", "5ch"); // "1,234"
       const fill = el("div", "cellbar-fill");
       fill.style.width = `${((r.counted / maxCounted) * 100).toFixed(1)}%`;
       cell.append(fill, el("span", "cellbar-val", fmtInt(r.counted)));

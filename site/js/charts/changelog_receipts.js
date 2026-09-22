@@ -68,6 +68,7 @@ export function render(slots, data) {
           if (col.key === "edits") {
             const td = el("td", "num");
             const cell = el("div", "cellbar");
+            cell.style.setProperty("--cellbar-val-w", "4ch"); // edits per entry: a few digits
             const fill = el("div", "cellbar-fill accent");
             fill.style.width = `${((100 * r.edits) / maxEdits).toFixed(1)}%`;
             cell.append(fill, el("span", "cellbar-val", fmtInt(r.edits)));
