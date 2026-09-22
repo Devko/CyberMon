@@ -93,6 +93,24 @@ previous-month cell withheld (a month that closed while the lane was down
 was only ever partially fetched). States written before this key existed
 load unchanged: each cached lane's stamp is seeded from the state's
 ``last_sync``, the latest any of its months can have been fetched.
+
+**Per-term freshness.** A lane stamp only says that *some* term's fetch
+landed; every lane lets one term fail while the others succeed. So the
+state also carries ``term_success`` — ``{source: {term_id: ISO UTC}}`` —
+stamped for each term whose own fetch for that source landed this run:
+for the whole-curve lanes (GDELT, arXiv, Wikipedia) a refreshed curve
+(the same outcomes that count toward the lane stamp: a Wikipedia 404 or
+an arXiv empty-feed-over-cached-history is a kept cache, not a success);
+for the per-cell lanes (HN, EDGAR) the term's *closing-month* cell (the
+window's previous month) landing — the one cell the partial-month rule
+protects, so a term whose current-month cell lands while its closing
+cell fails is not vouched for. ``market_metrics`` applies the same
+partial previous-month rule per term; once a state carries the key, a
+cached (source, term) series with no stamp of its own counts as partial
+(its closing-month cell never landed after that month closed). States written before this key existed seed
+each cached (source, term) stamp from that lane's ``last_success``
+(itself seeded from ``last_sync``), so nothing turns partial on the first
+night after the upgrade that was not already.
 """
 from __future__ import annotations
 
@@ -204,6 +222,12 @@ def _month_bounds_iso(month: str) -> tuple[str, str]:
     return f"{month}-01", last.isoformat()
 
 
+def _closing_month(window: list[str]) -> str | None:
+    """The window's previous (most recently closed) month — the cell the
+    partial-month rule guards — or None for a one-month window."""
+    return window[-2] if len(window) >= 2 else None
+
+
 # ---------------------------------------------------------------- state I/O
 
 def _state_path(cache_dir: Path) -> Path:
@@ -298,22 +322,28 @@ def reconstruct_state(out_dir: Path,
 
 def _pruned_state(state: dict | None, terms: list[TermDef],
                   window_set: set[str],
-                  log: Callable[[str], None]) -> tuple[dict, list, dict]:
+                  log: Callable[[str], None]
+                  ) -> tuple[dict, list, dict, dict]:
     """Carry the prior state forward, dropping months outside the window,
     terms no longer on the watchlist, and pending entries that are out of
     window / duplicated / not ``hn`` cells. Returns ``(series, pending,
-    last_success)``; the freshness stamps keep only well-formed ISO
-    values, and a lane with cached months but no stamp (a state written
-    before stamps existed) is seeded from the state's ``last_sync`` — the
-    latest any of its months can have been fetched."""
+    last_success, term_success)``; the freshness stamps keep only
+    well-formed ISO values, and a lane with cached months but no stamp (a
+    state written before stamps existed) is seeded from the state's
+    ``last_sync`` — the latest any of its months can have been fetched.
+    A state with no ``term_success`` key at all (written before per-term
+    stamps existed) has each cached (source, term) series seeded from its
+    lane's stamp: the lane rule already judged it that way, so the
+    upgrade marks nothing partial that was not already."""
     known = {t.id for t in terms}
     series: dict[str, dict[str, dict[str, int]]] = {}
     pending: list[list] = []
     last_success: dict[str, str] = {}
+    term_success: dict[str, dict[str, str]] = {}
     if not isinstance(state, dict) or state.get("version") != STATE_VERSION:
         if state:
             log("  market: discarding unrecognized cached state")
-        return series, pending, last_success
+        return series, pending, last_success, term_success
     for term_id, sources in (state.get("series") or {}).items():
         if term_id not in known:
             continue
@@ -348,7 +378,27 @@ def _pruned_state(state: dict | None, terms: list[TermDef],
         for sources in series.values():
             for source in sources:
                 last_success.setdefault(source, last_sync)
-    return series, pending, last_success
+    per_term = state.get("term_success")
+    if isinstance(per_term, dict):
+        for source, by_term in per_term.items():
+            if not isinstance(by_term, dict):
+                continue
+            kept_stamps = {str(t): ts for t, ts in by_term.items()
+                           if t in known and _is_iso(ts)}
+            if kept_stamps:
+                term_success[str(source)] = kept_stamps
+    else:
+        # Seed only a state written before per-term stamps existed. Once
+        # the key is present, an unstamped cached series is one whose own
+        # closing-month fetch never landed (e.g. an HN/EDGAR term whose
+        # older cells did); seeding it from a lane stamp another term
+        # earned would vouch for exactly the cell this rule guards.
+        for term_id, sources in series.items():
+            for source in sources:
+                if source in last_success:
+                    term_success.setdefault(source, {}) \
+                                .setdefault(term_id, last_success[source])
+    return series, pending, last_success, term_success
 
 
 # -------------------------------------------------------------------- GDELT
@@ -418,9 +468,12 @@ def _fetch_gdelt(session, term: TermDef, sleep: Callable[[float], None],
 def _gdelt_pass(session, series: dict, terms: list[TermDef],
                 window_set: set[str], day: date,
                 sleep: Callable[[float], None],
-                log: Callable[[str], None]) -> bool:
+                log: Callable[[str], None],
+                landed: set[str] | None = None) -> bool:
     """True when the pass refreshed at least one term curve (the lane's
-    ``last_success`` stamp); False when every term kept its cache."""
+    ``last_success`` stamp); False when every term kept its cache. Each
+    refreshed term's id is added to ``landed`` (its per-term stamp)."""
+    landed = set() if landed is None else landed
     ordered = gdelt_term_order(terms, series, day)
     starved = sum(1 for t in ordered
                   if not series.get(t.id, {}).get("gdelt"))
@@ -437,6 +490,7 @@ def _gdelt_pass(session, series: dict, terms: list[TermDef],
             continue
         series.setdefault(term.id, {})["gdelt"] = \
             {m: n for m, n in monthly.items() if m in window_set}
+        landed.add(term.id)
         refreshed += 1
     log(f"  market/gdelt: {refreshed}/{len(terms)} term curve(s) refreshed, "
         f"{kept} kept from cache")
@@ -507,9 +561,12 @@ def _fetch_arxiv(session, term: TermDef, window: list[str],
 def _arxiv_pass(session, series: dict, terms: list[TermDef],
                 window: list[str],
                 sleep: Callable[[float], None],
-                log: Callable[[str], None]) -> bool:
+                log: Callable[[str], None],
+                landed: set[str] | None = None) -> bool:
     """True when the pass re-bucketed at least one term (the lane's
-    ``last_success`` stamp); False when every term kept its cache."""
+    ``last_success`` stamp); False when every term kept its cache. Each
+    re-bucketed term's id is added to ``landed`` (its per-term stamp)."""
+    landed = set() if landed is None else landed
     refreshed = kept = 0
     for term in terms:
         monthly = _fetch_arxiv(session, term, window, sleep, log)
@@ -537,6 +594,7 @@ def _arxiv_pass(session, series: dict, terms: list[TermDef],
         # metrics like divergence() skip over it).
         series.setdefault(term.id, {})["arxiv"] = \
             {m: monthly.get(m, 0) for m in window}
+        landed.add(term.id)
         refreshed += 1
     log(f"  market/arxiv: {refreshed}/{len(terms)} term curve(s) "
         f"re-bucketed, {kept} kept from cache")
@@ -580,9 +638,12 @@ def _fetch_wiki(session, term: TermDef, window: list[str],
 def _wiki_pass(session, series: dict, terms: list[TermDef],
                window_set: set[str], window: list[str],
                sleep: Callable[[float], None],
-               log: Callable[[str], None]) -> bool:
+               log: Callable[[str], None],
+               landed: set[str] | None = None) -> bool:
     """True when at least one mapped term's curve refreshed (the lane's
-    ``last_success`` stamp), or when no term is mapped at all."""
+    ``last_success`` stamp), or when no term is mapped at all. Each
+    refreshed term's id is added to ``landed`` (its per-term stamp)."""
+    landed = set() if landed is None else landed
     mapped = [t for t in terms if t.wiki_article]
     refreshed = kept = 0
     for i, term in enumerate(mapped):
@@ -594,6 +655,7 @@ def _wiki_pass(session, series: dict, terms: list[TermDef],
             continue
         series.setdefault(term.id, {})["wiki"] = \
             {m: n for m, n in monthly.items() if m in window_set}
+        landed.add(term.id)
         refreshed += 1
     log(f"  market/wiki: {refreshed}/{len(mapped)} term curve(s) refreshed, "
         f"{kept} kept from cache "
@@ -637,7 +699,8 @@ def _fetch_edgar_month(session, term: TermDef, month: str,
 def _edgar_pass(session, series: dict, terms: list[TermDef],
                 window: list[str],
                 sleep: Callable[[float], None],
-                log: Callable[[str], None]) -> bool:
+                log: Callable[[str], None],
+                landed: set[str] | None = None) -> bool:
     """Re-fetch every (term, month) cell in the window (per-cell healing:
     a failure keeps the cached count). ``_EDGAR_ABORT_AFTER`` consecutive
     failures abort the pass for the night — that pattern is SEC throttling
@@ -645,7 +708,13 @@ def _edgar_pass(session, series: dict, terms: list[TermDef],
     Returns True when the pass completed with at least one refreshed cell
     (the lane's ``last_success`` stamp); an aborted pass is never a
     success, however many cells landed before the abort — the cells past
-    it, the newest months of the trailing terms, were never fetched."""
+    it, the newest months of the trailing terms, were never fetched.
+
+    A term whose closing-month cell (:func:`_closing_month`) landed is
+    added to ``landed`` (its per-term stamp) — even on an aborted pass,
+    since that cell itself was fetched after its month closed."""
+    landed = set() if landed is None else landed
+    closing = _closing_month(window)
     tracked = [t for t in terms if t.edgar_query]
     refreshed = failed = streak = 0
     for term in tracked:
@@ -665,6 +734,8 @@ def _edgar_pass(session, series: dict, terms: list[TermDef],
             streak = 0
             series.setdefault(term.id, {}) \
                   .setdefault("edgar", {})[month] = count
+            if closing is None or month == closing:
+                landed.add(term.id)
             refreshed += 1
     log(f"  market/edgar: {refreshed} cell(s) refreshed across "
         f"{len(tracked)} term(s), {failed} kept from cache")
@@ -708,7 +779,8 @@ def _fetch_hn_month(session, term: TermDef, month: str,
 def _hn_pass(session, series: dict, pending: list[list],
              terms: list[TermDef], window: list[str], backfill_batch: int,
              sleep: Callable[[float], None],
-             log: Callable[[str], None]) -> tuple[list[list], bool]:
+             log: Callable[[str], None],
+             landed: set[str] | None = None) -> tuple[list[list], bool]:
     """Refresh current+previous month per term, keep the backfill queue in
     shape, drain up to ``backfill_batch`` cells; returns ``(new queue,
     success)``. Each cell already spends a bounded retry ladder, so
@@ -716,7 +788,12 @@ def _hn_pass(session, series: dict, pending: list[list],
     down for the night: the pass stops requesting (the remaining refresh
     cells keep their cached months, the queue keeps every undrained
     entry) and reports no success, so the lane's freshness stamp does not
-    move. Otherwise success means at least one refresh cell landed."""
+    move. Otherwise success means at least one refresh cell landed.
+
+    A term whose closing-month cell (:func:`_closing_month`) landed —
+    refresh or backfill — is added to ``landed`` (its per-term stamp)."""
+    landed = set() if landed is None else landed
+    closing = _closing_month(window)
     refresh_months = window[-2:]  # previous + current: the closing month
     refreshed = streak = 0        # must finalize once the calendar flips
     aborted = False
@@ -741,6 +818,8 @@ def _hn_pass(session, series: dict, pending: list[list],
             streak = 0
             series.setdefault(term.id, {}) \
                   .setdefault("hn", {})[month] = count
+            if closing is None or month == closing:
+                landed.add(term.id)
             refreshed += 1
         if aborted:
             break
@@ -773,6 +852,8 @@ def _hn_pass(session, series: dict, pending: list[list],
             streak = 0
             series.setdefault(term_id, {}) \
                   .setdefault("hn", {})[month] = count
+            if closing is None or month == closing:
+                landed.add(term_id)
             backfilled += 1
     pending = still_pending + pending[backfill_batch:]
     log(f"  market/hn: {refreshed} refresh cell(s), {backfilled} "
@@ -788,14 +869,16 @@ def sync_state(state: dict | None, terms: list[TermDef],
                sleep: Callable[[float], None] = time.sleep,
                log: Callable[[str], None] = print) -> dict:
     """Return up-to-date market sync state (``{version, last_sync, series,
-    pending, last_success}``): prune the prior state to the rolling
+    pending, last_success, term_success}``): prune the prior state to the rolling
     window, re-fetch the whole GDELT, arXiv, Wikipedia and EDGAR curves
     per term (GDELT in the starved-first, day-rotated order of
     :func:`gdelt_term_order`; EDGAR cell by cell), refresh the two most
     recent HN months per term, and drain up to ``backfill_batch`` HN cells
     from the pending queue (see the module docstring for the per-source
     policy). Each lane whose pass succeeded gets its ``last_success``
-    stamped ``now``; a lane that refreshed nothing keeps its old stamp."""
+    stamped ``now``; a lane that refreshed nothing keeps its old stamp.
+    Likewise each (source, term) whose own fetch landed gets its
+    ``term_success`` stamp (see the module docstring's per-term rules)."""
     if session is None:
         import requests
 
@@ -803,22 +886,30 @@ def sync_state(state: dict | None, terms: list[TermDef],
     now = now or datetime.now(timezone.utc)
     window = month_window(now, window_months)
     window_set = set(window)
-    series, pending, last_success = _pruned_state(state, terms, window_set,
-                                                  log)
+    series, pending, last_success, term_success = _pruned_state(
+        state, terms, window_set, log)
+    landed: dict[str, set[str]] = {s: set() for s in
+                                   ("gdelt", "arxiv", "wiki", "edgar", "hn")}
     succeeded = {
         "gdelt": _gdelt_pass(session, series, terms, window_set, now.date(),
-                             sleep, log),
-        "arxiv": _arxiv_pass(session, series, terms, window, sleep, log),
+                             sleep, log, landed["gdelt"]),
+        "arxiv": _arxiv_pass(session, series, terms, window, sleep, log,
+                             landed["arxiv"]),
         "wiki": _wiki_pass(session, series, terms, window_set, window, sleep,
-                           log),
-        "edgar": _edgar_pass(session, series, terms, window, sleep, log),
+                           log, landed["wiki"]),
+        "edgar": _edgar_pass(session, series, terms, window, sleep, log,
+                             landed["edgar"]),
     }
     pending, succeeded["hn"] = _hn_pass(session, series, pending, terms,
-                                        window, backfill_batch, sleep, log)
+                                        window, backfill_batch, sleep, log,
+                                        landed["hn"])
     stamp = _iso(now)
     for source, ok in succeeded.items():
         if ok:
             last_success[source] = stamp
+    for source, term_ids in landed.items():
+        for term_id in term_ids:
+            term_success.setdefault(source, {})[term_id] = stamp
     dead = sorted(s for s, ok in succeeded.items() if not ok)
     if dead:
         log(f"  market: no successful pass tonight for {', '.join(dead)}; "
@@ -826,4 +917,4 @@ def sync_state(state: dict | None, terms: list[TermDef],
             + ", ".join(f"{s}={last_success.get(s, 'never')}" for s in dead))
     return {"version": STATE_VERSION, "last_sync": stamp,
             "series": series, "pending": pending,
-            "last_success": last_success}
+            "last_success": last_success, "term_success": term_success}

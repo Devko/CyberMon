@@ -78,8 +78,8 @@ Honesty caveat, stated in the copy and the docs: the moat here is softer
 than the KEV changelog's. FIRST's daily EPSS snapshots ARE publicly
 archived (dated files go back years), so CyberMon is the only *maintained*
 per-CVE EPSS churn log, not the only possible source. Distinct from the
-EPSS Report Card (module 10), which grades the model's ACCURACY; this
-module measures its day-to-day STABILITY.
+EPSS Report Card (module 10), which sets the model's day-before-listing
+score beside the KEV outcome; this module measures its day-to-day STABILITY.
 
 The record starts at first deploy: on the first run there is no prior
 state, so the night is a baseline (zero rows), and the committed CSV ships

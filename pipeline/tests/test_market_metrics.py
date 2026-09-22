@@ -11,7 +11,8 @@ from pipeline import contracts  # noqa: F401  (see above)
 from pipeline import market_contracts
 from pipeline.market_metrics import (STALE_AFTER_DAYS, build_market_hype,
                                      divergence, index_series,
-                                     lane_freshness, run_stage, yoy)
+                                     lane_freshness, run_stage,
+                                     term_partial, yoy)
 from pipeline.market_terms import TERMS, TermDef
 
 from .conftest import GENERATED_AT
@@ -529,6 +530,60 @@ def test_partial_month_rule_is_independent_of_staleness():
     obj = build_market_hype(state, [_term("aaa")], "2026-07-02T00:00:00Z")
     assert obj["terms"][0]["series"]["gdelt"][-1]["month"] == "2026-06"
     assert obj["terms"][0]["yoy"]["gdelt"]["latest_month"] == "2026-06"
+
+
+def test_term_partial_judges_each_term_by_its_own_stamp():
+    # GENERATED_AT is 2026-07-09: a stamp before 2026-07-01 is partial.
+    state = _state({"aaa": {"gdelt": {"2026-06": 1}, "hn": {"2026-06": 1}},
+                    "bbb": {"gdelt": {"2026-06": 1}, "hn": {"2026-06": 1}},
+                    "ccc": {"gdelt": {"2026-06": 1}}})
+    state["term_success"] = {
+        "gdelt": {"aaa": "2026-07-01T00:00:00Z",      # June fetched whole
+                  "bbb": "2026-06-30T23:59:59Z",      # partial
+                  "ccc": "sometime"},                  # unreadable
+        "hn": {"aaa": "2026-07-08T00:00:00Z"}}         # bbb: never landed
+    assert term_partial(state, GENERATED_AT) == {
+        "bbb": {"gdelt", "hn"}, "ccc": {"gdelt"}}
+    # a state predating per-term stamps judges nothing (lane rule only)
+    del state["term_success"]
+    assert term_partial(state, GENERATED_AT) == {}
+
+
+def test_term_failing_across_rollover_withholds_its_previous_month():
+    # Both lanes are fresh (another term's fetch landed last night), but
+    # bbb's own gdelt fetch last landed in June: its June cell is partial
+    # and must not publish or anchor a YoY; aaa is unaffected.
+    rising = _monthly([10] * 12 + [20] * 12, start="2024-07")   # ..2026-06
+    state = _state({"aaa": {"gdelt": dict(rising)},
+                    "bbb": {"gdelt": dict(rising)}})
+    state["last_success"] = _stamps()
+    state["term_success"] = {"gdelt": {"aaa": "2026-07-08T00:00:00Z",
+                                       "bbb": "2026-06-29T00:00:00Z"}}
+    obj = build_market_hype(state, [_term("aaa"), _term("bbb")],
+                            GENERATED_AT)
+    assert obj["stale_sources"] == []
+    aaa, bbb = obj["terms"]
+    assert aaa["series"]["gdelt"][-1]["month"] == "2026-06"
+    assert aaa["yoy"]["gdelt"]["pct_change"] == 100.0
+    assert bbb["series"]["gdelt"][-1]["month"] == "2026-05"
+    assert bbb["yoy"]["gdelt"] is None
+    assert obj["headline"]["top_riser"]["term_id"] == "aaa"
+    market_contracts.validate("market_hype.json", obj)
+
+
+def test_partial_term_drops_out_of_divergence():
+    state = _state({"aaa": {"gdelt": _monthly([10, 10, 10], start="2026-04"),
+                            "arxiv": _monthly([3, 6, 12], start="2026-04")}})
+    state["last_success"] = _stamps()
+    state["term_success"] = {"gdelt": {"aaa": "2026-07-08T00:00:00Z"},
+                             "arxiv": {"aaa": "2026-07-08T00:00:00Z"}}
+    assert build_market_hype(state, [_term("aaa")], GENERATED_AT) \
+        ["terms"][0]["divergence"] is not None
+    state["term_success"]["arxiv"]["aaa"] = "2026-06-20T00:00:00Z"
+    obj = build_market_hype(state, [_term("aaa")], GENERATED_AT)
+    assert obj["terms"][0]["divergence"] is None
+    assert obj["headline"]["top_divergence"] is None
+    market_contracts.validate("market_hype.json", obj)
 
 
 def test_run_stage_live_publishes_stale_sources_in_payload_and_meta(

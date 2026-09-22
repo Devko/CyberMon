@@ -262,7 +262,11 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
           type: "line",
           // Plotted transformed, reported raw — the tooltip below reads
           // `byYear`, never the plotted y.
-          data: rows.map((r) => [r.year, toSym(r.value)]),
+          // Provisional cohorts draw hollow, as on the like-for-like line
+          // (same flag, same rule, since 2026-09-22 on every metric).
+          data: rows.map((r) => (r.provisional
+            ? { value: [r.year, toSym(r.value)], symbol: "emptyCircle", symbolSize: 7 }
+            : [r.year, toSym(r.value)])),
           color: C.accent,
           symbol: "circle",
           symbolSize: 4,

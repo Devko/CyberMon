@@ -944,3 +944,127 @@ def test_hn_abort_during_backfill_keeps_undrained_cells_queued(monkeypatch):
                                 ["hn", "alpha", "2026-04"],
                                 ["hn", "alpha", "2026-05"]]
     assert "hn" not in state["last_success"]  # aborted: never a success
+
+
+# ------------------------------------------------------ per-term freshness
+
+def _june_rollover_prior(series, stamp="2026-06-28T00:00:00Z"):
+    """A state last synced before July began: every lane and every cached
+    (source, term) series stamped in late June."""
+    return {"version": 1, "last_sync": stamp, "series": series,
+            "pending": [],
+            "last_success": {s: stamp for s in ALL_SOURCES},
+            "term_success": {s: {t: stamp for t, srcs in series.items()
+                                 if s in srcs}
+                             for s in ALL_SOURCES}}
+
+
+def _published_months(obj, term_id, source):
+    term = next(t for t in obj["terms"] if t["id"] == term_id)
+    return [p["month"] for p in term["series"][source]]
+
+
+def test_gdelt_term_failing_across_rollover_withholds_only_its_june():
+    # beta's GDELT curve fails tonight (both attempts) while alpha's lands:
+    # the lane gets a fresh stamp, but beta's cached June is a partial
+    # count from June 28 and must not publish as a closed month.
+    prior = _june_rollover_prior({
+        "alpha": {"gdelt": {"2026-05": 10, "2026-06": 8}},
+        "beta": {"gdelt": {"2026-05": 20, "2026-06": 16}}})
+    session = FakeSession(gdelt=[
+        _gdelt([("20260501T000000Z", 11), ("20260601T000000Z", 12)]),
+        FakeResponse(429, text="x"), FakeResponse(429, text="x")])
+    state = _sync(session, [TERM_A, TERM_B], state=prior, months=3)
+    tonight = "2026-07-09T06:00:00Z"
+    assert state["last_success"]["gdelt"] == tonight
+    assert state["term_success"]["gdelt"] == {
+        "alpha": tonight, "beta": "2026-06-28T00:00:00Z"}
+    obj = build_market_hype(state, [TERM_A, TERM_B], tonight)
+    assert obj["stale_sources"] == []
+    assert _published_months(obj, "alpha", "gdelt") == ["2026-05", "2026-06"]
+    assert _published_months(obj, "beta", "gdelt") == ["2026-05"]
+
+
+def test_hn_term_stamp_needs_its_closing_month_cell():
+    # alpha's current-month HN cell lands but its closing-month (June)
+    # cell fails: the lane succeeded, alpha's June is still the partial
+    # count fetched in June. beta's June cell lands and publishes.
+    prior = _june_rollover_prior({
+        "alpha": {"hn": {"2026-05": 5, "2026-06": 3}},
+        "beta": {"hn": {"2026-05": 5, "2026-06": 3}}})
+    session = FakeSession(hn=[FakeResponse(400, payload={}), _hn(9),
+                              _hn(7), _hn(9)])
+    state = _sync(session, [TERM_A, TERM_B], state=prior, months=3)
+    tonight = "2026-07-09T06:00:00Z"
+    assert state["last_success"]["hn"] == tonight
+    assert state["term_success"]["hn"] == {
+        "alpha": "2026-06-28T00:00:00Z", "beta": tonight}
+    obj = build_market_hype(state, [TERM_A, TERM_B], tonight)
+    assert _published_months(obj, "alpha", "hn") == ["2026-05"]
+    assert _published_months(obj, "beta", "hn") == ["2026-05", "2026-06"]
+
+
+def test_edgar_term_stamp_follows_the_closing_month_cell():
+    prior = _june_rollover_prior({
+        "mapped": {"edgar": {"2026-05": 4, "2026-06": 2}}})
+    # cells in window order 05, 06, 07: June fails, the rest land (per-cell
+    # healing keeps June's cached partial count; the lane still succeeds)
+    session = FakeSession(edgar=[_edgar(4), FakeResponse(403, text="x"),
+                                 _edgar(1)])
+    state = _sync(session, [TERM_M], state=prior, months=3)
+    tonight = "2026-07-09T06:00:00Z"
+    assert state["last_success"]["edgar"] == tonight
+    assert state["term_success"]["edgar"]["mapped"] == "2026-06-28T00:00:00Z"
+    obj = build_market_hype(state, [TERM_M], tonight)
+    assert _published_months(obj, "mapped", "edgar") == ["2026-05"]
+    # the next night June lands and the term heals
+    healed = _sync(FakeSession(edgar=[_edgar(4), _edgar(5), _edgar(1)]),
+                   [TERM_M], state=state, months=3)
+    assert healed["term_success"]["edgar"]["mapped"] == tonight
+    obj = build_market_hype(healed, [TERM_M], tonight)
+    assert _published_months(obj, "mapped", "edgar") == ["2026-05", "2026-06"]
+
+
+def test_kept_caches_never_earn_a_term_stamp():
+    # wiki 404 (renamed article) and arXiv's twice-empty feed over cached
+    # history both keep the cache — neither is a term success.
+    prior = _june_rollover_prior({
+        "mapped": {"wiki": {"2026-06": 50}, "arxiv": {"2026-06": 3}}})
+    session = FakeSession(wiki=[FakeResponse(404, text="gone")],
+                          arxiv=[_atom(0, []), _atom(0, [])])
+    state = _sync(session, [TERM_M], state=prior, months=3)
+    assert state["term_success"]["wiki"]["mapped"] == "2026-06-28T00:00:00Z"
+    assert state["term_success"]["arxiv"]["mapped"] == "2026-06-28T00:00:00Z"
+
+
+def test_pre_term_stamp_state_seeds_from_lane_stamps_without_partials():
+    # A state written before term_success existed: each cached series is
+    # seeded from its lane stamp (here itself seeded from last_sync), so a
+    # night on which every fetch fails marks nothing partial the lane rule
+    # would not.
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"alpha": {"gdelt": {"2026-05": 7, "2026-06": 9}},
+                        "beta": {"gdelt": {"2026-05": 3, "2026-06": 4}}},
+             "pending": [],
+             "last_success": {"gdelt": "2026-07-02T00:00:00Z"}}
+    session = FakeSession(gdelt=[FakeResponse(429, text="x")] * 4)
+    state = _sync(session, [TERM_A, TERM_B], state=prior, months=3)
+    assert state["term_success"]["gdelt"] == {
+        "alpha": "2026-07-02T00:00:00Z", "beta": "2026-07-02T00:00:00Z"}
+    obj = build_market_hype(state, [TERM_A, TERM_B], "2026-07-09T06:00:00Z")
+    for term_id in ("alpha", "beta"):
+        assert _published_months(obj, term_id, "gdelt") == \
+            ["2026-05", "2026-06"]
+
+
+def test_term_stamps_pruned_to_known_terms_and_iso_values():
+    prior = _june_rollover_prior({"alpha": {"gdelt": {"2026-06": 1}}})
+    prior["term_success"]["gdelt"].update({"retired": "2026-06-28T00:00:00Z",
+                                           "beta": "garbage"})
+    session = FakeSession(gdelt=[FakeResponse(429, text="x")] * 2)
+    state = _sync(session, [TERM_A, TERM_B], state=prior, months=3)
+    # beta (no cached curve) fetches first and fails: its garbage stamp is
+    # dropped, not kept or reseeded. alpha's benign empty curve lands and
+    # is stamped tonight; the retired term's stamp is pruned.
+    assert state["term_success"]["gdelt"] == {
+        "alpha": "2026-07-09T06:00:00Z"}

@@ -536,6 +536,20 @@ function fitSlides() {
           window.echarts.getInstanceByDom(host)?.resize();
         });
       }
+      // Last resort for sections with no stretchy chart host (the credits
+      // funnel is plain HTML): lower the 2x zoom and widen the logical
+      // layout by the same factor, so the section reflows wider and shorter
+      // but still spans the sheet. Floored at 1.4x — smaller type is no
+      // longer phone-readable, and what still spills is reported below.
+      const MIN_ZOOM = 1.4;
+      for (let pass = 0, zoom = 2; pass < 6; pass++) {
+        const innerH = inner.getBoundingClientRect().height;
+        if (innerH - scaleBox.clientHeight <= 2 || zoom <= MIN_ZOOM) break;
+        zoom = Math.max(MIN_ZOOM, zoom * (scaleBox.clientHeight / innerH) * 0.98);
+        inner.style.transform = `scale(${zoom})`;
+        inner.style.width = `${100 / zoom}%`;
+        hosts.forEach((h) => window.echarts.getInstanceByDom(h)?.resize());
+      }
     }
 
     const tableBox = slide.querySelector(".slide-tablebox");

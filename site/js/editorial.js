@@ -859,7 +859,11 @@ export const editorial = {
         "resweep from NVD's yearly feeds at least weekly) and diffs the fresh snapshot " +
         "against the previous one. A status change between snapshots is a transition; the " +
         "chart counts them per day: CVEs entering “Received,” entering “Awaiting " +
-        "Analysis,” leaving the live queue for “Analyzed,” and leaving it for “Deferred.” " +
+        "Analysis,” leaving the live queue for “Analyzed,” and leaving it for “Deferred” " +
+        "(the live queue includes “Received”; before 23 September 2026 the Analyzed " +
+        "line counted exits from Awaiting and Undergoing only, so a Received record " +
+        "analyzed between two snapshots was missed there). Only exits seen awaiting " +
+        "analysis are timed. " +
         "Dates attach at observation: NVD publishes no status-change timestamps, so a " +
         "CVE's status is stamped with the day CyberMon first saw it. A queue wait is " +
         "therefore the span between our sighting of the entry and our sighting of the " +
@@ -2801,8 +2805,9 @@ export const editorial = {
         "departure and a newcomer; a cnaID the roster shares between " +
         "organizations proves nothing and never pairs. Snapshots stored before " +
         "20 September 2026 carry no cnaID, so a rename logged before then still " +
-        "reads as a departure plus a newcomer (August's The Qt Company → Qt " +
-        "Group pair is the likely case). Events append to a " +
+        "reads as a departure plus a newcomer: August's TQtC → Qt pair is one " +
+        "(The Qt Company renamed Qt Group under the same cnaID, CNA-2025-0016), " +
+        "so the one departure on the record is a rename. Events append to a " +
         "committed, append-only log (data/history/cna_roster.csv) — like the " +
         "NVD backlog history, a normalized ledger this project accumulates; the " +
         "roster file's own git history holds the raw edits, this log the " +

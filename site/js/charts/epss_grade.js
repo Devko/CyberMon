@@ -1,9 +1,9 @@
-// EPSS 1 (hero) — the grade: per KEV year, the share of graded additions
+// EPSS 1 (hero) — listing-eve scores: per KEV year, the share of scored additions
 // whose day-before EPSS score fell under 1%, in 1–10%, or at/above 10%.
 // Contract: site/data/epss_report.json (shared by all three sections;
 // epss.js fetches it once). Stacked 100% bars; accent ink on the sub-1%
 // band on purpose — a confirmed-exploited CVE the model scored under 1%
-// the day before is the strongest form of miss the data can show.
+// the day before is the sharpest contrast the data can show.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";

@@ -200,7 +200,7 @@ body.carousel {
 .slide-scale .finder-head { font-size: 10.5px; padding: 3px 0; }
 .slide-scale .claim { margin-top: 3px; padding-left: 8px; }
 .slide-scale .claim-num { font-size: 11px; }
-.slide-scale .cmp-row { font-size: 9.5px; gap: 5px; margin-bottom: 2px; grid-template-columns: 6em minmax(0, 1fr) 3em; }
+.slide-scale .cmp-row { font-size: 9.5px; gap: 5px; margin-bottom: 2px; grid-template-columns: 8em minmax(0, 1fr) 3em; }
 .slide-scale .cmp-row .funnel-track { height: 7px; }
 .slide-scale .stage-sev { margin-top: 6px; }
 .slide-scale .funnel-track { height: 10px; margin-top: 4px; }

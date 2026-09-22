@@ -36,6 +36,10 @@ call — the movers board never ranks a dead lane's ever-older data. A lane
 whose last success predates the current month also has its previous-month
 cell withheld from the series: that month closed while the lane was
 down, so what the cache holds is a partial fetch, never a closed month.
+The same previous-month rule is applied per (source, term) from the
+state's ``term_success`` stamps (:func:`term_partial`): a lane that
+succeeded on the strength of its other terms does not vouch for a term
+whose own fetch kept failing across the month rollover.
 """
 from __future__ import annotations
 
@@ -132,6 +136,42 @@ def lane_freshness(state: dict, generated_at: str
         if last < month_start:
             partial.add(source)
     return stale, partial
+
+
+def term_partial(state: dict, generated_at: str) -> dict[str, set[str]]:
+    """``{term_id: {source, ...}}`` whose previous-month cell is a partial
+    fetch by the state's per-term ``term_success`` stamps
+    (``{source: {term_id: ISO}}``, maintained by ``fetch_market``), judged
+    at ``generated_at`` exactly like the lane-level rule of
+    :func:`lane_freshness`: a stamp that predates the first day of the
+    generation month, or cannot be parsed, marks the cell partial.
+
+    A cached (source, term) series with no stamp of its own is partial
+    too — the sync stamps every term whose closing-month fetch landed and
+    seeds every cached series when it first writes the key, so a missing
+    stamp means that term's closing-month cell never landed after its
+    month closed. A state with no ``term_success`` key at all (fixtures,
+    hand-built states, states not yet re-synced) judges nothing here;
+    the lane rule still applies to it.
+    """
+    stamps = state.get("term_success")
+    if not isinstance(stamps, dict):
+        return {}
+    month_start = _parse_iso(generated_at).replace(
+        day=1, hour=0, minute=0, second=0, microsecond=0)
+    out: dict[str, set[str]] = {}
+    for term_id, sources in (state.get("series") or {}).items():
+        for source in SOURCES:
+            if not (sources or {}).get(source):
+                continue
+            raw = (stamps.get(source) or {}).get(term_id)
+            try:
+                partial = raw is None or _parse_iso(str(raw)) < month_start
+            except ValueError:
+                partial = True
+            if partial:
+                out.setdefault(term_id, set()).add(source)
+    return out
 
 
 # ---------------------------------------------------------------- pure math
@@ -264,7 +304,9 @@ def build_market_hype(state: dict, terms: list[TermDef],
     freshness rules of :func:`lane_freshness` apply: stale lanes publish
     their series (flagged in ``stale_sources``) but no YoY or divergence;
     a lane down since before the month rolled over also withholds its
-    previous-month cell — and with it, that night, its anchored windows."""
+    previous-month cell — and with it, that night, its anchored windows —
+    and so does a single term whose own fetch for a lane has not landed
+    since before the rollover (:func:`term_partial`)."""
     all_series = state.get("series", {})
     # The month in progress is collected (the sync must keep refreshing it)
     # but never published: ten days of a month charted next to complete
@@ -276,13 +318,15 @@ def build_market_hype(state: dict, terms: list[TermDef],
     previous_month = _previous_month(current_month)
     stale_sources, partial = lane_freshness(state, generated_at)
     stale = set(stale_sources)
+    partial_terms = term_partial(state, generated_at)
     term_objs = []
     for term in terms:
+        withheld = partial | partial_terms.get(term.id, set())
         per_source = {
             src: {m: n for m, n in (all_series.get(term.id, {})
                                     .get(src, {}) or {}).items()
                   if m < current_month
-                  and not (src in partial and m == previous_month)}
+                  and not (src in withheld and m == previous_month)}
             for src in SOURCES}
         series = {s: index_series(per_source.get(s, {})) for s in SOURCES}
         term_objs.append({

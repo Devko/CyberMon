@@ -281,6 +281,13 @@ catch-up lump lands the day after — `after_resweep` marks where the lump
 is. The CSV is unchanged (no new column); the contract re-derives the flag
 when present and tolerates its absence on older editions.
 
+Since 2026-09-23 `analyzed_from_awaiting` counts every exit from the live
+queue to Analyzed — Received included, symmetric with
+`deferred_from_awaiting` (the column name is kept; the CSV shape does not
+change). Only exits that were seen Awaiting/Undergoing are timed into the
+median. Rows before that date counted Analyzed exits from Awaiting /
+Undergoing only and are not rewritten.
+
 `meta.sources.nvd` may additively carry `throughput_events` (int ≥ 0):
 the transitions counted by that run's diff; absent on carry-forward runs
 and on runs with no previous state to diff against. `--skip-nvd` carries
@@ -548,7 +555,16 @@ never name a stale source. Series are still published for stale lanes.
 A lane whose last success predates the first day of the generation month
 also publishes no cell for the previous month (it was only partially
 fetched) on top of the existing current-month trim, so a closed month is
-never published from a partial fetch. `meta.sources.market` carries the
+never published from a partial fetch. Since 2026-09-22 the same rule also
+applies per term: the sync state carries `term_success`
+(`{source: {term_id: ISO}}`, stamped when that term's own fetch landed —
+a refreshed curve for GDELT/arXiv/Wikipedia, the closing-month cell for
+HN/EDGAR), and a term whose stamp predates the generation month (or is
+missing for a cached series once the key exists) publishes no
+previous-month cell for that source, so its YoY and divergence are
+withheld that night even when the lane itself is fresh. Older states are
+seeded from the lane stamps, so the upgrade marks nothing partial. The
+output shape is unchanged. `meta.sources.market` carries the
 same `stale_sources` list. arXiv: an empty first page is re-requested
 once, and an empty result for a term with a nonzero cached series is
 treated as a failed fetch (cache kept), never as an all-zero observation.

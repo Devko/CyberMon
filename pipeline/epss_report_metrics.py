@@ -1,4 +1,6 @@
-"""EPSS Report Card metrics: grading the forecast against the outcome.
+"""EPSS Report Card metrics: the model's day-before-listing score for each
+confirmed-exploited (KEV) CVE — a snapshot set beside the outcome, not a
+grade of the model (the "graded" / "ungradeable" field names are historical).
 
 Per-entry day-before facts arrive as sync state maintained by
 ``fetch_epss_history`` (``{"entries": {"CVE|dateAdded": {score_date, epss,

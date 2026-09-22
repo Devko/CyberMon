@@ -164,11 +164,18 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
             counts["received_new"] += 1
         elif status == "Awaiting Analysis":
             counts["entered_awaiting"] += 1
-        elif status == "Analyzed" and prev in _PRE_ANALYZED:
+        elif status == "Analyzed" and prev in QUEUE_STATUSES:
+            # Symmetric with Deferred: any live-queue status (Received
+            # included, as on the decay chart) leaving for Analyzed is an
+            # exit. Only waits that began awaiting analysis are timed — the
+            # clock the stat note describes; a Received -> Analyzed hop
+            # between two snapshots has no awaiting sighting to time from.
+            # (Rows before 2026-09-23 counted exits from Awaiting /
+            # Undergoing only; committed rows are not rewritten.)
             counts["analyzed_from_awaiting"] += 1
             since = _parse_date(prev_since.get(cve_id, ""))
-            if since is not None and today_date is not None \
-                    and since <= today_date:
+            if prev in _PRE_ANALYZED and since is not None \
+                    and today_date is not None and since <= today_date:
                 durations.append((today_date - since).days)
         elif status == "Deferred" and prev in QUEUE_STATUSES:
             counts["deferred_from_awaiting"] += 1

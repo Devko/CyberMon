@@ -328,3 +328,15 @@ def test_contract_rederives_after_resweep_and_tolerates_its_absence():
     for h in obj["history"]:
         del h["after_resweep"]        # an edition published before the field
     contracts.validate("nvd_throughput.json", obj)
+
+
+def test_received_to_analyzed_counts_as_an_exit_but_is_not_timed():
+    """Symmetric with Deferred: a Received record analyzed between two
+    snapshots left the live queue and counts in the Analyzed flow, but it
+    was never seen awaiting analysis, so no wait is clocked for it."""
+    prev = _state({"CVE-1": "Received", "CVE-2": "Awaiting Analysis"},
+                  since={"CVE-1": "2026-07-01", "CVE-2": "2026-07-01"})
+    now = _state({"CVE-1": "Analyzed", "CVE-2": "Analyzed"})
+    t = nvd_throughput.diff_transitions(prev, now, TODAY)
+    assert t["counts"]["analyzed_from_awaiting"] == 2
+    assert len(t["durations"]) == 1      # only the awaiting wait is timed

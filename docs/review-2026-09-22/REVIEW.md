@@ -68,22 +68,17 @@ limitation the code keeps; **Open** = verified, left for a follow-up.
 | Chrome | Nav opened the Field in a new tab; footer had no carried-forward flag for EPSS history; "graded" footer wording; home cards for Rescores/Roster contradicted 09-20 #16/#20; noscript list lacked the Field; resize registry kept disposed charts. | Fixed. |
 | Docs | `data-contracts.md` had the Time to PoC example (old numbers, unclosed) under the botnet heading; HIBP/Ransomwhere docstrings denied the carry-forward `__main__` performs. | Fixed. |
 
-## Open (verified, not changed here)
+## Follow-up round (same day)
 
-- **NVD throughput flow asymmetry** (`nvd_throughput.py`): Received →
-  Deferred counts as a queue exit but Received → Analyzed does not. Changing
-  it alters the meaning of a committed, append-only history, so it needs its
-  own decision. The stat note now says the clock starts "awaiting analysis".
-- **Market freshness is per lane, not per term** (`market_metrics.py`): a
-  single term failing across a month rollover can publish a partial month
-  as closed. Heals on the next good night for that term.
-- **Rescores hero stat** counts all logged events (5,412, 98 % backfills);
-  the label ("Events on the committed log") is accurate, and the chart now
-  separates the two, so left as is.
-- **Credits carousel overflow** seen locally only with web fonts blocked;
-  check the nightly log for `FAIL credits` before acting.
-- Pipeline docstrings in `epss_report_metrics.py` / `epss_volatility.py` and
-  the `epss_grade.js` header still use "grading" language (not reader-facing).
+| Item | Resolution |
+| --- | --- |
+| NVD throughput flow asymmetry | Fixed: Received → Analyzed now counts as a queue exit, symmetric with Deferred; only exits seen awaiting analysis are timed. Committed rows before 2026-09-23 are not rewritten; methodology and data contract date the change. Test added. |
+| Market freshness per lane, not per term | Fixed: per-(source, term) `term_success` stamps; a term whose own fetch failed across the month rollover has its previous-month cell withheld (YoY and divergence follow). Old states seed from the lane stamps, so the first night marks nothing new. Output shape unchanged. 9 tests added. |
+| Roster "departure" | Verified against CVEProject/cve-website history: commit `a03548e` (2026-08-03) renamed TQtC / The Qt Company to Qt / Qt Group under the same, unique cnaID CNA-2025-0016 (country and type unchanged, scope text reworded) — the rename rule is met. The methodology now says so. **The committed `cna_roster.csv` rows were not rewritten**: rewriting the append-only history needs the owner's go-ahead (two rows → one `renamed` + one `scope_changed`, then rebuild `roster_flux`). |
+| Credits carousel overflow | Confirmed with the real Newsreader font: the funnel slide overflowed its sheet by 330 px, so `credits.pdf` was never built. The fit pass now lowers the zoom (floored at 1.4×) for sections with no chart host to shrink; every deck builds. The slide's "credited here" label was also clipped by its bar (column widened). |
+| AI clock raw series | Provisional years now draw hollow on the raw line too. |
+| "Grading" wording | Prose in `epss_report_metrics.py`, `epss_volatility.py` and `epss_grade.js` reworded; the `graded` / `ungradeable` field names are contract names and stay. |
+| Rescores hero stat | Left as is (label accurate; the chart now separates backfills from rescores). |
 
 ## What moves in the published data
 
