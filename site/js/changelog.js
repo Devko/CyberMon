@@ -1,5 +1,5 @@
 // =============================================================================
-// changelog.js — KEV Changelog tab (changelog.html). Builds the three
+// changelog.js — KEV Changelog tab (changelog.html). Builds the four
 // changelog sections from editorial.js. Like epss.js, all sections share
 // ONE contract file (data/kev_changelog.json), fetched once and passed to
 // each renderer. Each renderer runs inside its own try/catch so one bad
@@ -10,6 +10,7 @@ import { hookResize } from "./theme.js";
 import { initChrome, fetchJSON, buildSection, showError } from "./common.js";
 import { render as renderEdits } from "./charts/changelog_edits.js";
 import { render as renderFlips } from "./charts/changelog_flips.js";
+import { render as renderLag } from "./charts/changelog_lag.js";
 import { render as renderReceipts } from "./charts/changelog_receipts.js";
 
 // RELATIVE paths only — must work under python -m http.server AND under a
@@ -19,6 +20,7 @@ const DATA_FILE = "data/kev_changelog.json";
 const SECTIONS = [
   { id: "edits", render: renderEdits, hero: true },
   { id: "flagflip", render: renderFlips },
+  { id: "flaglag", render: renderLag },
   { id: "receipts", render: renderReceipts },
 ];
 

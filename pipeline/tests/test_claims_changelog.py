@@ -203,6 +203,40 @@ def check_removals_are_named(d: dict) -> None:
         )
 
 
+def check_flag_lag_lands_late(d: dict) -> None:
+    # editorial.js (changelog.html flag-lag section): headline "Most
+    # ransomware flags land long after the listing." — at build
+    # (2026-09-22): 110 flips after the 2023-12 step, 87 of them (79%)
+    # more than 90 days after dateAdded, median 437.5 days. "Most" dies
+    # below half; "long after" dies when the median drops under 90 days.
+    # The listing-year tooltip says "fewer than 10 flips — no median
+    # published", which holds only while min_n is 10. Editions before
+    # 2026-09-22 lack the block; the section renders a no-block card.
+    lag = d.get("flag_lag")
+    if lag is None:
+        pytest.skip("kev_changelog.json predates the flag_lag block")
+    n = lag["n_capture"] + lag["n_daily"]
+    assert n >= 25, (
+        f"'Most ransomware flags land long after the listing' needs a real "
+        f"cohort ({n} flips is an anecdote)"
+    )
+    late = sum(b["capture"] + b["daily"] for b in lag["buckets"]
+               if b["lo"] > 90)
+    assert late / n > 0.5, (
+        f"'Most ransomware flags land long after the listing': only "
+        f"{late} of {n} flips landed more than 90 days after listing"
+    )
+    median = lag["overall"]["median_days"]
+    assert median is not None and median >= 90.0, (
+        f"'long after the listing' needs the median lag ({median} days) "
+        f"to stay above three months"
+    )
+    assert d["min_n"] == 10, (
+        f"'fewer than 10 flips — no median published' quotes min_n, which "
+        f"is now {d['min_n']}"
+    )
+
+
 # --------------------------------------------------------------------------
 # (verbatim claim from editorial.js, assertion)
 # --------------------------------------------------------------------------
@@ -223,6 +257,11 @@ CLAIMS = [
         "New listings are deliberately not counted",
         check_additions_excluded,
     ),
+    (
+        "Most ransomware flags land long after the listing.",
+        check_flag_lag_lands_late,
+    ),
+    ("fewer than 10 flips — no median published", check_flag_lag_lands_late),
     ("Some entries never stop changing", check_entries_never_stop_changing),
     ("every entry observed leaving the catalog", check_removals_are_named),
 ]

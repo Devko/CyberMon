@@ -453,6 +453,7 @@ def test_contract_reconciles_step_keys_and_tolerates_their_absence():
     obj = kc.build_kev_changelog(state, events, "2026-07-11T00:00:00Z",
                                  min_n=1)
     validate("kev_changelog.json", obj)
+    del obj["flag_lag"]  # additive block; this test edits the flips keys alone
     obj["flips"]["total_after_step"] = 5           # 0 + 5 != total 1
     with pytest.raises(ContractViolation, match="total_after_step"):
         validate("kev_changelog.json", obj)
@@ -469,6 +470,49 @@ def test_contract_reconciles_step_keys_and_tolerates_their_absence():
     obj["flips"]["step_month"] = None
     del obj["flips"]["step_month_flips"]
     del obj["flips"]["total_after_step"]           # an edition before the keys
+    validate("kev_changelog.json", obj)
+
+
+def test_flag_lag_excludes_the_step_and_buckets_by_granularity():
+    """The flag-lag block: the step month's flips are left out (the
+    flag-flip section's rule), each remaining flip is bucketed by days from
+    dateAdded and split by granularity, grouped by listing year, and a flip
+    later reverted to Unknown counts as went_back."""
+    state = kc.new_state("2023-12-04")
+    kc.apply_snapshot(state, catalog(
+        entry("CVE-2022-0001", date_added="2022-06-01"),
+        entry("CVE-2022-0002", date_added="2022-06-01"),
+        entry("CVE-2024-0003", date_added="2024-01-10"),
+        entry("CVE-2024-0004", date_added="2024-01-10")), "2023-12-04")
+    events = [_flip("CVE-2022-0001", "2023-12-04", "capture"),   # the step
+              _flip("CVE-2022-0002", "2024-02-12", "capture"),   # 621 d
+              _flip("CVE-2024-0003", "2024-01-30"),               # 20 d
+              _flip("CVE-2024-0004", "2024-03-10"),               # 60 d
+              {"observed_date": "2024-04-01", "cve": "CVE-2024-0004",
+               "change_type": "field_changed",
+               "field": "knownRansomwareCampaignUse",
+               "old": "Known", "new": "Unknown", "granularity": "daily"}]
+    obj = kc.build_kev_changelog(state, events, "2026-07-11T00:00:00Z",
+                                 min_n=2)
+    validate("kev_changelog.json", obj)
+    lag = obj["flag_lag"]
+    assert lag["step_month"] == "2023-12" and lag["excluded_step"] == 1
+    assert (lag["n_capture"], lag["n_daily"], lag["unusable"]) == (1, 2, 0)
+    assert lag["went_back"] == 1
+    counts = {b["label"]: (b["capture"], b["daily"]) for b in lag["buckets"]}
+    assert counts["0-30d"] == (0, 1)
+    assert counts["31-90d"] == (0, 1)
+    assert counts["1-2y"] == (1, 0)
+    assert lag["overall"]["median_days"] == 60.0
+    assert [(y["year"], y["n"]) for y in lag["by_year"]] == \
+        [(2022, 1), (2023, 0), (2024, 2)]
+    assert lag["by_year"][0]["median_days"] is None     # below min_n
+    assert lag["by_year"][2]["median_days"] == 40.0
+
+    lag["n_daily"] += 1                                  # drift is caught
+    with pytest.raises(ContractViolation, match="flag_lag"):
+        validate("kev_changelog.json", obj)
+    del obj["flag_lag"]                                  # older editions
     validate("kev_changelog.json", obj)
 
 

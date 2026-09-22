@@ -793,5 +793,126 @@
   "edits_total": 2945,
   "edits_per_100_entries": 171.5,
   "pct_flag_flips": 4.0
+ },
+ "flag_lag": {
+  "step_month": "2023-12",
+  "excluded_step": 206,
+  "n_capture": 78,
+  "n_daily": 32,
+  "unusable": 0,
+  "went_back": 0,
+  "overall": {
+   "n": 110,
+   "median_days": 437.5,
+   "p25_days": 124.2,
+   "p75_days": 1107.0
+  },
+  "buckets": [
+   {
+    "label": "0-30d",
+    "lo": 0,
+    "hi": 30,
+    "capture": 5,
+    "daily": 4
+   },
+   {
+    "label": "31-90d",
+    "lo": 31,
+    "hi": 90,
+    "capture": 11,
+    "daily": 3
+   },
+   {
+    "label": "91-180d",
+    "lo": 91,
+    "hi": 180,
+    "capture": 10,
+    "daily": 2
+   },
+   {
+    "label": "181-365d",
+    "lo": 181,
+    "hi": 365,
+    "capture": 12,
+    "daily": 3
+   },
+   {
+    "label": "1-2y",
+    "lo": 366,
+    "hi": 730,
+    "capture": 17,
+    "daily": 4
+   },
+   {
+    "label": "2-4y",
+    "lo": 731,
+    "hi": 1460,
+    "capture": 21,
+    "daily": 3
+   },
+   {
+    "label": "4y+",
+    "lo": 1461,
+    "hi": null,
+    "capture": 2,
+    "daily": 13
+   }
+  ],
+  "by_year": [
+   {
+    "year": 2021,
+    "capture": 6,
+    "daily": 8,
+    "n": 14,
+    "median_days": 1721.0,
+    "p25_days": 1303.0,
+    "p75_days": 1746.0
+   },
+   {
+    "year": 2022,
+    "capture": 15,
+    "daily": 7,
+    "n": 22,
+    "median_days": 1183.0,
+    "p25_days": 1051.2,
+    "p75_days": 1498.0
+   },
+   {
+    "year": 2023,
+    "capture": 12,
+    "daily": 0,
+    "n": 12,
+    "median_days": 318.0,
+    "p25_days": 141.8,
+    "p75_days": 551.5
+   },
+   {
+    "year": 2024,
+    "capture": 25,
+    "daily": 2,
+    "n": 27,
+    "median_days": 400.0,
+    "p25_days": 271.0,
+    "p75_days": 516.5
+   },
+   {
+    "year": 2025,
+    "capture": 13,
+    "daily": 6,
+    "n": 19,
+    "median_days": 142.0,
+    "p25_days": 70.5,
+    "p75_days": 335.0
+   },
+   {
+    "year": 2026,
+    "capture": 7,
+    "daily": 9,
+    "n": 16,
+    "median_days": 32.0,
+    "p25_days": 23.2,
+    "p75_days": 57.0
+   }
+  ]
  }
 }

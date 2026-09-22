@@ -1786,6 +1786,89 @@ the committed value drops at the first rebuild. Validator:
 `pipeline/kev_changelog_contracts.py` (registered into
 `pipeline/contracts.py`'s dispatch).
 
+`flag_lag` (additive since 2026-09-22; older editions lack it and the
+section shows a no-block card) — the ransomware-flag lag section:
+
+```json
+"flag_lag": {
+  "step_month": "2023-12", "excluded_step": 206,
+  "n_capture": 78, "n_daily": 32, "unusable": 0, "went_back": 0,
+  "overall": {"n": 110, "median_days": 437.5,
+              "p25_days": 124.2, "p75_days": 1107.0},
+  "buckets": [{"label": "0-30d", "lo": 0, "hi": 30,
+               "capture": 5, "daily": 4}],
+  "by_year": [{"year": 2021, "capture": 6, "daily": 8, "n": 14,
+               "median_days": 1721.0, "p25_days": 1303.0,
+               "p75_days": 1746.0}]
+}
+```
+
+The cohort is every Unknown→Known flip outside the step month (the same
+rule as `lag_post_step`; `excluded_step` equals `step_month_flips`). Each
+lag is `observed_date − dateAdded` in days — an upper bound, since the
+flip is dated to its first observation; `n_capture`/`n_daily` split the
+cohort by granularity (capture-dated lags are loose upper bounds).
+`buckets` tile 0 days upward contiguously (the last is open-ended, `hi:
+null`) and sum per granularity to `n_capture`/`n_daily`; `by_year` groups
+by the year of `dateAdded`, contiguous ascending, with stats null below
+`min_n`. `unusable` counts flips with no parseable `dateAdded` or a
+negative lag (never bucketed); `went_back` counts cohort flips followed by
+a later Known→Unknown change of the same entry. The validator requires
+`n_capture + n_daily + unusable == flips.total − excluded_step`.
+
+
+## site/data/observatory.json  (Mutation Observatory instrument)
+
+```json
+{
+  "generated_at": "...",
+  "base_date": "2021-12-23", "last_observed": "2026-09-22",
+  "kinds": ["kev_added", "kev_removed", "kev_flag", "kev_due",
+            "kev_field", "kev_text", "rescore", "version_shift",
+            "first_score", "score_removed", "epss_move"],
+  "kind_source": ["kev", "kev", "kev", "kev", "kev", "kev", "rescore",
+                  "rescore", "rescore", "rescore", "epss"],
+  "granularities": ["daily", "capture", "pooled"],
+  "sources": {
+    "kev": {"first_observed": "2021-12-23", "capture_until": "2026-06-30",
+            "nightly_from": "2026-07-11", "events": 4360},
+    "rescore": {"first_observed": "2026-07-15", "events": 5412},
+    "epss": {"first_observed": "2026-07-18", "events": 55, "nights": 62,
+             "excluded_reset": 0, "excluded_anomaly": 7}
+  },
+  "counts": {"kev_added": 1415, "first_score": 5304, "...": 0},
+  "cves": 7157,
+  "events": ["26|CVE-2013-3900|0||1",
+             "1734|CVE-2026-81627|6|v3.1 6.7->v3.1 8.2 (redhat)|0"]
+}
+```
+
+One event stream over CyberMon's own histories, built by
+`pipeline/observatory.py` from the merged logs the run persists
+(`rescore_log.csv`, `kev_changelog.csv` + the KEV state's backfill block,
+`epss_volatility.csv`) — no fetch, no state, deterministic. Each event is
+one `|`-joined string, `day|cve|kind|detail|granularity`: `day` is the
+offset in days from `base_date`, `kind` and `granularity` index into
+`kinds` / `granularities`, `detail` is the change as `old->new` (KEV
+value fields, rescores with the CNA in parentheses, EPSS probabilities),
+the field name for a KEV text revision, the score for a first score, and
+empty for a KEV addition/removal; a `|` inside KEV text is written `/`.
+(Column arrays under the pipeline's `indent=1` would cost ~0.6 MB; this
+is ~470 KB raw, ~52 KB gzipped.)
+
+Every date is the event's **first observation** by CyberMon: `daily` (the
+nightly run), `capture` (KEV only — the first Internet Archive capture
+showing the change; it happened at or before that date, never after
+`sources.kev.capture_until`), `pooled` (EPSS only — the first night after
+missed nights, the EPSS module's `gap` class). EPSS nights the EPSS
+module quarantines as `reset` or `anomaly` contribute no event and are
+counted in `sources.epss`. `sources.*.first_observed` says when each
+history begins (KEV: the state's baseline capture; rescores: the first
+logged event; EPSS: the first logged night); the validator rejects any
+event dated before its history began, checks the encoding and the
+day-sorted order, and reconciles `counts`, `sources.*.events` and `cves`
+with the events shipped. Validator: `pipeline/observatory_contracts.py`.
+
 
 ## site/data/cna_roster.json  (CNA Roster History module, all 3 charts)
 

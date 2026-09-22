@@ -23,6 +23,9 @@ Arithmetic identities enforced here (the file's audit trail):
 * optional ``flips.step_month_flips`` + ``flips.total_after_step`` ==
   ``flips.total``, and the step count equals the first month's flips —
   the step is set apart from the headline, never dropped from the ledger.
+* optional ``flag_lag``: bucketed + unusable flips == ``flips.total``
+  minus the step month's flips; buckets tile 0.. contiguously and sum to
+  ``n_capture``/``n_daily``; per-listing-year counts sum to the same n.
 """
 from __future__ import annotations
 
@@ -158,6 +161,101 @@ def _check_flips(obj: Any, min_n: int, edits_total: int) -> int:
     return total
 
 
+def _check_lag_stats(lag: Any, lpath: str, min_n: int) -> int:
+    """n + p25/median/p75: stats null below min_n, ordered otherwise."""
+    n = _get(lag, "n", lpath)
+    _check_int(n, f"{lpath}.n")
+    keys = ("p25_days", "median_days", "p75_days")
+    stats = [_get(lag, k, lpath) for k in keys]
+    if n < min_n:
+        if any(s is not None for s in stats):
+            _fail(lpath, f"stats must be null below min_n={min_n} (n={n})")
+        return n
+    for key, v in zip(keys, stats):
+        _check_num(v, f"{lpath}.{key}", 0.0, 36600.0)
+    if not stats[0] <= stats[1] <= stats[2]:
+        _fail(lpath, "p25 <= median <= p75 must hold")
+    return n
+
+
+def _check_flag_lag(obj: Any, min_n: int) -> None:
+    """Additive (editions before 2026-09-22 lack it): the ransomware-flag
+    lag block. Reconciles with the flips block: the cohort is the flips
+    outside the step month, each either bucketed or counted unusable."""
+    path = "kev_changelog.flag_lag"
+    block = obj["flag_lag"]
+    flips = obj["flips"]
+    step = _get(block, "step_month", path)
+    if step != flips.get("step_month"):
+        _fail(f"{path}.step_month",
+              f"{step!r} differs from flips.step_month "
+              f"{flips.get('step_month')!r}")
+    for key in ("excluded_step", "n_capture", "n_daily", "unusable",
+                "went_back"):
+        _check_int(_get(block, key, path), f"{path}.{key}")
+    step_n = flips.get("step_month_flips",
+                       flips["by_month"][0]["flips"]
+                       if step is not None and flips["by_month"] else 0)
+    if block["excluded_step"] != step_n:
+        _fail(f"{path}.excluded_step",
+              f"{block['excluded_step']} differs from the step month's "
+              f"{step_n} flips")
+    n = block["n_capture"] + block["n_daily"]
+    cohort = flips["total"] - block["excluded_step"]
+    if n + block["unusable"] != cohort:
+        _fail(path, f"n_capture + n_daily + unusable = "
+                    f"{n + block['unusable']}, cohort (total - step) is "
+                    f"{cohort}")
+    if block["went_back"] > n:
+        _fail(f"{path}.went_back", f"{block['went_back']} exceeds n={n}")
+    if _check_lag_stats(_get(block, "overall", path), f"{path}.overall",
+                        min_n) != n:
+        _fail(f"{path}.overall.n", f"must equal n_capture + n_daily = {n}")
+
+    rows = _check_list(_get(block, "buckets", path), f"{path}.buckets")
+    grains = {"capture": 0, "daily": 0}
+    prev_hi = -1
+    for i, row in enumerate(rows):
+        p = f"{path}.buckets[{i}]"
+        _check_str(_get(row, "label", p), f"{p}.label")
+        lo, hi = _get(row, "lo", p), _get(row, "hi", p)
+        _check_int(lo, f"{p}.lo")
+        if lo != prev_hi + 1:
+            _fail(f"{p}.lo", f"{lo} does not follow the previous bucket's "
+                             f"upper edge {prev_hi}")
+        if hi is None:
+            if i != len(rows) - 1:
+                _fail(f"{p}.hi", "only the last bucket may be open-ended")
+        else:
+            _check_int(hi, f"{p}.hi", minimum=lo)
+            prev_hi = hi
+        for g in grains:
+            _check_int(_get(row, g, p), f"{p}.{g}")
+            grains[g] += row[g]
+    if rows and rows[-1]["hi"] is not None:
+        _fail(f"{path}.buckets", "the last bucket must be open-ended")
+    if grains["capture"] != block["n_capture"] or \
+            grains["daily"] != block["n_daily"]:
+        _fail(f"{path}.buckets", f"bucket counts {grains} do not sum to "
+                                 f"n_capture/n_daily")
+
+    rows = _check_list(_get(block, "by_year", path), f"{path}.by_year")
+    year_sum = 0
+    for i, row in enumerate(rows):
+        p = f"{path}.by_year[{i}]"
+        year = _get(row, "year", p)
+        _check_int(year, f"{p}.year", minimum=1990)
+        if i and year != rows[i - 1]["year"] + 1:
+            _fail(f"{p}.year", "listing years must be contiguous ascending")
+        for g in ("capture", "daily"):
+            _check_int(_get(row, g, p), f"{p}.{g}")
+        if _check_lag_stats(row, p, min_n) != row["capture"] + row["daily"]:
+            _fail(f"{p}.n", "must equal capture + daily")
+        year_sum += row["n"]
+    if year_sum != n:
+        _fail(f"{path}.by_year", f"years sum to {year_sum}, n is {n}")
+
+
 def _check_board(obj: Any, removed_total: int) -> None:
     path = "kev_changelog.board"
     board = _get(obj, "board", "kev_changelog")
@@ -261,6 +359,8 @@ def _validate_kev_changelog(obj: Any) -> None:
               f"month totals sum to {edits_sum}, catalog.edits_total is "
               f"{catalog['edits_total']}")
     _check_flips(obj, min_n, catalog["edits_total"])
+    if "flag_lag" in obj:
+        _check_flag_lag(obj, min_n)
     _check_board(obj, catalog["removed_total"])
     _check_headline(obj, catalog)
 

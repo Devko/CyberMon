@@ -133,6 +133,17 @@ export const editorial = {
             "weakness or NVD queue status. Hover for the record, share any view by its link. " +
             "Rebuilt nightly from the same corpus pass as the charts.",
         },
+        {
+          id: "observatory",
+          href: "observatory.html",
+          num: "Δ",
+          label: "Mutation Observatory",
+          headline: "Every per-CVE change CyberMon logs, one record at a time.",
+          blurb:
+            "CNA rescores, KEV additions, edits and removals, and each night's biggest EPSS " +
+            "move — from the histories CyberMon keeps — on one stream dated by first " +
+            "observation. Brush a window, follow one CVE's trail, download the events.",
+        },
       ],
     },
     modules: [
@@ -511,6 +522,10 @@ export const editorial = {
     editors: "rescore_tracker.py",
     edits: "kev_changelog.py",
     flagflip: "kev_changelog.py",
+    flaglag: "kev_changelog.py",
+    obs_stream: "observatory.py",
+    obs_trail: "observatory.py",
+    obs_window: "observatory.py",
     receipts: "kev_changelog.py",
     naming_board: "naming_metrics.py",
     naming_dist: "naming_metrics.py",
@@ -2249,8 +2264,69 @@ export const editorial = {
     },
 
     // --------------------------------------------- changelog.html · 3
-    receipts: {
+    flaglag: {
       num: "03",
+      kicker: "The flag's lag",
+      source: "CISA KEV · CyberMon's own nightly diffs · Internet Archive captures",
+      headline: "Most ransomware flags land long after the listing.",
+      caption:
+        "For every entry flipped from “Unknown” to “Known” ransomware use, " +
+        "the days between the entry's dateAdded and the first observation " +
+        "of the flip. The distribution shows how spread out that wait is; " +
+        "the listing-year view shows the median and middle half for the " +
+        "entries CISA listed in each year. Flips dated from Internet Archive " +
+        "captures are upper bounds — the flip happened at or before the " +
+        "capture that first shows it.",
+      statBig: "{median} days",
+      statLead: "median from listing to the observed flip",
+      statLeadThin: "too few flips to state a median yet",
+      statNote:
+        "{n} flips · middle half {p25}–{p75} days · {n_daily} observed by the nightly " +
+        "diff, {n_capture} from captures (upper bounds)",
+      statNoteStep: "the {step_flips} flips logged together in {step_month} are left out",
+      wentBack: "{went_back} of these flips later went back to “Unknown”",
+      wentBackNone: "none of these flips has gone back to “Unknown”",
+      note:
+        "Each date is the first observation of the flip, not the day CISA made it. " +
+        "A younger listing year has had less time to be flipped, so its median is " +
+        "capped by its age.",
+      noBlock: "This edition predates the flag-lag block — the nightly fills it.",
+      toggleLabels: ["Distribution", "By listing year"],
+      legendDaily: "Nightly diff (to the day)",
+      legendCapture: "Capture (upper bound)",
+      legendIqr: "Middle half (p25–p75)",
+      legendMedian: "Median",
+      axisDays: "days from dateAdded to observed flip",
+      axisDaysShort: "days",
+      axisYear: "listing year (flips)",
+      yearTip: "Listed {year} · {n} flips",
+      yearThin: "fewer than 10 flips — no median published",
+      bucketLabels: {
+        "0-30d": "≤30 d", "31-90d": "31–90 d", "91-180d": "91–180 d",
+        "181-365d": "181–365 d", "1-2y": "1–2 y", "2-4y": "2–4 y", "4y+": ">4 y",
+      },
+      methodology:
+        "The cohort is every logged change of knownRansomwareCampaignUse from " +
+        "“Unknown” to “Known” on an entry already in the catalog, minus the " +
+        "flips in the step month named in the flag-flip section (the first " +
+        "capture carrying the flag column, when every already-flagged entry " +
+        "flipped at once). The lag is the flip's observation date minus the " +
+        "entry's dateAdded, in days. Every flip is dated to its first " +
+        "observation, so every lag is an upper bound: “daily” flips were seen " +
+        "by the nightly diff and are good to the day; “capture” flips come " +
+        "from the Internet Archive backfill and can sit weeks after the real " +
+        "change. For entries listed before CISA added the column in October " +
+        "2023, the lag includes the time before the flag existed at all. The " +
+        "listing-year view groups flips by the year of dateAdded; its median " +
+        "and quartiles are published only with at least 10 flips in the " +
+        "year, and a recent year can only show lags as long as its entries " +
+        "are old. A flip that later went back to “Unknown” stays in the " +
+        "cohort and is counted separately.",
+    },
+
+    // --------------------------------------------- changelog.html · 4
+    receipts: {
+      num: "04",
       kicker: "The receipts board",
       source: "CISA KEV · CyberMon's own nightly diffs",
       headline: "Some entries never stop changing.",
