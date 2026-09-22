@@ -18,7 +18,8 @@ is omitted for this run and ``meta.json`` omits ``sources.nvd``
 (contracts.py allows that).
 
 Single-module upstreams degrade instead of aborting (documented choice):
-HIBP, Ransomwhere and APNIC each feed exactly one module, so a sustained
+HIBP, Ransomwhere and APNIC each feed exactly one module (OSV feeds the
+two OSV modules, which degrade together), so a sustained
 outage there carries that module's previous edition forward marked
 ``"stale": true`` — the site renders "(carried forward)" — while the run
 continues. Core sources (the cvelistV5 corpus, EPSS, KEV) still fail the
@@ -45,8 +46,8 @@ from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                epss_report_metrics, epss_volatility, extortion_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
                kev_metrics, market_metrics, metrics, naming_metrics,
-               nvd_throughput, poc_metrics, quality_metrics, rescore_tracker,
-               top25_metrics)
+               nvd_throughput, osv_metrics, poc_metrics, quality_metrics,
+               rescore_tracker, top25_metrics)
 from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_feodo import fetch_blocklist, load_blocklist_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -718,6 +719,24 @@ def run(args: argparse.Namespace) -> int:
         args.out, generated_at, snapshot=feodo,
         offline_fixtures=args.offline_fixtures)
     outputs["botnet_weather.json"] = botnet_obj
+    # Advisory Gap + Registry Malware: one OSV fetch (the per-ecosystem
+    # exports, conditional GETs against the .cache state) feeds both. OSV
+    # is a single upstream for two modules, so an outage degrades exactly
+    # those two — both carried forward stale — never the run.
+    osv_source = osv_failure = None
+    try:
+        gap_obj, mal_obj, osv_source = osv_metrics.run_stage(
+            args.cache_dir, generated_at,
+            offline_fixtures=args.offline_fixtures)
+        outputs["advisory_gap.json"] = gap_obj
+        outputs["registry_malware.json"] = mal_obj
+    except (OSError, ValueError) as exc:
+        osv_failure = f"OSV export fetch failed ({exc!r})"
+        for name in ("advisory_gap.json", "registry_malware.json"):
+            carried = _carry_forward(args.out, name, generated_at,
+                                     osv_failure)
+            if carried is not None:
+                outputs[name] = carried
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -786,6 +805,13 @@ def run(args: argparse.Namespace) -> int:
     outputs["meta.json"]["sources"]["nuclei"] = {
         "fetched_at": generated_at, "cve_count": len(poc.nuclei_ids)}
     outputs["meta.json"]["sources"]["feodo"] = feodo_source
+    if osv_source is not None:
+        outputs["meta.json"]["sources"]["osv"] = osv_source
+    elif "advisory_gap.json" in outputs or \
+            "registry_malware.json" in outputs:
+        carried_osv = _carry_forward_source(args.out, "osv")
+        if carried_osv is not None:
+            outputs["meta.json"]["sources"]["osv"] = carried_osv
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

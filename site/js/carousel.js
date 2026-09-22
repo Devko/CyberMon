@@ -90,6 +90,12 @@ import { render as renderCreditsTargets } from "./charts/credits_targets.js";
 import { render as renderCreditsBoard } from "./charts/credits_board.js";
 import { render as renderCreditsCoverage } from "./charts/credits_coverage.js";
 import { render as renderC2Age } from "./charts/c2_age.js";
+import { render as renderGapYears } from "./charts/gap_years.js";
+import { render as renderGapEcosystems } from "./charts/gap_ecosystems.js";
+import { render as renderGapSeverity } from "./charts/gap_severity.js";
+import { render as renderMalMonths } from "./charts/mal_months.js";
+import { render as renderMalShare } from "./charts/mal_share.js";
+import { render as renderMalWithdrawn } from "./charts/mal_withdrawn.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -283,6 +289,22 @@ const MODULES = {
       { id: "credits_weakness", render: renderCreditsWeakness },
       { id: "credits_targets", render: renderCreditsTargets },
       { id: "credits_coverage", render: renderCreditsCoverage },
+    ],
+  },
+  advisories: {
+    file: "data/advisory_gap.json",
+    sections: [
+      { id: "gap_years", render: renderGapYears },
+      { id: "gap_ecosystems", render: renderGapEcosystems },
+      { id: "gap_severity", render: renderGapSeverity },
+    ],
+  },
+  malware: {
+    file: "data/registry_malware.json",
+    sections: [
+      { id: "mal_months", render: renderMalMonths },
+      { id: "mal_share", render: renderMalShare },
+      { id: "mal_withdrawn", render: renderMalWithdrawn },
     ],
   },
 };

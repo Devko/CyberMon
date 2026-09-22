@@ -402,6 +402,9 @@ function renderMeta(meta) {
       feodo_listed: (s.feodo?.listed ?? 0).toLocaleString("en-US"),
       feodo_online: (s.feodo?.online ?? 0).toLocaleString("en-US"),
       feodo_fetched: s.feodo?.fetched_at ?? "?",
+      osv_ghsa: (s.osv?.ghsa_advisories ?? 0).toLocaleString("en-US"),
+      osv_mal: (s.osv?.mal_reports ?? 0).toLocaleString("en-US"),
+      osv_fetched: (s.osv?.fetched_at ?? "?") + (s.osv?.stale ? " (carried forward)" : ""),
     }))
   );
 }

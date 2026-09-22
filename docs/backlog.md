@@ -280,7 +280,23 @@ copy guarded by the claims audit, and time shown as the kind of time it is
 - **Feasibility:** medium — pagination and de-duplication by accession
   number; carry-forward on an EDGAR outage like HIBP/Ransomwhere.
 
-### 25 · Advisory Gap — GitHub advisories vs CVE
+### 25 · Advisory Gap — GitHub advisories vs CVE — SHIPPED as module 25
+- **Shipped 2026-09-22** (`advisories.html`): reviewed GHSA advisories per
+  GitHub publication year × ecosystem with/without a CVE alias (ecosystem
+  picker + share view; last-90-days no-CVE drawn provisional), the no-CVE
+  share per ecosystem, severity with vs without. Real numbers at launch:
+  34,677 live reviewed advisories, 2,904 (8.4%) without a CVE; crates.io
+  26.7%, GitHub Actions 25.5%, npm 15.1%, Maven 1.4%; Critical is 22.1% of
+  the no-CVE set vs 12.4% of the CVE set. The thesis's "large share" is
+  the ecosystem story, not the overall one — the copy says so.
+- **Verified:** all GHSA records in the exports carry
+  `github_reviewed: true` (two withdrawn legacy records predate the flag);
+  a 45-record sample matched GitHub's own advisory-database files, but OSV's
+  alias list also links CVEs from the CVE side (6 of 400 sampled
+  CVE-aliased advisories have no CVE in GitHub's file), so the no-CVE count
+  is the narrower one — the methodology says so.
+- **Open:** OSV's alias list vs GitHub's own `cve_id` could be split exactly
+  from the advisory-database repo if it is ever fetched.
 - **Thesis:** the software ecosystems grade their own vulnerabilities now.
   A large share of GitHub-reviewed advisories never gets a CVE id, so a
   program that watches only CVE misses them (the "registries are faster"
@@ -295,7 +311,17 @@ copy guarded by the claims audit, and time shown as the kind of time it is
   later, so a young advisory's "no CVE" can change (young cohorts flagged).
 - **Feasibility:** medium — shares one fetcher with module 26.
 
-### 26 · Registry Malware — malicious packages
+### 26 · Registry Malware — malicious packages — SHIPPED as module 26
+- **Shipped 2026-09-22** (`malware.html`): MAL reports per registry per
+  month (stacked / log-scale lines), each year's share by registry,
+  withdrawn reports. Real numbers at launch: 238,022 reports since Nov
+  2021; Nov 2025 alone 142,256 (59.8%), 142,153 of them crediting
+  amazon-inspector; 356 withdrawn; npm 93%; PyPI carried 2023.
+- **Nightly:** one shared fetcher (`fetch_osv.py`) for 13 exports,
+  conditional GETs against `.cache/osv_state.json.gz` (actions/cache).
+  npm's 215 MB zip changes most days, so the saving is on the smaller
+  exports; OSV's `modified_id.csv` would allow a per-record incremental
+  sync if the download ever matters.
 - **Thesis:** package registries are the new watering hole, and the takedown
   log is public.
 - **Signals:** `MAL-*` reports per ecosystem per month (npm, PyPI, crates.io,

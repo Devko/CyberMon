@@ -19,7 +19,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "extortion_ledger.json", "dnssec_adoption.json",
              "epss_report.json", "cve_calendar.json", "rescore_log.json",
              "epss_volatility.json", "kev_changelog.json",
-             "cna_roster.json", "time_to_poc.json", "botnet_weather.json"]
+             "cna_roster.json", "time_to_poc.json", "botnet_weather.json",
+             "advisory_gap.json", "registry_malware.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -388,6 +389,20 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert meta["sources"]["feodo"] == {"fetched_at": meta["generated_at"],
                                         "listed": 6, "online": 2}
 
+    # Advisory Gap / Registry Malware: the synthetic OSV fixture exports
+    # (four ecosystem directories). One GHSA advisory sits in two of them
+    # and counts once; the withdrawn one is out.
+    gap = _load(tmp_path, "advisory_gap.json")
+    assert gap["catalog"]["advisories"] == 8
+    assert gap["catalog"]["without_cve"] == 3
+    malware = _load(tmp_path, "registry_malware.json")
+    assert malware["catalog"]["reports"] == 8
+    assert malware["catalog"]["withdrawn"] == 1
+    assert meta["sources"]["osv"] == {
+        "fetched_at": meta["generated_at"], "ghsa_advisories": 8,
+        "mal_reports": 8, "ecosystems": 4, "downloaded": 4,
+        "not_modified": 0}
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -533,3 +548,29 @@ def test_history_rows_share_the_editions_date_across_midnight(tmp_path,
     for name in ("nvd_backlog.csv", "nvd_throughput.csv"):
         rows = (tmp_path / "history" / name).read_text("utf-8").splitlines()
         assert rows[-1].startswith("2031-12-31,"), name
+
+
+def test_osv_outage_carries_both_modules_forward(tmp_path, capsys,
+                                                 monkeypatch):
+    """One upstream, two modules: an OSV failure carries advisory_gap.json
+    and registry_malware.json forward stale (and their meta source), while
+    every other module still refreshes."""
+    from pipeline import osv_metrics
+
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    before = _load(tmp_path, "advisory_gap.json")
+
+    def down(*args, **kwargs):
+        raise OSError("HTTP 503")
+
+    monkeypatch.setattr(osv_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    for name in ("advisory_gap.json", "registry_malware.json"):
+        carried = _load(tmp_path, name)
+        assert carried["stale"] is True
+        contracts.validate(name, carried)
+    assert _load(tmp_path, "advisory_gap.json")["catalog"] == \
+        before["catalog"]
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["osv"]["stale"] is True
+    assert meta["sources"]["osv"]["fetched_at"] == before["generated_at"]

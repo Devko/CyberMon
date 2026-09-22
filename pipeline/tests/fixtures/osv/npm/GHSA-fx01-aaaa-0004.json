@@ -1,0 +1,27 @@
+{
+ "schema_version": "1.7.3",
+ "id": "GHSA-fx01-aaaa-0004",
+ "published": "2022-01-05T10:00:00Z",
+ "modified": "2022-01-05T10:00:00Z",
+ "summary": "Synthetic fixture advisory",
+ "details": "Synthetic fixture record for the offline pipeline run.",
+ "aliases": [],
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-npm",
+    "ecosystem": "npm"
+   },
+   "database_specific": {
+    "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/01/GHSA-fx01-aaaa-0004/GHSA-fx01-aaaa-0004.json"
+   }
+  }
+ ],
+ "database_specific": {
+  "cwe_ids": [],
+  "github_reviewed": true,
+  "github_reviewed_at": "2022-01-05T10:00:00Z",
+  "severity": "LOW"
+ },
+ "withdrawn": "2022-02-01T00:00:00Z"
+}

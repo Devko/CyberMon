@@ -1,0 +1,29 @@
+{
+ "schema_version": "1.7.3",
+ "id": "GHSA-fx01-bbbb-0006",
+ "published": "2024-08-08T10:00:00Z",
+ "modified": "2024-08-08T10:00:00Z",
+ "summary": "Synthetic fixture advisory",
+ "details": "Synthetic fixture record for the offline pipeline run.",
+ "aliases": [
+  "CVE-2024-0006"
+ ],
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-pypi",
+    "ecosystem": "PyPI"
+   },
+   "database_specific": {
+    "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/08/GHSA-fx01-bbbb-0006/GHSA-fx01-bbbb-0006.json"
+   }
+  }
+ ],
+ "database_specific": {
+  "cwe_ids": [],
+  "github_reviewed": true,
+  "github_reviewed_at": "2024-08-08T10:00:00Z",
+  "severity": "HIGH",
+  "nvd_published_at": "2024-08-01T10:00:00Z"
+ }
+}

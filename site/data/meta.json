@@ -99,6 +99,14 @@
    "fetched_at": "2026-09-22T02:50:21Z",
    "listed": 5,
    "online": 1
+  },
+  "osv": {
+   "fetched_at": "2026-09-22T19:12:48Z",
+   "ghsa_advisories": 34677,
+   "mal_reports": 238022,
+   "ecosystems": 13,
+   "downloaded": 0,
+   "not_modified": 13
   }
  }
 }

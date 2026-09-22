@@ -1,0 +1,26 @@
+{
+ "schema_version": "1.7.3",
+ "id": "GHSA-fx01-cccc-0008",
+ "published": "2024-03-03T10:00:00Z",
+ "modified": "2024-03-03T10:00:00Z",
+ "summary": "Synthetic fixture advisory",
+ "details": "Synthetic fixture record for the offline pipeline run.",
+ "aliases": [],
+ "affected": [
+  {
+   "package": {
+    "name": "fixture-crates.io",
+    "ecosystem": "crates.io"
+   },
+   "database_specific": {
+    "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/03/GHSA-fx01-cccc-0008/GHSA-fx01-cccc-0008.json"
+   }
+  }
+ ],
+ "database_specific": {
+  "cwe_ids": [],
+  "github_reviewed": true,
+  "github_reviewed_at": "2024-03-03T10:00:00Z",
+  "severity": "MODERATE"
+ }
+}

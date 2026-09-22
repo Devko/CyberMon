@@ -72,6 +72,8 @@ BY_SOURCE = {
     "epss_volatility.json": "epssvol",
     "cna_roster.json": "roster",
     "botnet_weather.json": "feodo",
+    "advisory_gap.json": "osv",
+    "registry_malware.json": "osv",
 }
 
 # A degraded module may be carried forward for a few nights while an

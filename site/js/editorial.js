@@ -98,6 +98,8 @@ export const editorial = {
     { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackmap" },
     { id: "ai", href: "ai.html", label: "The AI Alibi", group: "exploitation" },
     { id: "credits", href: "credits.html", label: "AI Credits", group: "machine" },
+    { id: "advisories", href: "advisories.html", label: "Advisory Gap", group: "machine" },
+    { id: "malware", href: "malware.html", label: "Registry Malware", group: "attackmap" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -435,6 +437,34 @@ export const editorial = {
           "attached.",
         live: true,
       },
+      {
+        id: "advisories",
+        href: "advisories.html",
+        num: "25",
+        label: "Advisory Gap",
+        headline: "Most reviewed advisories get a CVE. A quarter of Rust's do not.",
+        blurb:
+          "GitHub's reviewed security advisories for open-source packages, split " +
+          "by whether they carry a CVE id — per publication year, per " +
+          "ecosystem, and by GitHub's own severity rating. A vulnerability " +
+          "program that watches only CVE never sees the ones without. " +
+          "Rebuilt nightly from OSV's ecosystem exports.",
+        live: true,
+      },
+      {
+        id: "malware",
+        href: "malware.html",
+        num: "26",
+        label: "Registry Malware",
+        headline: "The registries' malware log is public. Six in ten of its reports landed in one month.",
+        blurb:
+          "The OpenSSF malicious-packages feed counted per registry per " +
+          "month: how many malicious packages were reported, which " +
+          "ecosystems carry each year's reports, and how many reports were " +
+          "later withdrawn. Reports, not installs or victims. Rebuilt " +
+          "nightly from OSV's ecosystem exports.",
+        live: true,
+      },
     ],
   },
 
@@ -541,6 +571,32 @@ export const editorial = {
     credits_weakness: "ai_credits_metrics.py",
     credits_targets: "ai_credits_metrics.py",
     credits_coverage: "ai_credits_metrics.py",
+    gap_years: "osv_metrics.py",
+    gap_ecosystems: "osv_metrics.py",
+    gap_severity: "osv_metrics.py",
+    mal_months: "osv_metrics.py",
+    mal_share: "osv_metrics.py",
+    mal_withdrawn: "osv_metrics.py",
+  },
+
+  // Display names for OSV ecosystem ids (advisories.html, malware.html).
+  // The id stays the data key; the bracket names the language where the
+  // registry name does not.
+  osvEcosystems: {
+    npm: "npm",
+    PyPI: "PyPI",
+    Maven: "Maven (Java)",
+    Packagist: "Packagist (PHP)",
+    Go: "Go",
+    "crates.io": "crates.io (Rust)",
+    NuGet: "NuGet (.NET)",
+    RubyGems: "RubyGems",
+    Hex: "Hex (Erlang)",
+    SwiftURL: "Swift",
+    "GitHub Actions": "GitHub Actions",
+    Pub: "Pub (Dart)",
+    VSCode: "VS Code extensions",
+    other: "Other",
   },
 
   // Shared by every chart that draws a full-year pace projection for the
@@ -3721,6 +3777,208 @@ export const editorial = {
         "differs: some CNAs credit every reporter, some none, and a few write " +
         "their own product into the line.",
     },
+
+    // --------------------------------- advisories.html · 1 (hero)
+    gap_years: {
+      num: "01",
+      kicker: "The coverage gap",
+      source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
+      headline: "Most reviewed advisories get a CVE. A quarter of Rust's do not.",
+      // {placeholders} fill from data/advisory_gap.json at render time.
+      caption:
+        "Every security advisory GitHub has reviewed for an open-source " +
+        "package, by the year GitHub published it, split by whether the " +
+        "advisory carries a CVE id. {without_pct} of the {advisories} " +
+        "live advisories carry none: {without} advisories that a program " +
+        "watching only CVE never sees. The year is GitHub's publication date, " +
+        "so an older vulnerability reviewed later sits in the year it was " +
+        "reviewed. Pick an ecosystem to see its own split.",
+      statLabel: "of GitHub-reviewed advisories carry no CVE id",
+      statWhen: "{without} of {advisories} advisories · withdrawn ones excluded",
+      selectLabel: "Ecosystem",
+      allLabel: "All ecosystems",
+      toggleCount: "Counts",
+      toggleShare: "No-CVE share",
+      legendWith: "With a CVE",
+      legendWithout: "No CVE",
+      legendYoung: "No CVE, published in the last {days} days",
+      legendShare: "Share without a CVE",
+      tooltipShare: "{pct} without a CVE",
+      nodata:
+        "No edition yet — the nightly fills this page from OSV's exports.",
+      note:
+        "* {year} is still filling in. The palest segment is provisional: " +
+        "an advisory can gain a CVE after it is published. Of the {lag_n} " +
+        "advisories whose CVE has an NVD publication date, {later_90} saw " +
+        "that CVE reach NVD more than 90 days after the advisory, " +
+        "{later_365} more than a year after.",
+      methodology:
+        "The pipeline reads OSV.dev's per-ecosystem exports (all.zip for " +
+        "each of the twelve GitHub advisory ecosystems) and keeps the records " +
+        "whose id starts GHSA-. OSV mirrors only GitHub-reviewed advisories; " +
+        "the pipeline checks the reviewed flag on every record and counts " +
+        "{not_reviewed} live records without it tonight. Withdrawn " +
+        "advisories ({withdrawn}) are left out. An advisory that affects " +
+        "packages in several ecosystems appears in several exports; it is " +
+        "counted once here ({multi} advisories span more than one " +
+        "ecosystem). An advisory counts as having a CVE when OSV lists a " +
+        "CVE id among its aliases. OSV also adds the link from the CVE side " +
+        "— a CVE record that names the advisory — so its alias list can be " +
+        "longer than GitHub's own, and the no-CVE count here is the narrower " +
+        "one. Years are GitHub's publication dates. Advisories published in " +
+        "the {days} days before the edition are drawn as provisional, " +
+        "because a CVE can be added later; the NVD date used to size that " +
+        "effect is the one GitHub records for the aliased CVE.",
+    },
+
+    // --------------------------------- advisories.html · 2
+    gap_ecosystems: {
+      num: "02",
+      kicker: "By ecosystem",
+      source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
+      headline: "In Rust, one advisory in four has no CVE. In Maven, almost all have one.",
+      caption:
+        "The share of each ecosystem's reviewed advisories that carry no CVE " +
+        "id, all publication years together. An advisory that affects " +
+        "packages in several ecosystems counts in each of them. The count " +
+        "behind each share is on the bar label or in its tooltip.",
+      xAxis: "% of the ecosystem's advisories without a CVE",
+      barLabel: "{pct} · {without} of {total}",
+      tooltip: "{without} of {total} advisories without a CVE ({young} published in the last {days} days)",
+      smallNote: "Fewer than {min_n} advisories, not ranked: {list}.",
+      nodata:
+        "No edition yet — the nightly fills this page from OSV's exports.",
+      methodology:
+        "Per ecosystem, the live reviewed advisories that list a package in " +
+        "that ecosystem, split by whether OSV lists a CVE alias. The " +
+        "ecosystem names are OSV's: crates.io is Rust, Packagist is PHP, Hex " +
+        "is Erlang and Elixir, Swift packages are listed by their source " +
+        "URL. Shares are over all publication years; an ecosystem with " +
+        "fewer than {min_n} advisories gets no share, because a handful of " +
+        "advisories cannot carry a percentage.",
+    },
+
+    // --------------------------------- advisories.html · 3
+    gap_severity: {
+      num: "03",
+      kicker: "Severity",
+      source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
+      headline: "The advisories without a CVE are not the minor ones.",
+      caption:
+        "GitHub's own severity rating, as a share of the advisories with a " +
+        "CVE and of those without. {crit_without} of the no-CVE advisories " +
+        "are rated Critical, against {crit_with} of those with a CVE. More " +
+        "of them are rated Low as well: the no-CVE set leans to both ends of " +
+        "the scale rather than to the bottom.",
+      rowWith: "With a CVE",
+      rowWithout: "Without a CVE",
+      levels: {
+        CRITICAL: "Critical",
+        HIGH: "High",
+        MODERATE: "Moderate",
+        LOW: "Low",
+        UNRATED: "No rating",
+      },
+      tooltip: "{level}: {n} advisories · {pct} of the row",
+      nodata:
+        "No edition yet — the nightly fills this page from OSV's exports.",
+      methodology:
+        "The severity is the rating GitHub gives the advisory (Critical, High, " +
+        "Moderate, Low), read from the record's database_specific block — " +
+        "not a CVSS score recomputed here, and not NVD's rating of the " +
+        "aliased CVE. Each row sums to 100% of its advisories: all live " +
+        "reviewed advisories with a CVE alias in one row, all without in " +
+        "the other, every publication year together.",
+    },
+
+    // --------------------------------- malware.html · 1 (hero)
+    mal_months: {
+      num: "01",
+      kicker: "The takedown log",
+      source: "OpenSSF malicious-packages (Apache-2.0) via OSV.dev",
+      headline: "Six in ten of the feed's reports landed in one month.",
+      caption:
+        "Each bar is one month of reports in the OpenSSF malicious-packages " +
+        "feed: one report per malicious package, dated when the report was " +
+        "published to the feed. {peak_month} alone holds {peak_reports} " +
+        "reports, {peak_share} of everything on file, and " +
+        "{peak_top_n} of them name one contributor, {peak_top_source}. " +
+        "In a typical month of the last two years the feed published " +
+        "{median} reports. These are reports, not installs or victims.",
+      statLabel: "malicious-package reports on file",
+      statWhen: "published since {first_month} · {this_year} so far in {year}",
+      toggleStacked: "Stacked",
+      toggleLog: "By registry, log scale",
+      yAxis: "reports",
+      yAxisLog: "reports (log scale)",
+      burstsLabel: "Largest months",
+      burstTemplate: "{month}: {n} ({share} of all; {src_n} from {src})",
+      burstTemplateNone: "{month}: {n} ({share} of all; {src_n} credit no contributor)",
+      nodata:
+        "No edition yet — the nightly fills this page from OSV's exports.",
+      note:
+        "* {month} is still filling in. The log view draws each registry " +
+        "as its own line, so the smaller registries stay readable beside npm.",
+      methodology:
+        "The pipeline reads OSV.dev's per-ecosystem exports and keeps the " +
+        "records whose id starts MAL- — the OpenSSF malicious-packages " +
+        "feed, which OSV republishes. Each report counts once, in the month " +
+        "of its published date: when the report entered the feed, not when " +
+        "the package went up on the registry and not when it was removed. " +
+        "Withdrawn reports stay in the counts (the next section counts them " +
+        "separately). The contributor named for a month is the source the " +
+        "feed credits most often in that month's reports; a report can " +
+        "credit several sources, and the earliest reports credit none. " +
+        "Registries beyond the four largest are folded into Other.",
+    },
+
+    // --------------------------------- malware.html · 2
+    mal_share: {
+      num: "02",
+      kicker: "By registry",
+      source: "OpenSSF malicious-packages (Apache-2.0) via OSV.dev",
+      headline: "npm carries almost every report. Not every year.",
+      caption:
+        "The share of each year's reports by registry. npm holds " +
+        "{npm_share} of all reports on file, but the mix moves: in 2023 " +
+        "PyPI carried most of the year's reports, and RubyGems holds " +
+        "{ruby_share} of this year's so far.",
+      yAxis: "% of the year's reports",
+      tooltip: "{name}: {n} reports · {pct}",
+      nodata:
+        "No edition yet — the nightly fills this page from OSV's exports.",
+      methodology:
+        "Per publication year, each registry's reports over all the year's " +
+        "reports. The registry is the one the report names; OSV files a VS " +
+        "Code extension under VSCode whether it was published to the " +
+        "Microsoft marketplace or to Open VSX, and this page does the same. " +
+        "The current year is partial, but a share is comparable as it " +
+        "stands; a single large month still moves it.",
+    },
+
+    // --------------------------------- malware.html · 3
+    mal_withdrawn: {
+      num: "03",
+      kicker: "Withdrawn",
+      source: "OpenSSF malicious-packages (Apache-2.0) via OSV.dev",
+      headline: "Almost no report is taken back.",
+      caption:
+        "{withdrawn} of {reports} reports ({pct}) carry a withdrawal " +
+        "date: the feed retracted the report after publishing it. A " +
+        "withdrawn report stays in the export, so it is counted here by the " +
+        "year the report was first published.",
+      yAxis: "withdrawn reports",
+      byEcosystem: "By registry",
+      ecoTemplate: "{name} {n} of {reports}",
+      tooltip: "{year}: {n} of {total} reports withdrawn",
+      nodata:
+        "No edition yet — the nightly fills this page from OSV's exports.",
+      methodology:
+        "A report counts as withdrawn when its record carries a withdrawn " +
+        "timestamp. Bars are grouped by the year the report was published, " +
+        "not the year it was withdrawn. The feed does not record a reason, " +
+        "so this page does not give one.",
+    },
   },
 
   footer: {
@@ -3741,14 +3999,16 @@ export const editorial = {
       "Metasploit metadata ({metasploit_modules} modules) · " +
       "Nuclei CVE templates ({nuclei_cves}) · " +
       "Feodo Tracker: {feodo_listed} C2s listed ({feodo_online} online) " +
-      "fetched {feodo_fetched}",
+      "fetched {feodo_fetched} · " +
+      "OSV exports: {osv_ghsa} reviewed advisories, {osv_mal} malicious-package " +
+      "reports, fetched {osv_fetched}",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project. Not affiliated with, endorsed by, or speaking for " +
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
-      "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, or the Internet " +
-      "Archive. Charts aggregate public data; no individual CVE is news here, no victim " +
+      "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, GitHub, the OpenSSF, Google (OSV.dev), " +
+      "or the Internet Archive. Charts aggregate public data; no individual CVE is news here, no victim " +
       "is identified or identifiable anywhere on this site, and no attacker " +
       "infrastructure is republished — C2 servers appear only as aggregate counts, " +
       "never as addresses.",
@@ -3782,6 +4042,8 @@ export const editorial = {
       "the Nuclei templates CVE index (ProjectDiscovery, MIT), " +
       "botnet C2 blocklist by abuse.ch's Feodo Tracker (feodotracker.abuse.ch, CC0 — " +
       "attribution appreciated), " +
+      "the GitHub Advisory Database (GitHub, CC-BY 4.0) and the OpenSSF malicious-packages " +
+      "feed (Apache-2.0), both read from the OSV.dev ecosystem exports, " +
       "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
@@ -3887,6 +4149,8 @@ export const editorial = {
       c2: "abuse.ch Feodo Tracker (CC0) · CyberMon nightly snapshots",
       ai: "Exploit-DB · Metasploit · cvelistV5 (MITRE) · CyberMon AI timeline",
       credits: "CVE List V5 (MITRE) · CISA KEV · finders' own announcements",
+      advisories: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
+      malware: "OpenSSF malicious-packages via OSV.dev",
     },
   },
 };
