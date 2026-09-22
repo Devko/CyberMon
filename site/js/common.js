@@ -223,9 +223,59 @@ function renderNav(activeId) {
   const instruments = el("div", "site-nav-row");
   instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab", { sameTab: true }));
   nav.prepend(instruments);
+
+  // Phones: 27 links would fill the whole first screen before any content,
+  // so the rows fold behind one summary naming the current page. Desktop
+  // keeps them open (the summary is hidden there by CSS).
+  const current = editorial.nav.find((t) => t.id === activeId);
+  const fold = el("details", "site-nav-fold");
+  const summary = el("summary", "site-nav-summary");
+  summary.append(
+    el("span", "site-nav-summary-label", editorial.navFoldLabel),
+    el("span", "site-nav-summary-current", current?.label ?? "")
+  );
+  fold.append(summary, ...nav.childNodes);
+  nav.append(fold);
+  const wide = window.matchMedia?.("(min-width: 721px)");
+  const sync = () => { fold.open = !wide || wide.matches; };
+  sync();
+  wide?.addEventListener?.("change", sync);
+}
+
+// "On this page": a jump list over the page's sections, for the long module
+// pages (a phone scroll of 15,000px otherwise has no table of contents).
+// Runs after the page script has appended its sections (same tick).
+function renderToc() {
+  const main = document.getElementById("sections");
+  const sections = main ? [...main.querySelectorAll(":scope > .chart-section[id]")] : [];
+  if (sections.length < 3) return;
+  const toc = el("nav", "page-toc");
+  toc.setAttribute("aria-label", editorial.tocLabel);
+  toc.append(el("span", "page-toc-label", editorial.tocLabel));
+  const list = el("ol", "page-toc-list");
+  for (const s of sections) {
+    const kicker = s.querySelector(".section-kicker")?.textContent?.trim();
+    if (!kicker) continue;
+    const a = el("a", "page-toc-link", kicker);
+    a.href = `#${s.id}`;
+    const li = el("li");
+    li.append(a);
+    list.append(li);
+  }
+  toc.append(list);
+  main.prepend(toc);
 }
 
 function renderMasthead() {
+  // On module pages the wordmark is the way home.
+  const title = document.querySelector(".masthead-title");
+  if (title && document.body.classList.contains("page-module") && !title.querySelector("a")) {
+    const home = el("a", "masthead-home");
+    home.href = "index.html";
+    home.setAttribute("aria-label", "CyberMon overview");
+    home.append(...title.childNodes);
+    title.append(home);
+  }
   document.getElementById("masthead-kicker").textContent = editorial.masthead.kicker;
   document.getElementById("masthead-thesis").textContent = editorial.masthead.thesis;
   document.getElementById("masthead-sub").textContent = editorial.masthead.sub;
@@ -329,8 +379,12 @@ function renderMeta(meta) {
 // Renders masthead, nav, footer; loads meta.json (banner + edition stamp).
 // Returns a promise that settles when meta handling is done.
 export function initChrome(activeTabId) {
+  // Module pages get the compact masthead; the manifesto lines stay on the
+  // landing page, where they introduce the site.
+  document.body.classList.add(activeTabId === "home" ? "page-home" : "page-module");
   renderMasthead();
   renderNav(activeTabId);
+  if (activeTabId !== "home") queueMicrotask(renderToc);
   renderFooterText(activeTabId);
   return fetchJSON("data/meta.json")
     .then(renderMeta)

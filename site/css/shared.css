@@ -181,6 +181,50 @@ code {
   border-bottom-color: var(--accent);
 }
 
+/* ---- compact masthead on module pages: the wordmark and thesis stay, the
+   kicker and manifesto paragraph live on the landing page only ---------- */
+
+.page-module .masthead { padding: 32px 20px 22px; }
+.page-module .masthead-kicker,
+.page-module .masthead-sub { display: none; }
+.page-module .masthead-title { font-size: clamp(2rem, 5vw, 3.2rem); margin-bottom: 8px; }
+.page-module .masthead-thesis { font-size: clamp(1.05rem, 2.2vw, 1.3rem); max-width: none; margin-bottom: 0; }
+.page-module .site-nav { margin-top: 18px; }
+.masthead-home { color: inherit; text-decoration: none; }
+.masthead-home:hover .accent,
+.masthead-home:focus-visible .accent { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+
+/* nav fold: the summary only exists for phones (see the mobile block) */
+.site-nav-summary { display: none; }
+
+/* ---- "On this page" jump list (module pages with 3+ sections) ---------- */
+
+.page-toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 18px;
+  padding: 22px 0 18px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-toc-label { color: var(--faint); letter-spacing: 0.16em; }
+.page-toc-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.page-toc-link { color: var(--muted); text-decoration: none; }
+.page-toc-link:hover,
+.page-toc-link:focus-visible { color: var(--ink); text-decoration: underline; }
+.chart-section[id] { scroll-margin-top: 16px; }
+
 /* -------------------------------------------------------------- sections -- */
 
 .sections {
@@ -727,6 +771,34 @@ code {
     padding: 7px 9px 6px;
   }
   .site-nav-row-lead .site-nav-tab { padding-top: 11px; }
+
+  /* folded nav: one tappable line naming the current page */
+  .site-nav-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    min-height: 44px;
+    padding: 12px 4px;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .site-nav-summary::-webkit-details-marker { display: none; }
+  .site-nav-summary-label { color: var(--muted); }
+  .site-nav-summary-label::after { content: " ▾"; color: var(--accent); }
+  .site-nav-fold[open] .site-nav-summary-label::after { content: " ▴"; }
+  .site-nav-summary-current { color: var(--ink); text-align: right; }
+  .site-nav-fold[open] > .site-nav-summary { border-bottom: 1px solid var(--rule); }
+
+  .page-module .masthead { padding: 24px 16px 8px; }
+  .page-toc { padding: 16px 0 14px; font-size: 11px; gap: 6px 14px; }
+  .page-toc-label { flex-basis: 100%; }
+  .page-toc-list { gap: 0 14px; }
+  .page-toc-link { display: inline-block; padding: 7px 0; }
 
   .chart { height: 320px; }
   .chart-tall { height: 360px; }

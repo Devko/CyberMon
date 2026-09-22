@@ -458,6 +458,8 @@ export const editorial = {
   },
 
   methodologyLabel: "How this is computed",
+  navFoldLabel: "All modules",
+  tocLabel: "On this page",
   chartSourcePrefix: "Data: ",
   chartSourceLinkText: "all sources & licenses ↓",
   methodologySourcePrefix: "Source of truth: ",
@@ -2241,7 +2243,7 @@ export const editorial = {
         "entry sat in the catalog before the flag existed at all, and the " +
         "curve shows them as the step where the record's flag history " +
         "begins. The median is published only with at least 10 observed " +
-        "flips; below that the count ships and the statistic stays null. " +
+        "flips; below that the count ships and the statistic stays unpublished. " +
         "Flips back to “Unknown” are rarer, tracked, and disclosed in the " +
         "data file as reversals rather than netted against the total.",
     },
