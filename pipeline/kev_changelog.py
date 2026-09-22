@@ -527,6 +527,91 @@ def _is_flip(event: dict) -> bool:
             and event["new"] == "Known")
 
 
+# Ransomware-flag lag buckets: (label, lo, hi) in days from dateAdded to the
+# observed Unknown->Known flip, inclusive; hi None = open-ended.
+LAG_BUCKETS = (
+    ("0-30d", 0, 30),
+    ("31-90d", 31, 90),
+    ("91-180d", 91, 180),
+    ("181-365d", 181, 365),
+    ("1-2y", 366, 730),
+    ("2-4y", 731, 1460),
+    ("4y+", 1461, None),
+)
+
+
+def _flag_lag(events: list[dict], flips: list[dict], step_month: str | None,
+              step_month_flips: int, entries: dict, removed: dict,
+              lag_stats: Callable[[list[float]], dict]) -> dict:
+    """The flag-lag block (additive since 2026-09-22): days from each
+    entry's ``dateAdded`` to its observed Unknown->Known flip, as a bucketed
+    distribution split by granularity and per listing year.
+
+    Same cohort rule as the flag-flip section's post-step lag: flips in the
+    step month (schema initialization) are left out and counted in
+    ``excluded_step``. A flip is dated to its first observation, so every
+    lag is an upper bound on the true one; for ``capture`` flips the bound
+    is loose (weeks between captures), for ``daily`` flips it is the day.
+    ``went_back`` counts cohort flips followed by a later flip of the same
+    entry back to Unknown. ``unusable`` counts flips whose entry has no
+    parseable dateAdded or whose lag comes out negative — reported, never
+    bucketed.
+    """
+    cohort = [e for e in flips
+              if step_month is None or _month(e["observed_date"]) != step_month]
+    # Later flag changes back to Unknown, per entry, by observation date.
+    back_dates: dict[str, list[str]] = defaultdict(list)
+    for e in events:
+        if (e["change_type"] == "field_changed"
+                and e["field"] == "knownRansomwareCampaignUse"
+                and e["new"] != "Known"):
+            back_dates[e["cve"]].append(e["observed_date"])
+
+    buckets = [{"label": label, "lo": lo, "hi": hi, "capture": 0, "daily": 0}
+               for label, lo, hi in LAG_BUCKETS]
+    by_year: dict[int, list[tuple[float, str]]] = defaultdict(list)
+    lags: list[float] = []
+    grains: Counter[str] = Counter()
+    unusable = went_back = 0
+    for e in cohort:
+        fp = entries.get(e["cve"]) or removed.get(e["cve"]) or {}
+        added = fp.get("added", "")
+        try:
+            delta = (date.fromisoformat(e["observed_date"])
+                     - date.fromisoformat(added)).days
+        except ValueError:
+            unusable += 1
+            continue
+        if delta < 0:
+            unusable += 1
+            continue
+        grain = e["granularity"]
+        for b in buckets:
+            if delta >= b["lo"] and (b["hi"] is None or delta <= b["hi"]):
+                b[grain] += 1
+                break
+        lags.append(float(delta))
+        grains[grain] += 1
+        by_year[int(added[:4])].append((float(delta), grain))
+        if any(d > e["observed_date"] for d in back_dates.get(e["cve"], ())):
+            went_back += 1
+
+    years = []
+    if by_year:
+        for year in range(min(by_year), max(by_year) + 1):
+            rows = by_year.get(year, [])
+            stats = lag_stats([d for d, _ in rows])
+            years.append({"year": year,
+                          "capture": sum(1 for _, g in rows if g == "capture"),
+                          "daily": sum(1 for _, g in rows if g == "daily"),
+                          **stats})
+    return {"step_month": step_month, "excluded_step": step_month_flips,
+            "n_capture": grains["capture"], "n_daily": grains["daily"],
+            "unusable": unusable, "went_back": went_back,
+            "overall": lag_stats(lags), "buckets": buckets,
+            "by_year": years}
+
+
 def build_kev_changelog(state: dict, events: list[dict],
                         generated_at: str, *, min_n: int = 10,
                         board_size: int = 12) -> dict:
@@ -617,6 +702,8 @@ def build_kev_changelog(state: dict, events: list[dict],
                    "step_month_flips": step_month_flips,
                    "total_after_step": total_after_step,
                    "lag_post_step": _lag_stats(post_lags)}
+    flag_lag = _flag_lag(events, flips, step_month, step_month_flips,
+                         entries, removed, _lag_stats)
 
     # ---- section 3: the receipts board --------------------------------------
     edit_counts: Counter[str] = Counter()
@@ -678,6 +765,7 @@ def build_kev_changelog(state: dict, events: list[dict],
         "board": {"most_edited": most_edited, "removals": removals},
         "catalog": catalog,
         "headline": headline,
+        "flag_lag": flag_lag,
     }
 
 

@@ -20,7 +20,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "epss_report.json", "cve_calendar.json", "rescore_log.json",
              "epss_volatility.json", "kev_changelog.json",
              "cna_roster.json", "time_to_poc.json", "botnet_weather.json",
-             "sec_incidents.json"]
+             "sec_incidents.json",
+             "observatory.json"]
 
 
 def _load(out: Path, name: str) -> dict:

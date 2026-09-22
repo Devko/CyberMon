@@ -83,6 +83,11 @@ jobs:
       - name: Check Field interactions and failures
         run: python tools/field_smoke.py
 
+      # Searches a real CVE from the committed observatory.json and asserts
+      # its trail, the #cve= deep link at 390 px, and the window CSV.
+      - name: Check Mutation Observatory interactions
+        run: python tools/observatory_smoke.py
+
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts
       # they are non-blank and actually differ. NOT a full render — capturing

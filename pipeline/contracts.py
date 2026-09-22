@@ -723,3 +723,6 @@ VALIDATORS.update(sec_incidents_contracts.VALIDATORS)
 from . import field_contracts  # noqa: E402
 
 VALIDATORS.update(field_contracts.VALIDATORS)
+from . import observatory_contracts  # noqa: E402
+
+VALIDATORS.update(observatory_contracts.VALIDATORS)

@@ -190,6 +190,12 @@ export function groupNav() {
   return { leading, groups: groups.filter((g) => g.tabs.length) };
 }
 
+// [id, href, label] — the nav's instrument links, in display order.
+const INSTRUMENT_LINKS = [
+  ["field", "field.html", "The Field →"],
+  ["observatory", "observatory.html", "Observatory →"],
+];
+
 // Grouped nav. Phones: one row per group (label over its tabs) inside a
 // fold. Desktop: a single bar of group buttons, with one group's pages open
 // beneath it. Every destination is a plain <a>; the buttons only choose
@@ -233,10 +239,18 @@ function renderNav(activeId) {
     buttons.set(g.id, btn);
     groupBar.append(btn);
   }
-  groupBar.append(link("field.html", "The Field →", "site-nav-tab site-nav-field", { sameTab: true }));
+  // Instruments (not modules, so not in editorial.nav): after the groups on
+  // desktop, their own row on phones.
+  const instrumentLinks = (first) => INSTRUMENT_LINKS.map(([id, href, label], i) => {
+    const a = link(href, label, "site-nav-tab" + (i === 0 && first ? ` ${first}` : "") +
+      (id === activeId ? " is-active" : ""), { sameTab: true });
+    if (id === activeId) a.setAttribute("aria-current", "page");
+    return a;
+  });
+  groupBar.append(...instrumentLinks("site-nav-field"));
 
   const instruments = el("div", "site-nav-row site-nav-row-instruments");
-  instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab", { sameTab: true }));
+  instruments.append(el("span", "site-nav-group-label", "Instruments"), ...instrumentLinks(null));
   nav.append(groupBar, instruments);
 
   if (leading.length) {
@@ -257,7 +271,8 @@ function renderNav(activeId) {
   // Phones: 27 links would fill the whole first screen before any content,
   // so the rows fold behind one summary naming the current page. Desktop
   // keeps them open (the summary is hidden there by CSS).
-  const current = editorial.nav.find((t) => t.id === activeId);
+  const current = editorial.nav.find((t) => t.id === activeId) ??
+    editorial.home.instruments?.items.find((t) => t.id === activeId);
   const fold = el("details", "site-nav-fold");
   const summary = el("summary", "site-nav-summary");
   summary.append(
@@ -326,7 +341,8 @@ function renderFooterText(activeTabId) {
   // (tools/make_carousels.py) and shipped only inside the Pages artifact,
   // so on a local checkout this link 404s until the generator has run —
   // acceptable for a deploy-time build product.
-  if (activeTabId && activeTabId !== "home") {
+  // Instruments have no carousel.
+  if (activeTabId && activeTabId !== "home" && editorial.nav.some((t) => t.id === activeTabId)) {
     const dl = el("p", "footer-carousel");
     const a = el("a", "mono", tpl(editorial.footer.carouselTemplate, { id: activeTabId }));
     a.href = `carousels/${activeTabId}.pdf`; // relative — works under GitHub Pages subpaths

@@ -178,11 +178,14 @@ from the same cvelistV5 corpus (all date judgments UTC):
 ### 12 · KEV Changelog — [changelog.html](https://devko.github.io/CyberMon/changelog.html) (live)
 
 *CISA edits the exploited list without a changelog — CyberMon keeps the
-diffs.* Three views over the project's own diff record of the CISA KEV
+diffs.* Four views over the project's own diff record of the CISA KEV
 catalog: edits per month by kind (due-date moves, ransomware-flag flips,
 text revisions, removals — additions are excluded, because a growing
 catalog is the system working), the cumulative Unknown→Known ransomware
-flips with the median listing-to-flip gap, and a receipts board of the
+flips with the median listing-to-flip gap, the flag's lag (days from
+`dateAdded` to the observed flip as a distribution split by dating
+granularity and per listing year, the 2023-12 column-introduction step
+left out, capture-dated lags labelled as upper bounds), and a receipts board of the
 most-edited entries plus every entry observed leaving the catalog. Each
 nightly run fingerprints the fresh catalog (tracked fields verbatim,
 free-text fields as short hashes) and diffs it against the committed
@@ -509,6 +512,30 @@ can obtain a compatible artifact.** No production data is committed here.
 Checks: `python -m pytest pipeline/tests -q`, `python tools/site_smoke.py`,
 and `python tools/field_smoke.py` (isolated synthetic fixture). Use
 `python tools/field_smoke.py --site site` to check an assembled real build.
+
+## Mutation Observatory — [observatory.html](https://devko.github.io/CyberMon/observatory.html) (instrument)
+
+*Every per-CVE change CyberMon logs, one record at a time.* The Observatory
+lays the events of the three histories CyberMon keeps — CNA score changes
+(`rescore_log.csv`), KEV additions, field and text edits and removals
+(`kev_changelog.csv`, with its capture/daily granularity), and each
+night's biggest EPSS probability move (`epss_volatility.csv`; nights the
+EPSS module quarantines as a model reset or a whole-corpus anomaly are
+left out) — on one daily stream. Brush a window on the stacked chart, list
+its events in a sortable table (first 100 rows shown, the whole window as
+CSV), or search a CVE (deep link `#cve=CVE-…`) for its trail as a vertical
+timeline, with a link to the same record in the Field. Every event is
+dated by its **first observation** by CyberMon and the page states when
+each history begins; nothing is drawn before monitoring began.
+
+Data: `site/data/observatory.json`, built nightly by
+`pipeline/observatory.py` from the same merged logs the pipeline persists
+(no fetch, no state); ~470 KB raw / ~52 KB gzipped for ~9,800 events, one
+`|`-joined string per event. Like the Field it is an instrument: an entry
+under Instruments on the home page and in the nav, no carousel, no claims
+audit (the page's copy carries no hard-coded numbers). Browser check:
+`python tools/observatory_smoke.py` (searches a real CVE from the data,
+asserts its trail, the deep link at 390 px and the CSV download).
 
 ## Architecture
 

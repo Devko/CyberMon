@@ -46,8 +46,8 @@ from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                epss_report_metrics, epss_volatility, extortion_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
                kev_metrics, market_metrics, metrics, naming_metrics,
-               nvd_throughput, poc_metrics, quality_metrics, rescore_tracker,
-               sec_incidents_metrics, top25_metrics)
+               nvd_throughput, observatory, poc_metrics, quality_metrics,
+               rescore_tracker, sec_incidents_metrics, top25_metrics)
 from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_feodo import fetch_blocklist, load_blocklist_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -739,6 +739,14 @@ def run(args: argparse.Namespace) -> int:
             offline_fixtures=args.offline_fixtures,
             backfill_batch=args.kev_changelog_backfill)
     outputs["kev_changelog.json"] = changelog
+    # Mutation Observatory (instrument, not a module): tonight's merged
+    # rescore / KEV-changelog / EPSS-volatility logs — the same rows the
+    # persists below write — laid on one per-CVE event stream. No fetch,
+    # no state: a pure function of the three records.
+    outputs["observatory.json"] = observatory.build_observatory(
+        kev_rows=changelog_pending.events, kev_state=changelog_pending.state,
+        rescore_rows=rescore_rows, epss_rows=epssvol_rows,
+        generated_at=generated_at)
     # CNA Roster History: diff tonight's CVE.org org roster against the
     # committed state; onboardings/departures/scope changes append to a
     # committed CSV (an original dataset — the federation keeps no history).

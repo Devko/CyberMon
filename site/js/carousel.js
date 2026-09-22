@@ -60,6 +60,7 @@ import { render as renderRescoreMagnitude } from "./charts/rescore_magnitude.js"
 import { render as renderRescoreEditors } from "./charts/rescore_editors.js";
 import { render as renderEdits } from "./charts/changelog_edits.js";
 import { render as renderChangelogFlips } from "./charts/changelog_flips.js";
+import { render as renderChangelogLag } from "./charts/changelog_lag.js";
 import { render as renderReceipts } from "./charts/changelog_receipts.js";
 import { render as renderNamingBoard } from "./charts/naming_board.js";
 import { render as renderNamingDist } from "./charts/naming_distribution.js";
@@ -208,6 +209,7 @@ const MODULES = {
     sections: [
       { id: "edits", render: renderEdits },
       { id: "flagflip", render: renderChangelogFlips },
+      { id: "flaglag", render: renderChangelogLag },
       { id: "receipts", render: renderReceipts, table: true },
     ],
   },
