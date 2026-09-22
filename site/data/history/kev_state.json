@@ -18596,6 +18596,17 @@
    "ransom": "Unknown",
    "vendor": "TrueConf"
   },
+  "CVE-2026-7273": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-21",
+   "desc": "5def05a449a3",
+   "due": "2026-09-24",
+   "name": "Zyxel GS1900 Series Switches Stack-Based Buffer Overflow Vulnerability",
+   "notes": "6716f9045881",
+   "product": "GS1900 Series Switches",
+   "ransom": "Unknown",
+   "vendor": "Zyxel"
+  },
   "CVE-2026-72898": {
    "action": "ba0d649eb29b",
    "added": "2026-08-11",
@@ -18883,7 +18894,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-21",
+ "last_observed": "2026-09-22",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
