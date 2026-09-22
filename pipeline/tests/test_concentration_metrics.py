@@ -114,9 +114,10 @@ def test_fixture_years_exact(agg):
     assert by_year[2024] == {"year": 2024, "cna_count": 3,
                              "newcomer_count": 0, "top5_share": 100.0,
                              "top10_share": 100.0, "hhi": 3333.3}
-    assert by_year[2025] == {"year": 2025, "cna_count": 1,
-                             "newcomer_count": 0, "top5_share": 100.0,
-                             "top10_share": 100.0, "hhi": 10000.0}
+    # 2025: VendorX 2 + the Linux-kernel fixture 1 (a newcomer) -> 5/9
+    assert by_year[2025] == {"year": 2025, "cna_count": 2,
+                             "newcomer_count": 1, "top5_share": 100.0,
+                             "top10_share": 100.0, "hhi": 5555.6}
 
 
 def test_fixture_rejection_leaderboard_sort_and_rate(agg):
@@ -133,6 +134,8 @@ def test_fixture_rejection_leaderboard_sort_and_rate(agg):
          "rejected_rate_pct": 0.0},
         {"cna": "GitHub_M", "total": 2, "rejected": 0,
          "rejected_rate_pct": 0.0},
+        {"cna": "Linux", "total": 1, "rejected": 0,
+         "rejected_rate_pct": 0.0},
     ]
 
 
@@ -146,9 +149,9 @@ def test_fixture_headline_complete_year_and_ten_year_baseline(agg):
     obj = build_cna_concentration(agg, GENERATED_AT, min_total=1)
     # GENERATED_AT is 2026 -> latest complete year 2025; baseline
     # 2015 (latest - 10) is in the gap-filled span.
-    assert obj["headline"] == {"latest_year": 2025, "cna_count_latest": 1,
+    assert obj["headline"] == {"latest_year": 2025, "cna_count_latest": 2,
                                "top5_share_latest": 100.0,
-                               "hhi_latest": 10000.0,
+                               "hhi_latest": 5555.6,
                                "baseline_year": 2015,
                                "top5_share_baseline": 0.0,
                                "hhi_baseline": 0.0}

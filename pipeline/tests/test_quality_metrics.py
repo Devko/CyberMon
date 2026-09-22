@@ -99,17 +99,20 @@ def test_fixture_advisory_quality_per_year(agg):
                              "missing_cvss": 1, "pct_missing_cvss": 33.3,
                              "missing_affected": 2,
                              "pct_missing_affected": 66.7}
-    # 2025: ADP-only CWE/score counts as present (record-level check).
-    assert by_year[2025] == {"year": 2025, "n": 2,
-                             "missing_cwe": 1, "pct_missing_cwe": 50.0,
-                             "missing_cvss": 0, "pct_missing_cvss": 0.0,
+    # 2025: ADP-only CWE/score counts as present (record-level check);
+    # the Linux-kernel fixture (CVE-2025-0200) has usable affected[] data
+    # but no CWE and no score.
+    assert by_year[2025] == {"year": 2025, "n": 3,
+                             "missing_cwe": 2, "pct_missing_cwe": 66.7,
+                             "missing_cvss": 1, "pct_missing_cvss": 33.3,
                              "missing_affected": 1,
-                             "pct_missing_affected": 50.0}
+                             "pct_missing_affected": 33.3}
 
 
 def test_advisory_quality_min_n_drops_thin_years(agg):
     out = build_advisory_quality(agg, GENERATED_AT, min_n=3)
-    assert [r["year"] for r in out["years"]] == [2023, 2024]  # n=2 dropped
+    # 2014 (n=2) dropped
+    assert [r["year"] for r in out["years"]] == [2023, 2024, 2025]
 
 
 def test_advisory_quality_empty_aggregator():

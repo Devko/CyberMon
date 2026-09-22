@@ -21,7 +21,7 @@ publications would post a >100% "rate").
 """
 from __future__ import annotations
 
-from .metrics import (Aggregator, _pct, _r1, pace_projection,
+from .metrics import (LINUX_CNA, Aggregator, _pct, _r1, pace_projection,
                       year_elapsed)
 
 
@@ -47,6 +47,33 @@ def _year_row(agg: Aggregator, year: int,
         "top10_share": top10,
         "hhi": hhi,
     }
+
+
+def _without_cna(agg: Aggregator, cna: str) -> dict:
+    """Top-5/top-10 share, HHI and active-CNA count per year with one CNA
+    removed from the federation entirely — its records leave the
+    denominator and it leaves the ranking, so the next assignor moves up.
+    Same year span as ``years``. Newcomer counts are not recomputed: the
+    toggle covers the additive trend chart only."""
+    rows = []
+    for year in agg.year_span():
+        published = {k: v for k, v in
+                     (agg.cna_year_published.get(year) or {}).items()
+                     if k != cna}
+        rejected = {k for k in (agg.cna_year_rejected.get(year) or {})
+                    if k != cna}
+        total = sum(published.values())
+        if total:
+            counts = sorted(published.values(), reverse=True)
+            top5 = _pct(sum(counts[:5]), total)
+            top10 = _pct(sum(counts[:10]), total)
+            hhi = _r1(10000.0 * sum((n / total) ** 2 for n in counts))
+        else:
+            top5 = top10 = hhi = 0.0
+        rows.append({"year": year,
+                     "cna_count": len(set(published) | rejected),
+                     "top5_share": top5, "top10_share": top10, "hhi": hhi})
+    return {"cna": cna, "years": rows}
 
 
 def _rejection_leaderboard(agg: Aggregator, *, window_years: int,
@@ -127,6 +154,7 @@ def build_cna_concentration(agg: Aggregator, generated_at: str, *,
             "hhi_baseline": baseline["hhi"] if baseline else 0.0,
         },
     }
+    out["without_linux"] = _without_cna(agg, LINUX_CNA)
     newcomers = next((row["newcomer_count"] for row in years
                       if row["year"] == current_year), 0)
     projected = pace_projection(newcomers, generated_at)

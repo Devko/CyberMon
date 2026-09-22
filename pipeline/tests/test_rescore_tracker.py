@@ -52,8 +52,8 @@ def test_fingerprint_and_inflation_score_cannot_disagree():
 
 def test_aggregator_collects_published_fingerprints(agg):
     fps = agg.rescore_fingerprints
-    # published records only: the fixture corpus has 11 records, 1 REJECTED
-    assert len(fps) == 10
+    # published records only: the fixture corpus has 12 records, 1 REJECTED
+    assert len(fps) == 11
     assert "CVE-2024-0003" not in fps  # the REJECTED record
     # scored record: (cna, exact newest version, that version's score)
     assert fps["CVE-2023-0001"] == ("VendorX", "v3.1", 9.8)

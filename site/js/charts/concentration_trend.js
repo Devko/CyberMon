@@ -6,7 +6,8 @@
 // methodology footnote — the chart reports shares.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
-import { el } from "../dom.js";
+import { el, clear } from "../dom.js";
+import { mkToggle } from "../ui.js";
 
 const TOP5_NAME = "Top-5 share";
 const TOP10_NAME = "Top-10 share";
@@ -16,21 +17,31 @@ export function render(slots, data) {
   const ed = editorial.sections.concentration;
 
   // ---- headline stat --------------------------------------------------------
+  // The headline years come from the payload; with the Linux-kernel toggle
+  // on, the two shares are read from the without_linux rows for those same
+  // years, so the stat never disagrees with the chart beneath it.
   const h = data.headline || {};
   const stat = el("div", "hero-stat");
   stat.append(el("div", "hero-stat-label", ed.statLabel));
   const row = el("div", "hero-stat-row");
-  if (Number.isFinite(h.top5_share_latest) && Number.isFinite(h.top5_share_baseline)) {
-    row.append(
-      el("span", "hero-num accent", fmtPct(h.top5_share_latest)),
-      el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
-      el("span", "hero-vs", "vs"),
-      el("span", "hero-num", fmtPct(h.top5_share_baseline)),
-      el("span", "hero-when", tpl(ed.statAgo, { ago_year: h.baseline_year }))
-    );
-  } else {
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
-  }
+  const drawStat = (rows) => {
+    clear(row);
+    const at = (y) => rows.find((r) => r.year === y)?.top5_share;
+    const latest = rows === data.years ? h.top5_share_latest : at(h.latest_year);
+    const base = rows === data.years ? h.top5_share_baseline : at(h.baseline_year);
+    if (Number.isFinite(latest) && Number.isFinite(base)) {
+      row.append(
+        el("span", "hero-num accent", fmtPct(latest)),
+        el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
+        el("span", "hero-vs", "vs"),
+        el("span", "hero-num", fmtPct(base)),
+        el("span", "hero-when", tpl(ed.statAgo, { ago_year: h.baseline_year }))
+      );
+    } else {
+      row.append(el("span", "hero-when muted", "Not enough data yet."));
+    }
+  };
+  drawStat(data.years || []);
   stat.append(row);
   slots.stat.append(stat);
 
@@ -41,13 +52,15 @@ export function render(slots, data) {
     slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
     return;
   }
+  const wl = data.without_linux?.years;
+  const variants = [years, ...(wl?.length === years.length ? [wl] : [])];
 
   // The generation year plots but is partial — mark it (volume.js pattern).
   const genYear = Number(data.generated_at.slice(0, 4));
   const cats = years.map((d) => (d.year === genYear ? `${d.year}*` : String(d.year)));
 
   const chart = mkChart(slots.chart);
-  chart.setOption({
+  const draw = (rows) => chart.setOption({
     grid: { ...baseGrid, left: 50, right: 54, top: 44 },
     legend: { ...baseLegend, data: [TOP5_NAME, TOP10_NAME, COUNT_NAME] },
     tooltip: {
@@ -86,22 +99,35 @@ export function render(slots, data) {
     series: [
       {
         name: TOP5_NAME, type: "line", yAxisIndex: 0,
-        data: years.map((d) => d.top5_share),
+        data: rows.map((d) => d.top5_share),
         color: C.accent, symbol: "none",
         lineStyle: { width: 2 }, z: 5,
       },
       {
         name: TOP10_NAME, type: "line", yAxisIndex: 0,
-        data: years.map((d) => d.top10_share),
+        data: rows.map((d) => d.top10_share),
         color: C.ink, symbol: "none",
         lineStyle: { width: 1.5, type: [6, 4] }, z: 4,
       },
       {
         name: COUNT_NAME, type: "line", yAxisIndex: 1,
-        data: years.map((d) => d.cna_count),
+        data: rows.map((d) => d.cna_count),
         color: C.muted, symbol: "none",
         lineStyle: { width: 1, type: [2, 3] }, z: 3,
       },
     ],
-  });
+  }, { replaceMerge: ["series"] });
+  draw(years);
+
+  if (variants.length > 1) {
+    const edl = editorial.linuxToggle;
+    const note = el("p", "panel-note", `${edl.note} ${ed.linuxNote}`);
+    note.hidden = true;
+    slots.controls.append(mkToggle(edl.labels, (idx) => {
+      draw(variants[idx]);
+      drawStat(variants[idx]);
+      note.hidden = idx === 0;
+    }));
+    slots.extra.append(note);
+  }
 }

@@ -205,6 +205,27 @@ def _validate_cna_concentration(obj: Any) -> None:
                                "cna_concentration.projection",
                                obj["generated_at"], {"newcomers": 1})
 
+    # Optional: the trend without the Linux kernel CNA (its records leave
+    # the denominator and it leaves the ranking). Shares and HHI are
+    # recomputed, so only the active-CNA headcount is bounded by the parent.
+    if "without_linux" in obj:
+        block = obj["without_linux"]
+        bp = "cna_concentration.without_linux"
+        _check_str(_get(block, "cna", bp), f"{bp}.cna")
+        rows = _check_list(_get(block, "years", bp), f"{bp}.years")
+        if len(rows) != len(entries):
+            _fail(f"{bp}.years", "must align with the parent years series")
+        for i, (row, full) in enumerate(zip(rows, entries)):
+            rp = f"{bp}.years[{i}]"
+            if _get(row, "year", rp) != full["year"]:
+                _fail(f"{rp}.year", "must align with the parent years series")
+            _check_int(_get(row, "cna_count", rp), f"{rp}.cna_count")
+            if row["cna_count"] > full["cna_count"]:
+                _fail(f"{rp}.cna_count", "exceeds the parent's cna_count")
+            for key in ("top5_share", "top10_share"):
+                _check_num(_get(row, key, rp), f"{rp}.{key}", 0.0, 100.0)
+            _check_num(_get(row, "hhi", rp), f"{rp}.hhi", 0.0, _HHI_HI)
+
 
 VALIDATORS: dict[str, Callable[[Any], None]] = {
     "kev_latency.json": _validate_kev_latency,

@@ -41,6 +41,7 @@ from pathlib import Path
 from typing import Iterator
 
 from . import field_export
+from . import cvss_v4_metrics, tags_metrics
 from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -612,6 +613,15 @@ def run(args: argparse.Namespace) -> int:
     # ... and the record-level ledger behind it (ids, tiers, roles; no text).
     outputs["ai_credits_ledger.json"] = \
         ai_credits_metrics.build_ai_credits_ledger(credits, generated_at)
+    # Record Tags (module 23) and CVSS 4.0 adoption (a module-01 section):
+    # both read tallies the same corpus pass already made. Fixture corpora
+    # are tiny, so the board floors drop to 1.
+    outputs["cve_tags.json"] = tags_metrics.build_cve_tags(
+        agg, generated_at, **({"min_n": 1} if args.offline_fixtures else {}))
+    outputs["cvss_v4.json"] = cvss_v4_metrics.build_cvss_v4(
+        agg, generated_at,
+        **({"adopters_min_v4": 1, "dual_min_n": 1}
+           if args.offline_fixtures else {}))
     # Single-upstream modules: build from tonight's fetch, or carry the
     # previous edition forward marked stale when that upstream is down.
     if hibp is not None:

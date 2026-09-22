@@ -399,7 +399,9 @@ code {
   padding: 16px 16px 12px;
 }
 
-.panel-controls { display: flex; justify-content: flex-end; }
+/* Several toggles (a scale switch plus the Linux-kernel filter) sit side by
+   side and wrap onto a second row on phones. */
+.panel-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 8px; }
 .panel-controls:empty { display: none; }
 
 .panel-subtitle {
@@ -493,7 +495,9 @@ code {
   font-size: 0.95rem;
 }
 
-.method-body p { margin: 0 0 10px; }
+/* long unbreakable strings (URL templates, file paths) wrap instead of
+   widening the page on phones */
+.method-body p { margin: 0 0 10px; overflow-wrap: anywhere; }
 
 .method-src { font-family: var(--mono); font-size: 12px; }
 

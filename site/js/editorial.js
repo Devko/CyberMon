@@ -98,6 +98,7 @@ export const editorial = {
     { id: "c2", href: "c2.html", label: "Botnet Weather", group: "attackmap" },
     { id: "ai", href: "ai.html", label: "The AI Alibi", group: "exploitation" },
     { id: "credits", href: "credits.html", label: "AI Credits", group: "machine" },
+    { id: "tags", href: "tags.html", label: "Record Tags", group: "machine" },
     { id: "incidents", href: "incidents.html", label: "Incident Clock", group: "industry" },
     { id: "advisories", href: "advisories.html", label: "Advisory Gap", group: "machine" },
     { id: "malware", href: "malware.html", label: "Registry Malware", group: "attackmap" },
@@ -159,7 +160,7 @@ export const editorial = {
         blurb:
           "CVSS inflation, the 9.8 flood, scores vs. real-world exploitation, NVD backlog " +
           "decay, NVD throughput, CNA scoring habits, the volume curve, advisory quality, " +
-          "bug-class inertia. Nine charts, " +
+          "bug-class inertia, CVSS 4.0 adoption. Ten charts, " +
           "rebuilt every night.",
         live: true,
       },
@@ -450,6 +451,20 @@ export const editorial = {
         live: true,
       },
       {
+        id: "tags",
+        href: "tags.html",
+        num: "23",
+        label: "Record Tags",
+        headline: "More CVEs are issued for products the vendor no longer supports.",
+        blurb:
+          "The CVE record lets the CNA tag a record “unsupported when assigned” " +
+          "or “disputed”. Counted per year: the first tag keeps climbing, the " +
+          "second stays flat. Who sets the tags, how few CNAs use them at all, " +
+          "and how tagged records are scored against the same CNAs' other " +
+          "records. A tag is what the CNA noted, not a verdict.",
+        live: true,
+      },
+      {
         id: "incidents",
         href: "incidents.html",
         num: "24",
@@ -612,6 +627,10 @@ export const editorial = {
     mal_months: "osv_metrics.py",
     mal_share: "osv_metrics.py",
     mal_withdrawn: "osv_metrics.py",
+    cvss4: "cvss_v4_metrics.py",
+    tags_trend: "tags_metrics.py",
+    tags_board: "tags_metrics.py",
+    tags_severity: "tags_metrics.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -646,6 +665,18 @@ export const editorial = {
     tooltipElapsed: "{pct} of the year elapsed",
     floodLabel: "≈ {n} projected",
     floodTooltipName: "All severities",
+  },
+
+  // Shared by the additive charts that can drop the Linux kernel CNA
+  // (volume curve, 9.8 flood, CNA concentration). The pipeline ships a
+  // without_linux variant with its own pace projection — see
+  // docs/data-contracts.md, "Linux-kernel variants".
+  linuxToggle: {
+    labels: ["All CNAs", "Without Linux kernel"],
+    note:
+      "The Linux kernel CNA's records (assigner “Linux”) are removed year by " +
+      "year. Only counts can be taken apart this way — a median cannot — so " +
+      "every other chart on this page still includes them.",
   },
 
   sections: {
@@ -825,6 +856,10 @@ export const editorial = {
       eraMarker: "← scored in NVD, not in the record",
       toggleAbsolute: "Absolute",
       toggleShare: "Share of year",
+      linuxNote:
+        "Since 2024 nearly every record with no score anywhere in it is a " +
+        "kernel record: switch the kernel off and the gray band all but " +
+        "disappears.",
       methodology:
         "CVEs are bucketed by their base score (highest CVSS version available per record): " +
         "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.0–3.9. “No score in record” " +
@@ -1016,6 +1051,9 @@ export const editorial = {
         "partial — the apparent dip at the right edge is a year still being written.",
       toggleLinear: "Linear",
       toggleLog: "Log scale",
+      linuxNote:
+        "The kernel's records start in 2024; the dashed pace line follows the " +
+        "toggle.",
       methodology:
         "Counts come from the cvelistV5 corpus: “published” is CVE records by original " +
         "publication year; “rejected” is records with state REJECTED, counted by their original " +
@@ -1095,6 +1133,70 @@ export const editorial = {
         "published records, so the denominator is never hidden. A year plots only with at " +
         "least 500 tagged records. Class names come from a small built-in map in the " +
         "pipeline; ids the map doesn't know are shown as bare CWE numbers.",
+    },
+
+    // ------------------------------------------------------------------ 10
+    cvss4: {
+      num: "10",
+      kicker: "CVSS 4.0 adoption",
+      source: "cvelistV5 (MITRE) — CNA-assigned scores",
+      // Static fallback (screen readers, the TOC, a failed fetch); the
+      // renderer replaces it with headlineTemplate filled from the data.
+      headline: "CVSS 4.0 shipped in late 2023. Most new CVE records still don't carry it.",
+      headlineTemplate: "CVSS 4.0 shipped in late 2023. It is on {pct} of this year's new CVE records.",
+      caption:
+        "Each month's newly published CVE records, split by the CVSS versions their " +
+        "CNA scored: v4.0 only, v3.x and v4.0 side by side, v3.x only, or neither. " +
+        "In {latest_year}, {latest_pct} of new records carried a v4.0 score; in " +
+        "{current_year} so far, {current_pct} ({v4_current} of {published_current}), " +
+        "from {v4_cnas} CNAs. Three assigners supply most of that volume, and " +
+        "most v4.0 scores arrive next to a v3.x score rather than instead of one.",
+      toggleMonthly: "Monthly",
+      toggleYearly: "Yearly",
+      classLabels: {
+        v4_only: "v4.0 only",
+        both: "v3.x and v4.0",
+        v3_only: "v3.x only",
+        neither: "Neither",
+      },
+      note:
+        "Scores from ADP containers do not count here. {neither_adp} of " +
+        "{current_year}'s {neither} “neither” records carry a CVSS score added " +
+        "by an ADP (CISA's v3.1) — the 9.8 flood above counts those.",
+      adoptersTitle: "Largest v4.0 adopters since {since}",
+      adoptersContext:
+        "{adopters} CNAs have scored at least one record in v4.0; the {shown} " +
+        "listed (at least {min_v4} v4.0 records each) account for {top_share} " +
+        "of all v4.0-scored records.",
+      colCna: "CNA",
+      colV4: "v4.0 records",
+      colShare: "Share of its records",
+      colOnly: "v4.0 only",
+      compareTitle: "v4.0 minus v3.x, same record, same CNA",
+      compareStat:
+        "{n} records scored in both · same severity band {same} · v4.0 higher " +
+        "{higher} · v4.0 lower {lower} · median difference {median}",
+      compareAxis: "v4.0 − v3.x base score",
+      compareTooltip: "{n} records with a difference of {range}",
+      nodata: "Not enough data yet.",
+      methodology:
+        "For every published record in the cvelistV5 corpus, the CVSS versions its CNA " +
+        "container scores: a v4.0 base score, a v3.x base score (3.0 and 3.1 count " +
+        "alike), both, or neither — a record scored only in v2 counts as “neither”. " +
+        "Scores in ADP containers are not counted, because the question is what the " +
+        "CNA of record scored; the note under the chart gives how many “neither” " +
+        "records an ADP scored. Months are publication months from {since} (the " +
+        "month CVSS 4.0 was published); years start in 2023. Shares are of all " +
+        "records published in the month or year; the current month and year " +
+        "(marked *) are partial. The adopters board covers records published since " +
+        "{since} and lists CNAs with at least {min_v4} v4.0-scored records; its " +
+        "share column is v4.0-scored records over all the CNA's records in that " +
+        "window. The histogram takes every record whose CNA gave both a v4.0 and a " +
+        "v3.x base score (the highest 3.x minor version when several are present) " +
+        "and bins v4.0 minus v3.x in half-point steps; the end bins collect " +
+        "everything beyond. Severity bands are the site's usual ones (Critical ≥ " +
+        "9.0, High 7.0–8.9, Medium 4.0–6.9, Low below 4.0). The two versions " +
+        "score different things, so a difference is not an error in either.",
     },
 
     // --------------------------------------------- kev.html · 1 · hero
@@ -1248,6 +1350,9 @@ export const editorial = {
       statLabel: "Share of published CVEs from the year's top 5 CNAs",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
+      linuxNote:
+        "Without the kernel the top-5 share still climbs after 2023, and the " +
+        "shares are recomputed over the remaining CNAs.",
       methodology:
         "Each CVE record's assigner (the CNA of record in cvelistV5) is counted by original " +
         "publication year; a CNA is active in a year if it published or rejected at least one record. " +
@@ -4214,6 +4319,127 @@ export const editorial = {
         "not the year it was withdrawn. The feed does not record a reason, " +
         "so this page does not give one.",
     },
+
+    // --------------------------------------------- tags.html · 1 · hero
+    tags_trend: {
+      num: "01",
+      kicker: "Unsupported when assigned",
+      source: "CVE List V5 (MITRE)",
+      headline: "More CVEs are issued for products the vendor no longer supports.",
+      caption:
+        "The CVE record format lets the CNA tag a record. “unsupported-when-" +
+        "assigned” says the product was already out of vendor support when the " +
+        "CVE ID was assigned: {first} records carried it in {first_year}, " +
+        "{latest} in {latest_year}, and {current} so far in {current_year}. " +
+        "“disputed” says some party disputes that the record describes a " +
+        "vulnerability; it does not grow with the corpus — between {dmin} and " +
+        "{dmax} records a year from {dfrom} to {dto}, while yearly publications " +
+        "more than doubled, so its share of the year fell. " +
+        "“exclusively-hosted-service” marks a cloud service with " +
+        "nothing for a customer to install. A tag records what the CNA noted, " +
+        "not a verdict, and an untagged record is not “supported” or " +
+        "“undisputed”: most CNAs never set these tags.",
+      statLabel: "Records tagged “unsupported-when-assigned”",
+      statLatest: "{latest_year}",
+      statFirst: "{first_year}",
+      statCurrent: "{current} in {current_year} so far",
+      toggleCount: "Records",
+      toggleShare: "Share of year",
+      tagLabels: {
+        "unsupported-when-assigned": "unsupported-when-assigned",
+        disputed: "disputed",
+        "exclusively-hosted-service": "exclusively-hosted-service",
+      },
+      tooltipShare: "{pct} of {published} published",
+      contextNote:
+        "Not charted: tags a CNA defines for itself (prefixed x_), {private} " +
+        "distinct ones so far — most used: {top}. ADP containers carry only " +
+        "{adp}.",
+      nodata: "No tagged records in the corpus yet — the nightly fills this.",
+      methodology:
+        "For every published record in the cvelistV5 corpus, the tags array of the " +
+        "CNA container, counted once per record per tag and filed under the record's " +
+        "publication year (rejected records excluded). The three tags charted are the " +
+        "ones the CVE record schema defines; tags prefixed x_ are private to the CNA " +
+        "that sets them and are listed only in the note. The record carries no date " +
+        "for when a tag was added, so a record tagged years after publication counts " +
+        "under its publication year, and the chart cannot say when tagging happened. " +
+        "Shares are tagged records over all records published that year. The first " +
+        "year shown is the first year any of the three tags appears. The current year " +
+        "(marked *) is partial and refills nightly; its share is comparable as it " +
+        "stands, its count is not.",
+    },
+
+    // --------------------------------------------- tags.html · 2
+    tags_board: {
+      num: "02",
+      kicker: "Who tags",
+      source: "CVE List V5 (MITRE)",
+      headline: "A few CNAs set the tags. Most never do.",
+      caption:
+        "Tagged records from {from} to {to}, by the CNA that set the tag. " +
+        "{u_cnas} of the {active} CNAs that published a record in those years " +
+        "set “unsupported-when-assigned” at least once, and the top three " +
+        "account for {u_top3} of the tags. “disputed” is set almost entirely " +
+        "by one CNA: {d_top} set {d_top1} of them. Read every count here as " +
+        "that CNA's practice, not as a measure of its products.",
+      windowTemplate:
+        "{from}–{to} · CNAs with at least {min_n} tagged records · {cnas} CNAs set the tag at all",
+      colCna: "CNA",
+      colN: "Tagged records",
+      colShare: "Share of the tag",
+      colRate: "Share of its records",
+      nodata: "No CNA has set this tag often enough to list.",
+      methodology:
+        "Records published in the last {window_years} publication years (the current, " +
+        "partial year included), by the assigner of record. A CNA is listed with at " +
+        "least {min_n} tagged records in the window; smaller users still count toward " +
+        "the number of CNAs that set the tag. “Share of the tag” is the CNA's tagged " +
+        "records over all records carrying that tag in the window; “share of its " +
+        "records” is the CNA's tagged records over every record it published in the " +
+        "window. The active-CNA count is every assigner with at least one published " +
+        "record in the window.",
+    },
+
+    // --------------------------------------------- tags.html · 3
+    tags_severity: {
+      num: "03",
+      kicker: "Tagged against baseline",
+      source: "CVE List V5 (MITRE)",
+      headline: "Records tagged unsupported are rated Critical more often than their CNAs' other records.",
+      caption:
+        "The severity of tagged records from {from} to {to} against two baselines: " +
+        "every other record from the CNAs that set the tag, and every record " +
+        "published in those years. Records tagged “unsupported-when-assigned” " +
+        "are rated Critical {u_crit} of the time, against {u_same} for the same " +
+        "CNAs' other records and {all_crit} across all records. Comparing with " +
+        "the same CNAs' own records keeps each assigner's scoring habits in both " +
+        "rows; it does not say why the tagged records score higher.",
+      rowLabels: {
+        tagged: "{tag}",
+        same_cnas_untagged: "its CNAs' other records",
+        all: "all records",
+      },
+      severityLabels: {
+        critical: "Critical",
+        high: "High",
+        medium: "Medium",
+        low: "Low",
+        unscored: "No score in record",
+      },
+      tooltipRow: "{n} records",
+      nodata: "Not enough tagged records yet.",
+      methodology:
+        "Records published in the last {window_years} publication years (the current, " +
+        "partial year included). Each record is bucketed by the base score in the " +
+        "record itself — the newest CVSS version present, the CNA container first and " +
+        "ADP containers as fallback, the same rule as the 9.8 flood — as Critical " +
+        "(≥ 9.0), High (7.0–8.9), Medium (4.0–6.9), Low (below 4.0), or no score. " +
+        "“Its CNAs' other records” pools every record from any CNA that set the tag at " +
+        "least once in the window, minus the tagged ones; a CNA that tags heavily " +
+        "weighs heavily in both rows. Bars are shares of each row's records; the " +
+        "tooltip carries the counts.",
+    },
   },
 
   footer: {
@@ -4394,6 +4620,7 @@ export const editorial = {
       incidents: "SEC EDGAR full-text search (Forms 8-K, 8-K/A)",
       advisories: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
       malware: "OpenSSF malicious-packages via OSV.dev",
+      tags: "CVE List V5 (MITRE)",
     },
   },
 };

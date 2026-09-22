@@ -1,13 +1,14 @@
 # Module backlog
 
-Candidate monitoring modules, beyond the twenty-two that exist today
+Candidate monitoring modules, beyond the twenty-six that exist today
 (01 CVE Ecosystem, 02 Security Market, 03 KEV Latency, 04 CNA
 Concentration, 05 Breach Ledger, 06 Extortion Ledger, 07 ATT&CK Churn,
 08 Hygiene Index, 09 Security Products, 10 EPSS Report Card, 11 CVE
 Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
 15 CWE Top 25, 16 Vulnrichment, 17 EPSS Volatility, 18 CNA Roster,
-19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi, 22 AI Credits — all
-live).
+19 Time to PoC, 20 Botnet Weather, 21 The AI Alibi, 22 AI Credits,
+23 Record Tags, 24 Incident Clock, 25 Advisory Gap, 26 Registry Malware —
+all live; plus the instruments The Field and the Mutation Observatory).
 
 ## Maintenance — one upstream outage costs the whole night — RESOLVED
 
@@ -234,7 +235,17 @@ every item keeps the house rules — open data only, every number reproducible,
 copy guarded by the claims audit, and time shown as the kind of time it is
 (event, publication, or first observation by CyberMon).
 
-### 23 · Record Tags — CVEs for software nobody supports
+### 23 · Record Tags — CVEs for software nobody supports — SHIPPED as module 23
+Live as **23 · Record Tags** ([tags.html](../site/tags.html)), data
+`cve_tags.json`, stage `pipeline/tags_metrics.py` (tallies ride the shared
+corpus pass). Three charts: schema tags per year (count / share toggle,
+x_ and ADP tags listed as context only); who tags (board per tag over the
+last five years — 49 of 471 active CNAs set unsupported-when-assigned,
+mitre sets 82% of disputed); severity of tagged records against the same
+CNAs' other records (17.4% Critical vs 11.1%) and all records (9.4%).
+Probe counts reproduced exactly from the checkout. Open: a "time
+disputed" view needs CyberMon's own tag snapshots (the record has no tag
+date). Original entry:
 - **Thesis (revised after the count probe):** more and more CVE ids are
   issued for software its vendor had already stopped supporting. The record
   format lets a CNA tag a CVE `unsupported-when-assigned`; those tags went
@@ -357,7 +368,13 @@ copy guarded by the claims audit, and time shown as the kind of time it is
   when it was published to the feed, not when the package went live.
 - **Feasibility:** easy once module 25's fetcher exists.
 
-### CVSS 4.0 adoption — a section on module 01
+### CVSS 4.0 adoption — a section on module 01 — SHIPPED as section 10 of module 01
+Live on [cve.html](../site/cve.html) (section 10), data `cvss_v4.json`,
+stage `pipeline/cvss_v4_metrics.py`. Monthly/yearly coverage classes from
+the CNA container (ADP scores not counted; `neither_adp` shows the gap),
+the adopters board, and the v4.0 − v3.x histogram with band agreement
+(69% same band, median −0.1). Headline filled from data. Probe counts
+reproduced (21,509 of 68,708 in 2026 on the checkout). Original entry:
 - **Thesis:** CVSS 4.0 shipped in November 2023; the record shows who
   actually moved to it.
 - **Signals:** share of each month's newly published records carrying a
@@ -367,7 +384,14 @@ copy guarded by the claims audit, and time shown as the kind of time it is
   switched; on records scored in both, how v4 compares with v3.
 - **Source:** the corpus pass (metrics already separates the versions).
 
-### Ransomware-flag lag — a section on module 12
+### Ransomware-flag lag — a section on module 12 — SHIPPED as section 03 of module 12
+Live on [changelog.html](../site/changelog.html) (section 03; receipts moved
+to 04), additive `flag_lag` block in `kev_changelog.json` from
+`pipeline/kev_changelog.py`. At launch: 110 Unknown→Known flips after the
+2023-12 step month (32 nightly-dated, 78 capture-dated upper bounds),
+median 437.5 days after listing (IQR 124–1,107); by listing year 2021
+1,721 d → 2025 142 d (recent years capped by entry age); none went back.
+Original entry:
 - **Thesis:** CISA's "known ransomware use" flag is often set long after an
   entry is listed; the changelog already logs every flip.
 - **Signals:** days from `dateAdded` to the Unknown→Known flip, as a
@@ -375,7 +399,14 @@ copy guarded by the claims audit, and time shown as the kind of time it is
 - **Caveats:** the 2023-12 column-introduction step is excluded (as in the
   flag-flip section); capture-granularity dates are upper bounds.
 
-### Linux-kernel toggle — modules 01 and 04
+### Linux-kernel toggle — modules 01 and 04 — SHIPPED
+Additive `without_linux` blocks in `volume_curve.json`,
+`nine_eight_flood.json` (each with its own pace projection) and
+`cna_concentration.json` (shares/HHI recomputed); a toggle beside the
+existing controls on those three charts, with the "medians are not
+subtractable" note. Findings on the page, claims-guarded: nearly every
+unscored record since 2024 is the kernel's; the post-2023 top-5
+re-concentration survives without it. Original entry:
 - **Thesis check, not a thesis:** the kernel became a CNA in 2024 and
   published 4,287 records that year, 5,675 in 2025 and 6,547 in 2026 so far
   (~9.5% of the year). A toggle that removes it
@@ -384,7 +415,13 @@ copy guarded by the claims audit, and time shown as the kind of time it is
   concentration (top-5/top-10 share, HHI). Medians are not subtractable and
   stay as they are; the toggle says so.
 
-### Mutation Observatory — instrument
+### Mutation Observatory — instrument — SHIPPED
+Live as [observatory.html](../site/observatory.html), linked beside The
+Field in the nav and on the landing page. `pipeline/observatory.py` builds
+`observatory.json` every run from the merged histories (no fetch, no
+state): 9,827 events on 7,157 CVEs at launch. Open: the EPSS side is each
+night's single biggest move only — the EPSS log keeps no other per-CVE
+rows. Original entry:
 - **What:** a per-CVE event trail built from the histories CyberMon keeps:
   rescores (`rescore_log.csv`), KEV additions / edits / removals
   (`kev_changelog.csv`), and the nightly biggest EPSS move

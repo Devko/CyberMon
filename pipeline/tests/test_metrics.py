@@ -203,8 +203,9 @@ def test_flood_buckets_unscored_and_rejected(agg):
     # the REJECTED record does not appear at all.
     assert by_year[2024] == {"year": 2024, "critical": 1, "high": 0,
                              "medium": 1, "low": 0, "unscored": 1}
-    # ADP-only 9.9 counts as scored ("anywhere in the record").
-    assert by_year[2025]["critical"] == 1 and by_year[2025]["unscored"] == 0
+    # ADP-only 9.9 counts as scored ("anywhere in the record"); the one
+    # 2025 unscored record is the Linux-kernel fixture (CVE-2025-0200).
+    assert by_year[2025]["critical"] == 1 and by_year[2025]["unscored"] == 1
     # gap years are zero-filled and the series is contiguous 2014..2025.
     assert [r["year"] for r in out["years"]] == list(range(2014, 2026))
     assert by_year[2019] == {"year": 2019, "critical": 0, "high": 0,
@@ -276,7 +277,7 @@ def test_volume_curve_counts_rejected_by_publication_year(agg):
     by_year = {r["year"]: r for r in out["years"]}
     assert by_year[2014] == {"year": 2014, "published": 2, "rejected": 0}
     assert by_year[2024] == {"year": 2024, "published": 3, "rejected": 1}
-    assert by_year[2025] == {"year": 2025, "published": 2, "rejected": 0}
+    assert by_year[2025] == {"year": 2025, "published": 3, "rejected": 0}
     assert by_year[2020] == {"year": 2020, "published": 0, "rejected": 0}
 
 

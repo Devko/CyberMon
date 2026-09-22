@@ -100,6 +100,10 @@ import { render as renderGapSeverity } from "./charts/gap_severity.js";
 import { render as renderMalMonths } from "./charts/mal_months.js";
 import { render as renderMalShare } from "./charts/mal_share.js";
 import { render as renderMalWithdrawn } from "./charts/mal_withdrawn.js";
+import { render as renderCvss4 } from "./charts/cvss4.js";
+import { render as renderTagsTrend } from "./charts/tags_trend.js";
+import { render as renderTagsBoard } from "./charts/tags_board.js";
+import { render as renderTagsSeverity } from "./charts/tags_severity.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -119,6 +123,7 @@ const MODULES = {
       { id: "volume", file: "data/volume_curve.json", render: renderVolume },
       { id: "quality", file: "data/advisory_quality.json", render: renderQuality },
       { id: "cwe", file: "data/cwe_distribution.json", render: renderCweShare },
+      { id: "cvss4", file: "data/cvss_v4.json", render: renderCvss4 },
     ],
   },
   market: {
@@ -318,6 +323,14 @@ const MODULES = {
       { id: "mal_months", render: renderMalMonths },
       { id: "mal_share", render: renderMalShare },
       { id: "mal_withdrawn", render: renderMalWithdrawn },
+    ],
+  },
+  tags: {
+    file: "data/cve_tags.json",
+    sections: [
+      { id: "tags_trend", render: renderTagsTrend },
+      { id: "tags_board", render: renderTagsBoard, table: true },
+      { id: "tags_severity", render: renderTagsSeverity },
     ],
   },
 };
