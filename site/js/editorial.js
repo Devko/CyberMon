@@ -2805,9 +2805,10 @@ export const editorial = {
         "departure and a newcomer; a cnaID the roster shares between " +
         "organizations proves nothing and never pairs. Snapshots stored before " +
         "20 September 2026 carry no cnaID, so a rename logged before then still " +
-        "reads as a departure plus a newcomer: August's TQtC → Qt pair is one " +
-        "(The Qt Company renamed Qt Group under the same cnaID, CNA-2025-0016), " +
-        "so the one departure on the record is a rename. Events append to a " +
+        "reads as a departure plus a newcomer. The one such pair on the record, " +
+        "August's TQtC → Qt (The Qt Company renamed Qt Group under the same, " +
+        "unique cnaID CNA-2025-0016 in the roster file's history), was " +
+        "reconciled by hand into one rename plus its scope change. Events append to a " +
         "committed, append-only log (data/history/cna_roster.csv) — like the " +
         "NVD backlog history, a normalized ledger this project accumulates; the " +
         "roster file's own git history holds the raw edits, this log the " +

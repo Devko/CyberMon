@@ -275,10 +275,10 @@
    },
    {
     "month": "2026-08",
-    "onboarded": 11,
-    "departed": 1,
-    "renamed": 0,
-    "scope_changed": 4
+    "onboarded": 10,
+    "departed": 0,
+    "renamed": 1,
+    "scope_changed": 5
    },
    {
     "month": "2026-09",
@@ -289,10 +289,10 @@
    }
   ],
   "totals": {
-   "onboarded": 20,
-   "departed": 1,
-   "renamed": 0,
-   "scope_changed": 6
+   "onboarded": 19,
+   "departed": 0,
+   "renamed": 1,
+   "scope_changed": 7
   },
   "events_total": 27,
   "first_observed": "2026-07-21"
