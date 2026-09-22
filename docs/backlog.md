@@ -226,6 +226,113 @@ milestone overlay alone would have been module 19 with annotations.
   classifier, and keyword-matching product names is a real landmine, so
   it belongs in its own pass. See the Tier 1 candidate note below.
 
+## Scheduled 2026-09-22 — the next build round
+
+Chosen by the owner from the 2026-09-22 ideas pass. Four new modules, three
+additions to existing pages, and one instrument. Numbering continues from 22;
+every item keeps the house rules — open data only, every number reproducible,
+copy guarded by the claims audit, and time shown as the kind of time it is
+(event, publication, or first observation by CyberMon).
+
+### 23 · Disputed CVEs — the record's own tags
+- **Thesis:** the CVE program's fastest-growing category is argument. The
+  record format lets a CNA tag a CVE `disputed` (a party — often the vendor —
+  says it is not a vulnerability) or `unsupported-when-assigned` (the
+  software was already out of support when the id was issued); nobody
+  charts either.
+- **Signals:** tagged share of each year's published records, per tag; the
+  CNAs that apply each tag (volume floor, like the CNA board); what the
+  disputed records are (CWE mix, severity) against the year's baseline.
+- **Source:** `containers.cna.tags` in the cvelistV5 corpus already read
+  every night (plus `exclusively-hosted-service`, reported as context).
+- **Caveats for the copy:** a tag records that a dispute or an end-of-life
+  status was *noted*, not that it is correct; untagged is not "undisputed".
+  CyberMon has no history of when a tag was added (the record carries no
+  tag date), so no "time disputed" chart until our own snapshots accrue.
+- **Feasibility:** easy — one more field in the corpus pass. Count probe
+  against the 2026-09-22 corpus before copy is written.
+
+### 24 · Incident Clock — SEC cyber-incident filings
+- **Thesis:** since December 2023 a US public company must disclose a
+  material cybersecurity incident on Form 8-K Item 1.05 within four business
+  days of deciding it is material. The filing record shows how the rule is
+  actually used: a trickle of Item 1.05 filings, amendments that arrive
+  months later, and a drift toward voluntary Item 8.01 disclosures after the
+  SEC's May 2024 guidance.
+- **Signals:** Item 1.05 8-Ks per month/quarter; 8-K/A amendments and the lag
+  from the original filing to its amendment; Item 8.01 cyber-incident
+  filings beside them; distinct companies filing.
+- **Source:** EDGAR full-text search (`efts.sec.gov/LATEST/search-index`),
+  already used by module 02's EDGAR lane (same client, User-Agent and pacing
+  rules). No key.
+- **Caveats:** full-text matching finds filings that *mention* the item; the
+  item list EDGAR indexes per filing is the filter. The incident date is
+  prose, not a field, so the page measures filing cadence and amendment lag,
+  never "time from breach to disclosure".
+- **Feasibility:** medium — pagination and de-duplication by accession
+  number; carry-forward on an EDGAR outage like HIBP/Ransomwhere.
+
+### 25 · Advisory Gap — GitHub advisories vs CVE
+- **Thesis:** the software ecosystems grade their own vulnerabilities now.
+  A large share of GitHub-reviewed advisories never gets a CVE id, so a
+  program that watches only CVE misses them (the "registries are faster"
+  framing was tested earlier and killed — this is about coverage, not speed).
+- **Signals:** reviewed GHSA advisories per year and ecosystem, split by
+  whether a CVE alias exists; the no-CVE share by ecosystem; severity of
+  advisories with and without a CVE.
+- **Source:** OSV per-ecosystem exports
+  (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`), which
+  carry GitHub-reviewed advisories with their aliases. Reachable, no key.
+- **Caveats:** OSV mirrors reviewed advisories only; a CVE alias can be added
+  later, so a young advisory's "no CVE" can change (young cohorts flagged).
+- **Feasibility:** medium — shares one fetcher with module 26.
+
+### 26 · Registry Malware — malicious packages
+- **Thesis:** package registries are the new watering hole, and the takedown
+  log is public.
+- **Signals:** `MAL-*` reports per ecosystem per month (npm, PyPI, crates.io,
+  RubyGems, NuGet, Go…); withdrawn reports; share of the year's reports by
+  ecosystem.
+- **Source:** the same OSV exports (OpenSSF malicious-packages feed).
+- **Caveats:** counts reports, not installs or victims; a report's date is
+  when it was published to the feed, not when the package went live.
+- **Feasibility:** easy once module 25's fetcher exists.
+
+### CVSS 4.0 adoption — a section on module 01
+- **Thesis:** CVSS 4.0 shipped in November 2023; the record shows who
+  actually moved to it.
+- **Signals:** share of each month's newly published records carrying a
+  v4.0 score (v4 only / v3 and v4 / v3 only / neither); the CNAs that
+  switched; on records scored in both, how v4 compares with v3.
+- **Source:** the corpus pass (metrics already separates the versions).
+
+### Ransomware-flag lag — a section on module 12
+- **Thesis:** CISA's "known ransomware use" flag is often set long after an
+  entry is listed; the changelog already logs every flip.
+- **Signals:** days from `dateAdded` to the Unknown→Known flip, as a
+  distribution and per listing year; flips that went back.
+- **Caveats:** the 2023-12 column-introduction step is excluded (as in the
+  flag-flip section); capture-granularity dates are upper bounds.
+
+### Linux-kernel toggle — modules 01 and 04
+- **Thesis check, not a thesis:** the kernel became a CNA in 2024 and now
+  publishes more records than any other assigner. A toggle that removes it
+  shows which trends survive without it.
+- **Where:** the additive charts only — volume curve, the 9.8 flood, CNA
+  concentration (top-5/top-10 share, HHI). Medians are not subtractable and
+  stay as they are; the toggle says so.
+
+### Mutation Observatory — instrument
+- **What:** a per-CVE event trail built from the histories CyberMon keeps:
+  rescores (`rescore_log.csv`), KEV additions / edits / removals
+  (`kev_changelog.csv`), and the nightly biggest EPSS move
+  (`epss_volatility.csv`). A daily event stream you can brush, a CVE search
+  that shows one record's trail, and the events in the brushed window as a
+  table with CSV export.
+- **Rule:** every event is dated by first observation, labelled as such;
+  nothing is drawn before monitoring began, and the page says which
+  histories start when.
+
 ## Fresh candidates — probed 2026-07-18
 
 Six ideas probed live this round (every endpoint fetched, not taken from
