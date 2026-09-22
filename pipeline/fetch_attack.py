@@ -39,9 +39,10 @@ Counting rules (the methodology on the site quotes these):
 * churn (per release vs its predecessor, techniques and sub-techniques
   together, keyed by STIX object id): ``added`` = ids new to the release;
   ``deprecated`` / ``revoked`` = ids present in both releases whose flag
-  flipped false→true. An object arriving already deprecated counts once,
-  as an addition; an object deprecated in an earlier release is never
-  re-counted. The index's earliest release has no predecessor: churn None.
+  flipped false→true while the object was still active (a retirement is
+  counted once: revoked when that flag flips, else deprecated). An object
+  arriving already deprecated counts once, as an addition; an object
+  retired in an earlier release is never re-counted. The index's earliest release has no predecessor: churn None.
 """
 from __future__ import annotations
 
@@ -153,10 +154,15 @@ def churn_counts(prev_flags: dict[str, dict],
         if prev is None:
             added += 1  # arriving already-deprecated still counts here only
             continue
-        if cur["deprecated"] and not prev["deprecated"]:
-            deprecated += 1
-        if cur["revoked"] and not prev["revoked"]:
+        # A retirement counts once, when the object leaves the active set:
+        # one already deprecated that is later revoked (or one flipping both
+        # flags in the same release) is not a second event. Revoked wins the
+        # label when both flip together.
+        was_active = not (prev["deprecated"] or prev["revoked"])
+        if was_active and cur["revoked"]:
             revoked += 1
+        elif was_active and cur["deprecated"]:
+            deprecated += 1
     return {"added": added, "deprecated": deprecated, "revoked": revoked}
 
 

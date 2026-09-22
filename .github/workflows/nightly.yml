@@ -236,19 +236,11 @@ jobs:
           fi
 
       # Once per ISO week, freeze an immutable snapshot tag on HEAD. The
-      # append-only site/data/history/ CSVs (nvd_backlog.csv,
-      # nvd_throughput.csv) CANNOT be regenerated
-      # (this repo is their only copy), so a weekly tag is a rollback point if
-      # a file is ever corrupted or truncated by a bad run. Insurance, not
-      # append-only site/data/history/ CSVs (nvd_backlog.csv and
-      # rescore_log.csv) CANNOT be regenerated (this repo is their only
-      # copy), so a weekly tag is a rollback point if a file is ever
-      # corrupted or truncated by a bad run. Insurance, not
-      # append-only history files (site/data/history/nvd_backlog.csv, and
-      # the KEV changelog's kev_changelog.csv + kev_state.json) CANNOT be
-      # regenerated (this repo is their only copy), so a weekly tag is a
-      # rollback point if a file is ever corrupted or truncated by a bad
-      # run. Insurance, not
+      # append-only history files under site/data/history/ (nvd_backlog.csv,
+      # nvd_throughput.csv, rescore_log.csv, the KEV changelog's
+      # kev_changelog.csv + kev_state.json, ...) CANNOT be regenerated (this
+      # repo is their only copy), so a weekly tag is a rollback point if a
+      # file is ever corrupted or truncated by a bad run. Insurance, not
       # the product: every failure mode here is swallowed so it can never
       # take down the refresh itself (the pipeline-run step above still must
       # NOT get continue-on-error — this leniency is for the backup only).
@@ -274,21 +266,34 @@ jobs:
       # artifact without ever touching git history — binary PDFs regenerated
       # every night would bloat the repo (site/carousels/ is gitignored).
       #
-      # Every carousel step is continue-on-error ON PURPOSE: the PDFs are
-      # nice-to-have build products, and a single module's rendering bug
-      # must never block the site deploy (it did, for two days — the site
-      # served stale data while fresh commits piled up on main). A carousel
-      # failure still leaves a paper trail via the notify step below.
+      # The carousel and clip builds are continue-on-error ON PURPOSE: the
+      # PDFs are nice-to-have build products, and a single module's rendering
+      # bug must never block the site deploy (it did, for two days — the site
+      # served stale data while fresh commits piled up on main). A failure
+      # still leaves a paper trail via the notify step below.
+      #
+      # The browser installs are NOT lenient: the required Field check below
+      # runs in the same Chromium, so a skipped install would only fail the
+      # job later, after the data commit. Retried instead, since a transient
+      # pip/apt hiccup is the likely failure.
       - name: Install Playwright
         id: carousel-deps
-        continue-on-error: true
-        run: pip install -r pipeline/requirements-dev.txt
+        run: |
+          for i in 1 2 3; do
+            pip install -r pipeline/requirements-dev.txt && exit 0
+            sleep 20
+          done
+          exit 1
 
       # --with-deps also apt-installs the browser's system libraries.
       - name: Install headless Chromium
         id: carousel-browser
-        continue-on-error: true
-        run: playwright install --with-deps chromium
+        run: |
+          for i in 1 2 3; do
+            playwright install --with-deps chromium && exit 0
+            sleep 20
+          done
+          exit 1
 
       - name: Build carousel PDFs
         id: carousels

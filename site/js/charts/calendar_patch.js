@@ -7,7 +7,7 @@
 // of the CVE week regardless, so the gap between the bar and that second
 // line is what the release train adds on top of the generic Tuesday
 // effect. Accent ink on purpose — the release train is the chart's subject.
-import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
+import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
@@ -20,8 +20,11 @@ export function render(slots, data) {
     return;
   }
   const baseline = data.patch_tuesday.calendar_pct;
-  const tuesdayBaseline = data.patch_tuesday.headline?.tuesday_baseline_latest;
-  const hasTuesday = Number.isFinite(tuesdayBaseline);
+  // The ordinary-Tuesday control is per year (each year's own other
+  // Tuesdays), so it steps with the bars rather than sitting at one level.
+  const tuesdaySeries = rows.map((r) =>
+    (Number.isFinite(r.tuesday_baseline_pct) ? r.tuesday_baseline_pct : null));
+  const hasTuesday = tuesdaySeries.some((v) => v != null);
 
   // The generation year plots but is partial — mark it (volume.js pattern).
   const genYear = Number(data.generated_at.slice(0, 4));
@@ -29,10 +32,14 @@ export function render(slots, data) {
 
   const chart = mkChart(slots.chart);
   chart.setOption({
-    grid: { ...baseGrid, left: 50, top: 28 },
+    grid: { ...baseGrid, left: 50, top: hasTuesday ? 44 : 28 },
+    // Legend for the step line only (the uniform-calendar markLine labels
+    // itself); line icon so it reads as the dotted line, not a bar.
+    ...(hasTuesday ? { legend: { ...baseLegend, data: [ed.tuesdayBaselineSeries], icon: "rect", itemWidth: 14, itemHeight: 2 } } : {}),
     tooltip: {
       ...baseTooltip,
       formatter: (p) => {
+        if (p.seriesType !== "bar") return "";
         const r = rows[p.dataIndex];
         if (!r) return "";
         return (
@@ -52,7 +59,17 @@ export function render(slots, data) {
       min: 0,
       axisLabel: { ...valAxis().axisLabel, formatter: "{value}%" },
     }),
-    series: [{
+    series: [...(hasTuesday ? [{
+      type: "line",
+      name: ed.tuesdayBaselineSeries,
+      step: "middle",
+      data: tuesdaySeries,
+      symbol: "none",
+      silent: true,
+      z: 3,
+      lineStyle: { color: C.ink, type: [2, 3], width: 1.25, opacity: 0.9 },
+      itemStyle: { color: C.ink },
+    }] : []), {
       type: "bar",
       barWidth: "55%",
       data: rows.map((r) => r.pct),
@@ -70,11 +87,6 @@ export function render(slots, data) {
         data: [
           { yAxis: baseline,
             label: { formatter: () => tpl(ed.baselineLabel, { pct: fmtPct(baseline) }) } },
-          ...(hasTuesday
-            ? [{ yAxis: tuesdayBaseline,
-                 lineStyle: { color: C.muted, type: [2, 3], width: 1, opacity: 0.9 },
-                 label: { formatter: () => tpl(ed.tuesdayBaselineLabel, { pct: fmtPct(tuesdayBaseline) }) } }]
-            : []),
         ],
       },
     }],

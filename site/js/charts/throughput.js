@@ -43,14 +43,20 @@ export function render(slots, data) {
   const line = mkChart(slots.chart);
   line.setOption({
     grid: { ...baseGrid, left: 52, right: 36, top: 40, bottom: 24 },
-    legend: { ...baseLegend, top: 0 },
+    // Explicit data: the "_resweep" ring helper must not get a legend entry.
+    legend: { ...baseLegend, top: 0, data: [ed.seriesAnalyzed, ed.seriesDeferred, ed.seriesReceived] },
     tooltip: {
       ...baseTooltip, trigger: "axis",
       formatter: (params) => {
         let html = tooltipRows(params, fmtInt);
         const i = params[0]?.dataIndex;
-        if (i != null && hist[i]?.resweep) {
-          html += `<div style="margin-top:4px;color:${C.muted};">${ed.resweepFlag}</div>`;
+        // The lump lands the night AFTER a full resweep (the sweep itself
+        // diffs a frozen snapshot), so the two rows carry different flags.
+        const flag = i == null ? null
+          : hist[i]?.after_resweep ? ed.afterResweepFlag
+          : hist[i]?.resweep ? ed.resweepFlag : null;
+        if (flag) {
+          html += `<div style="margin-top:4px;color:${C.muted};">${flag}</div>`;
         }
         return html;
       },
@@ -63,8 +69,9 @@ export function render(slots, data) {
       axisLabel: { color: C.muted, fontFamily: MONO, fontSize: 11, formatter: (v) => fmtInt(v) },
     }),
     // Visible symbols on purpose: a young record (one diff = no line
-    // segment yet) still renders points instead of nothing. Resweep days
-    // get a hollow marker so a catch-up lump never reads as a trend.
+    // segment yet) still renders points instead of nothing. The day after a
+    // resweep, where the catch-up lands, gets a hollow marker so a lump
+    // never reads as a trend.
     series: [
       {
         name: ed.seriesAnalyzed, type: "line",
@@ -86,10 +93,10 @@ export function render(slots, data) {
         lineStyle: { width: 1 },
       },
       {
-        // helper series (underscore name: legends skip it): rings on
-        // resweep days across all three flows' x positions.
+        // helper series (kept out of the legend's explicit data): rings on
+        // catch-up days (the row after a resweep).
         name: "_resweep", type: "scatter",
-        data: hist.map((d, i) => (d.resweep ? [i, d.analyzed_from_awaiting] : null)).filter(Boolean),
+        data: hist.map((d, i) => (d.after_resweep ? [i, d.analyzed_from_awaiting] : null)).filter(Boolean),
         color: C.ink, symbol: "circle", symbolSize: 9,
         itemStyle: { color: "transparent", borderColor: C.muted, borderWidth: 1 },
         tooltip: { show: false },

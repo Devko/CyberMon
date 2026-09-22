@@ -104,6 +104,17 @@ def test_churn_counts_fixture_release_pair():
                                        "revoked": 1}
 
 
+def test_churn_counts_a_retirement_once():
+    # deprecated earlier, revoked now: already retired, not a second event;
+    # both flags flipping in one release: one retirement, labelled revoked.
+    prev = {"a": {"deprecated": True, "revoked": False},
+            "b": {"deprecated": False, "revoked": False}}
+    cur = {"a": {"deprecated": True, "revoked": True},
+           "b": {"deprecated": True, "revoked": True}}
+    assert churn_counts(prev, cur) == {"added": 0, "deprecated": 0,
+                                       "revoked": 1}
+
+
 def test_churn_counts_empty_diff():
     flags = technique_flags(load_fixture("enterprise-attack-1.0.json"))
     assert churn_counts(flags, flags) == {"added": 0, "deprecated": 0,

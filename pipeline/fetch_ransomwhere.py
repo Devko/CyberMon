@@ -24,8 +24,10 @@ Unlike fetch_kev's tolerant filtering, malformed records here raise: every
 record is money, and silently dropping one would silently understate an
 already lower-bound dataset. Fail loud, fix upstream or fix the parser —
 transient network blips (HTTP 429/5xx, connection errors) get a bounded
-retry (3 attempts, backoff), but an exhausted retry still raises: there is
-no carry-forward for this source.
+retry (3 attempts, backoff), but an exhausted retry still raises here.
+The pipeline entry point (``pipeline/__main__.py``) catches that and
+carries the previous extortion_ledger.json forward, marked stale in
+meta.json's sources.
 """
 from __future__ import annotations
 

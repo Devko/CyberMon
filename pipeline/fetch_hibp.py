@@ -8,9 +8,10 @@ cohort rule in :mod:`pipeline.breach_metrics` keys off. HIBP requires a
 User-Agent and attribution (handled in the site's shared footer copy).
 
 Failures are loud on purpose: transient blips (HTTP 429/5xx, connection
-errors) get a bounded retry (3 attempts, backoff), but there is no
-carry-forward machinery — if HIBP stays down, the run fails and nothing
-stale is deployed.
+errors) get a bounded retry (3 attempts, backoff), and an exhausted retry
+raises here. The pipeline entry point (``pipeline/__main__.py``) catches
+that and carries the previous edition of breach_ledger.json forward,
+marked stale in meta.json's sources, so the footer says so.
 """
 from __future__ import annotations
 

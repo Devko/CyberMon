@@ -309,9 +309,15 @@ function main({ meta, buf }) {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
+    const aspectChanged = Math.abs(w / h - camera.aspect) > 1e-6;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    if (ready) { resetCamera(); invalidate(); }
+    if (!ready) return;
+    // keep a focused record in view; otherwise refit only when the shape changed
+    // (the observer's first callback reports the size main() already used)
+    if (focusIdx >= 0 && visible(focusIdx)) flyTo(focusIdx);
+    else if (aspectChanged) resetCamera();
+    invalidate();
   }
   new ResizeObserver(resize).observe(canvas);
   resize();
@@ -650,7 +656,7 @@ function main({ meta, buf }) {
     if (e.key !== "Enter") return;
     clearTimeout(recordTimer); state.recordQ = e.target.value; refresh();
     const ids = resultIndices();
-    if (ids.length === 1) { inspect(ids[0]); writeHash(); }
+    if (ids.length === 1) { inspect(ids[0]); flyTo(ids[0]); writeHash(); }
     else { $("f-results").hidden = false; renderResults(); }
   });
   $("f-result-rows").addEventListener("click", (e) => {
@@ -965,6 +971,11 @@ function main({ meta, buf }) {
       else used.push(r);
     }
   }
+  function flyTo(i) {
+    cam.tx = target[i * 3]; cam.ty = target[i * 3 + 1]; cam.tz = target[i * 3 + 2];
+    cam.r = Math.min(cam.r, 140);
+    invalidate();
+  }
   function refresh() {
     tip.style.opacity = 0;
     $("f-inspector").hidden = true;
@@ -975,8 +986,7 @@ function main({ meta, buf }) {
     updateCounters();
     if (focusIdx >= 0 && visible(focusIdx)) {
       // fly the camera to the focused record and pin its card top-right
-      cam.tx = target[focusIdx * 3]; cam.ty = target[focusIdx * 3 + 1]; cam.tz = target[focusIdx * 3 + 2];
-      cam.r = Math.min(cam.r, 140);
+      flyTo(focusIdx);
       inspect(focusIdx);
     }
     writeHash();
@@ -1131,7 +1141,10 @@ function main({ meta, buf }) {
     colour(); writeHash();
   }));
   // a click anywhere on the canvas releases a pinned focus
-  canvas.addEventListener("pointerdown", () => { if (focusIdx >= 0) { focusIdx = -1; colour(); writeHash(); } });
+  canvas.addEventListener("pointerdown", () => { if (focusIdx >= 0) closeInspector(); });
+  // read-only view state for tools/field_smoke.py
+  window.fieldView = () => ({ focus: focusIdx >= 0 ? cveId(focusIdx) : null, cam: { ...cam },
+    target: focusIdx >= 0 ? [target[focusIdx * 3], target[focusIdx * 3 + 1], target[focusIdx * 3 + 2]] : null });
 
   // ---- sources --------------------------------------------------------------
   const s = meta.sources || {};

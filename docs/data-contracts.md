@@ -1885,6 +1885,36 @@ Validator: `pipeline/roster_contracts.py` (registered into
 
 ## site/data/time_to_poc.json  (Time to PoC module, all 3 charts)
 
+```json
+{
+  "generated_at": "...",
+  "hero": {
+    "matched": {"dated_cves": 25086, "matched_cves": 25043, "unmatched_cves": 43},
+    "years": [
+      {"year": 2025, "n": 197, "median_days": 38.0, "p25_days": 7.0, "p75_days": 127.0, "pct_negative": 4.1, "pct_within_week": 25.9}
+    ],
+    "headline": {"latest_year": 2025, "median_days_latest": 38.0, "pct_negative_latest": 4.1, "baseline_year": 2015, "median_days_baseline": -1.0}
+  },
+  "kev_preempt": {
+    "cutoff": "2023-01-01",
+    "total_kev": 1717,
+    "trend": {"with_poc_date": 121, "preempted": 67, "pct_preempted": 55.4},
+    "seeding": {"with_poc_date": 329, "preempted": 318, "pct_preempted": 96.7},
+    "years": [
+      {"year": 2024, "total_added": 186, "with_poc_date": 33, "preempted": 18, "pct_preempted": 54.5}
+    ]
+  },
+  "coverage": {
+    "window_year": 2025,
+    "buckets": [
+      {"bucket": "9.0-10.0", "total": 4111, "with_poc": 205, "pct": 5.0, "with_detection": 182}
+    ],
+    "unscored": {"total": 2955, "with_poc": 1, "pct": 0.0, "with_detection": 0}
+  },
+  "catalog": {"exploitdb": {"entries": 47160, "with_cve": 27425, "cves": 25086, "dated_cves": 25086}, "metasploit": {"modules": 7180, "with_cve": 3115, "exploit_modules_with_cve": 2409, "cves": 2573, "other_cves": 637, "dated_cves": 0, "disclosure_dated_cves": 3047}, "nuclei": {"templates": 4432, "cves": 4432}, "exploit_cves": 25978, "union_cves": 29608, "dated_cves": 25086, "matched_in_corpus": 25932}
+}
+```
+
 ### `arming` — the like-for-like clock (added for module 21)
 
 Since 2026-09-08 the block also carries `min_n` (int ≥ 1, production 30 via
@@ -1912,8 +1942,8 @@ years. This section makes it comparable, by fixing two distinct things:
 * **Back-catalogued exploits.** The window is bounded BELOW as well as
   above. A gap of -4,452 days is an old exploit finally receiving a CVE
   id — a cataloguing event, not a fast one — and it drags a one-sided
-  median arbitrarily negative (it is why the raw 2025 median reads -12d
-  off a p25 of -4,452). The validator enforces `|median_days| <=
+  median arbitrarily negative (on the old mixed-source clock it is why
+  the raw 2025 median read -12d off a p25 of -4,452). The validator enforces `|median_days| <=
   horizon_days`: a value outside the window means the lower bound was
   lost and the drag is back.
 
@@ -1934,48 +1964,6 @@ hero cohort (every negative gap is also under seven days).
 ```json
 {
   "generated_at": "...",
-  "hero": {
-    "matched": {"dated_cves": 26182, "matched_cves": 26139,
-                "unmatched_cves": 43},
-    "years": [
-      {"year": 2025, "n": 502, "median_days": -12.0, "p25_days": -4452.0,
-       "p75_days": 6.8, "pct_negative": 55.4, "pct_within_week": 75.3}
-    ],
-    "headline": {"latest_year": 2025, "median_days_latest": -12.0,
-                 "pct_negative_latest": 55.4,
-                 "baseline_year": 2015, "median_days_baseline": -2.0}
-  },
-  "kev_preempt": {
-    "cutoff": "2023-01-01",
-    "total_kev": 1651,
-    "trend": {"with_poc_date": 228, "preempted": 184,
-              "pct_preempted": 80.7},
-    "seeding": {"with_poc_date": 412, "preempted": 407,
-                "pct_preempted": 98.8},
-    "years": [
-      {"year": 2024, "total_added": 186, "with_poc_date": 65,
-       "preempted": 51, "pct_preempted": 78.5}
-    ]
-  },
-  "coverage": {
-    "window_year": 2025,
-    "buckets": [
-      {"bucket": "9.0-10.0", "total": 3955, "with_poc": 328, "pct": 8.3,
-       "with_detection": 410}
-    ],
-    "unscored": {"total": 4398, "with_poc": 2, "pct": 0.0,
-                 "with_detection": 1}
-  },
-  "catalog": {
-    "exploitdb": {"entries": 47108, "with_cve": 27384, "cves": 25041,
-                  "dated_cves": 25041},
-    "metasploit": {"modules": 7110, "with_cve": 3078,
-                   "exploit_modules_with_cve": 2410, "cves": 2530,
-                   "other_cves": 640, "dated_cves": 0,
-                   "disclosure_dated_cves": 3007},
-    "nuclei": {"templates": 4222, "cves": 4222},
-    "exploit_cves": 26900, "union_cves": 29360, "dated_cves": 25041,
-    "matched_in_corpus": 26850
   "c2_weather": {
     "first_observed": "2026-07-21",
     "families": ["Emotet", "QakBot"],

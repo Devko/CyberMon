@@ -101,12 +101,12 @@ def check_most_recent_below_1pct(d: dict) -> None:
 
 
 def check_bottom_half_share(d: dict) -> None:
-    # editorial.js (epss.html percentile section): "nearly three in ten of
+    # editorial.js (epss.html percentile section): "about three in ten of
     # the graded cohort sat in the bottom half" — live value at last copy
-    # edit: 29.4% cohort-wide.
+    # edit: 30.1% cohort-wide.
     pct = d["percentiles"]["bottom_half"]["pct"]
-    assert 20.0 <= pct <= 38.0, (
-        f"'nearly three in ten of the graded cohort sat in the bottom half' "
+    assert 25.0 <= pct <= 35.0, (
+        f"'about three in ten of the graded cohort sat in the bottom half' "
         f"needs the cohort-wide bottom-half share ({pct}%) to stay in "
         f"that neighbourhood"
     )
@@ -125,7 +125,7 @@ CLAIMS = [
         check_most_recent_below_1pct,
     ),
     (
-        "nearly three in ten of the graded cohort sat in the bottom half",
+        "about three in ten of the graded cohort sat in the bottom half",
         check_bottom_half_share,
     ),
 ]

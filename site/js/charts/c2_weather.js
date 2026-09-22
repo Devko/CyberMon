@@ -49,7 +49,17 @@ export function render(slots, data) {
     slots.stat.append(stat);
   }
 
-  const dates = series.map((pt) => pt.date);
+  // Gap-fill the calendar: a night the pipeline missed is an empty slot
+  // (no bar, a break in the line), never silently closed up.
+  const byDate = new Map(series.map((pt) => [pt.date, pt]));
+  const dates = [];
+  if (series.length) {
+    const end = Date.parse(`${series[series.length - 1].date}T00:00:00Z`);
+    for (let t = Date.parse(`${series[0].date}T00:00:00Z`); t <= end; t += 86400000) {
+      dates.push(new Date(t).toISOString().slice(0, 10));
+    }
+  }
+  const days = dates.map((d) => byDate.get(d) || null);
   const famSeries = families.map((fam, i) => ({
     name: fam,
     type: "bar",
@@ -57,7 +67,7 @@ export function render(slots, data) {
     barMaxWidth: 26,
     color: FAMILY_COLORS[i % FAMILY_COLORS.length],
     emphasis: { focus: "series" },
-    data: series.map((pt) => pt.online[fam] ?? 0),
+    data: days.map((pt) => (pt ? pt.online[fam] ?? 0 : null)),
   }));
 
   const chart = mkChart(slots.chart);
@@ -73,8 +83,13 @@ export function render(slots, data) {
       ...baseTooltip,
       trigger: "axis",
       formatter: (params) => {
-        const pt = params.length && series[params[0].dataIndex];
-        if (!pt) return "";
+        const i = params.length ? params[0].dataIndex : -1;
+        const pt = days[i];
+        if (!pt) {
+          return dates[i]
+            ? `<div style="color:${C.muted};">${escapeHtml(dates[i])} · ${escapeHtml(ed.noReading)}</div>`
+            : "";
+        }
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(pt.date)}</div>`;
@@ -111,7 +126,7 @@ export function render(slots, data) {
         symbolSize: dates.length > 40 ? 3 : 5,
         lineStyle: { color: C.muted, width: 1.5, type: "dashed" },
         itemStyle: { color: C.muted },
-        data: series.map((pt) => pt.listed_total),
+        data: days.map((pt) => (pt ? pt.listed_total : null)),
       },
     ],
   });

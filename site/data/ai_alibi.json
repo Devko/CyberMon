@@ -171,137 +171,164 @@
      {
       "year": 1999,
       "value": -765.0,
-      "n": 107
+      "n": 107,
+      "provisional": false
      },
      {
       "year": 2000,
       "value": -87.0,
-      "n": 552
+      "n": 552,
+      "provisional": false
      },
      {
       "year": 2001,
       "value": -118.0,
-      "n": 430
+      "n": 430,
+      "provisional": false
      },
      {
       "year": 2002,
       "value": -100.5,
-      "n": 430
+      "n": 430,
+      "provisional": false
      },
      {
       "year": 2003,
       "value": -14.0,
-      "n": 383
+      "n": 383,
+      "provisional": false
      },
      {
       "year": 2004,
       "value": -21.0,
-      "n": 427
+      "n": 427,
+      "provisional": false
      },
      {
       "year": 2005,
       "value": -6.0,
-      "n": 1954
+      "n": 1954,
+      "provisional": false
      },
      {
       "year": 2006,
       "value": -3.0,
-      "n": 2484
+      "n": 2484,
+      "provisional": false
      },
      {
       "year": 2007,
       "value": -3.0,
-      "n": 2745
+      "n": 2745,
+      "provisional": false
      },
      {
       "year": 2008,
       "value": -5.0,
-      "n": 2550
+      "n": 2550,
+      "provisional": false
      },
      {
       "year": 2009,
       "value": -21.0,
-      "n": 2634
+      "n": 2634,
+      "provisional": false
      },
      {
       "year": 2010,
       "value": -8.0,
-      "n": 1362
+      "n": 1362,
+      "provisional": false
      },
      {
       "year": 2011,
       "value": -16.0,
-      "n": 709
+      "n": 709,
+      "provisional": false
      },
      {
       "year": 2012,
       "value": -28.0,
-      "n": 854
+      "n": 854,
+      "provisional": false
      },
      {
       "year": 2013,
       "value": -7.0,
-      "n": 577
+      "n": 577,
+      "provisional": false
      },
      {
       "year": 2014,
       "value": -8.0,
-      "n": 837
+      "n": 837,
+      "provisional": false
      },
      {
       "year": 2015,
       "value": -1.0,
-      "n": 683
+      "n": 683,
+      "provisional": false
      },
      {
       "year": 2016,
       "value": 0.0,
-      "n": 452
+      "n": 452,
+      "provisional": false
      },
      {
       "year": 2017,
       "value": -1.0,
-      "n": 1297
+      "n": 1297,
+      "provisional": false
      },
      {
       "year": 2018,
       "value": 1.0,
-      "n": 1066
+      "n": 1066,
+      "provisional": false
      },
      {
       "year": 2019,
       "value": 0.0,
-      "n": 780
+      "n": 780,
+      "provisional": false
      },
      {
       "year": 2020,
       "value": 1.0,
-      "n": 526
+      "n": 526,
+      "provisional": false
      },
      {
       "year": 2021,
       "value": 8.0,
-      "n": 247
+      "n": 247,
+      "provisional": false
      },
      {
       "year": 2022,
       "value": 20.0,
-      "n": 220
+      "n": 220,
+      "provisional": false
      },
      {
       "year": 2023,
       "value": 15.5,
-      "n": 270
+      "n": 270,
+      "provisional": false
      },
      {
       "year": 2024,
       "value": 166.5,
-      "n": 154
+      "n": 154,
+      "provisional": false
      },
      {
       "year": 2025,
       "value": 38.0,
-      "n": 197
+      "n": 197,
+      "provisional": true
      }
     ]
    },
@@ -314,137 +341,164 @@
      {
       "year": 1999,
       "value": 97.2,
-      "n": 107
+      "n": 107,
+      "provisional": false
      },
      {
       "year": 2000,
       "value": 97.1,
-      "n": 552
+      "n": 552,
+      "provisional": false
      },
      {
       "year": 2001,
       "value": 98.1,
-      "n": 430
+      "n": 430,
+      "provisional": false
      },
      {
       "year": 2002,
       "value": 95.6,
-      "n": 430
+      "n": 430,
+      "provisional": false
      },
      {
       "year": 2003,
       "value": 94.8,
-      "n": 383
+      "n": 383,
+      "provisional": false
      },
      {
       "year": 2004,
       "value": 91.3,
-      "n": 427
+      "n": 427,
+      "provisional": false
      },
      {
       "year": 2005,
       "value": 93.4,
-      "n": 1954
+      "n": 1954,
+      "provisional": false
      },
      {
       "year": 2006,
       "value": 92.9,
-      "n": 2484
+      "n": 2484,
+      "provisional": false
      },
      {
       "year": 2007,
       "value": 96.2,
-      "n": 2745
+      "n": 2745,
+      "provisional": false
      },
      {
       "year": 2008,
       "value": 96.0,
-      "n": 2550
+      "n": 2550,
+      "provisional": false
      },
      {
       "year": 2009,
       "value": 95.5,
-      "n": 2634
+      "n": 2634,
+      "provisional": false
      },
      {
       "year": 2010,
       "value": 91.0,
-      "n": 1362
+      "n": 1362,
+      "provisional": false
      },
      {
       "year": 2011,
       "value": 86.7,
-      "n": 709
+      "n": 709,
+      "provisional": false
      },
      {
       "year": 2012,
       "value": 88.8,
-      "n": 854
+      "n": 854,
+      "provisional": false
      },
      {
       "year": 2013,
       "value": 75.2,
-      "n": 577
+      "n": 577,
+      "provisional": false
      },
      {
       "year": 2014,
       "value": 80.3,
-      "n": 837
+      "n": 837,
+      "provisional": false
      },
      {
       "year": 2015,
       "value": 71.9,
-      "n": 683
+      "n": 683,
+      "provisional": false
      },
      {
       "year": 2016,
       "value": 71.2,
-      "n": 452
+      "n": 452,
+      "provisional": false
      },
      {
       "year": 2017,
       "value": 80.6,
-      "n": 1297
+      "n": 1297,
+      "provisional": false
      },
      {
       "year": 2018,
       "value": 75.3,
-      "n": 1066
+      "n": 1066,
+      "provisional": false
      },
      {
       "year": 2019,
       "value": 73.2,
-      "n": 780
+      "n": 780,
+      "provisional": false
      },
      {
       "year": 2020,
       "value": 65.6,
-      "n": 526
+      "n": 526,
+      "provisional": false
      },
      {
       "year": 2021,
       "value": 48.6,
-      "n": 247
+      "n": 247,
+      "provisional": false
      },
      {
       "year": 2022,
       "value": 35.9,
-      "n": 220
+      "n": 220,
+      "provisional": false
      },
      {
       "year": 2023,
       "value": 41.1,
-      "n": 270
+      "n": 270,
+      "provisional": false
      },
      {
       "year": 2024,
       "value": 13.0,
-      "n": 154
+      "n": 154,
+      "provisional": false
      },
      {
       "year": 2025,
       "value": 25.9,
-      "n": 197
+      "n": 197,
+      "provisional": true
      }
     ]
    },
@@ -457,137 +511,164 @@
      {
       "year": 1999,
       "value": 97.2,
-      "n": 107
+      "n": 107,
+      "provisional": false
      },
      {
       "year": 2000,
       "value": 96.9,
-      "n": 552
+      "n": 552,
+      "provisional": false
      },
      {
       "year": 2001,
       "value": 97.9,
-      "n": 430
+      "n": 430,
+      "provisional": false
      },
      {
       "year": 2002,
       "value": 95.3,
-      "n": 430
+      "n": 430,
+      "provisional": false
      },
      {
       "year": 2003,
       "value": 90.3,
-      "n": 383
+      "n": 383,
+      "provisional": false
      },
      {
       "year": 2004,
       "value": 85.7,
-      "n": 427
+      "n": 427,
+      "provisional": false
      },
      {
       "year": 2005,
       "value": 86.4,
-      "n": 1954
+      "n": 1954,
+      "provisional": false
      },
      {
       "year": 2006,
       "value": 86.8,
-      "n": 2484
+      "n": 2484,
+      "provisional": false
      },
      {
       "year": 2007,
       "value": 90.3,
-      "n": 2745
+      "n": 2745,
+      "provisional": false
      },
      {
       "year": 2008,
       "value": 93.6,
-      "n": 2550
+      "n": 2550,
+      "provisional": false
      },
      {
       "year": 2009,
       "value": 93.2,
-      "n": 2634
+      "n": 2634,
+      "provisional": false
      },
      {
       "year": 2010,
       "value": 87.4,
-      "n": 1362
+      "n": 1362,
+      "provisional": false
      },
      {
       "year": 2011,
       "value": 81.0,
-      "n": 709
+      "n": 709,
+      "provisional": false
      },
      {
       "year": 2012,
       "value": 82.9,
-      "n": 854
+      "n": 854,
+      "provisional": false
      },
      {
       "year": 2013,
       "value": 67.1,
-      "n": 577
+      "n": 577,
+      "provisional": false
      },
      {
       "year": 2014,
       "value": 74.7,
-      "n": 837
+      "n": 837,
+      "provisional": false
      },
      {
       "year": 2015,
       "value": 55.3,
-      "n": 683
+      "n": 683,
+      "provisional": false
      },
      {
       "year": 2016,
       "value": 48.2,
-      "n": 452
+      "n": 452,
+      "provisional": false
      },
      {
       "year": 2017,
       "value": 51.7,
-      "n": 1297
+      "n": 1297,
+      "provisional": false
      },
      {
       "year": 2018,
       "value": 41.0,
-      "n": 1066
+      "n": 1066,
+      "provisional": false
      },
      {
       "year": 2019,
       "value": 46.0,
-      "n": 780
+      "n": 780,
+      "provisional": false
      },
      {
       "year": 2020,
       "value": 43.5,
-      "n": 526
+      "n": 526,
+      "provisional": false
      },
      {
       "year": 2021,
       "value": 12.6,
-      "n": 247
+      "n": 247,
+      "provisional": false
      },
      {
       "year": 2022,
       "value": 16.4,
-      "n": 220
+      "n": 220,
+      "provisional": false
      },
      {
       "year": 2023,
       "value": 22.6,
-      "n": 270
+      "n": 270,
+      "provisional": false
      },
      {
       "year": 2024,
       "value": 7.8,
-      "n": 154
+      "n": 154,
+      "provisional": false
      },
      {
       "year": 2025,
       "value": 4.1,
-      "n": 197
+      "n": 197,
+      "provisional": true
      }
     ]
    }
@@ -874,13 +955,13 @@
        "n": 3916
       },
       "post": {
-       "value": 73.3,
-       "years": 3,
-       "n": 621
+       "value": 91.0,
+       "years": 2,
+       "n": 424
       },
-      "era_shift": 71.5,
-      "pct_banked": 75.4,
-      "shift_share_pct": -24.6,
+      "era_shift": 89.2,
+      "pct_banked": 71.0,
+      "shift_share_pct": -29.0,
       "verdict": "decelerated"
      },
      {
@@ -898,14 +979,14 @@
        "n": 2839
       },
       "post": {
-       "value": 102.2,
-       "years": 2,
-       "n": 351
+       "value": 166.5,
+       "years": 1,
+       "n": 154
       },
-      "era_shift": 96.2,
-      "pct_banked": 69.9,
-      "shift_share_pct": -30.1,
-      "verdict": "decelerated"
+      "era_shift": 160.5,
+      "pct_banked": null,
+      "shift_share_pct": null,
+      "verdict": "insufficient"
      },
      {
       "era": "uplift",
@@ -955,13 +1036,13 @@
        "n": 3916
       },
       "post": {
-       "value": 26.7,
-       "years": 3,
-       "n": 621
+       "value": 27.1,
+       "years": 2,
+       "n": 424
       },
-      "era_shift": -42.0,
-      "pct_banked": 39.9,
-      "shift_share_pct": -60.1,
+      "era_shift": -41.6,
+      "pct_banked": 40.1,
+      "shift_share_pct": -59.9,
       "verdict": "decelerated"
      },
      {
@@ -979,14 +1060,14 @@
        "n": 2839
       },
       "post": {
-       "value": 19.4,
-       "years": 2,
-       "n": 351
+       "value": 13.0,
+       "years": 1,
+       "n": 154
       },
-      "era_shift": -40.3,
-      "pct_banked": 47.8,
-      "shift_share_pct": -52.2,
-      "verdict": "decelerated"
+      "era_shift": -46.7,
+      "pct_banked": null,
+      "shift_share_pct": null,
+      "verdict": "insufficient"
      },
      {
       "era": "uplift",
@@ -1036,13 +1117,13 @@
        "n": 3916
       },
       "post": {
-       "value": 11.5,
-       "years": 3,
-       "n": 621
+       "value": 15.2,
+       "years": 2,
+       "n": 424
       },
-      "era_shift": -27.5,
-      "pct_banked": 67.3,
-      "shift_share_pct": -32.7,
+      "era_shift": -23.8,
+      "pct_banked": 70.4,
+      "shift_share_pct": -29.6,
       "verdict": "decelerated"
      },
      {
@@ -1060,14 +1141,14 @@
        "n": 2839
       },
       "post": {
-       "value": 5.9,
-       "years": 2,
-       "n": 351
+       "value": 7.8,
+       "years": 1,
+       "n": 154
       },
-      "era_shift": -26.0,
-      "pct_banked": 71.0,
-      "shift_share_pct": -29.0,
-      "verdict": "decelerated"
+      "era_shift": -24.1,
+      "pct_banked": null,
+      "shift_share_pct": null,
+      "verdict": "insufficient"
      },
      {
       "era": "uplift",
@@ -1749,9 +1830,9 @@
   "milestones": 14,
   "no_uplift_reports": 2,
   "cells": 12,
-  "judged": 7,
+  "judged": 4,
   "accelerated": 0,
-  "decelerated": 7,
+  "decelerated": 4,
   "no_inflection": 0,
   "pct_accelerated": 0.0
  }

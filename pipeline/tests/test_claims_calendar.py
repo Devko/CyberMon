@@ -128,16 +128,21 @@ def check_patch_tuesday_multiple(d: dict) -> None:
 
 
 def check_patch_tuesday_clears_an_ordinary_tuesday(d: dict) -> None:
-    # editorial.js (calendar.html patch tuesday): "the bar still clears what
-    # an ordinary Tuesday would carry". The ordinary-Tuesday baseline landed
-    # 2026-09-20; an edition without it has nothing to judge.
-    h = d["patch_tuesday"]["headline"]
-    if h is None or h.get("tuesday_baseline_latest") is None:
-        pytest.skip("edition predates tuesday_baseline_latest")
-    assert h["pct_latest"] > h["tuesday_baseline_latest"], (
-        f"'the bar still clears what an ordinary Tuesday would carry' vs "
-        f"{h['pct_latest']}% on patch Tuesdays against a "
-        f"{h['tuesday_baseline_latest']}% ordinary-Tuesday baseline"
+    # editorial.js (calendar.html patch tuesday): "every year since 2019 the
+    # bar has cleared what its own ordinary Tuesdays would carry". The chart
+    # draws the per-year baseline, so every charted year from 2019 on is
+    # judged against its own (2018 is the last year below: 3.5 vs 4.4).
+    # The ordinary-Tuesday baseline landed 2026-09-20; an edition without it
+    # has nothing to judge.
+    rows = [r for r in d["patch_tuesday"]["years"] if r["year"] >= 2019]
+    if not any(r.get("tuesday_baseline_pct") is not None for r in rows):
+        pytest.skip("edition predates tuesday_baseline_pct")
+    below = [(r["year"], r["pct"], r["tuesday_baseline_pct"]) for r in rows
+             if r.get("tuesday_baseline_pct") is not None
+             and r["pct"] <= r["tuesday_baseline_pct"]]
+    assert not below, (
+        f"'every year since 2019 the bar has cleared what its own ordinary "
+        f"Tuesdays would carry' vs years at or below their baseline: {below}"
     )
 
 
@@ -160,7 +165,7 @@ CLAIMS = [
         check_tuesday_peak,
     ),
     (
-        "the bar still clears what an ordinary Tuesday would carry",
+        "every year since 2019 the bar has cleared what its own ordinary Tuesdays would carry",
         "cve_calendar.json",
         check_patch_tuesday_clears_an_ordinary_tuesday,
     ),

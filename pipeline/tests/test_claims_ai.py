@@ -89,8 +89,10 @@ def check_collapse_finished_a_decade_left_of_the_band(d: dict) -> None:
 
 def check_nothing_bends_at_the_cutoff(d: dict) -> None:
     # editorial.js (ai.html · 2 headline): "Nothing bends toward faster at
-    # the cutoff." (Exploit-DB-dated clock, 2026-09-21: 0 of 7 judged
-    # metric-era cells accelerated; all 7 read "slowed".)
+    # the cutoff." (Exploit-DB-dated clock, 2026-09-22: 0 of 4 judged
+    # metric-era cells accelerated; all 4 read "slowed". Was 0 of 7 until
+    # the raw metrics stopped counting the provisional 2025 cohort, which
+    # withheld their three GPT-4 cells.)
     head = d["headline"]
     assert head["judged"] >= 1, (
         "'Nothing bends toward faster at the cutoff' needs at least one "

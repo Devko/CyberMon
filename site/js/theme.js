@@ -165,7 +165,13 @@ export function hookResize() {
   let t = null;
   window.addEventListener("resize", () => {
     clearTimeout(t);
-    t = setTimeout(() => instances.forEach((c) => c.resize()), 120);
+    t = setTimeout(() => {
+      // Renderers that rebuild a chart dispose the old instance; drop those.
+      for (let i = instances.length - 1; i >= 0; i--) {
+        if (instances[i].isDisposed()) instances.splice(i, 1);
+      }
+      instances.forEach((c) => c.resize());
+    }, 120);
   });
 }
 

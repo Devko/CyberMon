@@ -26,7 +26,7 @@ const COLS = [
 // The uncounted number, with its make-up on hover: a lab named without its
 // model, and/or anyone credited only for the fix (tier "fix").
 function uncountedCell(r, ed) {
-  const td = el("td", "num", r.uncounted ? fmtInt(r.uncounted) : "—");
+  const td = el("td", "num", fmtInt(r.uncounted));
   if (r.uncounted) {
     const named = r.uncounted - r.fix;
     const parts = [];
@@ -124,7 +124,7 @@ export function render(slots, data) {
         el("td", "num", fmtPct(r.serious)),
         el("td", "num", fmtInt(r.system)),
         uncountedCell(r, ed),
-        el("td", "num" + (r.kev ? " accent" : ""), r.kev ? fmtInt(r.kev) : "—"),
+        el("td", "num" + (r.kev ? " accent" : ""), fmtInt(r.kev)),
         el("td", "mono", r.first_month),
         el("td", "cna-list",
           r.top_cnas.map((c) => `${c.cna} ${fmtInt(c.n)}`).join(" · "))

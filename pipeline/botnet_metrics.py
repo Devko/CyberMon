@@ -215,13 +215,25 @@ def build_c2_today(snapshot: C2Snapshot, day: str) -> dict:
     listed: Counter = Counter()
     online: Counter = Counter()
     countries: Counter = Counter()
+    # Networks are keyed by AS number when the feed gives one: the same AS
+    # appears under more than one as_name spelling ("DIGITALOCEAN-ASN" and
+    # "DIGITALOCEAN-ASN - DigitalOcean, LLC"). Each AS is labelled with its
+    # most common spelling tonight (ties: the shorter, then alphabetical).
     asns: Counter = Counter()
+    as_names: dict = {}
     for e in snapshot.entries:
         listed[e.family] += 1
         if e.online:
             online[e.family] += 1
         countries[e.country] += 1
-        asns[e.as_name] += 1
+        key = e.as_number if e.as_number is not None else e.as_name
+        asns[key] += 1
+        as_names.setdefault(key, Counter())[e.as_name] += 1
+    asn_labels: Counter = Counter()
+    for key, n in asns.items():
+        label = min(as_names[key].items(),
+                    key=lambda kv: (-kv[1], len(kv[0]), kv[0]))[0]
+        asn_labels[label] += n
     families = [{"label": fam, "listed": n, "online": online.get(fam, 0)}
                 for fam, n in listed.items()]
     families.sort(key=lambda d: (-d["listed"], d["label"]))
@@ -231,7 +243,7 @@ def build_c2_today(snapshot: C2Snapshot, day: str) -> dict:
         "online_total": snapshot.online_count,
         "families": families,
         "countries": _breakdown(countries),
-        "asns": _breakdown(asns),
+        "asns": _breakdown(asn_labels),
     }
 
 

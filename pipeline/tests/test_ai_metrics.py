@@ -358,6 +358,61 @@ def test_banked_withholds_when_every_post_cutoff_year_is_provisional():
     assert lfl_block(out)["verdict"] == "accelerated"
 
 
+def test_raw_metrics_do_not_count_provisional_cohorts_either():
+    # The regression: only the like-for-like rows carried `provisional`,
+    # so the three raw metrics judged the GPT-4 era on 2024 + the
+    # still-indexing 2025 cohort and published verdicts the stated rule
+    # forbids. Ingestion lag belongs to the cohort YEAR, so the raw rows
+    # must inherit the flag and the minimum must count settled years only.
+    payload = poc_payload(flat_years(100.0, 2000, 2021)
+                          | flat_years(2.0, 2022, 2025))
+    payload["arming"] = {
+        "horizon_days": 90, "ingestion_allowance_days": 365,
+        "observed_through": "2026-04-10", "min_n": 30,
+        "years": arming_years(flat_years(5.0, 2000, 2025),
+                              provisional_from=2025)}
+    out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
+    for m in out["clock"]["metrics"]:
+        flagged = [r["year"] for r in m["years"] if r["provisional"]]
+        assert flagged == [2025], (m["id"], flagged)
+    for m in out["banked"]["metrics"]:
+        by_era = {b["era"]: b for b in m["eras"]}
+        # ChatGPT: 2023 + 2024 settled, 2025 excluded from the mean too.
+        assert by_era["chatgpt"]["post"]["years"] == 2, m["id"]
+        assert by_era["chatgpt"]["verdict"] != "insufficient", m["id"]
+        # GPT-4: 2024 is the only settled post year — withheld.
+        assert by_era["gpt4"]["post"]["years"] == 1, m["id"]
+        assert by_era["gpt4"]["verdict"] == "insufficient", m["id"]
+    gap = gap_block(out)
+    assert gap["post"]["n"] == 200               # 2023 + 2024, not 2025
+    assert out["headline"]["judged"] == 4        # one ChatGPT cell each
+
+
+def test_raw_years_the_arming_series_lacks_get_the_same_rule():
+    # A cohort too thin for the arming series still has a tracker lag.
+    # The raw row is flagged by time_to_poc's own rule — settled once
+    # observed_through reaches Dec 31 + the ingestion allowance.
+    payload = poc_payload(flat_years(5.0, 2000, 2025))
+    payload["arming"] = {
+        "horizon_days": 90, "ingestion_allowance_days": 365,
+        "observed_through": "2026-04-10", "min_n": 30,
+        "years": arming_years(flat_years(5.0, 2000, 2023),
+                              provisional_from=2099)}
+    out = ai_metrics.build_ai_alibi(payload, GENERATED_AT)
+    flags = {r["year"]: r["provisional"]
+             for r in out["clock"]["metrics"][0]["years"]}
+    # 2024 settles 2025-12-31 (reached); 2025 settles 2026-12-31 (not).
+    assert flags[2024] is False and flags[2025] is True
+    assert not any(v for y, v in flags.items() if y < 2025)
+
+
+def test_no_arming_section_leaves_raw_rows_unflagged():
+    out = ai_metrics.build_ai_alibi(
+        poc_payload(flat_years(5.0, 2000, 2025)), GENERATED_AT)
+    assert all(r["provisional"] is False
+               for m in out["clock"]["metrics"] for r in m["years"])
+
+
 def test_attention_propagates_the_market_stale_marker():
     from pipeline import contracts
 

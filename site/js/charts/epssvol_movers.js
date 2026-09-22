@@ -18,7 +18,10 @@ const COLS = [
   { key: "delta", labelKey: "colDelta", numeric: true, bar: true },
 ];
 
-const pct = (p) => `${(p * 100).toFixed(1)}%`;
+// Probabilities in percent at three decimals (the feed carries five digits
+// of probability); moves in percentage points so both columns share a unit.
+const pct = (p) => `${(p * 100).toFixed(3)}%`;
+const pp = (v) => `${(v * 100).toFixed(1)} pp`;
 const absDelta = (v) => Math.abs(v);
 
 export function render(slots, data) {
@@ -31,7 +34,7 @@ export function render(slots, data) {
   slots.stat.append(
     el("div", "table-context", tpl(ed.windowTemplate, {
       shown: fmtInt(rows.length),
-      min_delta: movers.min_delta.toFixed(2),
+      min_delta: pp(movers.min_delta),
       context: catalog.first_observed
         ? tpl(ed.boardNote, {
             days: fmtInt(catalog.days_observed),
@@ -112,7 +115,7 @@ export function render(slots, data) {
           const fill = el("div", "cellbar-fill" + (up ? " accent" : ""));
           fill.style.width = `${((100 * absDelta(r.delta)) / maxDelta).toFixed(1)}%`;
           cell.append(fill, el("span", "cellbar-val",
-            `${up ? "▲" : "▼"} ${absDelta(r.delta).toFixed(3)}`));
+            `${up ? "▲" : "▼"} ${pp(absDelta(r.delta))}`));
           td.append(cell);
           tr.append(td);
         }

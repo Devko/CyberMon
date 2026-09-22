@@ -42,6 +42,9 @@ export function render(slots, data, ctx) {
   }
 
   const cats = months.map((m) => m.month);
+  // The generation month is still filling: drawn faded and flagged in the
+  // tooltip (the partial-period star of the yearly charts).
+  const genMonth = String(data.generated_at || "").slice(0, 7);
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 50, top: 24, bottom: 40 },
@@ -51,7 +54,8 @@ export function render(slots, data, ctx) {
         const m = months[p.dataIndex];
         if (!m) return "";
         let html =
-          `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(m.month)}</div>` +
+          `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(m.month)}` +
+          `${m.month === genMonth ? ` · ${escapeHtml(ed.partialMonth)}` : ""}</div>` +
           `<strong>${fmtInt(m.enriched)}</strong> records enriched<br>` +
           `<span style="color:${C.muted};">SSVC ${fmtInt(m.ssvc)} · ` +
           `CVSS ${fmtInt(m.cvss)} · CWE ${fmtInt(m.cwe)}</span>`;
@@ -92,7 +96,8 @@ export function render(slots, data, ctx) {
         data: months.map((m) => ({
           value: m.enriched,
           // Sweep months read in accent; ordinary enrichment stays neutral.
-          itemStyle: { color: m.backfill ? C.accent : C.versions.v4 },
+          itemStyle: { color: m.backfill ? C.accent : C.versions.v4,
+                       opacity: m.month === genMonth ? 0.45 : 1 },
         })),
       },
     ],

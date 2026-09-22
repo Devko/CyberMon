@@ -52,22 +52,29 @@ export function render(slots, data) {
 
   // Rescores diverge around zero in one stack; the direction-free change
   // types stack separately in muted inks so they can never read as up/down.
+  // The two stacks get their own panels (context above, rescores below):
+  // a CNA backfill week logs thousands of first scores against a handful of
+  // rescores, and on one shared axis the rescores flatten to nothing.
   const SERIES = [
-    { name: ed.legendUp, stack: "rescore", color: C.accent,
+    { name: ed.legendUp, stack: "rescore", color: C.accent, grid: 1,
       value: (w) => w.rescore_up },
-    { name: ed.legendDown, stack: "rescore", color: C.versions.v3,
+    { name: ed.legendDown, stack: "rescore", color: C.versions.v3, grid: 1,
       value: (w) => -w.rescore_down },
-    { name: ed.legendFirst, stack: "context", color: C.sev.medium,
+    { name: ed.legendFirst, stack: "context", color: C.sev.medium, grid: 0,
       value: (w) => w.first_score },
-    { name: ed.legendShift, stack: "context", color: C.sev.low,
+    { name: ed.legendShift, stack: "context", color: C.sev.low, grid: 0,
       value: (w) => w.version_shift },
-    { name: ed.legendRemoved, stack: "context", color: C.sev.unscored,
+    { name: ed.legendRemoved, stack: "context", color: C.sev.unscored, grid: 0,
       value: (w) => w.score_removed },
   ];
 
   const chart = mkChart(slots.chart);
   chart.setOption({
-    grid: { ...baseGrid, left: 50, top: 48 },
+    grid: [
+      { ...baseGrid, left: 50, top: 48, bottom: undefined, height: "26%" },
+      { ...baseGrid, left: 50, top: "46%" },
+    ],
+    axisPointer: { link: [{ xAxisIndex: "all" }] },
     legend: { ...baseLegend, data: SERIES.map((s) => s.name), icon: "rect", itemHeight: 8 },
     tooltip: {
       ...baseTooltip,
@@ -90,16 +97,24 @@ export function render(slots, data) {
         return head + body;
       },
     },
-    xAxis: catAxis(weeks.map((w) => (w.week === genWeek ? `${w.week}*` : w.week)), {
-      axisLabel: { ...catAxis([]).axisLabel, rotate: weeks.length > 16 ? 45 : 0 },
-    }),
-    yAxis: valAxis({
+    xAxis: [0, 1].map((gridIndex) => ({
+      ...catAxis(weeks.map((w) => (w.week === genWeek ? `${w.week}*` : w.week)), {
+        axisLabel: gridIndex
+          ? { ...catAxis([]).axisLabel, rotate: weeks.length > 16 ? 45 : 0 }
+          : { show: false },
+      }),
+      gridIndex,
+    })),
+    yAxis: [0, 1].map((gridIndex) => valAxis({
+      gridIndex,
       axisLabel: { ...valAxis().axisLabel, formatter: (v) => fmtInt(Math.abs(v)) },
-    }),
-    series: SERIES.map(({ name, stack, color, value }) => ({
+    })),
+    series: SERIES.map(({ name, stack, color, grid, value }) => ({
       name,
       type: "bar",
       stack,
+      xAxisIndex: grid,
+      yAxisIndex: grid,
       color,
       barMaxWidth: 26,
       emphasis: { focus: "series" },

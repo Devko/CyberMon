@@ -131,14 +131,15 @@ def check_just_over_half_kev_preempted(d: dict) -> None:
     )
 
 
-def check_four_in_ten_of_catalog_matched(d: dict) -> None:
+def check_quarter_of_catalog_matched(d: dict) -> None:
     # editorial.js (exploits.html #2 methodology): "entries with a dated
-    # PoC, roughly four in ten of the catalog". (Live 2026-07: 38.8%.)
+    # PoC, roughly a quarter of the catalog". (Live 2026-09-22: 26.2% on the
+    # Exploit-DB-only clock; the old mixed clock read 38.8%.)
     kp = d["kev_preempt"]
     with_poc = kp["trend"]["with_poc_date"] + kp["seeding"]["with_poc_date"]
     share = 100.0 * with_poc / kp["total_kev"]
-    assert 25 <= share <= 55, (
-        f"'roughly four in ten of the catalog' claims ~40%; data says "
+    assert 20 <= share <= 32, (
+        f"'roughly a quarter of the catalog' claims ~25%; data says "
         f"{share:.1f}% ({with_poc} of {kp['total_kev']})"
     )
 
@@ -249,9 +250,9 @@ CLAIMS = [
         check_just_over_half_kev_preempted,
     ),
     (
-        "roughly four in ten of the catalog",
+        "roughly a quarter of the catalog",
         "time_to_poc.json",
-        check_four_in_ten_of_catalog_matched,
+        check_quarter_of_catalog_matched,
     ),
     (
         "the overwhelming majority of records never attract tracked public exploit code at all",

@@ -75,7 +75,8 @@ export function render(slots, data) {
       for (const col of COLS) {
         if (col.key === "cna") {
           const td = el("td", "cna-name");
-          td.append(el("span", "cna-short", r.cna), el("span", "cna-org", r.org));
+          td.append(el("span", "cna-short", r.cna));
+          if (r.org && r.org !== r.cna) td.append(el("span", "cna-org", r.org));
           tr.append(td);
         } else {
           const td = el("td", "num");

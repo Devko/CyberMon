@@ -304,3 +304,54 @@ def test_attention_stale_marker_must_be_boolean_true():
     gone["attention"]["stale"] = True
     with pytest.raises(ContractViolation, match="nothing to be stale"):
         contracts.validate("ai_alibi.json", gone)
+
+
+# ---- provisional cohorts ---------------------------------------------------
+
+
+def provisional_obj() -> dict:
+    """A build whose 2025 cohort is still being indexed (arming says so),
+    so every metric's GPT-4 cell is withheld on one settled year."""
+    payload = poc_payload({**{y: 200.0 for y in range(2000, 2005)},
+                           **{y: 5.0 for y in range(2005, 2026)}})
+    payload["arming"] = {
+        "horizon_days": 90, "ingestion_allowance_days": 365,
+        "observed_through": "2026-04-10", "min_n": 30,
+        "years": [{"year": y, "n": 50, "median_days": 5.0,
+                   "pct_within_week": 50.0, "pct_negative": 10.0,
+                   "provisional": y >= 2025} for y in range(2000, 2026)]}
+    return ai_metrics.build_ai_alibi(payload, GENERATED_AT,
+                                     market=market_payload())
+
+
+def test_provisional_build_passes():
+    contracts.validate("ai_alibi.json", provisional_obj())
+
+
+def test_clock_row_without_provisional_rejected():
+    obj = valid_obj()
+    del obj["clock"]["metrics"][0]["years"][0]["provisional"]
+    with pytest.raises(ContractViolation, match="provisional"):
+        contracts.validate("ai_alibi.json", obj)
+
+
+def test_raw_metric_disagreeing_with_like_for_like_rejected():
+    obj = provisional_obj()
+    row = obj["clock"]["metrics"][0]["years"][-1]
+    assert row["year"] == 2025 and row["provisional"], "fixture assumption"
+    row["provisional"] = False
+    with pytest.raises(ContractViolation, match="disagrees with the like"):
+        contracts.validate("ai_alibi.json", obj)
+
+
+def test_post_window_counting_a_provisional_year_rejected():
+    # The original bug's output shape: a raw metric's GPT-4 cell counting
+    # the still-indexing 2025 cohort as its second post year and judging.
+    obj = provisional_obj()
+    metric = next(m for m in obj["banked"]["metrics"]
+                  if m["id"] == "poc_gap")
+    block = next(b for b in metric["eras"] if b["era"] == "gpt4")
+    assert block["post"]["years"] == 1, "fixture assumption"
+    block["post"]["years"] = 2
+    with pytest.raises(ContractViolation, match="settled year"):
+        contracts.validate("ai_alibi.json", obj)

@@ -310,7 +310,10 @@ function patchECharts() {
     const chart = origInit.call(window.echarts, dom, theme, opts);
     charts.push(chart);
     const setOption = chart.setOption.bind(chart);
-    chart.setOption = (option, ...rest) => setOption({ animation: false, ...option }, ...rest);
+    // animation last: theme.js mkChart folds baseOption (animation: true
+    // unless reduce-motion) into every option before it reaches this
+    // wrapper, so a leading default would always be overridden.
+    chart.setOption = (option, ...rest) => setOption({ ...option, animation: false }, ...rest);
     return chart;
   };
 }

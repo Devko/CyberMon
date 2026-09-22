@@ -190,14 +190,13 @@ def check_deferred_pile(d: dict) -> None:
 
 
 def check_cna_nine_plus(d: dict) -> None:
-    # editorial.js (CNA leaderboard): "Some CNAs hand a 9+ to a third or
-    # more of the CVEs they score" — the three-year window slides every
-    # January (39.8% today; ~31% once 2024 drops out), so the copy claims
-    # the floor, not the current peak.
+    # editorial.js (CNA leaderboard): "The most aggressive hand a 9+ to
+    # three or four in ten of the CVEs they score" — the three-year window
+    # slides every January (39.8% today; ~31% once 2024 drops out).
     top = max(c["pct_geq_9"] for c in d["cnas"])
-    assert 28 <= top <= 60, (
-        f"'a 9+ to a third or more of the CVEs they score' needs a top "
-        f"per-CNA pct_geq_9 of at least ~30%; data's max is {top}%"
+    assert 27 <= top <= 45, (
+        f"'a 9+ to three or four in ten of the CVEs they score' needs a top "
+        f"per-CNA pct_geq_9 of roughly 30-40%; data's max is {top}%"
     )
 
 
@@ -337,7 +336,8 @@ def check_concentration_reversal(d: dict) -> None:
     # editorial.js (concentration hero): "the roster grew seventeen-fold
     # between 2015 and 2025, yet in 2025 five of its hundreds of names
     # still shipped a majority of the database, their share climbing for a
-    # third straight year". Named years: the partial 2026 (48.0%) would
+    # second straight year" (2023 is the low; 2024 and 2025 each rise).
+    # Named years: the partial 2026 (48.0%) would
     # have failed "still ship a majority" on 2027-01-01.
     by_year = {y["year"]: y for y in d["years"]}
     a, b, c = by_year[2023], by_year[2024], by_year[2025]
@@ -345,7 +345,7 @@ def check_concentration_reversal(d: dict) -> None:
         f"'in 2025 … still shipped a majority' vs top5 {c['top5_share']}%"
     )
     assert a["top5_share"] < b["top5_share"] < c["top5_share"], (
-        f"'climbing for a third straight year' vs "
+        f"'climbing for a second straight year' vs "
         f"{[(y['year'], y['top5_share']) for y in (a, b, c)]}"
     )
     growth = c["cna_count"] / by_year[2015]["cna_count"]
@@ -377,7 +377,7 @@ CLAIMS = [
         check_entrants_top3_recruiting,
     ),
     (
-        "still shipped a majority of the database, their share climbing for a third straight year",
+        "still shipped a majority of the database, their share climbing for a second straight year",
         "cna_concentration.json",
         check_concentration_reversal,
     ),
@@ -432,7 +432,7 @@ CLAIMS = [
         check_deferred_pile,
     ),
     (
-        "Some CNAs hand a 9+ to a third or more of the CVEs they score",
+        "The most aggressive hand a 9+ to three or four in ten of the CVEs they score",
         "cna_leaderboard.json",
         check_cna_nine_plus,
     ),

@@ -40,7 +40,7 @@ prose. The contract has no field for them.
 """
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 
 from .ai_timeline_data import (DEFAULT_ERA, ERAS, MILESTONES, Era, Milestone)
 from .metrics import _pct, _r1
@@ -67,9 +67,10 @@ INFLECTION_THRESHOLD_PCT = 10.0
 # swings the gap median by double digits (a batch of old CVEs picking up
 # PoC references drags the p25 to -4452 days), and a verdict resting on
 # it would be an artifact with a headline. Years the trackers are still
-# indexing (``provisional`` rows of the like-for-like series) do not
-# count toward this minimum: a cohort known to read biased cannot stand
-# in for a settled one. Eras younger than this report "insufficient" and
+# indexing (``provisional`` rows — flagged by one rule across the
+# like-for-like series AND the three raw metrics, see _provisional_rule)
+# do not count toward this minimum, for any metric: a cohort known to
+# read biased cannot stand in for a settled one. Eras younger than this report "insufficient" and
 # say so on the page — a judgment this module earns back as the record
 # accumulates, not one it fakes now.
 MIN_POST_YEARS = 2
@@ -254,22 +255,61 @@ def _build_like_for_like(poc: dict) -> dict:
     }
 
 
+def _provisional_rule(poc: dict):
+    """year -> bool: is that cohort still being indexed by the trackers?
+
+    This is time_to_poc's OWN rule for the ``arming`` rows, not a second
+    one: a cohort settles once ``observed_through`` has reached Dec 31 of
+    its year plus ``ingestion_allowance_days`` (the rule
+    poc_contracts re-derives). Tracker ingestion lag is a property of the
+    COHORT YEAR, not of the statistic, so the raw metrics — same trackers,
+    same years — inherit it exactly. Where the arming series carries a row
+    for the year its flag is used as-is; other years (thin cohorts the
+    arming series drops) get the same rule applied directly. An upstream
+    with no ``arming`` section carries no provenance to apply the rule
+    with, and every row stays unflagged, as before.
+    """
+    arming = poc.get("arming") or {}
+    flags = {int(r["year"]): bool(r.get("provisional", False))
+             for r in arming.get("years") or []}
+    observed = arming.get("observed_through")
+    allowance = arming.get("ingestion_allowance_days")
+    if not observed or allowance is None:
+        return lambda year: flags.get(year, False)
+    observed_on = date.fromisoformat(observed)
+
+    def rule(year: int) -> bool:
+        if year in flags:
+            return flags[year]
+        return observed_on < date(year, 12, 31) + timedelta(
+            days=int(allowance))
+    return rule
+
+
 def _build_clock(poc: dict, current_year: int) -> dict:
     """The three annual speed metrics, complete years only.
 
     The generation year is dropped outright rather than marked: this
     module's whole argument is about where a series bends, and a partial
     year is a fake bend at the right-hand edge.
+
+    Complete years the trackers are still indexing ARE kept (they chart),
+    but flagged ``provisional`` by the same rule as the like-for-like
+    series (:func:`_provisional_rule`), so the banked test excludes them
+    from every metric's post level and settled-year count alike.
     """
     rows = [r for r in poc.get("hero", {}).get("years", [])
             if r["year"] < current_year]
+    provisional = _provisional_rule(poc)
     metrics = []
     for spec in CLOCK_METRICS:
         metrics.append({
             "id": spec["id"], "label": spec["label"], "unit": spec["unit"],
             "faster": spec["faster"],
             "years": [{"year": r["year"], "value": _r1(float(r[spec["field"]])),
-                       "n": int(r["n"])} for r in rows],
+                       "n": int(r["n"]),
+                       "provisional": provisional(int(r["year"]))}
+                      for r in rows],
         })
     return {"source_file": "time_to_poc.json",
             "first_year": rows[0]["year"] if rows else 0,
@@ -307,8 +347,6 @@ def _build_banked(clock: dict, eras: list[dict],
             # The year containing the cutoff sits between the two
             # windows and belongs to neither: it is excluded here as
             # deliberately as it is from the pre window above.
-            post_v, post_y, post_n = _window(
-                rows, "value", start=post_start, end=last_year)
             # A verdict standing on cohorts the trackers have not
             # finished indexing is not a verdict. Those years read
             # slower than they will finally prove to be, so publishing

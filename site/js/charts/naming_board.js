@@ -27,7 +27,12 @@ export function render(slots, data) {
     return;
   }
 
-  const rows = data.groups.slice(0, TOP_N);
+  // Cut at TOP_N but never split a tie: groups sharing the last shown alias
+  // count all make the board (the contract sorts by alt_count descending).
+  let cut = Math.min(TOP_N, data.groups.length);
+  while (cut < data.groups.length && cut > 0 &&
+         data.groups[cut].alt_count === data.groups[cut - 1].alt_count) cut++;
+  const rows = data.groups.slice(0, cut);
   const maxAlt = h.most_renamed_alt_count || 1;
 
   slots.stat.append(el("div", "table-context", tpl(ed.statTemplate, {

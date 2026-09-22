@@ -45,8 +45,8 @@ function yearPos(plotDate) {
 }
 
 // ---- symmetric log scale ----------------------------------------------------
-// The gap series spans -800 days (1999) to single digits (every year since
-// ~2005). On a linear axis the 1999 outlier sets the scale and the entire
+// The gap series spans about -770 days (1999) to a few months (the newest
+// cohorts). On a linear axis the 1999 outlier sets the scale and the entire
 // period this module is ABOUT — 2004 onward, including the AI era — renders
 // inside ~3% of the axis height, as a flat line nobody can read. The caption
 // promises "a line that does nothing in particular once it enters"; a reader

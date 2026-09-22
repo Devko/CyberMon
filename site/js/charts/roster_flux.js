@@ -19,7 +19,10 @@ export function render(slots, data) {
   const noteEl = slots.panel.querySelector(".panel-note");
   if (noteEl) {
     noteEl.textContent = flux.events_total > 0
-      ? tpl(ed.note, { events: fmtInt(flux.events_total), first_date: first })
+      // "recorded since" dates the record's start (the first snapshot), not
+      // the first event it happened to catch.
+      ? tpl(ed.note, { events: fmtInt(flux.events_total),
+                       first_date: data.roster_size?.first_observed || first })
       : ed.noteEmpty;
   }
 

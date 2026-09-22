@@ -129,7 +129,8 @@ export function buildSection(cfg, ed = null, opts = {}) {
   const methodBody = el("div", "method-body");
   const methodText = el("p", null, ed.methodology);
   const methodSrc = el("p", "method-src", editorial.methodologySourcePrefix);
-  methodSrc.append(link(editorial.metricsUrl, editorial.methodologySourceLinkText, "mono"));
+  const srcFile = editorial.sourceFiles[cfg.id] ?? "metrics.py";
+  methodSrc.append(link(editorial.pipelineUrl + srcFile, `pipeline/${srcFile}`, "mono"));
   methodBody.append(methodText, methodSrc);
   details.append(summary, methodBody);
 
@@ -148,6 +149,12 @@ export function showError(slots, file, err = null) {
   clear(slots.extra);
   // Never leave an unfilled {placeholder} note next to an error card.
   slots.panel.querySelector(".panel-note")?.remove();
+  // Captions and methodology whose templates the renderer never got to fill
+  // (the payload did not arrive) would otherwise show raw {braces}.
+  const section = slots.panel.closest(".chart-section");
+  section?.querySelectorAll(".section-caption, .method-body > p:first-child").forEach((p) => {
+    if (/\{\w+\}/.test(p.textContent)) p.textContent = p.textContent.replace(/\{\w+\}/g, "n/a");
+  });
   clear(slots.chart).classList.remove("chart", "chart-tall");
   slots.chart.removeAttribute("role");
   const kind = !window.echarts && !(err instanceof DataError) ? "library" : "data";
@@ -214,7 +221,7 @@ function renderNav(activeId) {
     nav.append(row);
   }
   const instruments = el("div", "site-nav-row");
-  instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab"));
+  instruments.append(el("span", "site-nav-group-label", "Instruments"), link("field.html", "The Field →", "site-nav-tab", { sameTab: true }));
   nav.prepend(instruments);
 }
 
@@ -305,7 +312,8 @@ function renderMeta(meta) {
       attack_version: (s.attack?.latest_version ?? "?") + (s.attack?.stale ? " (carried forward)" : ""),
       attack_versions: (s.attack?.version_count ?? 0).toLocaleString("en-US"),
       apnic_fetched: (s.apnic?.fetched_at ?? "?") + (s.apnic?.stale ? " (carried forward)" : ""),
-      epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US"),
+      epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US") +
+        (s.epss_history?.stale ? " (carried forward)" : ""),
       rescore_events: (s.rescores?.events_total ?? 0).toLocaleString("en-US"),
       kev_changelog_events: (s.kev_changelog?.events_total ?? 0).toLocaleString("en-US"),
       exploitdb_entries: (s.exploitdb?.entry_count ?? 0).toLocaleString("en-US"),

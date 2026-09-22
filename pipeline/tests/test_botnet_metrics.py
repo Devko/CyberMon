@@ -125,16 +125,30 @@ def test_build_weather_missing_total_row_fails_loudly():
         bm.build_weather_series(rows)
 
 
+def test_build_c2_today_keys_networks_by_as_number():
+    # One AS under two as_name spellings is one network, labelled by its
+    # most common spelling (ties: the shorter); no AS number falls back to
+    # the name.
+    s = snap(
+        c2("203.0.113.1", as_name="DO-ASN", as_number=14061),
+        c2("203.0.113.2", as_name="DO-ASN - DigitalOcean, LLC",
+           as_number=14061),
+        c2("203.0.113.3", as_name="OTHER", as_number=None),
+    )
+    assert bm.build_c2_today(s, "2026-07-21")["asns"] == [
+        {"label": "DO-ASN", "n": 2}, {"label": "OTHER", "n": 1}]
+
+
 def test_build_c2_today_composition_and_sorting():
     s = snap(
         c2("203.0.113.1", family="QakBot", country="US",
-           as_name="CLOUD-A"),
+           as_name="CLOUD-A", as_number=64500),
         c2("203.0.113.2", family="QakBot", status="offline", country="GB",
-           as_name="CLOUD-A"),
+           as_name="CLOUD-A", as_number=64500),
         c2("203.0.113.3", family="Emotet", status="offline", country="US",
-           as_name="EXAMPLE-BACKBONE"),
+           as_name="EXAMPLE-BACKBONE", as_number=64501),
         c2("203.0.113.4", family="Pikabot", status="offline", country="DE",
-           as_name="RHEIN"),
+           as_name="RHEIN", as_number=64502),
     )
     today = bm.build_c2_today(s, "2026-07-21")
     assert today["listed_total"] == 4 and today["online_total"] == 1

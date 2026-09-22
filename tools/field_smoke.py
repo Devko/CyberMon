@@ -92,6 +92,7 @@ def check(site, synthetic, screenshots=None, allow_sample=False):
             page.locator('#f-reset-filters').click()
         assert count()==meta['n']
         slider('#f-size',2);assert 'z=2' in page.url
+        page.goto('about:blank')  # same-hash goto would not re-run readHash()
         load('#z=2');assert page.locator('#f-size').input_value()=='2'
         if synthetic:
             page.locator('#f-cna').fill('Median');page.wait_for_timeout(1100)
@@ -113,7 +114,17 @@ def check(site, synthetic, screenshots=None, allow_sample=False):
             page.locator('#f-reset-filters').click()
             page.locator('#f-record').fill('CVE-2026-1001');page.keyboard.press('Enter')
             assert count()==1 and page.locator('#f-inspector').is_visible()
+            view=page.evaluate('window.fieldView()')
+            assert view['focus']=='CVE-2026-1001' and [view['cam'][k] for k in ('tx','ty','tz')]==view['target'],view
             page.locator('#f-inspector-close').click();page.locator('#f-reset-filters').click()
+            # deep link: the camera must end on the record, after the resize observer settles
+            page.goto('about:blank');load('#cve=CVE-2026-1002')
+            view=page.evaluate('window.fieldView()')
+            assert view['focus']=='CVE-2026-1002' and page.locator('#f-inspector').is_visible(),view
+            assert [view['cam'][k] for k in ('tx','ty','tz')]==view['target'] and view['cam']['r']<=140,view
+            page.locator('#f-canvas').click(position={'x':5,'y':5})
+            assert page.evaluate('window.fieldView().focus') is None and page.locator('#f-inspector').is_hidden()
+            load()
         page.locator('#f-flat').click();assert page.locator('#f-flat').get_attribute('aria-pressed')=='true'
         page.locator('#f-canvas').focus(); page.keyboard.press('ArrowLeft'); page.keyboard.press('Home')
         page.wait_for_timeout(1000); before=page.evaluate('window.fieldFrames');page.wait_for_timeout(400)

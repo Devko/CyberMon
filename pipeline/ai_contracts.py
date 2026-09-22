@@ -25,7 +25,13 @@ Module-specific rules beyond the shared helpers:
   verdict allowed to carry a missing level or a post-window shorter than
   the module's minimum, and a judged cell must have ``era_shift`` equal
   to ``post - pre``. A violation means the builder's guards broke, and
-  publishing it would print a verdict nothing backs.
+  publishing it would print a verdict nothing backs;
+* **provisional cohorts never count toward a post window** — every
+  clock row carries ``provisional``, the raw metrics must agree with the
+  like-for-like series on it year by year, and each cell's ``post.years``
+  is re-derived as the number of SETTLED rows from the post window's
+  start, so a still-indexing year cannot quietly lift an era over the
+  two-year minimum.
 """
 from __future__ import annotations
 
@@ -172,6 +178,7 @@ def _validate_ai_alibi(obj: Any) -> None:
         _fail("ai_alibi.clock.metrics", "no clock metric survived")
     units: dict[str, str] = {}
     by_metric: dict[str, dict[int, float]] = {}
+    series_rows: dict[str, list] = {}
     for i, m in enumerate(metrics):
         path = f"ai_alibi.clock.metrics[{i}]"
         mid = _get(m, "id", path)
@@ -196,6 +203,10 @@ def _validate_ai_alibi(obj: Any) -> None:
                 _check_num(value, f"{rpath}.value", -_DAYS_LIMIT, _DAYS_LIMIT)
             else:
                 _check_num(value, f"{rpath}.value", 0.0, 100.0)
+            # Same meaning as on the like-for-like rows: the trackers are
+            # still indexing this cohort, so no verdict may count it.
+            if not isinstance(_get(r, "provisional", rpath), bool):
+                _fail(f"{rpath}.provisional", "must be a bool")
         _check_sorted(seen, f"{path}.years")
         if len(set(seen)) != len(seen):
             _fail(f"{path}.years", "duplicate years")
@@ -205,6 +216,7 @@ def _validate_ai_alibi(obj: Any) -> None:
                   f"declares {first_year}-{last_year} — every metric shares "
                   f"one cohort and must share one span")
         by_metric[mid] = {r["year"]: r["value"] for r in rows}
+        series_rows[mid] = rows
 
     # poc_negative (gap < 0) is a strict SUBSET of poc_week (gap <= 7), so
     # its share can never exceed poc_week's in any year. The page leans on
@@ -270,6 +282,23 @@ def _validate_ai_alibi(obj: Any) -> None:
         _fail("ai_alibi.like_for_like.years", "duplicate years")
     if lfl_rows:
         units[lfl_id] = lfl["unit"]
+        series_rows[lfl_id] = lfl_rows
+
+    # Tracker ingestion lag belongs to the COHORT YEAR, not the statistic:
+    # the raw metrics and the like-for-like series are indexed by the same
+    # trackers, so a year both chart must be provisional in both or in
+    # neither. A disagreement is how a still-indexing year would slip
+    # back into a raw metric's verdict.
+    lfl_prov = {r["year"]: r["provisional"] for r in lfl_rows}
+    for mid in by_metric:
+        for r in series_rows[mid]:
+            if r["year"] in lfl_prov and \
+                    r["provisional"] != lfl_prov[r["year"]]:
+                _fail(f"ai_alibi.clock.metrics[{mid}].years",
+                      f"{r['year']}: provisional={r['provisional']} "
+                      f"disagrees with the like-for-like series "
+                      f"({lfl_prov[r['year']]}) — ingestion lag is a "
+                      f"property of the cohort year, not of the metric")
 
     # ---- banked -----------------------------------------------------------
     banked = _get(obj, "banked", "ai_alibi")
@@ -340,11 +369,24 @@ def _validate_ai_alibi(obj: Any) -> None:
             share = _get(b, "shift_share_pct", bpath)
             missing = early is None or pre is None or post is None
             thin = int(post_obj["years"]) < MIN_POST_YEARS
+            # Re-derived, never trusted: the post level may only count
+            # SETTLED years of this metric's own series from the post
+            # window's start on. A provisional year counted here is a
+            # verdict resting on a cohort the trackers are still indexing.
+            if "post_start_year" in b and mid in series_rows:
+                settled = sum(1 for r in series_rows[mid]
+                              if r["year"] >= b["post_start_year"]
+                              and not r.get("provisional"))
+                if int(post_obj["years"]) != settled:
+                    _fail(f"{bpath}.post.years",
+                          f"{post_obj['years']} post-cutoff year(s) "
+                          f"claimed, but the series holds {settled} "
+                          f"settled year(s) from {b['post_start_year']} "
+                          f"on — provisional years never count")
 
             if verdict == "insufficient":
-                # Withholding is always permitted — a cell may also be
-                # withheld because every post-cutoff cohort is still
-                # provisional, which this validator cannot see from here.
+                # Withholding is always permitted (the settled-year
+                # count above already covers provisional post cohorts).
                 # The safety-critical direction is the other one: a cell
                 # that DOES publish a verdict must be able to back it.
                 if pct is not None or share is not None:
