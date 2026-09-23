@@ -1,4 +1,4 @@
-// AI and Exploit Timing 2 — the inflection test. One diverging bar per speed
+// AI and PoC Timing 2 — the inflection test. One diverging bar per speed
 // metric: how much of that metric's total travelled distance the selected
 // AI era accounts for, and in which direction. Contract:
 // site/data/ai_alibi.json (`banked`), re-rendered when the hero's era
@@ -13,7 +13,7 @@
 //
 // Bars right of zero are the only ones that support the AI-made-attackers
 // -fast story, so they are the only ones that carry the accent.
-import { C, mkChart, valAxis, baseTooltip, baseGrid, escapeHtml, MONO } from "../theme.js";
+import { C, mkChart, valAxis, baseTooltip, baseGrid, escapeHtml, fmtInt, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 import { makeEraStore } from "./ai_era.js";
@@ -92,7 +92,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
               `${escapeHtml(ed.tipEarly)} <strong>${fmtLevel(block.early.value, u)}</strong><br>` +
               `${escapeHtml(tpl(ed.tipPre, { cut_year: block.cut_year }))} <strong>${fmtLevel(block.pre.value, u)}</strong><br>` +
               `${escapeHtml(ed.tipPost)} <strong>${fmtLevel(block.post.value, u)}</strong> ` +
-              `<span style="color:${C.muted};">(${block.post.years}y)</span><br>` +
+              `<span style="color:${C.muted};">(${block.post.years}y, ${fmtInt(block.post.n)} CVEs)</span><br>` +
               `<span style="color:${C.muted};">${escapeHtml(tpl(ed.tipBanked, { pct: block.pct_banked === null ? "—" : block.pct_banked.toFixed(1) }))}</span>`
             );
           },
@@ -153,6 +153,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
             pre: fmtLevel(block.pre.value, metric.unit),
             post: fmtLevel(block.post.value, metric.unit),
             share: fmtSigned(block.shift_share_pct ?? 0),
+            post_n: fmtInt(block.post.n),
           });
       rowEl.append(el("span", "verdict-levels mono", levels));
       table.append(rowEl);

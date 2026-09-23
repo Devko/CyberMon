@@ -96,7 +96,7 @@ export const editorial = {
     { id: "roster", href: "roster.html", label: "CNA Roster", group: "machine" },
     { id: "exploits", href: "exploits.html", label: "Time to PoC", group: "exploitation" },
     { id: "c2", href: "c2.html", label: "Botnet C2 Servers", group: "attackmap" },
-    { id: "ai", href: "ai.html", label: "AI and Exploit Timing", group: "exploitation" },
+    { id: "ai", href: "ai.html", label: "AI and PoC Timing", group: "exploitation" },
     { id: "credits", href: "credits.html", label: "AI Credits", group: "machine" },
     { id: "tags", href: "tags.html", label: "Record Tags", group: "machine" },
     { id: "incidents", href: "incidents.html", label: "SEC Incident Filings", group: "industry" },
@@ -419,15 +419,16 @@ export const editorial = {
         id: "ai",
         href: "ai.html",
         num: "21",
-        label: "AI and Exploit Timing",
-        headline: "No judged exploit-timing measure has sped up since ChatGPT's release.",
+        label: "AI and PoC Timing",
+        headline: "Public exploit code in Exploit-DB has not appeared sooner since ChatGPT's release.",
         blurb:
           "A dated timeline of AI releases, reports and incidents over CyberMon's " +
-          "exploit-timing series (days from CVE publication to public exploit code), with " +
-          "each series tested for a change at three candidate start dates for an “AI era”. " +
-          "At the ChatGPT date none of the judged measures sped up; the later dates do not " +
-          "yet have enough complete years to judge. Also AI-security attention against the " +
-          "same series.",
+          "public-exploit series (days from CVE publication to the first exploit code " +
+          "Exploit-DB dates), with each series tested for a change at three candidate " +
+          "start dates for an “AI era”. At the ChatGPT date none of the judged measures " +
+          "moved earlier; the later dates do not yet have enough complete years to judge. " +
+          "This measures public exploit code, not attacks in the wild, and the page says " +
+          "how the two differ. Also AI-security attention against the same series.",
         live: true,
       },
       {
@@ -3075,8 +3076,10 @@ export const editorial = {
         "assigned. Since 2021 the median has been positive, weeks after publication, on " +
         "cohorts a fraction of their earlier size. Those cohorts hold one to three " +
         "hundred CVEs each, and the youngest are still being indexed by the archive, so " +
-        "the AI and Exploit Timing page marks them provisional. The 2024 cohort, with a median of " +
-        "months, is a single outlier year, not a trend.",
+        "the AI and PoC Timing page marks them provisional. The 2024 cohort, with a median of " +
+        "months, is a single outlier year, not a trend. This is public exploit code in " +
+        "one archive, not exploitation in the wild, which vendors measuring attacks " +
+        "from incident data report as much faster.",
       statLabel: "Median days from CVE publication to first public exploit code",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -3306,16 +3309,25 @@ export const editorial = {
     // --------------------------------- ai.html · 1 · hero
     ai_clock: {
       num: "01",
-      kicker: "Exploit clock and AI timeline",
+      kicker: "Public exploit clock and AI timeline",
       source: "Exploit-DB (OffSec) · cvelistV5 (MITRE) · CyberMon AI timeline",
-      headline: "The median time from CVE to public exploit code has not shortened since ChatGPT.",
+      headline: "Public exploit code in Exploit-DB has not appeared sooner since ChatGPT.",
       seeAlso: {
         text: "Which CVE records credit AI labs and vendors:",
         href: "credits.html",
         label: "AI Credits →",
       },
       caption:
-        "The red line is the exploitation clock from the Time to PoC module: for " +
+        "This page measures when public exploit code appears, not when attackers " +
+        "exploit a vulnerability. The two can move in opposite directions. " +
+        "Mandiant, which measures exploitation in the wild from its own incident " +
+        "data, reports an average time-to-exploit of 63 days in 2018–19 and five " +
+        "days in 2023, a year in which 70% of the vulnerabilities it saw exploited " +
+        "were zero-days. Attackers can move sooner with private exploit code while " +
+        "public archives receive fewer exploits, and later; this page cannot " +
+        "separate the two, and Exploit-DB now dates far fewer CVEs than it did " +
+        "(the note under the chart gives the counts). " +
+        "The red line is the public exploit clock from the Time to PoC module: for " +
         "each CVE whose first public exploit code Exploit-DB dates, the median " +
         "number of days from the CVE record's publication to that exploit, by " +
         "publication year. The dots along the top are the AI timeline: model " +
@@ -3336,7 +3348,7 @@ export const editorial = {
         "Where the two lines differ, the raw line includes exploits outside the " +
         "pale line's 90-day window: on the left, old exploits that received CVE " +
         "ids years later; on the right, exploit code published months after the " +
-        "CVE. Neither difference shows faster exploitation. Right of the marked " +
+        "CVE. Neither difference shows public code appearing sooner. Right of the marked " +
         "edge there is no complete year of data. The 2026 milestones, which " +
         "include models and programmes aimed at finding vulnerabilities, sit " +
         "beyond what this page can test.",
@@ -3347,16 +3359,20 @@ export const editorial = {
       axisSlower: "↑ exploit\n  arrives\n  later",
       axisFaster: "↓ exploit\n  arrives\n  sooner",
       provisionalFrom: "provisional →",
-      statLabel: "Speed metrics that accelerated in the AI era",
+      statLabel: "Public-exploit timing metrics that moved earlier after the cutoff",
       statOf: "of {judged} judged metric-era tests",
-      statUplift: "vendor threat reports that looked for offensive uplift and reported none",
+      statUplift: "vendor threat reports (2024 to early 2025) that looked for offensive uplift and reported none",
       bandLabel: "AI era · from {label}",
       tipMonth: "{date} · month precision",
       railTitle: "AI timeline with dates and sources",
       railSourceLabel: "source",
       note:
         "The clock covers {first_year}–{last_year}: {n} matched CVEs over the " +
-        "complete years, shown against {milestones} dated AI milestones.",
+        "complete years, shown against {milestones} dated AI milestones. " +
+        "Exploit-DB dated public exploits for {peak_n} CVEs published in " +
+        "{peak_year} and for {latest_n} published in {latest_year}, so recent " +
+        "medians rest on far fewer CVEs; exploits published only elsewhere, " +
+        "such as on GitHub, are not counted.",
       methodology:
         "The clock series is copied from the Time to PoC module " +
         "(time_to_poc.json) without recomputation: the same median, matched " +
@@ -3382,9 +3398,10 @@ export const editorial = {
         "everything from 2004 on would be squeezed into a fifth of the chart's " +
         "height, most of it a flat line. The transform changes no number, and " +
         "the tooltips give the real values in days. Widely cited vendor figures " +
-        "that point the other way, Mandiant's 63-to-5-day time-to-exploit series " +
-        "and the DBIR's edge-device share, are not plotted: they come from " +
-        "private incident corpora and cannot be reproduced from this pipeline. " +
+        "that point the other way, Mandiant's average time-to-exploit (63 days " +
+        "in 2018–19, five in 2023) and the DBIR's edge-device share, are not " +
+        "plotted: they measure exploitation in the wild from private incident " +
+        "corpora and cannot be reproduced from this pipeline. " +
         "They are recorded with attribution in the repository " +
         "(pipeline/ai_timeline_data.EXTERNAL_CONTEXT) and are never drawn on an " +
         "axis here. The module inherits three limits from the clock and does not " +
@@ -3405,7 +3422,7 @@ export const editorial = {
       num: "02",
       kicker: "Inflection test",
       source: "Exploit-DB (OffSec) · cvelistV5 (MITRE)",
-      headline: "No judged speed metric moved toward faster exploitation after the cutoff.",
+      headline: "No judged timing metric moved toward earlier public exploit code after the cutoff.",
       caption:
         "This chart puts the comparison in chart 01 into numbers. The top bar is " +
         "the like-for-like clock, the one measure here that is not biased by " +
@@ -3416,11 +3433,13 @@ export const editorial = {
         "cutoff, and the settled years since. It then asks what share of the " +
         "metric's total movement the AI era accounts for, and in which " +
         "direction. Bars to the right mean the era moved that metric toward " +
-        "faster exploitation; only those would support the claim that AI sped " +
-        "exploitation up, and they are drawn in the accent colour. Bars to the " +
-        "left mean it moved toward slower exploitation. Changing the cutoff at " +
-        "the top of the page redraws the bars.",
-      axisLabel: "share of the metric's total movement, since the cutoff (→ faster)",
+        "earlier public exploit code; only those would support the claim that " +
+        "AI brought public exploits sooner, and they are drawn in the accent " +
+        "colour. Bars to the left mean public code came later. The table below " +
+        "gives each level and how many CVEs it rests on. None of this measures " +
+        "exploitation in the wild (see chart 01). Changing the cutoff at the " +
+        "top of the page redraws the bars.",
+      axisLabel: "share of the metric's total movement, since the cutoff (→ earlier)",
       primaryTag: "strongest evidence: fixed 90-day window",
       tableCaption: "Levels behind each bar, {era} cutoff ({date}):",
       tipEarly: "start of record:",
@@ -3429,17 +3448,17 @@ export const editorial = {
       tipBanked: "movement before the cutoff: {pct}% of the total",
       tipInsufficient:
         "Withheld: only {years} complete, settled year(s) after the cutoff year; the test needs two.",
-      rowLevels: "{early} → {pre} → {post}   ({share})",
+      rowLevels: "{early} → {pre} → {post}   ({share}) · {post_n} CVEs since the cutoff",
       rowInsufficient: "withheld: {years} complete, settled year(s) after the cutoff year",
       verdicts: {
-        accelerated: "accelerated",
-        decelerated: "slowed",
+        accelerated: "earlier",
+        decelerated: "later",
         no_inflection: "no inflection",
         insufficient: "withheld",
       },
       allWithheld: "Withheld: {years} complete, settled year(s) from {post_start_year} on.",
       note:
-        "{accelerated} of {judged} judged metrics accelerated in the AI era" +
+        "{accelerated} of {judged} judged metrics moved earlier after the cutoff" +
         "{withheld}. The start and pre-cutoff levels are {window}-year means; " +
         "the post level averages every settled year since the cutoff. A shift " +
         "under {threshold}% of a metric's total movement counts as no " +
@@ -3507,9 +3526,9 @@ export const editorial = {
     // --------------------------------- ai.html · 3
     ai_attention: {
       num: "03",
-      kicker: "Attention and the clock",
+      kicker: "Attention and the public exploit clock",
       source: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR · Exploit-DB",
-      headline: "Attention to AI security multiplied while the exploit clock stayed within a narrow band.",
+      headline: "Attention to AI security multiplied while the public exploit clock stayed within a narrow band.",
       caption:
         "The solid lines show attention to AI security: the five attention lanes " +
         "of the Buzzword Attention module, averaged per term, with each lane " +
@@ -3517,9 +3536,10 @@ export const editorial = {
         "clock (the pale line in chart 01, settled years only) over the same " +
         "window, held flat across each year because it is measured annually. " +
         "Over the window attention multiplied, while the clock's annual median " +
-        "stayed inside a band of days. Had the time to exploitation shortened " +
-        "as attention rose, the dashed line would fall; it does not.",
-      clockLabel: "Exploitation clock (median gap)",
+        "stayed inside a band of days. Had public exploit code started " +
+        "appearing sooner as attention rose, the dashed line would fall; it " +
+        "does not. It measures public code, not attacks.",
+      clockLabel: "Public exploit clock (median gap)",
       axisAttention: "attention index",
       axisClock: "median gap",
       unavailable:
@@ -3565,9 +3585,9 @@ export const editorial = {
       source: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit · Nuclei · finders' own announcements",
       headline: "AI finders announce thousands of vulnerabilities, and CVE records credit each kind with hundreds.",
       seeAlso: {
-        text: "Exploitation speed before and after the AI era:",
+        text: "When public exploit code appears, before and after the AI era:",
         href: "ai.html",
-        label: "AI and Exploit Timing →",
+        label: "AI and PoC Timing →",
       },
       caption:
         "Labs and vendors report their results in their own units: " +

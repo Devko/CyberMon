@@ -249,7 +249,7 @@ CLAIMS = [
         check_collapse_finished_a_decade_left_of_the_band,
     ),
     (
-        "No judged speed metric moved toward faster exploitation after the cutoff.",
+        "No judged timing metric moved toward earlier public exploit code after the cutoff.",
         "ai_alibi.json",
         check_nothing_bends_at_the_cutoff,
     ),

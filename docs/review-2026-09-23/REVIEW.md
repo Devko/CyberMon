@@ -137,6 +137,24 @@ Vulnrichment (CISA's program name), EPSS Volatility, CNA Roster, Time to
 PoC, AI Credits, Record Tags. Page files and ids are unchanged, so links
 keep working.
 
+## AI and PoC Timing (same day, after a reader question)
+
+The page read as contradicting industry figures ("exploits did not get
+faster") because its headline, stat, verdict words and captions said
+"exploitation" while the data is public exploit code as Exploit-DB dates
+it. Fixed: every claim is scoped to public exploit code; the caption now
+opens with the difference from exploitation in the wild and quotes
+Mandiant's figures correctly (an *average* time-to-exploit, 63 days in
+2018–19 and five in 2023, when 70% of the vulnerabilities it saw exploited
+were zero-days; the repo's reference note had called it a median); the
+chart note gives Exploit-DB's shrinking coverage (2,745 CVEs from 2007
+against 154 from 2024) and that GitHub-only exploits are not counted; the
+verdict table shows the CVEs behind each post-cutoff level (255 for the
+like-for-like clock); the no-uplift stat is dated 2024 to early 2025;
+verdicts read "earlier/later". The module is renamed AI and PoC Timing to
+match the Time to PoC module it draws from. Three new guards in
+`test_claims_copy.py`.
+
 ## What moves in the published data
 
 Regenerated here with the edition's own stamp: `sec_incidents.json` and

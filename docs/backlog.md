@@ -50,7 +50,7 @@ verified and either disclosed in the page copy or left as the owner's call.
   ATT&CK Releases, Hygiene Index → DNSSEC Validation, Security Products →
   Security Products in KEV, EPSS Report Card → EPSS Before KEV, Silent
   Rescores → CVSS Score Changes, Naming Chaos → Threat Group Aliases, Botnet
-  Weather → Botnet C2 Servers, The AI Alibi → AI and Exploit Timing,
+  Weather → Botnet C2 Servers, The AI Alibi → AI and PoC Timing,
   Incident Clock → SEC Incident Filings, Advisory Gap → Advisories Without a
   CVE, Registry Malware → Malicious Packages. Nav groups: The CVE machine →
   CVE records, The industry → Industry, Attacker's map → Threats. The

@@ -1,4 +1,4 @@
-// AI and Exploit Timing 3 — AI-security attention against the clock it is blamed
+// AI and PoC Timing 3 — AI-security attention against the clock it is blamed
 // for. Contract: site/data/ai_alibi.json (`attention`).
 //
 // Two axes, on purpose and disclosed in the caption: attention is a

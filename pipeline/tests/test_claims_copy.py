@@ -244,6 +244,38 @@ def check_dozens_of_incident_filings(d: dict) -> None:
     assert 24 <= d["totals"]["originals"] < 200, d["totals"]["originals"]
 
 
+# -------------------------------------------------------- AI and PoC Timing
+
+def check_public_code_not_sooner(d: dict) -> None:
+    # ai_clock headline: the like-for-like clock at the default (ChatGPT)
+    # cutoff did not move earlier. (2026-09-23: 2.0 d -> 9.0 d, "later".)
+    lfl = next(m for m in d["banked"]["metrics"] if m["id"] == "poc_like_for_like")
+    era = next(e for e in lfl["eras"] if e["era"] == "chatgpt")
+    assert era["verdict"] != "accelerated" and era["post"]["value"] >= era["pre"]["value"], era
+
+
+def check_exploitdb_thinned(d: dict) -> None:
+    # ai_clock note: "Exploit-DB dated public exploits for {peak_n} CVEs
+    # published in {peak_year} and for {latest_n} published in
+    # {latest_year}, so recent medians rest on far fewer CVEs"
+    # (2026-09-23: 2,745 in 2007, 154 in 2024).
+    rows = next(m for m in d["clock"]["metrics"] if m["id"] == "poc_gap")["years"]
+    peak = max(r["n"] for r in rows)
+    latest = [r for r in rows if not r["provisional"]][-1]["n"]
+    assert peak >= 5 * latest, (peak, latest)
+
+
+def check_mandiant_figures_recorded(d: dict) -> None:
+    # ai_clock caption quotes Mandiant: "an average time-to-exploit of 63
+    # days in 2018–19 and five days in 2023, a year in which 70% of the
+    # vulnerabilities it saw exploited were zero-days". The quoted figures
+    # must match the attributed record the repo keeps.
+    from pipeline.ai_timeline_data import EXTERNAL_CONTEXT
+    rec = next(r for r in EXTERNAL_CONTEXT if r["attribution"].startswith("Mandiant"))
+    for bit in ("Average", "63 days", "5 days (2023)", "70%"):
+        assert bit in rec["claim"], (bit, rec["claim"])
+
+
 CLAIMS = [
     ("Agentic AI has the steepest year-over-year rise in news and in research papers.",
      "market_hype.json", check_agentic_ai_steepest),
@@ -300,6 +332,12 @@ CLAIMS = [
      "cve_calendar.json", check_tuesday_busiest_since_2022),
     ("Since 2021 the median public exploit has appeared a week or more after the CVE.",
      "time_to_poc.json", check_exploit_a_week_or_more_since_2021),
+    ("Public exploit code in Exploit-DB has not appeared sooner since ChatGPT.",
+     "ai_alibi.json", check_public_code_not_sooner),
+    ("so recent medians rest on far fewer CVEs",
+     "ai_alibi.json", check_exploitdb_thinned),
+    ("reports an average time-to-exploit of 63 days in 2018–19 and five days in 2023",
+     "ai_alibi.json", check_mandiant_figures_recorded),
     ("have filed dozens of material-incident 8-Ks since December 2023",
      "sec_incidents.json", check_dozens_of_incident_filings),
 ]

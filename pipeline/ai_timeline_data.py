@@ -243,11 +243,12 @@ MILESTONES: list[Milestone] = [
 # documentation, deliberately inert.
 EXTERNAL_CONTEXT: list[dict[str, str]] = [
     {
-        "claim": "Median time-to-exploit fell from ~63 days (2018-19) to "
-                 "~5 days (2023).",
+        "claim": "Average time-to-exploit fell from 63 days (2018-19) to "
+                 "5 days (2023); 70% of the vulnerabilities Mandiant saw "
+                 "exploited in 2023 were zero-days.",
         "attribution": "Mandiant / Google Cloud, Time-to-Exploit Trends",
         "why_not_plotted": "Derived from Mandiant's private incident corpus; "
-                           "not reproducible from open data, and its median "
+                           "not reproducible from open data, and its average "
                            "is taken over observed-exploited vulns, so a "
                            "rising zero-day share pulls it toward zero by "
                            "construction.",

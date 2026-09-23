@@ -367,41 +367,39 @@ port or hostname ever reaches the site, a red line the output contract
 enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
 `pipeline/botnet_metrics.py`; no shared upstream.
 
-### 21 · AI and Exploit Timing — [ai.html](https://devko.github.io/CyberMon/ai.html) (live)
+### 21 · AI and PoC Timing — [ai.html](https://devko.github.io/CyberMon/ai.html) (live)
 
-*No judged exploit-timing measure has sped up since ChatGPT's release.*
-Exploitation got fast long before the models did, and this module tests
-that claim instead of asserting it. Three charts: the whole
-publication-to-first-public-exploit record (1999 onward) with the AI
-timeline marked and the AI era shaded — the collapse finishes a decade
-left of the band; the **inflection test**, which for three speed metrics
-compares the record's opening level, the five years before a cutoff and
-everything since, and reports how much of the total movement the AI era
-accounts for **and in which direction**; and AI-security attention (module
-02's five lanes for *AI Security* and *Agentic AI*) plotted against the
-clock it is supposed to have broken. The era cutoff is a **reader-facing
-control** — ChatGPT, GPT-4, or the first documented in-the-wild uplift — so
-anyone who suspects the default date was chosen to flatter the thesis can
-move it; on the September 2026 edition, 0 of 8 judged metric-era cells
-accelerated and 3 moved the other way.
+*Public exploit code in Exploit-DB has not appeared sooner since ChatGPT's release.*
+This module tests whether public exploit code started appearing sooner once
+LLMs arrived. It measures public exploit code as Exploit-DB dates it, not
+exploitation in the wild, and says so on the page: Mandiant, measuring
+attacks from its own incident data, reports an average time-to-exploit of
+63 days in 2018–19 and five days in 2023. Three charts: the
+publication-to-first-public-exploit record (1999 onward) with a dated AI
+timeline and the chosen AI era shaded; an inflection test that compares
+each timing metric's opening level, the five years before a cutoff and the
+settled years since, and reports how much of the total movement the era
+accounts for and in which direction (with the number of CVEs behind each
+level); and AI-security attention (the Buzzword Attention lanes for *AI
+Security* and *Agentic AI*) against the like-for-like clock. The cutoff is
+a reader-facing control (ChatGPT, GPT-4, or the first documented AI-run
+operation). On the September 2026 edition, 0 of 4 judged metrics moved
+earlier at the ChatGPT cutoff; the later cutoffs lack two settled years.
 
-No fetch of its own: the clock is lifted verbatim from `time_to_poc.json`
-and the attention lanes from `market_hype.json`, so this page and the
-modules it quotes can never disagree. The one new input is
-`pipeline/ai_timeline_data.py`, a hand-committed milestone table (the CWE
-Top 25 precedent) where **every row carries a source URL and a date
-precision** and renders in an on-page, linked timeline rail. Landmines
-defused in writing: KEV latency is excluded because its series starts in
-2023, inside the era under test; levels are 5-year means, never single
-years (the 1999 cohort is 109 CVEs at a −800-day median); a cutoff's cut
-year is the last year ending entirely *before* it, so no year straddles;
-and an era with under two complete years behind it is **withheld, not
-judged**. Widely cited vendor figures that point the other way — Mandiant's
-63→5-day time-to-exploit series, the DBIR's edge-device share — are
-deliberately **never plotted**: they come from private incident corpora and
-are not reproducible here, so they live in the repo as attributed prose
-(`ai_timeline_data.EXTERNAL_CONTEXT`) and a unit test asserts they never
-reach the payload. Stage `pipeline/ai_metrics.py`; no new upstream.
+Limits the page states: Exploit-DB dates far fewer CVEs than it used to
+(2,745 published in 2007, 154 in 2024), exploits published only on GitHub
+or elsewhere are not counted, and the post-ChatGPT level rests on a few
+hundred CVEs. No fetch of its own: the clock is copied from
+`time_to_poc.json` and the attention lanes from `market_hype.json`. The one
+new input is `pipeline/ai_timeline_data.py`, a hand-maintained milestone
+table where every row has a source URL and a date precision. KEV latency is
+excluded because its series starts in 2023, inside the era under test;
+levels are 5-year means, not single years; the year containing a cutoff
+counts for neither side; and an era with under two settled years is
+withheld. Vendor figures from private incident data (Mandiant's
+time-to-exploit, the DBIR's edge-device share) are quoted with attribution
+and never plotted (`ai_timeline_data.EXTERNAL_CONTEXT`; a unit test asserts
+they never reach the payload). Stage `pipeline/ai_metrics.py`.
 
 ### 22 · AI Credits — [credits.html](https://devko.github.io/CyberMon/credits.html) (live)
 

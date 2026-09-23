@@ -1,4 +1,4 @@
-// AI and Exploit Timing 1 (hero) — CyberMon's exploitation clock across the whole
+// AI and PoC Timing 1 (hero) — CyberMon's exploitation clock across the whole
 // record, with the AI era shaded and the AI timeline marked. Contract:
 // site/data/ai_alibi.json (shared by all three sections; ai.js fetches it
 // once and hands every renderer the same era store).
@@ -388,11 +388,20 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
   const noteEl = slots.panel.querySelector(".panel-note");
   if (noteEl) {
     if (rows.length) {
+      // The channel's thinning, from the same rows: its busiest year
+      // against the latest settled one.
+      const settled = rows.filter((r) => !r.provisional);
+      const peak = rows.reduce((a, r) => (r.n > a.n ? r : a), rows[0]);
+      const latest = settled[settled.length - 1] || rows[rows.length - 1];
       noteEl.textContent = tpl(ed.note, {
         first_year: firstYear,
         last_year: lastYear,
         n: fmtInt(rows.reduce((sum, r) => sum + r.n, 0)),
         milestones: milestones.length,
+        peak_n: fmtInt(peak.n),
+        peak_year: peak.year,
+        latest_n: fmtInt(latest.n),
+        latest_year: latest.year,
       });
     } else {
       noteEl.remove(); // never show a template with holes in it
