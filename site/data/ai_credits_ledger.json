@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-22T02:50:21Z",
+ "generated_at": "2026-09-23T02:50:50Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -14175,6 +14175,399 @@
      "tier": "fix",
      "roles": [
       "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-13087",
+   "published": "2026-09-22",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-63272",
+   "published": "2026-09-22",
+   "cna": "Document Fdn.",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-63273",
+   "published": "2026-09-22",
+   "cna": "Document Fdn.",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-63274",
+   "published": "2026-09-22",
+   "cna": "Document Fdn.",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-63275",
+   "published": "2026-09-22",
+   "cna": "Document Fdn.",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-63276",
+   "published": "2026-09-22",
+   "cna": "Document Fdn.",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-89422",
+   "published": "2026-09-22",
+   "cna": "EEF",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-90462",
+   "published": "2026-09-22",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-94640",
+   "published": "2026-09-22",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95658",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95659",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95661",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95665",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95667",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95671",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95679",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95682",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95683",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95693",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95698",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95701",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95703",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95754",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95806",
+   "published": "2026-09-22",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-95818",
+   "published": "2026-09-22",
+   "cna": "glibc",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
      ]
     }
    ]

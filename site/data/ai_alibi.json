@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-22T02:50:21Z",
+ "generated_at": "2026-09-23T02:50:50Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-06-24",
+  "observed_through": "2026-06-25",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -842,8 +842,8 @@
    },
    {
     "year": 2026,
-    "value": 36.0,
-    "n": 59,
+    "value": 31.0,
+    "n": 61,
     "provisional": true
    }
   ]

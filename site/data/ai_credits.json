@@ -1,11 +1,11 @@
 {
- "generated_at": "2026-09-22T02:50:21Z",
+ "generated_at": "2026-09-23T02:50:50Z",
  "kinds": {
   "llm": {
    "headline": {
-    "cves": 194,
+    "cves": 199,
     "this_year": 2026,
-    "cves_this_year": 176,
+    "cves_this_year": 181,
     "finders": 4,
     "first_month": "2024-10"
    },
@@ -202,25 +202,25 @@
     },
     {
      "month": "2026-09",
-     "anthropic": 31,
+     "anthropic": 36,
      "openai": 0,
      "google": 0,
      "other_llm": 0,
-     "total": 31
+     "total": 36
     }
    ],
    "severity": {
     "critical": 29,
     "high": 100,
-    "medium": 58,
+    "medium": 63,
     "low": 7,
     "unscored": 0
    },
    "funnel": {
-    "credited": 194,
-    "scored": 194,
+    "credited": 199,
+    "scored": 199,
     "high_or_critical": 129,
-    "high_or_critical_pct": 66.5,
+    "high_or_critical_pct": 64.8,
     "poc": 1,
     "poc_pct": 0.5,
     "kev": 0,
@@ -230,9 +230,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 504,
+    "cves": 508,
     "this_year": 2026,
-    "cves_this_year": 379,
+    "cves_this_year": 383,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -332,22 +332,22 @@
     },
     {
      "month": "2026-09",
-     "vendor": 40,
-     "total": 40
+     "vendor": 44,
+     "total": 44
     }
    ],
    "severity": {
     "critical": 32,
-    "high": 150,
-    "medium": 307,
-    "low": 15,
+    "high": 152,
+    "medium": 308,
+    "low": 16,
     "unscored": 0
    },
    "funnel": {
-    "credited": 504,
-    "scored": 504,
-    "high_or_critical": 182,
-    "high_or_critical_pct": 36.1,
+    "credited": 508,
+    "scored": 508,
+    "high_or_critical": 184,
+    "high_or_critical_pct": 36.2,
     "poc": 13,
     "poc_pct": 2.6,
     "kev": 2,
@@ -361,62 +361,62 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 56407,
-  "scored": 56392,
-  "high_or_critical": 23644,
-  "high_or_critical_pct": 41.9,
-  "poc": 913,
+  "credited": 56572,
+  "scored": 56571,
+  "high_or_critical": 23737,
+  "high_or_critical_pct": 42.0,
+  "poc": 917,
   "poc_pct": 1.6,
-  "kev": 74,
+  "kev": 75,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 5366,
-   "high": 18278,
-   "medium": 31108,
-   "low": 1640,
-   "unscored": 15
+   "critical": 5401,
+   "high": 18336,
+   "medium": 31192,
+   "low": 1642,
+   "unscored": 1
   }
  },
  "profile": {
   "llm": {
-   "n": 194,
+   "n": 199,
    "median_cvss": 7.8,
-   "median_epss_pctile": 24.0,
-   "epss_scored": 186,
+   "median_epss_pctile": 24.1,
+   "epss_scored": 194,
    "recent_days": 90,
-   "recent_pct": 54.6,
+   "recent_pct": 55.8,
    "poc_pct": 0.5,
    "kev_pct": 0.0,
-   "memory_pct": 43.8,
-   "cna_scored_pct": 62.4,
+   "memory_pct": 45.2,
+   "cna_scored_pct": 63.3,
    "top_cwe": {
     "cwe": "CWE-416",
     "n": 23,
-    "pct": 11.9
+    "pct": 11.6
    }
   },
   "vendor": {
-   "n": 504,
+   "n": 508,
    "median_cvss": 6.3,
    "median_epss_pctile": 27.6,
-   "epss_scored": 503,
+   "epss_scored": 504,
    "recent_days": 90,
-   "recent_pct": 37.7,
+   "recent_pct": 35.4,
    "poc_pct": 2.6,
    "kev_pct": 0.4,
-   "memory_pct": 22.8,
-   "cna_scored_pct": 84.3,
+   "memory_pct": 23.0,
+   "cna_scored_pct": 84.4,
    "top_cwe": {
     "cwe": "CWE-79",
     "n": 97,
-    "pct": 19.2
+    "pct": 19.1
    }
   },
   "baseline": {
-   "n": 56407,
+   "n": 56572,
    "median_cvss": 6.8,
-   "median_epss_pctile": 25.5,
-   "epss_scored": 56320,
+   "median_epss_pctile": 25.6,
+   "epss_scored": 56449,
    "recent_days": 90,
    "recent_pct": 23.9,
    "poc_pct": 1.6,
@@ -425,7 +425,7 @@
    "cna_scored_pct": 92.0,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 11216,
+    "n": 11235,
     "pct": 19.9
    }
   }
@@ -436,15 +436,15 @@
     "key": "memory",
     "label": "Memory safety",
     "llm": {
-     "n": 85,
-     "pct": 43.8
+     "n": 90,
+     "pct": 45.2
     },
     "vendor": {
-     "n": 115,
-     "pct": 22.8
+     "n": 117,
+     "pct": 23.0
     },
     "baseline": {
-     "n": 5143,
+     "n": 5167,
      "pct": 9.1
     }
    },
@@ -453,14 +453,14 @@
     "label": "Injection (XSS, SQL, command)",
     "llm": {
      "n": 8,
-     "pct": 4.1
+     "pct": 4.0
     },
     "vendor": {
      "n": 146,
-     "pct": 29.0
+     "pct": 28.7
     },
     "baseline": {
-     "n": 21626,
+     "n": 21671,
      "pct": 38.3
     }
    },
@@ -469,14 +469,14 @@
     "label": "Access control and auth",
     "llm": {
      "n": 27,
-     "pct": 13.9
+     "pct": 13.6
     },
     "vendor": {
      "n": 64,
-     "pct": 12.7
+     "pct": 12.6
     },
     "baseline": {
-     "n": 14122,
+     "n": 14168,
      "pct": 25.0
     }
    },
@@ -485,14 +485,14 @@
     "label": "Files, paths and requests",
     "llm": {
      "n": 9,
-     "pct": 4.6
+     "pct": 4.5
     },
     "vendor": {
      "n": 60,
-     "pct": 11.9
+     "pct": 11.8
     },
     "baseline": {
-     "n": 5055,
+     "n": 5077,
      "pct": 9.0
     }
    },
@@ -501,15 +501,15 @@
     "label": "Crypto and certificate checks",
     "llm": {
      "n": 22,
-     "pct": 11.3
+     "pct": 11.1
     },
     "vendor": {
      "n": 26,
-     "pct": 5.2
+     "pct": 5.1
     },
     "baseline": {
-     "n": 930,
-     "pct": 1.6
+     "n": 936,
+     "pct": 1.7
     }
    },
    {
@@ -517,14 +517,14 @@
     "label": "Input, state and resource handling",
     "llm": {
      "n": 24,
-     "pct": 12.4
+     "pct": 12.1
     },
     "vendor": {
-     "n": 38,
-     "pct": 7.5
+     "n": 39,
+     "pct": 7.7
     },
     "baseline": {
-     "n": 3348,
+     "n": 3365,
      "pct": 5.9
     }
    },
@@ -533,14 +533,14 @@
     "label": "Other CWE",
     "llm": {
      "n": 19,
-     "pct": 9.8
+     "pct": 9.5
     },
     "vendor": {
-     "n": 53,
-     "pct": 10.5
+     "n": 54,
+     "pct": 10.6
     },
     "baseline": {
-     "n": 5280,
+     "n": 5304,
      "pct": 9.4
     }
    },
@@ -556,7 +556,7 @@
      "pct": 0.4
     },
     "baseline": {
-     "n": 903,
+     "n": 884,
      "pct": 1.6
     }
    }
@@ -564,90 +564,90 @@
  },
  "targets": {
   "llm": {
-   "cves": 194,
-   "named": 194,
+   "cves": 199,
+   "named": 199,
    "distinct": 48,
    "top_share_n": 5,
-   "top_share_pct": 46.9,
+   "top_share_pct": 47.7,
    "projects": [
     {
      "label": "Mozilla / Firefox",
      "n": 31,
-     "pct": 16.0
+     "pct": 15.6
     },
     {
      "label": "Legion of the Bouncy Castle Inc. / BC-JAVA",
      "n": 30,
-     "pct": 15.5
+     "pct": 15.1
     },
     {
      "label": "FreeBSD",
      "n": 13,
-     "pct": 6.7
+     "pct": 6.5
+    },
+    {
+     "label": "The Document Foundation / LibreOffice",
+     "n": 12,
+     "pct": 6.0
     },
     {
      "label": "misp",
      "n": 9,
-     "pct": 4.6
+     "pct": 4.5
     },
     {
      "label": "PostgreSQL",
      "n": 8,
-     "pct": 4.1
+     "pct": 4.0
     },
     {
      "label": "Wireshark Foundation / Wireshark",
      "n": 8,
-     "pct": 4.1
+     "pct": 4.0
     },
     {
      "label": "wolfSSL",
      "n": 8,
-     "pct": 4.1
+     "pct": 4.0
     },
     {
      "label": "QuickJS",
      "n": 7,
-     "pct": 3.6
-    },
-    {
-     "label": "The Document Foundation / LibreOffice",
-     "n": 7,
-     "pct": 3.6
+     "pct": 3.5
     },
     {
      "label": "FFmpeg",
      "n": 6,
-     "pct": 3.1
+     "pct": 3.0
     }
    ]
   },
   "vendor": {
-   "cves": 504,
-   "named": 504,
+   "cves": 508,
+   "named": 508,
    "distinct": 149,
    "top_share_n": 5,
-   "top_share_pct": 26.6,
+   "top_share_pct": 27.0,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 63,
-     "pct": 12.5
+     "n": 66,
+     "pct": 13.0
     },
     {
      "label": "OpenSSL",
      "n": 23,
-     "pct": 4.6
+     "pct": 4.5
     },
     {
      "label": "curl",
      "n": 17,
-     "pct": 3.4
+     "pct": 3.3
     },
     {
      "label": "OpenClaw",
      "n": 16,
-     "pct": 3.2
+     "pct": 3.1
     },
     {
      "label": "SohuTV / CacheCloud",
@@ -733,8 +733,8 @@
   },
   {
    "year": 2026,
-   "published": 68700,
-   "with_credits": 28875,
+   "published": 69154,
+   "with_credits": 29040,
    "pct": 42.0
   }
  ],
@@ -744,16 +744,16 @@
    "label": "AISLE",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 217,
-   "counted": 217,
-   "system": 46,
-   "org": 171,
+   "cves": 221,
+   "counted": 221,
+   "system": 48,
+   "org": 173,
    "fix": 0,
    "severity": {
     "critical": 14,
-    "high": 93,
-    "medium": 99,
-    "low": 11,
+    "high": 95,
+    "medium": 100,
+    "low": 12,
     "unscored": 0
    },
    "poc": 0,
@@ -763,7 +763,7 @@
    "top_cnas": [
     {
      "cna": "redhat",
-     "n": 77
+     "n": 80
     },
     {
      "cna": "VulnCheck",
@@ -812,15 +812,15 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 219,
-   "counted": 154,
-   "system": 154,
-   "org": 28,
-   "fix": 37,
+   "cves": 240,
+   "counted": 159,
+   "system": 159,
+   "org": 29,
+   "fix": 52,
    "severity": {
     "critical": 29,
     "high": 76,
-    "medium": 45,
+    "medium": 50,
     "low": 4,
     "unscored": 0
    },
@@ -831,7 +831,7 @@
    "top_cnas": [
     {
      "cna": "CIRCL",
-     "n": 48
+     "n": 63
     },
     {
      "cna": "mozilla",
@@ -1465,7 +1465,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/zero-days",
    "note": "Claude Opus 4.6, open-source code. No CVE count given.",
-   "credited": 154
+   "credited": 159
   },
   {
    "finder": "anthropic",
@@ -1479,7 +1479,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
    "note": "Collective total with about 50 Project Glasswing partners; includes proprietary code that will never get a public CVE.",
-   "credited": 154
+   "credited": 159
   },
   {
    "finder": "anthropic",
@@ -1493,7 +1493,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
    "note": "",
-   "credited": 154
+   "credited": 159
   },
   {
    "finder": "openai",
@@ -1549,7 +1549,7 @@
    "live": true,
    "source": "https://aisle.com/cve-discoveries",
    "note": "",
-   "credited": 217
+   "credited": 221
   },
   {
    "finder": "zeropath",

@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-09-22",
+ "last_observed": "2026-09-23",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -3040,6 +3040,13 @@
    "scope": "c539cc56c22d",
    "type": "CERT"
   },
+  "chainguard": {
+   "cna_id": "CNA-2026-0068",
+   "country": "USA",
+   "org": "Chainguard, Inc.",
+   "scope": "89573f9b403c",
+   "type": "Hosted Service + Open Source + Researcher + Vendor"
+  },
   "checkpoint": {
    "cna_id": "CNA-2016-0008",
    "country": "Israel",
@@ -4102,6 +4109,10 @@
   [
    "2026-09-22",
    549
+  ],
+  [
+   "2026-09-23",
+   550
   ]
  ],
  "version": 1

@@ -18794,6 +18794,17 @@
    "ransom": "Unknown",
    "vendor": "Google"
   },
+  "CVE-2026-85102": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-22",
+   "desc": "207764bb0026",
+   "due": "2026-09-25",
+   "name": "Check Point Multiple Products Improper Certificate Validation Vulnerability",
+   "notes": "8b96d765b1e8",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Check Point"
+  },
   "CVE-2026-85706": {
    "action": "ba0d649eb29b",
    "added": "2026-09-11",
@@ -18882,6 +18893,39 @@
    "ransom": "Unknown",
    "vendor": "IBM"
   },
+  "CVE-2026-93616": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-22",
+   "desc": "18496c73f0fa",
+   "due": "2026-09-25",
+   "name": "Check Point Multiple Products Path Traversal Vulnerability",
+   "notes": "5e5a8339d832",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Check Point"
+  },
+  "CVE-2026-93952": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-22",
+   "desc": "7e08c7ff4bfc",
+   "due": "2026-09-25",
+   "name": "Arista VeloCloud Orchestrator Improper Input Validation Vulnerability",
+   "notes": "de7a2dc0f07b",
+   "product": "VeloCloud Orchestrator",
+   "ransom": "Unknown",
+   "vendor": "Arista"
+  },
+  "CVE-2026-94127": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-22",
+   "desc": "6f87625976ec",
+   "due": "2026-09-25",
+   "name": "F5 BIG-IP APM Heap-based Buffer Overflow Vulnerability",
+   "notes": "da9cca35dba4",
+   "product": "BIG-IP APM",
+   "ransom": "Unknown",
+   "vendor": "F5"
+  },
   "CVE-2026-9586": {
    "action": "ba0d649eb29b",
    "added": "2026-09-02",
@@ -18894,7 +18938,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-22",
+ "last_observed": "2026-09-23",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
