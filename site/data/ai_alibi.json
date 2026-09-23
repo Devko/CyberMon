@@ -5,7 +5,7 @@
    "id": "chatgpt",
    "label": "ChatGPT",
    "date": "2022-11-30",
-   "caption": "The month the public narrative starts: GPT-3.5 in everyone's browser.",
+   "caption": "The earliest cutoff: ChatGPT's public release (GPT-3.5).",
    "cut_year": 2021,
    "post_start_year": 2023,
    "default": true
@@ -14,7 +14,7 @@
    "id": "gpt4",
    "label": "GPT-4",
    "date": "2023-03-14",
-   "caption": "The stricter test \u2014 the first model widely argued to be capable enough to matter offensively.",
+   "caption": "GPT-4's release, often cited as the first model capable enough to matter for offensive work.",
    "cut_year": 2022,
    "post_start_year": 2024,
    "default": false
@@ -23,7 +23,7 @@
    "id": "uplift",
    "label": "First documented uplift",
    "date": "2025-08-27",
-   "caption": "The most generous cutoff: the first vendor report of AI running real extortion operations, not just assisting.",
+   "caption": "The latest cutoff: the first vendor report of a model doing much of the work in a real extortion operation.",
    "cut_year": 2024,
    "post_start_year": 2026,
    "default": false
@@ -36,7 +36,7 @@
    "precision": "day",
    "kind": "capability",
    "label": "ChatGPT (GPT-3.5) released",
-   "note": "General-purpose LLMs reach the public. No offensive tooling ecosystem exists yet.",
+   "note": "A general-purpose LLM becomes available to the public.",
    "source": "https://openai.com/index/chatgpt/"
   },
   {
@@ -45,7 +45,7 @@
    "precision": "day",
    "kind": "capability",
    "label": "GPT-4 released",
-   "note": "The first model widely argued to be capable enough to matter for exploit development.",
+   "note": "Often cited as the first model capable enough to help with exploit development.",
    "source": "https://openai.com/index/gpt-4-research/"
   },
   {
@@ -54,7 +54,7 @@
    "precision": "day",
    "kind": "no_uplift",
    "label": "Microsoft + OpenAI: no capability uplift observed",
-   "note": "A joint threat report finds state actors using LLMs for recon, scripting and translation \u2014 and concludes it saw no novel capabilities or capability uplift.",
+   "note": "A joint threat report describes state actors using LLMs for reconnaissance, scripting and translation, and reports no novel capabilities or capability uplift.",
    "source": "https://www.microsoft.com/en-us/security/blog/2024/02/14/staying-ahead-of-threat-actors-in-the-age-of-ai/"
   },
   {
@@ -63,7 +63,7 @@
    "precision": "month",
    "kind": "research",
    "label": "Fang et al.: LLM agents exploit one-day vulns (lab)",
-   "note": "A UIUC benchmark reports high success on a 15-CVE set \u2014 but the agent is handed the CVE description, and the method drew substantial criticism. Lab feasibility, not an in-the-wild driver.",
+   "note": "A UIUC study reports high success on a 15-CVE set when the agent is given the CVE description; the method drew substantial criticism. A laboratory result, with no evidence from real attacks.",
    "source": "https://arxiv.org/abs/2404.08144"
   },
   {
@@ -71,8 +71,8 @@
    "plot_date": "2024-11-15",
    "precision": "month",
    "kind": "defensive",
-   "label": "Big Sleep finds a real-world memory-safety bug",
-   "note": "Google's LLM-assisted bug hunter reports a genuine SQLite flaw \u2014 a milestone on the DEFENDERS' side of the ledger.",
+   "label": "Big Sleep reports a real-world memory-safety bug",
+   "note": "Google's LLM-based bug-hunting agent reports a real SQLite flaw, a defensive use of the technology.",
    "source": "https://googleprojectzero.blogspot.com/2024/10/from-naptime-to-big-sleep.html"
   },
   {
@@ -81,7 +81,7 @@
    "precision": "month",
    "kind": "no_uplift",
    "label": "Google GTIG: productivity gains, not new capabilities",
-   "note": "A second threat-intel shop looks specifically for offensive uplift in adversarial generative-AI use and reaches the same conclusion.",
+   "note": "Google's threat-intelligence group examines adversarial use of generative AI for offensive uplift and reports productivity gains but no new capabilities.",
    "source": "https://cloud.google.com/blog/topics/threat-intelligence/adversarial-misuse-generative-ai"
   },
   {
@@ -90,7 +90,7 @@
    "precision": "month",
    "kind": "offensive",
    "label": "XBOW tops the HackerOne US leaderboard",
-   "note": "An autonomous pentesting system out-reports human researchers on a public bounty leaderboard \u2014 bug finding at scale, on authorised targets.",
+   "note": "An autonomous penetration-testing system ranks first on a public bug-bounty leaderboard, reporting bugs in authorised targets.",
    "source": "https://xbow.com/blog/xbow-top-1/"
   },
   {
@@ -99,7 +99,7 @@
    "precision": "month",
    "kind": "defensive",
    "label": "DARPA AIxCC finals",
-   "note": "Autonomous systems find and patch a large share of injected synthetic vulnerabilities \u2014 the defensive-automation proof point.",
+   "note": "Autonomous systems find and patch a large share of the synthetic vulnerabilities inserted for the competition.",
    "source": "https://aicyberchallenge.com/"
   },
   {
@@ -107,8 +107,8 @@
    "plot_date": "2025-08-15",
    "precision": "month",
    "kind": "offensive",
-   "label": "Anthropic reports AI-assisted extortion",
-   "note": "The first vendor account of a model orchestrating a real extortion operation end to end, rather than assisting a human operator.",
+   "label": "Anthropic reports AI-run extortion",
+   "note": "The first vendor account of a model doing much of the work in a real extortion operation, rather than only advising a human operator.",
    "source": "https://www.anthropic.com/news/detecting-countering-misuse-aug-2025"
   },
   {
@@ -117,7 +117,7 @@
    "precision": "month",
    "kind": "offensive",
    "label": "Anthropic reports AI-orchestrated espionage",
-   "note": "Multi-stage intrusion workflows run with reduced human involvement \u2014 genuinely new, and three years downstream of the trend this module measures.",
+   "note": "Multi-stage intrusion workflows run with reduced human involvement, reported three years after ChatGPT's release.",
    "source": "https://www.anthropic.com/news/disrupting-AI-espionage"
   },
   {
@@ -125,8 +125,8 @@
    "plot_date": "2026-04-07",
    "precision": "day",
    "kind": "capability",
-   "label": "Anthropic withholds Claude Mythos, citing vulnerability discovery",
-   "note": "A frontier model is kept from public release specifically because of its ability to find software vulnerabilities \u2014 the first time cyber capability, rather than any other risk, gates a launch. It goes instead to roughly 50 defensive-security organisations under Project Glasswing.",
+   "label": "Anthropic withholds Claude Mythos, citing its cyber capability",
+   "note": "A frontier model is kept from general release until safeguards can block its most dangerous cybersecurity outputs. It goes instead to eleven other launch partners and more than 40 further organisations that build or maintain critical software, under Project Glasswing.",
    "source": "https://www.anthropic.com/glasswing"
   },
   {
@@ -135,7 +135,7 @@
    "precision": "day",
    "kind": "defensive",
    "label": "OpenAI launches Daybreak",
-   "note": "A cyber programme built the same way: vulnerability-finding capability released through vetted-defender access rather than generally, alongside tooling to patch what it finds.",
+   "note": "An OpenAI cyber programme that gives vetted defenders access to vulnerability-finding capability, with tooling to patch what it finds.",
    "source": "https://openai.com/index/daybreak-securing-the-world/"
   },
   {
@@ -143,8 +143,8 @@
    "plot_date": "2026-05-22",
    "precision": "day",
    "kind": "defensive",
-   "label": "Glasswing reports 10,000+ high/critical vulnerabilities in a month",
-   "note": "Partners report more than ten thousand high- or critical-severity findings in systemically important software within a month; of 1,752 independently assessed, 90.6% were valid true positives. Discovery volume, not exploitation speed \u2014 which is the shift this module's own charts cannot yet see.",
+   "label": "Glasswing reports 10,000+ high/critical vulnerabilities in six weeks",
+   "note": "Anthropic and about 50 partners report more than ten thousand high- or critical-severity findings in systemically important software since the April launch; of 1,752 findings from Anthropic's own open-source scan that independent firms assessed, 90.6% were valid true positives. This counts discoveries; any effect on exploitation speed is not yet visible in this module's charts.",
    "source": "https://www.anthropic.com/research/glasswing-initial-update"
   },
   {
@@ -153,7 +153,7 @@
    "precision": "day",
    "kind": "capability",
    "label": "GPT-5.5-Cyber: measured gain in turning bugs into exploits",
-   "note": "A model purpose-built for finding and patching vulnerabilities. OpenAI reports 85.6% on CyberGym (from 81.8%) and, more relevant here, 39.5% against 25.95% on ExploitGym \u2014 converting a known vulnerability into a working exploit. That is the one mechanism that would compress the gap this page measures.",
+   "note": "A model built for finding and patching vulnerabilities. OpenAI reports 85.6% on CyberGym (from 81.8%) and 39.5% against 25.95% on ExploitGym, a benchmark of turning a known vulnerability into a working exploit. Exploit conversion is the capability most directly tied to the gap this page measures.",
    "source": "https://openai.com/index/daybreak-securing-the-world/"
   }
  ],

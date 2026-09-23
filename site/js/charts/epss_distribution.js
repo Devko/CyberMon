@@ -49,14 +49,14 @@ export function render(slots, data) {
             if (!m) return "";
             const n = m.counts[bucket] ?? 0;
             return `${p.marker} ${escapeHtml(p.seriesName)} ` +
-              `<strong>${fmtInt(n)}</strong> of ${fmtInt(m.n)} graded`;
+              `<strong>${fmtInt(n)}</strong> of ${fmtInt(m.n)} scored`;
           })
           .join("<br>");
         return `<div style="color:${C.muted};margin-bottom:4px;">day-before score ${escapeHtml(String(bucket))}</div>` + rows;
       },
     },
     xAxis: catAxis(buckets.map(String)),
-    yAxis: valAxis({ name: "graded entries", nameTextStyle: { color: C.faint, fontSize: 10 } }),
+    yAxis: valAxis({ name: "scored entries", nameTextStyle: { color: C.faint, fontSize: 10 } }),
     series: byModel.map((m) => ({
       name: seriesName(m),
       type: "bar",

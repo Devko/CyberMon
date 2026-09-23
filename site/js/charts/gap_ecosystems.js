@@ -1,4 +1,4 @@
-// Advisory Gap 2 — the no-CVE share per ecosystem, all publication years.
+// Advisories Without a CVE 2 — the no-CVE share per ecosystem, all publication years.
 // Contract: site/data/advisory_gap.json (ecosystems[]). One horizontal bar
 // per ecosystem that clears the min_n floor, sorted by share; the rest are
 // named below the chart, never ranked on a handful of advisories.
@@ -85,7 +85,7 @@ export function render(slots, data, refs) {
   if (small.length) {
     slots.extra.append(el("p", "table-context", tpl(ed.smallNote, {
       min_n: fmtInt(data.min_n),
-      list: small.map((e) => `${ecoLabel(e.ecosystem)} (${fmtInt(e.total)})`).join(", "),
+      list: small.map((e) => `${ecoLabel(e.ecosystem)}: ${fmtInt(e.total)}`).join(", "),
     })));
   }
 }

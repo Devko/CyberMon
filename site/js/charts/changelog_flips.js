@@ -38,7 +38,8 @@ export function render(slots, data) {
   const post = flips.lag_post_step || {};
   const hasPooled = lag.median_days !== null && lag.median_days !== undefined;
   const hasPost = stepMonth && post.median_days !== null && post.median_days !== undefined;
-  const vars = { median: fmtInt(lag.median_days), post_median: fmtInt(post.median_days),
+  const vars = { median: fmtInt(Math.round(lag.median_days)),
+                 post_median: fmtInt(Math.round(post.median_days)),
                  step_month: stepMonth, step_flips: fmtInt(stepFlips) };
   stat.append(el("div", "hero-stat-label",
     !hasPooled

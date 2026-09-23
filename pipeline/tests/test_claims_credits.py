@@ -88,8 +88,9 @@ def check_thousands_announced_hundreds_credited(d: dict) -> None:
 
 def check_four_in_ten_vendor_credits_name_a_person(d: dict) -> None:
     # editorial.js (credits.html 01): "about four in ten vendor credits name
-    # a person at the company and not the tool". (The first draft said
-    # "most"; this guard is what caught it — 57% name the tool.)
+    # the company only through a person there or in a thank-you line" — the
+    # org tier. (The first draft said "most"; this guard is what caught it —
+    # 57% are system tier.)
     rows = [r for r in d["board"] if r["kind"] == "vendor"]
     counted = sum(r["counted"] for r in rows)
     person = counted - sum(min(r["system"], r["counted"]) for r in rows)
@@ -227,16 +228,20 @@ def check_vendor_credits_begin_march_2025(d: dict) -> None:
 # -------------------------------------------------------------- 04 · board
 
 def check_three_finders_hold_most_credits(d: dict) -> None:
-    # editorial.js (credits.html 04 headline): "Three finders hold most of
-    # the credits"
-    counted = [r["counted"] for r in d["board"]]
-    share = 100.0 * sum(counted[:3]) / sum(counted)
-    assert len(counted) >= 4 and counted[2] >= 2 * counted[3] and \
-        share > 50.0, (
-            f"'Three finders hold most of the credits' needs the top three "
-            f"over half of all counted credits and the third at least double "
-            f"the fourth; top four {counted[:4]}, top-three share {share:.1f}%"
-        )
+    # editorial.js (credits.html 04 headline): "In each column one or two
+    # finders hold most of the credits" — judged per kind, never summed
+    # across labs and vendors (the two kinds count by different rules).
+    # (2026-09-23: Anthropic 159 of 199 lab credits; AISLE + ZAST.AI 383 of
+    # 508 vendor-credited CVEs.)
+    for kind in ("llm", "vendor"):
+        counted = sorted((r["counted"] for r in d["board"]
+                          if r["kind"] == kind), reverse=True)
+        total = d["kinds"][kind]["funnel"]["credited"] \
+            if "funnel" in d["kinds"][kind] else sum(counted)
+        top2 = sum(counted[:2])
+        assert total and 100.0 * top2 / total > 50.0, (
+            f"{kind}: 'one or two finders hold most of the credits' needs "
+            f"the top two over half; {counted[:4]} of {total}")
 
 
 def check_zast_mostly_medium_one_cna(d: dict) -> None:
@@ -274,10 +279,10 @@ def check_several_vendors_name_a_person(d: dict) -> None:
 
 def check_openai_named_far_more_than_codex(d: dict) -> None:
     # editorial.js (credits.html 04): "OpenAI is named on several times more
-    # records than Codex is"
+    # records than its models are"
     r = _finder(d, "openai")
     assert r["cves"] >= 3 * r["counted"], (
-        f"'named on several times more records than Codex is' needs OpenAI's "
+        f"'named on several times more records than its models are' needs OpenAI's "
         f"matched records at 3x+ its counted CVEs; {r['cves']} vs "
         f"{r['counted']}"
     )
@@ -393,10 +398,10 @@ def check_fewer_than_half_carry_a_credit(d: dict) -> None:
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    ("Thousands announced. Hundreds credited in CVE records.",
+    ("announce vulnerabilities in the thousands; hundreds of CVE records credit them",
      "ai_credits.json", check_thousands_announced_hundreds_credited),
-    ("about four in ten vendor credits name a person at the company and not "
-     "the tool",
+    ("about four in ten vendor credits name the company only through a person "
+     "there or in a thank-you line",
      "ai_credits.json", check_four_in_ten_vendor_credits_name_a_person),
     ("a higher median CVSS score and a much larger share of memory-safety "
      "weaknesses",
@@ -417,7 +422,7 @@ CLAIMS = [
      "ai_credits.json", check_lab_clusters_then_every_month),
     ("Vendor credits begin in March 2025.",
      "ai_credits.json", check_vendor_credits_begin_march_2025),
-    ("Three finders hold most of the credits",
+    ("In each column one or two finders hold most of the credits",
      "ai_credits.json", check_three_finders_hold_most_credits),
     ("ZAST.AI's credits are almost all medium-severity records published "
      "through one CNA",
@@ -426,11 +431,11 @@ CLAIMS = [
      "ai_credits.json", check_anthropic_has_most_criticals),
     ("for several vendors that is a minority or none",
      "ai_credits.json", check_several_vendors_name_a_person),
-    ("OpenAI is named on several times more records than Codex is",
+    ("OpenAI is named on several times more records than its models are",
      "ai_credits.json", check_openai_named_far_more_than_codex),
     ("records that credit it only for the fix",
      "ai_credits.json", check_fix_credits_exist_and_never_count),
-    ("The baseline's largest family is injection.",
+    ("injection (cross-site scripting, SQL injection, command injection) is the largest family, at more than a third",
      "ai_credits.json", check_baseline_largest_family_is_injection),
     ("crypto and certificate weaknesses are also several times the baseline "
      "share, and injection is small",

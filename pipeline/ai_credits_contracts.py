@@ -154,6 +154,9 @@ def _validate_ai_credits(obj: Any) -> None:
         if r["first_month"] > r["last_month"]:
             _fail(f"{path}.first_month", "is after last_month")
         cnas = _check_list(_get(r, "top_cnas", path), f"{path}.top_cnas")
+        if sum(c.get("n", 0) for c in cnas if isinstance(c, dict)) > \
+                r.get("counted", 0):
+            _fail(f"{path}.top_cnas", "counts more CVEs than the row credits")
         for j, c in enumerate(cnas):
             _check_str(_get(c, "cna", f"{path}.top_cnas[{j}]"),
                        f"{path}.top_cnas[{j}].cna")

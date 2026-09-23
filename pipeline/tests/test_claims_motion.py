@@ -190,26 +190,25 @@ def check_gate_did_not_widen(d: dict) -> None:
         f"{first['top5_share']}% to {last['top5_share']}%, so concentration "
         f"loosened less than the headline claims, or not at all."
     )
-    # Still a genuine concentration story: half the world's CVE numbering
-    # remains with five organizations.
-    assert last["top5_share"] >= 40.0, (
+    # "the five largest still issue about half" (2025: 56.6%).
+    assert 40.0 <= last["top5_share"] <= 62.0, (
         f"the top-5 now issue only {last['top5_share']}% — the gate has in fact "
         f"widened, and 'The gate did not' is no longer the story."
     )
 
 
 CLAIMS = [
-    ("Ransomware ran security's news cycle. Then it didn't.",
+    ("Ransomware once led news mentions of the tracked terms; it no longer does.",
      "market_hype.json", check_ransomware_led_then_lost),
     ("raw article counts, not the site's per-term index",
      "market_hype.json", check_race_is_comparable),
     ("All {terms} tracked terms shown",
      "market_hype.json", check_all_terms_shown),
-    ("“Critical” was an exception. Now it's a product line.",
+    ("CVEs rated Critical went from a handful a year to thousands.",
      "nine_eight_flood.json", check_critical_is_routine),
-    ("severity lived in NVD's database, which this chart does not read",
+    ("severity scores were kept in NVD's database, which this chart does not read",
      "nine_eight_flood.json", check_era_caveat_holds),
-    ("The gatekeepers multiplied. The gate did not.",
+    ("Hundreds of CNAs now assign CVEs; the five largest still issue about half.",
      "cna_concentration.json", check_gate_did_not_widen),
 ]
 

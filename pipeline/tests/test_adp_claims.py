@@ -47,8 +47,8 @@ def load(name: str) -> dict:
 
 
 def check_ssvc_rides_nearly_every_record(d: dict) -> None:
-    # editorial.js (adp_adds caption): "an SSVC decision ... rides on nearly
-    # every one"
+    # editorial.js (adp_adds caption): "An SSVC assessment ... rides on
+    # nearly every one"
     pct = d["adds"]["pct_ssvc"]
     assert pct >= 85.0, (
         f"'an SSVC decision rides on nearly every one' needs SSVC on at least "
@@ -91,17 +91,17 @@ def check_handoff_begins_in_the_vulnrichment_era(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "an SSVC decision ... rides on nearly every one",
+        "SSVC decision points, CISA's assessment of exploitation, automatability and technical impact, appear on nearly every one",
         "adp_coverage.json",
         check_ssvc_rides_nearly_every_record,
     ),
     (
-        "One agency does almost all of it",
+        "CISA adds almost all of the substantive ADP enrichment on CVE records.",
         "adp_coverage.json",
         check_cisa_is_the_sole_substantive_enricher,
     ),
     (
-        "climbs from Vulnrichment's 2024 launch",
+        "The series starts at Vulnrichment's 2024 launch",
         "adp_coverage.json",
         check_handoff_begins_in_the_vulnrichment_era,
     ),

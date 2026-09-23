@@ -1,5 +1,5 @@
 // =============================================================================
-// market.js — Security Market tab (market.html). Builds the three market
+// market.js — Buzzword Attention tab (market.html). Builds the three market
 // sections from editorial.js. Unlike cve.js, ALL sections share ONE contract
 // file (data/market_hype.json): it is fetched once and the parsed payload is
 // passed to every section renderer. Each renderer runs inside its own

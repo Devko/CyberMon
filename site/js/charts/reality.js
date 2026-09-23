@@ -65,7 +65,7 @@ export function render(slots, data) {
     },
     xAxis: catAxis(xCats, {
       position: "bottom",
-      name: "EPSS: probability of exploitation →",
+      name: "EPSS: predicted probability of exploitation →",
       nameLocation: "middle", nameGap: 32,
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
       splitArea: { show: false },

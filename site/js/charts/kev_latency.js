@@ -47,7 +47,13 @@ export function render(slots, data) {
       middle_verb: words.middle[mid][0], middle_word: words.middle[mid][1],
       tail_verb: words.tail[tail][0], tail_word: words.tail[tail][1],
     };
-    slots.caption.textContent = tpl(ed.caption, vars);
+    const current = rows.find((r) => r.year > h.latest_year && r.n >= 10);
+    slots.caption.textContent = tpl(ed.caption, vars) + (current
+      ? tpl(ed.captionCurrent, {
+        current_year: current.year,
+        current_median: fmtInt(Math.round(current.median_days)),
+      })
+      : "");
     if (slots.methodText) slots.methodText.textContent = tpl(ed.methodology, vars);
   }
   const stat = el("div", "hero-stat");

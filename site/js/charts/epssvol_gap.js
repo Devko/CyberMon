@@ -28,7 +28,7 @@ export function render(slots, data) {
     if (q.length) {
       const counts = {};
       for (const entry of q) counts[entry.reason] = (counts[entry.reason] ?? 0) + 1;
-      const label = { reset: "model reset", gap: "pooled", anomaly: "lurch" };
+      const label = { reset: "model reset", gap: "pooled", anomaly: "anomalous" };
       note += tpl(ed.noteQuarantined, {
         n: fmtInt(q.length),
         days: fmtInt(data.catalog.days_observed),

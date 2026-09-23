@@ -367,10 +367,12 @@ def build_ai_credits(collector: CreditCollector, generated_at: str) -> dict:
                                      "cnas": Counter(), "counted": []})
             b[tier] += 1
             b["months"].append(row.traits.month)
-            b["cnas"][row.cna] += 1
-            # severity, exploit code and KEV describe the counted CVEs only
+            # severity, exploit code, KEV and the "credited most by" CNAs
+            # describe the counted CVEs only — a fix-role or org-tier
+            # record is not a credit the page may attribute to a CNA
             if counts_toward_headline(_BY_KEY[key].group, tier):
                 b["counted"].append(row.traits)
+                b["cnas"][row.cna] += 1
     board = [{"key": key, "label": _BY_KEY[key].label,
               "group": _BY_KEY[key].group,
               "kind": kind_of(_BY_KEY[key].group),

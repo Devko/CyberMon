@@ -1,5 +1,5 @@
 // =============================================================================
-// incidents.js — Incident Clock tab (incidents.html). Builds the three SEC
+// incidents.js — SEC Incident Filings tab (incidents.html). Builds the three SEC
 // cyber-incident filing sections from editorial.js. Like c2.js, all sections
 // share ONE contract file (data/sec_incidents.json), fetched once and passed
 // to each renderer; each renderer runs inside its own try/catch so one bad

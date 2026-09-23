@@ -238,7 +238,10 @@ def build_sec_incidents(data: SecIncidentData, generated_at: str,
             "originals": len(originals),
             "amendments": len(amendments),
             "voluntary": len(voluntary),
-            "companies_105": len({f.cik for f in originals + amendments}),
+            # the hero reads "{originals} from {companies_105} companies":
+            # filers of originals only, so an amendment-only filer (its
+            # original predates the window) never inflates it
+            "companies_105": len({f.cik for f in originals}),
             "companies_801": len({f.cik for f in voluntary}),
             "latest_105": recent[0]["date"] if recent else None,
         },

@@ -1,5 +1,5 @@
 // =============================================================================
-// guards.js — Security Products tab (guards.html). Builds the three guards
+// guards.js — Security Products in KEV tab (guards.html). Builds the three guards
 // sections from editorial.js. Like kev.js, all sections share ONE contract
 // file (data/kev_guards.json), fetched once and passed to each renderer.
 // Each renderer runs inside its own try/catch so one bad chart yields one

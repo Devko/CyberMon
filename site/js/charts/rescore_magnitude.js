@@ -29,7 +29,7 @@ export function render(slots, data) {
   if (mag.median_delta !== null) {
     slots.controls.append(
       el("div", "panel-subtitle", tpl(ed.medianLabel, {
-        median: (mag.median_delta > 0 ? "+" : "") + mag.median_delta.toFixed(1),
+        median: (mag.median_delta > 0 ? "+" : "") + mag.median_delta.toFixed(1).replace("-", "−"),
       }))
     );
   }

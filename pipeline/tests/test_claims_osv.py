@@ -89,9 +89,16 @@ def check_maven_almost_all(d: dict) -> None:
 
 
 def check_not_the_minor_ones(d: dict) -> None:
+    # gap_severity headline: "Without a CVE, advisories lean to both ends of
+    # the scale" — more often Critical AND more often Low than the CVE set.
+    # (The caption's malware clause rests on GitHub's advisory API, not on
+    # this file: ~400 of 2026-09-23's no-CVE Critical advisories are
+    # malicious-package notices, 367 of them npm from 2020 — see
+    # docs/backlog.md for tagging them in the pipeline.)
     crit = _sev(d, "CRITICAL")
+    check_more_low_as_well(d)
     assert crit["without_cve_pct"] > crit["with_cve_pct"], (
-        f"'not the minor ones': the no-CVE set is no longer more often "
+        f"'lean to both ends': the no-CVE set is no longer more often "
         f"Critical ({crit['without_cve_pct']}% vs {crit['with_cve_pct']}%)")
 
 
@@ -166,16 +173,16 @@ def check_almost_none_withdrawn(d: dict) -> None:
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    ("Most reviewed advisories get a CVE.", "advisory_gap.json",
+    ("Most GitHub-reviewed advisories carry a CVE id", "advisory_gap.json",
      check_most_get_a_cve),
     ("A quarter of Rust's do not.", "advisory_gap.json", check_rust_quarter),
-    ("In Rust, one advisory in four has no CVE.", "advisory_gap.json",
+    ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
      check_rust_quarter),
-    ("In Rust, one advisory in four has no CVE.", "advisory_gap.json",
+    ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
      check_rust_is_highest),
-    ("In Maven, almost all have one.", "advisory_gap.json",
+    ("almost every Maven advisory has one", "advisory_gap.json",
      check_maven_almost_all),
-    ("The advisories without a CVE are not the minor ones.",
+    ("No-CVE advisories are rated Critical or Low more often",
      "advisory_gap.json", check_not_the_minor_ones),
     ("More of them are rated Low as well", "advisory_gap.json",
      check_more_low_as_well),
@@ -183,17 +190,17 @@ CLAIMS = [
      check_reviewed_only),
     ("each of the twelve GitHub advisory ecosystems", "advisory_gap.json",
      check_twelve_ecosystems),
-    ("Six in ten of the feed's reports landed in one month.",
+    ("Six in ten of the feed's reports were published in a single month",
      "registry_malware.json", check_six_in_ten_one_month),
     ("of them name one contributor, {peak_top_source}",
      "registry_malware.json", check_peak_names_a_contributor),
     ("In a typical month of the last two years the feed published",
      "registry_malware.json", check_typical_month_window),
-    ("npm carries almost every report.", "registry_malware.json",
+    ("npm accounts for almost every report on file", "registry_malware.json",
      check_npm_almost_every),
     ("in 2023 PyPI carried most of the year's reports",
      "registry_malware.json", check_pypi_2023),
-    ("Almost no report is taken back.", "registry_malware.json",
+    ("Almost no report in the feed has been withdrawn", "registry_malware.json",
      check_almost_none_withdrawn),
 ]
 

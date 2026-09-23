@@ -81,21 +81,26 @@ def complete_years(rows: list[dict]) -> list[dict]:
 
 
 def check_severity_headline(d: dict) -> None:
-    # editorial.js (cve.html hero): "About half of all CVEs ship as
+    # editorial.js (cve.html hero): "About half of scored CVEs ship as
     # “High” or worse." — 43.5% in 2025, 53.5% in the partial 2026; the
     # band holds "about half" on both sides of the January rollover.
+    # Caption: "— a level, not a climb": the headline year stays within
+    # 10 points of the baseline year (2020: 46.7%).
     pct = d["headline"]["pct_high_critical_latest"]  # share ≥ 7.0, latest complete year
     assert 40 <= pct <= 60, (
-        f"'About half of all CVEs ship as High or worse' claims ~50%; "
+        f"'About half of scored CVEs ship as High or worse' claims ~50%; "
         f"data says {pct}% (latest complete year {d['headline']['latest_year']})"
     )
+    base = d["headline"]["pct_high_critical_baseline"]
+    assert abs(pct - base) < 10, (
+        f"'a level, not a climb' vs {base}% -> {pct}%")
 
 
 def check_epss_disconnect(d: dict) -> None:
-    # editorial.js (score vs. reality): "six in ten Critical-rated CVEs
-    # carry less than a 1% probability of exploitation"
+    # editorial.js (score vs. reality): "more than six in ten
+    # Critical-rated CVEs carry less than a 1% probability of exploitation"
     pct = d["headline"]["pct_critical_epss_below_1pct"]
-    assert 50 <= pct <= 70, (
+    assert 60 < pct <= 70, (
         f"'six in ten Critical-rated CVEs carry less than a 1% probability' "
         f"claims ~60%; data says {pct}%"
     )
@@ -319,23 +324,24 @@ def check_flood_critical_volume(d: dict) -> None:
 
 
 def check_entrants_top3_recruiting(d: dict) -> None:
-    # editorial.js (concentration entrants): "the three biggest recruiting
-    # years on record are 2023, 2024 and 2025". Named years: the partial
-    # 2026 (46 newcomers vs 2023's 77) would have failed "the last three
-    # complete ones" on 2027-01-01. Judged over complete years only, so a
-    # later year out-recruiting them fails this the January it happens.
+    # editorial.js (concentration entrants): "every complete year since
+    # 2023 has brought in more new CNAs than any year before it". Complete
+    # years only: the partial current year is still counting. (2026-09-23:
+    # 77 / 64 / 70 for 2023-25 against a pre-2023 best of 50 in 2022.)
     rows = complete_years(d["years"])
-    top3 = sorted(rows, key=lambda y: y["newcomer_count"], reverse=True)[:3]
-    assert {y["year"] for y in top3} == {2023, 2024, 2025}, (
-        f"'three biggest recruiting years on record are 2023, 2024 and 2025' — "
-        f"top3 by newcomers: {[(y['year'], y['newcomer_count']) for y in top3]}"
+    before = max(y["newcomer_count"] for y in rows if y["year"] < 2023)
+    since = [(y["year"], y["newcomer_count"]) for y in rows
+             if y["year"] >= 2023]
+    assert since and all(n > before for _, n in since), (
+        f"'every complete year since 2023 has brought in more new CNAs than "
+        f"any year before it' — pre-2023 best {before}, since: {since}"
     )
 
 
 def check_concentration_reversal(d: dict) -> None:
     # editorial.js (concentration hero): "the roster grew seventeen-fold
     # between 2015 and 2025, yet in 2025 five of its hundreds of names
-    # still shipped a majority of the database, their share climbing for a
+    # still shipped a majority of the year's records, their share climbing for a
     # second straight year" (2023 is the low; 2024 and 2025 each rise).
     # Named years: the partial 2026 (48.0%) would
     # have failed "still ship a majority" on 2027-01-01.
@@ -372,32 +378,32 @@ def check_flood_partial_year_mark(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "the three biggest recruiting years on record are 2023, 2024 and 2025",
+        "every complete year since 2023 has brought in more new CNAs than any year before 2023",
         "cna_concentration.json",
         check_entrants_top3_recruiting,
     ),
     (
-        "still shipped a majority of the database, their share climbing for a second straight year",
+        "still shipped a majority of the year's records, their share climbing for a second straight year",
         "cna_concentration.json",
         check_concentration_reversal,
     ),
     (
-        "2026 passed that mark with months of the year to spare",
+        "The Critical count for 2026 passed four thousand with months of the year still to go",
         "nine_eight_flood.json",
         check_flood_partial_year_mark,
     ),
     (
-        "close to four thousand records a year shipped stamped Critical in 2024 and 2025",
+        "Close to four thousand CVEs a year were rated Critical in 2024 and 2025.",
         "nine_eight_flood.json",
         check_flood_critical_volume,
     ),
     (
-        "About half of all CVEs ship as “High” or worse.",
+        "About half of scored CVEs are rated High or Critical.",
         "severity_inflation.json",
         check_severity_headline,
     ),
     (
-        "six in ten Critical-rated CVEs carry less than a 1% probability of exploitation",
+        "more than six in ten Critical-rated CVEs carry less than a 1% probability of exploitation",
         "score_vs_reality.json",
         check_epss_disconnect,
     ),
@@ -407,12 +413,12 @@ CLAIMS = [
         check_severity_gradient,
     ),
     (
-        "the Modified pile is more than an order of magnitude larger than the live queue",
+        "the Modified count is more than an order of magnitude larger than the live queue",
         "nvd_decay.json",
         check_modified_pile_ratio,
     ),
     (
-        "in-record scoring was a rounding error in 2017 and covers well over nine in ten records today",
+        "In-record scoring covered fewer than one in ten of 2017's records and covers more than nine in ten today",
         "advisory_quality.json",
         check_in_record_scoring_rise,
     ),
@@ -422,27 +428,27 @@ CLAIMS = [
         check_seeding_era_latency,
     ),
     (
-        "{pct} of actively exploited vulnerabilities are rated below High",
+        "{pct} of CISA KEV entries are rated below High",
         "score_vs_reality.json",
         check_kev_below_high,
     ),
     (
-        "tens of thousands of CVEs were quietly stamped “Deferred”",
+        "Tens of thousands of CVEs carry NVD's “Deferred” status.",
         "nvd_decay.json",
         check_deferred_pile,
     ),
     (
-        "The most aggressive hand a 9+ to three or four in ten of the CVEs they score",
+        "The highest-rating CNAs score three or four in ten of their CVEs 9.0 or higher.",
         "cna_leaderboard.json",
         check_cna_nine_plus,
     ),
     (
-        "Nearly four in ten KEV listings land inside a week.",
+        "Nearly four in ten KEV listings come within a week",
         "kev_latency.json",
         check_kev_week_bucket,
     ),
     (
-        "One in seven lands three years late.",
+        "one in seven after three years",
         "kev_latency.json",
         check_kev_three_years_late,
     ),
@@ -452,22 +458,22 @@ CLAIMS = [
         check_kev_getting_slower,
     ),
     (
-        "The early catalog handed out months; the {latest_year} listings carried a median of {latest_median} days",
+        "The 2021 launch cohort got deadlines measured in months; the {latest_year} listings carried a median of {latest_median} days",
         "kev_latency.json",
         check_kev_three_week_rule,
     ),
     (
-        "More assignors than ever.",
+        "There are more CNAs than ever",
         "cna_concentration.json",
         check_more_assignors_than_ever,
     ),
     (
-        "The volume still belongs to a handful.",
+        "five of them published most of 2025's CVEs",
         "cna_concentration.json",
         check_volume_belongs_to_a_handful,
     ),
     (
-        "collapsed from a fifth of everything shipped in 2017 to under two percent by 2023 — and 2024 and 2025 bent it back up",
+        "Rejections fell from a fifth of all records in 2017 to under two percent in 2023, then rose again in 2024 and 2025.",
         "volume_curve.json",
         check_rejection_share_story,
     ),

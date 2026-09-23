@@ -9,15 +9,20 @@ so both are countable from the full-text search API module 02 already
 reads (``fetch_market.EDGAR_URL``, same User-Agent and pacing rules):
 
     https://efts.sec.gov/LATEST/search-index
-        ?q="<phrase>"&forms=8-K,8-K/A&dateRange=custom
+        ?q="<phrase>"&forms=8-K&dateRange=custom
         &startdt=YYYY-MM-DD&enddt=YYYY-MM-DD&from=<offset>
 
 **The two queries are measurement definitions** (:data:`QUERIES`; the
 page's methodology prints them from the emitted JSON):
 
-* ``item_105`` — ``q="Item 1.05"``, ``forms=8-K,8-K/A``. The phrase is only
-  the recall net; a filing *counts* when EDGAR's own item list for it
-  contains ``1.05``. Form 8-K = an original disclosure, 8-K/A = an
+* ``item_105`` — ``q="Item 1.05"``, ``forms=8-K``. EDGAR's form filter
+  matches on the root form, so ``8-K`` returns the originals *and* their
+  8-K/A amendments; a comma list ``8-K,8-K/A`` returns the amendments
+  only (probed live 2026-09-23: Jan–Feb 2024 gives 3 hits that way
+  against 9 — six originals, three amendments — for ``8-K``; the first
+  editions ran the comma list and counted zero originals). The phrase is
+  only the recall net; a filing *counts* when EDGAR's own item list for
+  it contains ``1.05``. Form 8-K = an original disclosure, 8-K/A = an
   amendment.
 * ``item_801`` — ``q="cybersecurity incident"``, ``forms=8-K`` (originals
   only). A filing counts when its item list contains ``8.01`` and not
@@ -90,7 +95,9 @@ from .fetch_market import EDGAR_URL, EDGAR_USER_AGENT
 RULE_EFFECTIVE = "2023-12-18"
 
 QUERIES: dict[str, dict[str, str]] = {
-    "item_105": {"q": '"Item 1.05"', "forms": "8-K,8-K/A", "item": "1.05"},
+    # "8-K" is the root form: it returns 8-K/A amendments too. Never a
+    # comma list — EDGAR then returns 8-K/A only (see module docstring).
+    "item_105": {"q": '"Item 1.05"', "forms": "8-K", "item": "1.05"},
     "item_801": {"q": '"cybersecurity incident"', "forms": "8-K",
                  "item": "8.01"},
 }

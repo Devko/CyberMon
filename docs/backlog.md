@@ -10,6 +10,60 @@ Calendar, 12 KEV Changelog, 13 Silent Rescores, 14 Naming Chaos,
 23 Record Tags, 24 Incident Clock, 25 Advisory Gap, 26 Registry Malware —
 all live; plus the instruments The Field and the Mutation Observatory).
 
+## Maintenance — open items from the 2026-09-23 content review
+
+The review record is `docs/review-2026-09-23/REVIEW.md`; everything below was
+verified and either disclosed in the page copy or left as the owner's call.
+
+- **Charts that close up missed nights** on a category axis (the C2 fix of
+  09-22, not yet applied): CNA roster size, EPSS Volatility gap (quarantined
+  and missed nights), NVD backlog and throughput history (the 08-30 point is
+  a three-night diff), the Observatory stream (missed nights draw as 0).
+- **Advisory Gap malware share.** About 400 of the no-CVE Critical
+  advisories are malicious-package notices (GitHub advisory API, 2026-09-23;
+  367 npm from 2020). The caption says so in words; tag them in
+  `fetch_osv.ghsa_row` (summary / CWE-506) so the share is measured and
+  guarded, and the 2020 spike can be split.
+- **Market redirects.** Fixed for the three moved articles (`wiki_former`);
+  add a fetch-time MediaWiki `redirects=1` check that warns when a mapped
+  title becomes a redirect.
+- **Feodo Tracker staleness.** The page now says when the counts have not
+  moved for a week or more; capture the tracker's "Last updated" stamp or
+  the newest `last_online` so the page can date the silence.
+- **Observatory dating.** Label KEV/rescore runs after missed nights (and the
+  first KEV nightly) as pooled; restamp EPSS events to the run date. Both
+  are disclosed in the methodology today.
+- **The Field's crossings** count nights the Volatility page quarantines
+  (disclosed in the coverage note); drop them in `recent_crossings`.
+- **KEV Changelog receipts** count the 2023-12 ransomware step flips as
+  edits (disclosed) and cut the top 12 through a tie at 8 edits.
+- **Calendar ID age** from `dateReserved` instead of the ID prefix — the
+  copy now says the prefix is a label, not a timestamp.
+- **Owner's voice** — RESOLVED the same day: the owner asked for no AI slop,
+  and the site-wide plain-language pass removed the slogans, the EPSS
+  "grade" vocabulary and the metaphors, and gave every page title its
+  module name (see the review record).
+- **Module names changed 2026-09-23** (reader-facing only; ids, file names,
+  data files, pipeline modules and the docstrings/docs that use the old
+  names are unchanged): Security Market → Buzzword Attention, Breach Ledger
+  → Breach Catalog, Extortion Ledger → Ransom Payments, ATT&CK Churn →
+  ATT&CK Releases, Hygiene Index → DNSSEC Validation, Security Products →
+  Security Products in KEV, EPSS Report Card → EPSS Before KEV, Silent
+  Rescores → CVSS Score Changes, Naming Chaos → Threat Group Aliases, Botnet
+  Weather → Botnet C2 Servers, The AI Alibi → AI and Exploit Timing,
+  Incident Clock → SEC Incident Filings, Advisory Gap → Advisories Without a
+  CVE, Registry Malware → Malicious Packages. Nav groups: The CVE machine →
+  CVE records, The industry → Industry, Attacker's map → Threats. The
+  instruments keep their names (The Field, Mutation Observatory).
+- **Dated headlines** name 2025 explicitly (calendar ID age, weekday,
+  Patch Tuesday, concentration): true after January but old news — refresh
+  to 2026 when that year completes.
+- **Guards that will trip on purpose:** credits lab ceiling 280 (~November),
+  vendor exploit-corpus gap (~2–3 months), crates.io's thin lead over GitHub
+  Actions in the no-CVE share, and the CVE concentration hero's "since 2023
+  that trend has reversed" when the partial 2026 (46.9%) becomes the
+  headline year in January (its guard names 2023–2025 and will not trip).
+
 ## Maintenance — one upstream outage costs the whole night — RESOLVED
 
 Filed and fixed 2026-08-30, after abuse.ch served `503 certificate has expired`
@@ -278,7 +332,9 @@ date). Original entry:
   10,000-hit cap; paged by `from`; dedup by accession number), stage
   `pipeline/sec_incidents_metrics.py`, contract
   `pipeline/sec_incidents_contracts.py`. Queries: `q="Item 1.05"`
-  forms `8-K,8-K/A`, counted by EDGAR's item list; `q="cybersecurity
+  forms `8-K` (the root form, which returns the 8-K/A amendments too; the
+  first editions ran `8-K,8-K/A`, which EDGAR answers with amendments only,
+  and counted zero originals — fixed 2026-09-23), counted by EDGAR's item list; `q="cybersecurity
   incident"` forms `8-K`, counted when items hold 8.01 and not 1.05 and the
   phrase hit the primary document. Three sections: monthly/quarterly
   filings, amendment lag (CIK + nearest prior original, first amendment),

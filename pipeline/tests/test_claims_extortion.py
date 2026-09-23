@@ -88,19 +88,33 @@ def check_last_verified_payment_quarter(d: dict) -> None:
     )
 
 
+def check_median_grew_250_fold(d: dict) -> None:
+    # editorial.js (extortion payments caption): "From 2016 to 2022 the
+    # median grew some 250-fold." Both years are settled history
+    # ($575.54 -> $147,038.94, x255).
+    by = {r["year"]: r.get("median_usd") for r in d["payments_by_year"]}
+    ratio = by[2022] / by[2016]
+    assert 200 <= ratio <= 320, f"'some 250-fold' vs x{ratio:.0f}"
+
+
 CLAIMS = [
+    (
+        "From 2016 to 2022 the median grew some 250-fold.",
+        "extortion_ledger.json",
+        check_median_grew_250_fold,
+    ),
     (
         "the ledger's last verified payment landed in Q3 2024",
         "extortion_ledger.json",
         check_last_verified_payment_quarter,
     ),
     (
-        "Over a billion dollars, settled in public view.",
+        "Verified ransom payments on the Ransomwhere ledger total over a billion dollars.",
         "extortion_ledger.json",
         check_billion_dollar_floor,
     ),
     (
-        "The single largest slice of verified revenue — about two thirds — carries no family label at all",
+        "The revenue with no family label, about two thirds of the total, is larger than any family's",
         "extortion_ledger.json",
         check_unattributed_two_thirds,
     ),

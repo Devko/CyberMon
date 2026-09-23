@@ -1,5 +1,5 @@
 // =============================================================================
-// ai.js — The AI Alibi tab (ai.html). Builds the three sections from
+// ai.js — AI and Exploit Timing tab (ai.html). Builds the three sections from
 // editorial.js. Like exploits.js, all sections share ONE contract file
 // (data/ai_alibi.json), fetched once and passed to each renderer.
 //

@@ -1,4 +1,4 @@
-// The AI Alibi 2 — the inflection test. One diverging bar per speed
+// AI and Exploit Timing 2 — the inflection test. One diverging bar per speed
 // metric: how much of that metric's total travelled distance the selected
 // AI era accounts for, and in which direction. Contract:
 // site/data/ai_alibi.json (`banked`), re-rendered when the hero's era
@@ -71,7 +71,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
           type: "text", left: "center", top: "middle", silent: true,
           style: {
             text: tpl(ed.allWithheld, {
-              cut_year: era.cut_year,
+              post_start_year: era.post_start_year,
               years: cells.length ? cells[0].block.post.years : 0,
             }),
             fill: C.muted, fontFamily: MONO, fontSize: 12,
@@ -166,12 +166,14 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       noteEl.textContent = judged.length
         ? tpl(ed.note, {
             judged: judged.length,
-            total: cells.length,
+            withheld: judged.length < cells.length
+              ? tpl(ed.noteWithheldClause, { total: cells.length })
+              : "",
             accelerated: judged.filter((r) => r.block.verdict === "accelerated").length,
             window: banked.window_years,
             threshold: banked.inflection_threshold_pct,
           })
-        : tpl(ed.noteWithheld, { total: cells.length, cut_year: era.cut_year });
+        : tpl(ed.noteWithheld, { total: cells.length, post_start_year: era.post_start_year });
     }
   };
 

@@ -1,5 +1,5 @@
 // =============================================================================
-// hygiene.js — Hygiene Index tab (hygiene.html). Builds the three DNSSEC
+// hygiene.js — DNSSEC Validation tab (hygiene.html). Builds the three DNSSEC
 // sections from editorial.js. All three read ONE contract file
 // (data/dnssec_adoption.json), fetched once and passed to each renderer
 // (kev.js pattern). Each renderer runs inside its own try/catch so one bad

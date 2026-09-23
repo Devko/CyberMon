@@ -74,12 +74,12 @@ def check_two_roots_mitre_larger(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "Mostly vendors, speaking for themselves.",
+        "Most organizations on the CVE roster are vendors.",
         "cna_roster.json",
         check_mostly_vendors,
     ),
     (
-        "two top-level roots, MITRE and CISA, that vouch for the rest",
+        "Two top-level roots, MITRE and CISA, oversee the rest.",
         "cna_roster.json",
         check_two_roots_mitre_larger,
     ),

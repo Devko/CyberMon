@@ -1,5 +1,5 @@
 // =============================================================================
-// breaches.js — Breach Ledger tab (breaches.html). Builds the three breach
+// breaches.js — Breach Catalog tab (breaches.html). Builds the three breach
 // sections from editorial.js. All three sections share ONE contract file
 // (data/breach_ledger.json), fetched once and passed to each renderer
 // (kev.js pattern). Each renderer runs inside its own try/catch so one bad

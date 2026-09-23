@@ -1,5 +1,5 @@
 // =============================================================================
-// attack.js — ATT&CK Churn tab (attack.html). Builds the three ATT&CK
+// attack.js — ATT&CK Releases tab (attack.html). Builds the three ATT&CK
 // sections from editorial.js. Like kev.js, all sections share ONE contract
 // file (data/attack_churn.json), fetched once and passed to each renderer.
 // Each renderer runs inside its own try/catch so one bad chart yields one

@@ -217,8 +217,8 @@ def _validate_sec_incidents(obj: Any) -> None:
     c801 = _get(totals, "companies_801", f"{P}.totals")
     _check_int(c105, f"{P}.totals.companies_105")
     _check_int(c801, f"{P}.totals.companies_801")
-    if c105 > totals["originals"] + totals["amendments"]:
-        _fail(f"{P}.totals.companies_105", "exceeds Item 1.05 filings")
+    if c105 > totals["originals"]:
+        _fail(f"{P}.totals.companies_105", "exceeds Item 1.05 originals")
     if c801 > totals["voluntary"]:
         _fail(f"{P}.totals.companies_801", "exceeds Item 8.01 filings")
     latest = _get(totals, "latest_105", f"{P}.totals")

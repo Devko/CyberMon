@@ -127,8 +127,10 @@ export function render(slots, data) {
         uncountedCell(r, ed),
         el("td", "num" + (r.kev ? " accent" : ""), fmtInt(r.kev)),
         el("td", "mono", r.first_month),
-        el("td", "cna-list",
-          r.top_cnas.map((c) => `${c.cna} ${fmtInt(c.n)}`).join(" · "))
+        r.top_cnas.length
+          ? el("td", "cna-list",
+            r.top_cnas.map((c) => `${c.cna} ${fmtInt(c.n)}`).join(" · "))
+          : el("td", "cna-list muted", "—")
       );
       tbody.append(tr);
     }

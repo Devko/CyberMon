@@ -66,7 +66,9 @@ def test_fixture_build_counts_and_validates():
     contracts.validate("sec_incidents.json", obj)
     t = obj["totals"]
     assert (t["originals"], t["amendments"], t["voluntary"]) == (7, 4, 3)
-    assert t["companies_105"] == 7 and t["companies_801"] == 3
+    # companies_105 counts filers of originals only: 7 originals from 6
+    # CIKs (one company filed two), the amendment-only filer not counted
+    assert t["companies_105"] == 6 and t["companies_801"] == 3
     d = obj["diagnostics"]
     assert d["dropped_105"] == 1 and d["phrase_fallback_105"] == 1
     assert obj["monthly"][0]["month"] == "2023-12"

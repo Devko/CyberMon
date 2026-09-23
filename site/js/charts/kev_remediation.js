@@ -34,7 +34,7 @@ export function render(slots, data) {
         current_clause: current
           ? tpl(ed.captionCurrentClause, {
               current_year: current.year,
-              current_median: fmtDays(current.median_days),
+              current_median: fmtInt(Math.round(current.median_days)),
             })
           : "",
       });

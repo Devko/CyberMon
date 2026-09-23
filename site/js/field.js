@@ -27,38 +27,38 @@ const $ = (id) => document.getElementById(id);
 const ARRANGE = {
   time: {
     k: "Timeline · date × score × EPSS",
-    thesis: "Records by publication day and current in-record severity. Depth shows the current EPSS forecast for exploitation in the next 30 days; KEV marks observed exploitation.",
-    method: "x: datePublished (UTC day). y: the newest CVSS base score in the record, CNA container before CISA-ADP — the same precedence the severity-inflation chart uses; records with no in-record score sit on the floor. z: log10 of the current EPSS probability, so each lane back is ten times less likely; records without a current EPSS score sit in the back lane.",
+    thesis: "Records by publication day and current in-record severity. Depth shows the current EPSS probability of exploitation in the next 30 days; KEV marks confirmed exploitation.",
+    method: "x: datePublished (UTC day). y: the newest CVSS base score in the record, CNA container before CISA-ADP, the same score the CVE Ecosystem page uses for CVEs by severity and for CVSS against EPSS; records with no in-record score are placed at the bottom. z: log10 of the current EPSS probability, so each lane further back is ten times less likely; records without a current EPSS score are placed in the back lane.",
   },
   grid: {
     k: "Severity × predicted exploitation",
-    thesis: "EPSS estimates exploitation probability; CVSS describes severity. These are different dimensions, with no expected diagonal. KEV is the separate observed-exploitation overlay.",
-    method: "The same sixteen buckets as chart 3 on the CVE Ecosystem page (CVSS 0.0–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no in-record score and a column for records without a current EPSS score. Pile height is the base score.",
+    thesis: "EPSS estimates the probability of exploitation; CVSS describes severity. They measure different things, and no diagonal is expected. KEV marks confirmed exploitation separately.",
+    method: "The same sixteen buckets as the CVSS × EPSS grid on the CVE Ecosystem page (CVSS 0.0–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no in-record score and a column for records without a current EPSS score. Point height is the base score.",
   },
   cna: {
     k: "By assigner",
-    thesis: "Who mints the record. The forty-eight largest assigners in the selection, each pile as tall as the scores it hands out.",
-    method: "Grouped by the record's assignerShortName. Pile height is the base score, so a flat-topped pile is a CNA that scores everything alike. The KEV count under each pile is the exploited-in-the-wild cut of that CNA's records.",
+    thesis: "Records grouped by the CNA that assigned them: the 48 largest assigners in the current selection. Point height is the record's base score.",
+    method: "Grouped by the record's assignerShortName. Point height is the base score, so a group whose points sit at one height scored its records alike. The KEV count under each group is the number of that CNA's records in KEV.",
   },
   cwe: {
     k: "By weakness",
-    thesis: "Bug-class inertia in one room: the thirty weakness classes that carry most of the selection.",
+    thesis: "Records grouped by weakness class: the 30 most common CWE ids in the current selection.",
     method: "Grouped by the first cweId in the record, CNA container preferred; records whose problemTypes carry no CWE id are grouped as untagged. Names are the site's own short labels for the common classes.",
   },
   status: {
     k: "By NVD queue status",
-    thesis: "Where each record sits in NVD's queue tonight — the backlog the decay chart counts, one record at a time.",
-    method: "vulnStatus from the nightly NVD sync (the same state the NVD decay and throughput charts diff). Unknown means NVD has no record of the id, or the NVD stage was skipped for this build.",
+    thesis: "Records grouped by their current NVD status, the statuses the NVD backlog chart counts.",
+    method: "vulnStatus from the nightly NVD sync (the same state the NVD backlog and throughput charts compare). Unknown means NVD has no record of the id, or the NVD stage was skipped for this build.",
   },
   clock: {
     k: "The clock · publication → PoC → KEV",
-    thesis: "How long the record had. Front lane: days from publication to the first public proof of concept. Back lane: days to the KEV listing. Left of zero, the exploit came first.",
-    method: "Only records with a dated event are placed. x is the signed gap in days on a log scale (±10 years at the edges); y is the base score. PoC date is the earliest Exploit-DB entry, the one source that dates the exploit itself (Metasploit dates the disclosure, not the module; Nuclei publishes no dates); KEV date is CISA's dateAdded. A record with both sits in the KEV lane and the hover shows both gaps — the same joins the Time to PoC and KEV Latency modules use.",
+    thesis: "Days from CVE publication to the first dated public exploit (front lane) and to the KEV listing (back lane). Points left of zero came before publication.",
+    method: "Only records with a dated public exploit or a KEV listing are placed. x is the signed gap in days on a log scale, capped at ±10 years; y is the base score. The exploit date is the earliest Exploit-DB entry: of the three exploit sources, only Exploit-DB dates the exploit itself (Metasploit metadata dates the vulnerability's disclosure, and Nuclei templates carry no date). The KEV date is CISA's dateAdded. A record with both is placed in the KEV lane, and the hover shows both gaps. These are the same joins the Time to PoC and KEV Latency modules use.",
   },
   vendor: {
     k: "By vendor",
-    thesis: "Whose software. The forty-eight vendors carrying most of the selection, by the first affected vendor each record names.",
-    method: "Grouped by the CNA container's first affected[].vendor, lower-cased and whitespace-normalised; placeholder vendors (n/a, unknown) and records naming none fall into \"other\" and are not shown here. Vendor spelling is the record's own, so one company can appear under two names.",
+    thesis: "Records grouped by the first affected vendor each record names: the 48 largest vendors in the current selection.",
+    method: "Grouped by the CNA container's first affected[].vendor, lower-cased and whitespace-normalised; placeholder vendors (n/a, unknown) and records naming none are grouped as \"other\" and not shown here. Vendor spelling is the record's own, so one company can appear under two names.",
   },
 };
 
@@ -1154,7 +1154,7 @@ function main({ meta, buf }) {
     `${fmt(meta.n)} published CVEs placed · ${fmt(skipped.rejected || 0)} rejected and ${fmt(skipped.undated || 0)} undated records left out · `
     + `${fmt(meta.counts.scored)} carry a score in the record · ${fmt(meta.counts.epss)} have an EPSS score · ${fmt(meta.counts.poc_dated || 0)} have a dated public PoC.<br>`
     + (meta.layout.version >= 3
-      ? `Changed in the last ${fmt(meta.window_days || 30)} days: ${fmt(meta.counts.rescored || 0)} CNA scores (the Silent Rescores log) · ${fmt(meta.counts.crossed || 0)} crossed the 1% EPSS line (the Volatility diff).<br>`
+      ? `Changed in the last ${fmt(meta.window_days || 30)} days: ${fmt(meta.counts.rescored || 0)} CNA scores (the CVSS Score Changes log) · ${fmt(meta.counts.crossed || 0)} crossed the 1% EPSS line (the Volatility diff, including nights that page quarantines).<br>`
       : "")
     + `cvelistV5 ${str(s.cvelist?.release)} · CISA KEV ${str(s.kev?.catalog_version)} (${fmt(s.kev?.count || 0)} entries) · `
     + `EPSS ${str(s.epss?.model_version)} of ${str(s.epss?.score_date)} · `

@@ -1,4 +1,4 @@
-// Advisory Gap 1 (hero) — reviewed GHSA advisories per GitHub publication
+// Advisories Without a CVE 1 (hero) — reviewed GHSA advisories per GitHub publication
 // year, split by whether they carry a CVE alias. Contract:
 // site/data/advisory_gap.json (years + ecosystems[].years). An ecosystem
 // picker swaps the series; a toggle swaps counts for the no-CVE share. The

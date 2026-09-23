@@ -417,6 +417,37 @@ def test_wiki_success_replaces_cache_but_leaves_unfetched_months_as_gaps():
     assert state["series"]["mapped"]["wiki"] == {"2026-06": 70, "2026-07": 5}
 
 
+TERM_MOVED = TermDef("moved", "Moved", gdelt_query='"moved" security',
+                     hn_query='"moved"', arxiv_query='"moved"',
+                     wiki_article="New_title",
+                     wiki_former=("Old_title", "Older_title"))
+
+
+def test_wiki_moved_article_sums_current_and_former_titles():
+    # after a move the old title keeps only redirect traffic and the new
+    # one starts near zero: each month is the sum over every title
+    session = FakeSession(wiki=[
+        _wiki([("2026-06", 3), ("2026-07", 900)]),     # New_title
+        _wiki([("2026-06", 1000), ("2026-07", 40)]),   # Old_title
+        FakeResponse(404, text="no views"),            # Older_title: none
+    ])
+    state = _sync(session, [TERM_MOVED], months=3)
+    urls = [r["url"] for r in session.requests["wiki"]]
+    assert ["/New_title/" in urls[0], "/Old_title/" in urls[1],
+            "/Older_title/" in urls[2]] == [True, True, True]
+    assert state["series"]["moved"]["wiki"] == {"2026-06": 1003,
+                                                "2026-07": 940}
+
+
+def test_wiki_moved_article_keeps_cache_when_a_title_fails():
+    prior = {"version": 1, "last_sync": "2026-07-08T00:00:00Z",
+             "series": {"moved": {"wiki": {"2026-06": 500}}}, "pending": []}
+    session = FakeSession(wiki=[_wiki([("2026-06", 3)]),
+                                FakeResponse(503, text="unavailable")])
+    state = _sync(session, [TERM_MOVED], state=prior, months=3)
+    assert state["series"]["moved"]["wiki"] == {"2026-06": 500}
+
+
 # -------------------------------------------------------------------- EDGAR
 
 def test_edgar_cell_request_shape_and_month_bounds():

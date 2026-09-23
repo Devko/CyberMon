@@ -18,12 +18,12 @@ the pipeline source.
 Each module is its own directly linkable page with its own pipeline stage and
 [data contracts](docs/data-contracts.md). The landing page
 ([index.html](site/index.html)) is the module directory, grouped by theme —
-The CVE machine, Exploitation, The industry, Attacker's map — the same groups
+CVE records, Exploitation, Industry, Threats — the same groups
 as the site nav (both fold over the `group` tags in `site/js/editorial.js`).
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
-*CVE severity has become meaningless — here are the receipts.* Ten charts:
+*Close to half of scored CVEs are rated High or Critical each year.* Ten charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't
@@ -61,9 +61,9 @@ records a year, so both additive charts ship a `without_linux` variant with
 its own pace projection. Medians cannot be taken apart this way; every
 other chart keeps all records.
 
-### 02 · Security Market — [market.html](https://devko.github.io/CyberMon/market.html) (live)
+### 02 · Buzzword Attention — [market.html](https://devko.github.io/CyberMon/market.html) (live)
 
-*The security industry runs on a hype curve. Nobody publishes the curve.*
+*Attention to each security buzzword is tracked monthly in five public sources.*
 A data-driven hype-cycle tracker for 14 curated buzzwords across five
 independent attention signals — news coverage (GDELT), practitioner
 chatter (Hacker News), research output (arXiv cs.CR), public curiosity
@@ -75,8 +75,7 @@ media-vs-research pair of the five).
 
 ### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html) (live)
 
-*By the time the government confirms it's exploited, the exploit had a
-head start.* Four charts: days from CVE publication to CISA KEV listing
+*Most KEV entries were listed a week or more after their CVE was published.* Four charts: days from CVE publication to CISA KEV listing
 (median/IQR by year, distribution buckets), remediation-deadline spans,
 and the share of each year's listings flagged for known ransomware
 campaign use — with the 2021 launch back-catalog quarantined from the
@@ -86,15 +85,14 @@ signal they are.
 
 ### 04 · CNA Concentration — [concentration.html](https://devko.github.io/CyberMon/concentration.html) (live)
 
-*The CVE database is becoming a handful of vendors grading themselves at
-scale.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
+*Hundreds of CNAs assign CVEs; since 2021 the five largest have issued about half.* CNA roster growth vs. top-5/top-10 volume share, a formal HHI
 concentration index, newcomer counts, and a rejection-rate leaderboard.
 The trend chart takes the same Linux-kernel toggle as module 01 (shares
 and HHI recomputed without the kernel CNA).
 
-### 05 · Breach Ledger — [breaches.html](https://devko.github.io/CyberMon/breaches.html) (live)
+### 05 · Breach Catalog — [breaches.html](https://devko.github.io/CyberMon/breaches.html) (live)
 
-*Dwell time is a marketing number. Breach disclosure is a public record.*
+*Breaches typically reach Have I Been Pwned months after their recorded breach date.*
 Three charts over the Have I Been Pwned breach catalog: days from breach
 to public cataloging (median/IQR per catalog year, with the December
 2013 launch import quarantined from the trend), breaches and accounts
@@ -103,10 +101,9 @@ share of each year's breaches spilling the top data classes. Fabricated
 entries, spam lists, malware corpora and stealer logs are excluded, and
 the exclusion arithmetic ships in the data file.
 
-### 06 · Extortion Ledger — [extortion.html](https://devko.github.io/CyberMon/extortion.html) (live)
+### 06 · Ransom Payments — [extortion.html](https://devko.github.io/CyberMon/extortion.html) (live)
 
-*Ransom revenue is the one security statistic nobody can spin — it
-settles on a public ledger.* Three views of the crowdsourced,
+*Crowdsourced, blockchain-verified ransomware payments total more than a billion dollars.* Three views of the crowdsourced,
 on-chain-verified Ransomwhere dataset: confirmed ransom revenue per
 quarter (in day-of-transfer dollars), payment counts and median payment
 size per year, and a family concentration board with the unattributed
@@ -114,21 +111,20 @@ majority disclosed rather than ranked. Every figure is a lower bound by
 construction — a payment counts only after someone reported the address
 and the transfers were verified.
 
-### 07 · ATT&CK Churn — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
+### 07 · ATT&CK Releases — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
 
-*The map of attacker behavior grows every release; detections are graded
-against a moving target.* Three charts from MITRE's versioned enterprise
+*Active ATT&CK techniques and sub-techniques have increased every year since 2018.* Three charts from MITRE's versioned enterprise
 STIX bundles: active techniques and sub-techniques per ATT&CK release over
-real release dates, what each release added vs. deprecated or revoked
+the release dates MITRE's STIX index records, what each release added vs. deprecated or revoked
 (diffed by STIX id), and the group/software catalog behind the matrix.
 Released bundles are immutable, so per-version stats are computed once and
 cached (`.cache/attack_state.json`); a lost cache is reconstructed from the
 previously published `attack_churn.json`, and a normal night costs one
 `index.json` fetch.
 
-### 08 · Hygiene Index — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
+### 08 · DNSSEC Validation — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
 
-*The fix is two decades old, free, and still not deployed.* Three charts
+*Fewer than half of internet users sit behind DNSSEC-validating resolvers.* Three charts
 on measured DNSSEC validation (APNIC Labs): the world adoption line since
 2013, a fixed set of the ten largest online populations compared (frozen
 by APNIC's own internet-user weighting at module creation), and the
@@ -136,9 +132,9 @@ one-economy-one-vote distribution across every measured economy. APNIC
 publishes its full daily history, so this stage refetches statelessly
 every night — no accumulated state, no committed history file.
 
-### 09 · Security Products — [guards.html](https://devko.github.io/CyberMon/guards.html) (live)
+### 09 · Security Products in KEV — [guards.html](https://devko.github.io/CyberMon/guards.html) (live)
 
-*The products guarding the network keep landing on the exploited list.*
+*More than one KEV entry in nine is a security product.*
 Three views over the CISA KEV catalog, with every entry classified by a
 curated, versioned security-product table
 ([pipeline/security_products.py](pipeline/security_products.py) — the
@@ -151,9 +147,9 @@ consecutive listings, and the ransomware-flag split between exploited
 security products and the rest of the catalog. No new upstream source:
 everything derives from the KEV feed the pipeline already fetches.
 
-### 10 · EPSS Report Card — [epss.html](https://devko.github.io/CyberMon/epss.html) (live)
+### 10 · EPSS Before KEV — [epss.html](https://devko.github.io/CyberMon/epss.html) (live)
 
-*What the industry's exploit forecast said the day before the catalog caught up.*
+*Roughly half or more of recent KEV additions had an EPSS score under 1% the day before listing.*
 Three charts describing EPSS — the site's own yardstick for CVSS — on the
 eve of the outcome it exists to predict: for every CVE that CISA later
 confirmed exploited (KEV), the EPSS score published **the day before** the
@@ -174,7 +170,7 @@ requests. The one-time historical backfill is batch-capped
 
 ### 11 · CVE Calendar — [calendar.html](https://devko.github.io/CyberMon/calendar.html) (live)
 
-*The CVE stream keeps vendor time.* Three charts on publication timing,
+*Since 2022, more CVEs have been published on Tuesday than on any other day.* Three charts on publication timing,
 from the same cvelistV5 corpus (all date judgments UTC):
 
 1. **Reservation aging (hero)** — per publication year, the share of
@@ -190,8 +186,7 @@ from the same cvelistV5 corpus (all date judgments UTC):
 
 ### 12 · KEV Changelog — [changelog.html](https://devko.github.io/CyberMon/changelog.html) (live)
 
-*CISA edits the exploited list without a changelog — CyberMon keeps the
-diffs.* Four views over the project's own diff record of the CISA KEV
+*CISA changes KEV entries after listing them, including due dates and ransomware flags.* Four views over the project's own diff record of the CISA KEV
 catalog: edits per month by kind (due-date moves, ransomware-flag flips,
 text revisions, removals — additions are excluded, because a growing
 catalog is the system working), the cumulative Unknown→Known ransomware
@@ -210,10 +205,9 @@ was seeded once from Internet Archive captures of the feed
 `granularity: "capture"` and are dated to the first capture showing the
 change; nightly events carry `"daily"`.
 
-### 13 · Silent Rescores — [rescores.html](https://devko.github.io/CyberMon/rescores.html) (live)
+### 13 · CVSS Score Changes — [rescores.html](https://devko.github.io/CyberMon/rescores.html) (live)
 
-*Severity is not just assigned — it is edited after the fact, quietly, on
-live records.* Every night the pipeline fingerprints each published CVE's
+*CNAs change CVSS scores on published CVE records, mostly by adding a missing score.* Every night the pipeline fingerprints each published CVE's
 CNA-assigned base score (the exact extraction the severity-inflation
 chart uses, so the two can never disagree) and diffs it against the
 previous night's corpus (`site/data/history/rescore_state.json`,
@@ -232,9 +226,9 @@ every night.** A lost diff state rebuilds from that night's corpus (zero
 events that night, at worst one night's diffs lost); a re-run on the same
 corpus release is detected and never double-counts.
 
-### 14 · Naming Chaos — [naming.html](https://devko.github.io/CyberMon/naming.html) (live)
+### 14 · Threat Group Aliases — [naming.html](https://devko.github.io/CyberMon/naming.html) (live)
 
-*One adversary, a roomful of names — every vendor rebrands the same actor.*
+*ATT&CK's most-renamed threat groups carry more than a dozen other names each.*
 Two charts over the intrusion-set roster of MITRE's current enterprise
 ATT&CK STIX bundle: a most-renamed leaderboard (each group's alternate
 names — the aliases besides its canonical one, so APT28 is also Fancy Bear,
@@ -250,8 +244,7 @@ series (aliases per release) is a documented follow-up.
 
 ### 15 · CWE Top 25 — [top25.html](https://devko.github.io/CyberMon/top25.html) (live)
 
-*The official worst-bugs list, checked against what actually ships and gets
-exploited.* Two charts set MITRE's annual **CWE Top 25** — a small,
+*Most of MITRE's CWE Top 25 also rank among the 25 most frequent weaknesses in CVEs.* Two charts set MITRE's annual **CWE Top 25** — a small,
 hand-committed static list (`pipeline/cwe_top25_data.py`, the module's only
 new source; the 2023, 2024 and 2025 lists transcribed from cwe.mitre.org,
 with the newest committed year, 2025, the one compared) — against the
@@ -269,25 +262,23 @@ raw prevalence is the story, and the measured window is stated explicitly.
 
 ### 16 · Vulnrichment — [adp.html](https://devko.github.io/CyberMon/adp.html) (live)
 
-*When the scorekeeper walked off, CISA picked up the pen.* As NVD's analysis
+*CISA's Vulnrichment program has added data to about half of all published CVEs.* As NVD's analysis
 pipeline stalled through 2024, CISA's Vulnrichment program — the `CISA-ADP`
 container bolted onto the CVE record — quietly became the record's de-facto
 enricher. Three charts over the `containers.adp[]` blocks the CVE-corpus pass
 already parses (no new fetch): the monthly enrichment curve bucketed by the
 CISA-ADP container's own `dateUpdated` (NOT the CVE's publish date, because
 CISA back-fills legacy records — a 2019 CVE's block is stamped 2025; back-fill
-sweep months are flagged), what the enrichment adds (an SSVC decision on
-nearly every record, CVSS and CWE as selective patch-ins), and the
-sole-enricher board (CISA-ADP does the substantive work; the CVE Program root
-adds only reference tags). No NVD overlay: CyberMon's own NVD history begins at
+sweep months are flagged), what the enrichment adds (SSVC decision points on
+nearly every record, CVSS and CWE mostly where the CNA left them blank), and
+the ADP publisher board (CISA-ADP does almost all of the substantive work;
+the CVE Program's own ADP container adds only references). No NVD overlay: CyberMon's own NVD history begins at
 launch, so there is no 2024 NVD flow to chart — the slowdown is prose, and the
 live backlog is read client-side for scale, never a fabricated trend.
 
 ### 17 · EPSS Volatility — [epssvol.html](https://devko.github.io/CyberMon/epssvol.html) (live)
 
-*Teams triage on the EPSS percentile — a number that reshuffles under most
-CVEs every night as the growing corpus re-ranks — while the model's actual
-probability holds for nearly all of them.* Every night CyberMon fingerprints
+*EPSS percentiles change for almost every CVE each night; probabilities change for very few.* Every night CyberMon fingerprints
 the EPSS feed it already fetches (each CVE's probability and percentile) and
 diffs it against the previous night's fingerprint (a cache in
 `.cache/epss_volatility_state.json.gz`, restored by actions/cache and saved
@@ -302,13 +293,13 @@ day's single biggest probability mover. Three charts: the headline gap
 a biggest-single-day movers board. Three kinds of night are quarantined from
 every trend and named with their reason in the data file: model-version
 resets (a new model rescoring the whole corpus overnight — the treatment
-Silent Rescores gives its seeding), pooled nights (a diff spanning more than
+CVSS Score Changes gives its seeding), pooled nights (a diff spanning more than
 one snapshot because the nights between failed), and whole-corpus lurches (a
 night on which more than five times the clean-night median share of
 probabilities moved, and moved back — three of them in August 2026 supplied
 nine in ten of every material crossing on record until this rule existed). **No upstream keeps a
 per-CVE EPSS change log, so the record starts at first deploy — thin by
-design, deeper every night.** Distinct from the EPSS Report Card (module
+design, deeper every night.** Distinct from the EPSS Before KEV (module
 10), which describes where scores stood the day before a KEV listing; this
 measures the model's stability, and neither measures its accuracy. Honest
 caveat kept in the copy: FIRST's dated daily snapshots are publicly
@@ -317,7 +308,7 @@ possible source.
 
 ### 18 · CNA Roster — [roster.html](https://devko.github.io/CyberMon/roster.html) (live)
 
-*The CVE federation grows and churns; nobody keeps the history.* The CVE
+*The CVE Program publishes no join dates, so CyberMon logs roster changes nightly.* The CVE
 Program publishes who can assign a CVE today but no record of how the roster
 got there. CyberMon snapshots the org roster every night — the JSON behind
 cve.org's List of Partners (~530 orgs) — and keeps the diff: onboardings,
@@ -327,7 +318,7 @@ upstream keeps only today's roster. Three charts: roster size over time and
 onboardings-vs-departures per month (both drawn from the committed record, so
 they start launch-thin — onboarding means *first observed in our snapshots*,
 since no accreditation date is published — and deepen one night at a time,
-like Silent Rescores), plus today's composition by type, top-level root
+like CVSS Score Changes), plus today's composition by type, top-level root
 (MITRE vs CISA), reporting root and country, which is fully real from day one.
 State and log are written only after every output validates and travel in the
 same nightly commit. Roster data is CVE Program data; the program's terms
@@ -336,10 +327,9 @@ stage `pipeline/cna_roster.py`; no shared upstream.
 
 ### 19 · Time to PoC — [exploits.html](https://devko.github.io/CyberMon/exploits.html) (live)
 
-*The only deadline that matters is the gap between disclosure and public
-exploit code.* Three charts joining the public exploit trackers to the CVE
+*Since 2021 the median public exploit has appeared a week or more after the CVE.* Three charts joining the public exploit trackers to the CVE
 corpus — the third leg of the exploitation trilogy (KEV Latency is the
-government's clock, EPSS Report Card the forecast's day-before snapshot, this the
+government's clock, EPSS Before KEV the forecast's day-before snapshot, this the
 attacker's): the gap from CVE publication to the first dated public PoC
 (median/IQR per publication year, negative gaps kept — since the mid-2000s
 the median hugs zero, and half the PoC'd cohort has code out before the
@@ -356,9 +346,9 @@ detection-coverage line — no repo histories are cloned). All three publish ful
 statelessly every night (`pipeline/fetch_poc.py`, day-cached in
 `.cache/poc/`); honesty notes — public-tracker lower bound, self-selected
 cohort, right-censored recent years — live in the page methodology.
-### 20 · Botnet Weather — [c2.html](https://devko.github.io/CyberMon/c2.html) (live)
+### 20 · Botnet C2 Servers — [c2.html](https://devko.github.io/CyberMon/c2.html) (live)
 
-*Botnet command-and-control has weather. Nobody keeps the forecasts.*
+*Feodo Tracker's botnet C2 blocklist is counted by malware family every night.*
 abuse.ch's Feodo Tracker publishes the live blocklist of botnet C2 servers
 (Emotet, QakBot, Pikabot, ...) — only today's picture. CyberMon snapshots it
 nightly and keeps the series: per-family daily counts (listed vs online)
@@ -377,9 +367,9 @@ port or hostname ever reaches the site, a red line the output contract
 enforces mechanically. New fetcher `pipeline/fetch_feodo.py`, stage
 `pipeline/botnet_metrics.py`; no shared upstream.
 
-### 21 · The AI Alibi — [ai.html](https://devko.github.io/CyberMon/ai.html) (live)
+### 21 · AI and Exploit Timing — [ai.html](https://devko.github.io/CyberMon/ai.html) (live)
 
-*The industry blames AI for a clock that did not speed up when the models arrived.*
+*No judged exploit-timing measure has sped up since ChatGPT's release.*
 Exploitation got fast long before the models did, and this module tests
 that claim instead of asserting it. Three charts: the whole
 publication-to-first-public-exploit record (1999 onward) with the AI
@@ -415,7 +405,7 @@ reach the payload. Stage `pipeline/ai_metrics.py`; no new upstream.
 
 ### 22 · AI Credits — [credits.html](https://devko.github.io/CyberMon/credits.html) (live)
 
-*Thousands announced. Hundreds credited in CVE records.* This module measures **attribution, not
+*AI labs and vendors announce vulnerabilities in the thousands; hundreds of CVE records credit them.* This module measures **attribution, not
 discovery**: every credit in the corpus is matched against a hand-curated
 registry of AI finders (`pipeline/ai_credits_data.py`), and nothing verifies
 how a bug was actually found. The registry is narrow because a loose match
@@ -458,7 +448,7 @@ methodology discloses that it was drafted with Claude, an Anthropic model.
 
 ### 23 · Record Tags — [tags.html](https://devko.github.io/CyberMon/tags.html) (live)
 
-*More CVEs are issued for products the vendor no longer supports.* The CVE
+*More CVEs are tagged as issued for products the vendor no longer supports.* The CVE
 record lets the CNA tag its container; three values are defined by the
 schema — `unsupported-when-assigned`, `disputed`,
 `exclusively-hosted-service` (`x_` tags are CNA-private and listed only as
@@ -472,9 +462,9 @@ record. A tag is what the CNA noted, not a verdict; untagged is not
 publication year. No fetch of its own — the tallies ride the shared
 corpus pass (`Aggregator._add_tags`). Stage `pipeline/tags_metrics.py`.
 
-### 24 · Incident Clock — [incidents.html](https://devko.github.io/CyberMon/incidents.html) (live; first edition pending)
+### 24 · SEC Incident Filings — [incidents.html](https://devko.github.io/CyberMon/incidents.html) (live)
 
-*The SEC's incident-disclosure rule, counted filing by filing.* Since
+*US public companies have filed dozens of material-incident 8-Ks since December 2023.* Since
 18 December 2023 a US public company must disclose a material cybersecurity
 incident on Form 8-K under Item 1.05. Every night the pipeline re-reads SEC
 EDGAR full-text search (the client, User-Agent and pacing of module 02's
@@ -491,14 +481,16 @@ the latest Item 1.05 filings linked to EDGAR — companies' own public
 filings, the one place the site names an affected organisation. The
 incident date is prose, not a field, so nothing here measures
 breach-to-disclosure time. Stateless (no history, no cache); an EDGAR
-outage carries the last counted edition forward stale. The committed
-edition is an honest empty one (`status: "empty"`) until the first nightly
-read. Fetcher `pipeline/fetch_sec_incidents.py`, stage
+outage carries the last counted edition forward stale. Before its first
+nightly read the edition is an honest empty one (`status: "empty"`); the
+first editions sent `forms=8-K,8-K/A`, which EDGAR answers with amendments
+only, and counted zero originals until the query was fixed on 2026-09-23.
+Fetcher `pipeline/fetch_sec_incidents.py`, stage
 `pipeline/sec_incidents_metrics.py`.
 
-### 25 · Advisory Gap — [advisories.html](https://devko.github.io/CyberMon/advisories.html) (live)
+### 25 · Advisories Without a CVE — [advisories.html](https://devko.github.io/CyberMon/advisories.html) (live)
 
-*Most reviewed advisories get a CVE. A quarter of Rust's do not.*
+*Most GitHub-reviewed advisories carry a CVE id; a quarter of Rust's do not.*
 GitHub-reviewed security advisories (GHSA ids) for open-source packages, read
 from OSV.dev's per-ecosystem exports for the twelve GitHub advisory
 ecosystems, withdrawn ones excluded and multi-ecosystem advisories counted
@@ -511,9 +503,9 @@ pipeline checks the flag on every record and a claims test guards it.
 Fetcher `pipeline/fetch_osv.py` (shared with module 26), stage
 `pipeline/osv_metrics.py`.
 
-### 26 · Registry Malware — [malware.html](https://devko.github.io/CyberMon/malware.html) (live)
+### 26 · Malicious Packages — [malware.html](https://devko.github.io/CyberMon/malware.html) (live)
 
-*Six in ten of the feed's reports landed in one month.*
+*Six in ten reports in the OpenSSF malicious-packages feed were published in one month.*
 The OpenSSF malicious-packages feed (MAL ids), from the same OSV exports:
 reports per registry per month of feed publication (stacked, or one line
 per registry on a log scale), each year's reports by registry, and the
@@ -525,7 +517,7 @@ compact summary, and an OSV outage carries both modules forward stale.
 
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html) (instrument)
 
-*Every published CVE, one point each.* The Field explores the corpus by
+*Every published CVE is placed as one point in a 3D view.* The Field explores the corpus by
 publication date, current severity and EPSS, publication-to-PoC/KEV timing,
 assigner, vendor, weakness, or current NVD status. It has a dedicated
 Instruments link and stays separate from module/carousel generation.
@@ -571,7 +563,7 @@ and `python tools/field_smoke.py` (isolated synthetic fixture). Use
 
 ## Mutation Observatory — [observatory.html](https://devko.github.io/CyberMon/observatory.html) (instrument)
 
-*Every per-CVE change CyberMon logs, one record at a time.* The Observatory
+*The Observatory puts CyberMon's CVE-level change logs on one timeline.* The Observatory
 lays the events of the three histories CyberMon keeps — CNA score changes
 (`rescore_log.csv`), KEV additions, field and text edits and removals
 (`kev_changelog.csv`, with its capture/daily granularity), and each
@@ -622,14 +614,14 @@ reads a few-KB JSON file; there are no runtime queries.
 | Source | What we use | License / terms |
 |---|---|---|
 | [cvelistV5](https://github.com/CVEProject/cvelistv5) (CVE Program) | Authoritative CVE corpus incl. CNA-assigned CVSS scores | [CVE terms of use](https://www.cve.org/Legal/TermsOfUse); CVE is a registered trademark of The MITRE Corporation |
-| [EPSS](https://www.first.org/epss/) (FIRST) | Daily exploitation-probability scores (current CSV feed), plus historical day-before scores fetched per-date from the [FIRST API](https://api.first.org/) (`/data/v1/epss?cve=…&date=…`) for the EPSS Report Card — each (CVE, date) looked up once, ever | Free with attribution per [EPSS usage guidance](https://www.first.org/epss/user-guide) |
+| [EPSS](https://www.first.org/epss/) (FIRST) | Daily exploitation-probability scores (current CSV feed), plus historical day-before scores fetched per-date from the [FIRST API](https://api.first.org/) (`/data/v1/epss?cve=…&date=…`) for the EPSS Before KEV — each (CVE, date) looked up once, ever | Free with attribution per [EPSS usage guidance](https://www.first.org/epss/user-guide) |
 | [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Known Exploited Vulnerabilities catalog | US Government work; [CC0-style license](https://www.cisa.gov/sites/default/files/licenses/kev/license.txt) |
 | [NVD API 2.0](https://nvd.nist.gov/developers/vulnerabilities) (NIST) | Enrichment status (`vulnStatus`) only | Public domain (US Government); [NVD terms](https://nvd.nist.gov/general/faq) request attribution and prohibit implying endorsement |
 | [GDELT 2.0 DOC API](https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/) | Monthly news-article volume per tracked term | Free with attribution per [GDELT terms of use](https://www.gdeltproject.org/about.html#termsofuse) |
 | [HN Search API](https://hn.algolia.com/api) (Algolia) | Monthly story+comment counts per tracked term | Free API provided by Algolia; attribution appreciated |
 | [arXiv API](https://info.arxiv.org/help/api/index.html) | Monthly cs.CR preprint counts per tracked term | Free per [arXiv API ToU](https://info.arxiv.org/help/api/tou.html); thank you to arXiv for use of its open access interoperability |
 | [Wikimedia Pageviews REST API](https://wikimedia.org/api/rest_v1/) | Monthly pageviews of one curated en.wikipedia article per tracked term (`agent=user`, bot traffic excluded); the term→article mapping is reviewable data in `pipeline/market_terms.py` | Aggregate pageview data is [CC0](https://creativecommons.org/publicdomain/zero/1.0/); accessed per the [Wikimedia API policy](https://foundation.wikimedia.org/wiki/Policy:Wikimedia_Foundation_API_Policy) (descriptive User-Agent with contact info) |
-| [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; corpus reaches back to 2001); for the Incident Clock, the paged hits of two 8-K queries (Item 1.05, Item 8.01 cyber incident) since 2023-12-18 — accession number, filer CIK/name, filing date, form, item list | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
+| [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; corpus reaches back to 2001); for SEC Incident Filings, the paged hits of two 8-K queries (Item 1.05, Item 8.01 cyber incident) since 2023-12-18 — accession number, filer CIK/name, filing date, form, item list | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License) — breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts and per-release churn | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/) — royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
@@ -640,7 +632,7 @@ reads a few-KB JSON file; there are no runtime queries.
 | [Exploit-DB](https://www.exploit-db.com/) (OffSec) | The exploit archive's index CSV (`files_exploits.csv` from the [exploitdb](https://gitlab.com/exploit-database/exploitdb) repo): per-exploit `date_published` and CVE references from the `codes` column — metadata only, no exploit code is fetched | Archive maintained by OffSec as a public service; index metadata used as facts with attribution (credited in the site footer); not affiliated |
 | [Metasploit Framework](https://github.com/rapid7/metasploit-framework) (Rapid7) | Module metadata (`db/modules_metadata_base.json`): `disclosure_date` and CVE `references` per module — the disclosure date, not the module merge date, documented as such | [BSD-3-Clause](https://github.com/rapid7/metasploit-framework/blob/master/LICENSE); Metasploit is a Rapid7 project (credited in the site footer) |
 | [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template — coverage only, the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
-| [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS — snapshotted nightly for the Botnet Weather count record; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
+| [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS — snapshotted nightly for the Botnet C2 Servers count record; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 | [OSV.dev ecosystem exports](https://google.github.io/osv.dev/data/#data-dumps) (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`) | GitHub-reviewed advisories (GHSA ids: publication date, aliases, GitHub severity, withdrawn flag) and OpenSSF malicious-packages reports (MAL ids: publication date, withdrawn flag, contributing sources) — aggregates only, no package names republished | GitHub Advisory Database: [CC-BY 4.0](https://github.com/github/advisory-database/blob/main/LICENSE.md); OpenSSF malicious-packages: [Apache-2.0](https://github.com/ossf/malicious-packages/blob/main/LICENSE); both credited in the site footer. No key |
 
 The NVD stage is **incremental**: a per-CVE status map is kept as cached

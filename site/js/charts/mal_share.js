@@ -1,4 +1,4 @@
-// Registry Malware 2 — each year's reports by registry, as shares.
+// Malicious Packages 2 — each year's reports by registry, as shares.
 // Contract: site/data/registry_malware.json (years[].by_ecosystem). 100%
 // stacked bars, one per publication year; the registries past the fourth
 // fold into Other (same fixed colours as the hero). The partial year is

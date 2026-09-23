@@ -163,44 +163,45 @@ def check_overwhelming_majority_uncovered(d: dict) -> None:
 
 def check_criticals_several_times_middle(d: dict) -> None:
     # editorial.js (exploits.html #3): "criticals draw public exploit
-    # attention at several times the rate of the middle of the scale".
-    # (Live 2026-07: 8.3% vs 1.0%.)
+    # attention at more than ten times the rate of the middle of the
+    # scale". (Live 2026-07: 8.3% vs 1.0%; 2026-09-23: 5.0% vs 0.3%.)
     rows = {r["bucket"]: r for r in d["coverage"]["buckets"]}
     critical = rows.get("9.0-10.0")
     medium = rows.get("4.0-6.9")
     assert critical and medium, "both buckets must survive the min-n gate"
     assert medium["pct"] > 0, "middle-bucket coverage vanished entirely"
     ratio = critical["pct"] / medium["pct"]
-    assert ratio >= 2.5, (
-        f"'several times the rate of the middle of the scale' needs the "
-        f"critical/medium coverage ratio comfortably above 2; data says "
+    assert ratio > 10, (
+        f"'more than ten times the rate of the middle of the scale' needs "
+        f"the critical/medium coverage ratio above 10; data says "
         f"{critical['pct']}% vs {medium['pct']}% (x{ratio:.1f})"
     )
 
 
 def check_few_percent_ever_get_a_poc(d: dict) -> None:
     # editorial.js (exploits.html hero methodology): "only a few percent of
-    # records ever get a tracked public exploit". (Live 2026-07: 29,360
-    # union CVEs against 367,886 corpus records = 8.0%.)
+    # records ever get a tracked public exploit". Exploit code only — the
+    # union adds Nuclei detection checks, which the page says are not
+    # exploits. (2026-09-23: 25,978 of 396,407 = 6.6%.)
     cve_count = _META["sources"]["cvelist"]["cve_count"]
-    share = 100.0 * d["catalog"]["union_cves"] / cve_count
+    share = 100.0 * d["catalog"]["exploit_cves"] / cve_count
     assert 0.5 <= share <= 12, (
         f"'only a few percent of records ever get a tracked public "
         f"exploit' claims single digits; data says {share:.1f}% "
-        f"({d['catalog']['union_cves']} of {cve_count})"
+        f"({d['catalog']['exploit_cves']} of {cve_count})"
     )
 
 
 def check_newest_cohorts_are_a_few_hundred(d: dict) -> None:
     _require_exploit_dated_clock(d)
     # editorial.js (exploits.html hero): "Read those newest years with
-    # care: a few hundred CVEs each". (2026-09-21: 2021-2025 cohorts run
-    # 154-270 CVEs against 2,000+ in the late 2000s.)
+    # care: one to three hundred CVEs each". (2026-09-21: 2021-2025
+    # cohorts run 154-270 CVEs against 2,000+ in the late 2000s.)
     recent = [r for r in d["hero"]["years"]
               if 2021 <= r["year"] < GENERATION_YEAR]
     assert recent, "no complete years since 2021"
-    assert all(50 <= r["n"] < 1000 for r in recent), (
-        f"'a few hundred CVEs each' vs "
+    assert all(100 <= r["n"] < 350 for r in recent), (
+        f"'one to three hundred CVEs each' vs "
         f"{[(r['year'], r['n']) for r in recent]}"
     )
 
@@ -220,12 +221,12 @@ def check_channel_thinned(d: dict) -> None:
 
 CLAIMS = [
     (
-        "Read those newest years with care: a few hundred CVEs each",
+        "one to three hundred CVEs each",
         "time_to_poc.json",
         check_newest_cohorts_are_a_few_hundred,
     ),
     (
-        "Since 2021 the median has moved the other way, to weeks after publication",
+        "Since 2021 the median has been positive, weeks after publication",
         "time_to_poc.json",
         check_median_moved_to_weeks_after_since_2021,
     ),
@@ -240,12 +241,12 @@ CLAIMS = [
         check_median_within_a_month_of_zero_2005_2020,
     ),
     (
-        "early CVE records were cataloguing an arsenal that already existed",
+        "early CVE records catalogued exploits that already existed",
         "time_to_poc.json",
         check_early_records_catalogued_an_arsenal,
     ),
     (
-        "just over half of the listings with a dated PoC were beaten to the announcement",
+        "just over half of the listings with a dated PoC had the code published before the listing day",
         "time_to_poc.json",
         check_just_over_half_kev_preempted,
     ),
@@ -255,12 +256,12 @@ CLAIMS = [
         check_quarter_of_catalog_matched,
     ),
     (
-        "the overwhelming majority of records never attract tracked public exploit code at all",
+        "the overwhelming majority of records have no tracked public exploit code",
         "time_to_poc.json",
         check_overwhelming_majority_uncovered,
     ),
     (
-        "criticals draw public exploit attention at several times the rate of the middle of the scale",
+        "at more than ten times the rate of medium-rated records",
         "time_to_poc.json",
         check_criticals_several_times_middle,
     ),

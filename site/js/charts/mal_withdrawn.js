@@ -1,4 +1,4 @@
-// Registry Malware 3 — withdrawn reports, by the year the report was
+// Malicious Packages 3 — withdrawn reports, by the year the report was
 // published. Contract: site/data/registry_malware.json (years[].withdrawn,
 // ecosystems[].withdrawn). Bars per year; the per-registry split is a text
 // tally below (most registries have none).

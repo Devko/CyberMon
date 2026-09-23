@@ -80,7 +80,7 @@ CLAIMS = [
         check_world_line,
     ),
     (
-        "the top of this list validates for roughly nine of every ten users, the bottom for almost none",
+        "The highest validates for roughly nine of every ten users and the lowest for almost none",
         "dnssec_adoption.json",
         check_giants_gap,
     ),

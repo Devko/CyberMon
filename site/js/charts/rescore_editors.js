@@ -22,6 +22,7 @@ export function render(slots, data) {
 
   const context = catalog.events_total > 0
     ? tpl(ed.boardNote, {
+        rescores: fmtInt(catalog.totals?.rescore ?? 0),
         events: fmtInt(catalog.events_total),
         first_date: catalog.first_observed,
       })

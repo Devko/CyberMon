@@ -1,9 +1,10 @@
 """Have I Been Pwned public breach catalog (JSON feed, no API key).
 
 One GET returns every breach HIBP has ever cataloged, with the breach's
-own date (``BreachDate``, self-reported, usually rounded to the first of a
-month), the date HIBP cataloged it (``AddedDate``), the account count
-(``PwnCount``), the leaked data classes, and the classification flags the
+own date (``BreachDate``, HIBP's best estimate of when it happened — not
+always accurate, sometimes only month-precise), the date HIBP cataloged it
+(``AddedDate``), the account count (``PwnCount``, the accounts HIBP loaded
+from the breach), the leaked data classes, and the classification flags the
 cohort rule in :mod:`pipeline.breach_metrics` keys off. HIBP requires a
 User-Agent and attribution (handled in the site's shared footer copy).
 

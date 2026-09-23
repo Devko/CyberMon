@@ -1,5 +1,5 @@
 // =============================================================================
-// rescores.js — Silent Rescores tab (rescores.html). Builds the three rescore
+// rescores.js — CVSS Score Changes tab (rescores.html). Builds the three rescore
 // sections from editorial.js. Like calendar.js, all sections share ONE
 // contract file (data/rescore_log.json), fetched once and passed to each
 // renderer; each renderer runs inside its own try/catch so one bad chart

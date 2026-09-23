@@ -1,5 +1,5 @@
 // =============================================================================
-// advisories.js — Advisory Gap tab (advisories.html). Builds the three sections from
+// advisories.js — Advisories Without a CVE tab (advisories.html). Builds the three sections from
 // editorial.js. Like roster.js, all sections share ONE contract file
 // (data/advisory_gap.json), fetched once and passed to each renderer; each
 // renderer runs inside its own try/catch so one bad chart yields one inline

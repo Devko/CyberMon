@@ -604,35 +604,50 @@ def _arxiv_pass(session, series: dict, terms: list[TermDef],
 # ---------------------------------------------------------------- Wikipedia
 
 def _fetch_wiki(session, term: TermDef, window: list[str],
-                log: Callable[[str], None]) -> dict[str, int] | None:
+                log: Callable[[str], None],
+                sleep: Callable[[float], None] = lambda s: None
+                ) -> dict[str, int] | None:
     """One term's whole monthly pageview curve as ``{YYYY-MM: views}``, or
     None on failure (keep the cached months). Months the API omits —
     the article did not exist yet — stay gaps: unknown, not zero. A 404
     for a mapped article means the title was renamed or deleted and
     market_terms.py needs fixing; logged loudly, cache kept — and, like
     every other kept cache, it counts against the lane's freshness stamp
-    rather than passing as a refresh."""
+    rather than passing as a refresh.
+
+    A moved article's earlier titles (``term.wiki_former``) are fetched
+    too and summed month by month: after a move the Pageviews API counts
+    a request only under the title it asked for, so the current title
+    alone loses every month before the move and the old one alone loses
+    every month after it. A former title with no views in the window
+    (404) adds nothing; any other failure keeps the cache, as above."""
     start = window[0].replace("-", "") + "0100"
     end = window[-1].replace("-", "") + "0100"
-    url = f"{WIKI_URL}/{term.wiki_article}/monthly/{start}/{end}"
-    try:
-        resp = session.get(url, headers=_HEADERS, timeout=_TIMEOUT)
-        if resp.status_code == 404:
-            log(f"  market/wiki: HTTP 404 for article "
-                f"{term.wiki_article!r} ({term.id}) — renamed/deleted? "
-                f"fix market_terms.py; keeping cached months")
+    monthly: dict[str, int] = {}
+    for i, title in enumerate((term.wiki_article, *term.wiki_former)):
+        if i:
+            sleep(_WIKI_DELAY)
+        url = f"{WIKI_URL}/{title}/monthly/{start}/{end}"
+        try:
+            resp = session.get(url, headers=_HEADERS, timeout=_TIMEOUT)
+            if resp.status_code == 404:
+                if i:
+                    continue
+                log(f"  market/wiki: HTTP 404 for article "
+                    f"{title!r} ({term.id}) — renamed/deleted? "
+                    f"fix market_terms.py; keeping cached months")
+                return None
+            if resp.status_code != 200:
+                raise ValueError(f"HTTP {resp.status_code}")
+            for item in resp.json()["items"]:
+                ts = str(item["timestamp"])  # "2021080100"
+                month = f"{ts[:4]}-{ts[4:6]}"
+                monthly[month] = monthly.get(month, 0) + int(item["views"])
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            log(f"  market/wiki: request failed ({term.id}, {title}): "
+                f"{exc!r}; keeping cached months")
             return None
-        if resp.status_code != 200:
-            raise ValueError(f"HTTP {resp.status_code}")
-        monthly: dict[str, int] = {}
-        for item in resp.json()["items"]:
-            ts = str(item["timestamp"])  # "2021080100"
-            monthly[f"{ts[:4]}-{ts[4:6]}"] = int(item["views"])
-        return monthly
-    except (OSError, KeyError, TypeError, ValueError) as exc:
-        log(f"  market/wiki: request failed ({term.id}): {exc!r}; "
-            f"keeping cached months")
-        return None
+    return monthly
 
 
 def _wiki_pass(session, series: dict, terms: list[TermDef],
@@ -649,7 +664,7 @@ def _wiki_pass(session, series: dict, terms: list[TermDef],
     for i, term in enumerate(mapped):
         if i:
             sleep(_WIKI_DELAY)
-        monthly = _fetch_wiki(session, term, window, log)
+        monthly = _fetch_wiki(session, term, window, log, sleep)
         if monthly is None:
             kept += 1
             continue

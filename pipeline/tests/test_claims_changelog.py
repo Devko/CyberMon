@@ -175,13 +175,13 @@ def check_additions_excluded(d: dict) -> None:
 
 
 def check_entries_never_stop_changing(d: dict) -> None:
-    # editorial.js (changelog.html receipts): "Some entries never stop
-    # changing." — the board's top entry needs a real edit history
-    # (trial: 12 edits; the range dies below a handful).
+    # editorial.js (changelog.html receipts): "Some KEV entries have been
+    # edited eight or more times after listing" — the board's top entry
+    # (2026-09-23: every one of the top 12 has 8 or more edits).
     board = d["board"]["most_edited"]
-    assert board, "'Some entries never stop changing' with an empty board"
-    assert board[0]["edits"] >= 4, (
-        f"'Some entries never stop changing' needs the most-edited entry "
+    assert board, "the most-edited claim with an empty board"
+    assert board[0]["edits"] >= 8, (
+        f"'edited eight or more times' needs the most-edited entry "
         f"({board[0]['cve']}, {board[0]['edits']} edits) to have a real "
         f"revision history"
     )
@@ -241,7 +241,8 @@ def check_flag_lag_lands_late(d: dict) -> None:
 # (verbatim claim from editorial.js, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    ("The ransomware flag arrives late", check_flag_arrives_late),
+    ("CISA often adds the ransomware flag months or years after listing",
+     check_flag_arrives_late),
     (
         "not counting the {step_flips} flips logged together in "
         "{step_month}, the month the flag column first appears in the "
@@ -249,8 +250,8 @@ CLAIMS = [
         check_step_is_set_apart,
     ),
     (
-        "due dates that moved, ransomware flags that flipped, descriptions "
-        "that were rewritten, entries that quietly vanished",
+        "changed due dates, changed ransomware flags, rewritten descriptions "
+        "and notes, and removed entries",
         check_every_edit_kind_exists,
     ),
     (
@@ -258,11 +259,12 @@ CLAIMS = [
         check_additions_excluded,
     ),
     (
-        "Most ransomware flags land long after the listing.",
+        "Most ransomware-flag flips come more than three months after listing",
         check_flag_lag_lands_late,
     ),
     ("fewer than 10 flips — no median published", check_flag_lag_lands_late),
-    ("Some entries never stop changing", check_entries_never_stop_changing),
+    ("Some KEV entries have been edited eight or more times after listing",
+     check_entries_never_stop_changing),
     ("every entry observed leaving the catalog", check_removals_are_named),
 ]
 

@@ -1,4 +1,4 @@
-// Advisory Gap 3 — GitHub's severity rating, with vs without a CVE.
+// Advisories Without a CVE 3 — GitHub's severity rating, with vs without a CVE.
 // Contract: site/data/advisory_gap.json (severity[]). Two 100%-stacked
 // horizontal bars (one per group), segments by rating, Critical in accent
 // as everywhere on the site. "No rating" is drawn only when it holds any.

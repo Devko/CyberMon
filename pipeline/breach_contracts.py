@@ -25,8 +25,8 @@ IMPORT_CUTOFF = "2014-01-01"
 EXCLUSION_REASONS = ["fabricated", "spam_list", "malware", "stealer_log"]
 MAX_TOP_CLASSES = 6
 # Lag stats are bounded generously (~135 years); a lag may be
-# legitimately negative (a breach cataloged before its self-reported,
-# usually month-rounded, breach date).
+# legitimately negative (a breach cataloged before its stated breach
+# date, HIBP's sometimes month-precise best estimate).
 _DAYS_LO, _DAYS_HI = -50000.0, 50000.0
 # Catalog-year floor: HIBP launched December 2013.
 _MIN_ADDED_YEAR = 2013

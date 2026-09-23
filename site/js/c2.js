@@ -1,5 +1,5 @@
 // =============================================================================
-// c2.js — Botnet Weather tab (c2.html). Builds the three C2 sections from
+// c2.js — Botnet C2 Servers tab (c2.html). Builds the three C2 sections from
 // editorial.js. Like roster.js, all sections share ONE contract file
 // (data/botnet_weather.json), fetched once and passed to each renderer; each
 // renderer runs inside its own try/catch so one bad chart yields one inline

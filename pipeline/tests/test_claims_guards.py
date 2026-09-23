@@ -101,7 +101,7 @@ CLAIMS = [
         check_recent_years_above_catalog_share,
     ),
     (
-        "more than one entry in nine in the whole catalog is in a product sold to enforce security",
+        "More than one KEV entry in nine is in a security product",
         "kev_guards.json",
         check_one_in_nine_guard_share,
     ),

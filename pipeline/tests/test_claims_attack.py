@@ -84,7 +84,7 @@ CLAIMS = [
         check_subtechniques_outnumber_techniques,
     ),
     (
-        "Forty-odd releases in",
+        "Across its forty-odd releases",
         "attack_churn.json",
         check_forty_odd_releases,
     ),

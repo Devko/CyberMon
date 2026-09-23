@@ -43,7 +43,10 @@ def _normalized_editorial() -> str:
 def _claims_modules():
     tests_pkg = Path(__file__).parent
     for info in pkgutil.iter_modules([str(tests_pkg)]):
-        if info.name.startswith("test_claims_") and \
+        # test_claims_* plus the two older suites named *_claims
+        # (test_adp_claims, test_top25_claims), which it used to skip
+        if (info.name.startswith("test_claims_") or
+                info.name.endswith("_claims")) and \
                 info.name != "test_claims_anchors":
             yield importlib.import_module(f"pipeline.tests.{info.name}")
 

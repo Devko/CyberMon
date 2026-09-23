@@ -830,16 +830,16 @@
    "last_month": "2026-09",
    "top_cnas": [
     {
-     "cna": "CIRCL",
-     "n": 63
-    },
-    {
      "cna": "mozilla",
      "n": 32
     },
     {
      "cna": "bcorg",
      "n": 30
+    },
+    {
+     "cna": "apache",
+     "n": 23
     }
    ]
   },
@@ -966,16 +966,16 @@
    "last_month": "2026-09",
    "top_cnas": [
     {
-     "cna": "JFROG",
-     "n": 34
+     "cna": "CIRCL",
+     "n": 6
     },
     {
-     "cna": "redhat",
-     "n": 31
+     "cna": "PostgreSQL",
+     "n": 3
     },
     {
-     "cna": "mozilla",
-     "n": 11
+     "cna": "freebsd",
+     "n": 2
     }
    ]
   },
@@ -1064,10 +1064,6 @@
     {
      "cna": "freebsd",
      "n": 8
-    },
-    {
-     "cna": "redhat",
-     "n": 3
     }
    ]
   },
@@ -1444,12 +1440,7 @@
    "kev": 0,
    "first_month": "2026-05",
    "last_month": "2026-05",
-   "top_cnas": [
-    {
-     "cna": "apache",
-     "n": 1
-    }
-   ]
+   "top_cnas": []
   }
  ],
  "claims": [
@@ -1464,7 +1455,7 @@
    "date": "2026-02-05",
    "live": false,
    "source": "https://www.anthropic.com/research/zero-days",
-   "note": "Claude Opus 4.6, open-source code. No CVE count given.",
+   "note": "Claude Opus 4.6, open-source code; the post gives no CVE count.",
    "credited": 159
   },
   {
@@ -1478,7 +1469,7 @@
    "date": "2026-05-22",
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
-   "note": "Collective total with about 50 Project Glasswing partners; includes proprietary code that will never get a public CVE.",
+   "note": "Total for Anthropic and about 50 Project Glasswing partners, whose scans cover their own software as well as open source; some findings may never receive a public CVE.",
    "credited": 159
   },
   {
@@ -1520,7 +1511,7 @@
    "date": "2025-08-04",
    "live": false,
    "source": "https://x.com/argvee/status/1952390039700431184",
-   "note": "Big Sleep's first batch, announced by Google's VP of security engineering. Google publishes no CVE count.",
+   "note": "Big Sleep's first batch, announced by Google's VP of security engineering; the post gives no CVE count.",
    "credited": 19
   },
   {
@@ -1534,7 +1525,7 @@
    "date": "2025-06-24",
    "live": false,
    "source": "https://xbow.com/blog/top-1-how-xbow-did-it",
-   "note": "130 resolved and 303 triaged at the time; bug-bounty reports against live targets rarely receive CVEs.",
+   "note": "130 resolved and 303 triaged at the time. Bug-bounty reports against live services usually do not receive CVEs.",
    "credited": 6
   },
   {

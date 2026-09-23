@@ -28,90 +28,96 @@ const KIND_LABELS = {
   kev_added: "KEV · listed",
   kev_removed: "KEV · removed",
   kev_flag: "KEV · ransomware flag",
-  kev_due: "KEV · due date moved",
-  kev_field: "KEV · field edited",
-  kev_text: "KEV · text revised",
+  kev_due: "KEV · due date changed",
+  kev_field: "KEV · field changed",
+  kev_text: "KEV · text changed",
   rescore: "Score · rescored",
-  version_shift: "Score · CVSS version shift",
+  version_shift: "Score · CVSS version change",
   first_score: "Score · first CNA score",
   score_removed: "Score · removed",
-  epss_move: "EPSS · night's biggest move",
+  epss_move: "EPSS · largest change that night",
 };
 const GRAIN_LABELS = {
   daily: "nightly run",
-  capture: "archive capture — at or before this date",
+  capture: "archive capture (on or before this date)",
   pooled: "first run after missed nights",
 };
-const SOURCE_LABELS = { kev: "KEV Changelog", rescore: "Silent Rescores", epss: "EPSS Volatility" };
+const SOURCE_LABELS = { kev: "KEV Changelog", rescore: "CVSS Score Changes", epss: "EPSS Volatility" };
 
 // Chart lanes: the eleven kinds folded into six stacks a legend can carry.
 const LANES = [
   { name: "KEV listed", kinds: ["kev_added"], color: C.accent },
   { name: "KEV removed", kinds: ["kev_removed"], color: "#ff9a92" }, // accent tint: KEV's hue
-  { name: "KEV edited", kinds: ["kev_flag", "kev_due", "kev_field", "kev_text"], color: C.sev.high },
-  { name: "Score edited", kinds: ["rescore", "version_shift", "score_removed"], color: C.versions.v3 },
+  { name: "KEV changed", kinds: ["kev_flag", "kev_due", "kev_field", "kev_text"], color: C.sev.high },
+  { name: "Score changed", kinds: ["rescore", "version_shift", "score_removed"], color: C.versions.v3 },
   { name: "First CNA score", kinds: ["first_score"], color: C.sev.medium },
-  { name: "EPSS biggest move", kinds: ["epss_move"], color: C.versions.v4 },
+  { name: "EPSS largest change", kinds: ["epss_move"], color: C.versions.v4 },
 ];
 
 const ED = {
   stream: {
     num: "01",
-    kicker: "The event stream",
-    source: "CyberMon's own histories — rescore log, KEV changelog, EPSS volatility log",
-    headline: "Score edits, KEV edits and EPSS jumps, by the day CyberMon saw them.",
+    kicker: "Events by day",
+    source: "CyberMon's rescore log, KEV changelog and EPSS volatility log",
+    headline: "Each bar counts the CVE-level changes CyberMon observed that day.",
     caption:
-      "Every event on the three histories CyberMon keeps, stacked by kind on the day it was " +
-      "first observed. Drag the handles of the bar under the chart (or pinch and scroll on " +
-      "the chart) to pick a window; the table below lists that window's events. Click a " +
-      "legend entry to hide a kind.",
-    note: "When each history begins: loading…",
+      "Events from CyberMon's three per-CVE logs, stacked by kind on the day each was first " +
+      "observed. Most score events are a first CNA score added to an existing record; " +
+      "changes to an existing score are rarer. Drag the handles of the bar under the chart, " +
+      "or pinch or Shift-scroll on the chart, to choose a date range; the table below lists " +
+      "its events. Click a legend entry to hide that kind.",
+    note: "Start of each log: loading…",
     methodology:
-      "Each event is dated by its first observation by CyberMon, never by when the change was " +
-      "made upstream: the nightly run that saw it, or — for the KEV record before the nightly " +
-      "diffs — the first Internet Archive capture of the catalog that shows it, so the change " +
-      "happened at or before that date. Before the nightly KEV diffs began, KEV is seen only " +
-      "on capture dates: the days between captures are unobserved, not quiet, and carry no " +
-      "bar. Each history is drawn from its own first observation on (the markers on the " +
-      "chart); nothing is drawn before monitoring began. EPSS contributes one event per night " +
-      "— the single biggest probability move — except on the nights the EPSS Volatility " +
-      "module quarantines as a model reset or a whole-corpus anomaly; a night that follows " +
-      "missed nights pools their change and is marked as such. Rescore events are the " +
-      "Silent Rescores taxonomy: rescore (same CVSS version, new score), version shift, a " +
-      "first CNA score on an existing record, and a removed score.",
+      "KEV and score events are dated by the nightly run that first saw them, not by when the " +
+      "change was made upstream. KEV changes from before the nightly diffs began are dated by " +
+      "the first of the weekly Internet Archive captures CyberMon read that shows them, so " +
+      "each happened on or before that date; the days between captures were not observed and " +
+      "carry no bar. EPSS events are dated by FIRST's score date for the snapshot, which is " +
+      "the day before the run that read it. A run that follows missed nights, and the first " +
+      "nightly KEV run (which compared the catalog with the last archive capture), includes " +
+      "every change since the previous observation. EPSS events from such a run are labelled " +
+      "as pooled; KEV and score events are still labelled as a nightly run. Each log is drawn " +
+      "from its first observation onward, marked on the chart. EPSS contributes one event per " +
+      "night, the largest change in probability, except on nights the EPSS Volatility module " +
+      "quarantines as a model reset or a whole-corpus anomaly. Score events follow the Silent " +
+      "Rescores definitions: rescore (same CVSS version, new score), CVSS version change, " +
+      "first CNA score on an existing record, and removed score. Rows logged before " +
+      "2026-09-20 carry only the version family (for example v3).",
   },
   trail: {
     num: "02",
-    kicker: "One record's trail",
-    source: "CyberMon's own histories",
-    headline: "Follow one CVE through every history.",
+    kicker: "One CVE",
+    source: "CyberMon's change logs",
+    headline: "The trail lists every logged event for one CVE, oldest first.",
     caption:
-      "Search a CVE id to see every event CyberMon has logged for it, oldest first. The page " +
-      "address keeps the record (#cve=…), so a trail can be shared by its link.",
+      "Search a CVE id to list its events. The page address keeps the CVE (#cve=…), so a " +
+      "trail can be shared as a link.",
     methodology:
-      "The trail lists the record's events from all three histories in the order they were " +
-      "first observed. A CVE with no trail has not been rescored by its CNA, listed or edited " +
-      "in KEV, or been a night's biggest EPSS move since each history began — which says " +
-      "nothing about changes made before monitoring began.",
+      "The trail lists the CVE's events from all three logs in the order they were first " +
+      "observed. An empty trail means that, since each log began, the CVE had no CNA score " +
+      "change, was not listed or changed in KEV, and was not the largest EPSS change on a " +
+      "night this page keeps (nights quarantined as model resets or whole-corpus anomalies " +
+      "are left out). It says nothing about changes before monitoring began.",
   },
   window: {
     num: "03",
-    kicker: "The window's events",
-    source: "CyberMon's own histories",
-    headline: "The events in the window, one row each.",
+    kicker: "Events in the range",
+    source: "CyberMon's change logs",
+    headline: "The table lists each event in the selected date range.",
     caption:
-      "Every event in the window picked on the stream above. Sort by any column; the " +
-      "download carries the whole window, not just the rows shown.",
+      "Sort by any column. The CSV download contains every event in the range, including " +
+      "rows beyond those shown.",
     methodology:
-      "The table lists at most {cap} rows in the current sort order; the CSV download holds " +
-      "every event in the window with its first-observed date, CVE, kind, source history, " +
-      "change and dating granularity.",
+      "The table shows at most {cap} rows in the current sort order. The CSV contains every " +
+      "event in the range with its first-observed date, CVE, kind, source log, change and " +
+      "dating method.",
   },
 };
 
 // ---- data -------------------------------------------------------------------
 
 const dayMs = 86400000;
+const plural = (n, one, many) => `${fmtInt(n)} ${n === 1 ? one : many}`;
 const isoOf = (baseMs, day) => new Date(baseMs + day * dayMs).toISOString().slice(0, 10);
 const arrow = (s) => String(s).replace(/->/g, " → ");
 
@@ -174,14 +180,14 @@ function renderStream(slots, data, events, onWindow) {
 
   const markers = [
     src.kev.nightly_from && [src.kev.nightly_from, "KEV nightly"],
-    src.rescore.first_observed && [src.rescore.first_observed, "rescores"],
+    src.rescore.first_observed && [src.rescore.first_observed, "CNA scores"],
     src.epss.first_observed && [src.epss.first_observed, "EPSS"],
   ].filter(Boolean);
 
   const chart = mkChart(slots.chart);
   slots.chart.setAttribute("aria-label",
     "Stacked bar chart of events per day by kind, first-observed dates " +
-    `${data.base_date} to ${data.last_observed}; the table below lists the selected window.`);
+    `${data.base_date} to ${data.last_observed}; the table below lists the selected date range.`);
   const narrow = () => slots.chart.clientWidth < 560;
   chart.setOption({
     grid: { left: 44, right: 14, top: narrow() ? 72 : 48, bottom: 78 },
@@ -233,7 +239,7 @@ function renderStream(slots, data, events, onWindow) {
     const inWin = events.filter((e) => e.day >= win.from && e.day <= win.to);
     const cves = new Set(inWin.map((e) => e.cve)).size;
     statLine.textContent =
-      `Window: first observed ${from} to ${to} · ${fmtInt(inWin.length)} events on ${fmtInt(cves)} CVEs`;
+      `Range: first observed ${from} to ${to} · ${plural(inWin.length, "event", "events")} on ${plural(cves, "CVE", "CVEs")}`;
     onWindow(inWin, from, to);
   };
   let t = null;
@@ -267,7 +273,7 @@ function renderTrail(slots, data, events) {
   input.setAttribute("aria-describedby", "obs-search-hint");
   const btn = el("button", "obs-search-btn", "Show trail");
   btn.type = "submit";
-  const hint = el("p", "obs-search-hint", `${fmtInt(byCve.size)} CVEs have at least one event on record.`);
+  const hint = el("p", "obs-search-hint", `${plural(byCve.size, "CVE has", "CVEs have")} at least one event on record.`);
   hint.id = "obs-search-hint";
   form.append(label, input, btn);
   slots.controls.append(form, hint);
@@ -299,8 +305,9 @@ function renderTrail(slots, data, events) {
     out.append(head);
     if (!trail) {
       out.append(el("p", "obs-trail-empty",
-        `No event on record for ${cve}: since each history began, it has not been rescored by its CNA, ` +
-        "listed or edited in KEV, or been a night's biggest EPSS move."));
+        `No event on record for ${cve}. Since each log began it has had no CNA score change, ` +
+        "has not been listed or changed in KEV, and has not been the largest EPSS change on a " +
+        "night this page keeps (quarantined nights are left out)."));
       return;
     }
     const sources = new Set(trail.map((e) => e.source));
@@ -355,7 +362,7 @@ function makeTable(slots) {
   slots.chart.removeAttribute("aria-label");
   const state = { key: "date", dir: -1, rows: [], from: "", to: "" };
 
-  const dl = el("button", "obs-download", "Download CSV of this window");
+  const dl = el("button", "obs-download", "Download CSV of this range");
   dl.type = "button";
   const info = el("div", "table-context");
   info.setAttribute("aria-live", "polite");
@@ -365,7 +372,7 @@ function makeTable(slots) {
   const wrap = el("div", "table-wrap obs-table-wrap");
   wrap.tabIndex = 0;
   wrap.setAttribute("role", "region");
-  wrap.setAttribute("aria-label", "Events in the selected window");
+  wrap.setAttribute("aria-label", "Events in the selected date range");
   const table = el("table", "cna-table obs-table");
   const thead = el("thead");
   const hr = el("tr");
@@ -412,11 +419,11 @@ function makeTable(slots) {
       tbody.append(tr);
     }
     more.textContent = rows.length > TABLE_CAP
-      ? `${fmtInt(rows.length - TABLE_CAP)} more events in this window — narrow the window, or download the CSV for all ${fmtInt(rows.length)}.`
+      ? `${plural(rows.length - TABLE_CAP, "more event", "more events")} in this range. Narrow the range, or download the CSV for all ${fmtInt(rows.length)}.`
       : "";
     more.hidden = rows.length <= TABLE_CAP;
     info.textContent = rows.length
-      ? `${fmtInt(rows.length)} events first observed ${state.from} to ${state.to}` +
+      ? `${plural(rows.length, "event", "events")} first observed ${state.from} to ${state.to}` +
         (rows.length > TABLE_CAP ? ` · showing ${fmtInt(TABLE_CAP)}` : "")
       : `No events first observed ${state.from} to ${state.to}.`;
     dl.disabled = rows.length === 0;
@@ -451,18 +458,18 @@ function historiesNote(data) {
   const parts = [];
   if (s.kev.first_observed) {
     parts.push(s.kev.capture_until
-      ? `KEV catalog — first observed ${s.kev.first_observed} in an Internet Archive capture; ` +
-        `captures through ${s.kev.capture_until} (a capture-dated change happened at or before its date)` +
+      ? `KEV catalog: first observed ${s.kev.first_observed} in an Internet Archive capture, ` +
+        `archive captures through ${s.kev.capture_until} (a change dated by a capture happened on or before that date)` +
         (s.kev.nightly_from ? `, nightly diffs from ${s.kev.nightly_from}` : "")
-      : `KEV catalog — nightly diffs, first observed ${s.kev.first_observed}`);
+      : `KEV catalog: nightly diffs, first observed ${s.kev.first_observed}`);
   }
-  if (s.rescore.first_observed) parts.push(`CNA scores — nightly, first event observed ${s.rescore.first_observed}`);
+  if (s.rescore.first_observed) parts.push(`CNA scores: nightly, first event ${s.rescore.first_observed}`);
   if (s.epss.first_observed) {
     const dropped = (s.epss.excluded_reset ?? 0) + (s.epss.excluded_anomaly ?? 0);
-    parts.push(`EPSS — nightly, first observed ${s.epss.first_observed}` +
+    parts.push(`EPSS: nightly, first score date ${s.epss.first_observed}` +
       (dropped ? ` (${fmtInt(dropped)} of ${fmtInt(s.epss.nights)} nights left out as model resets or whole-corpus anomalies)` : ""));
   }
-  return parts.length ? `When each history begins: ${parts.join(" · ")}. Nothing is drawn before these dates.` : "";
+  return parts.length ? `Start of each log. ${parts.join(" · ")}. Nothing is drawn before these dates.` : "";
 }
 
 // ---- boot -----------------------------------------------------------------------
@@ -491,7 +498,7 @@ async function boot() {
           for (const b of built) {
             b.slots.chart.classList.remove("chart", "chart-tall");
             b.slots.chart.removeAttribute("aria-label");
-            b.slots.chart.append(el("div", "nodata-card", "No edition yet — the nightly fills it."));
+            b.slots.chart.append(el("div", "nodata-card", "No data yet; the nightly run fills this in."));
           }
           return;
         }

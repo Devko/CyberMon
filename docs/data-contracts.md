@@ -1121,7 +1121,7 @@ still count in `catalog`; lag stats additionally require a parseable
 
 `lag_by_year` (hero): `lag = AddedDate − BreachDate` in days, per catalog
 year, median + p25/p75. Negative lags (a breach catalogued before its
-self-reported, usually month-rounded, breach date) are KEPT, never
+stated breach date — HIBP's best estimate, sometimes only month-precise) are KEPT, never
 floored — same rule as `kev_latency`, they flag source date quality.
 Entries with `AddedDate` before `import_era.added_before` (fixed at
 `2014-01-01`) are the catalog's opening import — HIBP launched 2013-12-04
@@ -2458,7 +2458,8 @@ gap (`days`, faster is `down`), the share armed within a week, and the
 share whose exploit code predates the record (both `percent`, faster is
 `up`). All three must span the same years; a mismatch means the builder
 dropped rows from one. KEV latency is deliberately absent — its series is
-quarantined to start in 2023, after two of the three cutoffs, and a metric
+quarantined to start in 2023, which leaves two of the three cutoffs with
+no pre-cutoff years, and a metric
 whose history begins inside the era under test cannot test it. The
 generation year is dropped entirely rather than marked partial: this
 module's subject is where a series bends, and a half-finished year is a
@@ -2623,7 +2624,8 @@ never how the bug was found.
 **The counting rule (the module's one editorial knob,
 `counts_toward_headline`, decided 2026-09-20).** Every match is *recorded*
 on the board (`cves = system + org + fix`); what the page may *call* AI-credited —
-headlines, lanes, severity, funnels, the board ranking — is `counted`:
+headlines, lanes, severity, funnels, the board ranking and its `top_cnas`
+(counted credits only since 2026-09-23; before, fix-role records leaked in) — is `counted`:
 LLM labs count at the `system` tier only, vendors at `system` or `org`,
 nobody at `fix`. The two kinds are never summed; a CVE crediting both appears once in each. Re-run
 `test_claims_credits.py` after changing the rule.
@@ -2738,7 +2740,7 @@ validator `pipeline/sec_incidents_contracts.py`.
 
 | id | `q` | `forms` | a filing counts when |
 |---|---|---|---|
-| `item_105` | `"Item 1.05"` | `8-K,8-K/A` | EDGAR's item list for it contains `1.05` (8-K = original, 8-K/A = amendment) |
+| `item_105` | `"Item 1.05"` | `8-K` | EDGAR's item list for it contains `1.05` (8-K = original, 8-K/A = amendment; the `8-K` filter matches the root form, so it returns both — a comma list `8-K,8-K/A` returns the amendments only) |
 | `item_801` | `"cybersecurity incident"` | `8-K` | item list contains `8.01` and not `1.05`, the phrase hit the primary 8-K document (not only an exhibit), and the accession number is not already an Item 1.05 filing |
 
 Requests add `dateRange=custom&startdt=..&enddt=..` (one calendar month per
@@ -2763,7 +2765,7 @@ Two legal editions:
   "status": "empty",
   "status_reason": "not_fetched",
   "window": {"start": "2023-12-18", "end": "2026-09-22"},
-  "definitions": {"item_105": {"q": "\"Item 1.05\"", "forms": "8-K,8-K/A", "item": "1.05"},
+  "definitions": {"item_105": {"q": "\"Item 1.05\"", "forms": "8-K", "item": "1.05"},
                   "item_801": {"q": "\"cybersecurity incident\"", "forms": "8-K", "item": "8.01"}},
   "monthly": [], "quarterly": [], "totals": null, "amendment_lag": null, "recent": []
 }
@@ -2783,7 +2785,7 @@ renders "no edition yet — the first nightly fills this page" cards.
   "quarterly": [{"quarter": "2023-Q4", "originals": 0, "amendments": 0,
                  "voluntary": 0, "partial": true}, ...],
   "totals": {"originals": 7, "amendments": 4, "voluntary": 3,
-             "companies_105": 7, "companies_801": 3, "latest_105": "2025-08-08"},
+             "companies_105": 6, "companies_801": 3, "latest_105": "2025-08-08"},
   "amendment_lag": {"originals": 7, "amended": 2, "matched_amendments": 3,
                     "unmatched_amendments": 1, "median_days": 120.5,
                     "max_days": 201,
@@ -2805,7 +2807,7 @@ contiguous from `2023-12` through the edition month, by **filing date**
 month/quarter are `partial`. `originals` = Item 1.05 8-Ks, `amendments` =
 Item 1.05 8-K/As, `voluntary` = Item 8.01 cyber 8-Ks. Quarterly rows are
 exact sums of their months; `totals` equal the series sums; companies are
-distinct primary CIKs. Amendment lag: each amendment is matched to the same
+distinct primary CIKs (`companies_105` counts the filers of originals only). Amendment lag: each amendment is matched to the same
 CIK's latest Item 1.05 original filed on or before it; `amended` counts
 originals with a matched amendment and the buckets (fixed labels
 `0–7 days, 8–30 days, 31–90 days, 91–180 days, 181–365 days, over a year`)

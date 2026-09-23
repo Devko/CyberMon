@@ -1,4 +1,4 @@
-// Registry Malware 1 (hero) — OpenSSF malicious-packages reports per month
+// Malicious Packages 1 (hero) — OpenSSF malicious-packages reports per month
 // of feed publication, by registry. Contract: site/data/registry_malware.json
 // (months, catalog, bursts). Default view stacks the registries on a linear
 // axis (the bursts are the story); the log view draws each registry as its

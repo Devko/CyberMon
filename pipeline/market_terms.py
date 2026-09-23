@@ -15,9 +15,15 @@ sources search very different corpora:
 * **Wikipedia** (Pageviews REST API) counts monthly views of ONE curated
   en.wikipedia article per term — ``wiki_article`` below. The mapping is
   editorial data, reviewable like any other curation in this repo (same
-  spirit as the guards classifier): every title was verified live
-  (2026-07-21) to exist and to be the canonical on-topic article, and
-  the judgment calls are commented inline. ``None`` means en.wikipedia
+  spirit as the guards classifier): the judgment calls are commented
+  inline. The 2026-07-21 audit missed that three mapped titles were
+  already redirects (re-checked 2026-09-23 with the MediaWiki API,
+  ``action=query&redirects=1``): after a page move, the Pageviews API
+  counts only the requests that still arrive through the old title, so
+  the series collapsed at each move date. A moved article is mapped to
+  its current title, with every earlier title in ``wiki_former``; the
+  fetch sums the titles month by month (a request is counted under the
+  one title it asked for, so nothing is counted twice). ``None`` means en.wikipedia
   has no on-topic article for the term (CNAPP, as of the audit); the
   term simply has no Wikipedia series — an honest gap, never a
   stand-in article that measures something else.
@@ -42,6 +48,8 @@ class TermDef:
 
     ``wiki_article`` is an exact en.wikipedia.org article title (None =
     no on-topic article exists; the term has no Wikipedia series).
+    ``wiki_former`` lists the article's earlier titles (now redirects to
+    it); their monthly views are added to the current title's.
     ``edgar_query`` is the quoted phrase for SEC EDGAR full-text search
     (None = term not tracked there).
     """
@@ -53,6 +61,7 @@ class TermDef:
     arxiv_query: str
     wiki_article: str | None = None
     edgar_query: str | None = None
+    wiki_former: tuple[str, ...] = ()
 
 
 TERMS: list[TermDef] = [
@@ -60,13 +69,22 @@ TERMS: list[TermDef] = [
             gdelt_query='"zero trust" security',
             hn_query='"zero trust"',
             arxiv_query='"zero trust"',
-            wiki_article="Zero_trust_security_model",
+            # moved from Zero_trust_security_model on 2024-11-21
+            wiki_article="Zero_trust_architecture",
+            wiki_former=("Zero_trust_security_model",),
             edgar_query='"zero trust"'),
     TermDef("sbom", "SBOM",
             gdelt_query='"software bill of materials"',
             hn_query='"SBOM"',
             arxiv_query='"SBOM"',
-            wiki_article="Software_bill_of_materials",
+            # Judgment call, flagged for review: the SBOM article was
+            # moved to the broader title Software_supply_chain on
+            # 2022-05-03. It is the same article under a wider name, so
+            # the lane follows it rather than counting only the requests
+            # still arriving through the old title (which fell from
+            # ~5,500 to ~600 a month at the move).
+            wiki_article="Software_supply_chain",
+            wiki_former=("Software_bill_of_materials",),
             edgar_query='"software bill of materials"'),
     TermDef("post_quantum", "Post-Quantum",
             gdelt_query='"post-quantum" (cryptography OR encryption OR security)',
@@ -113,9 +131,11 @@ TERMS: list[TermDef] = [
             gdelt_query='"agentic AI"',
             hn_query='"agentic AI"',
             arxiv_query='"agentic AI"',
-            # article created late 2024; its short pageview history is
-            # the honest history of the term
-            wiki_article="Agentic_AI",
+            # article created late 2024 (its short pageview history is
+            # the honest history of the term), moved to AI_agent on
+            # 2025-12-18
+            wiki_article="AI_agent",
+            wiki_former=("Agentic_AI",),
             edgar_query='"agentic AI"'),
     TermDef("ransomware", "Ransomware",
             gdelt_query='"ransomware"',

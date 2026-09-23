@@ -1,5 +1,5 @@
 // =============================================================================
-// extortion.js — Extortion Ledger tab (extortion.html). Builds the three
+// extortion.js — Ransom Payments tab (extortion.html). Builds the three
 // sections from editorial.js. Like kev.js, all sections share ONE contract
 // file (data/extortion_ledger.json), fetched once and passed to each
 // renderer; each renderer runs inside its own try/catch so one bad chart

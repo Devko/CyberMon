@@ -81,7 +81,7 @@ def check_almost_all_official_classes_are_exploited(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "a few never crack the 25 most common weaknesses we actually measure",
+        "a few official picks fall outside the 25 most common weaknesses",
         "cwe_top25.json",
         check_several_official_picks_miss_the_measured_top25,
     ),

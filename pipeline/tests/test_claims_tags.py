@@ -57,8 +57,8 @@ def _share(n: int, d: int) -> float:
 # ------------------------------------------------------------ Record Tags
 
 def check_unsupported_climbing(d: dict) -> None:
-    # tags_trend headline + home card: "More CVEs are issued for products
-    # the vendor no longer supports." — the latest complete year beats the
+    # tags_trend headline + home card: "More CVEs are tagged as issued for
+    # products the vendor no longer supports." — the latest complete year beats the
     # one before it, and sits far above the tag's first year.
     full = [r for r in d["years"] if r["year"] < GENERATION_YEAR]
     assert len(full) >= 2, "no complete years to judge"
@@ -89,7 +89,9 @@ def check_disputed_flat(d: dict) -> None:
 
 
 def check_home_blurb(d: dict) -> None:
-    # home card: "the first tag keeps climbing, the second stays flat."
+    # home card: "the first tag keeps climbing, the second lags the
+    # corpus." (disputed counts rose 85 -> 137 over 2021-25 while yearly
+    # publications more than doubled — the share fell.)
     check_unsupported_climbing(d)
     check_disputed_flat(d)
 
@@ -105,7 +107,7 @@ def check_most_cnas_never_tag(d: dict) -> None:
 
 
 def check_disputed_one_cna(d: dict) -> None:
-    # tags_board caption: "“disputed” is set almost entirely by one CNA"
+    # tags_board caption: "“disputed” is set mostly by one CNA"
     top1 = d["boards"]["disputed"]["top1_share_pct"]
     assert top1 >= 75.0, f"top CNA sets only {top1}% of disputed tags"
 
@@ -136,8 +138,9 @@ def check_adp_tags_complete(d: dict) -> None:
 # ---------------------------------------------------------- CVSS 4.0 (01)
 
 def check_v4_minority(d: dict) -> None:
-    # cvss4 fallback headline: "Most new CVE records still don't carry it."
-    # and "CVSS 4.0 shipped in late 2023."
+    # cvss4 fallback headline: "Most new CVE records do not carry a CVSS 4.0
+    # score from their CNA." and caption "Since CVSS 4.0 was published in
+    # late 2023"
     assert d["since_month"] == "2023-11"
     assert d["headline"]["v4_share_current_pct"] < 50.0, (
         "v4.0 is now on most new records — rewrite the fallback headline")
@@ -165,6 +168,19 @@ def check_kernel_starts_2024(d: dict) -> None:
     diff = [f["year"] for f, w in zip(d["years"], wl)
             if (f["published"], f["rejected"]) != (w["published"], w["rejected"])]
     assert diff and diff[0] == 2024, f"kernel records first differ in {diff[:1]}"
+
+
+def check_rejection_rebound_is_kernel(d: dict) -> None:
+    # volume linuxNote: "most of the 2024–25 rejection rebound is its own"
+    # — of each year's rise in rejections over 2023, the kernel's records
+    # are the larger part. (2026-09-23: 155 of +211 and 128 of +171.)
+    full = {r["year"]: r["rejected"] for r in d["years"]}
+    wl = {r["year"]: r["rejected"] for r in d["without_linux"]["years"]}
+    for y in (2024, 2025):
+        rise = full[y] - full[2023]
+        kernel = full[y] - wl[y]
+        assert rise > 0 and kernel > rise / 2, (
+            f"{y}: rejections +{rise} over 2023, kernel {kernel}")
 
 
 def check_unscored_is_kernel(d: dict) -> None:
@@ -195,32 +211,31 @@ def check_concentration_survives(d: dict) -> None:
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    ("More CVEs are issued for products the vendor no longer supports.",
+    ("More CVEs are tagged as issued for products the vendor no longer supports.",
      "cve_tags.json", check_unsupported_climbing),
-    ("the first tag keeps climbing, the second stays flat.",
+    ("the first tag keeps climbing and the second has not kept pace with the corpus",
      "cve_tags.json", check_home_blurb),
-    ("vulnerability; it does not grow with the corpus — between {dmin} and "
-     "{dmax} records a year from {dfrom} to {dto}, while yearly publications "
-     "more than doubled, so its share of the year fell.",
+    ("It appeared on between {dmin} and {dmax} records a year from {dfrom} to {dto}, while yearly publications more than doubled, so its share of each year's records fell.",
      "cve_tags.json", check_disputed_flat),
     ("most CNAs never set these tags.", "cve_tags.json",
      check_most_cnas_never_tag),
-    ("A few CNAs set the tags. Most never do.", "cve_tags.json",
+    ("Most active CNAs set neither tag in the last five years", "cve_tags.json",
      check_most_cnas_never_tag),
-    ("“disputed” is set almost entirely by one CNA", "cve_tags.json",
+    ("“disputed” is set mostly by one CNA", "cve_tags.json",
      check_disputed_one_cna),
     ("Records tagged unsupported are rated Critical more often than their "
      "CNAs' other records.", "cve_tags.json",
      check_unsupported_rated_critical_more),
     ("ADP containers carry only {adp}.", "cve_tags.json",
      check_adp_tags_complete),
-    ("CVSS 4.0 shipped in late 2023. Most new CVE records still don't carry it.",
+    ("Most new CVE records do not carry a CVSS 4.0 score from their CNA.",
      "cvss_v4.json", check_v4_minority),
-    ("Three assigners supply most of that volume, and most v4.0 scores arrive "
-     "next to a v3.x score rather than instead of one.",
+    ("three CNAs account for most v4.0 scores, and most records with a v4.0 score also carry a v3.x score.",
      "cvss_v4.json", check_v4_few_assigners_dual),
     ("The kernel's records start in 2024", "volume_curve.json",
      check_kernel_starts_2024),
+    ("most of the rise in rejections in 2024 and 2025 comes from them", "volume_curve.json",
+     check_rejection_rebound_is_kernel),
     ("Since 2024 nearly every record with no score anywhere in it is a "
      "kernel record", "nine_eight_flood.json", check_unscored_is_kernel),
     ("Without the kernel the top-5 share still climbs after 2023",

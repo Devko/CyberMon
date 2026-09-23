@@ -8,7 +8,7 @@
  "definitions": {
   "item_105": {
    "q": "\"Item 1.05\"",
-   "forms": "8-K,8-K/A",
+   "forms": "8-K",
    "item": "1.05"
   },
   "item_801": {
@@ -20,42 +20,42 @@
  "monthly": [
   {
    "month": "2023-12",
-   "originals": 0,
+   "originals": 2,
    "amendments": 1,
    "voluntary": 0,
    "partial": true
   },
   {
    "month": "2024-01",
-   "originals": 0,
+   "originals": 2,
    "amendments": 2,
    "voluntary": 1,
    "partial": false
   },
   {
    "month": "2024-02",
-   "originals": 0,
+   "originals": 4,
    "amendments": 1,
    "voluntary": 1,
    "partial": false
   },
   {
    "month": "2024-03",
-   "originals": 0,
+   "originals": 3,
    "amendments": 3,
    "voluntary": 0,
    "partial": false
   },
   {
    "month": "2024-04",
-   "originals": 0,
+   "originals": 3,
    "amendments": 2,
    "voluntary": 0,
    "partial": false
   },
   {
    "month": "2024-05",
-   "originals": 0,
+   "originals": 3,
    "amendments": 1,
    "voluntary": 1,
    "partial": false
@@ -69,21 +69,21 @@
   },
   {
    "month": "2024-07",
-   "originals": 0,
+   "originals": 4,
    "amendments": 1,
    "voluntary": 3,
    "partial": false
   },
   {
    "month": "2024-08",
-   "originals": 0,
+   "originals": 1,
    "amendments": 3,
    "voluntary": 2,
    "partial": false
   },
   {
    "month": "2024-09",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 2,
    "partial": false
@@ -97,14 +97,14 @@
   },
   {
    "month": "2024-11",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 5,
    "partial": false
   },
   {
    "month": "2024-12",
-   "originals": 0,
+   "originals": 2,
    "amendments": 0,
    "voluntary": 2,
    "partial": false
@@ -118,35 +118,35 @@
   },
   {
    "month": "2025-02",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 1,
    "partial": false
   },
   {
    "month": "2025-03",
-   "originals": 0,
+   "originals": 1,
    "amendments": 1,
    "voluntary": 1,
    "partial": false
   },
   {
    "month": "2025-04",
-   "originals": 0,
+   "originals": 2,
    "amendments": 0,
    "voluntary": 1,
    "partial": false
   },
   {
    "month": "2025-05",
-   "originals": 0,
+   "originals": 2,
    "amendments": 0,
    "voluntary": 1,
    "partial": false
   },
   {
    "month": "2025-06",
-   "originals": 0,
+   "originals": 2,
    "amendments": 1,
    "voluntary": 2,
    "partial": false
@@ -160,21 +160,21 @@
   },
   {
    "month": "2025-08",
-   "originals": 0,
+   "originals": 2,
    "amendments": 0,
    "voluntary": 2,
    "partial": false
   },
   {
    "month": "2025-09",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 3,
    "partial": false
   },
   {
    "month": "2025-10",
-   "originals": 0,
+   "originals": 3,
    "amendments": 0,
    "voluntary": 2,
    "partial": false
@@ -188,7 +188,7 @@
   },
   {
    "month": "2025-12",
-   "originals": 0,
+   "originals": 1,
    "amendments": 1,
    "voluntary": 2,
    "partial": false
@@ -202,56 +202,56 @@
   },
   {
    "month": "2026-02",
-   "originals": 0,
+   "originals": 1,
    "amendments": 1,
    "voluntary": 0,
    "partial": false
   },
   {
    "month": "2026-03",
-   "originals": 0,
+   "originals": 2,
    "amendments": 0,
    "voluntary": 4,
    "partial": false
   },
   {
    "month": "2026-04",
-   "originals": 0,
+   "originals": 1,
    "amendments": 1,
    "voluntary": 7,
    "partial": false
   },
   {
    "month": "2026-05",
-   "originals": 0,
+   "originals": 3,
    "amendments": 1,
    "voluntary": 2,
    "partial": false
   },
   {
    "month": "2026-06",
-   "originals": 0,
+   "originals": 3,
    "amendments": 0,
    "voluntary": 2,
    "partial": false
   },
   {
    "month": "2026-07",
-   "originals": 0,
+   "originals": 3,
    "amendments": 4,
    "voluntary": 3,
    "partial": false
   },
   {
    "month": "2026-08",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 4,
    "partial": false
   },
   {
    "month": "2026-09",
-   "originals": 0,
+   "originals": 2,
    "amendments": 0,
    "voluntary": 4,
    "partial": true
@@ -260,120 +260,120 @@
  "quarterly": [
   {
    "quarter": "2023-Q4",
-   "originals": 0,
+   "originals": 2,
    "amendments": 1,
    "voluntary": 0,
    "partial": true
   },
   {
    "quarter": "2024-Q1",
-   "originals": 0,
+   "originals": 9,
    "amendments": 6,
    "voluntary": 2,
    "partial": false
   },
   {
    "quarter": "2024-Q2",
-   "originals": 0,
+   "originals": 6,
    "amendments": 4,
    "voluntary": 6,
    "partial": false
   },
   {
    "quarter": "2024-Q3",
-   "originals": 0,
+   "originals": 6,
    "amendments": 4,
    "voluntary": 7,
    "partial": false
   },
   {
    "quarter": "2024-Q4",
-   "originals": 0,
+   "originals": 3,
    "amendments": 0,
    "voluntary": 11,
    "partial": false
   },
   {
    "quarter": "2025-Q1",
-   "originals": 0,
+   "originals": 2,
    "amendments": 2,
    "voluntary": 3,
    "partial": false
   },
   {
    "quarter": "2025-Q2",
-   "originals": 0,
+   "originals": 6,
    "amendments": 1,
    "voluntary": 4,
    "partial": false
   },
   {
    "quarter": "2025-Q3",
-   "originals": 0,
+   "originals": 3,
    "amendments": 0,
    "voluntary": 8,
    "partial": false
   },
   {
    "quarter": "2025-Q4",
-   "originals": 0,
+   "originals": 4,
    "amendments": 1,
    "voluntary": 7,
    "partial": false
   },
   {
    "quarter": "2026-Q1",
-   "originals": 0,
+   "originals": 3,
    "amendments": 1,
    "voluntary": 4,
    "partial": false
   },
   {
    "quarter": "2026-Q2",
-   "originals": 0,
+   "originals": 7,
    "amendments": 2,
    "voluntary": 11,
    "partial": false
   },
   {
    "quarter": "2026-Q3",
-   "originals": 0,
+   "originals": 6,
    "amendments": 4,
    "voluntary": 11,
    "partial": true
   }
  ],
  "totals": {
-  "originals": 0,
+  "originals": 57,
   "amendments": 26,
   "voluntary": 74,
-  "companies_105": 20,
+  "companies_105": 56,
   "companies_801": 58,
-  "latest_105": "2026-07-30"
+  "latest_105": "2026-09-08"
  },
  "amendment_lag": {
-  "originals": 0,
-  "amended": 0,
-  "matched_amendments": 0,
-  "unmatched_amendments": 26,
-  "median_days": null,
-  "max_days": null,
+  "originals": 57,
+  "amended": 19,
+  "matched_amendments": 25,
+  "unmatched_amendments": 1,
+  "median_days": 22.0,
+  "max_days": 158,
   "buckets": [
    {
     "label": "0\u20137 days",
-    "n": 0
+    "n": 1
    },
    {
     "label": "8\u201330 days",
-    "n": 0
+    "n": 9
    },
    {
     "label": "31\u201390 days",
-    "n": 0
+    "n": 7
    },
    {
     "label": "91\u2013180 days",
-    "n": 0
+    "n": 2
    },
    {
     "label": "181\u2013365 days",
@@ -387,13 +387,51 @@
  },
  "recent": [
   {
+   "date": "2026-09-08",
+   "form": "8-K",
+   "company": "BOSTON SCIENTIFIC CORP",
+   "ticker": "BSX",
+   "cik": "885725",
+   "adsh": "0000885725-26-000059",
+   "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572526000059/0000885725-26-000059-index.htm"
+  },
+  {
+   "date": "2026-09-01",
+   "form": "8-K",
+   "company": "Park Dental Partners, Inc.",
+   "ticker": "PARK",
+   "cik": "2069604",
+   "adsh": "0001104659-26-104300",
+   "url": "https://www.sec.gov/Archives/edgar/data/2069604/000110465926104300/0001104659-26-104300-index.htm"
+  },
+  {
+   "date": "2026-08-31",
+   "form": "8-K",
+   "company": "Nutex Health Inc.",
+   "ticker": "NUTX",
+   "cik": "1479681",
+   "adsh": "0001628280-26-059602",
+   "url": "https://www.sec.gov/Archives/edgar/data/1479681/000162828026059602/0001628280-26-059602-index.htm"
+  },
+  {
+   "date": "2026-07-31",
+   "form": "8-K",
+   "company": "AMGEN INC",
+   "ticker": "AMGN",
+   "cik": "318154",
+   "adsh": "0000318154-26-000119",
+   "url": "https://www.sec.gov/Archives/edgar/data/318154/000031815426000119/0000318154-26-000119-index.htm"
+  },
+  {
    "date": "2026-07-30",
    "form": "8-K/A",
    "company": "River Financial Corp",
    "ticker": "RVRF",
    "cik": "1641601",
    "adsh": "0001193125-26-325324",
-   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526325324/0001193125-26-325324-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526325324/0001193125-26-325324-index.htm",
+   "original_date": "2026-06-25",
+   "lag_days": 35
   },
   {
    "date": "2026-07-17",
@@ -402,7 +440,9 @@
    "ticker": "RVRF",
    "cik": "1641601",
    "adsh": "0001193125-26-307288",
-   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526307288/0001193125-26-307288-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526307288/0001193125-26-307288-index.htm",
+   "original_date": "2026-06-25",
+   "lag_days": 22
   },
   {
    "date": "2026-07-10",
@@ -411,7 +451,9 @@
    "ticker": "RVRF",
    "cik": "1641601",
    "adsh": "0001193125-26-300763",
-   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526300763/0001193125-26-300763-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526300763/0001193125-26-300763-index.htm",
+   "original_date": "2026-06-25",
+   "lag_days": 15
   },
   {
    "date": "2026-07-06",
@@ -420,7 +462,63 @@
    "ticker": "RVRF",
    "cik": "1641601",
    "adsh": "0001193125-26-295704",
-   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526295704/0001193125-26-295704-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526295704/0001193125-26-295704-index.htm",
+   "original_date": "2026-06-25",
+   "lag_days": 11
+  },
+  {
+   "date": "2026-07-02",
+   "form": "8-K",
+   "company": "NAVIENT CORP",
+   "ticker": "JSM, NAVI",
+   "cik": "1593538",
+   "adsh": "0001140361-26-027441",
+   "url": "https://www.sec.gov/Archives/edgar/data/1593538/000114036126027441/0001140361-26-027441-index.htm"
+  },
+  {
+   "date": "2026-07-02",
+   "form": "8-K",
+   "company": "AdaptHealth Corp.",
+   "ticker": "AHCO",
+   "cik": "1725255",
+   "adsh": "0001104659-26-080297",
+   "url": "https://www.sec.gov/Archives/edgar/data/1725255/000110465926080297/0001104659-26-080297-index.htm"
+  },
+  {
+   "date": "2026-06-25",
+   "form": "8-K",
+   "company": "River Financial Corp",
+   "ticker": "RVRF",
+   "cik": "1641601",
+   "adsh": "0001193125-26-282946",
+   "url": "https://www.sec.gov/Archives/edgar/data/1641601/000119312526282946/0001193125-26-282946-index.htm"
+  },
+  {
+   "date": "2026-06-23",
+   "form": "8-K",
+   "company": "8X8 INC /DE/",
+   "ticker": "EGHT",
+   "cik": "1023731",
+   "adsh": "0001023731-26-000084",
+   "url": "https://www.sec.gov/Archives/edgar/data/1023731/000102373126000084/0001023731-26-000084-index.htm"
+  },
+  {
+   "date": "2026-06-15",
+   "form": "8-K",
+   "company": "iRhythm Holdings, Inc.",
+   "ticker": "IRTC",
+   "cik": "1388658",
+   "adsh": "0001388658-26-000055",
+   "url": "https://www.sec.gov/Archives/edgar/data/1388658/000138865826000055/0001388658-26-000055-index.htm"
+  },
+  {
+   "date": "2026-05-22",
+   "form": "8-K",
+   "company": "Oncology Institute, Inc.",
+   "ticker": "TOI, DFPH, TOIIW",
+   "cik": "1799191",
+   "adsh": "0001079973-26-000721",
+   "url": "https://www.sec.gov/Archives/edgar/data/1799191/000107997326000721/0001079973-26-000721-index.htm"
   },
   {
    "date": "2026-05-20",
@@ -429,7 +527,27 @@
    "ticker": "WST",
    "cik": "105770",
    "adsh": "0000105770-26-000077",
-   "url": "https://www.sec.gov/Archives/edgar/data/105770/000010577026000077/0000105770-26-000077-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/105770/000010577026000077/0000105770-26-000077-index.htm",
+   "original_date": "2026-05-11",
+   "lag_days": 9
+  },
+  {
+   "date": "2026-05-11",
+   "form": "8-K",
+   "company": "CB Financial Services, Inc.",
+   "ticker": "CBFV",
+   "cik": "1605301",
+   "adsh": "0001605301-26-000021",
+   "url": "https://www.sec.gov/Archives/edgar/data/1605301/000160530126000021/0001605301-26-000021-index.htm"
+  },
+  {
+   "date": "2026-05-11",
+   "form": "8-K",
+   "company": "WEST PHARMACEUTICAL SERVICES INC",
+   "ticker": "WST",
+   "cik": "105770",
+   "adsh": "0000105770-26-000068",
+   "url": "https://www.sec.gov/Archives/edgar/data/105770/000010577026000068/0000105770-26-000068-index.htm"
   },
   {
    "date": "2026-04-09",
@@ -441,13 +559,51 @@
    "url": "https://www.sec.gov/Archives/edgar/data/310764/000119312526149607/0001193125-26-149607-index.htm"
   },
   {
+   "date": "2026-04-08",
+   "form": "8-K",
+   "company": "Bitcoin Depot Inc.",
+   "ticker": "BTM, BTMWW",
+   "cik": "1901799",
+   "adsh": "0001193125-26-147772",
+   "url": "https://www.sec.gov/Archives/edgar/data/1901799/000119312526147772/0001193125-26-147772-index.htm"
+  },
+  {
+   "date": "2026-03-27",
+   "form": "8-K",
+   "company": "CareCloud, Inc.",
+   "ticker": "CCLD, CCLDO",
+   "cik": "1582982",
+   "adsh": "0001493152-26-013239",
+   "url": "https://www.sec.gov/Archives/edgar/data/1582982/000149315226013239/0001493152-26-013239-index.htm"
+  },
+  {
+   "date": "2026-03-20",
+   "form": "8-K",
+   "company": "TRIO-TECH INTERNATIONAL",
+   "ticker": "TRT",
+   "cik": "732026",
+   "adsh": "0001437749-26-009193",
+   "url": "https://www.sec.gov/Archives/edgar/data/732026/000143774926009193/0001437749-26-009193-index.htm"
+  },
+  {
+   "date": "2026-02-24",
+   "form": "8-K",
+   "company": "UFP TECHNOLOGIES INC",
+   "ticker": "UFPT",
+   "cik": "914156",
+   "adsh": "0001628280-26-011152",
+   "url": "https://www.sec.gov/Archives/edgar/data/914156/000162828026011152/0001628280-26-011152-index.htm"
+  },
+  {
    "date": "2026-02-03",
    "form": "8-K/A",
    "company": "WYTEC INTERNATIONAL INC",
    "ticker": "WYTC",
    "cik": "1560143",
    "adsh": "0001683168-26-000732",
-   "url": "https://www.sec.gov/Archives/edgar/data/1560143/000168316826000732/0001683168-26-000732-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/1560143/000168316826000732/0001683168-26-000732-index.htm",
+   "original_date": "2025-08-29",
+   "lag_days": 158
   },
   {
    "date": "2025-12-29",
@@ -456,166 +612,24 @@
    "ticker": "CPNG",
    "cik": "1834584",
    "adsh": "0001834584-25-000202",
-   "url": "https://www.sec.gov/Archives/edgar/data/1834584/000183458425000202/0001834584-25-000202-index.htm"
+   "url": "https://www.sec.gov/Archives/edgar/data/1834584/000183458425000202/0001834584-25-000202-index.htm",
+   "original_date": "2025-12-16",
+   "lag_days": 13
   },
   {
-   "date": "2025-06-20",
-   "form": "8-K/A",
-   "company": "NUCOR CORP",
-   "ticker": "NUE",
-   "cik": "73309",
-   "adsh": "0001193125-25-143135",
-   "url": "https://www.sec.gov/Archives/edgar/data/73309/000119312525143135/0001193125-25-143135-index.htm"
-  },
-  {
-   "date": "2025-03-06",
-   "form": "8-K/A",
-   "company": "LEE ENTERPRISES, Inc",
-   "ticker": "LEE",
-   "cik": "58361",
-   "adsh": "0001628280-25-010944",
-   "url": "https://www.sec.gov/Archives/edgar/data/58361/000162828025010944/0001628280-25-010944-index.htm"
-  },
-  {
-   "date": "2025-01-27",
-   "form": "8-K/A",
-   "company": "ENGLOBAL CORP",
-   "ticker": "ENGC",
-   "cik": "933738",
-   "adsh": "0001654954-25-000798",
-   "url": "https://www.sec.gov/Archives/edgar/data/933738/000165495425000798/0001654954-25-000798-index.htm"
-  },
-  {
-   "date": "2024-08-06",
-   "form": "8-K/A",
-   "company": "BASSETT FURNITURE INDUSTRIES INC",
-   "ticker": "BSET",
-   "cik": "10329",
-   "adsh": "0001437749-24-024679",
-   "url": "https://www.sec.gov/Archives/edgar/data/10329/000143774924024679/0001437749-24-024679-index.htm"
-  },
-  {
-   "date": "2024-08-06",
-   "form": "8-K/A",
-   "company": "KEY TRONIC CORP",
-   "ticker": "KTCC",
-   "cik": "719733",
-   "adsh": "0000719733-24-000047",
-   "url": "https://www.sec.gov/Archives/edgar/data/719733/000071973324000047/0000719733-24-000047-index.htm"
-  },
-  {
-   "date": "2024-08-05",
-   "form": "8-K/A",
-   "company": "SONIC AUTOMOTIVE INC",
-   "ticker": "SAH",
-   "cik": "1043509",
-   "adsh": "0001043509-24-000063",
-   "url": "https://www.sec.gov/Archives/edgar/data/1043509/000104350924000063/0001043509-24-000063-index.htm"
-  },
-  {
-   "date": "2024-07-31",
-   "form": "8-K/A",
-   "company": "Cencora, Inc.",
-   "ticker": "COR",
-   "cik": "1140859",
-   "adsh": "0001104659-24-084351",
-   "url": "https://www.sec.gov/Archives/edgar/data/1140859/000110465924084351/0001104659-24-084351-index.htm"
-  },
-  {
-   "date": "2024-06-14",
-   "form": "8-K/A",
-   "company": "KEY TRONIC CORP",
-   "ticker": "KTCC",
-   "cik": "719733",
-   "adsh": "0000719733-24-000035",
-   "url": "https://www.sec.gov/Archives/edgar/data/719733/000071973324000035/0000719733-24-000035-index.htm"
-  },
-  {
-   "date": "2024-05-28",
-   "form": "8-K/A",
-   "company": "BRANDYWINE REALTY TRUST",
-   "ticker": "BDN",
-   "cik": "790816",
-   "adsh": "0001193125-24-147625",
-   "url": "https://www.sec.gov/Archives/edgar/data/790816/000119312524147625/0001193125-24-147625-index.htm"
-  },
-  {
-   "date": "2024-04-24",
-   "form": "8-K/A",
-   "company": "UNITEDHEALTH GROUP INC",
-   "ticker": "UNH",
-   "cik": "731766",
-   "adsh": "0000731766-24-000150",
-   "url": "https://www.sec.gov/Archives/edgar/data/731766/000073176624000150/0000731766-24-000150-index.htm"
-  },
-  {
-   "date": "2024-04-01",
-   "form": "8-K/A",
-   "company": "MARINEMAX INC",
-   "ticker": "HZO",
-   "cik": "1057060",
-   "adsh": "0000950170-24-038881",
-   "url": "https://www.sec.gov/Archives/edgar/data/1057060/000095017024038881/0000950170-24-038881-index.htm"
-  },
-  {
-   "date": "2024-03-29",
-   "form": "8-K/A",
-   "company": "SouthState Corp",
-   "ticker": "SSB",
-   "cik": "764038",
-   "adsh": "0001558370-24-004390",
-   "url": "https://www.sec.gov/Archives/edgar/data/764038/000155837024004390/0001558370-24-004390-index.htm"
-  },
-  {
-   "date": "2024-03-08",
-   "form": "8-K/A",
-   "company": "MICROSOFT CORP",
-   "ticker": "MSFT",
-   "cik": "789019",
-   "adsh": "0001193125-24-062997",
-   "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312524062997/0001193125-24-062997-index.htm"
-  },
-  {
-   "date": "2024-03-08",
-   "form": "8-K/A",
-   "company": "UNITEDHEALTH GROUP INC",
-   "ticker": "UNH",
-   "cik": "731766",
-   "adsh": "0000731766-24-000085",
-   "url": "https://www.sec.gov/Archives/edgar/data/731766/000073176624000085/0000731766-24-000085-index.htm"
-  },
-  {
-   "date": "2024-02-21",
-   "form": "8-K/A",
-   "company": "PRUDENTIAL FINANCIAL INC",
-   "ticker": "PFH, PRH, PRS, PRU",
-   "cik": "1137774",
-   "adsh": "0001193125-24-040749",
-   "url": "https://www.sec.gov/Archives/edgar/data/1137774/000119312524040749/0001193125-24-040749-index.htm"
-  },
-  {
-   "date": "2024-01-18",
-   "form": "8-K/A",
-   "company": "V F CORP",
-   "ticker": "VFC",
-   "cik": "103379",
-   "adsh": "0001193125-24-010243",
-   "url": "https://www.sec.gov/Archives/edgar/data/103379/000119312524010243/0001193125-24-010243-index.htm"
-  },
-  {
-   "date": "2024-01-12",
-   "form": "8-K/A",
-   "company": "First American Financial Corp",
-   "ticker": "FAF",
-   "cik": "1472787",
-   "adsh": "0000950170-24-004247",
-   "url": "https://www.sec.gov/Archives/edgar/data/1472787/000095017024004247/0000950170-24-004247-index.htm"
+   "date": "2025-12-16",
+   "form": "8-K",
+   "company": "Coupang, Inc.",
+   "ticker": "CPNG",
+   "cik": "1834584",
+   "adsh": "0001834584-25-000196",
+   "url": "https://www.sec.gov/Archives/edgar/data/1834584/000183458425000196/0001834584-25-000196-index.htm"
   }
  ],
  "diagnostics": {
-  "hits_105": 26,
+  "hits_105": 93,
   "hits_801": 1160,
-  "filings_105": 26,
+  "filings_105": 93,
   "filings_801": 1017,
   "dropped_105": 0,
   "dropped_801": 0,

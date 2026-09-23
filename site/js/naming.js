@@ -1,5 +1,5 @@
 // =============================================================================
-// naming.js — Threat-actor Naming Chaos tab (naming.html). Builds the two
+// naming.js — Threat Group Aliases tab (naming.html). Builds the two
 // sections from editorial.js. Like attack.js, both sections share ONE contract
 // file (data/naming.json), fetched once and passed to each renderer. Each
 // renderer runs inside its own try/catch so one bad chart yields one inline

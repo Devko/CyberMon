@@ -230,14 +230,16 @@ CLAIMS: tuple[Claim, ...] = (
           "high-severity vulnerabilities found and validated",
           "vulnerabilities", "2026-02-05",
           "https://www.anthropic.com/research/zero-days", "2026-09-20",
-          note="Claude Opus 4.6, open-source code. No CVE count given."),
+          note="Claude Opus 4.6, open-source code; the post gives no CVE "
+               "count."),
     Claim("anthropic", 10000, "more than",
           "high- or critical-severity vulnerabilities",
           "vulnerabilities", "2026-05-22",
           "https://www.anthropic.com/research/glasswing-initial-update",
           "2026-09-20",
-          note="Collective total with about 50 Project Glasswing partners; "
-               "includes proprietary code that will never get a public CVE."),
+          note="Total for Anthropic and about 50 Project Glasswing partners, "
+               "whose scans cover their own software as well as open source; "
+               "some findings may never receive a public CVE."),
     Claim("anthropic", 65, "",
           "public advisories (of 530 bugs disclosed, 75 patched)",
           "advisories", "2026-05-22",
@@ -250,12 +252,12 @@ CLAIMS: tuple[Claim, ...] = (
           "2025-08-04",
           "https://x.com/argvee/status/1952390039700431184", "2026-09-20",
           note="Big Sleep's first batch, announced by Google's VP of "
-               "security engineering. Google publishes no CVE count."),
+               "security engineering; the post gives no CVE count."),
     Claim("xbow", 1060, "nearly", "vulnerabilities submitted on HackerOne",
           "submissions", "2025-06-24",
           "https://xbow.com/blog/top-1-how-xbow-did-it", "2026-09-20",
-          note="130 resolved and 303 triaged at the time; bug-bounty "
-               "reports against live targets rarely receive CVEs."),
+          note="130 resolved and 303 triaged at the time. Bug-bounty "
+               "reports against live services usually do not receive CVEs."),
     Claim("aisle", 400, "", "CVEs assigned", "cves", "2026-09-20",
           "https://aisle.com/cve-discoveries", "2026-09-20", live=True),
     Claim("zeropath", 13, "", "CVEs assigned", "cves", "2026-09-20",

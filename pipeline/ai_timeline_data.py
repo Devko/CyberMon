@@ -94,14 +94,13 @@ class Era:
 # matter can move the goalpost forward and watch the answer hold.
 ERAS: list[Era] = [
     Era("chatgpt", "ChatGPT", "2022-11-30",
-        "The month the public narrative starts: GPT-3.5 in everyone's "
-        "browser."),
+        "The earliest cutoff: ChatGPT's public release (GPT-3.5)."),
     Era("gpt4", "GPT-4", "2023-03-14",
-        "The stricter test — the first model widely argued to be capable "
-        "enough to matter offensively."),
+        "GPT-4's release, often cited as the first model capable enough to "
+        "matter for offensive work."),
     Era("uplift", "First documented uplift", "2025-08-27",
-        "The most generous cutoff: the first vendor report of AI running "
-        "real extortion operations, not just assisting."),
+        "The latest cutoff: the first vendor report of a model doing much of "
+        "the work in a real extortion operation."),
 ]
 
 DEFAULT_ERA = "chatgpt"
@@ -113,22 +112,21 @@ MILESTONES: list[Milestone] = [
     Milestone(
         "2022-11-30", "day", "capability",
         "ChatGPT (GPT-3.5) released",
-        "General-purpose LLMs reach the public. No offensive tooling "
-        "ecosystem exists yet.",
+        "A general-purpose LLM becomes available to the public.",
         "https://openai.com/index/chatgpt/",
     ),
     Milestone(
         "2023-03-14", "day", "capability",
         "GPT-4 released",
-        "The first model widely argued to be capable enough to matter for "
-        "exploit development.",
+        "Often cited as the first model capable enough to help with exploit "
+        "development.",
         "https://openai.com/index/gpt-4-research/",
     ),
     Milestone(
         "2024-02-14", "day", "no_uplift",
         "Microsoft + OpenAI: no capability uplift observed",
-        "A joint threat report finds state actors using LLMs for recon, "
-        "scripting and translation — and concludes it saw no novel "
+        "A joint threat report describes state actors using LLMs for "
+        "reconnaissance, scripting and translation, and reports no novel "
         "capabilities or capability uplift.",
         "https://www.microsoft.com/en-us/security/blog/2024/02/14/"
         "staying-ahead-of-threat-actors-in-the-age-of-ai/",
@@ -136,55 +134,54 @@ MILESTONES: list[Milestone] = [
     Milestone(
         "2024-04", "month", "research",
         "Fang et al.: LLM agents exploit one-day vulns (lab)",
-        "A UIUC benchmark reports high success on a 15-CVE set — but the "
-        "agent is handed the CVE description, and the method drew "
-        "substantial criticism. Lab feasibility, not an in-the-wild driver.",
+        "A UIUC study reports high success on a 15-CVE set when the agent is "
+        "given the CVE description; the method drew substantial criticism. "
+        "A laboratory result, with no evidence from real attacks.",
         "https://arxiv.org/abs/2404.08144",
     ),
     Milestone(
         "2024-11", "month", "defensive",
-        "Big Sleep finds a real-world memory-safety bug",
-        "Google's LLM-assisted bug hunter reports a genuine SQLite flaw — a "
-        "milestone on the DEFENDERS' side of the ledger.",
+        "Big Sleep reports a real-world memory-safety bug",
+        "Google's LLM-based bug-hunting agent reports a real SQLite flaw, a "
+        "defensive use of the technology.",
         "https://googleprojectzero.blogspot.com/2024/10/"
         "from-naptime-to-big-sleep.html",
     ),
     Milestone(
         "2025-01", "month", "no_uplift",
         "Google GTIG: productivity gains, not new capabilities",
-        "A second threat-intel shop looks specifically for offensive uplift "
-        "in adversarial generative-AI use and reaches the same conclusion.",
+        "Google's threat-intelligence group examines adversarial use of "
+        "generative AI for offensive uplift and reports productivity gains "
+        "but no new capabilities.",
         "https://cloud.google.com/blog/topics/threat-intelligence/"
         "adversarial-misuse-generative-ai",
     ),
     Milestone(
         "2025-06", "month", "offensive",
         "XBOW tops the HackerOne US leaderboard",
-        "An autonomous pentesting system out-reports human researchers on a "
-        "public bounty leaderboard — bug finding at scale, on authorised "
-        "targets.",
+        "An autonomous penetration-testing system ranks first on a public "
+        "bug-bounty leaderboard, reporting bugs in authorised targets.",
         "https://xbow.com/blog/xbow-top-1/",
     ),
     Milestone(
         "2025-08", "month", "defensive",
         "DARPA AIxCC finals",
-        "Autonomous systems find and patch a large share of injected "
-        "synthetic vulnerabilities — the defensive-automation proof point.",
+        "Autonomous systems find and patch a large share of the synthetic "
+        "vulnerabilities inserted for the competition.",
         "https://aicyberchallenge.com/",
     ),
     Milestone(
         "2025-08", "month", "offensive",
-        "Anthropic reports AI-assisted extortion",
-        "The first vendor account of a model orchestrating a real extortion "
-        "operation end to end, rather than assisting a human operator.",
+        "Anthropic reports AI-run extortion",
+        "The first vendor account of a model doing much of the work in a real "
+        "extortion operation, rather than only advising a human operator.",
         "https://www.anthropic.com/news/detecting-countering-misuse-aug-2025",
     ),
     Milestone(
         "2025-11", "month", "offensive",
         "Anthropic reports AI-orchestrated espionage",
-        "Multi-stage intrusion workflows run with reduced human involvement "
-        "— genuinely new, and three years downstream of the trend this "
-        "module measures.",
+        "Multi-stage intrusion workflows run with reduced human involvement, "
+        "reported three years after ChatGPT's release.",
         "https://www.anthropic.com/news/disrupting-AI-espionage",
     ),
     # ---- 2026: the capability turn ------------------------------------
@@ -195,40 +192,41 @@ MILESTONES: list[Milestone] = [
     # watch if they expect the historical finding to stop holding.
     Milestone(
         "2026-04-07", "day", "capability",
-        "Anthropic withholds Claude Mythos, citing vulnerability discovery",
-        "A frontier model is kept from public release specifically because "
-        "of its ability to find software vulnerabilities — the first time "
-        "cyber capability, rather than any other risk, gates a launch. It "
-        "goes instead to roughly 50 defensive-security organisations under "
-        "Project Glasswing.",
+        "Anthropic withholds Claude Mythos, citing its cyber capability",
+        "A frontier model is kept from general release until safeguards can "
+        "block its most dangerous cybersecurity outputs. It goes instead to "
+        "eleven other launch partners and more than 40 further organisations that "
+        "build or maintain critical software, under Project Glasswing.",
         "https://www.anthropic.com/glasswing",
     ),
     Milestone(
         "2026-05-11", "day", "defensive",
         "OpenAI launches Daybreak",
-        "A cyber programme built the same way: vulnerability-finding "
-        "capability released through vetted-defender access rather than "
-        "generally, alongside tooling to patch what it finds.",
+        "An OpenAI cyber programme that gives vetted defenders access to "
+        "vulnerability-finding capability, with tooling to patch what it "
+        "finds.",
         "https://openai.com/index/daybreak-securing-the-world/",
     ),
     Milestone(
         "2026-05-22", "day", "defensive",
-        "Glasswing reports 10,000+ high/critical vulnerabilities in a month",
-        "Partners report more than ten thousand high- or critical-severity "
-        "findings in systemically important software within a month; of "
-        "1,752 independently assessed, 90.6% were valid true positives. "
-        "Discovery volume, not exploitation speed — which is the shift this "
-        "module's own charts cannot yet see.",
+        "Glasswing reports 10,000+ high/critical vulnerabilities in six weeks",
+        "Anthropic and about 50 partners report more than ten thousand high- "
+        "or critical-severity findings in systemically important software "
+        "since the April launch; of 1,752 findings from Anthropic's own "
+        "open-source scan that independent firms assessed, 90.6% were valid "
+        "true positives. "
+        "This counts discoveries; any effect on exploitation speed is not "
+        "yet visible in this module's charts.",
         "https://www.anthropic.com/research/glasswing-initial-update",
     ),
     Milestone(
         "2026-06-22", "day", "capability",
         "GPT-5.5-Cyber: measured gain in turning bugs into exploits",
-        "A model purpose-built for finding and patching vulnerabilities. "
-        "OpenAI reports 85.6% on CyberGym (from 81.8%) and, more relevant "
-        "here, 39.5% against 25.95% on ExploitGym — converting a known "
-        "vulnerability into a working exploit. That is the one mechanism "
-        "that would compress the gap this page measures.",
+        "A model built for finding and patching vulnerabilities. OpenAI "
+        "reports 85.6% on CyberGym (from 81.8%) and 39.5% against 25.95% on "
+        "ExploitGym, a benchmark of turning a known vulnerability into a "
+        "working exploit. Exploit conversion is the capability most directly "
+        "tied to the gap this page measures.",
         "https://openai.com/index/daybreak-securing-the-world/",
     ),
 ]

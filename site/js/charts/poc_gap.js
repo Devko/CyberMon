@@ -77,7 +77,7 @@ export function render(slots, data) {
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.axisValueLabel ?? p.name))}</div>` +
           `median <strong>${fmtDays(r.median_days)}</strong> · IQR ${fmtDays(r.p25_days)}–${fmtDays(r.p75_days)}<br>` +
           `${fmtInt(r.n)} matched CVEs · ${fmtPct(r.pct_negative)} PoC before publish · ` +
-          `${fmtPct(r.pct_within_week)} within a week`
+          `${fmtPct(r.pct_within_week)} by day 7`
         );
       },
     },

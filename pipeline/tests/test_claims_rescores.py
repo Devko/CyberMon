@@ -147,7 +147,7 @@ CLAIMS = [
         check_direction_exists_only_for_rescores,
     ),
     (
-        "This record starts at first deploy and deepens nightly.",
+        "The log starts at first deploy and grows nightly.",
         "history/rescore_log.csv",
         check_log_dates_monotonic,
     ),

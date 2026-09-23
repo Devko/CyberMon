@@ -1,4 +1,4 @@
-// Shared era selection for the AI Alibi charts.
+// Shared era selection for the AI and Exploit Timing charts.
 //
 // ai.html gives the reader a live selector: the hero owns it, the
 // inflection board re-renders from it. The carousel generator calls the

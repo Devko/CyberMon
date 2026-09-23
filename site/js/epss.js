@@ -1,5 +1,5 @@
 // =============================================================================
-// epss.js — EPSS Report Card tab (epss.html). Builds the three report-card
+// epss.js — EPSS Before KEV tab (epss.html). Builds the three report-card
 // sections from editorial.js. Like kev.js, all sections share ONE contract
 // file (data/epss_report.json), fetched once and passed to each renderer.
 // Each renderer runs inside its own try/catch so one bad chart yields one

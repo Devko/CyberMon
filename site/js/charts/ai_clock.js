@@ -1,4 +1,4 @@
-// The AI Alibi 1 (hero) — CyberMon's exploitation clock across the whole
+// AI and Exploit Timing 1 (hero) — CyberMon's exploitation clock across the whole
 // record, with the AI era shaded and the AI timeline marked. Contract:
 // site/data/ai_alibi.json (shared by all three sections; ai.js fetches it
 // once and hands every renderer the same era store).

@@ -99,7 +99,7 @@ export function render(slots, data) {
           {
             name: "Rejected", type: "line",
             data: rows.map((d) => d.rejected),
-            color: C.accent, symbol: "none", lineStyle: { width: 1.5, type: [5, 3] },
+            color: C.accent, symbol: "none", lineStyle: { width: 1.5 },
           },
           ...(hasProj
             ? [projSeries("Published", "published", C.ink),

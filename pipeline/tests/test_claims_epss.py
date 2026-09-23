@@ -121,11 +121,11 @@ CLAIMS = [
         check_flip_coincides_with_model_change,
     ),
     (
-        "roughly half or more arrive having been scored below one percent the day before",
+        "Roughly half or more of recent KEV additions scored under 1% the day before listing",
         check_most_recent_below_1pct,
     ),
     (
-        "about three in ten of the graded cohort sat in the bottom half",
+        "About three in ten scored KEV additions ranked in EPSS's bottom half",
         check_bottom_half_share,
     ),
 ]

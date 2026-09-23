@@ -1,4 +1,4 @@
-// Shared USD formatting for the three Extortion Ledger charts. All amounts
+// Shared USD formatting for the three Ransom Payments charts. All amounts
 // in extortion_ledger.json are whole dollars at historical (day-of-transfer)
 // rates — see docs/data-contracts.md.
 import { fmtInt } from "../theme.js";

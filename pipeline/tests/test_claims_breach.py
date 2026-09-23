@@ -62,9 +62,11 @@ def check_typical_gap_in_months(d: dict) -> None:
 
 
 def check_import_era_callout(d: dict) -> None:
-    # editorial.js (breach lag methodology): "its seven opening-import
-    # entries predate the service itself by a median nominal lag of well
-    # over a year" — import_era is a fixed historical set (n=7, 511 d).
+    # editorial.js (breach lag methodology): "six of its seven
+    # opening-import entries predate the service itself, and the seven
+    # carry a median nominal lag of well over a year" — import_era is a
+    # fixed historical set (n=7, 511 d; PixelFederation is dated launch
+    # day, the other six before it).
     era = d["import_era"]
     assert era["n"] == 7, f"'its seven opening-import entries' vs n={era['n']}"
     assert 365 <= era["median_days"] <= 1000, (
@@ -74,12 +76,24 @@ def check_import_era_callout(d: dict) -> None:
 
 def check_third_take_over_a_year(d: dict) -> None:
     # editorial.js (breaches.html hero): "roughly a third of entries take
-    # more than a year to surface". (Live fetch 2026-07: 35.5%.)
+    # more than a year to reach the catalog". (Live fetch 2026-07: 35.5%.)
     pct = d["headline"]["pct_over_365d"]
     assert 25 <= pct <= 45, (
-        f"'roughly a third of entries take more than a year to surface' "
+        f"'roughly a third of entries take more than a year to reach the catalog' "
         f"claims ~33%; data says {pct}%"
     )
+
+
+def check_passwords_trend(d: dict) -> None:
+    # editorial.js (breaches.html leaks caption): "Passwords are the trend:
+    # in nine of ten breaches cataloged in 2014, about four in ten by 2025,
+    # and lower every year since 2019." Named years: 2014-2025 are settled.
+    by = {y["year"]: y["shares"].get("Passwords") for y in d["class_shares"]["years"]}
+    assert by[2014] is not None and 85 <= by[2014] <= 95, by.get(2014)
+    assert by[2025] is not None and 35 <= by[2025] <= 45, by.get(2025)
+    run = [by[y] for y in range(2019, 2026)]
+    assert all(a > b for a, b in zip(run, run[1:])), (
+        f"'lower every year since 2019' vs {list(zip(range(2019, 2026), run))}")
 
 
 CLAIMS = [
@@ -89,14 +103,19 @@ CLAIMS = [
         check_typical_gap_in_months,
     ),
     (
-        "its seven opening-import entries predate the service itself by a median nominal lag of well over a year",
+        "six of its seven opening-import entries predate the service itself, and the seven carry a median nominal lag of well over a year",
         "breach_ledger.json",
         check_import_era_callout,
     ),
     (
-        "roughly a third of entries take more than a year to surface",
+        "roughly a third of entries take more than a year to reach the catalog",
         "breach_ledger.json",
         check_third_take_over_a_year,
+    ),
+    (
+        "Passwords appeared in nine of ten breaches cataloged in 2014, about four in ten by 2025, and a lower share every year since 2019",
+        "breach_ledger.json",
+        check_passwords_trend,
     ),
 ]
 

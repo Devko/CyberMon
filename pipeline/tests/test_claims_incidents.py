@@ -90,13 +90,60 @@ def check_empty_claims_nothing(d: dict) -> None:
 
 def check_queries_printed(d: dict) -> None:
     # editorial.js (incidents_clock methodology): "Item 1.05: the phrase
-    # {q105} in forms {forms105}" — the page prints the edition's own
+    # {q105} in form {forms105} filings" — the page prints the edition's own
     # query, so the edition must carry the measurement definitions.
     from pipeline.fetch_sec_incidents import QUERIES
     assert d["definitions"] == QUERIES
 
 
+def check_originals_counted(d: dict) -> None:
+    # editorial.js (incidents_clock statLabel): "Item 1.05 incident
+    # disclosures on EDGAR (original 8-Ks)" and methodology "so it returns
+    # the 8-K/A amendments too" — one query must yield both forms. The
+    # first editions sent forms=8-K,8-K/A, which EDGAR answers with the
+    # amendments only, and printed 0 originals beside 26 amendments. A
+    # rule in force since December 2023 cannot have more amendments than
+    # original disclosures across the window.
+    if d["status"] != "ok":
+        return
+    t = d["totals"]
+    assert t["originals"] > 0
+    assert t["originals"] >= t["amendments"]
+    assert 0 < t["companies_105"] <= t["originals"]
+
+
+def check_one_or_two_a_month(d: dict) -> None:
+    # incidents_clock headline: "Companies file one or two Item 1.05
+    # incident disclosures in a typical month." — the median complete
+    # month. (2026-09-23: 1.5 over 32 complete months.)
+    if d["status"] != "ok":
+        return
+    import statistics
+    months = [r["originals"] for r in d["monthly"] if not r["partial"]]
+    med = statistics.median(months)
+    assert 1 <= med <= 2, f"median originals per complete month {med}"
+
+
+def check_third_amended_most_within_90(d: dict) -> None:
+    # incidents_amend headline: "About a third of Item 1.05 disclosures have
+    # been amended, most within 90 days." (2026-09-23: 19 of 57; 17 of the
+    # 19 first amendments within 90 days.)
+    if d["status"] != "ok":
+        return
+    lag = d["amendment_lag"]
+    pct = 100.0 * lag["amended"] / lag["originals"]
+    assert 25 <= pct <= 42, f"{lag['amended']} of {lag['originals']} amended"
+    within = sum(b["n"] for b in lag["buckets"][:3])  # 0-7, 8-30, 31-90
+    assert within > lag["amended"] / 2, (within, lag["amended"])
+
+
 CLAIMS = [
+    ("Companies file one or two Item 1.05 incident disclosures in a typical month.",
+     "sec_incidents.json", check_one_or_two_a_month),
+    ("About a third of Item 1.05 disclosures have been amended, most within 90 days.",
+     "sec_incidents.json", check_third_amended_most_within_90),
+    ("Item 1.05 incident disclosures on EDGAR (original 8-Ks)",
+     "sec_incidents.json", check_originals_counted),
     ("the rule took effect on 18 December 2023", "sec_incidents.json",
      check_rule_start),
     ("Up to the 25 newest Item 1.05 filings in the window, newest first",
@@ -105,7 +152,7 @@ CLAIMS = [
      check_receipts_link_to_edgar),
     ("nothing has been counted, so nothing is drawn as zero",
      "sec_incidents.json", check_empty_claims_nothing),
-    ("Item 1.05: the phrase {q105} in forms {forms105}",
+    ("Item 1.05: the phrase {q105} in form {forms105} filings",
      "sec_incidents.json", check_queries_printed),
 ]
 

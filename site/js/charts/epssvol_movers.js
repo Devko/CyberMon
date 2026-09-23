@@ -37,7 +37,7 @@ export function render(slots, data) {
       min_delta: pp(movers.min_delta),
       context: catalog.first_observed
         ? tpl(ed.boardNote, {
-            days: fmtInt(catalog.days_observed),
+            days: fmtInt(catalog.trend_days ?? catalog.days_observed),
             first_date: catalog.first_observed,
           })
         : ed.boardNoteEmpty,

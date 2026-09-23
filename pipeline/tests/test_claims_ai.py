@@ -244,12 +244,12 @@ def check_like_for_like_holds_a_narrow_band(d: dict) -> None:
 
 CLAIMS = [
     (
-        "a collapse that finished a decade to the left of that band",
+        "median made most of its move toward zero by 2013, a decade before the ChatGPT band opens",
         "ai_alibi.json",
         check_collapse_finished_a_decade_left_of_the_band,
     ),
     (
-        "Nothing bends toward faster at the cutoff.",
+        "No judged speed metric moved toward faster exploitation after the cutoff.",
         "ai_alibi.json",
         check_nothing_bends_at_the_cutoff,
     ),
@@ -259,14 +259,12 @@ CLAIMS = [
         check_headline_metric_shows_no_inflection,
     ),
     (
-        "One of these multiplied. The other stayed inside a band of days.",
+        "attention multiplied, while the clock's annual median stayed inside a band of days",
         "ai_alibi.json",
         check_attention_multiplied_clock_did_not,
     ),
     (
-        "the two largest vendor threat-intel shops looked specifically for "
-        "offensive capability uplift in 2024 and early 2025 and reported "
-        "finding none",
+        "the largest vendor threat-intelligence teams looked specifically for offensive capability uplift in 2024 and early 2025 and reported finding none",
         "ai_alibi.json",
         check_two_shops_found_no_uplift,
     ),

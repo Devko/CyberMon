@@ -50,8 +50,8 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">day-before percentile ${escapeHtml(String(r.bucket))}</div>` +
-          `<strong>${fmtPct(r.pct)}</strong> of the ranked cohort<br>` +
-          `${fmtInt(r.n)} of ${fmtInt(pct.n)} graded entries`
+          `<strong>${fmtPct(r.pct)}</strong> of ranked entries<br>` +
+          `${fmtInt(r.n)} of ${fmtInt(pct.n)} scored entries`
         );
       },
     },

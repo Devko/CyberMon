@@ -32,11 +32,28 @@ export function render(slots, data) {
   const first = weather.first_observed;
 
   // Thin-launch honesty: the note is data-driven from the record's start.
+  // A long run of identical snapshots gets its own note: the counts cannot
+  // tell a quiet sky from a feed that has stopped updating.
   const noteEl = slots.panel.querySelector(".panel-note");
   if (noteEl) {
-    noteEl.textContent = series.length > 1
-      ? tpl(ed.note, { first_date: first })
-      : ed.noteEmpty;
+    const key = (pt) => JSON.stringify([pt.online, pt.listed]);
+    let flatFrom = series.length - 1;
+    while (flatFrom > 0 && key(series[flatFrom - 1]) === key(series[series.length - 1])) {
+      flatFrom -= 1;
+    }
+    const nights = series.length - flatFrom;
+    const last = series[series.length - 1];
+    noteEl.textContent = series.length <= 1
+      ? ed.noteEmpty
+      : nights >= 7
+        ? tpl(ed.noteFlat, {
+          first_date: first,
+          nights: fmtInt(nights),
+          since: series[flatFrom].date,
+          listed: fmtInt(last.listed_total),
+          online: fmtInt(last.online_total),
+        })
+        : tpl(ed.note, { first_date: first });
   }
 
   // ---- headline stat: tonight's online count, listed context ---------------

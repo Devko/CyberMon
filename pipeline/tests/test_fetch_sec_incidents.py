@@ -146,7 +146,7 @@ def test_fetch_pages_by_offset_and_sends_the_sec_user_agent():
     hits = [_hit(adsh=f"0009999999-24-{i:06d}") for i in range(1, 6)]
 
     def respond(params):
-        if params["forms"] == "8-K" or params["startdt"] != "2024-01-01":
+        if params["q"] != '"Item 1.05"' or params["startdt"] != "2024-01-01":
             return FakeResponse(_page([]))
         start = int(params.get("from", 0))
         return FakeResponse(_page(hits[start:start + 2], total=5))
@@ -158,7 +158,7 @@ def test_fetch_pages_by_offset_and_sends_the_sec_user_agent():
     r = data.results["item_105"]
     assert len(r.filings) == 5
     jan = [c for c in session.calls if c["params"]["startdt"] == "2024-01-01"
-           and c["params"]["forms"] == "8-K,8-K/A"]
+           and c["params"]["q"] == '"Item 1.05"']
     assert [c["params"].get("from") for c in jan] == [None, 2, 4]
     call = session.calls[0]
     assert call["url"] == EDGAR_URL
@@ -178,7 +178,7 @@ def test_capped_window_is_split_in_half():
     fs.fetch_sec_incidents("2024-01-31", session=session, start="2024-01-01",
                            sleep=_no_sleep, log=lambda m: None)
     spans = [(c["params"]["startdt"], c["params"]["enddt"])
-             for c in session.calls if c["params"]["forms"] == "8-K,8-K/A"]
+             for c in session.calls if c["params"]["q"] == '"Item 1.05"']
     assert spans == [("2024-01-01", "2024-01-31"), ("2024-01-01", "2024-01-16"),
                      ("2024-01-17", "2024-01-31")]
 

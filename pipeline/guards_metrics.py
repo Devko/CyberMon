@@ -18,8 +18,9 @@ place) and emits three views plus a whole-catalog audit block:
   ``min_vendor_entries`` catalog entries, with its security-classified
   entry count, first/last listing dates, and the median gap in days
   between consecutive listings. Vendor names are the catalog's own
-  labels, whitespace-normalized but never merged (Pulse Secure stays
-  distinct from Ivanti: the catalog's attribution is the record).
+  labels, whitespace-normalized but never merged: the catalog's
+  attribution is the record (CISA has relabelled most Pulse Secure
+  entries as Ivanti; the one still labelled Pulse Secure stays apart).
 * **ransomware** — the ``knownRansomwareCampaignUse`` split: security
   products vs the rest of the catalog. No CVE join; a missing flag never
   counts as "Known" (same rule as kev_metrics).

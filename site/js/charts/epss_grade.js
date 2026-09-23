@@ -81,10 +81,10 @@ export function render(slots, data) {
             `<strong>${fmtPct(r.pct_below_1pct)}</strong> (${fmtInt(r.n_below_1pct)})<br>`,
           `1–10% ${fmtPct(r.pct_1_to_10pct)} (${fmtInt(r.n_1_to_10pct)})<br>`,
           `10%+ ${fmtPct(r.pct_above_10pct)} (${fmtInt(r.n_above_10pct)})<br>`,
-          `${fmtInt(r.graded)} graded entries`,
+          `${fmtInt(r.graded)} scored entries`,
         ];
-        if (r.ungradeable > 0) lines.push(` · ${fmtInt(r.ungradeable)} ungradeable`);
-        if (r.pending > 0) lines.push(` · ${fmtInt(r.pending)} pending backfill`);
+        if (r.ungradeable > 0) lines.push(` · ${fmtInt(r.ungradeable)} with no prior score`);
+        if (r.pending > 0) lines.push(` · ${fmtInt(r.pending)} awaiting lookup`);
         return lines.join("");
       },
     },

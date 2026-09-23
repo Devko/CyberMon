@@ -94,12 +94,12 @@ def check_postcard_sized(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "the module is the weather, not the blocklist",
+        "The module publishes counts only, never the blocklist itself",
         "botnet_weather.json",
         check_weather_not_blocklist,
     ),
     (
-        "The forecast fits on a postcard.",
+        "Tonight's blocklist holds a handful of C2 servers.",
         "botnet_weather.json",
         check_postcard_sized,
     ),

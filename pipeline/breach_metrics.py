@@ -2,8 +2,9 @@
 
 How long does a breach take to reach the public record? Lag =
 ``AddedDate - BreachDate`` in days, per calendar year of cataloging.
-A lag can be negative (a breach cataloged before its self-reported
-breach date — BreachDate is usually rounded to the first of a month);
+A lag can be negative (a breach cataloged before its stated breach
+date — BreachDate is HIBP's best estimate, "not always accurate" per its
+API docs, and some entries carry only month precision);
 negative lags are KEPT, never floored to zero, the same rule the KEV
 latency module applies: flooring would hide a date-quality signal.
 
