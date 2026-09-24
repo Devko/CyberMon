@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-23T02:50:50Z",
+ "generated_at": "2026-09-24T02:51:52Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -14566,6 +14566,157 @@
     {
      "finder": "aisle",
      "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-31377",
+   "published": "2026-09-23",
+   "cna": "apache",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "unnamed_agent",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-91928",
+   "published": "2026-09-23",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-91999",
+   "published": "2026-09-23",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92001",
+   "published": "2026-09-23",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-93769",
+   "published": "2026-09-23",
+   "cna": "Fluid Attacks",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "fluid",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-94243",
+   "published": "2026-09-23",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-94251",
+   "published": "2026-09-23",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-96445",
+   "published": "2026-09-23",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-96673",
+   "published": "2026-09-23",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "xbow",
+     "tier": "system",
      "roles": [
       "finder"
      ]

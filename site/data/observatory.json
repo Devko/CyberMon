@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-09-23T02:50:50Z",
+ "generated_at": "2026-09-24T02:51:52Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-09-23",
+ "last_observed": "2026-09-24",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -38,16 +38,16 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4364
+   "events": 4365
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5418
+   "events": 5420
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 55,
-   "nights": 63,
+   "events": 56,
+   "nights": 64,
    "excluded_reset": 0,
    "excluded_anomaly": 8
   }
@@ -55,17 +55,17 @@
  "counts": {
   "kev_added": 1419,
   "kev_removed": 9,
-  "kev_flag": 316,
+  "kev_flag": 317,
   "kev_due": 20,
   "kev_field": 785,
   "kev_text": 1815,
-  "rescore": 90,
+  "rescore": 92,
   "version_shift": 20,
   "first_score": 5304,
   "score_removed": 4,
-  "epss_move": 55
+  "epss_move": 56
  },
- "cves": 7167,
+ "cves": 7170,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -9903,6 +9903,10 @@
   "1735|CVE-2026-94109|6|v4.0 8.7->v4.0 8.6 (VulnCheck)|0",
   "1735|CVE-2023-4547|7|v3.1 3.5->v4.0 5.1 (VulDB)|0",
   "1735|CVE-2023-4548|7|v3.1 6.3->v4.0 5.3 (VulDB)|0",
-  "1735|CVE-2026-94184|9|v3.1 8.1->none (redhat)|0"
+  "1735|CVE-2026-94184|9|v3.1 8.1->none (redhat)|0",
+  "1735|CVE-2024-50379|10|0.44312->0.31824|0",
+  "1736|CVE-2026-63077|2|Unknown->Known|0",
+  "1736|CVE-2026-13745|6|v4.0 9.2->v4.0 7.7 (GoogleCloud)|0",
+  "1736|CVE-2026-47116|6|v4.0 9.3->v4.0 9.2 (VulnCheck)|0"
  ]
 }

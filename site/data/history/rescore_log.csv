@@ -5417,3 +5417,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-09-23,CVE-2026-93296,CIRCL,rescore,v4.0,5.1,v4.0,8.5
 2026-09-23,CVE-2026-94109,VulnCheck,rescore,v4.0,8.7,v4.0,8.6
 2026-09-23,CVE-2026-94184,redhat,score_removed,v3.1,8.1,,
+2026-09-24,CVE-2026-13745,GoogleCloud,rescore,v4.0,9.2,v4.0,7.7
+2026-09-24,CVE-2026-47116,VulnCheck,rescore,v4.0,9.3,v4.0,9.2

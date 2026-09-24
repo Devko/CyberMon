@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-23T02:50:50Z",
+ "generated_at": "2026-09-24T02:51:52Z",
  "min_n": 10,
  "months": [
   {
@@ -429,14 +429,14 @@
   {
    "month": "2026-09",
    "due_date": 0,
-   "ransomware_flag": 8,
+   "ransomware_flag": 9,
    "text": 5,
    "removed": 0,
-   "total": 13
+   "total": 14
   }
  ],
  "flips": {
-  "total": 316,
+  "total": 317,
   "reversals": 0,
   "by_month": [
    {
@@ -606,24 +606,24 @@
    },
    {
     "month": "2026-09",
-    "flips": 8,
-    "cumulative": 316
+    "flips": 9,
+    "cumulative": 317
    }
   ],
   "lag": {
-   "n": 316,
+   "n": 317,
    "median_days": 626.0,
-   "p25_days": 366.8,
+   "p25_days": 363.0,
    "p75_days": 768.0
   },
   "step_month": "2023-12",
   "step_month_flips": 206,
-  "total_after_step": 110,
+  "total_after_step": 111,
   "lag_post_step": {
-   "n": 110,
-   "median_days": 437.5,
-   "p25_days": 124.2,
-   "p75_days": 1107.0
+   "n": 111,
+   "median_days": 432.0,
+   "p25_days": 114.5,
+   "p75_days": 1098.0
   }
  },
  "board": {
@@ -782,30 +782,30 @@
  "catalog": {
   "entries": 1721,
   "removed_total": 9,
-  "events_total": 4364,
-  "edits_total": 2945,
+  "events_total": 4365,
+  "edits_total": 2946,
   "additions_excluded": 1419,
   "first_observed": "2021-12-23",
-  "last_observed": "2026-09-23",
+  "last_observed": "2026-09-24",
   "backfill_captures": 53
  },
  "headline": {
-  "edits_total": 2945,
-  "edits_per_100_entries": 171.1,
-  "pct_flag_flips": 4.0
+  "edits_total": 2946,
+  "edits_per_100_entries": 171.2,
+  "pct_flag_flips": 4.1
  },
  "flag_lag": {
   "step_month": "2023-12",
   "excluded_step": 206,
   "n_capture": 78,
-  "n_daily": 32,
+  "n_daily": 33,
   "unusable": 0,
   "went_back": 0,
   "overall": {
-   "n": 110,
-   "median_days": 437.5,
-   "p25_days": 124.2,
-   "p75_days": 1107.0
+   "n": 111,
+   "median_days": 432.0,
+   "p25_days": 114.5,
+   "p75_days": 1098.0
   },
   "buckets": [
    {
@@ -820,7 +820,7 @@
     "lo": 31,
     "hi": 90,
     "capture": 11,
-    "daily": 3
+    "daily": 4
    },
    {
     "label": "91-180d",
@@ -907,11 +907,11 @@
    {
     "year": 2026,
     "capture": 7,
-    "daily": 9,
-    "n": 16,
-    "median_days": 32.0,
-    "p25_days": 23.2,
-    "p75_days": 57.0
+    "daily": 10,
+    "n": 17,
+    "median_days": 34.0,
+    "p25_days": 24.0,
+    "p75_days": 53.0
    }
   ]
  }

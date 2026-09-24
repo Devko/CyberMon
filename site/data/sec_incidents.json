@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-09-23T02:50:50Z",
+ "generated_at": "2026-09-24T02:51:52Z",
  "status": "ok",
  "window": {
   "start": "2023-12-18",
-  "end": "2026-09-23"
+  "end": "2026-09-24"
  },
  "definitions": {
   "item_105": {
@@ -251,7 +251,7 @@
   },
   {
    "month": "2026-09",
-   "originals": 2,
+   "originals": 3,
    "amendments": 0,
    "voluntary": 4,
    "partial": true
@@ -337,22 +337,22 @@
   },
   {
    "quarter": "2026-Q3",
-   "originals": 6,
+   "originals": 7,
    "amendments": 4,
    "voluntary": 11,
    "partial": true
   }
  ],
  "totals": {
-  "originals": 57,
+  "originals": 58,
   "amendments": 26,
   "voluntary": 74,
-  "companies_105": 56,
+  "companies_105": 57,
   "companies_801": 58,
-  "latest_105": "2026-09-08"
+  "latest_105": "2026-09-23"
  },
  "amendment_lag": {
-  "originals": 57,
+  "originals": 58,
   "amended": 19,
   "matched_amendments": 25,
   "unmatched_amendments": 1,
@@ -386,6 +386,15 @@
   ]
  },
  "recent": [
+  {
+   "date": "2026-09-23",
+   "form": "8-K",
+   "company": "Astrana Health, Inc.",
+   "ticker": "ASTH",
+   "cik": "1083446",
+   "adsh": "0001104659-26-109813",
+   "url": "https://www.sec.gov/Archives/edgar/data/1083446/000110465926109813/0001104659-26-109813-index.htm"
+  },
   {
    "date": "2026-09-08",
    "form": "8-K",
@@ -615,22 +624,13 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1834584/000183458425000202/0001834584-25-000202-index.htm",
    "original_date": "2025-12-16",
    "lag_days": 13
-  },
-  {
-   "date": "2025-12-16",
-   "form": "8-K",
-   "company": "Coupang, Inc.",
-   "ticker": "CPNG",
-   "cik": "1834584",
-   "adsh": "0001834584-25-000196",
-   "url": "https://www.sec.gov/Archives/edgar/data/1834584/000183458425000196/0001834584-25-000196-index.htm"
   }
  ],
  "diagnostics": {
-  "hits_105": 93,
-  "hits_801": 1160,
-  "filings_105": 93,
-  "filings_801": 1017,
+  "hits_105": 94,
+  "hits_801": 1162,
+  "filings_105": 94,
+  "filings_801": 1019,
   "dropped_105": 0,
   "dropped_801": 0,
   "phrase_fallback_105": 0,
