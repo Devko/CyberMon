@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-24T02:51:52Z",
+ "generated_at": "2026-09-25T02:49:51Z",
  "roster_size": {
   "min_n": 2,
   "current": 550,
@@ -269,6 +269,10 @@
    {
     "date": "2026-09-24",
     "size": 550
+   },
+   {
+    "date": "2026-09-25",
+    "size": 550
    }
   ]
  },
@@ -293,16 +297,16 @@
     "onboarded": 7,
     "departed": 0,
     "renamed": 0,
-    "scope_changed": 1
+    "scope_changed": 2
    }
   ],
   "totals": {
    "onboarded": 20,
    "departed": 0,
    "renamed": 1,
-   "scope_changed": 7
+   "scope_changed": 8
   },
-  "events_total": 28,
+  "events_total": 29,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {

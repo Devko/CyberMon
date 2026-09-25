@@ -18343,6 +18343,17 @@
    "ransom": "Unknown",
    "vendor": "Linux"
   },
+  "CVE-2026-5430": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-24",
+   "desc": "57b483e436df",
+   "due": "2026-09-27",
+   "name": "WSO2 Multiple Products Path Traversal Vulnerability",
+   "notes": "ab85c9b0dee0",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "WSO2"
+  },
   "CVE-2026-54420": {
    "action": "ba0d649eb29b",
    "added": "2026-06-15",
@@ -18573,6 +18584,17 @@
    "product": "Endpoint Manager Mobile (EPMM)",
    "ransom": "Unknown",
    "vendor": "Ivanti"
+  },
+  "CVE-2026-71362": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-24",
+   "desc": "14c075d74225",
+   "due": "2026-09-27",
+   "name": "Adobe Commerce and Magento Incorrect Authorization Vulnerability",
+   "notes": "00c77d1f9179",
+   "product": "Commerce and Magento",
+   "ransom": "Unknown",
+   "vendor": "Adobe"
   },
   "CVE-2026-72529": {
    "action": "ba0d649eb29b",
@@ -18938,7 +18960,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-24",
+ "last_observed": "2026-09-25",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

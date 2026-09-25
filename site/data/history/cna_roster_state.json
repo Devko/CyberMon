@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-09-24",
+ "last_observed": "2026-09-25",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -3044,7 +3044,7 @@
    "cna_id": "CNA-2026-0068",
    "country": "USA",
    "org": "Chainguard, Inc.",
-   "scope": "89573f9b403c",
+   "scope": "f8f8bac2f81e",
    "type": "Hosted Service + Open Source + Researcher + Vendor"
   },
   "checkpoint": {
@@ -4116,6 +4116,10 @@
   ],
   [
    "2026-09-24",
+   550
+  ],
+  [
+   "2026-09-25",
    550
   ]
  ],

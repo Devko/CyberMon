@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-24T02:51:52Z",
+ "generated_at": "2026-09-25T02:49:51Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -230,9 +230,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 511,
+    "cves": 518,
     "this_year": 2026,
-    "cves_this_year": 386,
+    "cves_this_year": 393,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -332,59 +332,60 @@
     },
     {
      "month": "2026-09",
-     "vendor": 47,
-     "total": 47
+     "vendor": 54,
+     "total": 54
     }
    ],
    "severity": {
     "critical": 32,
-    "high": 155,
-    "medium": 308,
+    "high": 157,
+    "medium": 313,
     "low": 16,
     "unscored": 0
    },
    "funnel": {
-    "credited": 511,
-    "scored": 511,
-    "high_or_critical": 187,
-    "high_or_critical_pct": 36.6,
+    "credited": 518,
+    "scored": 518,
+    "high_or_critical": 189,
+    "high_or_critical_pct": 36.5,
     "poc": 13,
     "poc_pct": 2.5,
-    "kev": 2,
-    "kev_pct": 0.4
+    "kev": 3,
+    "kev_pct": 0.6
    },
    "kev_cves": [
     "CVE-2025-5086",
-    "CVE-2026-34486"
+    "CVE-2026-34486",
+    "CVE-2026-5430"
    ]
   }
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 56858,
-  "scored": 56858,
-  "high_or_critical": 23860,
+  "credited": 57006,
+  "scored": 57005,
+  "high_or_critical": 23918,
   "high_or_critical_pct": 42.0,
-  "poc": 919,
+  "poc": 921,
   "poc_pct": 1.6,
-  "kev": 75,
+  "kev": 76,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 5427,
-   "high": 18433,
-   "medium": 31339,
-   "low": 1659,
-   "unscored": 0
+   "critical": 5442,
+   "high": 18476,
+   "medium": 31424,
+   "low": 1663,
+   "unscored": 1
   }
  },
  "profile": {
   "llm": {
    "n": 204,
    "median_cvss": 7.7,
-   "median_epss_pctile": 22.9,
+   "median_epss_pctile": 30.2,
    "epss_scored": 204,
    "recent_days": 90,
-   "recent_pct": 56.9,
+   "recent_pct": 56.4,
    "poc_pct": 0.5,
    "kev_pct": 0.0,
    "memory_pct": 44.1,
@@ -396,36 +397,36 @@
    }
   },
   "vendor": {
-   "n": 511,
+   "n": 518,
    "median_cvss": 6.3,
-   "median_epss_pctile": 27.7,
-   "epss_scored": 509,
+   "median_epss_pctile": 32.7,
+   "epss_scored": 511,
    "recent_days": 90,
-   "recent_pct": 35.6,
+   "recent_pct": 36.3,
    "poc_pct": 2.5,
-   "kev_pct": 0.4,
-   "memory_pct": 22.9,
-   "cna_scored_pct": 84.5,
+   "kev_pct": 0.6,
+   "memory_pct": 23.7,
+   "cna_scored_pct": 84.7,
    "top_cwe": {
     "cwe": "CWE-79",
     "n": 98,
-    "pct": 19.2
+    "pct": 18.9
    }
   },
   "baseline": {
-   "n": 56858,
+   "n": 57006,
    "median_cvss": 6.8,
-   "median_epss_pctile": 25.6,
-   "epss_scored": 56691,
+   "median_epss_pctile": 27.8,
+   "epss_scored": 56914,
    "recent_days": 90,
-   "recent_pct": 23.9,
+   "recent_pct": 23.8,
    "poc_pct": 1.6,
    "kev_pct": 0.1,
    "memory_pct": 9.1,
    "cna_scored_pct": 91.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 11273,
+    "n": 11288,
     "pct": 19.8
    }
   }
@@ -440,11 +441,11 @@
      "pct": 44.1
     },
     "vendor": {
-     "n": 117,
-     "pct": 22.9
+     "n": 123,
+     "pct": 23.7
     },
     "baseline": {
-     "n": 5200,
+     "n": 5215,
      "pct": 9.1
     }
    },
@@ -456,12 +457,12 @@
      "pct": 4.9
     },
     "vendor": {
-     "n": 148,
-     "pct": 29.0
+     "n": 149,
+     "pct": 28.8
     },
     "baseline": {
-     "n": 21752,
-     "pct": 38.3
+     "n": 21782,
+     "pct": 38.2
     }
    },
    {
@@ -473,10 +474,10 @@
     },
     "vendor": {
      "n": 65,
-     "pct": 12.7
+     "pct": 12.5
     },
     "baseline": {
-     "n": 14253,
+     "n": 14298,
      "pct": 25.1
     }
    },
@@ -489,10 +490,10 @@
     },
     "vendor": {
      "n": 60,
-     "pct": 11.7
+     "pct": 11.6
     },
     "baseline": {
-     "n": 5097,
+     "n": 5118,
      "pct": 9.0
     }
    },
@@ -505,10 +506,10 @@
     },
     "vendor": {
      "n": 26,
-     "pct": 5.1
+     "pct": 5.0
     },
     "baseline": {
-     "n": 944,
+     "n": 951,
      "pct": 1.7
     }
    },
@@ -521,10 +522,10 @@
     },
     "vendor": {
      "n": 39,
-     "pct": 7.6
+     "pct": 7.5
     },
     "baseline": {
-     "n": 3382,
+     "n": 3390,
      "pct": 5.9
     }
    },
@@ -537,10 +538,10 @@
     },
     "vendor": {
      "n": 54,
-     "pct": 10.6
+     "pct": 10.4
     },
     "baseline": {
-     "n": 5350,
+     "n": 5371,
      "pct": 9.4
     }
    },
@@ -556,7 +557,7 @@
      "pct": 0.4
     },
     "baseline": {
-     "n": 880,
+     "n": 881,
      "pct": 1.5
     }
    }
@@ -623,21 +624,21 @@
    ]
   },
   "vendor": {
-   "cves": 511,
-   "named": 511,
-   "distinct": 151,
+   "cves": 518,
+   "named": 518,
+   "distinct": 153,
    "top_share_n": 5,
-   "top_share_pct": 26.8,
+   "top_share_pct": 26.3,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 66,
-     "pct": 12.9
+     "n": 65,
+     "pct": 12.5
     },
     {
      "label": "OpenSSL",
      "n": 23,
-     "pct": 4.5
+     "pct": 4.4
     },
     {
      "label": "curl",
@@ -733,9 +734,9 @@
   },
   {
    "year": 2026,
-   "published": 69628,
-   "with_credits": 29326,
-   "pct": 42.1
+   "published": 70179,
+   "with_credits": 29474,
+   "pct": 42.0
   }
  ],
  "board": [
@@ -744,15 +745,15 @@
    "label": "AISLE",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 221,
-   "counted": 221,
-   "system": 48,
-   "org": 173,
+   "cves": 228,
+   "counted": 228,
+   "system": 49,
+   "org": 179,
    "fix": 0,
    "severity": {
     "critical": 14,
-    "high": 95,
-    "medium": 100,
+    "high": 97,
+    "medium": 105,
     "low": 12,
     "unscored": 0
    },
@@ -763,7 +764,7 @@
    "top_cnas": [
     {
      "cna": "redhat",
-     "n": 80
+     "n": 81
     },
     {
      "cna": "VulnCheck",
@@ -948,10 +949,10 @@
    "label": "OpenAI (Codex / GPT)",
    "group": "openai",
    "kind": "llm",
-   "cves": 98,
+   "cves": 99,
    "counted": 13,
    "system": 13,
-   "org": 85,
+   "org": 86,
    "fix": 0,
    "severity": {
     "critical": 0,
@@ -1185,7 +1186,7 @@
     "unscored": 0
    },
    "poc": 2,
-   "kev": 1,
+   "kev": 2,
    "first_month": "2025-06",
    "last_month": "2026-08",
    "top_cnas": [
@@ -1540,7 +1541,7 @@
    "live": true,
    "source": "https://aisle.com/cve-discoveries",
    "note": "",
-   "credited": 221
+   "credited": 228
   },
   {
    "finder": "zeropath",
