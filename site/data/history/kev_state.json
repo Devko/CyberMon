@@ -18541,6 +18541,17 @@
    "ransom": "Unknown",
    "vendor": "Apple"
   },
+  "CVE-2026-65660": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-25",
+   "desc": "5ab6465f15ff",
+   "due": "2026-09-28",
+   "name": "Microsoft SharePoint Code Injection Vulnerability",
+   "notes": "f7f865bba50f",
+   "product": "SharePoint",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
   "CVE-2026-66384": {
    "action": "ba0d649eb29b",
    "added": "2026-08-27",
@@ -18559,6 +18570,17 @@
    "due": "2026-09-13",
    "name": "MikroTik RouterOS Missing Authentication for Critical Function Vulnerability",
    "notes": "cd168c53c578",
+   "product": "RouterOS",
+   "ransom": "Unknown",
+   "vendor": "MikroTik"
+  },
+  "CVE-2026-67279": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-25",
+   "desc": "b67e5d9636b6",
+   "due": "2026-09-28",
+   "name": "Mikrotik RouterOS Improper Enforcement of Behavioral Workflow Vulnerability",
+   "notes": "6a694555d1bd",
    "product": "RouterOS",
    "ransom": "Unknown",
    "vendor": "MikroTik"
@@ -18893,6 +18915,17 @@
    "ransom": "Unknown",
    "vendor": "Acronis"
   },
+  "CVE-2026-87902": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-25",
+   "desc": "fc4815da3b40",
+   "due": "2026-09-28",
+   "name": "WordPress Core Remote File Inclusion Vulnerability",
+   "notes": "ca64f89a93da",
+   "product": "Core",
+   "ransom": "Unknown",
+   "vendor": "WordPress"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -18960,7 +18993,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-25",
+ "last_observed": "2026-09-26",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

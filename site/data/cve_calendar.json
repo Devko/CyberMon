@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-25T02:49:51Z",
+ "generated_at": "2026-09-26T02:49:46Z",
  "min_n": 500,
  "id_age": {
   "years": [
@@ -291,14 +291,14 @@
    },
    {
     "year": 2026,
-    "n": 70179,
-    "same_year": 62775,
-    "one_year": 5189,
+    "n": 70859,
+    "same_year": 63451,
+    "one_year": 5193,
     "two_plus": 2215,
-    "pct_same_year": 89.4,
-    "pct_one_year": 7.4,
-    "pct_two_plus": 3.2,
-    "pct_prior_year": 10.6
+    "pct_same_year": 89.5,
+    "pct_one_year": 7.3,
+    "pct_two_plus": 3.1,
+    "pct_prior_year": 10.5
    }
   ],
   "clamped_negative": 0,
@@ -885,22 +885,22 @@
    },
    {
     "year": 2026,
-    "n": 70179,
+    "n": 70859,
     "counts": [
      9616,
      18159,
-     13288,
+     13287,
      12832,
-     9875,
+     10556,
      3745,
      2664
     ],
     "pct": [
-     13.7,
-     25.9,
-     18.9,
-     18.3,
-     14.1,
+     13.6,
+     25.6,
+     18.8,
+     18.1,
+     14.9,
      5.3,
      3.8
     ]
@@ -1202,10 +1202,10 @@
    },
    {
     "year": 2026,
-    "n": 70179,
+    "n": 70859,
     "on_pt": 6246,
-    "pct": 8.9,
-    "tuesday_baseline_pct": 5.3,
+    "pct": 8.8,
+    "tuesday_baseline_pct": 5.2,
     "top_day": {
      "date": "2026-09-08",
      "n": 1563

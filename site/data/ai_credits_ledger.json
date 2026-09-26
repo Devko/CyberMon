@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-25T02:49:51Z",
+ "generated_at": "2026-09-26T02:49:46Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -13690,6 +13690,21 @@
    ]
   },
   {
+   "cve": "CVE-2026-90997",
+   "published": "2026-09-17",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
    "cve": "CVE-2026-93292",
    "published": "2026-09-17",
    "cna": "VulnCheck",
@@ -14853,6 +14868,72 @@
      "tier": "org",
      "roles": [
       "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92550",
+   "published": "2026-09-25",
+   "cna": "apache",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92573",
+   "published": "2026-09-25",
+   "cna": "apache",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-96812",
+   "published": "2026-09-25",
+   "cna": "Google",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-97863",
+   "published": "2026-09-25",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
      ]
     }
    ]

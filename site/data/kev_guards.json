@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-25T02:49:51Z",
+ "generated_at": "2026-09-26T02:49:46Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,20 +35,20 @@
   },
   {
    "year": 2026,
-   "total": 239,
+   "total": 242,
    "security": 40,
-   "pct_security": 16.7
+   "pct_security": 16.5
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 388,
-   "dated_entries": 388,
+   "entries": 389,
+   "dated_entries": 389,
    "security_entries": 7,
    "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-08",
+   "last_added": "2026-09-25",
    "median_gap_days": 0.0
   },
   {
@@ -432,6 +432,16 @@
    "median_gap_days": 78.0
   },
   {
+   "vendor": "WordPress",
+   "entries": 6,
+   "dated_entries": 6,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-09-25",
+   "median_gap_days": 0.0
+  },
+  {
    "vendor": "Broadcom",
    "entries": 5,
    "dated_entries": 5,
@@ -512,6 +522,16 @@
    "median_gap_days": 52.0
   },
   {
+   "vendor": "MikroTik",
+   "entries": 5,
+   "dated_entries": 5,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-12-01",
+   "last_added": "2026-09-25",
+   "median_gap_days": 148.0
+  },
+  {
    "vendor": "N-able",
    "entries": 5,
    "dated_entries": 5,
@@ -540,16 +560,6 @@
    "first_added": "2022-02-15",
    "last_added": "2025-12-09",
    "median_gap_days": 277.5
-  },
-  {
-   "vendor": "WordPress",
-   "entries": 5,
-   "dated_entries": 5,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-07-21",
-   "median_gap_days": 0.0
   }
  ],
  "ransomware": {
@@ -559,13 +569,13 @@
    "pct_known": 37.6
   },
   "other": {
-   "total": 1513,
+   "total": 1516,
    "known": 282,
    "pct_known": 18.6
   }
  },
  "catalog": {
-  "total": 1723,
+  "total": 1726,
   "security": 210,
   "pct_security": 12.2,
   "classifier_version": 2,

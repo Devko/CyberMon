@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-25T02:49:51Z",
+ "generated_at": "2026-09-26T02:49:46Z",
  "hero": {
   "matched": {
    "dated_cves": 25086,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-06-27",
+  "observed_through": "2026-06-28",
   "min_n": 30,
   "years": [
    {
@@ -484,17 +484,17 @@
    },
    {
     "year": 2026,
-    "n": 62,
+    "n": 64,
     "median_days": 29.5,
-    "pct_within_week": 12.9,
-    "pct_negative": 9.7,
+    "pct_within_week": 12.5,
+    "pct_negative": 9.4,
     "provisional": true
    }
   ]
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1723,
+  "total_kev": 1726,
   "trend": {
    "with_poc_date": 121,
    "preempted": 67,
@@ -543,7 +543,7 @@
    },
    {
     "year": 2026,
-    "total_added": 239,
+    "total_added": 242,
     "with_poc_date": 22,
     "preempted": 11,
     "pct_preempted": 50.0

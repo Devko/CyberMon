@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-25T02:49:51Z",
+ "generated_at": "2026-09-26T02:49:46Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -13,7 +13,7 @@
  "window_years": 5,
  "min_n": 2000,
  "measured_total": 120165,
- "kev_total": 1503,
+ "kev_total": 1506,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -103,7 +103,7 @@
    "measured_rank": 16,
    "measured_n": 1731,
    "measured_share": 1.4,
-   "kev_n": 68
+   "kev_n": 69
   },
   {
    "cwe": "CWE-120",
@@ -250,6 +250,6 @@
   "in_measured_top25": 22,
   "outside_measured_top25": 3,
   "in_kev": 24,
-  "kev_coverage_pct": 64.8
+  "kev_coverage_pct": 64.7
  }
 }
