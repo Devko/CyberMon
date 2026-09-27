@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-26T02:49:46Z",
+ "generated_at": "2026-09-27T02:54:27Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 381,
    "newcomer_count": 50,
-   "top5_share": 47.2,
-   "top10_share": 68.7,
-   "hhi": 611.1
+   "top5_share": 47.4,
+   "top10_share": 68.8,
+   "hhi": 612.3
   }
  ],
  "rejection_leaderboard": {
@@ -280,9 +280,9 @@
    },
    {
     "cna": "Joomla",
-    "total": 448,
+    "total": 455,
     "rejected": 26,
-    "rejected_rate_pct": 5.8
+    "rejected_rate_pct": 5.7
    },
    {
     "cna": "freebsd",
@@ -340,7 +340,7 @@
    },
    {
     "cna": "Linux",
-    "total": 17428,
+    "total": 17429,
     "rejected": 313,
     "rejected_rate_pct": 1.8
    },
@@ -388,7 +388,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 7634,
+    "total": 7837,
     "rejected": 91,
     "rejected_rate_pct": 1.2
    },
@@ -508,7 +508,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 11164,
+    "total": 11169,
     "rejected": 49,
     "rejected_rate_pct": 0.4
    },
@@ -574,7 +574,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 16831,
+    "total": 16838,
     "rejected": 41,
     "rejected_rate_pct": 0.2
    },
@@ -676,7 +676,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4827,
+    "total": 4842,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -820,7 +820,7 @@
    },
    {
     "cna": "elastic",
-    "total": 265,
+    "total": 276,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1576,15 +1576,15 @@
    {
     "year": 2026,
     "cna_count": 380,
-    "top5_share": 46.5,
-    "top10_share": 67.3,
-    "hhi": 629.9
+    "top5_share": 46.6,
+    "top10_share": 67.4,
+    "hhi": 631.9
    }
   ]
  },
  "projection": {
   "year": 2026,
   "newcomers": 68,
-  "elapsed": 0.737
+  "elapsed": 0.74
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-26T02:49:46Z",
+ "generated_at": "2026-09-27T02:54:27Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,7 +206,7 @@
   },
   {
    "year": 2026,
-   "published": 70859,
+   "published": 71108,
    "counts": {
     "unsupported-when-assigned": 377,
     "disputed": 60,
@@ -232,14 +232,14 @@
      "cna": "VulDB",
      "n": 444,
      "share_pct": 38.6,
-     "cna_published": 16790,
+     "cna_published": 16797,
      "rate_pct": 2.6
     },
     {
      "cna": "VulnCheck",
      "n": 230,
      "share_pct": 20.0,
-     "cna_published": 7543,
+     "cna_published": 7746,
      "rate_pct": 3.0
     },
     {
@@ -333,7 +333,7 @@
      "cna": "VulDB",
      "n": 86,
      "share_pct": 15.3,
-     "cna_published": 16790,
+     "cna_published": 16797,
      "rate_pct": 0.5
     }
    ]
@@ -341,11 +341,11 @@
  },
  "severity": {
   "all": {
-   "critical": 20063,
-   "high": 71892,
-   "medium": 87513,
-   "low": 8094,
-   "unscored": 25221
+   "critical": 20081,
+   "high": 72028,
+   "medium": 87603,
+   "low": 8101,
+   "unscored": 25219
   },
   "unsupported-when-assigned": {
    "tagged": {
@@ -356,11 +356,11 @@
     "unscored": 44
    },
    "same_cnas_untagged": {
-    "critical": 9808,
-    "high": 25646,
-    "medium": 39754,
-    "low": 2828,
-    "unscored": 10081
+    "critical": 9817,
+    "high": 25771,
+    "medium": 39826,
+    "low": 2833,
+    "unscored": 10080
    }
   },
   "disputed": {
@@ -372,10 +372,10 @@
     "unscored": 162
    },
    "same_cnas_untagged": {
-    "critical": 6233,
-    "high": 13791,
-    "medium": 24162,
-    "low": 2195,
+    "critical": 6242,
+    "high": 13915,
+    "medium": 24234,
+    "low": 2200,
     "unscored": 9147
    }
   }

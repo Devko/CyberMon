@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-26T02:49:46Z",
+ "generated_at": "2026-09-27T02:54:27Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -362,19 +362,19 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 57174,
-  "scored": 57173,
-  "high_or_critical": 23977,
-  "high_or_critical_pct": 41.9,
+  "credited": 57362,
+  "scored": 57361,
+  "high_or_critical": 24101,
+  "high_or_critical_pct": 42.0,
   "poc": 921,
   "poc_pct": 1.6,
   "kev": 78,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 5456,
-   "high": 18521,
-   "medium": 31527,
-   "low": 1669,
+   "critical": 5472,
+   "high": 18629,
+   "medium": 31588,
+   "low": 1672,
    "unscored": 1
   }
  },
@@ -382,8 +382,8 @@
   "llm": {
    "n": 205,
    "median_cvss": 7.8,
-   "median_epss_pctile": 30.3,
-   "epss_scored": 204,
+   "median_epss_pctile": 32.4,
+   "epss_scored": 205,
    "recent_days": 90,
    "recent_pct": 56.6,
    "poc_pct": 0.5,
@@ -399,7 +399,7 @@
   "vendor": {
    "n": 520,
    "median_cvss": 6.3,
-   "median_epss_pctile": 32.7,
+   "median_epss_pctile": 32.6,
    "epss_scored": 520,
    "recent_days": 90,
    "recent_pct": 36.5,
@@ -414,19 +414,19 @@
    }
   },
   "baseline": {
-   "n": 57174,
+   "n": 57362,
    "median_cvss": 6.8,
-   "median_epss_pctile": 27.9,
-   "epss_scored": 57076,
+   "median_epss_pctile": 28.0,
+   "epss_scored": 57240,
    "recent_days": 90,
-   "recent_pct": 24.0,
+   "recent_pct": 24.2,
    "poc_pct": 1.6,
    "kev_pct": 0.1,
    "memory_pct": 9.1,
    "cna_scored_pct": 91.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 11342,
+    "n": 11363,
     "pct": 19.8
    }
   }
@@ -445,7 +445,7 @@
      "pct": 23.8
     },
     "baseline": {
-     "n": 5226,
+     "n": 5229,
      "pct": 9.1
     }
    },
@@ -461,7 +461,7 @@
      "pct": 28.7
     },
     "baseline": {
-     "n": 21854,
+     "n": 21895,
      "pct": 38.2
     }
    },
@@ -477,7 +477,7 @@
      "pct": 12.5
     },
     "baseline": {
-     "n": 14341,
+     "n": 14404,
      "pct": 25.1
     }
    },
@@ -493,7 +493,7 @@
      "pct": 11.5
     },
     "baseline": {
-     "n": 5129,
+     "n": 5152,
      "pct": 9.0
     }
    },
@@ -509,7 +509,7 @@
      "pct": 5.0
     },
     "baseline": {
-     "n": 953,
+     "n": 957,
      "pct": 1.7
     }
    },
@@ -525,8 +525,8 @@
      "pct": 7.5
     },
     "baseline": {
-     "n": 3398,
-     "pct": 5.9
+     "n": 3421,
+     "pct": 6.0
     }
    },
    {
@@ -541,8 +541,8 @@
      "pct": 10.6
     },
     "baseline": {
-     "n": 5392,
-     "pct": 9.4
+     "n": 5423,
+     "pct": 9.5
     }
    },
    {
@@ -734,9 +734,9 @@
   },
   {
    "year": 2026,
-   "published": 70859,
-   "with_credits": 29642,
-   "pct": 41.8
+   "published": 71108,
+   "with_credits": 29830,
+   "pct": 42.0
   }
  ],
  "board": [
