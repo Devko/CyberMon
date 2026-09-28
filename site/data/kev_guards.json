@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-27T02:54:27Z",
+ "generated_at": "2026-09-28T08:58:00Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 242,
-   "security": 40,
-   "pct_security": 16.5
+   "total": 244,
+   "security": 42,
+   "pct_security": 17.2
   }
  ],
  "vendors": [
@@ -142,6 +142,16 @@
    "median_gap_days": 42.0
   },
   {
+   "vendor": "Citrix",
+   "entries": 26,
+   "dated_entries": 26,
+   "security_entries": 20,
+   "pct_security": 76.9,
+   "first_added": "2021-11-03",
+   "last_added": "2026-09-27",
+   "median_gap_days": 10.0
+  },
+  {
    "vendor": "D-Link",
    "entries": 26,
    "dated_entries": 26,
@@ -160,16 +170,6 @@
    "first_added": "2021-11-03",
    "last_added": "2025-03-04",
    "median_gap_days": 8.0
-  },
-  {
-   "vendor": "Citrix",
-   "entries": 24,
-   "dated_entries": 24,
-   "security_entries": 18,
-   "pct_security": 75.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-09-09",
-   "median_gap_days": 10.0
   },
   {
    "vendor": "SonicWall",
@@ -564,9 +564,9 @@
  ],
  "ransomware": {
   "security": {
-   "total": 210,
+   "total": 212,
    "known": 79,
-   "pct_known": 37.6
+   "pct_known": 37.3
   },
   "other": {
    "total": 1516,
@@ -575,9 +575,9 @@
   }
  },
  "catalog": {
-  "total": 1726,
-  "security": 210,
-  "pct_security": 12.2,
+  "total": 1728,
+  "security": 212,
+  "pct_security": 12.3,
   "classifier_version": 2,
   "classifier_rules": 35
  }

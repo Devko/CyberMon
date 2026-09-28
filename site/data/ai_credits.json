@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-27T02:54:27Z",
+ "generated_at": "2026-09-28T08:58:00Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -362,20 +362,20 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 57362,
-  "scored": 57361,
-  "high_or_critical": 24101,
+  "credited": 57485,
+  "scored": 57465,
+  "high_or_critical": 24145,
   "high_or_critical_pct": 42.0,
-  "poc": 921,
+  "poc": 923,
   "poc_pct": 1.6,
   "kev": 78,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 5472,
-   "high": 18629,
-   "medium": 31588,
-   "low": 1672,
-   "unscored": 1
+   "critical": 5476,
+   "high": 18669,
+   "medium": 31635,
+   "low": 1685,
+   "unscored": 20
   }
  },
  "profile": {
@@ -385,7 +385,7 @@
    "median_epss_pctile": 32.4,
    "epss_scored": 205,
    "recent_days": 90,
-   "recent_pct": 56.6,
+   "recent_pct": 56.1,
    "poc_pct": 0.5,
    "kev_pct": 0.0,
    "memory_pct": 43.9,
@@ -414,19 +414,19 @@
    }
   },
   "baseline": {
-   "n": 57362,
+   "n": 57485,
    "median_cvss": 6.8,
-   "median_epss_pctile": 28.0,
-   "epss_scored": 57240,
+   "median_epss_pctile": 27.9,
+   "epss_scored": 57428,
    "recent_days": 90,
-   "recent_pct": 24.2,
+   "recent_pct": 24.1,
    "poc_pct": 1.6,
    "kev_pct": 0.1,
    "memory_pct": 9.1,
    "cna_scored_pct": 91.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 11363,
+    "n": 11367,
     "pct": 19.8
    }
   }
@@ -445,7 +445,7 @@
      "pct": 23.8
     },
     "baseline": {
-     "n": 5229,
+     "n": 5234,
      "pct": 9.1
     }
    },
@@ -461,8 +461,8 @@
      "pct": 28.7
     },
     "baseline": {
-     "n": 21895,
-     "pct": 38.2
+     "n": 21914,
+     "pct": 38.1
     }
    },
    {
@@ -477,7 +477,7 @@
      "pct": 12.5
     },
     "baseline": {
-     "n": 14404,
+     "n": 14435,
      "pct": 25.1
     }
    },
@@ -493,7 +493,7 @@
      "pct": 11.5
     },
     "baseline": {
-     "n": 5152,
+     "n": 5167,
      "pct": 9.0
     }
    },
@@ -509,7 +509,7 @@
      "pct": 5.0
     },
     "baseline": {
-     "n": 957,
+     "n": 966,
      "pct": 1.7
     }
    },
@@ -525,7 +525,7 @@
      "pct": 7.5
     },
     "baseline": {
-     "n": 3421,
+     "n": 3428,
      "pct": 6.0
     }
    },
@@ -541,7 +541,7 @@
      "pct": 10.6
     },
     "baseline": {
-     "n": 5423,
+     "n": 5441,
      "pct": 9.5
     }
    },
@@ -557,8 +557,8 @@
      "pct": 0.4
     },
     "baseline": {
-     "n": 881,
-     "pct": 1.5
+     "n": 900,
+     "pct": 1.6
     }
    }
   ]
@@ -734,8 +734,8 @@
   },
   {
    "year": 2026,
-   "published": 71108,
-   "with_credits": 29830,
+   "published": 71261,
+   "with_credits": 29953,
    "pct": 42.0
   }
  ],
@@ -781,11 +781,11 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 247,
+   "cves": 253,
    "counted": 165,
    "system": 165,
-   "org": 29,
-   "fix": 53,
+   "org": 34,
+   "fix": 54,
    "severity": {
     "critical": 29,
     "high": 78,

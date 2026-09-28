@@ -18926,6 +18926,28 @@
    "ransom": "Unknown",
    "vendor": "WordPress"
   },
+  "CVE-2026-88771": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-27",
+   "desc": "2922847e5b72",
+   "due": "2026-09-30",
+   "name": "Citrix NetScaler Improper Input Validation Vulnerability",
+   "notes": "59f732f51ac1",
+   "product": "NetScaler",
+   "ransom": "Unknown",
+   "vendor": "Citrix"
+  },
+  "CVE-2026-88772": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-27",
+   "desc": "b0a836b71543",
+   "due": "2026-09-30",
+   "name": "Citrix NetScaler Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability",
+   "notes": "59f732f51ac1",
+   "product": "NetScaler",
+   "ransom": "Unknown",
+   "vendor": "Citrix"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -18993,7 +19015,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-27",
+ "last_observed": "2026-09-28",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

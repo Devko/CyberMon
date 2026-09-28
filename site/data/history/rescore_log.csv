@@ -5485,3 +5485,4 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-09-26,CVE-2026-97509,Linux,first_score,,,v3.1,8.8
 2026-09-26,CVE-2026-97513,Linux,first_score,,,v3.1,7.8
 2026-09-26,CVE-2026-97520,Linux,first_score,,,v3.1,7.1
+2026-09-28,CVE-2026-96276,redhat,first_score,,,v3.1,6.5
