@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-28T08:58:00Z",
+ "generated_at": "2026-09-29T02:53:12Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -230,9 +230,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 520,
+    "cves": 530,
     "this_year": 2026,
-    "cves_this_year": 395,
+    "cves_this_year": 405,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -332,22 +332,22 @@
     },
     {
      "month": "2026-09",
-     "vendor": 56,
-     "total": 56
+     "vendor": 66,
+     "total": 66
     }
    ],
    "severity": {
     "critical": 32,
-    "high": 158,
-    "medium": 314,
-    "low": 16,
+    "high": 160,
+    "medium": 319,
+    "low": 19,
     "unscored": 0
    },
    "funnel": {
-    "credited": 520,
-    "scored": 520,
-    "high_or_critical": 190,
-    "high_or_critical_pct": 36.5,
+    "credited": 530,
+    "scored": 530,
+    "high_or_critical": 192,
+    "high_or_critical_pct": 36.2,
     "poc": 13,
     "poc_pct": 2.5,
     "kev": 3,
@@ -362,20 +362,20 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 57485,
-  "scored": 57465,
-  "high_or_critical": 24145,
+  "credited": 57695,
+  "scored": 57690,
+  "high_or_critical": 24225,
   "high_or_critical_pct": 42.0,
   "poc": 923,
   "poc_pct": 1.6,
   "kev": 78,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 5476,
-   "high": 18669,
-   "medium": 31635,
-   "low": 1685,
-   "unscored": 20
+   "critical": 5514,
+   "high": 18711,
+   "medium": 31768,
+   "low": 1697,
+   "unscored": 5
   }
  },
  "profile": {
@@ -397,27 +397,27 @@
    }
   },
   "vendor": {
-   "n": 520,
+   "n": 530,
    "median_cvss": 6.3,
-   "median_epss_pctile": 32.6,
-   "epss_scored": 520,
+   "median_epss_pctile": 32.4,
+   "epss_scored": 526,
    "recent_days": 90,
-   "recent_pct": 36.5,
+   "recent_pct": 37.4,
    "poc_pct": 2.5,
    "kev_pct": 0.6,
-   "memory_pct": 23.8,
-   "cna_scored_pct": 84.4,
+   "memory_pct": 24.7,
+   "cna_scored_pct": 84.7,
    "top_cwe": {
     "cwe": "CWE-79",
     "n": 98,
-    "pct": 18.8
+    "pct": 18.5
    }
   },
   "baseline": {
-   "n": 57485,
+   "n": 57695,
    "median_cvss": 6.8,
    "median_epss_pctile": 27.9,
-   "epss_scored": 57428,
+   "epss_scored": 57562,
    "recent_days": 90,
    "recent_pct": 24.1,
    "poc_pct": 1.6,
@@ -426,8 +426,8 @@
    "cna_scored_pct": 91.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 11367,
-    "pct": 19.8
+    "n": 11394,
+    "pct": 19.7
    }
   }
  },
@@ -441,11 +441,11 @@
      "pct": 43.9
     },
     "vendor": {
-     "n": 124,
-     "pct": 23.8
+     "n": 131,
+     "pct": 24.7
     },
     "baseline": {
-     "n": 5234,
+     "n": 5256,
      "pct": 9.1
     }
    },
@@ -458,10 +458,10 @@
     },
     "vendor": {
      "n": 149,
-     "pct": 28.7
+     "pct": 28.1
     },
     "baseline": {
-     "n": 21914,
+     "n": 21988,
      "pct": 38.1
     }
    },
@@ -474,10 +474,10 @@
     },
     "vendor": {
      "n": 65,
-     "pct": 12.5
+     "pct": 12.3
     },
     "baseline": {
-     "n": 14435,
+     "n": 14485,
      "pct": 25.1
     }
    },
@@ -490,10 +490,10 @@
     },
     "vendor": {
      "n": 60,
-     "pct": 11.5
+     "pct": 11.3
     },
     "baseline": {
-     "n": 5167,
+     "n": 5202,
      "pct": 9.0
     }
    },
@@ -506,10 +506,10 @@
     },
     "vendor": {
      "n": 26,
-     "pct": 5.0
+     "pct": 4.9
     },
     "baseline": {
-     "n": 966,
+     "n": 969,
      "pct": 1.7
     }
    },
@@ -522,10 +522,10 @@
     },
     "vendor": {
      "n": 39,
-     "pct": 7.5
+     "pct": 7.4
     },
     "baseline": {
-     "n": 3428,
+     "n": 3442,
      "pct": 6.0
     }
    },
@@ -537,11 +537,11 @@
      "pct": 10.7
     },
     "vendor": {
-     "n": 55,
-     "pct": 10.6
+     "n": 58,
+     "pct": 10.9
     },
     "baseline": {
-     "n": 5441,
+     "n": 5472,
      "pct": 9.5
     }
    },
@@ -557,8 +557,8 @@
      "pct": 0.4
     },
     "baseline": {
-     "n": 900,
-     "pct": 1.6
+     "n": 881,
+     "pct": 1.5
     }
    }
   ]
@@ -624,46 +624,46 @@
    ]
   },
   "vendor": {
-   "cves": 520,
-   "named": 520,
-   "distinct": 154,
+   "cves": 530,
+   "named": 530,
+   "distinct": 156,
    "top_share_n": 5,
-   "top_share_pct": 26.2,
+   "top_share_pct": 26.6,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 65,
-     "pct": 12.5
+     "n": 70,
+     "pct": 13.2
     },
     {
      "label": "OpenSSL",
      "n": 23,
-     "pct": 4.4
+     "pct": 4.3
     },
     {
      "label": "curl",
      "n": 17,
-     "pct": 3.3
+     "pct": 3.2
     },
     {
      "label": "OpenClaw",
      "n": 16,
-     "pct": 3.1
+     "pct": 3.0
     },
     {
      "label": "SohuTV / CacheCloud",
      "n": 15,
-     "pct": 2.9
+     "pct": 2.8
     },
     {
      "label": "Wireshark Foundation / Wireshark",
      "n": 15,
-     "pct": 2.9
+     "pct": 2.8
     },
     {
      "label": "Apache Software Foundation / Apache HTTP Server",
      "n": 14,
-     "pct": 2.7
+     "pct": 2.6
     },
     {
      "label": "atjiu / pybbs",
@@ -734,9 +734,9 @@
   },
   {
    "year": 2026,
-   "published": 71261,
-   "with_credits": 29953,
-   "pct": 42.0
+   "published": 71568,
+   "with_credits": 30163,
+   "pct": 42.1
   }
  ],
  "board": [
@@ -745,16 +745,16 @@
    "label": "AISLE",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 230,
-   "counted": 230,
-   "system": 49,
-   "org": 181,
+   "cves": 240,
+   "counted": 240,
+   "system": 50,
+   "org": 190,
    "fix": 0,
    "severity": {
     "critical": 14,
-    "high": 98,
-    "medium": 106,
-    "low": 12,
+    "high": 100,
+    "medium": 111,
+    "low": 15,
     "unscored": 0
    },
    "poc": 0,
@@ -764,7 +764,7 @@
    "top_cnas": [
     {
      "cna": "redhat",
-     "n": 81
+     "n": 84
     },
     {
      "cna": "VulnCheck",
@@ -1541,7 +1541,7 @@
    "live": true,
    "source": "https://aisle.com/cve-discoveries",
    "note": "",
-   "credited": 230
+   "credited": 240
   },
   {
    "finder": "zeropath",

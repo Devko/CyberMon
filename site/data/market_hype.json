@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-28T08:58:00Z",
+ "generated_at": "2026-09-29T02:53:12Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -1496,8 +1496,8 @@
      },
      {
       "month": "2026-08",
-      "n": 20,
-      "index": 19.6
+      "n": 21,
+      "index": 20.6
      }
     ]
    },
@@ -1528,8 +1528,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 14.4,
-     "n_latest_12m": 564,
+     "pct_change": 14.6,
+     "n_latest_12m": 565,
      "n_prior_12m": 493
     }
    },
@@ -4549,8 +4549,8 @@
      },
      {
       "month": "2026-08",
-      "n": 47,
-      "index": 67.1
+      "n": 48,
+      "index": 68.6
      }
     ]
    },
@@ -4581,8 +4581,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 165.0,
-     "n_latest_12m": 432,
+     "pct_change": 165.6,
+     "n_latest_12m": 433,
      "n_prior_12m": 163
     }
    },
@@ -13247,8 +13247,8 @@
      },
      {
       "month": "2026-08",
-      "n": 1060,
-      "index": 45.9
+      "n": 1062,
+      "index": 46.0
      }
     ]
    },
@@ -13280,7 +13280,7 @@
     "edgar": {
      "latest_month": "2026-08",
      "pct_change": 16.4,
-     "n_latest_12m": 14287,
+     "n_latest_12m": 14289,
      "n_prior_12m": 12273
     }
    },
@@ -14776,8 +14776,8 @@
      },
      {
       "month": "2026-08",
-      "n": 86,
-      "index": 43.9
+      "n": 87,
+      "index": 44.4
      }
     ]
    },
@@ -14808,8 +14808,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 37.2,
-     "n_latest_12m": 1003,
+     "pct_change": 37.3,
+     "n_latest_12m": 1004,
      "n_prior_12m": 731
     }
    },
@@ -19258,8 +19258,8 @@
      },
      {
       "month": "2026-08",
-      "n": 8,
-      "index": 57.1
+      "n": 9,
+      "index": 64.3
      }
     ]
    },
@@ -19290,8 +19290,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 382.4,
-     "n_latest_12m": 82,
+     "pct_change": 388.2,
+     "n_latest_12m": 83,
      "n_prior_12m": 17
     }
    },
@@ -20642,8 +20642,8 @@
      },
      {
       "month": "2026-07",
-      "n": 18,
-      "index": 20.5
+      "n": 19,
+      "index": 21.6
      },
      {
       "month": "2026-08",
@@ -20669,8 +20669,8 @@
     },
     "edgar": {
      "latest_month": "2026-08",
-     "pct_change": 19.2,
-     "n_latest_12m": 354,
+     "pct_change": 19.5,
+     "n_latest_12m": 355,
      "n_prior_12m": 297
     }
    },
