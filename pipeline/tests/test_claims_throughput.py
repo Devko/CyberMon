@@ -21,9 +21,11 @@ from pathlib import Path
 
 import pytest
 
+from . import claims_support
+
 from pipeline import contracts, nvd_throughput
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "site" / "data"
+DATA_DIR = claims_support.DATA_DIR
 
 _meta_path = DATA_DIR / "meta.json"
 if not _meta_path.exists():
@@ -42,7 +44,7 @@ def _load_json() -> dict:
     path = DATA_DIR / "nvd_throughput.json"
     if not path.exists():
         pytest.skip("nvd_throughput.json missing — record not started yet")
-    return json.loads(path.read_text("utf-8"))
+    return claims_support.read_json(path)
 
 
 def _load_csv_rows() -> list[dict]:

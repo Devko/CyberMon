@@ -13,12 +13,13 @@ this audit only ever judges the committed real data.
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 
 import pytest
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "site" / "data"
+from . import claims_support
+
+DATA_DIR = claims_support.DATA_DIR
 
 _meta_path = DATA_DIR / "meta.json"
 if not _meta_path.exists():
@@ -33,15 +34,14 @@ if _META.get("sample") is True:
         allow_module_level=True,
     )
 
-GENERATION_YEAR = int(os.environ.get("CYBERMON_REHEARSE_YEAR")
-                      or _META["generated_at"][:4])  # see test_claims_audit
+GENERATION_YEAR = claims_support.GENERATION_YEAR
 
 
 def load(name: str) -> dict:
     path = DATA_DIR / name
     if not path.exists():
         pytest.skip(f"{name} missing — nothing to audit")
-    return json.loads(path.read_text("utf-8"))
+    return claims_support.read_json(path)
 
 
 # --------------------------------------------------------------------------

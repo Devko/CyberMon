@@ -31,7 +31,9 @@ from pathlib import Path
 
 import pytest
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "site" / "data"
+from . import claims_support
+
+DATA_DIR = claims_support.DATA_DIR
 
 _meta_path = DATA_DIR / "meta.json"
 if not _meta_path.exists():
@@ -151,7 +153,7 @@ def test_stale_markers_are_boolean_and_recent() -> None:
         path = DATA_DIR / name
         if not path.exists():
             continue
-        obj = json.loads(path.read_text("utf-8"))
+        obj = claims_support.read_json(path)
         if "stale" in obj:
             assert obj["stale"] is True, f"{name}.stale must be true, not {obj['stale']!r}"
             assert source in stale_sources, (

@@ -27,14 +27,15 @@ real data.
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 
 import pytest
 
+from . import claims_support
+
 # Resolve site/data/ relative to this file so the audit works from any cwd:
 # pipeline/tests/test_claims_audit.py -> repo root -> site/data.
-DATA_DIR = Path(__file__).resolve().parents[2] / "site" / "data"
+DATA_DIR = claims_support.DATA_DIR
 
 _meta_path = DATA_DIR / "meta.json"
 if not _meta_path.exists():
@@ -58,15 +59,14 @@ if _META.get("sample") is True:
 # current year becomes "complete" with its values as they stand. Headline
 # blocks are computed by the pipeline and cannot be rehearsed this way;
 # their guards are pinned to named years instead (see docs/backlog.md).
-GENERATION_YEAR = int(os.environ.get("CYBERMON_REHEARSE_YEAR")
-                      or _META["generated_at"][:4])
+GENERATION_YEAR = claims_support.GENERATION_YEAR
 
 
 def load(name: str) -> dict:
     path = DATA_DIR / name
     if not path.exists():
         pytest.skip(f"{name} missing — nothing to audit")
-    return json.loads(path.read_text("utf-8"))
+    return claims_support.read_json(path)
 
 
 def complete_years(rows: list[dict]) -> list[dict]:

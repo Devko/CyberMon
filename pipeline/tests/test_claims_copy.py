@@ -20,7 +20,9 @@ from pathlib import Path
 
 import pytest
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "site" / "data"
+from . import claims_support
+
+DATA_DIR = claims_support.DATA_DIR
 
 _meta_path = DATA_DIR / "meta.json"
 if not _meta_path.exists():
@@ -30,14 +32,14 @@ _META = json.loads(_meta_path.read_text("utf-8"))
 if _META.get("sample") is True:
     pytest.skip("site/data holds sample data — claims audit only judges "
                 "real data", allow_module_level=True)
-GENERATION_YEAR = int(_META["generated_at"][:4])
+GENERATION_YEAR = claims_support.GENERATION_YEAR
 
 
 def load(name: str) -> dict:
     path = DATA_DIR / name
     if not path.exists():
         pytest.skip(f"{name} missing — nothing to audit")
-    return json.loads(path.read_text("utf-8"))
+    return claims_support.read_json(path)
 
 
 # ------------------------------------------------------------ market / hygiene

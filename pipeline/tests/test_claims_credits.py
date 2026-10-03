@@ -29,7 +29,9 @@ from pathlib import Path
 
 import pytest
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "site" / "data"
+from . import claims_support
+
+DATA_DIR = claims_support.DATA_DIR
 
 _meta_path = DATA_DIR / "meta.json"
 if not _meta_path.exists():
@@ -48,7 +50,7 @@ def load(name: str) -> dict:
     path = DATA_DIR / name
     if not path.exists():
         pytest.skip(f"{name} missing — nothing to audit")
-    return json.loads(path.read_text("utf-8"))
+    return claims_support.read_json(path)
 
 
 def _finder(d: dict, key: str) -> dict:
