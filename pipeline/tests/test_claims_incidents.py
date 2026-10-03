@@ -61,6 +61,24 @@ def check_rule_start(d: dict) -> None:
         assert d["monthly"][0]["partial"] is True
 
 
+def check_partial_periods(d: dict) -> None:
+    # incidents_clock note, shared by the Monthly and Quarterly views:
+    # "Hollow bars mark partial periods: the first, because the rule took
+    # effect on 18 December 2023, and the current one." In each view the
+    # first and the last period, and no other, are partial (December 2023
+    # / 2023-Q4 and the edition's month / quarter).
+    if d["status"] != "ok":
+        return
+    for key in ("monthly", "quarterly"):
+        rows = d[key]
+        flags = [r["partial"] for r in rows]
+        assert flags[0] and flags[-1] and not any(flags[1:-1]), (
+            key, [r.get("month") or r.get("quarter")
+                  for r in rows if r["partial"]])
+    assert d["quarterly"][0]["quarter"] == "2023-Q4"
+    assert d["monthly"][-1]["month"] == d["generated_at"][:7]
+
+
 def check_receipts_size(d: dict) -> None:
     # editorial.js (incidents_receipts methodology): "Up to the 25 newest
     # Item 1.05 filings in the window, newest first"
@@ -128,13 +146,17 @@ def check_one_or_two_a_month(d: dict) -> None:
 
 def check_third_amended_most_within_90(d: dict) -> None:
     # incidents_amend headline: "About a third of Item 1.05 disclosures have
-    # been amended, most within 90 days." (2026-09-23: 19 of 57; 17 of the
-    # 19 first amendments within 90 days.)
+    # been amended, most within 90 days." (2026-10-03: 19 of 58 = 32.8%; 17
+    # of the 19 first amendments within 90 days.) 29-38% reads as about a
+    # third; the old floor of 25 was a quarter. REVISIT IN JANUARY 2027: new
+    # originals arrive at ~1.5 a month and amendments lag them, so with no
+    # new amendment the share falls below 30% at 64 originals (~January-
+    # February) and below 29% at 66 (~March). If it trends there, reword.
     if d["status"] != "ok":
         return
     lag = d["amendment_lag"]
     pct = 100.0 * lag["amended"] / lag["originals"]
-    assert 25 <= pct <= 42, f"{lag['amended']} of {lag['originals']} amended"
+    assert 29 <= pct <= 38, f"{lag['amended']} of {lag['originals']} amended"
     within = sum(b["n"] for b in lag["buckets"][:3])  # 0-7, 8-30, 31-90
     assert within > lag["amended"] / 2, (within, lag["amended"])
 
@@ -148,6 +170,9 @@ CLAIMS = [
      "sec_incidents.json", check_originals_counted),
     ("the rule took effect on 18 December 2023", "sec_incidents.json",
      check_rule_start),
+    ("Hollow bars mark partial periods: the first, because the rule took "
+     "effect on 18 December 2023, and the current one.", "sec_incidents.json",
+     check_partial_periods),
     ("Up to the 25 newest Item 1.05 filings in the window, newest first",
      "sec_incidents.json", check_receipts_size),
     ("each linked to its filing index on EDGAR", "sec_incidents.json",

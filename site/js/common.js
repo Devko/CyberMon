@@ -39,11 +39,44 @@ export async function fetchJSON(path) {
     throw new DataError(`${path}: ${err.message}`, { cause: err });
   }
   if (!res.ok) throw new DataError(`${path}: HTTP ${res.status}`);
+  let data;
   try {
-    return await res.json();
+    data = await res.json();
   } catch (err) {
     throw new DataError(`${path}: ${err.message}`, { cause: err });
   }
+  noteEditionYear(data?.generated_at);
+  return data;
+}
+
+// ---- edition year (footer copyright designations) ---------------------------
+//
+// editorial.footer.dataNote carries MITRE's copyright designations with the
+// edition's year ({year}). meta.json's generated_at sets it. Until meta.json
+// arrives, or if it fails, the latest generated_at among the data files this
+// page has loaded sets it (every contract carries one). The visitor's clock
+// is never used: on 1 January, before the year's first nightly lands, it
+// would print a year the edition does not cover. Until a year is known the
+// note stays hidden; a page that loaded no data at all shows none to credit.
+let editionYear = null;
+let yearFromMeta = false;
+let dataNoteEl = null;
+
+function noteEditionYear(generatedAt, fromMeta = false) {
+  const year = String(generatedAt ?? "").match(/^(\d{4})-\d{2}-\d{2}/)?.[1];
+  if (!year || yearFromMeta) return;
+  if (!fromMeta && editionYear && year <= editionYear) return;
+  editionYear = year;
+  yearFromMeta = fromMeta;
+  renderDataNote();
+}
+
+function renderDataNote() {
+  if (!dataNoteEl) return;
+  dataNoteEl.textContent = editionYear
+    ? tpl(editorial.footer.dataNote, { year: editionYear })
+    : "";
+  dataNoteEl.hidden = !editionYear;
 }
 
 // ---- inline error card (section-level resilience) ---------------------------
@@ -330,8 +363,10 @@ function renderFooterText(activeTabId) {
   const ft = clear(document.getElementById("footer-text"));
   const repo = el("p", "footer-repo");
   repo.append(link(editorial.repoUrl, editorial.footer.repoLabel, "mono"));
+  dataNoteEl = el("p", "muted");
+  renderDataNote();
   ft.append(
-    el("p", "muted", editorial.footer.dataNote),
+    dataNoteEl,
     el("p", "muted", editorial.footer.disclaimer),
     el("p", "muted", editorial.footer.reuseNote),
     repo
@@ -364,6 +399,7 @@ function renderFooterText(activeTabId) {
 }
 
 function renderMeta(meta) {
+  noteEditionYear(meta.generated_at, true);
   const banner = document.getElementById("sample-banner");
   if (meta.sample === true) {
     banner.textContent = editorial.sampleBanner;

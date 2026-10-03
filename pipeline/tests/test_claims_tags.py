@@ -5,8 +5,8 @@ Pattern: test_claims_c2.py. Each CLAIMS entry quotes site/js/editorial.js
 verbatim (test_claims_anchors.py keeps the quote anchored) and asserts the
 committed data still sits where the sentence stays true. Numbers inside
 the copy are filled from the data by the renderer ({placeholders}); what is
-audited here is the verbal part around them — "keeps climbing", "flat",
-"most", "almost entirely", "nearly every". Ranges are tolerant: nightly
+audited here is the verbal part around them — "more", "risen in every
+complete year", "most", "nearly every". Ranges are tolerant: nightly
 drift must not trip them, only a claim becoming untrue should.
 
 When a test here fails: either the world changed (fix the copy in
@@ -57,9 +57,19 @@ def _share(n: int, d: int) -> float:
 # ------------------------------------------------------------ Record Tags
 
 def check_unsupported_climbing(d: dict) -> None:
-    # tags_trend headline + home card: "More CVEs are tagged as issued for
-    # products the vendor no longer supports." — the latest complete year beats the
-    # one before it, and sits far above the tag's first year.
+    # tags_trend headline, which the Record Tags home card repeats word for
+    # word: "More CVEs are tagged as issued for products the vendor no
+    # longer supports." — the latest complete year beats the one before it,
+    # and sits far above the tag's first year. (2026-10-03: 423 in 2025 vs
+    # 172 in 2024; 21 in 2020.)
+    #
+    # The January rehearsals (CYBERMON_REHEARSE_YEAR=2027, with or without
+    # TINY) fail this until 2026's running count passes 2025's 423, about
+    # mid-November at the recent pace: they judge the partial 2026 as
+    # complete, and 383 records after nine months sit below 423. The real
+    # 1 January edition reads the whole of 2026: 383 by 3 October projects
+    # to ~505 at the year's average pace, ~460 at the pace of the last ten
+    # days (0.9 a day). Do not loosen the check to pass the rehearsal.
     full = [r for r in d["years"] if r["year"] < GENERATION_YEAR]
     assert len(full) >= 2, "no complete years to judge"
     last, prev = full[-1]["counts"][UWA], full[-2]["counts"][UWA]
@@ -71,17 +81,44 @@ def check_unsupported_climbing(d: dict) -> None:
         "the tag's growth since its first year is no longer large")
 
 
-def check_disputed_flat(d: dict) -> None:
-    # tags_trend caption: "it does not grow with the corpus — between {dmin}
-    # and {dmax} records a year from {dfrom} to {dto}, while yearly
-    # publications more than doubled, so its share of the year fell."
+def check_unsupported_rising_since_2022(d: dict) -> None:
+    # home card blurb: "the count of records with the first tag has risen
+    # in every complete year since 2022" — each complete year from 2023 on
+    # has more such records than the year before. (2026-10-03: 48, 130,
+    # 172, 423 for 2022-25. 2021 had 70, so the span starts at 2022.) The
+    # plain January rehearsal fails this for the same reason as
+    # check_unsupported_climbing above.
+    full = {r["year"]: r["counts"][UWA] for r in d["years"]
+            if 2022 <= r["year"] < GENERATION_YEAR}
+    years = sorted(full)
+    assert len(years) >= 2 and years[0] == 2022, years
+    for prev, year in zip(years, years[1:]):
+        assert full[year] > full[prev], (
+            f"'risen in every complete year since 2022': {year} has "
+            f"{full[year]} vs {full[prev]} in {prev}")
+
+
+def check_disputed_share_fell(d: dict) -> None:
+    # tags_trend caption: "It appeared on between {dmin} and {dmax} records
+    # a year from {dfrom} to {dto}, while yearly publications more than
+    # doubled, so its share of each year's records fell." The range must be
+    # the true min and max over those years; publications more than
+    # doubled from the first year to the last; the share fell between them.
+    # (2026-10-03: 85-138 over 2020-25; publications 18,363 -> 48,152;
+    # share 0.47% -> 0.29%.) An earlier caption called the count flat and
+    # this check required max <= 2 x min. The copy no longer says flat, and
+    # that bound would have failed at random in January: the 2021-26 window
+    # needs 2026 to reach 69 disputed records and it holds 60, adding ~2 a
+    # month.
     h = d["headline"]
     by = {r["year"]: r for r in d["years"]}
+    span = [by[y]["counts"]["disputed"]
+            for y in range(h["disputed_from"], h["disputed_to"] + 1)]
+    assert (min(span), max(span)) == (h["disputed_min"], h["disputed_max"]), (
+        f"caption range {h['disputed_min']}-{h['disputed_max']} is not the "
+        f"min and max of {span}")
     first, last = by[h["disputed_from"]], by[h["disputed_to"]]
-    assert h["disputed_max"] <= 2 * h["disputed_min"], (
-        f"disputed ranges {h['disputed_min']}–{h['disputed_max']}: no "
-        f"longer flat")
-    assert last["published"] >= 2 * first["published"], (
+    assert last["published"] > 2 * first["published"], (
         "yearly publications no longer 'more than doubled' over the window")
     assert _share(last["counts"]["disputed"], last["published"]) < \
         _share(first["counts"]["disputed"], first["published"]), (
@@ -89,25 +126,41 @@ def check_disputed_flat(d: dict) -> None:
 
 
 def check_home_blurb(d: dict) -> None:
-    # home card: "the first tag keeps climbing, the second lags the
-    # corpus." (disputed counts rose 85 -> 137 over 2021-25 while yearly
-    # publications more than doubled — the share fell.)
-    check_unsupported_climbing(d)
-    check_disputed_flat(d)
+    # home card blurb: "the count of records with the first tag has risen in
+    # every complete year since 2022; the second has not kept pace with the
+    # corpus" — the first half as above; the second as the tags_trend
+    # caption: disputed counts grew less than publications, so the share
+    # fell over the caption's window.
+    check_unsupported_rising_since_2022(d)
+    check_disputed_share_fell(d)
 
 
 def check_most_cnas_never_tag(d: dict) -> None:
     # tags_trend caption: "most CNAs never set these tags." and the board
-    # headline "A few CNAs set the tags. Most never do."
+    # headline "Most CNAs active in recent years set neither tag." — over
+    # the board's window, CNAs that set either tag are fewer than half the
+    # active CNAs (their sum bounds the union), and each tag is set by at
+    # most a quarter. (2026-10-03: 49 and 13 of 475 active CNAs, 2022-26.)
+    counts = []
     for tag in (UWA, "disputed"):
         b = d["boards"][tag]
         assert b["active_cnas"] and b["cna_count"] <= 0.25 * b["active_cnas"], (
             f"{tag}: {b['cna_count']} of {b['active_cnas']} active CNAs set "
             f"it — 'most never do' needs rewording")
+        counts.append(b["cna_count"])
+    active = d["boards"][UWA]["active_cnas"]
+    assert sum(counts) < 0.5 * active, (
+        f"{sum(counts)} tag-setting CNAs of {active}: 'most set neither' is "
+        f"no longer certain")
 
 
 def check_disputed_one_cna(d: dict) -> None:
     # tags_board caption: "“disputed” is set mostly by one CNA"
+    # (2026-10-03: mitre, 461 of 562 = 82.0% over 2022-26.) The board's
+    # five-year window drops 2022 in January, when mitre set nearly all
+    # disputed tags: the 2023-27 window opens at ~79.4%, and on the current
+    # mix the share falls below 75% around late 2027. Reword then
+    # ("most often by one CNA") rather than lowering the bar.
     top1 = d["boards"]["disputed"]["top1_share_pct"]
     assert top1 >= 75.0, f"top CNA sets only {top1}% of disputed tags"
 
@@ -213,13 +266,16 @@ def check_concentration_survives(d: dict) -> None:
 CLAIMS = [
     ("More CVEs are tagged as issued for products the vendor no longer supports.",
      "cve_tags.json", check_unsupported_climbing),
-    ("the first tag keeps climbing and the second has not kept pace with the corpus",
+    ("the count of records with the first tag has risen in every complete "
+     "year since 2022; the second has not kept pace with the corpus",
      "cve_tags.json", check_home_blurb),
     ("It appeared on between {dmin} and {dmax} records a year from {dfrom} to {dto}, while yearly publications more than doubled, so its share of each year's records fell.",
-     "cve_tags.json", check_disputed_flat),
+     "cve_tags.json", check_disputed_share_fell),
     ("most CNAs never set these tags.", "cve_tags.json",
      check_most_cnas_never_tag),
-    ("Most active CNAs set neither tag in the last five years", "cve_tags.json",
+    # tags_board headline; the caption gives the window ({from} to {to}),
+    # which in January holds only days of its last year.
+    ("Most CNAs active in recent years set neither tag.", "cve_tags.json",
      check_most_cnas_never_tag),
     ("“disputed” is set mostly by one CNA", "cve_tags.json",
      check_disputed_one_cna),
