@@ -487,6 +487,12 @@ CLAIMS = [
      "epss_volatility.json", check_movers_exceed_25pp),
     ("On an average night, EPSS percentiles move for nearly all CVEs and probabilities for about 1%.",
      "epss_volatility.json", check_percentiles_vs_probabilities),
+    # home card; it said "for almost every CVE each night" until 2026-10-03,
+    # untrue on 09-20 (83.5% of percentiles moved)
+    ("On an average night, EPSS percentiles change for nearly all CVEs and probabilities for about 1%.",
+     "epss_volatility.json", check_percentiles_vs_probabilities),
+    ("changes for nearly every CVE on an average night, the probability for far fewer",
+     "epss_volatility.json", check_percentiles_vs_probabilities),
     ("Nearly all ATT&CK technique additions and retirements come in major releases.",
      "attack_churn.json", check_churn_in_major_releases),
     ("Most ATT&CK groups have three or fewer alternate names.",

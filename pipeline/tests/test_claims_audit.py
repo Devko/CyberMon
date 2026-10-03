@@ -239,6 +239,20 @@ def check_cna_nine_plus(d: dict) -> None:
         f"'more than a third' understates a top CNA at {top[0]}%")
 
 
+def check_largest_cnas_rate_few_nine_plus(d: dict) -> None:
+    # editorial.js (CNA leaderboard caption): "Some of the largest CNAs, with
+    # thousands of scored CVEs each, rate fewer than one in ten that high."
+    # (2026-10-03: Patchstack 15,697 at 8.3%, VulDB 14,219 at 2.4%,
+    # Wordfence 10,162 at 6.5%, microsoft 5,302 at 5.3%.) It said "a hundred
+    # times as many scored CVEs" until then, a ratio to the top CNA's size
+    # that the January window slide could break.
+    low = [c["cna"] for c in d["cnas"]
+           if c["n"] >= 2000 and c["pct_geq_9"] < 10]
+    assert len(low) >= 2, (
+        f"'Some of the largest CNAs, with thousands of scored CVEs each, rate "
+        f"fewer than one in ten that high' needs two such CNAs; found {low}")
+
+
 def _bucket_pct(d: dict, bucket: str) -> float:
     return next(b["pct"] for b in d["latency_buckets"] if b["bucket"] == bucket)
 
@@ -511,6 +525,12 @@ CLAIMS = [
         "The highest-rating CNAs score more than a third of their CVEs 9.0 or higher.",
         "cna_leaderboard.json",
         check_cna_nine_plus,
+    ),
+    (
+        "Some of the largest CNAs, with thousands of scored CVEs each, rate "
+        "fewer than one in ten that high.",
+        "cna_leaderboard.json",
+        check_largest_cnas_rate_few_nine_plus,
     ),
     (
         "Nearly four in ten KEV listings come within a week",

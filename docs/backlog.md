@@ -55,13 +55,24 @@ verified and either disclosed in the page copy or left as the owner's call.
   CVE, Registry Malware → Malicious Packages. Nav groups: The CVE machine →
   CVE records, The industry → Industry, Attacker's map → Threats. The
   instruments keep their names (The Field, Mutation Observatory).
-- **Dated headlines** name 2025 explicitly (calendar ID age, weekday,
-  Patch Tuesday, concentration): true after January but old news — refresh
-  to 2026 when that year completes.
-- **Guards that will trip on purpose:** credits lab ceiling 280 (~November),
-  vendor exploit-corpus gap (~2–3 months), and the CVE concentration hero's "since 2023
-  that trend has reversed" when the partial 2026 (46.9%) becomes the
-  headline year in January (its guard names 2023–2025 and will not trip).
+- **Dated headlines** (2026-10-03): the weekday and Patch Tuesday headlines
+  now say "the latest complete year", so they follow the chart across the
+  rollover. Calendar ID age ("From 2021 to 2025, about one in five…") and the
+  concentration copy ("from 2023 to 2025 it rose") name their years and stay
+  true; refresh them to include 2026 once it completes.
+- **Guards that will trip on purpose** (as of the 2026-10-03 audit, which
+  replaced the credits lab ceiling of 280 and the vendor exploit-corpus
+  "handful" with wording that survives batches):
+  - 2026-11-05: `test_claim_reading_is_fresh` (AI Credits' AISLE and
+    ZeroPath counters were last read 09-20; re-read them).
+  - Jan–Feb 2027: ADP "about half" (45–55%; 50.7% and rising ~1.3 pts a
+    month) — the copy will need "more than half".
+  - 2027-01-01: the AI-milestones guard (see the year-rollover section).
+  - ~autumn 2027: DNSSEC "more than twenty years" to reach every user
+    (23.6 years at the current pace).
+- **Rehearsal noise, not risk:** `check_last_verified_payment_quarter` fails
+  under `CYBERMON_REHEARSE_TINY` because the synthetic 2027 row copies 2024
+  Q3's paid quarter forward; a real new year cannot add a paid quarter.
 - **Incidents, Record Tags (2026-10-03 audit):** "About a third of Item 1.05
   disclosures have been amended" (19 of 58) drops below its 29% floor at 66
   originals if no amendment arrives (~March 2027; revisit in January).

@@ -364,11 +364,11 @@ export const editorial = {
         href: "epssvol.html",
         num: "17",
         label: "EPSS Volatility",
-        headline: "EPSS percentiles change for almost every CVE each night; probabilities change for very few.",
+        headline: "On an average night, EPSS percentiles change for nearly all CVEs and probabilities for about 1%.",
         blurb:
           "CyberMon compares each night's EPSS feed with the previous night's. The " +
           "percentile is a rank against all scored CVEs, a set that grows every day, so it " +
-          "changes for almost every CVE; the probability changes for very few. Also weekly " +
+          "changes for nearly every CVE on an average night; the probability for about 1%. Also weekly " +
           "counts of probabilities crossing 0.1%, 1% and 5%, and the largest single-night " +
           "changes. FIRST publishes daily scores but no change log; CyberMon has kept this " +
           "one since July 2026.",
@@ -1017,7 +1017,7 @@ export const editorial = {
       caption:
         "CVE Numbering Authorities (CNAs) can score the CVEs they publish. This board " +
         "uses those scores, not NVD's, and ranks each CNA by the share it rates 9.0 or " +
-        "higher. Some of the largest CNAs, with a hundred times as many scored CVEs, rate " +
+        "higher. Some of the largest CNAs, with thousands of scored CVEs each, rate " +
         "fewer than one in ten that high. The board does not show why: CNAs cover " +
         "different products, and some score in CVSS 4.0 while others use 3.x.",
       colCna: "CNA",
@@ -2787,8 +2787,8 @@ export const editorial = {
       caption:
         "EPSS publishes two figures per CVE: a probability of exploitation and a " +
         "percentile that ranks it against all other scored CVEs. The percentile " +
-        "changes for almost every CVE from one night to the next, the probability for " +
-        "far fewer. For a CVE whose probability is unchanged, a percentile change comes " +
+        "changes for nearly every CVE on an average night, the probability for far " +
+        "fewer. For a CVE whose probability is unchanged, a percentile change comes " +
         "from the rest of the ranking: the scored set grows by a few hundred CVEs a " +
         "day, and other CVEs' scores move. The two lines are the nightly shares of " +
         "compared CVEs whose percentile and whose probability changed; exact figures " +

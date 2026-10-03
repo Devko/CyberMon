@@ -162,6 +162,13 @@ CLAIMS = [
         check_typical_gap_in_months,
     ),
     (
+        # home card; cards are text only, so "typically" is the pooled median
+        "Breaches typically reach Have I Been Pwned months after their "
+        "recorded breach date.",
+        "breach_ledger.json",
+        check_typical_gap_in_months,
+    ),
+    (
         "The median for a single year has ranged from under a week, in 2014, to more than a year, in 2017 and 2023.",
         "breach_ledger.json",
         check_single_years_vary,

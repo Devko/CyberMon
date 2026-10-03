@@ -278,7 +278,7 @@ live backlog is read client-side for scale, never a fabricated trend.
 
 ### 17 · EPSS Volatility — [epssvol.html](https://devko.github.io/CyberMon/epssvol.html) (live)
 
-*EPSS percentiles change for almost every CVE each night; probabilities change for very few.* Every night CyberMon fingerprints
+*On an average night, EPSS percentiles change for nearly all CVEs and probabilities for about 1%.* Every night CyberMon fingerprints
 the EPSS feed it already fetches (each CVE's probability and percentile) and
 diffs it against the previous night's fingerprint (a cache in
 `.cache/epss_volatility_state.json.gz`, restored by actions/cache and saved
