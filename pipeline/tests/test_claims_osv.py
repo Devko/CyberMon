@@ -66,21 +66,51 @@ def check_most_get_a_cve(d: dict) -> None:
                       f"share below half; it is {pct}%")
 
 
+def check_one_in_twelve(d: dict) -> None:
+    # gap_years headline: "About one GitHub-reviewed advisory in twelve
+    # carries no CVE id." — between one in thirteen and one in eleven
+    # (7.7-9.1%). (2026-10-03: 2,909 of 35,137 = 8.3%; 8.2-8.4% in every
+    # edition since 2026-09-23. The 2026 advisories run at 6.9%, so the
+    # share drifts down slowly: about 26,000 more advisories at that rate,
+    # roughly two years at 2026's pace, before it reaches one in thirteen.)
+    cat = d["catalog"]
+    pct = 100.0 * cat["without_cve"] / cat["advisories"]
+    assert 100 / 13 <= pct <= 100 / 11, (
+        f"'about one advisory in twelve' needs a no-CVE share of 7.7-9.1%; "
+        f"it is {pct:.1f}% ({cat['without_cve']} of {cat['advisories']})")
+
+
 def check_rust_quarter(d: dict) -> None:
     # "a quarter" / "one advisory in four": 21-30% reads as a quarter.
+    # (2026-10-03: 26.4%, 395 of 1,497.)
     pct = _eco(d, "crates.io")["without_cve_pct"]
     assert pct is not None and 21 <= pct <= 30, (
         f"'a quarter of Rust's do not' needs crates.io's no-CVE share near "
         f"25%; it is {pct}%")
 
 
-def check_rust_is_highest(d: dict) -> None:
-    # The ecosystem chart accents the top share and the headline names Rust.
-    ranked = [e for e in d["ecosystems"] if e["without_cve_pct"] is not None]
-    top = max(ranked, key=lambda e: e["without_cve_pct"])
+# Ecosystems a reader would set Rust beside: the large registries.
+_LARGE_ECOSYSTEM = 1000  # advisories, all publication years
+
+
+def check_rust_highest_of_large(d: dict) -> None:
+    # The gap_ecosystems headline and the Advisories home card single out
+    # Rust's no-CVE share, which reads as Rust standing out among the main
+    # package registries. Among ecosystems with 1,000+ advisories it must be
+    # the highest. (2026-10-03: crates.io 26.4% of 1,497; next npm 15.1% of
+    # 7,238.) Smaller ecosystems are not ranked here, because the copy says
+    # nothing about them: GitHub Actions (25.5%, 14 of 55) sits one advisory
+    # from Rust's share, and the chart's accent on the top bar is a drawing
+    # rule, not a claim.
+    large = [e for e in d["ecosystems"] if e["total"] >= _LARGE_ECOSYSTEM
+             and e["without_cve_pct"] is not None]
+    assert any(e["ecosystem"] == "crates.io" for e in large), (
+        "crates.io has fewer than 1,000 advisories in this edition")
+    top = max(large, key=lambda e: e["without_cve_pct"])
     assert top["ecosystem"] == "crates.io", (
-        f"the headline leads with Rust, but {top['ecosystem']} now has the "
-        f"highest no-CVE share ({top['without_cve_pct']}%)")
+        f"the copy singles out Rust, but {top['ecosystem']} now has the "
+        f"highest no-CVE share among the large ecosystems "
+        f"({top['without_cve_pct']}%)")
 
 
 def check_maven_almost_all(d: dict) -> None:
@@ -125,11 +155,18 @@ def check_twelve_ecosystems(d: dict) -> None:
 
 # ---- registry_malware.json ----------------------------------------------------------
 
-def check_six_in_ten_one_month(d: dict) -> None:
-    pct = d["catalog"]["peak_share_pct"]
-    assert 54 <= pct <= 66, (f"'Six in ten of the feed's reports landed in "
-                             f"one month' needs a peak-month share near 60%; "
-                             f"it is {pct}%")
+def check_more_than_half_one_month(d: dict) -> None:
+    # mal_months headline and the Malicious Packages home card: more than
+    # half of all reports on file were published in one calendar month.
+    # (2026-10-03: November 2025, 142,256 of 239,077 = 59.5%. The old "six
+    # in ten" fell below 60% on 2026-09-23 and loses ~0.3 points every 11
+    # days as the feed grows. Half is ~45,000 more reports away: two to
+    # three years at 2026's pace of ~1,900 a month, unless a new burst.)
+    cat = d["catalog"]
+    pct = 100.0 * cat["peak_reports"] / cat["reports"]
+    assert pct > 50, (f"'More than half of the feed's reports were published "
+                      f"in a single month' — the peak month ({cat['peak_month']}) "
+                      f"holds {pct:.1f}%")
 
 
 def check_peak_names_a_contributor(d: dict) -> None:
@@ -150,9 +187,13 @@ def check_typical_month_window(d: dict) -> None:
 
 
 def check_npm_almost_every(d: dict) -> None:
+    # mal_share headline: "npm accounts for almost every report on file".
+    # (2026-10-03: 222,193 of 239,077 = 92.9%. 2026's reports are 73% npm,
+    # so the share sinks slowly: some 40,000 more reports at that mix
+    # before it reaches 90%.)
     npm = _eco(d, "npm")["reports"]
     pct = 100 * npm / d["catalog"]["reports"]
-    assert pct >= 85, (f"'npm carries almost every report' needs npm at 85% "
+    assert pct >= 90, (f"'npm carries almost every report' needs npm at 90% "
                        f"or more of all reports; it is {pct:.1f}%")
 
 
@@ -175,13 +216,19 @@ def check_almost_none_withdrawn(d: dict) -> None:
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
+    # home card (Advisories Without a CVE)
     ("Most GitHub-reviewed advisories carry a CVE id", "advisory_gap.json",
      check_most_get_a_cve),
     ("A quarter of Rust's do not.", "advisory_gap.json", check_rust_quarter),
+    ("A quarter of Rust's do not.", "advisory_gap.json",
+     check_rust_highest_of_large),
+    # advisories.html
+    ("About one GitHub-reviewed advisory in twelve carries no CVE id.",
+     "advisory_gap.json", check_one_in_twelve),
     ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
      check_rust_quarter),
     ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
-     check_rust_is_highest),
+     check_rust_highest_of_large),
     ("almost every Maven advisory has one", "advisory_gap.json",
      check_maven_almost_all),
     ("No-CVE advisories are rated Critical or Low more often",
@@ -192,8 +239,12 @@ CLAIMS = [
      check_reviewed_only),
     ("each of the twelve GitHub advisory ecosystems", "advisory_gap.json",
      check_twelve_ecosystems),
-    ("Six in ten of the feed's reports were published in a single month",
-     "registry_malware.json", check_six_in_ten_one_month),
+    # home card (Malicious Packages), then malware.html
+    ("More than half of the reports in the OpenSSF malicious-packages feed "
+     "were published in a single month.", "registry_malware.json",
+     check_more_than_half_one_month),
+    ("More than half of the feed's reports were published in a single month.",
+     "registry_malware.json", check_more_than_half_one_month),
     ("of them name one contributor, {peak_top_source}",
      "registry_malware.json", check_peak_names_a_contributor),
     ("In a typical month of the last two years the feed published",

@@ -453,10 +453,11 @@ export const editorial = {
         headline: "More CVEs are tagged as issued for products the vendor no longer supports.",
         blurb:
           "CNAs can tag a CVE record “unsupported-when-assigned” or “disputed”. Per " +
-          "publication year, the first tag keeps climbing and the second has not kept pace " +
-          "with the corpus. Also which CNAs set the tags (few do) and how tagged records " +
-          "are scored compared with the same CNAs' other records. A tag records what the " +
-          "CNA stated; CyberMon does not check it.",
+          "publication year, the count of records with the first tag has risen in every " +
+          "complete year since 2022; the second has not kept pace with the corpus. Also " +
+          "which CNAs set the tags (few do) and how tagged records are scored compared " +
+          "with the same CNAs' other records. A tag records what the CNA stated; " +
+          "CyberMon does not check it.",
         live: true,
       },
       {
@@ -492,7 +493,7 @@ export const editorial = {
         href: "malware.html",
         num: "26",
         label: "Malicious Packages",
-        headline: "Six in ten reports in the OpenSSF malicious-packages feed were published in one month.",
+        headline: "More than half of the reports in the OpenSSF malicious-packages feed were published in a single month.",
         blurb:
           "Reports in the OpenSSF malicious-packages feed per registry per month, each " +
           "registry's share of each year's reports, and how many reports were later " +
@@ -3967,8 +3968,8 @@ export const editorial = {
       partialTooltip: "partial period",
       yAxis: "Filings",
       note:
-        "Hollow bars mark partial periods: December 2023, because the rule " +
-        "took effect on 18 December 2023, and the current month.",
+        "Hollow bars mark partial periods: the first, because the rule " +
+        "took effect on 18 December 2023, and the current one.",
       nodata:
         "No edition yet. The nightly pipeline reads EDGAR's full-text " +
         "search; until its first read, nothing has been counted, so nothing " +
@@ -4198,7 +4199,7 @@ export const editorial = {
       num: "01",
       kicker: "Reports per month",
       source: "OpenSSF malicious-packages (Apache-2.0) via OSV.dev",
-      headline: "Six in ten of the feed's reports were published in a single month.",
+      headline: "More than half of the feed's reports were published in a single month.",
       caption:
         "Each bar is one month of reports in the OpenSSF malicious-packages " +
         "feed: one report per malicious package, dated when the report was " +
@@ -4241,11 +4242,16 @@ export const editorial = {
       kicker: "By registry",
       source: "OpenSSF malicious-packages (Apache-2.0) via OSV.dev",
       headline: "npm accounts for almost every report on file, but PyPI had most of 2023's.",
+      // {share_year} is the current year once it holds at least a median
+      // month's reports, otherwise the latest complete year (charts/mal_share.js),
+      // so a few days of January never name a registry.
       caption:
         "Each year's reports, split by registry. npm holds {npm_share} of " +
         "all reports on file, but the split varies by year: in 2023 PyPI " +
-        "carried most of the year's reports, and RubyGems holds " +
-        "{ruby_share} of this year's so far.",
+        "carried most of the year's reports. Of the registries other than " +
+        "npm, {second} has the largest share of reports in {share_year}: " +
+        "{second_share}.",
+      shareYearPartial: "{year} so far",
       yAxis: "% of the year's reports",
       tooltip: "{name}: {n} reports · {pct}",
       nodata:
@@ -4339,7 +4345,7 @@ export const editorial = {
       num: "02",
       kicker: "Who tags",
       source: "CVE List V5 (MITRE)",
-      headline: "Most active CNAs set neither tag in the last five years.",
+      headline: "Most CNAs active in recent years set neither tag.",
       caption:
         "Tagged records from {from} to {to}, by the CNA that set the tag. " +
         "{u_cnas} of the {active} CNAs that published a record in those years " +
@@ -4452,10 +4458,13 @@ export const editorial = {
       "unattended pipeline and provided as is, with no guarantee of correctness, " +
       "completeness or availability. Check a number against its primary source before " +
       "relying on it.",
+    // {year} (twice below) is the edition's year, from meta.json's
+    // generated_at; common.js fills it and keeps the note hidden until it
+    // knows the year, so the designations never go stale on 1 January.
     dataNote:
       // The CVE Terms of Use grant reuse provided MITRE's copyright designation is
       // reproduced; CVE® and CWE™ are MITRE trademarks. Do not paraphrase.
-      "Data: CVE List V5 and the CNA roster from CVE.org (Copyright © 1999–2026 The MITRE " +
+      "Data: CVE List V5 and the CNA roster from CVE.org (Copyright © 1999–{year} The MITRE " +
       "Corporation; CVE® is a registered trademark of The MITRE Corporation; reproduced under " +
       "the CVE Terms of Use), the CWE Top 25 (cwe.mitre.org; CWE™ is a trademark of The MITRE " +
       "Corporation), EPSS (FIRST.org), Known Exploited Vulnerabilities catalog (CISA), " +
@@ -4468,7 +4477,7 @@ export const editorial = {
       "Ransomwhere (crowdsourced ransomware payment tracker by Jack Cable, CC0), " +
       // The quoted sentence is MITRE's required copyright designation, verbatim
       // (attack.mitre.org → Resources → Terms of Use). Do not paraphrase it.
-      "MITRE ATT&CK® (© 2026 The MITRE Corporation. This work is reproduced and distributed " +
+      "MITRE ATT&CK® (© {year} The MITRE Corporation. This work is reproduced and distributed " +
       "with the permission of The MITRE Corporation.), " +
       "DNSSEC validation measurement data © APNIC Pty Ltd (APNIC Labs, stats.labs.apnic.net; " +
       "re-use with attribution permitted), " +

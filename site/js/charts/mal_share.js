@@ -23,12 +23,28 @@ export function render(slots, data, refs) {
     return;
   }
   const npm = (data.ecosystems || []).find((e) => e.ecosystem === "npm");
+  // The caption's year: the current one once it holds at least a median
+  // month's reports (catalog.median_month), else the latest complete year.
+  // A few days of January would let a handful of reports name any registry.
   const current = years.find((y) => y.partial);
+  const complete = years.filter((y) => !y.partial);
+  const shareYear = current && current.total >= (cat.median_month ?? Infinity)
+    ? current
+    : complete[complete.length - 1] ?? current;
+  // Largest registry other than npm in that year, by the registry the
+  // report names (not the folded series the chart draws).
+  const [secondName, secondN] = Object.entries(shareYear?.by_ecosystem ?? {})
+    .filter(([k, n]) => k !== "npm" && n > 0)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0] ?? [];
   fillRef(refs?.caption, {
     npm_share: fmtPct(npm ? (100 * npm.reports) / cat.reports : 0),
-    ruby_share: current
-      ? fmtPct((100 * (current.by_ecosystem.RubyGems ?? 0)) / current.total)
-      : "—",
+    second: secondName ? ecoLabel(secondName) : "—",
+    second_share: secondName ? fmtPct((100 * secondN) / shareYear.total) : "—",
+    share_year: !shareYear
+      ? "—"
+      : shareYear.partial
+        ? tpl(ed.shareYearPartial, { year: shareYear.year })
+        : String(shareYear.year),
   });
 
   const folded = years.map((y) => fold(y.by_ecosystem));

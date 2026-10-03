@@ -59,10 +59,19 @@ verified and either disclosed in the page copy or left as the owner's call.
   Patch Tuesday, concentration): true after January but old news — refresh
   to 2026 when that year completes.
 - **Guards that will trip on purpose:** credits lab ceiling 280 (~November),
-  vendor exploit-corpus gap (~2–3 months), crates.io's thin lead over GitHub
-  Actions in the no-CVE share, and the CVE concentration hero's "since 2023
+  vendor exploit-corpus gap (~2–3 months), and the CVE concentration hero's "since 2023
   that trend has reversed" when the partial 2026 (46.9%) becomes the
   headline year in January (its guard names 2023–2025 and will not trip).
+- **Incidents, Record Tags (2026-10-03 audit):** "About a third of Item 1.05
+  disclosures have been amended" (19 of 58) drops below its 29% floor at 66
+  originals if no amendment arrives (~March 2027; revisit in January).
+  "“disputed” is set mostly by one CNA" (82.0%) opens the 2023–27 window at
+  ~79.4% and falls below its 75% bar around late 2027. The January
+  rehearsals fail `check_unsupported_climbing` and `check_home_blurb` until
+  2026's unsupported-when-assigned count passes 2025's 423 (~mid-November);
+  383 by 3 October projects to ~460–505 for the year. Rust's no-CVE lead is
+  now ranked among ecosystems with 1,000+ advisories, so GitHub Actions
+  (14 of 55) no longer trips it.
 
 ## Maintenance — one upstream outage costs the whole night — RESOLVED
 
