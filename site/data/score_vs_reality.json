@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "grid": [
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "<0.1%",
-   "n": 140
+   "n": 141
   },
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "0.1-1%",
-   "n": 8260
+   "n": 8348
   },
   {
    "cvss_bucket": "0.0-3.9",
@@ -19,67 +19,67 @@
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "\u226510%",
-   "n": 33
+   "n": 35
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "<0.1%",
-   "n": 1300
+   "n": 1316
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "0.1-1%",
-   "n": 86213
+   "n": 86958
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "1-10%",
-   "n": 8120
+   "n": 8141
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "\u226510%",
-   "n": 838
+   "n": 839
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "<0.1%",
-   "n": 837
+   "n": 833
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "0.1-1%",
-   "n": 62759
+   "n": 63571
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "1-10%",
-   "n": 14626
+   "n": 14669
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "\u226510%",
-   "n": 2183
+   "n": 2187
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "<0.1%",
-   "n": 10
+   "n": 11
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "0.1-1%",
-   "n": 14035
+   "n": 14234
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "1-10%",
-   "n": 6334
+   "n": 6375
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "\u226510%",
-   "n": 1655
+   "n": 1659
   }
  ],
  "cvss_buckets": [
@@ -95,29 +95,29 @@
   "\u226510%"
  ],
  "headline": {
-  "pct_critical_epss_below_1pct": 63.7,
-  "n_critical_with_epss": 22034
+  "pct_critical_epss_below_1pct": 63.9,
+  "n_critical_with_epss": 22279
  },
  "kev": {
-  "total": 1728,
+  "total": 1733,
   "below_high": 212,
-  "pct_below_high": 12.3,
+  "pct_below_high": 12.2,
   "cvss_distribution": [
    {
     "bucket": "0.0-3.9",
-    "n": 7
+    "n": 9
    },
    {
     "bucket": "4.0-6.9",
-    "n": 205
+    "n": 203
    },
    {
     "bucket": "7.0-8.9",
-    "n": 908
+    "n": 911
    },
    {
     "bucket": "9.0-10.0",
-    "n": 608
+    "n": 610
    }
   ]
  }

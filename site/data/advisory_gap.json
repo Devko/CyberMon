@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
- "as_of": "2026-09-29",
+ "generated_at": "2026-10-03T09:33:31Z",
+ "as_of": "2026-10-03",
  "ecosystems_read": [
   "GitHub Actions",
   "Go",
@@ -16,15 +16,15 @@
   "npm"
  ],
  "young_days": 90,
- "young_since": "2026-07-01",
+ "young_since": "2026-07-05",
  "min_n": 50,
  "catalog": {
-  "advisories": 34904,
-  "with_cve": 32025,
-  "without_cve": 2879,
-  "without_cve_young": 190,
-  "without_cve_pct": 8.2,
-  "withdrawn_excluded": 1109,
+  "advisories": 35137,
+  "with_cve": 32228,
+  "without_cve": 2909,
+  "without_cve_young": 195,
+  "without_cve_pct": 8.3,
+  "withdrawn_excluded": 1145,
   "not_reviewed": 0,
   "multi_ecosystem": 300,
   "first_year": 2017,
@@ -96,8 +96,8 @@
   },
   {
    "year": 2024,
-   "total": 3547,
-   "with_cve": 2916,
+   "total": 3548,
+   "with_cve": 2917,
    "without_cve": 631,
    "without_cve_young": 0,
    "without_cve_pct": 17.8,
@@ -105,8 +105,8 @@
   },
   {
    "year": 2025,
-   "total": 3569,
-   "with_cve": 3296,
+   "total": 3570,
+   "with_cve": 3297,
    "without_cve": 273,
    "without_cve_young": 0,
    "without_cve_pct": 7.6,
@@ -114,22 +114,22 @@
   },
   {
    "year": 2026,
-   "total": 10243,
-   "with_cve": 9555,
-   "without_cve": 688,
-   "without_cve_young": 190,
-   "without_cve_pct": 6.7,
+   "total": 10474,
+   "with_cve": 9756,
+   "without_cve": 718,
+   "without_cve_young": 195,
+   "without_cve_pct": 6.9,
    "partial": true
   }
  ],
  "ecosystems": [
   {
    "ecosystem": "npm",
-   "total": 7127,
-   "with_cve": 6058,
-   "without_cve": 1069,
-   "without_cve_young": 52,
-   "without_cve_pct": 15.0,
+   "total": 7238,
+   "with_cve": 6146,
+   "without_cve": 1092,
+   "without_cve_young": 65,
+   "without_cve_pct": 15.1,
    "years": [
     {
      "year": 2017,
@@ -205,20 +205,20 @@
     },
     {
      "year": 2026,
-     "total": 2877,
-     "with_cve": 2664,
-     "without_cve": 213,
-     "without_cve_young": 52,
-     "without_cve_pct": 7.4
+     "total": 2988,
+     "with_cve": 2752,
+     "without_cve": 236,
+     "without_cve_young": 65,
+     "without_cve_pct": 7.9
     }
    ]
   },
   {
    "ecosystem": "Maven",
-   "total": 7042,
-   "with_cve": 6944,
-   "without_cve": 98,
-   "without_cve_young": 8,
+   "total": 7048,
+   "with_cve": 6951,
+   "without_cve": 97,
+   "without_cve_young": 6,
    "without_cve_pct": 1.4,
    "years": [
     {
@@ -295,20 +295,20 @@
     },
     {
      "year": 2026,
-     "total": 956,
-     "with_cve": 933,
-     "without_cve": 23,
-     "without_cve_young": 8,
-     "without_cve_pct": 2.4
+     "total": 962,
+     "with_cve": 940,
+     "without_cve": 22,
+     "without_cve_young": 6,
+     "without_cve_pct": 2.3
     }
    ]
   },
   {
    "ecosystem": "Packagist",
-   "total": 6416,
-   "with_cve": 5783,
+   "total": 6422,
+   "with_cve": 5789,
    "without_cve": 633,
-   "without_cve_young": 26,
+   "without_cve_young": 25,
    "without_cve_pct": 9.9,
    "years": [
     {
@@ -385,20 +385,20 @@
     },
     {
      "year": 2026,
-     "total": 1388,
-     "with_cve": 1323,
+     "total": 1394,
+     "with_cve": 1329,
      "without_cve": 65,
-     "without_cve_young": 26,
+     "without_cve_young": 25,
      "without_cve_pct": 4.7
     }
    ]
   },
   {
    "ecosystem": "PyPI",
-   "total": 6139,
-   "with_cve": 5890,
-   "without_cve": 249,
-   "without_cve_young": 36,
+   "total": 6216,
+   "with_cve": 5960,
+   "without_cve": 256,
+   "without_cve_young": 43,
    "without_cve_pct": 4.1,
    "years": [
     {
@@ -467,28 +467,28 @@
     },
     {
      "year": 2025,
-     "total": 703,
-     "with_cve": 673,
+     "total": 704,
+     "with_cve": 674,
      "without_cve": 30,
      "without_cve_young": 0,
      "without_cve_pct": 4.3
     },
     {
      "year": 2026,
-     "total": 2046,
-     "with_cve": 1948,
-     "without_cve": 98,
-     "without_cve_young": 36,
-     "without_cve_pct": 4.8
+     "total": 2122,
+     "with_cve": 2017,
+     "without_cve": 105,
+     "without_cve_young": 43,
+     "without_cve_pct": 4.9
     }
    ]
   },
   {
    "ecosystem": "Go",
-   "total": 4727,
-   "with_cve": 4377,
-   "without_cve": 350,
-   "without_cve_young": 27,
+   "total": 4747,
+   "with_cve": 4395,
+   "without_cve": 352,
+   "without_cve_young": 28,
    "without_cve_pct": 7.4,
    "years": [
     {
@@ -549,8 +549,8 @@
     },
     {
      "year": 2024,
-     "total": 626,
-     "with_cve": 557,
+     "total": 627,
+     "with_cve": 558,
      "without_cve": 69,
      "without_cve_young": 0,
      "without_cve_pct": 11.0
@@ -565,21 +565,21 @@
     },
     {
      "year": 2026,
-     "total": 1976,
-     "with_cve": 1850,
-     "without_cve": 126,
-     "without_cve_young": 27,
+     "total": 1995,
+     "with_cve": 1867,
+     "without_cve": 128,
+     "without_cve_young": 28,
      "without_cve_pct": 6.4
     }
    ]
   },
   {
    "ecosystem": "crates.io",
-   "total": 1485,
-   "with_cve": 1088,
-   "without_cve": 397,
-   "without_cve_young": 40,
-   "without_cve_pct": 26.7,
+   "total": 1497,
+   "with_cve": 1102,
+   "without_cve": 395,
+   "without_cve_young": 26,
+   "without_cve_pct": 26.4,
    "years": [
     {
      "year": 2017,
@@ -655,21 +655,21 @@
     },
     {
      "year": 2026,
-     "total": 452,
-     "with_cve": 314,
-     "without_cve": 138,
-     "without_cve_young": 40,
-     "without_cve_pct": 30.5
+     "total": 464,
+     "with_cve": 328,
+     "without_cve": 136,
+     "without_cve_young": 26,
+     "without_cve_pct": 29.3
     }
    ]
   },
   {
    "ecosystem": "RubyGems",
-   "total": 1088,
+   "total": 1089,
    "with_cve": 1054,
-   "without_cve": 34,
-   "without_cve_young": 1,
-   "without_cve_pct": 3.1,
+   "without_cve": 35,
+   "without_cve_young": 2,
+   "without_cve_pct": 3.2,
    "years": [
     {
      "year": 2017,
@@ -745,11 +745,11 @@
     },
     {
      "year": 2026,
-     "total": 185,
+     "total": 186,
      "with_cve": 174,
-     "without_cve": 11,
-     "without_cve_young": 1,
-     "without_cve_pct": 5.9
+     "without_cve": 12,
+     "without_cve_young": 2,
+     "without_cve_pct": 6.5
     }
    ]
   },
@@ -1207,31 +1207,31 @@
  "severity": [
   {
    "level": "CRITICAL",
-   "with_cve": 3948,
-   "without_cve": 642,
+   "with_cve": 3971,
+   "without_cve": 644,
    "with_cve_pct": 12.3,
-   "without_cve_pct": 22.3
+   "without_cve_pct": 22.1
   },
   {
    "level": "HIGH",
-   "with_cve": 11791,
-   "without_cve": 841,
-   "with_cve_pct": 36.8,
-   "without_cve_pct": 29.2
+   "with_cve": 11881,
+   "without_cve": 857,
+   "with_cve_pct": 36.9,
+   "without_cve_pct": 29.5
   },
   {
    "level": "MODERATE",
-   "with_cve": 14135,
-   "without_cve": 1026,
+   "with_cve": 14211,
+   "without_cve": 1037,
    "with_cve_pct": 44.1,
    "without_cve_pct": 35.6
   },
   {
    "level": "LOW",
-   "with_cve": 2151,
-   "without_cve": 370,
+   "with_cve": 2165,
+   "without_cve": 371,
    "with_cve_pct": 6.7,
-   "without_cve_pct": 12.9
+   "without_cve_pct": 12.8
   },
   {
    "level": "UNRATED",
@@ -1242,7 +1242,7 @@
   }
  ],
  "cve_lag": {
-  "n": 26984,
+  "n": 27119,
   "later_30d": 204,
   "later_90d": 113,
   "later_365d": 31

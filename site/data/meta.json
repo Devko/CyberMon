@@ -1,118 +1,118 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "sample": false,
  "sources": {
   "cvelist": {
-   "release": "cve_2026-09-29_0200Z",
-   "cve_count": 398867
+   "release": "cve_2026-10-03_0900Z",
+   "cve_count": 400917
   },
   "epss": {
    "model_version": "v2026.06.15",
-   "score_date": "2026-09-28",
-   "row_count": 380224
+   "score_date": "2026-10-02",
+   "row_count": 382205
   },
   "kev": {
-   "catalog_version": "2026.09.27",
-   "count": 1728
+   "catalog_version": "2026.10.02",
+   "count": 1733
   },
   "nvd": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "throughput_events": 800
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "throughput_events": 1684
   },
   "market": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "term_count": 14,
    "backfill_remaining": 0,
    "stale_sources": []
   },
   "hibp": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "breach_count": 1038
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "breach_count": 1039
   },
   "ransomwhere": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "address_count": 11186,
    "tx_count": 21802
   },
   "attack": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "latest_version": "19.2",
    "version_count": 41
   },
   "epss_history": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "graded": 1412,
-   "pending_backfill": 2
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "graded": 1414,
+   "pending_backfill": 1
   },
   "apnic": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "economy_count": 10,
-   "spread_economy_count": 200
+   "spread_economy_count": 201
   },
   "rescores": {
-   "events_total": 5491,
-   "state_release": "cve_2026-09-29_0200Z"
+   "events_total": 5502,
+   "state_release": "cve_2026-10-03_0900Z"
   },
   "kev_changelog": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "events_total": 4372,
-   "last_observed": "2026-09-29"
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "events_total": 4377,
+   "last_observed": "2026-10-03"
   },
   "naming": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "version": "19.2",
    "group_count": 176
   },
   "top25": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "official_year": 2025,
    "list_count": 3
   },
   "adp": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "cisa_records": 191792
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "cisa_records": 193982
   },
   "epssvol": {
-   "score_date": "2026-09-28",
-   "days_observed": 69
+   "score_date": "2026-10-02",
+   "days_observed": 70
   },
   "roster": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "org_count": 550,
-   "events_total": 29
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "org_count": 554,
+   "events_total": 33
   },
   "exploitdb": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "entry_count": 47160,
-   "cve_count": 25086
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "entry_count": 47170,
+   "cve_count": 25091
   },
   "metasploit": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "module_count": 7182,
-   "cve_count": 2574
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "module_count": 7188,
+   "cve_count": 2579
   },
   "nuclei": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "cve_count": 4449
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "cve_count": 4452
   },
   "feodo": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "listed": 5,
    "online": 1
   },
   "sec_incidents": {
-   "fetched_at": "2026-09-29T02:53:12Z",
+   "fetched_at": "2026-10-03T09:33:31Z",
    "filings_105": 58,
    "amendments_105": 26,
    "filings_801": 74
   },
   "osv": {
-   "fetched_at": "2026-09-29T02:53:12Z",
-   "ghsa_advisories": 34904,
-   "mal_reports": 238854,
+   "fetched_at": "2026-10-03T09:33:31Z",
+   "ghsa_advisories": 35137,
+   "mal_reports": 239077,
    "ecosystems": 13,
-   "downloaded": 6,
-   "not_modified": 7
+   "downloaded": 9,
+   "not_modified": 4
   }
  }
 }

@@ -17254,6 +17254,39 @@
    "ransom": "Unknown",
    "vendor": "Langflow"
   },
+  "CVE-2026-102489": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-02",
+   "desc": "1ddfc47e08fd",
+   "due": "2026-10-05",
+   "name": "Zammad GmbH Zammad Session Fixation Vulnerability",
+   "notes": "75eef42693aa",
+   "product": "Zammad",
+   "ransom": "Unknown",
+   "vendor": "Zammad GmbH"
+  },
+  "CVE-2026-102490": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-02",
+   "desc": "4032f1ab6109",
+   "due": "2026-10-05",
+   "name": "Zammad GmbH Zammad Improper Privilege Management Vulnerability",
+   "notes": "ce2b64b0660d",
+   "product": "Zammad",
+   "ransom": "Unknown",
+   "vendor": "Zammad GmbH"
+  },
+  "CVE-2026-104286": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-01",
+   "desc": "1ca62fca4d57",
+   "due": "2026-10-04",
+   "name": "Fortinet FortiMail Path Traversal Vulnerability",
+   "notes": "63a0da890f81",
+   "product": "FortiMail",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
+  },
   "CVE-2026-10520": {
    "action": "ba0d649eb29b",
    "added": "2026-06-11",
@@ -18717,6 +18750,17 @@
    "ransom": "Unknown",
    "vendor": "Cisco"
   },
+  "CVE-2026-76504": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-30",
+   "desc": "8cc82d58acac",
+   "due": "2026-10-03",
+   "name": "Cisco Catalyst SD-WAN Manager Hex Encoding Vulnerability",
+   "notes": "81819571f964",
+   "product": "Catalyst SD-WAN Manager",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2026-8037": {
    "action": "ba0d649eb29b",
    "added": "2026-08-07",
@@ -18893,6 +18937,17 @@
    "ransom": "Unknown",
    "vendor": "N-able"
   },
+  "CVE-2026-86950": {
+   "action": "ba0d649eb29b",
+   "added": "2026-09-29",
+   "desc": "147b91ed8989",
+   "due": "2026-10-02",
+   "name": "Apple Multiple Products Out-of-Bounds Write Vulnerability",
+   "notes": "1b1483678125",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Apple"
+  },
   "CVE-2026-87491": {
    "action": "ba0d649eb29b",
    "added": "2026-09-09",
@@ -19015,7 +19070,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-09-29",
+ "last_observed": "2026-10-03",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

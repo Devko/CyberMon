@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "c2_weather": {
   "first_observed": "2026-07-21",
   "families": [
@@ -890,13 +890,26 @@
     },
     "online_total": 1,
     "listed_total": 5
+   },
+   {
+    "date": "2026-10-03",
+    "online": {
+     "Emotet": 0,
+     "QakBot": 1
+    },
+    "listed": {
+     "Emotet": 1,
+     "QakBot": 4
+    },
+    "online_total": 1,
+    "listed_total": 5
    }
   ],
   "current_online": 1,
   "current_listed": 5
  },
  "c2_today": {
-  "snapshot_date": "2026-09-29",
+  "snapshot_date": "2026-10-03",
   "listed_total": 5,
   "online_total": 1,
   "families": [
@@ -941,10 +954,10 @@
   ]
  },
  "c2_age": {
-  "snapshot_date": "2026-09-29",
+  "snapshot_date": "2026-10-03",
   "n": 5,
-  "median_age_days": 259,
-  "oldest_age_days": 1578,
+  "median_age_days": 263,
+  "oldest_age_days": 1582,
   "buckets": [
    {
     "label": "under 30 days",
@@ -977,7 +990,7 @@
   ],
   "family_count": 2,
   "first_date": "2026-07-21",
-  "last_date": "2026-09-29",
-  "days_observed": 68
+  "last_date": "2026-10-03",
+  "days_observed": 69
  }
 }

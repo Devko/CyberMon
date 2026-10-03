@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-07-01",
+  "observed_through": "2026-07-05",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -842,8 +842,8 @@
    },
    {
     "year": 2026,
-    "value": 29.5,
-    "n": 66,
+    "value": 33.5,
+    "n": 68,
     "provisional": true
    }
   ]
@@ -1187,13 +1187,8 @@
     "label": "AI Security",
     "months": [
      {
-      "month": "2021-10",
-      "index": 20.3,
-      "sources": 5
-     },
-     {
       "month": "2021-11",
-      "index": 22.1,
+      "index": 21.9,
       "sources": 5
      },
      {
@@ -1208,12 +1203,12 @@
      },
      {
       "month": "2022-02",
-      "index": 21.4,
+      "index": 21.2,
       "sources": 5
      },
      {
       "month": "2022-03",
-      "index": 22.5,
+      "index": 22.2,
       "sources": 5
      },
      {
@@ -1233,12 +1228,12 @@
      },
      {
       "month": "2022-07",
-      "index": 19.0,
+      "index": 18.8,
       "sources": 5
      },
      {
       "month": "2022-08",
-      "index": 37.8,
+      "index": 37.6,
       "sources": 5
      },
      {
@@ -1258,7 +1253,7 @@
      },
      {
       "month": "2022-12",
-      "index": 21.7,
+      "index": 21.5,
       "sources": 5
      },
      {
@@ -1268,7 +1263,7 @@
      },
      {
       "month": "2023-02",
-      "index": 28.8,
+      "index": 28.4,
       "sources": 5
      },
      {
@@ -1278,7 +1273,7 @@
      },
      {
       "month": "2023-04",
-      "index": 22.2,
+      "index": 22.0,
       "sources": 5
      },
      {
@@ -1288,7 +1283,7 @@
      },
      {
       "month": "2023-06",
-      "index": 21.4,
+      "index": 21.2,
       "sources": 5
      },
      {
@@ -1298,12 +1293,12 @@
      },
      {
       "month": "2023-08",
-      "index": 44.3,
+      "index": 44.1,
       "sources": 5
      },
      {
       "month": "2023-09",
-      "index": 28.0,
+      "index": 27.5,
       "sources": 5
      },
      {
@@ -1313,22 +1308,22 @@
      },
      {
       "month": "2023-11",
-      "index": 31.4,
+      "index": 31.0,
       "sources": 5
      },
      {
       "month": "2023-12",
-      "index": 28.5,
+      "index": 27.6,
       "sources": 5
      },
      {
       "month": "2024-01",
-      "index": 23.4,
+      "index": 23.2,
       "sources": 5
      },
      {
       "month": "2024-02",
-      "index": 26.9,
+      "index": 26.5,
       "sources": 5
      },
      {
@@ -1338,12 +1333,12 @@
      },
      {
       "month": "2024-04",
-      "index": 24.6,
+      "index": 24.4,
       "sources": 5
      },
      {
       "month": "2024-05",
-      "index": 25.9,
+      "index": 25.7,
       "sources": 5
      },
      {
@@ -1353,7 +1348,7 @@
      },
      {
       "month": "2024-07",
-      "index": 30.5,
+      "index": 30.1,
       "sources": 5
      },
      {
@@ -1368,7 +1363,7 @@
      },
      {
       "month": "2024-10",
-      "index": 25.9,
+      "index": 25.5,
       "sources": 5
      },
      {
@@ -1378,108 +1373,113 @@
      },
      {
       "month": "2024-12",
-      "index": 21.8,
+      "index": 21.5,
       "sources": 5
      },
      {
       "month": "2025-01",
-      "index": 25.7,
+      "index": 25.3,
       "sources": 5
      },
      {
       "month": "2025-02",
-      "index": 34.8,
+      "index": 33.9,
       "sources": 5
      },
      {
       "month": "2025-03",
-      "index": 29.1,
+      "index": 28.7,
       "sources": 5
      },
      {
       "month": "2025-04",
-      "index": 27.2,
+      "index": 26.7,
       "sources": 5
      },
      {
       "month": "2025-05",
-      "index": 35.3,
+      "index": 34.4,
       "sources": 5
      },
      {
       "month": "2025-06",
-      "index": 25.8,
+      "index": 24.9,
       "sources": 5
      },
      {
       "month": "2025-07",
-      "index": 33.0,
+      "index": 29.9,
       "sources": 5
      },
      {
       "month": "2025-08",
-      "index": 31.5,
+      "index": 31.0,
       "sources": 5
      },
      {
       "month": "2025-09",
-      "index": 26.8,
+      "index": 26.6,
       "sources": 5
      },
      {
       "month": "2025-10",
-      "index": 36.8,
+      "index": 36.3,
       "sources": 5
      },
      {
       "month": "2025-11",
-      "index": 42.0,
+      "index": 40.6,
       "sources": 5
      },
      {
       "month": "2025-12",
-      "index": 43.1,
+      "index": 41.5,
       "sources": 5
      },
      {
       "month": "2026-01",
-      "index": 35.6,
+      "index": 34.8,
       "sources": 5
      },
      {
       "month": "2026-02",
-      "index": 46.4,
+      "index": 45.1,
       "sources": 5
      },
      {
       "month": "2026-03",
-      "index": 54.4,
+      "index": 53.5,
       "sources": 5
      },
      {
       "month": "2026-04",
-      "index": 59.9,
+      "index": 58.5,
       "sources": 5
      },
      {
       "month": "2026-05",
-      "index": 61.9,
+      "index": 59.9,
       "sources": 5
      },
      {
       "month": "2026-06",
-      "index": 60.6,
+      "index": 58.6,
       "sources": 5
      },
      {
       "month": "2026-07",
-      "index": 51.5,
+      "index": 50.8,
       "sources": 5
      },
      {
       "month": "2026-08",
-      "index": 48.5,
+      "index": 48.0,
       "sources": 5
+     },
+     {
+      "month": "2026-09",
+      "index": 58.4,
+      "sources": 4
      }
     ]
    },
@@ -1487,11 +1487,6 @@
     "id": "agentic_ai",
     "label": "Agentic AI",
     "months": [
-     {
-      "month": "2021-10",
-      "index": 0.0,
-      "sources": 4
-     },
      {
       "month": "2021-11",
       "index": 0.0,
@@ -1689,98 +1684,103 @@
      },
      {
       "month": "2025-02",
-      "index": 9.7,
+      "index": 9.6,
       "sources": 5
      },
      {
       "month": "2025-03",
-      "index": 17.6,
+      "index": 17.3,
       "sources": 5
      },
      {
       "month": "2025-04",
-      "index": 19.6,
+      "index": 19.2,
       "sources": 5
      },
      {
       "month": "2025-05",
-      "index": 35.3,
+      "index": 34.0,
       "sources": 5
      },
      {
       "month": "2025-06",
-      "index": 31.0,
+      "index": 29.5,
       "sources": 5
      },
      {
       "month": "2025-07",
-      "index": 49.4,
+      "index": 47.4,
       "sources": 5
      },
      {
       "month": "2025-08",
-      "index": 55.7,
+      "index": 53.6,
       "sources": 5
      },
      {
       "month": "2025-09",
-      "index": 44.6,
+      "index": 42.9,
       "sources": 5
      },
      {
       "month": "2025-10",
-      "index": 58.2,
+      "index": 56.4,
       "sources": 5
      },
      {
       "month": "2025-11",
-      "index": 55.8,
+      "index": 54.1,
       "sources": 5
      },
      {
       "month": "2025-12",
-      "index": 65.0,
+      "index": 63.2,
       "sources": 5
      },
      {
       "month": "2026-01",
-      "index": 55.1,
+      "index": 53.8,
       "sources": 5
      },
      {
       "month": "2026-02",
-      "index": 80.8,
+      "index": 78.8,
       "sources": 5
      },
      {
       "month": "2026-03",
-      "index": 86.7,
+      "index": 85.0,
       "sources": 5
      },
      {
       "month": "2026-04",
-      "index": 79.8,
+      "index": 78.5,
       "sources": 5
      },
      {
       "month": "2026-05",
-      "index": 87.5,
+      "index": 86.3,
       "sources": 5
      },
      {
       "month": "2026-06",
-      "index": 77.1,
+      "index": 76.0,
       "sources": 5
      },
      {
       "month": "2026-07",
-      "index": 65.1,
+      "index": 64.2,
       "sources": 5
      },
      {
       "month": "2026-08",
-      "index": 67.1,
+      "index": 66.0,
       "sources": 5
+     },
+     {
+      "month": "2026-09",
+      "index": 69.7,
+      "sources": 4
      }
     ]
    }
@@ -1809,9 +1809,9 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "index_first": 0.0,
-   "index_last": 67.1,
-   "month_first": "2021-10",
-   "month_last": "2026-08",
+   "index_last": 69.7,
+   "month_first": "2021-11",
+   "month_last": "2026-09",
    "clock_min": 4.5,
    "clock_max": 11.0,
    "clock_mean": 7.4,

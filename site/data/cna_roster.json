@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "roster_size": {
   "min_n": 2,
-  "current": 550,
-  "net_change": 20,
+  "current": 554,
+  "net_change": 24,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -289,6 +289,10 @@
    {
     "date": "2026-09-29",
     "size": 550
+   },
+   {
+    "date": "2026-10-03",
+    "size": 554
    }
   ]
  },
@@ -314,23 +318,30 @@
     "departed": 0,
     "renamed": 0,
     "scope_changed": 2
+   },
+   {
+    "month": "2026-10",
+    "onboarded": 4,
+    "departed": 0,
+    "renamed": 0,
+    "scope_changed": 0
    }
   ],
   "totals": {
-   "onboarded": 20,
+   "onboarded": 24,
    "departed": 0,
    "renamed": 1,
    "scope_changed": 8
   },
-  "events_total": 29,
+  "events_total": 33,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 550,
+  "total": 554,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 449
+    "n": 453
    },
    {
     "label": "Open Source",
@@ -368,7 +379,7 @@
   "by_role": [
    {
     "label": "CNA",
-    "n": 547
+    "n": 551
    },
    {
     "label": "Root",
@@ -394,11 +405,11 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 459
+    "n": 462
    },
    {
     "label": "CISA",
-    "n": 89
+    "n": 90
    },
    {
     "label": "n/a",
@@ -408,15 +419,15 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 387
+    "n": 388
    },
    {
     "label": "icscert",
-    "n": 87
+    "n": 88
    },
    {
     "label": "ENISA",
-    "n": 24
+    "n": 26
    },
    {
     "label": "redhat",
@@ -442,7 +453,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 288
+    "n": 290
    },
    {
     "label": "Germany",
@@ -494,7 +505,7 @@
    },
    {
     "label": "Sweden",
-    "n": 8
+    "n": 9
    },
    {
     "label": "India",
@@ -521,15 +532,15 @@
     "n": 5
    },
    {
+    "label": "Italy",
+    "n": 4
+   },
+   {
     "label": "T\u00fcrkiye",
     "n": 4
    },
    {
     "label": "Czech Republic",
-    "n": 3
-   },
-   {
-    "label": "Italy",
     "n": 3
    },
    {
@@ -619,13 +630,13 @@
   ]
  },
  "headline": {
-  "roster_total": 550,
+  "roster_total": 554,
   "top_type": "Vendor",
-  "top_type_n": 449,
+  "top_type_n": 453,
   "country_count": 43,
   "root_count": 7,
-  "mitre_n": 459,
-  "cisa_n": 89,
-  "assigning_n": 549
+  "mitre_n": 462,
+  "cisa_n": 90,
+  "assigning_n": 553
  }
 }

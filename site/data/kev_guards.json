@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 244,
-   "security": 42,
-   "pct_security": 17.2
+   "total": 249,
+   "security": 43,
+   "pct_security": 17.3
   }
  ],
  "vendors": [
@@ -53,22 +53,22 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 99,
-   "dated_entries": 99,
+   "entries": 100,
+   "dated_entries": 100,
    "security_entries": 23,
-   "pct_security": 23.2,
+   "pct_security": 23.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-16",
+   "last_added": "2026-09-30",
    "median_gap_days": 0.0
   },
   {
    "vendor": "Apple",
-   "entries": 94,
-   "dated_entries": 94,
+   "entries": 95,
+   "dated_entries": 95,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-08-18",
+   "last_added": "2026-09-29",
    "median_gap_days": 0.0
   },
   {
@@ -122,6 +122,16 @@
    "median_gap_days": 7.5
   },
   {
+   "vendor": "Fortinet",
+   "entries": 31,
+   "dated_entries": 31,
+   "security_entries": 31,
+   "pct_security": 100.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-10-01",
+   "median_gap_days": 42.0
+  },
+  {
    "vendor": "Linux",
    "entries": 31,
    "dated_entries": 31,
@@ -130,16 +140,6 @@
    "first_added": "2021-12-10",
    "last_added": "2026-09-18",
    "median_gap_days": 33.5
-  },
-  {
-   "vendor": "Fortinet",
-   "entries": 30,
-   "dated_entries": 30,
-   "security_entries": 30,
-   "pct_security": 100.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-09-09",
-   "median_gap_days": 42.0
   },
   {
    "vendor": "Citrix",
@@ -564,19 +564,19 @@
  ],
  "ransomware": {
   "security": {
-   "total": 212,
+   "total": 213,
    "known": 79,
-   "pct_known": 37.3
+   "pct_known": 37.1
   },
   "other": {
-   "total": 1516,
+   "total": 1520,
    "known": 282,
    "pct_known": 18.6
   }
  },
  "catalog": {
-  "total": 1728,
-  "security": 212,
+  "total": 1733,
+  "security": 213,
   "pct_security": 12.3,
   "classifier_version": 2,
   "classifier_rules": 35

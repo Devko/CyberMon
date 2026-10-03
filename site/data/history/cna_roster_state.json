@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-09-29",
+ "last_observed": "2026-10-03",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -1325,6 +1325,13 @@
    "scope": "9b2e30c7fa64",
    "type": "Vendor"
   },
+  "Infoblox": {
+   "cna_id": "CNA-2026-0070",
+   "country": "USA",
+   "org": "Infoblox Inc.",
+   "scope": "00a0171ea155",
+   "type": "Vendor"
+  },
   "Insyde": {
    "cna_id": "CNA-2025-0022",
    "country": "USA",
@@ -2025,6 +2032,13 @@
    "scope": "c5dbb5616107",
    "type": "Vendor"
   },
+  "Pointsharp": {
+   "cna_id": "CNA-2026-0072",
+   "country": "Sweden",
+   "org": "Pointsharp International AB",
+   "scope": "78e95835d727",
+   "type": "Vendor"
+  },
   "PostgreSQL": {
    "cna_id": "CNA-2024-0005",
    "country": "Canada",
@@ -2241,6 +2255,13 @@
    "org": "STAR Labs SG Pte. Ltd.",
    "scope": "05d3e74b0712",
    "type": "Researcher"
+  },
+  "SafeSource": {
+   "cna_id": "CNA-2026-0071",
+   "country": "Italy",
+   "org": "SafeSource Lab",
+   "scope": "05c86edc61b1",
+   "type": "Vendor"
   },
   "SailPoint": {
    "cna_id": "CNA-2022-0016",
@@ -2744,6 +2765,13 @@
    "country": "USA",
    "org": "WatchGuard Technologies, Inc.",
    "scope": "0aaa0eed4002",
+   "type": "Vendor"
+  },
+  "Westell": {
+   "cna_id": "CNA-2026-0069",
+   "country": "USA",
+   "org": "Westell Technologies, Inc.",
+   "scope": "09e8263f11e6",
    "type": "Vendor"
   },
   "WindRiver": {
@@ -4137,6 +4165,10 @@
   [
    "2026-09-29",
    550
+  ],
+  [
+   "2026-10-03",
+   554
   ]
  ],
  "version": 1

@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-09-29T02:53:12Z",
+ "generated_at": "2026-10-03T09:33:31Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-09-29",
+ "last_observed": "2026-10-03",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -38,34 +38,34 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4372
+   "events": 4377
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5491
+   "events": 5502
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 60,
-   "nights": 69,
+   "events": 61,
+   "nights": 70,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
  },
  "counts": {
-  "kev_added": 1426,
+  "kev_added": 1431,
   "kev_removed": 9,
   "kev_flag": 317,
   "kev_due": 20,
   "kev_field": 785,
   "kev_text": 1815,
-  "rescore": 98,
-  "version_shift": 23,
-  "first_score": 5366,
+  "rescore": 102,
+  "version_shift": 28,
+  "first_score": 5368,
   "score_removed": 4,
-  "epss_move": 60
+  "epss_move": 61
  },
- "cves": 7249,
+ "cves": 7264,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -9989,6 +9989,23 @@
   "1741|CVE-2026-93659|6|v4.0 9.3->v4.0 8.6 (VulnCheck)|0",
   "1741|CVE-2026-78426|7|v3.1 3.7->v4.0 2.0 (suse)|0",
   "1741|CVE-2026-78427|7|v3.1 4.3->v4.0 5.3 (suse)|0",
-  "1741|CVE-2026-78428|7|v3.1 8.0->v4.0 8.8 (suse)|0"
+  "1741|CVE-2026-78428|7|v3.1 8.0->v4.0 8.8 (suse)|0",
+  "1744|CVE-2026-81578|10|0.04481->0.85169|2",
+  "1745|CVE-2026-102489|0||0",
+  "1745|CVE-2026-102490|0||0",
+  "1745|CVE-2026-104286|0||0",
+  "1745|CVE-2026-76504|0||0",
+  "1745|CVE-2026-86950|0||0",
+  "1745|CVE-2024-58376|6|v4.0 9.3->v4.0 8.4 (VulnCheck)|0",
+  "1745|CVE-2026-10031|6|v4.0 2.3->v4.0 5.3 (VulnCheck)|0",
+  "1745|CVE-2026-10841|6|v3.1 4.2->v3.1 4.8 (ibm)|0",
+  "1745|CVE-2026-93353|6|v4.0 6.0->v4.0 2.3 (VulnCheck)|0",
+  "1745|CVE-2023-30804|7|v3.1 4.9->v4.0 6.9 (VulnCheck)|0",
+  "1745|CVE-2026-55676|7|v3.1 8.8->v4.0 8.7 (GitHub_M)|0",
+  "1745|CVE-2026-63133|7|v3.1 6.5->v4.0 7.1 (GitHub_M)|0",
+  "1745|CVE-2026-63134|7|v3.1 5.4->v4.0 5.3 (GitHub_M)|0",
+  "1745|CVE-2026-63177|7|v3.1 7.1->v4.0 7.1 (GitHub_M)|0",
+  "1745|CVE-2023-1989|8|v3.1 7.0 (redhat)|0",
+  "1745|CVE-2026-94184|8|v3.1 5.3 (redhat)|0"
  ]
 }
