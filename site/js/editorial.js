@@ -426,7 +426,8 @@ export const editorial = {
           "public-exploit series (days from CVE publication to the first exploit code " +
           "Exploit-DB dates), with each series tested for a change at three candidate " +
           "start dates for an “AI era”. At the ChatGPT date none of the judged measures " +
-          "moved earlier; the later dates do not yet have enough complete years to judge. " +
+          "moved earlier; each later date is judged once two complete, settled years " +
+          "follow it. " +
           "This measures public exploit code, not attacks in the wild, and the page says " +
           "how the two differ. Also AI-security attention against the same series.",
         live: true,
@@ -436,7 +437,7 @@ export const editorial = {
         href: "credits.html",
         num: "22",
         label: "AI Credits",
-        headline: "AI labs and vendors announce vulnerabilities in the thousands; hundreds of CVE records credit them.",
+        headline: "AI finders announce thousands of vulnerabilities; CVE records credit labs and vendors with hundreds each.",
         blurb:
           "CVE records that credit an AI lab's model or an AI-security vendor, matched " +
           "against a curated registry that keeps labs and vendors separate. The credited " +
@@ -3339,12 +3340,12 @@ export const editorial = {
         "ChatGPT band opens, and inside the band it moves later if it moves at " +
         "all. The pale line counts only exploits dated within 90 days either side " +
         "of publication, and only cohorts at least 90 days old, so every year is " +
-        "measured over the same window and the current year can be included. " +
+        "measured over the same window and a year can be drawn before it ends. " +
         "Every settled year since 2005 has sat inside a three-week band around " +
-        "zero. Up on the vertical axis means the exploit arrived later, so the " +
-        "rise into the current year is a longer wait. Years the exploit trackers " +
-        "are still indexing are drawn hollow: they lack exploits that will be " +
-        "indexed later, so they read slow, and no verdict on this page uses them. " +
+        "zero. Up on the vertical axis means the exploit arrived later. Years " +
+        "the exploit trackers are still indexing are drawn hollow: they lack " +
+        "exploits that will be indexed later, so they read slow, and no verdict " +
+        "on this page uses them. " +
         "Where the two lines differ, the raw line includes exploits outside the " +
         "pale line's 90-day window: on the left, old exploits that received CVE " +
         "ids years later; on the right, exploit code published months after the " +
@@ -3408,10 +3409,10 @@ export const editorial = {
         "fix them. First, the clock measures public exploit code dated by one " +
         "archive over a self-selected cohort, so it is a lower bound, not a " +
         "census. Second, recent years are right-censored: a CVE enters the cohort " +
-        "only once it has a public exploit, so a 2024 record whose exploit " +
-        "appears in 2027 is missing, and recent cohorts lose their slowest " +
-        "cases. That bias makes recent years look faster, which favours this " +
-        "page's conclusion: censoring would produce an apparent acceleration, " +
+        "only once it has a public exploit, so a record whose exploit appears " +
+        "years after publication is missing until then, and recent cohorts lose " +
+        "their slowest cases. That bias makes recent years look faster, which " +
+        "favours this page's conclusion: censoring would produce an apparent acceleration, " +
         "and none appears. Third, collection has thinned: the dated cohort per " +
         "year is well under a fifth of its late-2000s size, so a slowing verdict " +
         "is also consistent with the trackers indexing less.",
@@ -3475,16 +3476,17 @@ export const editorial = {
         "There are four metrics, and the first differs from the other three. The " +
         "like-for-like clock counts only exploits dated within 90 days either " +
         "side of publication, and only cohorts at least 90 days old, so every " +
-        "year, including the current partial one, has had the same window in " +
+        "year, including a year still in progress, has had the same window in " +
         "which exploit code could appear. The lower bound of the window matters " +
         "as much as the upper one: a gap of -4,452 days is an old exploit " +
         "receiving a CVE id, a cataloguing event and not a fast exploit, and " +
         "such gaps pull a one-sided median arbitrarily far negative. The clock " +
-        "is not a rate over all published CVEs. That rate falls from about 45% " +
-        "to under 1% across the record, almost entirely because annual CVE " +
-        "volume grew from roughly 5,700 to 40,000, which is a change in coverage " +
-        "that the coverage chart shows. One bias remains: the exploit trackers " +
-        "add entries for older disclosures over time, so the newest cohort is " +
+        "is not a rate over all published CVEs. That rate was about 45% for " +
+        "CVEs published in 2008 and 2009 and under 1% for those published in " +
+        "2024: over those years annual CVE volume grew from roughly 5,700 to " +
+        "40,000, and the number of CVEs whose public exploit Exploit-DB dates " +
+        "fell to under a tenth of its 2008 level. One bias remains: the exploit " +
+        "trackers add entries for older disclosures over time, so the newest cohort is " +
         "still missing exploits that will be added later and reads slightly " +
         "slow. A cohort still being indexed is therefore drawn hollow and never " +
         "counts toward a verdict. The other three metrics are read from the same " +
@@ -3528,15 +3530,15 @@ export const editorial = {
       num: "03",
       kicker: "Attention and the public exploit clock",
       source: "GDELT 2.0 · Hacker News (Algolia) · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR · Exploit-DB",
-      headline: "Attention to AI security multiplied while the public exploit clock stayed within a narrow band.",
+      headline: "Attention to AI security rose while the public exploit clock stayed within a narrow band.",
       caption:
         "The solid lines show attention to AI security: the five attention lanes " +
         "of the Buzzword Attention module, averaged per term, with each lane " +
         "indexed to its own peak. The dashed line is the like-for-like exploit " +
         "clock (the pale line in chart 01, settled years only) over the same " +
         "window, held flat across each year because it is measured annually. " +
-        "Over the window attention multiplied, while the clock's annual median " +
-        "stayed inside a band of days. Had public exploit code started " +
+        "Over the window attention to both terms rose, while the clock's annual " +
+        "median stayed inside a band of days. Had public exploit code started " +
         "appearing sooner as attention rose, the dashed line would fall; it " +
         "does not. It measures public code, not attacks.",
       clockLabel: "Public exploit clock (median gap)",
@@ -3565,13 +3567,13 @@ export const editorial = {
         "series share no unit and no sampling rate, so they have separate axes, " +
         "and the chart claims no correlation between them. The clock's axis " +
         "always spans at least plus or minus 90 days instead of being fitted to " +
-        "the data. Over this window the clock varies by a few days, and an axis " +
-        "fitted to that range would stretch it to the full chart height and make " +
-        "it look like a large change. Ninety days, about a quarter, is an " +
-        "editorial choice, and the axis widens if the data ever exceeds it. The " +
-        "window is the market module's 60 months, so it starts roughly a year " +
-        "before ChatGPT: enough months before the release to show a step change, " +
-        "too few for the long-run comparison, which charts 01 and 02 make.",
+        "the data. Over this window the clock varies by less than two weeks, and " +
+        "an axis fitted to that range would stretch it to the full chart height " +
+        "and make it look like a large change. Ninety days, about a quarter, is " +
+        "an editorial choice, and the axis widens if the data ever exceeds it. " +
+        "The window is the market module's 60 months, and the note under the " +
+        "chart gives the month it starts. That is too short for the long-run " +
+        "comparison, which charts 01 and 02 make.",
     },
 
     // --------------------------------- credits.html · 1 · hero
@@ -3598,7 +3600,7 @@ export const editorial = {
         "be in private code that never receives a CVE, or may be published " +
         "without a credit. An LLM lab is counted only when a credit for finding " +
         "or reporting the bug names its model. A vendor is counted whenever such " +
-        "a credit names it, which is weaker evidence: about four in ten vendor " +
+        "a credit names it, which is weaker evidence: four or five in ten vendor " +
         "credits name the company only through a person there or in a thank-you " +
         "line. The two columns are never added together. Each finder's announced " +
         "numbers are listed with their unit and source, and only an announced " +
@@ -3690,20 +3692,20 @@ export const editorial = {
       num: "02",
       kicker: "Side by side",
       source: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
-      headline: "Lab-credited CVEs have higher CVSS scores and similar EPSS, exploit and KEV figures.",
+      headline: "Lab-credited CVEs have a higher median CVSS score than all credited CVEs.",
       caption:
         "Nine measurements for three populations: CVEs crediting an LLM lab's " +
         "model, CVEs crediting an AI-security vendor, and all CVEs that carry a " +
         "credit. The baseline is drawn into each bar as a tick. Lab-credited " +
         "records have a higher median CVSS score and a much larger share of " +
-        "memory-safety weaknesses. Median EPSS percentile is close to the " +
-        "baseline in both AI columns. On KEV membership, each AI column is " +
-        "within a handful of records of what the baseline rate would give a " +
-        "population its size, and so is the lab column on exploit-corpus " +
-        "listing. The vendor column has more records in an exploit corpus than " +
-        "that rate would give. The comparison is descriptive and is not adjusted for publication age, " +
-        "target mix or crediting practice. The last row shows why age matters: " +
-        "the lab-credited cohort is much younger than the baseline, and exploit " +
+        "memory-safety weaknesses. Median EPSS percentile is within ten points " +
+        "of the baseline in both AI columns. On KEV membership, each AI column " +
+        "is within a handful of records of what the baseline rate would give a " +
+        "population its size. On exploit-corpus listing, the lab column has " +
+        "fewer records than that rate would give and the vendor column has " +
+        "more. The comparison is descriptive and is not adjusted for " +
+        "publication age, target mix or crediting practice. The last row shows " +
+        "why age matters: the lab-credited cohort is much younger than the baseline, and exploit " +
         "listings and KEV entries accumulate over time. The baseline is all " +
         "credited CVEs; it is not a human-only control group.",
       columns: {
@@ -3759,7 +3761,7 @@ export const editorial = {
         "Nuclei only. “Scored by its own CNA” is the share whose CVSS score came " +
         "from the assigning CNA and not from CISA's enrichment; it is low where " +
         "a CNA such as Mozilla's publishes no scores. The AI columns are small: " +
-        "one CVE moves the labs' exploit-corpus row by about half a point. A " +
+        "one CVE moves the labs' exploit-corpus row by half a point or less. A " +
         "stronger comparison would measure outcomes a fixed number of days after " +
         "publication and match on product and CNA; this page does not do that.",
     },
@@ -3853,7 +3855,8 @@ export const editorial = {
         "lab-credited CVEs memory safety is the largest, at several times the " +
         "baseline share; crypto and certificate weaknesses are also several " +
         "times the baseline share, and injection is small. The vendor-credited " +
-        "population falls between the two on both memory safety and injection. " +
+        "population falls between the two on injection and has a larger " +
+        "memory-safety share than the baseline. " +
         "The record does not say what was examined. The lab-credited records " +
         "concentrate in a few projects (chart 06), and Anthropic has said its " +
         "early work searched for memory-corruption bugs because they are easier " +
@@ -3882,13 +3885,13 @@ export const editorial = {
       num: "06",
       kicker: "Affected products",
       source: "CVE List V5 (MITRE)",
-      headline: "Two products account for about a quarter of the lab-credited CVEs.",
+      headline: "Lab-credited CVEs are more concentrated by affected product than vendor-credited CVEs.",
       caption:
-        "The affected product each record lists first, ranked per kind. The " +
-        "lab-credited records are concentrated: a Java crypto library and a " +
-        "browser lead the list, each well ahead of the third row. The record " +
-        "does not say how those targets were chosen. The vendor-credited list " +
-        "is less concentrated, with its top five holding about a quarter. Its first row " +
+        "The affected product each record lists first, ranked per kind. In the " +
+        "lab-credited list, Bouncy Castle's Java crypto library and the Firefox " +
+        "browser are both in the top five. The record does not say how those " +
+        "targets were chosen. The vendor-credited list is less concentrated, " +
+        "with its top five holding about a quarter. Its first row " +
         "is Red Hat Enterprise Linux, which Red Hat, as CNA, lists first in its " +
         "records, including records for flaws in upstream packages.",
       shareTemplate:
