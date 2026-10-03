@@ -403,7 +403,7 @@ they never reach the payload). Stage `pipeline/ai_metrics.py`.
 
 ### 22 · AI Credits — [credits.html](https://devko.github.io/CyberMon/credits.html) (live)
 
-*AI labs and vendors announce vulnerabilities in the thousands; hundreds of CVE records credit them.* This module measures **attribution, not
+*AI finders announce thousands of vulnerabilities; CVE records credit labs and vendors with hundreds each.* This module measures **attribution, not
 discovery**: every credit in the corpus is matched against a hand-curated
 registry of AI finders (`pipeline/ai_credits_data.py`), and nothing verifies
 how a bug was actually found. The registry is narrow because a loose match
