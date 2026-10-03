@@ -50,9 +50,15 @@ def load(name: str) -> dict:
 
 
 def check_typical_gap_in_months(d: dict) -> None:
-    # editorial.js (breaches.html hero): "the typical gap is measured in
-    # months" — the pooled live-era median must sit in month territory,
-    # not days and not years. (Live fetch 2026-07: 144 days.)
+    # editorial.js (breaches.html hero): headline "Since 2014, the median
+    # breach has reached HIBP's catalog months after it happened" and
+    # caption "the typical gap is measured in months" — the pooled
+    # live-era median, the hero stat's accent figure, must sit in month
+    # territory, not days and not years. (Live fetch 2026-07: 144 days;
+    # 137.5 on 09-23, 137.0 on 2026-10-03.) The stat's second figure, the
+    # latest complete year, is not held to "months": single years range
+    # from days to more than a year (check_single_years_vary), and 2026,
+    # which takes that slot in January, is at 23 days so far.
     median = d["headline"]["median_days"]
     assert 60 <= median <= 365, (
         f"'the typical gap is measured in months' needs the pooled trend "
@@ -72,6 +78,54 @@ def check_import_era_callout(d: dict) -> None:
     assert 365 <= era["median_days"] <= 1000, (
         f"'a median nominal lag of well over a year' vs {era['median_days']} d"
     )
+
+
+def check_single_years_vary(d: dict) -> None:
+    # editorial.js (breaches.html hero caption): "The median for a single
+    # year has ranged from under a week, in 2014, to more than a year, in
+    # 2017 and 2023." Named, complete years. (2026-10-03, unchanged since
+    # 09-23: 5 days in 2014, 452 in 2017, 439 in 2023.)
+    by = {r["year"]: r["median_days"] for r in d["lag_by_year"]}
+    assert by[2014] < 7, f"'under a week, in 2014' vs {by[2014]} days"
+    for y in (2017, 2023):
+        assert by[y] > 365, f"'more than a year, in {y}' vs {by[y]} days"
+
+
+# A partial year's class shares are held to the copy only from this many
+# cataloged breaches; three breaches in January can put a share anywhere.
+CLASS_SHARE_MIN_BREACHES = 50
+
+
+def _email_rows(d: dict) -> list[dict]:
+    return [y for y in d["class_shares"]["years"]
+            if claims_support.judged(y["year"], y.get("n"),
+                                     min_n=CLASS_SHARE_MIN_BREACHES)]
+
+
+def check_email_every_year_since_2015(d: dict) -> None:
+    # editorial.js (breaches.html leaks caption): "Email addresses appear in
+    # at least 95% of each year's breaches since 2015." (2026-10-03,
+    # unchanged since 09-23: lowest 97.0% in 2015 and 98.6% in 2021,
+    # 98.8% in 2025, 100% in 2026 so far over 102 breaches; 2014 was 88.9%.)
+    rows = [(y["year"], y["shares"].get("Email addresses", 0.0))
+            for y in _email_rows(d) if y["year"] >= 2015]
+    assert rows and rows[0][0] == 2015, rows[:1]
+    low = [(y, s) for y, s in rows if s < 95]
+    assert not low, f"'at least 95% of each year's breaches since 2015' vs {low}"
+
+
+def check_email_nearly_every_breach(d: dict) -> None:
+    # editorial.js (breaches.html leaks headline): "Nearly every cataloged
+    # breach includes email addresses" — pooled over the charted years.
+    # (2026-10-03: 99.3% of 999 breaches, 2014 through 2026; 99.3% of 998
+    # on 09-23.)
+    rows = _email_rows(d)
+    n = sum(y["n"] for y in rows)
+    with_email = sum(y["n"] * y["shares"].get("Email addresses", 0.0) / 100
+                     for y in rows)
+    assert n and with_email / n >= 0.95, (
+        f"'Nearly every cataloged breach includes email addresses' vs "
+        f"{100 * with_email / n:.1f}% of {n}")
 
 
 def check_third_take_over_a_year(d: dict) -> None:
@@ -98,9 +152,34 @@ def check_passwords_trend(d: dict) -> None:
 
 CLAIMS = [
     (
+        "Since 2014, the median breach has reached HIBP's catalog months after it happened.",
+        "breach_ledger.json",
+        check_typical_gap_in_months,
+    ),
+    (
         "the typical gap is measured in months",
         "breach_ledger.json",
         check_typical_gap_in_months,
+    ),
+    (
+        "The median for a single year has ranged from under a week, in 2014, to more than a year, in 2017 and 2023.",
+        "breach_ledger.json",
+        check_single_years_vary,
+    ),
+    (
+        "Email addresses appear in at least 95% of each year's breaches since 2015.",
+        "breach_ledger.json",
+        check_email_every_year_since_2015,
+    ),
+    (
+        "Nearly every cataloged breach includes email addresses; a falling share includes passwords.",
+        "breach_ledger.json",
+        check_email_nearly_every_breach,
+    ),
+    (
+        "Nearly every cataloged breach includes email addresses; a falling share includes passwords.",
+        "breach_ledger.json",
+        check_passwords_trend,
     ),
     (
         "six of its seven opening-import entries predate the service itself, and the seven carry a median nominal lag of well over a year",

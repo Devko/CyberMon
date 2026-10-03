@@ -167,23 +167,75 @@ def check_fewer_larger_after_2021(d: dict) -> None:
 # ---------------------------------------------------------------- CVE page
 
 def check_volume_rises_every_year(d: dict) -> None:
-    # volume headline: each year since 2017 above the year before (the
-    # partial current year included — it already exceeds the last one).
+    # volume headline: each complete year since 2017 above the year before
+    # (2026-10-03: 14,642 in 2017 ... 48,152 in 2025). The partial current
+    # year is not held to it: until it closes its count is still growing,
+    # and no count it reaches can be compared with a full year's. (2026
+    # passed 2025 in the summer, 73,605 so far; the 1 January edition judges
+    # it complete.)
     by = {y["year"]: y["published"] for y in d["years"]}
-    run = [by[y] for y in range(2016, GENERATION_YEAR + 1)]
-    assert all(b > a for a, b in zip(run, run[1:])), run
+    run = [(y, by[y]) for y in range(2016, GENERATION_YEAR)]
+    assert all(b > a for (_, a), (_, b) in zip(run, run[1:])), run
+
+
+# A partial year's shares are held to the copy only from this many records:
+# about two and a half months at the 2026 pace, five at 2025's. A few days
+# of January can put a share anywhere (the 2026-01 replay had 4.8% missing
+# a CWE after 500 records).
+PARTIAL_YEAR_MIN_RECORDS = 20_000
 
 
 def check_one_in_ten_lacks_cwe(d: dict) -> None:
-    # quality headline: 11.7% (2025), 10.1% (2026 so far).
-    by = {y["year"]: y["pct_missing_cwe"] for y in d["years"]}
+    # quality headline: "About one in ten new CVE records still lacks a
+    # weakness class (CWE)" — the latest complete year, and the current year
+    # once judged. (2026-10-03: 11.7% in 2025, 10.3% for 2026 so far over
+    # 73,605 records; 10.1% on 09-23.)
+    by = {y["year"]: y for y in d["years"]}
     for y in (GENERATION_YEAR - 1, GENERATION_YEAR):
-        if y in by:
-            assert 7 <= by[y] <= 14, (y, by[y])
+        r = by.get(y)
+        if r and claims_support.judged(y, r["n"],
+                                       min_n=PARTIAL_YEAR_MIN_RECORDS):
+            assert 7 <= r["pct_missing_cwe"] <= 14, (y, r["pct_missing_cwe"])
+    assert GENERATION_YEAR - 1 in by, "no row for the latest complete year"
 
 
 def check_xss_first(d: dict) -> None:
     assert d["top_cwes"][0]["id"] == "CWE-79", d["top_cwes"][0]
+
+
+def check_cwe_shares_2017_2025(d: dict) -> None:
+    # cwe caption: "From 2017 to 2025, cross-site scripting rose from about
+    # 9% to about 18% of tagged records and SQL injection from about 1% to
+    # about 9%. Missing authorization rose from almost nothing to about 5%,
+    # improper input validation and out-of-bounds reads fell below 2%, and
+    # the other three classes moved by about two points or less."
+    # (2026-10-03, unchanged since 09-23: XSS 9.0 -> 18.4, SQLi 1.3 -> 9.3,
+    # missing authz 0.1 -> 5.2, input validation 6.7 -> 1.3, OOB read
+    # 8.0 -> 1.6; CSRF +2.1, OOB write +0.5, path traversal -0.2.) "About"
+    # allows a point either way; both years are complete.
+    by = {y["year"]: y["shares"] for y in d["years"]}
+    a, b = by[2017], by[2025]
+
+    def about(value: float, target: float) -> bool:
+        return abs(value - target) <= 1.0
+
+    for cwe, start, end in (("CWE-79", 9, 18), ("CWE-89", 1, 9)):
+        assert about(a[cwe], start) and about(b[cwe], end), (
+            f"{cwe}: 'from about {start}% to about {end}%' vs "
+            f"{a[cwe]}% -> {b[cwe]}%")
+    assert a["CWE-862"] < 1 and about(b["CWE-862"], 5), (
+        f"missing authorization 'from almost nothing to about 5%' vs "
+        f"{a['CWE-862']}% -> {b['CWE-862']}%")
+    for cwe in ("CWE-20", "CWE-125"):
+        assert b[cwe] < 2 <= a[cwe], (
+            f"{cwe}: 'fell below 2%' vs {a[cwe]}% -> {b[cwe]}%")
+    rest = {c for c in a if c != "other"} - {
+        "CWE-79", "CWE-89", "CWE-862", "CWE-20", "CWE-125"}
+    assert len(rest) == 3, f"'the other three classes' vs {sorted(rest)}"
+    moves = {c: round(b[c] - a[c], 1) for c in rest}
+    assert all(abs(m) <= 2.5 for m in moves.values()), (
+        f"'the other three classes moved by about two points or less' vs "
+        f"{moves}")
 
 
 # ---------------------------------------------------------------- KEV / EPSS
@@ -194,10 +246,25 @@ def check_ransomware_one_in_five(d: dict) -> None:
 
 
 def check_deadlines_fell(d: dict) -> None:
-    # remediation headline: 181 d in 2021, 21 d or less since.
-    by = {y["year"]: y["median_days"] for y in d["remediation_span_by_year"]}
-    assert 150 <= by[2021] <= 200, by[2021]
-    assert all(v <= 21 for y, v in by.items() if y >= 2022), by
+    # remediation headline: "fell from six months in 2021 to three weeks in
+    # 2022–2025 and two weeks or less in 2026"; the methodology repeats the
+    # last two. (2026-10-03: 181 d in 2021; 21 d in each of 2022–2025; 2026
+    # so far 3 d over 249 listings with p25 3 and p75 14 — 14 d on 09-23
+    # and 9.5 d on 09-28. CISA's 2026 deadlines sit at 3 and 14 days, so the
+    # median moves between those two as listings arrive; it cannot pass two
+    # weeks while three quarters of the year's listings are at 14 days or
+    # less.)
+    by = {y["year"]: y for y in d["remediation_span_by_year"]}
+    assert 150 <= by[2021]["median_days"] <= 200, by[2021]
+    for y in range(2022, 2026):
+        assert 18 <= by[y]["median_days"] <= 24, (
+            f"'three weeks in 2022–2025' vs {by[y]['median_days']} d in {y}")
+    r = by.get(2026)
+    assert r, "no 2026 row: the headline names 2026"
+    if claims_support.judged(2026, r["n"], min_n=100):
+        assert r["median_days"] <= 14, (
+            f"'two weeks or less in 2026' vs {r['median_days']} d "
+            f"over {r['n']} listings")
 
 
 def check_listing_takes_weeks(d: dict) -> None:
@@ -280,10 +347,31 @@ def check_rejection_tenfold(d: dict) -> None:
 
 # ------------------------------------------------------------- home cards
 
-def check_close_to_half_each_year(d: dict) -> None:
-    # 2020-2026: 46.7 51.1 46.9 41.6 44.9 43.5 54.5
-    pcts = [y["pct_high_critical"] for y in d["blended"]]
-    assert pcts and all(40 <= p <= 56 for p in pcts), pcts
+def check_four_to_six_in_ten_since_2020(d: dict) -> None:
+    # CVE card: "Between four and six in ten scored CVEs have been rated
+    # High or Critical each year since 2020" — every blended year (the line
+    # starts in 2020), the current one once judged. (2026-10-03, unchanged
+    # since 09-23: 46.7 51.1 46.9 41.6 44.9 43.5 for 2020–2025, and 54.5 for
+    # 2026 so far over 58,276 scored CVEs.)
+    rows = [y for y in d["blended"]
+            if claims_support.judged(y["year"], y["n"],
+                                     min_n=PARTIAL_YEAR_MIN_RECORDS)]
+    assert rows and min(y["year"] for y in rows) == 2020, (
+        f"the card says 'since 2020'; the blended line starts in "
+        f"{min((y['year'] for y in rows), default=None)}")
+    off = [(y["year"], y["pct_high_critical"]) for y in rows
+           if not 40 <= y["pct_high_critical"] <= 60]
+    assert not off, f"'between four and six in ten … each year' vs {off}"
+
+
+def check_hundreds_of_cnas(d: dict) -> None:
+    # CNA Concentration card (and the motion scene): "Hundreds of CNAs
+    # assign CVEs" — the latest complete year's active CNAs. (2026-10-03:
+    # 367 in 2025; 386 in 2026 so far.)
+    rows = [y for y in d["years"] if y["year"] < GENERATION_YEAR]
+    latest = max(rows, key=lambda y: y["year"])
+    assert 200 <= latest["cna_count"] < 1000, (
+        f"'Hundreds of CNAs' vs {latest['cna_count']} in {latest['year']}")
 
 
 def check_kev_mostly_a_week_or_more(d: dict) -> None:
@@ -368,9 +456,18 @@ CLAIMS = [
      "advisory_quality.json", check_one_in_ten_lacks_cwe),
     ("Cross-site scripting is the most common weakness class of the last ten complete years.",
      "cwe_distribution.json", check_xss_first),
+    ("From 2017 to 2025, cross-site scripting rose from about 9% to about 18% of tagged "
+     "records and SQL injection from about 1% to about 9%. Missing authorization rose "
+     "from almost nothing to about 5%, improper input validation and out-of-bounds "
+     "reads fell below 2%, and the other three classes moved by about two points or less.",
+     "cwe_distribution.json", check_cwe_shares_2017_2025),
     ("CISA flags about one KEV entry in five as used in ransomware campaigns.",
      "kev_ransomware.json", check_ransomware_one_in_five),
-    ("Median remediation deadlines fell from six months in 2021 to three weeks or less.",
+    ("Median remediation deadlines fell from six months in 2021 to three weeks in "
+     "2022–2025 and two weeks or less in 2026.",
+     "kev_latency.json", check_deadlines_fell),
+    ("Entries added from 2022 to 2025 had a median deadline of three weeks, and "
+     "entries added in 2026 a median of two weeks or less.",
      "kev_latency.json", check_deadlines_fell),
     ("The median KEV listing comes weeks after the CVE record is published.",
      "kev_latency.json", check_listing_takes_weeks),
@@ -396,10 +493,12 @@ CLAIMS = [
      "adp_coverage.json", check_cisa_about_half),
     ("Rejection rates differ by more than tenfold between CNAs.",
      "cna_concentration.json", check_rejection_tenfold),
-    ("Close to half of scored CVEs are rated High or Critical each year.",
-     "severity_inflation.json", check_close_to_half_each_year),
+    ("Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.",
+     "severity_inflation.json", check_four_to_six_in_ten_since_2020),
     ("Most KEV entries were listed a week or more after their CVE was published.",
      "kev_latency.json", check_kev_mostly_a_week_or_more),
+    ("Hundreds of CNAs assign CVEs;",
+     "cna_concentration.json", check_hundreds_of_cnas),
     ("since 2021 the five largest have issued about half",
      "cna_concentration.json", check_top5_about_half_since_2021),
     ("Fewer than half of internet users sit behind DNSSEC-validating resolvers.",

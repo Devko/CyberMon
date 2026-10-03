@@ -23,7 +23,7 @@ as the site nav (both fold over the `group` tags in `site/js/editorial.js`).
 
 ### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html) (live)
 
-*Close to half of scored CVEs are rated High or Critical each year.* Ten charts:
+*Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.* Ten charts:
 
 1. **Severity inflation (hero)** — median and IQR of CVSS base scores per
    year, split by scoring version (v2/v3/v4) so methodology changes can't

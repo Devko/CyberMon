@@ -190,13 +190,30 @@ def check_adp_tags_complete(d: dict) -> None:
 
 # ---------------------------------------------------------- CVSS 4.0 (01)
 
+# "New records" means the current year once it has this many: before that
+# the latest complete year stands in. The headline block's current-year
+# share is not used, because a few days of January can put it anywhere (the
+# 2026-01 replay had 71% with a v4.0 score after 200 records).
+V4_CURRENT_MIN_RECORDS = 2_000
+
+
 def check_v4_minority(d: dict) -> None:
     # cvss4 fallback headline: "Most new CVE records do not carry a CVSS 4.0
     # score from their CNA." and caption "Since CVSS 4.0 was published in
-    # late 2023"
+    # late 2023". (2026-10-03: 31.8% for 2026 so far over 73,605 records,
+    # 25.8% in 2025; 31.3% on 09-23.)
     assert d["since_month"] == "2023-11"
-    assert d["headline"]["v4_share_current_pct"] < 50.0, (
-        "v4.0 is now on most new records — rewrite the fallback headline")
+    by = {r["year"]: r for r in d["years"]}
+    cur = by.get(GENERATION_YEAR)
+    if cur and claims_support.judged(GENERATION_YEAR, cur["published"],
+                                     min_n=V4_CURRENT_MIN_RECORDS):
+        row = cur
+    else:
+        row = by[max(y for y in by if y < GENERATION_YEAR)]
+    share = _share(row["v4_only"] + row["both"], row["published"])
+    assert share < 50.0, (
+        f"v4.0 is on {share:.1f}% of {row['year']}'s new records — rewrite "
+        f"the fallback headline")
 
 
 def check_v4_few_assigners_dual(d: dict) -> None:
@@ -251,13 +268,16 @@ def check_unscored_is_kernel(d: dict) -> None:
 
 
 def check_concentration_survives(d: dict) -> None:
-    # concentration linuxNote: "Without the kernel the top-5 share still
-    # climbs after 2023"
-    wl = {r["year"]: r for r in d["without_linux"]["years"]}
-    latest = max(y for y in wl if y < GENERATION_YEAR)
-    assert wl[latest]["top5_share"] > wl[2023]["top5_share"], (
-        f"without the kernel, top-5 share {wl[latest]['top5_share']} in "
-        f"{latest} is not above 2023's {wl[2023]['top5_share']}")
+    # concentration linuxNote: "Without the kernel the top-5 share also rose
+    # from 2023 to 2025". Named years: it used to compare the latest
+    # complete year with 2023, which from January would have set 2026
+    # (46.4% without the kernel) against 2023's 45.3%, a pass by a hair
+    # beside a ten-point fall from 2025. (2026-10-03, unchanged since 09-23:
+    # 45.3 -> 53.5 -> 57.5.)
+    wl = {r["year"]: r["top5_share"] for r in d["without_linux"]["years"]}
+    run = [wl[y] for y in (2023, 2024, 2025)]
+    assert run[0] < run[1] < run[2], (
+        f"without the kernel, top-5 share 2023–2025 is {run}, not a rise")
 
 
 # --------------------------------------------------------------------------
@@ -294,7 +314,7 @@ CLAIMS = [
      check_rejection_rebound_is_kernel),
     ("Since 2024 nearly every record with no score anywhere in it is a "
      "kernel record", "nine_eight_flood.json", check_unscored_is_kernel),
-    ("Without the kernel the top-5 share still climbs after 2023",
+    ("Without the kernel the top-5 share also rose from 2023 to 2025",
      "cna_concentration.json", check_concentration_survives),
 ]
 

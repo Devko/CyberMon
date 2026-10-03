@@ -81,19 +81,47 @@ def complete_years(rows: list[dict]) -> list[dict]:
 
 
 def check_severity_headline(d: dict) -> None:
-    # editorial.js (cve.html hero): "About half of scored CVEs ship as
-    # “High” or worse." — 43.5% in 2025, 53.5% in the partial 2026; the
-    # band holds "about half" on both sides of the January rollover.
-    # Caption: "— a level, not a climb": the headline year stays within
-    # 10 points of the baseline year (2020: 46.7%).
+    # editorial.js (cve.html hero): "About half of scored CVEs are rated
+    # High or Critical." — the headline block's latest complete year (43.5%
+    # for 2025 on 2026-10-03; 2026 so far is 54.5%, so the band holds
+    # "about half" on both sides of the January rollover). The caption's
+    # "no sustained rise" used to be checked here against the headline
+    # baseline; it names 2020–2025 now (check_inflation_2020_2025), which
+    # keeps the partial 2026 from tripping it the day it becomes complete.
     pct = d["headline"]["pct_high_critical_latest"]  # share ≥ 7.0, latest complete year
     assert 40 <= pct <= 60, (
-        f"'About half of scored CVEs ship as High or worse' claims ~50%; "
-        f"data says {pct}% (latest complete year {d['headline']['latest_year']})"
+        f"'About half of scored CVEs are rated High or Critical' claims "
+        f"~50%; data says {pct}% (latest complete year "
+        f"{d['headline']['latest_year']})"
     )
-    base = d["headline"]["pct_high_critical_baseline"]
-    assert abs(pct - base) < 10, (
-        f"'a level, not a climb' vs {base}% -> {pct}%")
+
+
+def check_inflation_2020_2025(d: dict) -> None:
+    # editorial.js (cve.html hero caption): "the v3 line starts earlier" than
+    # the blended line, and "From 2020 to 2025 the yearly median stayed
+    # close to 7.0, the lower edge of High, and between 40% and 52% of scored
+    # CVEs were rated 7.0 or higher each year, with no sustained rise."
+    # Named, complete years. (2026-10-03, unchanged since 09-23: medians
+    # 6.8 7.1 6.6 6.5 6.5 6.9; shares 46.7 51.1 46.9 41.6 44.9 43.5; the v3
+    # line starts in 2017, the blended line in 2020.)
+    blended = {y["year"]: y for y in d["blended"]}
+    v3_start = min(y["year"] for y in d["series"]["v3"])
+    assert v3_start < min(blended), (
+        f"'the v3 line starts earlier' vs v3 {v3_start}, blended "
+        f"{min(blended)}")
+    rows = [blended[y] for y in range(2020, 2026)]
+    medians = [(r["year"], r["median"]) for r in rows]
+    assert all(abs(m - 7.0) <= 0.6 for _, m in medians), (
+        f"'the yearly median stayed close to 7.0' vs {medians}")
+    shares = [r["pct_high_critical"] for r in rows]
+    assert all(40 <= s <= 52 for s in shares), (
+        f"'between 40% and 52% … each year' vs {shares}")
+    rises = [b > a for a, b in zip(shares, shares[1:])]
+    longest = max((len(run) for run in "".join(
+        "r" if r else " " for r in rises).split()), default=0)
+    assert longest < 3 and shares[-1] <= shares[0] + 5, (
+        f"'with no sustained rise' vs {shares} (longest run of yearly "
+        f"rises: {longest})")
 
 
 def check_epss_disconnect(d: dict) -> None:
@@ -195,14 +223,20 @@ def check_deferred_pile(d: dict) -> None:
 
 
 def check_cna_nine_plus(d: dict) -> None:
-    # editorial.js (CNA leaderboard): "The most aggressive hand a 9+ to
-    # three or four in ten of the CVEs they score" — the three-year window
-    # slides every January (39.8% today; ~31% once 2024 drops out).
-    top = max(c["pct_geq_9"] for c in d["cnas"])
-    assert 27 <= top <= 45, (
-        f"'a 9+ to three or four in ten of the CVEs they score' needs a top "
-        f"per-CNA pct_geq_9 of roughly 30-40%; data's max is {top}%"
-    )
+    # editorial.js (CNA leaderboard): "The highest-rating CNAs score more
+    # than a third of their CVEs 9.0 or higher." — the two highest on the
+    # board above a third (the plural), and the top below half, where "more
+    # than a third" would understate it. (2026-10-03, unchanged since 09-23:
+    # SolarWinds 44.0% of 100, GovTech CSG 39.8% of 108; third is twcert at
+    # 30.3%.) The three-year window slides every January; the 2026-10-03
+    # audit forecast a top near 40% once 2024 drops out. The old wording,
+    # "three or four in ten", sat about five critical records from its cap.
+    top = sorted((c["pct_geq_9"] for c in d["cnas"]), reverse=True)
+    assert len(top) >= 2 and top[1] > 100 / 3, (
+        f"'The highest-rating CNAs score more than a third' needs two CNAs "
+        f"above 33.3%; the board's top two are {top[:2]}")
+    assert top[0] < 50, (
+        f"'more than a third' understates a top CNA at {top[0]}%")
 
 
 def _bucket_pct(d: dict, bucket: str) -> float:
@@ -277,12 +311,17 @@ def check_more_assignors_than_ever(d: dict) -> None:
 
 
 def check_volume_belongs_to_a_handful(d: dict) -> None:
-    # editorial.js (concentration.html): "The volume still belongs to a
-    # handful."
-    share = d["headline"]["top5_share_latest"]
-    assert share >= 40, (
-        f"'The volume still belongs to a handful' needs a heavyweight top-5 "
-        f"share; data says {share}%"
+    # editorial.js (concentration.html hero): "five of them published most
+    # of 2025's CVEs" — a majority, in the named year (56.6% on 2026-10-03
+    # and 09-23). It used to read the headline block's latest year with a
+    # 40% floor, which would have judged 2026 against "most of 2025's" from
+    # 1 January; check_concentration_reversal pins the same 2025 figure for
+    # the caption.
+    by_year = {y["year"]: y for y in d["years"]}
+    share = by_year[2025]["top5_share"]
+    assert share > 50, (
+        f"'five of them published most of 2025's CVEs' vs a 2025 top-5 "
+        f"share of {share}%"
     )
 
 
@@ -338,6 +377,25 @@ def check_entrants_top3_recruiting(d: dict) -> None:
     )
 
 
+def check_concentration_fell_then_rose(d: dict) -> None:
+    # editorial.js (concentration hero caption): "In the decade to 2023 the
+    # top-5 share mostly fell as the program added CNAs; from 2023 to 2025
+    # it rose." Named years, so the partial 2026 (47.0% on 2026-10-03, 46.9%
+    # on 09-23) cannot turn "rose" into a ten-point fall in January.
+    # (2026-10-03: 68.4% in 2013 -> 45.3% in 2023, down in 7 of 10 steps,
+    # while active CNAs went 19 -> 262; then 53.1% in 2024, 56.6% in 2025.)
+    by_year = {y["year"]: y for y in d["years"]}
+    decade = [by_year[y]["top5_share"] for y in range(2013, 2024)]
+    falls = sum(b < a for a, b in zip(decade, decade[1:]))
+    assert falls > len(decade) // 2 and decade[-1] < decade[0], (
+        f"'In the decade to 2023 the top-5 share mostly fell' vs {decade}")
+    assert by_year[2023]["cna_count"] > by_year[2013]["cna_count"], (
+        "'as the program added CNAs' vs the active-CNA counts")
+    rise = [by_year[y]["top5_share"] for y in (2023, 2024, 2025)]
+    assert rise[0] < rise[1] < rise[2], (
+        f"'from 2023 to 2025 it rose' vs {rise}")
+
+
 def check_concentration_reversal(d: dict) -> None:
     # editorial.js (concentration hero): "the roster grew seventeen-fold
     # between 2015 and 2025, yet in 2025 five of its hundreds of names
@@ -388,6 +446,11 @@ CLAIMS = [
         check_concentration_reversal,
     ),
     (
+        "In the decade to 2023 the top-5 share mostly fell as the program added CNAs; from 2023 to 2025 it rose.",
+        "cna_concentration.json",
+        check_concentration_fell_then_rose,
+    ),
+    (
         "The Critical count for 2026 passed four thousand with months of the year still to go",
         "nine_eight_flood.json",
         check_flood_partial_year_mark,
@@ -401,6 +464,13 @@ CLAIMS = [
         "About half of scored CVEs are rated High or Critical.",
         "severity_inflation.json",
         check_severity_headline,
+    ),
+    (
+        "the v3 line starts earlier, on much thinner coverage. From 2020 to 2025 the yearly "
+        "median stayed close to 7.0, the lower edge of High, and between 40% and 52% of "
+        "scored CVEs were rated 7.0 or higher each year, with no sustained rise.",
+        "severity_inflation.json",
+        check_inflation_2020_2025,
     ),
     (
         "more than six in ten Critical-rated CVEs carry less than a 1% probability of exploitation",
@@ -438,7 +508,7 @@ CLAIMS = [
         check_deferred_pile,
     ),
     (
-        "The highest-rating CNAs score three or four in ten of their CVEs 9.0 or higher.",
+        "The highest-rating CNAs score more than a third of their CVEs 9.0 or higher.",
         "cna_leaderboard.json",
         check_cna_nine_plus,
     ),
