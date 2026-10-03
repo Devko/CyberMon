@@ -237,7 +237,7 @@ export const editorial = {
         href: "attack.html",
         num: "07",
         label: "ATT&CK Releases",
-        headline: "Active ATT&CK techniques and sub-techniques have increased every year since 2018.",
+        headline: "Active ATT&CK techniques and sub-techniques have more than tripled since v1.0 in 2018.",
         blurb:
           "Active techniques and sub-techniques in each MITRE ATT&CK enterprise release, " +
           "what each release added, deprecated or revoked, and the number of groups and " +
@@ -249,7 +249,7 @@ export const editorial = {
         href: "hygiene.html",
         num: "08",
         label: "DNSSEC Validation",
-        headline: "Fewer than half of internet users sit behind DNSSEC-validating resolvers.",
+        headline: "About four in ten internet users sit behind resolvers that fully validate DNSSEC.",
         blurb:
           "DNSSEC validation as measured by APNIC Labs: the world share of users since " +
           "2013, the ten economies with the most internet users, and the distribution " +
@@ -261,7 +261,7 @@ export const editorial = {
         href: "guards.html",
         num: "09",
         label: "Security Products in KEV",
-        headline: "More than one KEV entry in nine is a security product.",
+        headline: "More than one in nine KEV entries is in a security product.",
         blurb:
           "Every CISA KEV entry classified by a curated, versioned list of security " +
           "vendors and products: the security-product share of each year's listings, the " +
@@ -1670,7 +1670,7 @@ export const editorial = {
       num: "01",
       kicker: "Techniques per release",
       source: "MITRE ATT&CK® STIX bundles",
-      headline: "The ATT&CK enterprise matrix has grown every year since 2018.",
+      headline: "ATT&CK's enterprise matrix has more than three times the techniques and sub-techniques of v1.0 in 2018.",
       caption:
         "Active techniques and sub-techniques on the MITRE ATT&CK enterprise matrix, one " +
         "point per release, placed on the release dates MITRE's STIX index records. A " +
@@ -1766,7 +1766,8 @@ export const editorial = {
         "a resolver configuration setting, free of charge. The line is APNIC's measured " +
         "share of internet users whose resolvers perform that check, climbing from under " +
         "a tenth when the record starts in 2013 to roughly four in ten today. At the " +
-        "average rate of the last ten years, reaching every user would take decades more.",
+        "average rate of the last ten years, reaching every user would take more than " +
+        "twenty years.",
       statLabel: "Share of internet users behind validating resolvers",
       statLatest: "{latest_month}",
       statAgo: "{ago_month}",
@@ -1800,8 +1801,8 @@ export const editorial = {
         "The same measured rate for a fixed set of ten: the economies with the most " +
         "internet users, by APNIC's own weighting. The highest validates for roughly nine " +
         "of every ten users and the lowest for almost none; Japan and the United States " +
-        "are both below half. The dashed world line is weighted by users, and these ten " +
-        "economies carry more than half of that weight.",
+        "are both below half. The dashed line is APNIC's world rate, which weights each " +
+        "economy by its estimated number of internet users.",
       worldLine: "World average",
       note:
         "Lines are quarterly samples of APNIC's 30-day windows. The legend is ordered by " +
@@ -1865,9 +1866,10 @@ export const editorial = {
         "what the product is for. Bars show the share of each year's new listings that " +
         "are security products: VPN appliances, firewalls, endpoint protection, secure " +
         "gateways and similar products sold to enforce security. The stat gives the " +
-        "catalog-wide share, and recent years run well above that. The 2021–22 " +
-        "seeding years are charted like other years, because the classification depends " +
-        "only on the product and applies to back-catalog imports and new listings alike.",
+        "catalog-wide share, and each of the last two complete years was above it. The " +
+        "2021–22 seeding years are charted like other years, because the classification " +
+        "depends only on the product and applies to back-catalog imports and new listings " +
+        "alike.",
       statLabel: "Security products' share of the KEV catalog",
       statNote: "{security} of {total} KEV entries · classifier v{version}, {rules} rules, published in the repo",
       methodology:
@@ -1900,12 +1902,12 @@ export const editorial = {
       num: "02",
       kicker: "Repeat vendors",
       source: "CISA KEV",
-      headline: "For the most-listed security vendors, the median gap between KEV listings is days to weeks.",
+      headline: "For the five most-listed security vendors, the median gap between KEV listings is days to weeks.",
       caption:
         "Every vendor with at least five entries in the catalog, ranked by how many of " +
         "its vulnerabilities CISA has listed, with first and last listing dates and the " +
         "median gap in days between consecutive listings. Rows where security products " +
-        "make up at least half the vendor's entries are flagged; among the most-listed " +
+        "make up at least half the vendor's entries are flagged; for the five most-listed " +
         "of those, the median gap is days to weeks.",
       colVendor: "Vendor",
       colEntries: "KEV entries",
@@ -2009,15 +2011,14 @@ export const editorial = {
       num: "02",
       kicker: "Scores by model version",
       source: "EPSS (FIRST.org) · CISA KEV",
-      headline: "EPSS v2 scored most of these entries above 1%; v3 and v4 scored most below.",
+      headline: "EPSS v2 scored most of these entries above 1%; v3 scored most below, and v4 about half.",
       caption:
         "The same scored entries, in the four probability buckets of the " +
         "Score-vs-reality grid, split by EPSS model version. Versions v1 through v5 " +
         "are different models with materially different score distributions, so one " +
         "pooled histogram would mix incomparable scores, as mixing CVSS v2 and v3 " +
-        "scores would. Under the v2 model most of these entries scored above 1%; under " +
-        "v3 and v4 the majority scored below it, and the v5 era, on a small early " +
-        "cohort, shows the same pattern so far.",
+        "scores would. The v5 model has been in use since June 2026, and so far more " +
+        "than half of its small cohort scored below 1%.",
       methodology:
         "Each scored entry contributes its day-before probability to one bucket: " +
         "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive, the same " +
@@ -2056,10 +2057,9 @@ export const editorial = {
         "CVEs, so they can be compared across model versions where raw probabilities " +
         "cannot: a v2 probability and a v4 probability mean different things, but the " +
         "bottom half of a day's ranking means the same in every era. Buckets are shares " +
-        "of scored entries that carry a percentile. The earliest EPSS era published " +
-        "scores without percentiles for a period; such entries appear in the probability " +
-        "charts but not here, and their count is in the data file. The stat's median is " +
-        "the median day-before percentile of these entries.",
+        "of scored entries. Every scored entry carries a day-before percentile, so this " +
+        "chart covers the same entries as the two probability charts. The stat's median " +
+        "is the median day-before percentile of these entries.",
     },
 
     // --------------------------------------------- calendar.html · 1 · hero
@@ -2067,15 +2067,14 @@ export const editorial = {
       num: "01",
       kicker: "ID age",
       source: "cvelistV5 (MITRE)",
-      headline: "One in five CVEs published in 2025 carried an earlier year's ID.",
+      headline: "From 2021 to 2025, about one in five CVEs published each year carried an earlier year's ID.",
       caption:
         "Every CVE ID contains a year (CVE-2025-12345). Under CVE rules that year can " +
         "be the year the ID was reserved or the year the flaw was made public, and " +
         "either can be years before the record is published. The bands split each " +
         "year's newly published records by the age of their ID: same year, one year " +
-        "earlier, or two or more years earlier. In 2025, one in five records shipped " +
-        "on an earlier-year ID, and 2026 is running lower. The age of an ID is not " +
-        "the age of the flaw it describes.",
+        "earlier, or two or more years earlier. The 2026 share is the lowest since " +
+        "2008. The age of an ID is not the age of the flaw it describes.",
       statLabel: "Share of newly published CVEs carrying an earlier-year ID",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -2106,12 +2105,12 @@ export const editorial = {
       num: "02",
       kicker: "Weekday pattern",
       source: "cvelistV5 (MITRE)",
-      headline: "In 2025, Tuesday carried about a quarter of all CVE publications.",
+      headline: "In the latest complete year, Tuesday carried about a quarter of all CVE publications.",
       caption:
         "The share of each year's records published on each weekday, for the latest " +
-        "complete year and the year a decade before it. In the latest complete year, " +
-        "Tuesday leads with roughly a quarter of all records, while Saturday and " +
-        "Sunday carry few; a decade earlier the peak sat later in the week.",
+        "complete year and the year a decade before it. In the latest complete year " +
+        "Saturday and Sunday carry few records, and a decade earlier the peak sat later " +
+        "in the week.",
       weekdayLabels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
       seriesYearLabel: "{year}",
       tooltipN: "{n} dated records in {year}",
@@ -2134,14 +2133,13 @@ export const editorial = {
       num: "03",
       kicker: "Patch Tuesday",
       source: "cvelistV5 (MITRE)",
-      headline: "In 2025, Patch Tuesdays carried nearly three times their calendar share of CVEs.",
+      headline: "In the latest complete year, Patch Tuesdays carried two to three times their calendar share of CVEs.",
       caption:
         "Microsoft releases security updates on the second Tuesday of each month, and " +
         "several other vendors, Adobe and SAP among them, publish on the same day. " +
         "Bars show the share of each year's published records that land on those " +
         "twelve days. The dashed line is what twelve days out of 365 would hold if " +
-        "publication ignored the calendar: 3.3 percent. The latest complete year put " +
-        "two to three times that share on them, and the bar has cleared the line in " +
+        "publication ignored the calendar: 3.3 percent. The bar has cleared that line in " +
         "every complete year since 2014. Tuesday has also been the busiest weekday in " +
         "recent years, so a dotted step line shows what the same twelve days would " +
         "carry as ordinary Tuesdays in the same year. The gap between the bar and " +

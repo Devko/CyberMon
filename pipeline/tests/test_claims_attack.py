@@ -76,6 +76,72 @@ def check_forty_odd_releases(d: dict) -> None:
     )
 
 
+def check_more_than_tripled_since_v1(d: dict) -> None:
+    # editorial.js (attack.html hero + home card): "more than three times the
+    # techniques and sub-techniques of v1.0 in 2018" / "have more than
+    # tripled since v1.0 in 2018". 2026-10-03: v19.2 has 697 against
+    # v1.0's 188 (3.71x); it would take 133 net retirements to break. This
+    # replaced "has grown every year since 2018", which v19.0's 17
+    # revocations left 6 entries from breaking (691 at the end of 2025).
+    h = d["headline"]
+    assert h["first_version"] == "1.0" and h["released_first"].startswith(
+        "2018"), (
+        f"'v1.0 in 2018' — the first release on record is "
+        f"v{h['first_version']} of {h['released_first']}")
+    first = h["techniques_first"] + h["subtechniques_first"]
+    latest = h["techniques_latest"] + h["subtechniques_latest"]
+    assert latest > 3 * first, (
+        f"'more than three times as many techniques and sub-techniques as "
+        f"v1.0' — v{h['latest_version']} has {latest} against {first} "
+        f"({latest / first:.2f}x)")
+
+
+def check_growth_mostly_subtechniques(d: dict) -> None:
+    # editorial.js (attack.html hero caption): "most of the growth since
+    # 2018 has been in sub-techniques". 2026-10-03: +475 sub-techniques and
+    # +34 techniques since v1.0 (93% of the growth).
+    h = d["headline"]
+    sub = h["subtechniques_latest"] - h["subtechniques_first"]
+    tech = h["techniques_latest"] - h["techniques_first"]
+    assert sub > tech and sub > 0, (
+        f"'most of the growth since 2018 has been in sub-techniques' — "
+        f"sub-techniques {sub:+d}, techniques {tech:+d} since v1.0")
+
+
+def check_v7_largest_change(d: dict) -> None:
+    # editorial.js (attack.html churn caption): "the largest change was
+    # v7.0, which introduced sub-techniques: it added 302 and revoked or
+    # deprecated 140". 2026-10-03: v7.0 moved 442 entries; the next largest
+    # release, v8.0, moved 97. Released bundles do not change.
+    def moved(v):
+        c = v["churn"]
+        return c["added"] + c["deprecated"] + c["revoked"]
+
+    versions = [v for v in d["versions"] if v.get("churn")]
+    v7 = next(v for v in versions if v["version"] == "7.0")
+    retired = v7["churn"]["deprecated"] + v7["churn"]["revoked"]
+    assert (v7["churn"]["added"], retired) == (302, 140), (
+        f"'it added 302 and revoked or deprecated 140' — v7.0 added "
+        f"{v7['churn']['added']} and retired {retired}")
+    biggest = max(versions, key=moved)
+    assert biggest["version"] == "7.0", (
+        f"'the largest change was v7.0' — v{biggest['version']} moved "
+        f"{moved(biggest)} entries against v7.0's {moved(v7)}")
+
+
+def check_catalogs_grew_since_2018(d: dict) -> None:
+    # editorial.js (attack.html catalog headline): "ATT&CK's catalogs of
+    # groups and software have grown since 2018". 2026-10-03: groups 60 ->
+    # 176, software 189 -> 825 from v1.0 to v19.2.
+    first, latest = d["versions"][0], d["versions"][-1]
+    assert first["released"].startswith("2018"), first["released"]
+    for key in ("groups", "software"):
+        assert latest[key] > first[key], (
+            f"'catalogs of groups and software have grown since 2018' — "
+            f"{key}: v{first['version']} {first[key]}, "
+            f"v{latest['version']} {latest[key]}")
+
+
 # --------------------------------------------------------------------------
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
@@ -89,6 +155,34 @@ CLAIMS = [
         "Across its forty-odd releases",
         "attack_churn.json",
         check_forty_odd_releases,
+    ),
+    (
+        "ATT&CK's enterprise matrix has more than three times the techniques "
+        "and sub-techniques of v1.0 in 2018.",
+        "attack_churn.json",
+        check_more_than_tripled_since_v1,
+    ),
+    (
+        "Active ATT&CK techniques and sub-techniques have more than tripled "
+        "since v1.0 in 2018.",
+        "attack_churn.json",
+        check_more_than_tripled_since_v1,
+    ),
+    (
+        "most of the growth since 2018 has been in sub-techniques",
+        "attack_churn.json",
+        check_growth_mostly_subtechniques,
+    ),
+    (
+        "the largest change was v7.0, which introduced sub-techniques: it "
+        "added 302 and revoked or deprecated 140",
+        "attack_churn.json",
+        check_v7_largest_change,
+    ),
+    (
+        "ATT&CK's catalogs of groups and software have grown since 2018.",
+        "attack_churn.json",
+        check_catalogs_grew_since_2018,
     ),
 ]
 
