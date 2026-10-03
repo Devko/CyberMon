@@ -218,12 +218,8 @@ def check_percentiles_vs_probabilities(d: dict) -> None:
 
 # ------------------------------------------------------- ATT&CK / naming / C2
 
-def check_matrix_grew_every_year(d: dict) -> None:
-    year_end = {}
-    for v in d["versions"]:
-        year_end[v["released"][:4]] = v["techniques"] + v["subtechniques"]
-    run = [year_end[y] for y in sorted(year_end)]
-    assert all(b > a for a, b in zip(run, run[1:])), year_end
+# The ATT&CK hero and home-card headlines moved to test_claims_attack.py
+# (check_more_than_tripled_since_v1) on 2026-10-03.
 
 
 def check_churn_in_major_releases(d: dict) -> None:
@@ -298,14 +294,8 @@ def check_top5_about_half_since_2021(d: dict) -> None:
         [(y["year"], y["top5_share"]) for y in rows]
 
 
-def check_fewer_than_half_validate(d: dict) -> None:
-    assert d["world"]["latest"]["validating_pc"] < 50, d["world"]["latest"]
-
-
-def check_tuesday_busiest_since_2022(d: dict) -> None:
-    for y in d["weekday"]["years"]:
-        if y["year"] >= 2022:
-            assert y["pct"].index(max(y["pct"])) == 1, (y["year"], y["pct"])
+# The DNSSEC and CVE Calendar home cards moved to test_claims_hygiene.py
+# and test_claims_calendar.py on 2026-10-03.
 
 
 def check_exploit_a_week_or_more_since_2021(d: dict) -> None:
@@ -378,8 +368,6 @@ CLAIMS = [
      "epss_volatility.json", check_movers_exceed_25pp),
     ("EPSS percentiles move for nearly all CVEs each night; probabilities for about 1%.",
      "epss_volatility.json", check_percentiles_vs_probabilities),
-    ("The ATT&CK enterprise matrix has grown every year since 2018.",
-     "attack_churn.json", check_matrix_grew_every_year),
     ("Nearly all ATT&CK technique additions and retirements come in major releases.",
      "attack_churn.json", check_churn_in_major_releases),
     ("Most ATT&CK groups have three or fewer alternate names.",
@@ -402,10 +390,6 @@ CLAIMS = [
      "kev_latency.json", check_kev_mostly_a_week_or_more),
     ("since 2021 the five largest have issued about half",
      "cna_concentration.json", check_top5_about_half_since_2021),
-    ("Fewer than half of internet users sit behind DNSSEC-validating resolvers.",
-     "dnssec_adoption.json", check_fewer_than_half_validate),
-    ("Since 2022, more CVEs have been published on Tuesday than on any other day.",
-     "cve_calendar.json", check_tuesday_busiest_since_2022),
     ("Since 2021 the median public exploit has appeared a week or more after the CVE.",
      "time_to_poc.json", check_exploit_a_week_or_more_since_2021),
     ("Public exploit code in Exploit-DB has not appeared sooner since ChatGPT.",

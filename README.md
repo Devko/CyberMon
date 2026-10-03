@@ -113,7 +113,7 @@ and the transfers were verified.
 
 ### 07 · ATT&CK Releases — [attack.html](https://devko.github.io/CyberMon/attack.html) (live)
 
-*Active ATT&CK techniques and sub-techniques have increased every year since 2018.* Three charts from MITRE's versioned enterprise
+*Active ATT&CK techniques and sub-techniques have more than tripled since v1.0 in 2018.* Three charts from MITRE's versioned enterprise
 STIX bundles: active techniques and sub-techniques per ATT&CK release over
 the release dates MITRE's STIX index records, what each release added vs. deprecated or revoked
 (diffed by STIX id), and the group/software catalog behind the matrix.
@@ -124,7 +124,7 @@ previously published `attack_churn.json`, and a normal night costs one
 
 ### 08 · DNSSEC Validation — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html) (live)
 
-*Fewer than half of internet users sit behind DNSSEC-validating resolvers.* Three charts
+*About four in ten internet users sit behind resolvers that fully validate DNSSEC.* Three charts
 on measured DNSSEC validation (APNIC Labs): the world adoption line since
 2013, a fixed set of the ten largest online populations compared (frozen
 by APNIC's own internet-user weighting at module creation), and the
@@ -134,7 +134,7 @@ every night — no accumulated state, no committed history file.
 
 ### 09 · Security Products in KEV — [guards.html](https://devko.github.io/CyberMon/guards.html) (live)
 
-*More than one KEV entry in nine is a security product.*
+*More than one in nine KEV entries is in a security product.*
 Three views over the CISA KEV catalog, with every entry classified by a
 curated, versioned security-product table
 ([pipeline/security_products.py](pipeline/security_products.py) — the

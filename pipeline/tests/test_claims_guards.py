@@ -53,10 +53,11 @@ def load(name: str) -> dict:
 
 
 def check_one_in_nine_guard_share(d: dict) -> None:
-    # editorial.js (guards.html hero): "more than one entry in nine in the
-    # whole catalog is in a product sold to enforce security — and recent
-    # years run well above that". Live value at last copy edit: 11.8%.
-    # "More than one in nine" needs share > 11.1%, with headroom above.
+    # editorial.js (guards.html hero headline + home card): "More than one
+    # KEV entry in nine is in a security product" / "More than one in nine
+    # KEV entries is in a security product". 2026-10-03: 12.3% (213 of
+    # 1,733); 11.9-12.3% since late August. "More than one in nine" needs
+    # share > 11.1%, with headroom above.
     share = d["catalog"]["pct_security"]
     assert 11.2 <= share <= 20.0, (
         f"'more than one entry in nine ... is in a product sold to enforce "
@@ -66,41 +67,65 @@ def check_one_in_nine_guard_share(d: dict) -> None:
 
 
 def check_ransomware_roughly_twice(d: dict) -> None:
-    # editorial.js (guards.html overlap): "entries on exploited security
-    # products carry that flag roughly twice as often as the rest of the
-    # catalog". Live-feed ratio at module creation: 37.2 / 17.9 = 2.08.
+    # editorial.js (guards.html overlap headline + caption): "about twice as
+    # often" / "roughly twice as often as the rest of the catalog". Ratio at
+    # module creation: 37.2 / 17.9 = 2.08; 2026-10-03: 37.1 / 18.6 = 1.99
+    # (2.01-2.07 since late August). Band narrowed from 1.6-2.6 to 1.7-2.3
+    # on 2026-10-03: 1.6 reads as "about one and a half times".
     sec = d["ransomware"]["security"]["pct_known"]
     rest = d["ransomware"]["other"]["pct_known"]
     assert rest > 0, "ratio claim needs a nonzero rest-of-catalog share"
     ratio = sec / rest
-    assert 1.6 <= ratio <= 2.6, (
+    assert 1.7 <= ratio <= 2.3, (
         f"'roughly twice as often as the rest of the catalog' needs the "
-        f"security/rest ransomware-flag ratio in [1.6, 2.6]; data says "
+        f"security/rest ransomware-flag ratio in [1.7, 2.3]; data says "
         f"{sec}% vs {rest}% (ratio {ratio:.2f})"
     )
 
 
 # --------------------------------------------------------------------------
-def check_recent_years_above_catalog_share(d: dict) -> None:
-    # editorial.js (guards hero): "More than one entry in nine in the whole
-    # catalog is in a product sold to enforce security — and recent years
-    # run well above that." Both of the last two complete years must beat
-    # the whole-catalog share.
+def check_last_two_complete_years_above_catalog_share(d: dict) -> None:
+    # editorial.js (guards hero caption): "The stat gives the catalog-wide
+    # share, and each of the last two complete years was above it." It
+    # said "recent years run well above that" until 2026-10-03, which the
+    # guard (strictly above) did not measure. 2026-10-03: 2024 17.2% and
+    # 2025 15.1% against 12.3% catalog-wide; after the rollover 2025 and
+    # 2026 (17.3% so far).
     catalog_pct = d["catalog"]["pct_security"]
-    gen_year = int(d["generated_at"][:4])
-    complete = [y for y in d["years"] if y["year"] < gen_year]
+    complete = claims_support.complete_years(d["years"])
+    assert len(complete) >= 2, complete
     for y in complete[-2:]:
         assert y["pct_security"] > catalog_pct, (
-            f"'recent years run well above that' vs {y['year']} at "
-            f"{y['pct_security']}% against catalog {catalog_pct}%"
+            f"'each of the last two complete years was above it' vs "
+            f"{y['year']} at {y['pct_security']}% against catalog "
+            f"{catalog_pct}%"
         )
+
+
+def check_top_security_vendors_gap_days_to_weeks(d: dict) -> None:
+    # editorial.js (guards.html recidivism headline + caption): "For the
+    # five most-listed security vendors, the median gap between KEV
+    # listings is days to weeks." A security vendor is a flagged row (at
+    # least half its entries security products, the board's own rule);
+    # "days to weeks" is read as at most 60 days. 2026-10-03: Ivanti 7.5,
+    # Fortinet 42, Citrix 10, SonicWall 20, Palo Alto Networks 32.5 (F5 at
+    # 112 and Sophos at 159 sit further down the board).
+    flagged = [v for v in d["vendors"] if v["pct_security"] >= 50]
+    top = sorted(flagged, key=lambda v: -v["entries"])[:5]
+    assert len(top) == 5, [v["vendor"] for v in flagged]
+    slow = [(v["vendor"], v["median_gap_days"]) for v in top
+            if v["median_gap_days"] is None or v["median_gap_days"] > 60]
+    assert not slow, (
+        f"'the median gap between KEV listings is days to weeks' for the "
+        f"five most-listed security vendors; these exceed 60 days: {slow}"
+    )
 
 
 CLAIMS = [
     (
-        "and recent years run well above that",
+        "and each of the last two complete years was above it",
         "kev_guards.json",
-        check_recent_years_above_catalog_share,
+        check_last_two_complete_years_above_catalog_share,
     ),
     (
         "More than one KEV entry in nine is in a security product",
@@ -108,7 +133,27 @@ CLAIMS = [
         check_one_in_nine_guard_share,
     ),
     (
+        "More than one in nine KEV entries is in a security product.",
+        "kev_guards.json",
+        check_one_in_nine_guard_share,
+    ),
+    (
+        "For the five most-listed security vendors, the median gap between KEV listings is days to weeks.",
+        "kev_guards.json",
+        check_top_security_vendors_gap_days_to_weeks,
+    ),
+    (
+        "for the five most-listed of those, the median gap is days to weeks",
+        "kev_guards.json",
+        check_top_security_vendors_gap_days_to_weeks,
+    ),
+    (
         "entries on exploited security products carry that flag roughly twice as often as the rest of the catalog",
+        "kev_guards.json",
+        check_ransomware_roughly_twice,
+    ),
+    (
+        "KEV entries in security products carry the ransomware flag about twice as often.",
         "kev_guards.json",
         check_ransomware_roughly_twice,
     ),
