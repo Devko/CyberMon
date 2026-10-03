@@ -41,6 +41,9 @@ if json.loads(_meta_path.read_text("utf-8")).get("sample") is True:
     )
 
 
+GENERATION_YEAR = claims_support.GENERATION_YEAR
+
+
 def load(name: str) -> dict:
     path = DATA_DIR / name
     if not path.exists():
@@ -128,23 +131,24 @@ BUCKETS = ("unscored", "low", "medium", "high", "critical")
 
 
 def check_critical_is_routine(d: dict) -> None:
-    # headline: "“Critical” was an exception. Now it's a product line." — the
-    # early record has Critical as a rounding error; the recent record ships it
-    # in the thousands.
+    # headline: "CVEs rated Critical went from a handful a year to thousands."
+    # — the clip's first year has a handful, its last complete year
+    # thousands. (2026-10-03: 3 in 1999; 4,111 in 2025, 8,439 in 2026 so
+    # far.) Complete years by the edition's year (GENERATION_YEAR), not the
+    # payload's stamp, so the January rehearsals judge the right rows.
     years = d.get("years") or []
     assert len(years) >= 10, "not enough years to judge the claim"
 
-    gen_year = int(d["generated_at"][:4])
-    complete = [y for y in years if y["year"] != gen_year]
+    complete = [y for y in years if y["year"] < GENERATION_YEAR]
     first, last = complete[0], complete[-1]
 
-    assert first["critical"] < 100, (
-        f"'“Critical” was an exception' — but {first['year']} already carries "
+    assert first["critical"] <= 20, (
+        f"'from a handful a year' — but {first['year']} already carries "
         f"{first['critical']:,} Critical records."
     )
-    assert last["critical"] >= 1000, (
-        f"'Now it's a product line' — but the last complete year "
-        f"({last['year']}) carries only {last['critical']:,} Critical records."
+    assert last["critical"] >= 2000, (
+        f"'to thousands' — but the last complete year ({last['year']}) "
+        f"carries only {last['critical']:,} Critical records."
     )
 
 
@@ -172,30 +176,26 @@ def check_era_caveat_holds(d: dict) -> None:
 
 # --- cna-concentration -------------------------------------------------------
 
-def check_gate_did_not_widen(d: dict) -> None:
-    # headline: "The gatekeepers multiplied. The gate did not." — CNA count up
-    # by a lot; the top-5's share of output down, not up.
+def check_hundreds_about_half(d: dict) -> None:
+    # headline: "Hundreds of CNAs now assign CVEs; the five largest still
+    # issue about half." — the last complete year's active CNAs and top-5
+    # share. (2026-10-03: 367 CNAs and 56.6% in 2025; 386 and 47.0% for
+    # 2026 so far.) This used to guard the clip's older headline ("The
+    # gatekeepers multiplied. The gate did not.") with a tenfold rise over
+    # 1999's single CNA, which never pinned "hundreds".
     years = d.get("years") or []
     assert len(years) >= 10, "not enough years to judge the claim"
 
-    gen_year = int(d["generated_at"][:4])
-    complete = [y for y in years if y["year"] != gen_year]
-    first, last = complete[0], complete[-1]
+    complete = [y for y in years if y["year"] < GENERATION_YEAR]
+    last = complete[-1]
 
-    assert last["cna_count"] > first["cna_count"] * 10, (
-        f"'The gatekeepers multiplied' — CNA count went {first['cna_count']} "
-        f"({first['year']}) → {last['cna_count']} ({last['year']}), which is "
-        f"not a multiplication worth the word."
+    assert 200 <= last["cna_count"] < 1000, (
+        f"'Hundreds of CNAs now assign CVEs' vs {last['cna_count']} active "
+        f"CNAs in {last['year']}"
     )
-    assert last["top5_share"] < first["top5_share"], (
-        f"'The gate did not [multiply]' — the top-5 share rose from "
-        f"{first['top5_share']}% to {last['top5_share']}%, so concentration "
-        f"loosened less than the headline claims, or not at all."
-    )
-    # "the five largest still issue about half" (2025: 56.6%).
     assert 40.0 <= last["top5_share"] <= 62.0, (
-        f"the top-5 now issue only {last['top5_share']}% — the gate has in fact "
-        f"widened, and 'The gate did not' is no longer the story."
+        f"'the five largest still issue about half' vs {last['top5_share']}% "
+        f"in {last['year']}"
     )
 
 
@@ -211,7 +211,7 @@ CLAIMS = [
     ("severity scores were kept in NVD's database, which this chart does not read",
      "nine_eight_flood.json", check_era_caveat_holds),
     ("Hundreds of CNAs now assign CVEs; the five largest still issue about half.",
-     "cna_concentration.json", check_gate_did_not_widen),
+     "cna_concentration.json", check_hundreds_about_half),
 ]
 
 

@@ -81,6 +81,11 @@ def check_last_verified_payment_quarter(d: dict) -> None:
     # in Q3 2024" — a hard date one new crowdsourced report invalidates
     # overnight. Failing here means a newer payment landed: update BOTH
     # copy occurrences (revenue caption + payments methodology).
+    # The TINY rehearsals fail here by construction: they clone the latest
+    # quarter (2024 Q3, paid) into the rehearsal year, which is a new
+    # payment. A real new year adds no quarter: the series runs from the
+    # first to the last observed payment, so only a payment can extend it.
+    # The plain rehearsal passes.
     paid = [q for q in d["revenue_by_quarter"] if q["usd"] > 0]
     assert paid, "no paid quarters on the ledger at all"
     newest = (paid[-1]["year"], paid[-1]["quarter"])
@@ -88,6 +93,36 @@ def check_last_verified_payment_quarter(d: dict) -> None:
         f"'last verified payment landed in Q3 2024' vs newest paid quarter "
         f"{newest[0]}Q{newest[1]}"
     )
+
+
+def check_payment_counts_by_era(d: dict) -> None:
+    # editorial.js (extortion payments caption): "From 2016 through 2021 the
+    # ledger holds hundreds to thousands of payments a year, with medians
+    # between about $90 and $3,500. It holds about 150 payments for 2022
+    # and about 20 for each of 2023 and 2024, with medians around $100,000
+    # or higher." All named, complete years; the ledger has had no new
+    # verified payment since Q3 2024. (2026-10-03, unchanged since 09-23:
+    # 735–9,324 payments a year in 2016–21 with medians $92.00–$3,451.37;
+    # 146 in 2022, 19 in 2023, 19 in 2024; medians $147,039, $99,389,
+    # $139,534.) The old wording, "fewer than 150 a year from 2022", held
+    # by four payments.
+    by = {r["year"]: r for r in d["payments_by_year"]}
+    early = [by[y] for y in range(2016, 2022)]
+    assert all(100 <= r["payments"] < 10_000 for r in early), (
+        f"'hundreds to thousands of payments a year' vs "
+        f"{[(r['year'], r['payments']) for r in early]}")
+    meds = [r["median_usd"] for r in early]
+    assert 80 <= min(meds) <= 100 and 3_000 <= max(meds) <= 4_000, (
+        f"'medians between about $90 and $3,500' vs {meds}")
+    assert 125 <= by[2022]["payments"] <= 175, (
+        f"'about 150 payments for 2022' vs {by[2022]['payments']}")
+    for y in (2023, 2024):
+        assert 15 <= by[y]["payments"] <= 25, (
+            f"'about 20 for each of 2023 and 2024' vs {by[y]['payments']} "
+            f"in {y}")
+    late = [by[y]["median_usd"] for y in (2022, 2023, 2024)]
+    assert min(late) >= 85_000, (
+        f"'medians around $100,000 or higher' vs {late}")
 
 
 def check_median_grew_250_fold(d: dict) -> None:
@@ -111,7 +146,20 @@ CLAIMS = [
         check_last_verified_payment_quarter,
     ),
     (
+        "From 2016 through 2021 the ledger holds hundreds to thousands of payments a year, "
+        "with medians between about $90 and $3,500. It holds about 150 payments for 2022 "
+        "and about 20 for each of 2023 and 2024, with medians around $100,000 or higher.",
+        "extortion_ledger.json",
+        check_payment_counts_by_era,
+    ),
+    (
         "Verified ransom payments on the Ransomwhere ledger total over a billion dollars.",
+        "extortion_ledger.json",
+        check_billion_dollar_floor,
+    ),
+    (
+        # home card (Ransom Payments); $1,018.6M on 2026-10-03
+        "Crowdsourced, blockchain-verified ransomware payments total more than a billion dollars.",
         "extortion_ledger.json",
         check_billion_dollar_floor,
     ),

@@ -160,7 +160,7 @@ export const editorial = {
         href: "cve.html",
         num: "01",
         label: "CVE Ecosystem",
-        headline: "Close to half of scored CVEs are rated High or Critical each year.",
+        headline: "Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.",
         blurb:
           "Ten charts on CVE scores and records: severity by CVSS version over time, CVEs " +
           "per year by severity, CVSS against EPSS and KEV, NVD's backlog and daily " +
@@ -804,13 +804,13 @@ export const editorial = {
       headline: "About half of scored CVEs are rated High or Critical.",
       caption:
         "Median CVSS base score of newly published CVEs, by year and by scoring version. " +
-        "v3 scores run higher than v2 scores, so a separate line per version keeps a " +
-        "change of version from looking like a change in severity. The blended line " +
-        "starts in the first year in which CNA-assigned scores cover at least 20% of " +
-        "published records (see the methodology); the per-version lines start earlier, " +
-        "on much thinner coverage. In each complete year since 2020 the median sits " +
-        "close to 7.0, the lower edge of High, and four to five in ten scored CVEs are " +
-        "rated 7.0 or higher, with no sustained rise.",
+        "Each CVSS version computes the base score with its own formula, so a separate " +
+        "line per version keeps a change of version from looking like a change in " +
+        "severity. The blended line starts in the first year in which CNA-assigned " +
+        "scores cover at least 20% of published records (see the methodology); the v3 " +
+        "line starts earlier, on much thinner coverage. From 2020 to 2025 the yearly " +
+        "median stayed close to 7.0, the lower edge of High, and between 40% and 52% of " +
+        "scored CVEs were rated 7.0 or higher each year, with no sustained rise.",
       statLabel: "Share of scored CVEs rated High or Critical (base score ≥ 7.0)",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -904,10 +904,11 @@ export const editorial = {
         "CVEs rated 9.0 or higher whose EPSS probability is below 1%. The KEV stat is the " +
         "share of CISA KEV catalog entries whose CVSS base score is below 7.0. The score is " +
         "the newest CVSS version anywhere in the record, the CNA container before ADP " +
-        "containers. v2, v3 and v4 scores share one axis here, although v3 scores run " +
-        "higher than v2 (section 01 separates them). For KEV entries published before " +
-        "CNAs scored in the record, the score is usually CISA's own ADP score, so the KEV " +
-        "stat largely uses CISA's numbers. EPSS estimates the probability of exploitation " +
+        "containers. v2, v3 and v4 scores share one axis here, although each version " +
+        "computes the score with its own formula (section 01 separates them). For KEV " +
+        "entries published before CNAs scored in the record, the score is usually " +
+        "CISA's own ADP score, so the KEV stat largely uses CISA's numbers. EPSS " +
+        "estimates the probability of exploitation " +
         "in the next 30 days; it is a model's prediction, not a record of exploitation.",
     },
 
@@ -1010,7 +1011,7 @@ export const editorial = {
       num: "06",
       kicker: "Scores by CNA",
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
-      headline: "The highest-rating CNAs score three or four in ten of their CVEs 9.0 or higher.",
+      headline: "The highest-rating CNAs score more than a third of their CVEs 9.0 or higher.",
       caption:
         "CVE Numbering Authorities (CNAs) can score the CVEs they publish. This board " +
         "uses those scores, not NVD's, and ranks each CNA by the share it rates 9.0 or " +
@@ -1114,10 +1115,12 @@ export const editorial = {
         "The eight most common weakness classes of the last ten complete years, each " +
         "shown as its share of that year's CWE-tagged records, with all other classes " +
         "pooled as “Other.” The eight are chosen from the whole period's totals, so no " +
-        "class can drop off this chart; what changes is each class's share. Most move " +
-        "by a few points over the period and cross-site scripting by more than a dozen; " +
-        "missing authorization rises from almost nothing, while improper input " +
-        "validation and out-of-bounds reads decline.",
+        "class can drop off this chart; what changes is each class's share. From 2017 " +
+        "to 2025, cross-site scripting rose from about 9% to about 18% of tagged " +
+        "records and SQL injection from about 1% to about 9%. Missing authorization " +
+        "rose from almost nothing to about 5%, improper input validation and " +
+        "out-of-bounds reads fell below 2%, and the other three classes moved by about " +
+        "two points or less.",
       // rendered as a panel-note by cve.js (same slot the decay chart uses)
       note:
         "Shares are of CWE-tagged records only; each year's tooltip gives the share " +
@@ -1283,7 +1286,7 @@ export const editorial = {
       num: "03",
       kicker: "Remediation deadlines",
       source: "CISA KEV",
-      headline: "Median remediation deadlines fell from six months in 2021 to three weeks or less.",
+      headline: "Median remediation deadlines fell from six months in 2021 to three weeks in 2022–2025 and two weeks or less in 2026.",
       caption:
         "How long federal agencies get to fix each KEV entry: the time from the day " +
         "CISA lists a vulnerability to the remediation deadline it sets, median and " +
@@ -1303,9 +1306,10 @@ export const editorial = {
         "remediation spans are policy decisions made on the listing date, so they are " +
         "charted here. Lines are the median span of entries added each year; shaded bands " +
         "span the 25th–75th percentile. For context, BOD 22-01 set six months for CVEs " +
-        "with IDs assigned before 2021 and two weeks for all others, and entries added " +
-        "since typically carry two to three weeks. The chart shows the deadlines CISA " +
-        "assigned, which need not match the directive's defaults.",
+        "with IDs assigned before 2021 and two weeks for all others. Entries added from " +
+        "2022 to 2025 had a median deadline of three weeks, and entries added in 2026 a " +
+        "median of two weeks or less. The chart shows the deadlines CISA assigned, " +
+        "which need not match the directive's defaults.",
     },
 
     // --------------------------------------------- kev.html · 4
@@ -1347,7 +1351,7 @@ export const editorial = {
         "Three lines from one corpus: the number of CVE Numbering Authorities (CNAs) " +
         "that published at least one record each year, and the share of that year's " +
         "records from the top 5 and top 10 of them. In the decade to 2023 the top-5 " +
-        "share mostly fell as the program added CNAs. Since 2023 it has risen: the " +
+        "share mostly fell as the program added CNAs; from 2023 to 2025 it rose. The " +
         "roster grew seventeen-fold between 2015 and 2025, yet in 2025 five CNAs " +
         "still shipped a majority of the year's records, their share climbing for a " +
         "second straight year. Each CNA, vendor or not, writes the records it " +
@@ -1356,7 +1360,7 @@ export const editorial = {
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
       linuxNote:
-        "Without the kernel the top-5 share still climbs after 2023, and the " +
+        "Without the kernel the top-5 share also rose from 2023 to 2025, and the " +
         "shares are recomputed over the remaining CNAs.",
       methodology:
         "Each CVE record's assigner (the CNA of record in cvelistV5) is counted by " +
@@ -1439,14 +1443,16 @@ export const editorial = {
       num: "01",
       kicker: "Breach to catalog",
       source: "Have I Been Pwned breach catalog",
-      headline: "Breaches typically reach HIBP's catalog months after they happen.",
+      headline: "Since 2014, the median breach has reached HIBP's catalog months after it happened.",
       caption:
         "For each breach in the Have I Been Pwned (HIBP) catalog, the days between the " +
         "date the breach happened and the day HIBP added it, shown as the median and " +
         "interquartile range for each year of cataloging. Breaches loaded around the " +
         "catalog's December 2013 launch are reported in the note below and kept out of " +
         "the trend. Since 2014 the typical gap is measured in months, and roughly a third " +
-        "of entries take more than a year to reach the catalog. This differs from the " +
+        "of entries take more than a year to reach the catalog. The median for a " +
+        "single year has ranged from under a week, in 2014, to more than a year, in " +
+        "2017 and 2023. This differs from the " +
         "dwell-time figures vendors report from their own customers' incidents: it runs " +
         "from the breach to a public catalog that anyone can query.",
       statLabel: "Median days from breach to public catalog",
@@ -1529,8 +1535,9 @@ export const editorial = {
         "The six data classes listed most often across the cataloged breaches, each shown " +
         "as the share of that year's breaches that contain it. A breach can list many " +
         "classes, so the shares are independent and do not add up to 100%. Email " +
-        "addresses appear in nearly every breach each year. Passwords appeared in nine " +
-        "of ten breaches cataloged in 2014, about four in ten by 2025, and a lower share " +
+        "addresses appear in at least 95% of each year's breaches since 2015. " +
+        "Passwords appeared in nine of ten breaches cataloged in 2014, about four in " +
+        "ten by 2025, and a lower share " +
         "every year since 2019. The other classes move up and down, some by more than 20 " +
         "points from one year to the next.",
       methodology:
@@ -1594,8 +1601,9 @@ export const editorial = {
         "2015 (under three dollars) are not ransom amounts: most transfers to the tracked " +
         "wallets in those years were under ten dollars. From 2016 to 2022 the median grew " +
         "some 250-fold. From 2016 through 2021 the ledger holds hundreds to thousands of " +
-        "payments a year, with medians between about $90 and $3,500; from 2022 it holds " +
-        "fewer than 150 a year, with medians around $100,000 or higher. Thinner crowdsourced " +
+        "payments a year, with medians between about $90 and $3,500. It holds about 150 " +
+        "payments for 2022 and about 20 for each of 2023 and 2024, with medians around " +
+        "$100,000 or higher. Thinner crowdsourced " +
         "coverage and changes in how ransomware operates could both lower the recent " +
         "counts, and this dataset cannot separate the two.",
       legendPayments: "Verified payments",
