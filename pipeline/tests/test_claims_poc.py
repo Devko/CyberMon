@@ -79,29 +79,53 @@ def check_median_within_a_month_of_zero_2005_2020(d: dict) -> None:
     )
 
 
-def check_median_moved_to_weeks_after_since_2021(d: dict) -> None:
+# A current-year cohort starts January with a handful of CVEs and is
+# right-censored all year (a CVE published in March has had months, not
+# years, to attract code), so its median is held to the copy only once the
+# cohort is as large as the smallest one the copy describes ("one to three
+# hundred CVEs each"). 2026 passed 100 dated CVEs in the autumn (119 on
+# 2026-10-03).
+CURRENT_COHORT_MIN_N = 100
+
+
+def _judged_medians(d: dict) -> dict[int, float]:
+    return {r["year"]: r["median_days"] for r in d["hero"]["years"]
+            if claims_support.judged(r["year"], r["n"],
+                                     min_n=CURRENT_COHORT_MIN_N)}
+
+
+def check_two_weeks_or_more_since_2022(d: dict) -> None:
     _require_exploit_dated_clock(d)
-    # editorial.js (exploits.html hero): "Since 2021 the median has moved
-    # the other way, to weeks after publication" and "the 2024 cohort, at
-    # months rather than weeks, is the outlier". (2026-09-21: 2021-2025
-    # medians 8, 20, 15.5, 166.5, 38 days.)
-    recent = {r["year"]: r for r in d["hero"]["years"]
-              if 2021 <= r["year"] < GENERATION_YEAR}
-    assert len(recent) >= 3, "too few complete years since 2021 to judge"
-    assert all(r["median_days"] >= 7 for r in recent.values()), (
-        f"'to weeks after publication' needs every complete-year median "
-        f"since 2021 at a week or more; data says "
-        f"{[(y, r['median_days']) for y, r in sorted(recent.items())]}"
-    )
-    assert 2024 in recent and recent[2024]["median_days"] >= 60, (
-        f"'the 2024 cohort, at months rather than weeks' vs "
-        f"{recent.get(2024, {}).get('median_days')} days"
-    )
-    others = [r["median_days"] for y, r in recent.items() if y != 2024]
-    assert max(others) < 90, (
-        f"'is the outlier' needs every other recent median under three "
-        f"months; data says {others}"
-    )
+    # editorial.js (exploits.html hero): headline "Since 2022, the median
+    # first public exploit has come two weeks or more after the CVE record."
+    # and caption "Since 2021 the median has been positive, and since 2022
+    # it has been two weeks or more". (2026-10-03: 2021-2026 medians 8, 20,
+    # 15.5, 166.5, 38, 41 days; the thin margin is 2023's 15.5 against 14.
+    # A late Exploit-DB entry for an old CVE adds a long gap, so a complete
+    # year's median mostly moves up.)
+    medians = _judged_medians(d)
+    recent = {y: m for y, m in medians.items() if y >= 2021}
+    assert len([y for y in recent if y < GENERATION_YEAR]) >= 4, (
+        f"too few complete years since 2021 to judge: {sorted(recent)}")
+    assert all(m > 0 for m in recent.values()), (
+        f"'Since 2021 the median has been positive' vs "
+        f"{sorted(recent.items())}")
+    since_2022 = {y: m for y, m in recent.items() if y >= 2022}
+    assert all(m >= 14 for m in since_2022.values()), (
+        f"'since 2022 it has been two weeks or more' needs every judged "
+        f"median since 2022 at 14 days or more; data says "
+        f"{sorted(since_2022.items())}")
+
+
+def check_only_2024_above_three_months(d: dict) -> None:
+    _require_exploit_dated_clock(d)
+    # editorial.js (exploits.html hero): "Only the 2024 cohort has a median
+    # above three months." (2026-10-03: 2024 at 166.5 days; every other
+    # charted year at 41 days or less, the pre-2003 years deeply negative.)
+    above = sorted(y for y, m in _judged_medians(d).items() if m > 90)
+    assert above == [2024], (
+        f"'Only the 2024 cohort has a median above three months' vs the "
+        f"years above 90 days: {above}")
 
 
 def check_early_records_catalogued_an_arsenal(d: dict) -> None:
@@ -118,16 +142,19 @@ def check_early_records_catalogued_an_arsenal(d: dict) -> None:
     )
 
 
-def check_just_over_half_kev_preempted(d: dict) -> None:
+def check_about_half_kev_preempted(d: dict) -> None:
     _require_exploit_dated_clock(d)
-    # editorial.js (exploits.html #2): "just over half of the listings with
-    # a dated PoC were beaten to the announcement". (Exploit-DB-dated clock,
-    # 2026-09-21: 55.4% over 121 entries; the old mixed clock read 80.7%.)
+    # editorial.js (exploits.html #2): headline "public code preceded about
+    # half of KEV listings with a dated exploit" and caption "about half of
+    # the listings with a dated PoC had the code published before the
+    # listing day". (2026-09-29: 55.4% of 121; 2026-10-03: 54.5% of 123. The
+    # share drifts down as late Exploit-DB entries for listed CVEs count as
+    # code after the listing.)
     pct = d["kev_preempt"]["trend"]["pct_preempted"]
     n = d["kev_preempt"]["trend"]["with_poc_date"]
-    assert 50 <= pct <= 66, (
-        f"'just over half of the listings with a dated PoC were beaten to "
-        f"the announcement' claims 50-65%; data says {pct}% (over {n} entries)"
+    assert 40 <= pct <= 60, (
+        f"'about half of the listings with a dated PoC' claims 40-60%; "
+        f"data says {pct}% (over {n} entries)"
     )
 
 
@@ -178,6 +205,44 @@ def check_criticals_several_times_middle(d: dict) -> None:
     )
 
 
+def _coverage_pct(row: dict) -> float:
+    # The published pct is rounded to 0.1; the counts are exact.
+    return 100.0 * row["with_poc"] / row["total"]
+
+
+def check_highest_for_critical(d: dict) -> None:
+    # editorial.js (exploits.html #3): headline "Public exploit code is most
+    # common on CVEs rated critical." and caption "It is highest for
+    # critical-rated records". (2026-10-03, 2025 window: critical 5.01%,
+    # high 1.15%, medium 0.30%, low 0.25%, unscored 0.03%. The 2026
+    # records in the local corpus give 1.22% / 0.25% / 0.07% / 0.12%, so
+    # the order holds when the window moves in January.)
+    cov = d["coverage"]
+    rows = {r["bucket"]: r for r in cov["buckets"]}
+    critical = rows.get("9.0-10.0")
+    assert critical, "the critical bucket must survive the min-n gate"
+    others = {b: _coverage_pct(r) for b, r in rows.items() if b != "9.0-10.0"}
+    if cov["unscored"]["total"]:
+        others["unscored"] = _coverage_pct(cov["unscored"])
+    assert _coverage_pct(critical) > max(others.values()), (
+        f"'highest for critical-rated records' vs critical "
+        f"{_coverage_pct(critical):.2f}% and {others}")
+
+
+def check_low_and_medium_below_half_a_percent(d: dict) -> None:
+    # editorial.js (exploits.html #3): "below half a percent for low- and
+    # medium-rated ones". (2026-10-03, 2025 window: low 4 of 1,603 = 0.25%,
+    # medium 72 of 23,720 = 0.30%; the 2026 records in the local corpus
+    # give 0.12% and 0.07%.)
+    rows = {r["bucket"]: r for r in d["coverage"]["buckets"]}
+    for bucket in ("0.0-3.9", "4.0-6.9"):
+        assert bucket in rows, f"{bucket} must survive the min-n gate"
+        pct = _coverage_pct(rows[bucket])
+        assert pct < 0.5, (
+            f"'below half a percent for low- and medium-rated ones' vs "
+            f"{bucket} at {pct:.2f}%")
+
+
 def check_few_percent_ever_get_a_poc(d: dict) -> None:
     # editorial.js (exploits.html hero methodology): "only a few percent of
     # records ever get a tracked public exploit". Exploit code only — the
@@ -226,9 +291,21 @@ CLAIMS = [
         check_newest_cohorts_are_a_few_hundred,
     ),
     (
-        "Since 2021 the median has been positive, weeks after publication",
+        "Since 2022, the median first public exploit has come two weeks or "
+        "more after the CVE record.",
         "time_to_poc.json",
-        check_median_moved_to_weeks_after_since_2021,
+        check_two_weeks_or_more_since_2022,
+    ),
+    (
+        "Since 2021 the median has been positive, and since 2022 it has been "
+        "two weeks or more",
+        "time_to_poc.json",
+        check_two_weeks_or_more_since_2022,
+    ),
+    (
+        "Only the 2024 cohort has a median above three months.",
+        "time_to_poc.json",
+        check_only_2024_above_three_months,
     ),
     (
         "the dated cohort per year is now well under a fifth of its late-2000s size",
@@ -246,9 +323,15 @@ CLAIMS = [
         check_early_records_catalogued_an_arsenal,
     ),
     (
-        "just over half of the listings with a dated PoC had the code published before the listing day",
+        "Since 2023, public code preceded about half of KEV listings with a "
+        "dated exploit.",
         "time_to_poc.json",
-        check_just_over_half_kev_preempted,
+        check_about_half_kev_preempted,
+    ),
+    (
+        "about half of the listings with a dated PoC had the code published before the listing day",
+        "time_to_poc.json",
+        check_about_half_kev_preempted,
     ),
     (
         "roughly a quarter of the catalog",
@@ -264,6 +347,21 @@ CLAIMS = [
         "at more than ten times the rate of medium-rated records",
         "time_to_poc.json",
         check_criticals_several_times_middle,
+    ),
+    (
+        "Public exploit code is most common on CVEs rated critical.",
+        "time_to_poc.json",
+        check_highest_for_critical,
+    ),
+    (
+        "It is highest for critical-rated records",
+        "time_to_poc.json",
+        check_highest_for_critical,
+    ),
+    (
+        "below half a percent for low- and medium-rated ones",
+        "time_to_poc.json",
+        check_low_and_medium_below_half_a_percent,
     ),
     (
         "only a few percent of records ever get a tracked public exploit",

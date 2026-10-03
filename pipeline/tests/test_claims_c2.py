@@ -78,17 +78,29 @@ def check_weather_not_blocklist(d: dict) -> None:
     walk(d)
 
 
-def check_postcard_sized(d: dict) -> None:
-    # editorial.js (c2.html composition headline): "The forecast fits on a
-    # postcard." — tonight's blocklist stays small. Tolerant ceiling: the
-    # tracker held single digits at launch (its FAQ credits takedowns);
-    # a sustained resurgence past ~60 C2s means the sentence — and the
-    # module's framing of quiet-as-normal — must be rewritten.
+def check_a_handful_listed(d: dict) -> None:
+    # editorial.js (c2.html composition headline): "Tonight's blocklist
+    # holds a handful of C2 servers." (2026-10-03: 5, unchanged since the
+    # record began on 2026-07-21.) More than ten is not a handful.
     size = d["catalog"]["snapshot_size"]
-    assert size <= 60, (
-        f"'fits on a postcard' needs a small snapshot; tonight's blocklist "
-        f"holds {size} C2s — rewrite the copy for the new weather"
+    assert size <= 10, (
+        f"'a handful of C2 servers' needs ten or fewer; tonight's blocklist "
+        f"holds {size}"
     )
+
+
+def check_age_buckets_span(d: dict) -> None:
+    # editorial.js (c2.html age caption): "The buckets run from under 30
+    # days to over two years; a bucket is empty when no listed server was
+    # first seen in that range." — every bucket is published, empty ones
+    # at zero. (2026-10-03: the two youngest are empty.)
+    buckets = d["c2_age"]["buckets"]
+    if not d["c2_age"]["n"]:
+        return  # an empty blocklist renders the no-data card instead
+    labels = [b["label"] for b in buckets]
+    assert labels[0] == "under 30 days" and labels[-1] == "over 2 years", (
+        labels)
+    assert sum(b["n"] for b in buckets) == d["c2_age"]["n"], buckets
 
 
 # --------------------------------------------------------------------------
@@ -103,7 +115,13 @@ CLAIMS = [
     (
         "Tonight's blocklist holds a handful of C2 servers.",
         "botnet_weather.json",
-        check_postcard_sized,
+        check_a_handful_listed,
+    ),
+    (
+        "The buckets run from under 30 days to over two years; a bucket is "
+        "empty when no listed server was first seen in that range.",
+        "botnet_weather.json",
+        check_age_buckets_span,
     ),
 ]
 

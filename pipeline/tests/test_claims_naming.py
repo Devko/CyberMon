@@ -47,13 +47,42 @@ def load(name: str) -> dict:
     return claims_support.read_json(path)
 
 
+def _groups_with_at_least(d: dict, n: int) -> int:
+    return sum(b["n"] for b in d["distribution"] if b["alt_count"] >= n)
+
+
 def check_most_renamed_at_least_a_dozen(d: dict) -> None:
-    # editorial.js (naming.html hero): "The most-renamed answer to a dozen or
-    # more names apiece"
-    n = d["headline"]["most_renamed_alt_count"]
-    assert n >= 12, (
-        f"'answer to a dozen or more names apiece' needs the most-renamed "
-        f"group to carry at least 12 alternate names; the data has {n}"
+    # editorial.js (naming.html hero): "The most-renamed ATT&CK groups carry
+    # a dozen or more alternate names each." — plural, so at least two
+    # groups. (ATT&CK v19.2, 2026-10-03: APT28 and Mustang Panda 15, APT29
+    # 14, the next group, OilRig, 11.)
+    n = _groups_with_at_least(d, 12)
+    assert n >= 2, (
+        f"'the most-renamed groups carry a dozen or more names each' needs "
+        f"at least two groups with 12 or more alternate names; the data "
+        f"has {n}"
+    )
+
+
+def check_most_renamed_more_than_a_dozen(d: dict) -> None:
+    # editorial.js (home card 14): "ATT&CK's most-renamed threat groups
+    # carry more than a dozen other names each." — at least two groups with
+    # 13 or more. (2026-10-03: three, at 15, 15 and 14.)
+    n = _groups_with_at_least(d, 13)
+    assert n >= 2, (
+        f"'more than a dozen other names each' needs at least two groups "
+        f"with 13 or more alternate names; the data has {n}"
+    )
+
+
+def check_short_tail_of_ten_or_more(d: dict) -> None:
+    # editorial.js (naming.html alias counts): "a short tail of groups has
+    # ten or more". (2026-10-03: 6 of 176 groups.)
+    total = d["headline"]["total_groups"]
+    tail = _groups_with_at_least(d, 10)
+    assert 1 <= tail <= total / 10, (
+        f"'a short tail of groups has ten or more' needs between one group "
+        f"and a tenth of the {total} groups; it is {tail}"
     )
 
 
@@ -74,14 +103,34 @@ def check_roughly_four_in_ten_have_no_alias(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
+        "The most-renamed ATT&CK groups carry a dozen or more alternate names each.",
+        "naming.json",
+        check_most_renamed_at_least_a_dozen,
+    ),
+    (
         "a dozen or more names apiece",
         "naming.json",
         check_most_renamed_at_least_a_dozen,
     ),
     (
+        "ATT&CK's most-renamed threat groups carry more than a dozen other names each.",
+        "naming.json",
+        check_most_renamed_more_than_a_dozen,
+    ),
+    (
         "roughly four in ten tracked groups carry no second name",
         "naming.json",
         check_roughly_four_in_ten_have_no_alias,
+    ),
+    (
+        "Roughly four in ten groups have none",
+        "naming.json",
+        check_roughly_four_in_ten_have_no_alias,
+    ),
+    (
+        "a short tail of groups has ten or more",
+        "naming.json",
+        check_short_tail_of_ten_or_more,
     ),
 ]
 

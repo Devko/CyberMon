@@ -327,7 +327,7 @@ stage `pipeline/cna_roster.py`; no shared upstream.
 
 ### 19 · Time to PoC — [exploits.html](https://devko.github.io/CyberMon/exploits.html) (live)
 
-*Since 2021 the median public exploit has appeared a week or more after the CVE.* Three charts joining the public exploit trackers to the CVE
+*Since 2022 the median public exploit has appeared two weeks or more after the CVE.* Three charts joining the public exploit trackers to the CVE
 corpus — the third leg of the exploitation trilogy (KEV Latency is the
 government's clock, EPSS Before KEV the forecast's day-before snapshot, this the
 attacker's): the gap from CVE publication to the first dated public PoC

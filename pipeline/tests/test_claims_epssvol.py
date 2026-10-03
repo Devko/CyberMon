@@ -165,3 +165,53 @@ def test_json_and_csv_agree_on_the_record():
         assert cat["first_observed"] == min(r["observed_date"] for r in rows)
     else:
         assert cat["first_observed"] is None
+
+
+# --------------------------------------------------------------------------
+# Measured claims, now that the record has two months behind it.
+# --------------------------------------------------------------------------
+
+
+def check_most_clean_nights_move_ten_points(d: dict) -> None:
+    # movers caption: "On most clean nights some CVE's probability moves by
+    # ten percentage points or more, but it is one CVE among the hundreds of
+    # thousands compared." Each log row carries the night's largest move;
+    # the clean nights are the ones the gap chart keeps. (2026-10-03: 50 of
+    # 58 clean nights at 10 points or more; 349,158-382,205 CVEs compared a
+    # night.) The log can lag the JSON by a night (cache artefact), so only
+    # nights present in both are counted.
+    trend = {x["date"] for x in d["gap"]["days"]}
+    if len(trend) < 14:
+        pytest.skip("fewer than two weeks of clean nights — too few to judge")
+    rows = [r for r in load_csv() if r["observed_date"] in trend]
+    big = sum(1 for r in rows if r["top_cve"]
+              and abs(float(r["top_new"]) - float(r["top_old"])) >= 0.1 - 1e-9)
+    assert big > len(rows) / 2, (
+        f"'On most clean nights some CVE's probability moves by ten "
+        f"percentage points or more' vs {big} of {len(rows)} clean nights")
+    fewest = min(int(r["n_compared"]) for r in rows)
+    assert fewest >= 200_000, (
+        f"'one CVE among the hundreds of thousands compared' vs a night "
+        f"comparing {fewest:,}")
+
+
+# (verbatim claim from editorial.js, data file, assertion) — anchored by
+# test_claims_anchors.py.
+CLAIMS = [
+    (
+        "On most clean nights some CVE's probability moves by ten percentage "
+        "points or more, but it is one CVE among the hundreds of thousands "
+        "compared.",
+        "epss_volatility.json",
+        check_most_clean_nights_move_ten_points,
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    ("claim", "filename", "check"),
+    CLAIMS,
+    ids=[c[2].__name__ for c in CLAIMS],
+)
+def test_claim_still_true(claim: str, filename: str, check) -> None:
+    check(load_obj())

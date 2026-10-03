@@ -279,8 +279,12 @@ def check_movers_exceed_25pp(d: dict) -> None:
 
 
 def check_percentiles_vs_probabilities(d: dict) -> None:
+    # epssvol hero: "On an average night, EPSS percentiles move for nearly
+    # all CVEs and probabilities for about 1%." The gap shares pool every
+    # clean night (2026-10-03: 97.2% and 1.0% over 58 nights; single nights
+    # run 83.5-99.8% and 0.7-2.9%, which is why the copy says "average").
     g = d["gap"]
-    assert g["pct_moved_pct"] >= 90 and 0.3 <= g["prob_moved_pct"] <= 2.0, g
+    assert g["pct_moved_pct"] >= 90 and 0.5 <= g["prob_moved_pct"] <= 1.5, g
 
 
 # ------------------------------------------------------- ATT&CK / naming / C2
@@ -335,8 +339,12 @@ def check_joined_outnumber_left(d: dict) -> None:
 
 
 def check_cisa_about_half(d: dict) -> None:
+    # adp hero and home card: "about half of all published CVE records".
+    # (2026-07-19: 47.4%; 2026-10-03: 50.7%, rising about 1.3 points a
+    # month. At that pace the share reaches 55% around January-February
+    # 2027, and the copy then needs "more than half".)
     pct = d["headline"]["pct_cisa"]
-    assert 40 <= pct <= 60, pct
+    assert 45 <= pct <= 55, pct
     assert d["headline"]["first_month"] >= "2024-01", d["headline"]["first_month"]
 
 
@@ -396,10 +404,24 @@ def check_tuesday_busiest_since_2022(d: dict) -> None:
             assert y["pct"].index(max(y["pct"])) == 1, (y["year"], y["pct"])
 
 
-def check_exploit_a_week_or_more_since_2021(d: dict) -> None:
-    rows = [r for r in d["hero"]["years"] if r["year"] >= 2021]
-    assert rows and all(r["median_days"] >= 7 for r in rows), \
+def check_exploit_two_weeks_or_more_since_2022(d: dict) -> None:
+    # 2022-2026 medians 20 15.5 166.5 38 41 days (2026-10-03). The current
+    # year counts once it holds 100 dated CVEs: before that a few weeks of
+    # records, each with only days to attract code, set the median.
+    rows = [r for r in d["hero"]["years"] if r["year"] >= 2022
+            and claims_support.judged(r["year"], r["n"], min_n=100)]
+    assert len(rows) >= 4 and all(r["median_days"] >= 14 for r in rows), \
         [(r["year"], r["median_days"]) for r in rows]
+
+
+def check_rescores_mostly_first_scores(d: dict) -> None:
+    # rescores card: "mostly by adding a missing score"; Observatory card:
+    # "CNA score changes (mostly first scores on existing records)".
+    # (2026-10-03: 5,368 of 5,502 logged events are first scores, 97.6%.)
+    counts = d["counts"] if "counts" in d else d["catalog"]["totals"]
+    kinds = ("rescore", "version_shift", "first_score", "score_removed")
+    total = sum(counts[k] for k in kinds)
+    assert total and counts["first_score"] > total / 2, counts
 
 
 def check_dozens_of_incident_filings(d: dict) -> None:
@@ -473,7 +495,7 @@ CLAIMS = [
      "kev_latency.json", check_listing_takes_weeks),
     ("The twenty largest single-night EPSS probability moves each exceed 25 percentage points.",
      "epss_volatility.json", check_movers_exceed_25pp),
-    ("EPSS percentiles move for nearly all CVEs each night; probabilities for about 1%.",
+    ("On an average night, EPSS percentiles move for nearly all CVEs and probabilities for about 1%.",
      "epss_volatility.json", check_percentiles_vs_probabilities),
     ("The ATT&CK enterprise matrix has grown every year since 2018.",
      "attack_churn.json", check_matrix_grew_every_year),
@@ -491,6 +513,8 @@ CLAIMS = [
      "cna_roster.json", check_joined_outnumber_left),
     ("Since mid-2024, CISA has enriched about half of all published CVE records.",
      "adp_coverage.json", check_cisa_about_half),
+    ("CISA's Vulnrichment program has added data to about half of all published CVEs.",
+     "adp_coverage.json", check_cisa_about_half),
     ("Rejection rates differ by more than tenfold between CNAs.",
      "cna_concentration.json", check_rejection_tenfold),
     ("Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.",
@@ -505,8 +529,12 @@ CLAIMS = [
      "dnssec_adoption.json", check_fewer_than_half_validate),
     ("Since 2022, more CVEs have been published on Tuesday than on any other day.",
      "cve_calendar.json", check_tuesday_busiest_since_2022),
-    ("Since 2021 the median public exploit has appeared a week or more after the CVE.",
-     "time_to_poc.json", check_exploit_a_week_or_more_since_2021),
+    ("Since 2022 the median public exploit has appeared two weeks or more after the CVE.",
+     "time_to_poc.json", check_exploit_two_weeks_or_more_since_2022),
+    ("CNAs change CVSS scores on published CVE records, mostly by adding a missing score.",
+     "rescore_log.json", check_rescores_mostly_first_scores),
+    ("CNA score changes (mostly first scores on existing records)",
+     "observatory.json", check_rescores_mostly_first_scores),
     ("Public exploit code in Exploit-DB has not appeared sooner since ChatGPT.",
      "ai_alibi.json", check_public_code_not_sooner),
     ("so recent medians rest on far fewer CVEs",

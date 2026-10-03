@@ -71,10 +71,31 @@ def check_two_roots_mitre_larger(d: dict) -> None:
     )
 
 
+def check_nearly_all_assigning(d: dict) -> None:
+    # editorial.js (roster.html mix caption): "Nearly all of the listed
+    # organizations hold an assigning role (CNA or CNA-LR)". (2026-10-03:
+    # 553 of 554.) Editions before 2026-09-21 carry no assigning count.
+    h = d["headline"]
+    if "assigning_n" not in h:
+        pytest.skip("cna_roster.json predates the assigning-role count")
+    share = 100.0 * h["assigning_n"] / h["roster_total"]
+    assert share >= 95.0, (
+        f"'Nearly all of the listed organizations hold an assigning role' "
+        f"needs 95% or more; it is {share:.1f}% "
+        f"({h['assigning_n']} of {h['roster_total']})"
+    )
+
+
 # --------------------------------------------------------------------------
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
+    (
+        "Nearly all of the listed organizations hold an assigning role (CNA or "
+        "CNA-LR)",
+        "cna_roster.json",
+        check_nearly_all_assigning,
+    ),
     (
         "Most organizations on the CVE roster are vendors.",
         "cna_roster.json",
