@@ -165,10 +165,30 @@ failure is the reminder, and the test says so. `check_kev_getting_slower`,
 `check_more_assignors_than_ever` and `check_volume_belongs_to_a_handful`
 pass on the 2026 values as they stand.
 
-Rehearsal: `CYBERMON_REHEARSE_YEAR=2027 python -m pytest pipeline/tests/test_claims_audit.py`
+Rehearsal: `CYBERMON_REHEARSE_YEAR=2027 python -m pytest pipeline/tests`
 judges every raw-series guard as if the edition were generated next year.
 Headline blocks are computed by the pipeline and cannot be rehearsed from
 committed data; those guards are the pinned ones above.
+
+**Extended 2026-10-03.** That rehearsal models the partial year becoming
+complete; it does not model the new year that has barely started, and
+`test_claims_copy.py` ignored the variable altogether, so nine guards that
+would have gone red in the first week of January 2027 passed it (CVE volume
+"rises every year" would have stayed red for most of the year). All suites
+now share `pipeline/tests/claims_support.py`, and the full January check is
+three runs, all green except the guard above that fails on purpose:
+
+    CYBERMON_REHEARSE_YEAR=2027 python -m pytest pipeline/tests
+    CYBERMON_REHEARSE_YEAR=2027 CYBERMON_REHEARSE_TINY=low  python -m pytest pipeline/tests
+    CYBERMON_REHEARSE_YEAR=2027 CYBERMON_REHEARSE_TINY=high python -m pytest pipeline/tests
+
+`TINY` appends a few-days-old 2027 row to every year series (counts at 1%,
+other numbers zeroed or doubled). A guard that reads the current year must
+go through `claims_support.judged(year, n, min_n=...)`. Re-run all three in
+mid-December: the plain run judges 2026 on its values as they stand, so a
+"2026 grew over 2025" guard can fail there in October and pass by year end.
+`python tools/claims_history.py --last 9` runs the guards against each past
+nightly edition, which is how a rewritten claim is tested for headroom.
 
 ## Shipped outside the backlog
 
