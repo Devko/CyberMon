@@ -161,8 +161,8 @@ def check_every_edit_kind_exists(d: dict) -> None:
 
 
 def check_additions_excluded(d: dict) -> None:
-    # editorial.js (changelog.html hero): "New listings are deliberately
-    # not counted — a growing catalog is the system working" — the
+    # editorial.js (changelog.html hero): "New listings are not counted;
+    # the chart counts changes to entries already published." — the
     # exclusion must be real and disclosed (trial: 1,335 additions).
     catalog = d["catalog"]
     assert catalog["additions_excluded"] >= 100, (
@@ -257,7 +257,8 @@ CLAIMS = [
         check_every_edit_kind_exists,
     ),
     (
-        "New listings are deliberately not counted",
+        "New listings are not counted; the chart counts changes to entries "
+        "already published.",
         check_additions_excluded,
     ),
     (

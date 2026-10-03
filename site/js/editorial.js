@@ -392,7 +392,7 @@ export const editorial = {
         href: "exploits.html",
         num: "19",
         label: "Time to PoC",
-        headline: "Since 2021 the median public exploit has appeared a week or more after the CVE.",
+        headline: "Since 2022 the median public exploit has appeared two weeks or more after the CVE.",
         blurb:
           "Days from CVE publication to the first public exploit code dated by Exploit-DB " +
           "(negative when the exploit came first), how often public exploit code was out " +
@@ -2333,8 +2333,7 @@ export const editorial = {
         "the last observed one, keeps every difference, and records the edits as a " +
         "per-field ledger. Bars count edits per month: remediation deadlines moved, " +
         "ransomware flags flipped, text revised, and entries removed. New listings are " +
-        "deliberately not counted; the chart counts changes to entries already " +
-        "published.",
+        "not counted; the chart counts changes to entries already published.",
       statLabel: "Edits to already-published entries since the record began",
       statNote: "edits across a catalog of {entries} entries · new listings excluded: {additions}",
       legendDueDate: "Due date moved",
@@ -2421,8 +2420,8 @@ export const editorial = {
         "the column existed, and the curve shows them as the step where the record's " +
         "flag history begins. The median is published only with at least 10 observed " +
         "flips; below that, only the count is published. Flips back to “Unknown” are " +
-        "tracked (none so far) and reported in the data file as reversals, separately " +
-        "from the total.",
+        "tracked and reported in the data file as reversals, separately from the " +
+        "total.",
     },
 
     // --------------------------------------------- changelog.html · 3
@@ -2564,7 +2563,7 @@ export const editorial = {
       caption:
         "Each bar counts the active tracked groups with that many alternate names. " +
         "Roughly four in ten groups have none (ATT&CK lists no other name for them), " +
-        "while a short tail of groups has ten or more, up to fifteen.",
+        "while a short tail of groups has ten or more.",
       xAxis: "alternate names per group",
       yAxis: "tracked groups",
       nodata: "Not enough data yet.",
@@ -2586,8 +2585,8 @@ export const editorial = {
         "MITRE publishes the CWE Top 25 annually, ranking the weakness classes it " +
         "considers most dangerous. The table sets each class's official rank beside " +
         "its measured rank: how often the class is the first-listed CWE on a " +
-        "published CVE record. The two orders differ, and a few official picks fall " +
-        "outside the 25 most common weaknesses in the measured window. The two ranks " +
+        "published CVE record. The two orders differ, and not every official pick " +
+        "ranks among the 25 most common weaknesses in the measured window. The two ranks " +
         "measure different things. MITRE weights each class's NVD frequency by the " +
         "average CVSS severity of its CVEs over one year; the measured rank counts " +
         "frequency alone over five years. The comparison shows where the definitions " +
@@ -2703,7 +2702,8 @@ export const editorial = {
         "2024 analysis slowdown as a line: CyberMon's own NVD backlog record begins " +
         "at launch, so there is no 2024 NVD series to chart. The slowdown is " +
         "described in prose, and the backlog figure shown for comparison is read in " +
-        "the browser from the current nvd_decay.json; it is context, not a trend. " +
+        "the browser from the current nvd_decay.json and left out when that file was " +
+        "carried forward from an earlier night; it is context, not a trend. " +
         "Counts are of the cvelistV5 corpus, which is the source of truth for the " +
         "CVE List.",
     },
@@ -2747,9 +2747,9 @@ export const editorial = {
         "An Authorized Data Publisher (ADP) adds its own container to a CVE record, " +
         "separate from the assigning CNA's. The board ranks ADP publishers by the " +
         "records where they added SSVC decision points, a CVSS score or a CWE; " +
-        "references alone do not count. CISA-ADP leads by a wide margin. Other " +
-        "publishers that clear the bar, currently supplier ADPs that add data about " +
-        "products they ship, do so on far fewer records. The CVE Program's own ADP " +
+        "references alone do not count. CISA-ADP leads by a wide margin. One other " +
+        "publisher clears the bar: Red Hat's supplier ADP, which adds data about " +
+        "products Red Hat ships, on well under 1% of records. The CVE Program's own ADP " +
         "container (the “CVE Program Container”) adds only references, so it does " +
         "not appear.",
       statTemplate: "{shown} ADP publishers with substantive enrichment · CISA-ADP on {pct} of the published corpus",
@@ -2765,9 +2765,9 @@ export const editorial = {
         "the CVE v5 mechanism for an organization other than the assigning CNA to " +
         "add data to a record. The CVE Program's own ADP container is on most " +
         "records but adds only references, so it is not counted. CISA-ADP accounts " +
-        "for nearly all substantive enrichment; the other publishers that clear the " +
-        "bar are currently supplier ADPs, each on a small fraction of the records " +
-        "CISA-ADP covers.",
+        "for nearly all substantive enrichment; the one other publisher that clears " +
+        "the bar is Red Hat's supplier ADP (redhat-SADP), on well under 1% of " +
+        "published records.",
     },
 
     // --------------------------------- epssvol.html · 1 · hero
@@ -2775,7 +2775,7 @@ export const editorial = {
       num: "01",
       kicker: "Percentile vs probability",
       source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
-      headline: "EPSS percentiles move for nearly all CVEs each night; probabilities for about 1%.",
+      headline: "On an average night, EPSS percentiles move for nearly all CVEs and probabilities for about 1%.",
       caption:
         "EPSS publishes two figures per CVE: a probability of exploitation and a " +
         "percentile that ranks it against all other scored CVEs. The percentile " +
@@ -3035,8 +3035,9 @@ export const editorial = {
         "it lists: vendor, open source, researcher, hosted service, CERT, bug bounty " +
         "provider and others. Most are vendors. An organization can list more than " +
         "one type, so the bars sum to more than the roster total. The total counts " +
-        "every organization listed, including the roots, ADPs and secretariat, so " +
-        "the count of organizations with an assigning role beside it is smaller. " +
+        "every organization listed, including the roots, ADPs and secretariat. " +
+        "Nearly all of the listed organizations hold an assigning role (CNA or " +
+        "CNA-LR); that count is shown beside the total. " +
         "Two top-level roots, MITRE and CISA, oversee the rest.",
       statTemplate:
         "{total} organizations listed, {assigning} with an assigning role · " +
@@ -3063,7 +3064,7 @@ export const editorial = {
       num: "01",
       kicker: "Days to first public exploit",
       source: "Exploit-DB (OffSec) · cvelistV5 (MITRE)",
-      headline: "Since 2021, the first public exploit has typically come weeks after the CVE record.",
+      headline: "Since 2022, the median first public exploit has come two weeks or more after the CVE record.",
       caption:
         "For every CVE with dated public exploit code: the days from the CVE record's " +
         "publication to the first public exploit, as a median and interquartile range " +
@@ -3073,11 +3074,11 @@ export const editorial = {
         "most of those years it was negative: among CVEs that got public exploit code, " +
         "the code usually existed by the time the record was published. Values below " +
         "zero are exploits published with the advisory, or years before a CVE ID was " +
-        "assigned. Since 2021 the median has been positive, weeks after publication, on " +
-        "cohorts a fraction of their earlier size. Those cohorts hold one to three " +
-        "hundred CVEs each, and the youngest are still being indexed by the archive, so " +
-        "the AI and PoC Timing page marks them provisional. The 2024 cohort, with a median of " +
-        "months, is a single outlier year, not a trend. This is public exploit code in " +
+        "assigned. Since 2021 the median has been positive, and since 2022 it has been " +
+        "two weeks or more. The cohorts since 2021 are a fraction of their earlier " +
+        "size, one to three hundred CVEs each, and the youngest are still being indexed " +
+        "by the archive, so the AI and PoC Timing page marks them provisional. Only the " +
+        "2024 cohort has a median above three months. This is public exploit code in " +
         "one archive, not exploitation in the wild, which vendors measuring attacks " +
         "from incident data report as much faster.",
       statLabel: "Median days from CVE publication to first public exploit code",
@@ -3122,14 +3123,14 @@ export const editorial = {
       num: "02",
       kicker: "Exploit code before KEV listing",
       source: "CISA KEV · Exploit-DB (OffSec)",
-      headline: "Since 2023, public code preceded just over half of KEV listings with a dated exploit.",
+      headline: "Since 2023, public code preceded about half of KEV listings with a dated exploit.",
       caption:
         "CISA's Known Exploited Vulnerabilities (KEV) catalog lists vulnerabilities " +
         "the U.S. government has confirmed are exploited in the wild. For KEV entries " +
         "whose CVE has a dated public exploit, each bar is the share whose exploit code " +
         "was public before the day CISA listed the entry. The 2021–22 seeding years are " +
         "drawn muted: the catalog's launch imported years-old CVEs, and their exploit " +
-        "code, where dated, almost always came first. From 2023 on, just over half of " +
+        "code, where dated, almost always came first. From 2023 on, about half of " +
         "the listings with a dated PoC had the code published before the listing day.",
       note:
         "Since {cutoff_year}: for {trend_pct} of the {trend_n} KEV listings with a " +
@@ -3163,11 +3164,11 @@ export const editorial = {
         "or a Metasploit exploit module. Nuclei detection templates appear in the " +
         "tooltip as a separate count, since a detection check is not an exploit. " +
         "Coverage is low in every bucket: the overwhelming majority of records have no " +
-        "tracked public exploit code. It rises with severity, and critical-rated records " +
-        "have public exploit code at more than ten times the rate of medium-rated " +
-        "records. Score vs. Reality, on the CVE Ecosystem page, sets the same severity " +
-        "buckets against EPSS forecasts of exploitation; this chart counts exploit code " +
-        "already published.",
+        "tracked public exploit code. It is highest for critical-rated records, at more " +
+        "than ten times the rate of medium-rated records, and below half a percent for " +
+        "low- and medium-rated ones. Score vs. Reality, on the CVE Ecosystem page, sets " +
+        "the same severity buckets against EPSS forecasts of exploitation; this chart " +
+        "counts exploit code already published.",
       note:
         "Records published in {window_year}, the latest complete year. A young record " +
         "has had limited time to attract code and coverage can only grow, so each bar " +
@@ -3286,9 +3287,9 @@ export const editorial = {
       caption:
         "For every server on tonight's blocklist, the days since Feodo Tracker " +
         "first saw it. This is its age on the tracker; it does not show that the " +
-        "server was listed throughout or that it still responds. The youngest " +
-        "buckets hold servers first seen recently; the oldest hold servers first " +
-        "seen long ago that are still listed. The median changes when entries are " +
+        "server was listed throughout or that it still responds. The buckets run " +
+        "from under 30 days to over two years; a bucket is empty when no listed " +
+        "server was first seen in that range. The median changes when entries are " +
         "added or removed; while the list is unchanged it rises by one day each " +
         "night. Tonight's value is shown above the chart.",
       statLabel: "Median age of tonight's listed C2s",

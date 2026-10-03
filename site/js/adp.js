@@ -45,8 +45,10 @@ async function boot() {
 
   // Best-effort NVD context: resolve to { nvdBacklog } — a number or null —
   // and NEVER reject, so a missing/failed nvd_decay.json can't card the page.
+  // A carried-forward file (stale: true) is an earlier night's count, so the
+  // "tonight's edition" line is left out rather than misdated.
   const nvdCtx = fetchJSON(NVD_FILE)
-    .then((d) => ({ nvdBacklog: d?.current?.backlog_total ?? null }))
+    .then((d) => ({ nvdBacklog: d?.stale ? null : d?.current?.backlog_total ?? null }))
     .catch(() => ({ nvdBacklog: null }));
 
   jobs.push(
