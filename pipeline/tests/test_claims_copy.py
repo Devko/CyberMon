@@ -45,10 +45,84 @@ def load(name: str) -> dict:
 def check_agentic_ai_steepest(d: dict) -> None:
     # risers headline. (2026-09-23: +255.8% GDELT, +583.3% arXiv.)
     for src in ("gdelt", "arxiv"):
-        rows = [(t["yoy"][src]["pct_change"], t["id"]) for t in d["terms"]
-                if t["yoy"].get(src) and t["yoy"][src].get("pct_change") is not None]
+        by_id = {t["id"]: t["yoy"].get(src) for t in d["terms"]}
+        if (by_id.get("agentic_ai") or {}).get("pct_change") is None:
+            agentic_ai_yoy_withheld(d, src)
+            continue
+        rows = [(y["pct_change"], term_id) for term_id, y in by_id.items()
+                if y and y.get("pct_change") is not None]
         top = max(rows)
         assert top[1] == "agentic_ai", f"{src}: steepest riser is {top}"
+
+
+def agentic_ai_yoy_withheld(d: dict, src: str) -> None:
+    """Agentic AI posts no YoY for ``src`` tonight, so the data neither
+    confirms nor contradicts the headline; the risers table leaves the row
+    off and its eligibility note says why.
+
+    The usual cause is GDELT's rate limit meeting the month rollover
+    (market_metrics.term_partial): from a hosted runner about one GDELT
+    request in five lands, and a term's YoY stays withheld from the 1st of
+    the month until its own fetch lands once. That kept the nightly red
+    from 2026-10-01 to 10-03 while the GDELT figure itself (+255.8% against
+    +114.5% for the next term on 09-29) was not in doubt.
+
+    So a withheld GDELT figure may ship during the first
+    ``ROLLOVER_GRACE_DAYS`` of a month, and only while the lane itself is
+    alive (a lane in ``stale_sources`` has not landed any term for three
+    days: that is an outage, not the rollover). Once a green night skips the
+    08:43 catch-up, the term gets one try a day at about 36% (two requests),
+    so ten days leaves about a 1% chance it has still not landed. Anything
+    else withheld fails: arXiv rarely misses, and a GDELT gap later in the
+    month means the fetch is broken for this term, not waiting.
+    """
+    day = int(d["generated_at"][8:10])
+    assert src == "gdelt", (
+        f"{src}: agentic_ai has no published YoY tonight; only a GDELT gap "
+        f"after the month rollover may ship unchecked")
+    assert src not in d.get("stale_sources", []), (
+        f"{src}: the lane is stale, so agentic_ai's missing YoY is an outage")
+    assert day <= ROLLOVER_GRACE_DAYS, (
+        f"{src}: agentic_ai's YoY is still withheld on day {day} of the "
+        f"month (grace is {ROLLOVER_GRACE_DAYS}); its GDELT fetch is not "
+        f"landing")
+
+
+ROLLOVER_GRACE_DAYS = 10
+
+
+def _market_with(agentic_gdelt, generated_at, stale=()):
+    """A minimal market_hype.json for the withheld-YoY rule."""
+    def term(term_id, gdelt, arxiv):
+        return {"id": term_id, "yoy": {"gdelt": gdelt, "arxiv": arxiv}}
+    return {"generated_at": generated_at, "stale_sources": list(stale),
+            "terms": [term("agentic_ai", agentic_gdelt, {"pct_change": 500.0}),
+                      term("ai_security", {"pct_change": 108.8},
+                           {"pct_change": 110.0})]}
+
+
+@pytest.mark.parametrize(("agentic_gdelt", "generated_at", "stale", "ships"), [
+    ({"pct_change": 255.8}, "2026-10-20T02:43:00Z", (), True),   # published, top
+    ({"pct_change": 50.0}, "2026-10-02T02:43:00Z", (), False),   # published, beaten
+    (None, "2026-10-03T02:43:00Z", (), True),                    # rollover gap
+    (None, "2026-10-10T02:43:00Z", (), True),                    # last grace day
+    (None, "2026-10-11T02:43:00Z", (), False),                   # past grace
+    (None, "2026-10-03T02:43:00Z", ("gdelt",), False),           # lane outage
+])
+def test_agentic_ai_withheld_rule(agentic_gdelt, generated_at, stale, ships):
+    d = _market_with(agentic_gdelt, generated_at, stale)
+    if ships:
+        check_agentic_ai_steepest(d)
+    else:
+        with pytest.raises(AssertionError):
+            check_agentic_ai_steepest(d)
+
+
+def test_withheld_arxiv_never_ships():
+    d = _market_with({"pct_change": 255.8}, "2026-10-02T02:43:00Z")
+    d["terms"][0]["yoy"]["arxiv"] = None
+    with pytest.raises(AssertionError, match="only a GDELT gap"):
+        check_agentic_ai_steepest(d)
 
 
 def check_most_economies_half(d: dict) -> None:

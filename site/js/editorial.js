@@ -3696,10 +3696,12 @@ export const editorial = {
         "model, CVEs crediting an AI-security vendor, and all CVEs that carry a " +
         "credit. The baseline is drawn into each bar as a tick. Lab-credited " +
         "records have a higher median CVSS score and a much larger share of " +
-        "memory-safety weaknesses. On median EPSS percentile, listing in an " +
-        "exploit corpus and KEV membership, each AI column is within a handful " +
-        "of records of what the baseline rate would give a population its size. " +
-        "The comparison is descriptive and is not adjusted for publication age, " +
+        "memory-safety weaknesses. Median EPSS percentile is close to the " +
+        "baseline in both AI columns. On KEV membership, each AI column is " +
+        "within a handful of records of what the baseline rate would give a " +
+        "population its size, and so is the lab column on exploit-corpus " +
+        "listing. The vendor column has more records in an exploit corpus than " +
+        "that rate would give. The comparison is descriptive and is not adjusted for publication age, " +
         "target mix or crediting practice. The last row shows why age matters: " +
         "the lab-credited cohort is much younger than the baseline, and exploit " +
         "listings and KEV entries accumulate over time. The baseline is all " +
@@ -3880,13 +3882,13 @@ export const editorial = {
       num: "06",
       kicker: "Affected products",
       source: "CVE List V5 (MITRE)",
-      headline: "Five products account for about half of the lab-credited CVEs.",
+      headline: "Two products account for about a quarter of the lab-credited CVEs.",
       caption:
         "The affected product each record lists first, ranked per kind. The " +
-        "lab-credited records are concentrated: a browser, a Java crypto library " +
-        "and an operating system lead the list. The record does not say how " +
-        "those targets were chosen. The vendor-credited list is less " +
-        "concentrated, with its top five holding about a quarter. Its first row " +
+        "lab-credited records are concentrated: a Java crypto library and a " +
+        "browser lead the list, each well ahead of the third row. The record " +
+        "does not say how those targets were chosen. The vendor-credited list " +
+        "is less concentrated, with its top five holding about a quarter. Its first row " +
         "is Red Hat Enterprise Linux, which Red Hat, as CNA, lists first in its " +
         "records, including records for flaws in upstream packages.",
       shareTemplate:

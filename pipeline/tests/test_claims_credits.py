@@ -118,25 +118,44 @@ def check_lab_credited_score_higher_and_more_memory(d: dict) -> None:
     )
 
 
+def _at_baseline_rate(d: dict, kind: str, stage: str) -> tuple[int, float]:
+    """(observed, expected) records at ``stage`` for ``kind``, expected being
+    what the baseline rate gives a population the kind's size."""
+    base, f = d["baseline"], d["kinds"][kind]["funnel"]
+    return f[stage], f["credited"] * base[stage] / base["credited"]
+
+
 def check_exploitation_rows_within_a_handful_of_records(d: dict) -> None:
-    # editorial.js (credits.html 02): "the columns barely differ" / "each AI
-    # column is within a handful of records of what the baseline rate would
-    # give a population its size"
-    base = d["baseline"]
+    # editorial.js (credits.html 02): "Median EPSS percentile is close to the
+    # baseline in both AI columns. On KEV membership, each AI column is within
+    # a handful of records of what the baseline rate would give a population
+    # its size, and so is the lab column on exploit-corpus listing."
+    # The vendor exploit-corpus row left this claim on 2026-09-30 (15 vs 8.5);
+    # check_vendor_exploit_corpus_above_baseline_rate pins it now.
+    for kind, stage in (("llm", "kev"), ("vendor", "kev"), ("llm", "poc")):
+        observed, expected = _at_baseline_rate(d, kind, stage)
+        assert abs(observed - expected) <= 6, (
+            f"'within a handful of records' fails for {kind} {stage}: "
+            f"{observed} observed vs {expected:.1f} at the baseline rate"
+        )
     for kind in ("llm", "vendor"):
-        f = d["kinds"][kind]["funnel"]
-        for stage in ("poc", "kev"):
-            expected = f["credited"] * base[stage] / base["credited"]
-            assert abs(f[stage] - expected) <= 6, (
-                f"'within a handful of records' fails for {kind} {stage}: "
-                f"{f[stage]} observed vs {expected:.1f} at the baseline rate"
-            )
         gap = abs(d["profile"][kind]["median_epss_pctile"]
                   - d["profile"]["baseline"]["median_epss_pctile"])
         assert gap <= 5.0, (
-            f"'the columns barely differ' needs the {kind} median EPSS "
-            f"percentile within 5 of the baseline; it is {gap:.1f} away"
+            f"'Median EPSS percentile is close to the baseline' needs the "
+            f"{kind} median within 5 of the baseline; it is {gap:.1f} away"
         )
+
+
+def check_vendor_exploit_corpus_above_baseline_rate(d: dict) -> None:
+    # editorial.js (credits.html 02): "The vendor column has more records in
+    # an exploit corpus than that rate would give." (2026-09-29: 13 vs 8.5;
+    # 2026-10-03: 15 vs 8.5.)
+    observed, expected = _at_baseline_rate(d, "vendor", "poc")
+    assert observed > expected, (
+        f"'more records in an exploit corpus than that rate would give' "
+        f"fails: {observed} observed vs {expected:.1f} at the baseline rate"
+    )
 
 
 def check_lab_cohort_much_younger(d: dict) -> None:
@@ -347,19 +366,29 @@ def check_vendors_fall_between(d: dict) -> None:
 
 # ------------------------------------------------------------ 06 · targets
 
-def check_five_products_about_half_of_lab_cves(d: dict) -> None:
-    # editorial.js (credits.html 06): "Five products account for about half
-    # of the lab-credited CVEs." / "a browser, a Java crypto library and an
-    # operating system lead the list"
+def check_two_products_a_quarter_of_lab_cves(d: dict) -> None:
+    # editorial.js (credits.html 06): "Two products account for about a
+    # quarter of the lab-credited CVEs." / "a Java crypto library and a
+    # browser lead the list, each well ahead of the third row"
+    # Replaced "Five products ... about half" on 2026-10-03: a 52-CVE batch
+    # in four days took the top-5 share from 46.3% to 42.0%, and the third
+    # row (FreeBSD, then Bouncy Castle's C# edition) is not stable enough to
+    # name. Top two: 29.7% on 2026-09-29, 24.6% on 2026-10-03.
     t = d["targets"]["llm"]
-    assert t["top_share_n"] == 5 and 42.0 <= t["top_share_pct"] <= 58.0, (
-        f"'about half' needs the lab top-5 share in 42–58%; it is "
-        f"{t['top_share_pct']}%"
+    top2, third = t["projects"][:2], t["projects"][2]
+    share = sum(p["pct"] for p in top2)
+    assert 20.0 <= share <= 33.0, (
+        f"'about a quarter' needs the lab top-2 share in 20–33%; it is "
+        f"{share:.1f}%"
     )
-    top3 = " | ".join(p["label"].lower() for p in t["projects"][:3])
-    assert all(word in top3 for word in ("firefox", "bc-java", "freebsd")), (
-        f"'a browser, a Java crypto library and an operating system lead the "
-        f"list' — the top three are now {top3}"
+    labels = " | ".join(p["label"].lower() for p in top2)
+    assert all(word in labels for word in ("firefox", "bc-java")), (
+        f"'a Java crypto library and a browser lead the list' — the top two "
+        f"are now {labels}"
+    )
+    assert all(p["n"] >= 1.5 * third["n"] for p in top2), (
+        f"'each well ahead of the third row' needs 1.5x its count; "
+        f"{[p['n'] for p in top2]} vs {third['label']} at {third['n']}"
     )
 
 
@@ -409,6 +438,9 @@ CLAIMS = [
     ("each AI column is within a handful of records of what the baseline "
      "rate would give a population its size",
      "ai_credits.json", check_exploitation_rows_within_a_handful_of_records),
+    ("The vendor column has more records in an exploit corpus than that rate "
+     "would give.",
+     "ai_credits.json", check_vendor_exploit_corpus_above_baseline_rate),
     ("the lab-credited cohort is much younger than the baseline",
      "ai_credits.json", check_lab_cohort_much_younger),
     ("they are under two percent of it",
@@ -443,8 +475,11 @@ CLAIMS = [
     ("The vendor-credited population falls between the two on both memory "
      "safety and injection.",
      "ai_credits.json", check_vendors_fall_between),
-    ("Five products account for about half of the lab-credited CVEs.",
-     "ai_credits.json", check_five_products_about_half_of_lab_cves),
+    ("Two products account for about a quarter of the lab-credited CVEs.",
+     "ai_credits.json", check_two_products_a_quarter_of_lab_cves),
+    ("a Java crypto library and a browser lead the list, each well ahead of "
+     "the third row",
+     "ai_credits.json", check_two_products_a_quarter_of_lab_cves),
     ("with its top five holding about a quarter",
      "ai_credits.json", check_vendor_top_five_a_quarter_red_hat_first),
     ("Fewer than half of published CVEs carry any credit.",

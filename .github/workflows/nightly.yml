@@ -131,12 +131,14 @@ jobs:
             nvd-status-state-
 
       # Market-hype sync state (per-term monthly counts + HN backfill
-      # queue). Same self-healing semantics as the NVD state above.
+      # queue). Same self-healing semantics as the NVD state above, but
+      # restore-only here: it is saved right after the pipeline step, even
+      # on a failed night (see "Save market-hype sync state" below).
       - name: Restore market-hype sync state
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: .cache/market_state.json
-          key: market-state-${{ github.run_id }}
+          key: market-state-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             market-state-
 
@@ -219,6 +221,23 @@ jobs:
         # stream) from the same corpus pass. It lands in the gitignored
         # site/field/ and ships only inside the Pages artifact below.
         run: python -m pipeline --out site/data --field-out site/field
+
+      # The one state saved even when the job fails. It holds upstream
+      # counts and per-term fetch stamps, nothing derived from what was
+      # published, so keeping it after a failed night loses nothing. Not
+      # keeping it cost four days in October 2026: GDELT answers about one
+      # request in five from a hosted runner (35 of 168 first attempts over
+      # twelve runs, 2026-09-26 to 10-03), every term must land once after
+      # the month rolls over before its YoY is published again, and each
+      # failed night threw away the terms that had landed, so the next run
+      # started from the same pre-rollover state. Every other cache above
+      # keeps the save-on-success rule.
+      - name: Save market-hype sync state
+        if: ${{ !cancelled() && hashFiles('.cache/market_state.json') != '' }}
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/market_state.json
+          key: market-state-${{ github.run_id }}-${{ github.run_attempt }}
 
       # The gate that stops a drifted claim from shipping. contracts.py
       # already validates every output's structure in-pipeline, but the
