@@ -51,6 +51,11 @@ const fmtClock = (ym) => {
   return `${MONTHS[Number(m) - 1]} ${y}`;
 };
 
+const nextMonth = (ym) => {
+  const [y, m] = ym.split("-").map(Number);
+  return m === 12 ? `${y + 1}-01` : `${y}-${String(m + 1).padStart(2, "0")}`;
+};
+
 // Rank order (0 = largest) of every term for one column of values.
 function ranksOf(values) {
   const order = values
@@ -69,23 +74,28 @@ export const scene = {
     const terms = (data.terms || []).filter((t) => (t.series?.[SOURCE] || []).length);
     if (terms.length < 2) throw new Error(`hype-race: need 2+ terms with ${SOURCE} data, got ${terms.length}`);
 
-    const months = terms[0].series[SOURCE].map((p) => p.month);
+    // Every bar must sum the same span, so the race runs over the months all
+    // terms have. For a few nights after each month closes, a term whose GDELT
+    // fetch has not landed since has that month withheld (term_partial in
+    // pipeline/market_metrics.py); the race then ends a month earlier for
+    // every term instead of failing. A gap inside the shared grid is still an
+    // error: a trailing sum across it would compare different spans.
+    const byTerm = terms.map((t) => new Map(t.series[SOURCE].map((p) => [p.month, p.n])));
+    const months = terms[0].series[SOURCE].map((p) => p.month)
+      .filter((m) => byTerm.every((ns) => ns.has(m)));
     if (months.length <= WINDOW) {
-      throw new Error(`hype-race: need >${WINDOW} months, got ${months.length}`);
+      throw new Error(`hype-race: need >${WINDOW} shared months, got ${months.length}`);
     }
-    // Every term must share the month grid, or a trailing sum would silently
-    // compare different spans across bars.
-    for (const t of terms) {
-      const m = t.series[SOURCE].map((p) => p.month);
-      if (m.length !== months.length || m.some((v, i) => v !== months[i])) {
-        throw new Error(`hype-race: "${t.label}" has a different ${SOURCE} month grid`);
+    months.forEach((m, i) => {
+      if (i && m !== nextMonth(months[i - 1])) {
+        throw new Error(`hype-race: the shared ${SOURCE} month grid skips from ${months[i - 1]} to ${m}`);
       }
-    }
+    });
 
     // Trailing WINDOW-month sums, keeping only the complete windows.
     const steps = months.slice(WINDOW - 1);
-    const series = terms.map((t) => {
-      const n = t.series[SOURCE].map((p) => p.n);
+    const series = byTerm.map((ns) => {
+      const n = months.map((m) => ns.get(m));
       const out = [];
       for (let i = WINDOW - 1; i < n.length; i++) {
         let s = 0;
