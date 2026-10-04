@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-03T09:33:31Z",
+ "generated_at": "2026-10-04T08:46:02Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -87,11 +87,11 @@
   {
    "cna": "TuranSec",
    "org": "TuranSec",
-   "n": 199,
+   "n": 200,
    "avg_cvss": 7.9,
    "median_cvss": 8.1,
-   "pct_geq_9": 21.1,
-   "pct_geq_7": 77.4
+   "pct_geq_9": 21.5,
+   "pct_geq_7": 77.5
   },
   {
    "cna": "INCIBE",
@@ -195,11 +195,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 8043,
-   "avg_cvss": 7.5,
+   "n": 8063,
+   "avg_cvss": 7.4,
    "median_cvss": 8.2,
    "pct_geq_9": 14.8,
-   "pct_geq_7": 64.2
+   "pct_geq_7": 64.1
   },
   {
    "cna": "CERTVDE",
@@ -375,10 +375,10 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1693,
+   "n": 1696,
    "avg_cvss": 6.1,
    "median_cvss": 6.3,
-   "pct_geq_9": 9.6,
+   "pct_geq_9": 9.7,
    "pct_geq_7": 38.2
   },
   {
@@ -465,7 +465,7 @@
   {
    "cna": "Patchstack",
    "org": "Patchstack",
-   "n": 15697,
+   "n": 15700,
    "avg_cvss": 6.7,
    "median_cvss": 6.5,
    "pct_geq_9": 8.3,
@@ -537,7 +537,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10162,
+   "n": 10214,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.5,
@@ -717,7 +717,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 14219,
+   "n": 14221,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.4,

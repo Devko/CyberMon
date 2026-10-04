@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-03T09:33:31Z",
+ "generated_at": "2026-10-04T08:46:02Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -16641,6 +16641,23 @@
      "tier": "system",
      "roles": [
       "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-71885",
+   "published": "2026-10-03",
+   "cna": "bcorg",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "reporter"
      ]
     }
    ]

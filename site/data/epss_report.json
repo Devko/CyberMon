@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-03T09:33:31Z",
+ "generated_at": "2026-10-04T08:46:02Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -103,8 +103,8 @@
    "pct_below_1pct": 52.2,
    "pct_1_to_10pct": 20.6,
    "pct_above_10pct": 27.2,
-   "ungradeable": 68,
-   "pending": 1
+   "ungradeable": 69,
+   "pending": 0
   }
  ],
  "distribution": {
@@ -212,10 +212,10 @@
   "graded": 1414,
   "ungradeable": {
    "pre_epss": 0,
-   "listed_before_publication": 225,
+   "listed_before_publication": 226,
    "no_prior_score": 93
   },
-  "pending_backfill": 1
+  "pending_backfill": 0
  },
  "headline": {
   "graded": 1414,
@@ -15790,6 +15790,15 @@
    "cve": "CVE-2026-76504",
    "date_added": "2026-09-30",
    "score_date": "2026-09-29",
+   "epss": null,
+   "percentile": null,
+   "model": null,
+   "reason": "no_score_for_date"
+  },
+  {
+   "cve": "CVE-2026-104286",
+   "date_added": "2026-10-01",
+   "score_date": "2026-09-30",
    "epss": null,
    "percentile": null,
    "model": null,

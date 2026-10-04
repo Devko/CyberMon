@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-03T09:33:31Z",
+ "generated_at": "2026-10-04T08:46:02Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,7 +206,7 @@
   },
   {
    "year": 2026,
-   "published": 73605,
+   "published": 73719,
    "counts": {
     "unsupported-when-assigned": 383,
     "disputed": 60,
@@ -232,21 +232,21 @@
      "cna": "VulDB",
      "n": 445,
      "share_pct": 38.5,
-     "cna_published": 17003,
+     "cna_published": 17005,
      "rate_pct": 2.6
     },
     {
      "cna": "VulnCheck",
      "n": 232,
      "share_pct": 20.1,
-     "cna_published": 8075,
+     "cna_published": 8095,
      "rate_pct": 2.9
     },
     {
      "cna": "mitre",
      "n": 114,
      "share_pct": 9.9,
-     "cna_published": 28345,
+     "cna_published": 28348,
      "rate_pct": 0.4
     },
     {
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 461,
      "share_pct": 82.0,
-     "cna_published": 28345,
+     "cna_published": 28348,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 86,
      "share_pct": 15.3,
-     "cna_published": 17003,
+     "cna_published": 17005,
      "rate_pct": 0.5
     }
    ]
@@ -341,11 +341,11 @@
  },
  "severity": {
   "all": {
-   "critical": 20367,
-   "high": 73078,
-   "medium": 88617,
-   "low": 8211,
-   "unscored": 25254
+   "critical": 20373,
+   "high": 73124,
+   "medium": 88678,
+   "low": 8217,
+   "unscored": 25249
   },
   "unsupported-when-assigned": {
    "tagged": {
@@ -356,11 +356,11 @@
     "unscored": 44
    },
    "same_cnas_untagged": {
-    "critical": 9965,
-    "high": 26291,
-    "medium": 40366,
-    "low": 2864,
-    "unscored": 10106
+    "critical": 9966,
+    "high": 26300,
+    "medium": 40383,
+    "low": 2866,
+    "unscored": 10105
    }
   },
   "disputed": {
@@ -372,11 +372,11 @@
     "unscored": 162
    },
    "same_cnas_untagged": {
-    "critical": 6326,
-    "high": 14140,
-    "medium": 24565,
-    "low": 2227,
-    "unscored": 9168
+    "critical": 6327,
+    "high": 14146,
+    "medium": 24582,
+    "low": 2229,
+    "unscored": 9167
    }
   }
  },
@@ -384,7 +384,7 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 2624
+    "n": 2629
    },
    {
     "tag": "x_freeware",

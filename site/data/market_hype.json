@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-03T09:33:31Z",
+ "generated_at": "2026-10-04T08:46:02Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -305,6 +305,11 @@
       "month": "2026-08",
       "n": 388,
       "index": 35.8
+     },
+     {
+      "month": "2026-09",
+      "n": 192,
+      "index": 17.7
      }
     ],
     "hn": [
@@ -1446,8 +1451,8 @@
      },
      {
       "month": "2025-12",
-      "n": 32,
-      "index": 31.1
+      "n": 33,
+      "index": 32.0
      },
      {
       "month": "2026-01",
@@ -1497,7 +1502,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-09",
+     "pct_change": 9.5,
+     "n_latest_12m": 4765,
+     "n_prior_12m": 4351
+    },
     "hn": {
      "latest_month": "2026-09",
      "pct_change": 31.2,
@@ -1518,12 +1528,17 @@
     },
     "edgar": {
      "latest_month": "2026-09",
-     "pct_change": 10.1,
-     "n_latest_12m": 565,
+     "pct_change": 10.3,
+     "n_latest_12m": 566,
      "n_prior_12m": 513
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 28.7,
+    "arxiv_index_avg3m": 81.5,
+    "research_vs_media_index": 52.8,
+    "direction": "research_leads"
+   }
   },
   {
    "id": "sbom",
@@ -10582,6 +10597,11 @@
       "month": "2026-08",
       "n": 2282,
       "index": 70.0
+     },
+     {
+      "month": "2026-09",
+      "n": 1752,
+      "index": 53.7
      }
     ],
     "hn": [
@@ -11643,13 +11663,18 @@
      },
      {
       "month": "2026-09",
-      "n": 162,
-      "index": 49.2
+      "n": 173,
+      "index": 52.6
      }
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-09",
+     "pct_change": 201.8,
+     "n_latest_12m": 28373,
+     "n_prior_12m": 9402
+    },
     "hn": {
      "latest_month": "2026-09",
      "pct_change": 155.3,
@@ -11670,12 +11695,17 @@
     },
     "edgar": {
      "latest_month": "2026-09",
-     "pct_change": 323.6,
-     "n_latest_12m": 2461,
+     "pct_change": 325.5,
+     "n_latest_12m": 2472,
      "n_prior_12m": 581
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 65.7,
+    "arxiv_index_avg3m": 65.1,
+    "research_vs_media_index": -0.6,
+    "direction": "aligned"
+   }
   },
   {
    "id": "ransomware",
@@ -11971,6 +12001,11 @@
       "month": "2026-08",
       "n": 739,
       "index": 12.5
+     },
+     {
+      "month": "2026-09",
+      "n": 533,
+      "index": 9.0
      }
     ],
     "hn": [
@@ -13163,7 +13198,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-09",
+     "pct_change": -12.4,
+     "n_latest_12m": 12698,
+     "n_prior_12m": 14491
+    },
     "hn": {
      "latest_month": "2026-09",
      "pct_change": 3.9,
@@ -13189,7 +13229,12 @@
      "n_prior_12m": 12382
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 14.0,
+    "arxiv_index_avg3m": 31.0,
+    "research_vs_media_index": 17.0,
+    "direction": "research_leads"
+   }
   },
   {
    "id": "supply_chain_security",
@@ -13485,6 +13530,11 @@
       "month": "2026-08",
       "n": 856,
       "index": 33.1
+     },
+     {
+      "month": "2026-09",
+      "n": 514,
+      "index": 19.9
      }
     ],
     "hn": [
@@ -14677,7 +14727,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-09",
+     "pct_change": 91.5,
+     "n_latest_12m": 10454,
+     "n_prior_12m": 5458
+    },
     "hn": {
      "latest_month": "2026-09",
      "pct_change": 56.9,
@@ -14703,7 +14758,12 @@
      "n_prior_12m": 739
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 30.4,
+    "arxiv_index_avg3m": 55.5,
+    "research_vs_media_index": 25.1,
+    "direction": "research_leads"
+   }
   },
   {
    "id": "passwordless",
