@@ -19003,6 +19003,17 @@
    "ransom": "Unknown",
    "vendor": "Citrix"
   },
+  "CVE-2026-88779": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-04",
+   "desc": "8a803eb769ea",
+   "due": "2026-10-07",
+   "name": "Citrix NetScaler Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability",
+   "notes": "a95258ffed23",
+   "product": "NetScaler",
+   "ransom": "Unknown",
+   "vendor": "Citrix"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -19070,7 +19081,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-10-04",
+ "last_observed": "2026-10-05",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-10-04T08:46:02Z",
+ "generated_at": "2026-10-05T09:36:02Z",
  "matched": {
-  "total_kev": 1733,
-  "matched_cve": 1733,
+  "total_kev": 1734,
+  "matched_cve": 1734,
   "unmatched_cve": 0
  },
  "launch_backfill": {
@@ -40,12 +40,12 @@
   },
   {
    "year": 2026,
-   "n": 249,
+   "n": 250,
    "median_days": 14.0,
    "p25_days": 1.0,
    "p75_days": 167.0,
    "pct_negative": 1.2,
-   "pct_over_365d": 18.1
+   "pct_over_365d": 18.0
   }
  ],
  "latency_buckets": [
@@ -56,8 +56,8 @@
   },
   {
    "bucket": "0-7d",
-   "n": 341,
-   "pct": 39.3
+   "n": 342,
+   "pct": 39.4
   },
   {
    "bucket": "8-30d",
@@ -123,7 +123,7 @@
   },
   {
    "year": 2026,
-   "n": 249,
+   "n": 250,
    "median_days": 3.0,
    "p25_days": 3.0,
    "p75_days": 14.0

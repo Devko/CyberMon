@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T08:46:02Z",
+ "generated_at": "2026-10-05T09:36:02Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -195,10 +195,10 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 8063,
-   "avg_cvss": 7.4,
+   "n": 8085,
+   "avg_cvss": 7.5,
    "median_cvss": 8.2,
-   "pct_geq_9": 14.8,
+   "pct_geq_9": 14.9,
    "pct_geq_7": 64.1
   },
   {
@@ -465,7 +465,7 @@
   {
    "cna": "Patchstack",
    "org": "Patchstack",
-   "n": 15700,
+   "n": 15707,
    "avg_cvss": 6.7,
    "median_cvss": 6.5,
    "pct_geq_9": 8.3,
@@ -717,7 +717,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 14221,
+   "n": 14249,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.4,

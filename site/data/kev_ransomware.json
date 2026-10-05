@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T08:46:02Z",
+ "generated_at": "2026-10-05T09:36:02Z",
  "min_n": 10,
  "years": [
   {
@@ -34,13 +34,13 @@
   },
   {
    "year": 2026,
-   "total": 249,
+   "total": 250,
    "known": 27,
    "pct_known": 10.8
   }
  ],
  "catalog": {
-  "total": 1733,
+  "total": 1734,
   "known": 361,
   "pct_known": 20.8
  }

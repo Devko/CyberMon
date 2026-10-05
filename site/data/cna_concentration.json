@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T08:46:02Z",
+ "generated_at": "2026-10-05T09:36:02Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 386,
    "newcomer_count": 54,
-   "top5_share": 46.9,
+   "top5_share": 47.0,
    "top10_share": 68.1,
-   "hhi": 598.9
+   "hhi": 599.1
   }
  ],
  "rejection_leaderboard": {
@@ -382,7 +382,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 8190,
+    "total": 8212,
     "rejected": 95,
     "rejected_rate_pct": 1.2
    },
@@ -574,7 +574,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 17047,
+    "total": 17075,
     "rejected": 42,
     "rejected_rate_pct": 0.2
    },
@@ -640,7 +640,7 @@
    },
    {
     "cna": "Patchstack",
-    "total": 18256,
+    "total": 18263,
     "rejected": 27,
     "rejected_rate_pct": 0.1
    },
@@ -676,7 +676,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 4955,
+    "total": 4961,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -1588,15 +1588,15 @@
    {
     "year": 2026,
     "cna_count": 385,
-    "top5_share": 46.3,
+    "top5_share": 46.4,
     "top10_share": 67.0,
-    "hhi": 619.0
+    "hhi": 619.4
    }
   ]
  },
  "projection": {
   "year": 2026,
   "newcomers": 71,
-  "elapsed": 0.759
+  "elapsed": 0.762
  }
 }

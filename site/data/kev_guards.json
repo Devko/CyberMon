@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T08:46:02Z",
+ "generated_at": "2026-10-05T09:36:02Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 249,
-   "security": 43,
-   "pct_security": 17.3
+   "total": 250,
+   "security": 44,
+   "pct_security": 17.6
   }
  ],
  "vendors": [
@@ -143,13 +143,13 @@
   },
   {
    "vendor": "Citrix",
-   "entries": 26,
-   "dated_entries": 26,
-   "security_entries": 20,
-   "pct_security": 76.9,
+   "entries": 27,
+   "dated_entries": 27,
+   "security_entries": 21,
+   "pct_security": 77.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-27",
-   "median_gap_days": 10.0
+   "last_added": "2026-10-04",
+   "median_gap_days": 8.5
   },
   {
    "vendor": "D-Link",
@@ -564,9 +564,9 @@
  ],
  "ransomware": {
   "security": {
-   "total": 213,
+   "total": 214,
    "known": 79,
-   "pct_known": 37.1
+   "pct_known": 36.9
   },
   "other": {
    "total": 1520,
@@ -575,8 +575,8 @@
   }
  },
  "catalog": {
-  "total": 1733,
-  "security": 213,
+  "total": 1734,
+  "security": 214,
   "pct_security": 12.3,
   "classifier_version": 2,
   "classifier_rules": 35

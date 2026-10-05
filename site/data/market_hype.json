@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-04T08:46:02Z",
+ "generated_at": "2026-10-05T09:36:02Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -7880,6 +7880,11 @@
       "month": "2026-08",
       "n": 2,
       "index": 4.7
+     },
+     {
+      "month": "2026-09",
+      "n": 0,
+      "index": 0.0
      }
     ],
     "hn": [
@@ -8776,7 +8781,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-09",
+     "pct_change": -39.4,
+     "n_latest_12m": 103,
+     "n_prior_12m": 170
+    },
     "hn": null,
     "arxiv": null,
     "wiki": null,
