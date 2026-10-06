@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-05T09:36:02Z",
+ "generated_at": "2026-10-06T09:25:01Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,11 +206,11 @@
   },
   {
    "year": 2026,
-   "published": 73783,
+   "published": 74206,
    "counts": {
     "unsupported-when-assigned": 384,
     "disputed": 60,
-    "exclusively-hosted-service": 221
+    "exclusively-hosted-service": 223
    }
   }
  ],
@@ -223,7 +223,7 @@
   "unsupported-when-assigned": {
    "total": 1157,
    "cna_count": 49,
-   "active_cnas": 475,
+   "active_cnas": 476,
    "top1_share_pct": 38.5,
    "top3_share_pct": 68.5,
    "min_n": 5,
@@ -232,21 +232,21 @@
      "cna": "VulDB",
      "n": 446,
      "share_pct": 38.5,
-     "cna_published": 17033,
+     "cna_published": 17096,
      "rate_pct": 2.6
     },
     {
      "cna": "VulnCheck",
      "n": 232,
      "share_pct": 20.1,
-     "cna_published": 8117,
+     "cna_published": 8126,
      "rate_pct": 2.9
     },
     {
      "cna": "mitre",
      "n": 114,
      "share_pct": 9.9,
-     "cna_published": 28348,
+     "cna_published": 28367,
      "rate_pct": 0.4
     },
     {
@@ -267,7 +267,7 @@
      "cna": "apache",
      "n": 34,
      "share_pct": 2.9,
-     "cna_published": 1960,
+     "cna_published": 1964,
      "rate_pct": 1.7
     },
     {
@@ -288,7 +288,7 @@
      "cna": "jpcert",
      "n": 23,
      "share_pct": 2.0,
-     "cna_published": 1348,
+     "cna_published": 1349,
      "rate_pct": 1.7
     },
     {
@@ -317,7 +317,7 @@
   "disputed": {
    "total": 562,
    "cna_count": 13,
-   "active_cnas": 475,
+   "active_cnas": 476,
    "top1_share_pct": 82.0,
    "top3_share_pct": 97.7,
    "min_n": 5,
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 461,
      "share_pct": 82.0,
-     "cna_published": 28348,
+     "cna_published": 28367,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 86,
      "share_pct": 15.3,
-     "cna_published": 17033,
+     "cna_published": 17096,
      "rate_pct": 0.5
     }
    ]
@@ -341,11 +341,11 @@
  },
  "severity": {
   "all": {
-   "critical": 20386,
-   "high": 73136,
-   "medium": 88708,
-   "low": 8220,
-   "unscored": 25255
+   "critical": 20425,
+   "high": 73244,
+   "medium": 88964,
+   "low": 8239,
+   "unscored": 25256
   },
   "unsupported-when-assigned": {
    "tagged": {
@@ -356,11 +356,11 @@
     "unscored": 44
    },
    "same_cnas_untagged": {
-    "critical": 9979,
-    "high": 26311,
-    "medium": 40412,
-    "low": 2869,
-    "unscored": 10105
+    "critical": 10002,
+    "high": 26333,
+    "medium": 40529,
+    "low": 2871,
+    "unscored": 10103
    }
   },
   "disputed": {
@@ -372,11 +372,11 @@
     "unscored": 162
    },
    "same_cnas_untagged": {
-    "critical": 6339,
-    "high": 14152,
-    "medium": 24611,
-    "low": 2232,
-    "unscored": 9167
+    "critical": 6360,
+    "high": 14158,
+    "medium": 24686,
+    "low": 2236,
+    "unscored": 9164
    }
   }
  },
@@ -384,11 +384,11 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 2639
+    "n": 2711
    },
    {
     "tag": "x_freeware",
-    "n": 1894
+    "n": 1913
    },
    {
     "tag": "x_known-exploited-vulnerability",
@@ -417,7 +417,7 @@
   "schema_totals": {
    "unsupported-when-assigned": 1248,
    "disputed": 1501,
-   "exclusively-hosted-service": 400
+   "exclusively-hosted-service": 402
   }
  },
  "headline": {

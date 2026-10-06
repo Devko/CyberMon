@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-05T09:36:02Z",
+ "generated_at": "2026-10-06T09:25:01Z",
  "base_date": "2021-12-23",
  "last_observed": "2026-10-05",
  "kinds": [
@@ -46,8 +46,8 @@
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 63,
-   "nights": 72,
+   "events": 64,
+   "nights": 73,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
@@ -63,7 +63,7 @@
   "version_shift": 28,
   "first_score": 5368,
   "score_removed": 4,
-  "epss_move": 63
+  "epss_move": 64
  },
  "cves": 7266,
  "events": [
@@ -10009,6 +10009,7 @@
   "1745|CVE-2026-94184|8|v3.1 5.3 (redhat)|0",
   "1745|CVE-2023-42118|10|0.47506->0.21571|0",
   "1746|CVE-2023-4911|10|0.81422->0.63769|0",
-  "1747|CVE-2026-88779|0||0"
+  "1747|CVE-2026-88779|0||0",
+  "1747|CVE-2026-55040|10|0.17535->0.69536|0"
  ]
 }
