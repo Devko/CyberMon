@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-06T09:25:01Z",
+ "generated_at": "2026-10-07T09:14:18Z",
  "roster_size": {
   "min_n": 2,
-  "current": 554,
-  "net_change": 24,
+  "current": 555,
+  "net_change": 25,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -305,6 +305,10 @@
    {
     "date": "2026-10-06",
     "size": 554
+   },
+   {
+    "date": "2026-10-07",
+    "size": 555
    }
   ]
  },
@@ -333,27 +337,27 @@
    },
    {
     "month": "2026-10",
-    "onboarded": 4,
+    "onboarded": 5,
     "departed": 0,
     "renamed": 0,
-    "scope_changed": 0
+    "scope_changed": 1
    }
   ],
   "totals": {
-   "onboarded": 24,
+   "onboarded": 25,
    "departed": 0,
    "renamed": 1,
-   "scope_changed": 8
+   "scope_changed": 9
   },
-  "events_total": 33,
+  "events_total": 35,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 554,
+  "total": 555,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 453
+    "n": 454
    },
    {
     "label": "Open Source",
@@ -391,7 +395,7 @@
   "by_role": [
    {
     "label": "CNA",
-    "n": 551
+    "n": 552
    },
    {
     "label": "Root",
@@ -421,7 +425,7 @@
    },
    {
     "label": "CISA",
-    "n": 90
+    "n": 91
    },
    {
     "label": "n/a",
@@ -435,7 +439,7 @@
    },
    {
     "label": "icscert",
-    "n": 88
+    "n": 89
    },
    {
     "label": "ENISA",
@@ -465,7 +469,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 290
+    "n": 291
    },
    {
     "label": "Germany",
@@ -642,13 +646,13 @@
   ]
  },
  "headline": {
-  "roster_total": 554,
+  "roster_total": 555,
   "top_type": "Vendor",
-  "top_type_n": 453,
+  "top_type_n": 454,
   "country_count": 43,
   "root_count": 7,
   "mitre_n": 462,
-  "cisa_n": 90,
-  "assigning_n": 553
+  "cisa_n": 91,
+  "assigning_n": 554
  }
 }

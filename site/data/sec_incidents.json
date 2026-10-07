@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-06T09:25:01Z",
+ "generated_at": "2026-10-07T09:14:18Z",
  "status": "ok",
  "window": {
   "start": "2023-12-18",
-  "end": "2026-10-06"
+  "end": "2026-10-07"
  },
  "definitions": {
   "item_105": {
@@ -642,9 +642,9 @@
  ],
  "diagnostics": {
   "hits_105": 94,
-  "hits_801": 1165,
+  "hits_801": 1167,
   "filings_105": 94,
-  "filings_801": 1022,
+  "filings_801": 1024,
   "dropped_105": 0,
   "dropped_801": 0,
   "phrase_fallback_105": 0,

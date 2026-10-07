@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-10-06",
+ "last_observed": "2026-10-07",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -913,7 +913,7 @@
    "type": "Vendor"
   },
   "FERMAX": {
-   "cna_id": "CNA-2025-0032",
+   "cna_id": "CNA-2025-0063",
    "country": "Spain",
    "org": "Fermax Technologies SLU",
    "scope": "2c5861980235",
@@ -1966,7 +1966,7 @@
    "cna_id": "CNA-2021-0025",
    "country": "Estonia",
    "org": "Patchstack",
-   "scope": "7902f499de4e",
+   "scope": "2395cdbc379a",
    "type": "Bug Bounty Provider + Hosted Service + Open Source + Researcher + Vendor"
   },
   "Payara": {
@@ -3208,6 +3208,13 @@
    "scope": "679da4aa30c7",
    "type": "Open Source + Researcher + Vendor"
   },
+  "flock": {
+   "cna_id": "CNA-2026-0073",
+   "country": "USA",
+   "org": "Flock",
+   "scope": "624fdf313e35",
+   "type": "Vendor"
+  },
   "floragunn": {
    "cna_id": "CNA-2019-0005",
    "country": "Germany",
@@ -4181,6 +4188,10 @@
   [
    "2026-10-06",
    554
+  ],
+  [
+   "2026-10-07",
+   555
   ]
  ],
  "version": 1

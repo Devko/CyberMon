@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-06T09:25:01Z",
+ "generated_at": "2026-10-07T09:14:18Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-10-05",
+ "last_observed": "2026-10-07",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -42,12 +42,12 @@
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5502
+   "events": 5503
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 64,
-   "nights": 73,
+   "events": 65,
+   "nights": 74,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
@@ -59,13 +59,13 @@
   "kev_due": 20,
   "kev_field": 785,
   "kev_text": 1815,
-  "rescore": 102,
+  "rescore": 103,
   "version_shift": 28,
   "first_score": 5368,
   "score_removed": 4,
-  "epss_move": 64
+  "epss_move": 65
  },
- "cves": 7266,
+ "cves": 7267,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10010,6 +10010,8 @@
   "1745|CVE-2023-42118|10|0.47506->0.21571|0",
   "1746|CVE-2023-4911|10|0.81422->0.63769|0",
   "1747|CVE-2026-88779|0||0",
-  "1747|CVE-2026-55040|10|0.17535->0.69536|0"
+  "1747|CVE-2026-55040|10|0.17535->0.69536|0",
+  "1748|CVE-2026-73570|10|0.11946->0.71663|0",
+  "1749|CVE-2026-59870|6|v3.1 5.3->v3.1 7.5 (GitHub_M)|0"
  ]
 }

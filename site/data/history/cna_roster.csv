@@ -32,3 +32,5 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-03,Pointsharp,onboarded,Pointsharp International AB,Sweden,Vendor,
 2026-10-03,SafeSource,onboarded,SafeSource Lab,Italy,Vendor,
 2026-10-03,Westell,onboarded,"Westell Technologies, Inc.",USA,Vendor,
+2026-10-07,flock,onboarded,Flock,USA,Vendor,
+2026-10-07,Patchstack,scope_changed,Patchstack,Estonia,Bug Bounty Provider + Hosted Service + Open Source + Researcher + Vendor,
