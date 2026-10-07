@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-07T09:14:18Z",
+ "generated_at": "2026-10-07T15:46:30Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -395,8 +395,8 @@
   "llm": {
    "n": 266,
    "median_cvss": 7.6,
-   "median_epss_pctile": 28.0,
-   "epss_scored": 257,
+   "median_epss_pctile": 26.5,
+   "epss_scored": 266,
    "recent_days": 90,
    "recent_pct": 64.3,
    "poc_pct": 0.4,
@@ -412,8 +412,8 @@
   "vendor": {
    "n": 561,
    "median_cvss": 6.3,
-   "median_epss_pctile": 32.2,
-   "epss_scored": 557,
+   "median_epss_pctile": 31.6,
+   "epss_scored": 561,
    "recent_days": 90,
    "recent_pct": 38.1,
    "poc_pct": 2.7,
@@ -429,8 +429,8 @@
   "baseline": {
    "n": 59732,
    "median_cvss": 6.9,
-   "median_epss_pctile": 27.9,
-   "epss_scored": 59578,
+   "median_epss_pctile": 28.0,
+   "epss_scored": 59732,
    "recent_days": 90,
    "recent_pct": 25.1,
    "poc_pct": 1.6,
