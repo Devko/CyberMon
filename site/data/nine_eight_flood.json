@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-07T15:46:30Z",
+ "generated_at": "2026-10-08T09:27:01Z",
  "years": [
   {
    "year": 1999,
@@ -117,33 +117,33 @@
    "year": 2013,
    "critical": 11,
    "high": 51,
-   "medium": 14,
+   "medium": 15,
    "low": 3,
-   "unscored": 5108
+   "unscored": 5107
   },
   {
    "year": 2014,
    "critical": 16,
-   "high": 73,
+   "high": 74,
    "medium": 47,
    "low": 5,
-   "unscored": 7787
+   "unscored": 7786
   },
   {
    "year": 2015,
-   "critical": 18,
+   "critical": 19,
    "high": 47,
    "medium": 11,
    "low": 2,
-   "unscored": 6416
+   "unscored": 6415
   },
   {
    "year": 2016,
-   "critical": 11,
-   "high": 66,
+   "critical": 12,
+   "high": 67,
    "medium": 20,
    "low": 0,
-   "unscored": 6360
+   "unscored": 6358
   },
   {
    "year": 2017,
@@ -156,50 +156,50 @@
   {
    "year": 2018,
    "critical": 175,
-   "high": 636,
+   "high": 637,
    "medium": 828,
    "low": 104,
-   "unscored": 14767
+   "unscored": 14766
   },
   {
    "year": 2019,
-   "critical": 222,
+   "critical": 225,
    "high": 1039,
-   "medium": 1261,
+   "medium": 1268,
    "low": 110,
-   "unscored": 14676
+   "unscored": 14666
   },
   {
    "year": 2020,
-   "critical": 503,
-   "high": 2393,
-   "medium": 2863,
+   "critical": 506,
+   "high": 2394,
+   "medium": 2865,
    "low": 313,
-   "unscored": 12291
+   "unscored": 12285
   },
   {
    "year": 2021,
-   "critical": 760,
-   "high": 3575,
-   "medium": 3554,
+   "critical": 761,
+   "high": 3577,
+   "medium": 3558,
    "low": 490,
-   "unscored": 11798
+   "unscored": 11791
   },
   {
    "year": 2022,
    "critical": 1669,
-   "high": 5676,
-   "medium": 6485,
-   "low": 935,
-   "unscored": 10234
+   "high": 5682,
+   "medium": 6488,
+   "low": 936,
+   "unscored": 10224
   },
   {
    "year": 2023,
    "critical": 2357,
-   "high": 8131,
-   "medium": 11333,
+   "high": 8133,
+   "medium": 11334,
    "low": 1333,
-   "unscored": 5693
+   "unscored": 5690
   },
   {
    "year": 2024,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "critical": 8600,
-   "high": 30101,
-   "medium": 29125,
-   "low": 2928,
-   "unscored": 4475
+   "critical": 8659,
+   "high": 30278,
+   "medium": 29346,
+   "low": 2941,
+   "unscored": 4321
   }
  ],
  "record_era": {
@@ -232,8 +232,8 @@
  },
  "projection": {
   "year": 2026,
-  "total": 98066,
-  "elapsed": 0.767
+  "total": 98128,
+  "elapsed": 0.77
  },
  "without_linux": {
   "cna": "Linux",
@@ -354,33 +354,33 @@
     "year": 2013,
     "critical": 11,
     "high": 51,
-    "medium": 14,
+    "medium": 15,
     "low": 3,
-    "unscored": 5108
+    "unscored": 5107
    },
    {
     "year": 2014,
     "critical": 16,
-    "high": 73,
+    "high": 74,
     "medium": 47,
     "low": 5,
-    "unscored": 7787
+    "unscored": 7786
    },
    {
     "year": 2015,
-    "critical": 18,
+    "critical": 19,
     "high": 47,
     "medium": 11,
     "low": 2,
-    "unscored": 6416
+    "unscored": 6415
    },
    {
     "year": 2016,
-    "critical": 11,
-    "high": 66,
+    "critical": 12,
+    "high": 67,
     "medium": 20,
     "low": 0,
-    "unscored": 6360
+    "unscored": 6358
    },
    {
     "year": 2017,
@@ -393,50 +393,50 @@
    {
     "year": 2018,
     "critical": 175,
-    "high": 636,
+    "high": 637,
     "medium": 828,
     "low": 104,
-    "unscored": 14767
+    "unscored": 14766
    },
    {
     "year": 2019,
-    "critical": 222,
+    "critical": 225,
     "high": 1039,
-    "medium": 1261,
+    "medium": 1268,
     "low": 110,
-    "unscored": 14676
+    "unscored": 14666
    },
    {
     "year": 2020,
-    "critical": 503,
-    "high": 2393,
-    "medium": 2863,
+    "critical": 506,
+    "high": 2394,
+    "medium": 2865,
     "low": 313,
-    "unscored": 12291
+    "unscored": 12285
    },
    {
     "year": 2021,
-    "critical": 760,
-    "high": 3575,
-    "medium": 3554,
+    "critical": 761,
+    "high": 3577,
+    "medium": 3558,
     "low": 490,
-    "unscored": 11798
+    "unscored": 11791
    },
    {
     "year": 2022,
     "critical": 1669,
-    "high": 5676,
-    "medium": 6485,
-    "low": 935,
-    "unscored": 10234
+    "high": 5682,
+    "medium": 6488,
+    "low": 936,
+    "unscored": 10224
    },
    {
     "year": 2023,
     "critical": 2357,
-    "high": 8131,
-    "medium": 11333,
+    "high": 8133,
+    "medium": 11334,
     "low": 1333,
-    "unscored": 5693
+    "unscored": 5690
    },
    {
     "year": 2024,
@@ -456,17 +456,17 @@
    },
    {
     "year": 2026,
-    "critical": 8063,
-    "high": 27588,
-    "medium": 29122,
-    "low": 2928,
-    "unscored": 166
+    "critical": 8120,
+    "high": 27713,
+    "medium": 29343,
+    "low": 2941,
+    "unscored": 64
    }
   ],
   "projection": {
    "year": 2026,
-   "total": 88469,
-   "elapsed": 0.767
+   "total": 88563,
+   "elapsed": 0.77
   }
  }
 }
