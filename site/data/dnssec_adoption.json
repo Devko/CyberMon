@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -630,14 +630,14 @@
    },
    {
     "month": "2026-10",
-    "validating_pc": 39.1
+    "validating_pc": 39.2
    }
   ],
   "latest": {
-   "date": "2026-10-05",
-   "validating_pc": 39.1,
-   "partial_pc": 9.1,
-   "seen": 510984366
+   "date": "2026-10-07",
+   "validating_pc": 39.2,
+   "partial_pc": 9.2,
+   "seen": 504251767
   },
   "baseline": {
    "month": "2016-10",
@@ -1086,7 +1086,7 @@
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 54.7,
+   "latest_pc": 54.4,
    "series": [
     {
      "month": "2013-12",
@@ -1298,7 +1298,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 54.7
+     "validating_pc": 54.4
     }
    ]
   },
@@ -1524,7 +1524,7 @@
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 49.8,
+   "latest_pc": 49.9,
    "series": [
     {
      "month": "2013-12",
@@ -1736,14 +1736,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 49.8
+     "validating_pc": 49.9
     }
    ]
   },
   {
    "cc": "ID",
    "name": "Indonesia",
-   "latest_pc": 40.9,
+   "latest_pc": 40.7,
    "series": [
     {
      "month": "2013-12",
@@ -1955,14 +1955,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 40.9
+     "validating_pc": 40.7
     }
    ]
   },
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 37.2,
+   "latest_pc": 37.1,
    "series": [
     {
      "month": "2013-12",
@@ -2174,7 +2174,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 37.2
+     "validating_pc": 37.1
     }
    ]
   },
@@ -2400,7 +2400,7 @@
   {
    "cc": "JP",
    "name": "Japan",
-   "latest_pc": 14.9,
+   "latest_pc": 15.0,
    "series": [
     {
      "month": "2013-12",
@@ -2612,14 +2612,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 14.9
+     "validating_pc": 15.0
     }
    ]
   },
   {
    "cc": "CN",
    "name": "China",
-   "latest_pc": 0.5,
+   "latest_pc": 0.6,
    "series": [
     {
      "month": "2013-12",
@@ -2831,7 +2831,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 0.5
+     "validating_pc": 0.6
     }
    ]
   }
@@ -2846,19 +2846,19 @@
    },
    {
     "bucket": "10-25%",
-    "n": 34
+    "n": 35
    },
    {
     "bucket": "25-50%",
-    "n": 41
+    "n": 40
    },
    {
     "bucket": "50-75%",
-    "n": 50
+    "n": 49
    },
    {
     "bucket": "75%+",
-    "n": 66
+    "n": 67
    }
   ]
  }

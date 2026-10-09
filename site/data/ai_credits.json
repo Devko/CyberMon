@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -238,9 +238,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 562,
+    "cves": 572,
     "this_year": 2026,
-    "cves_this_year": 437,
+    "cves_this_year": 447,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -345,24 +345,24 @@
     },
     {
      "month": "2026-10",
-     "vendor": 29,
-     "total": 29
+     "vendor": 39,
+     "total": 39
     }
    ],
    "severity": {
     "critical": 34,
-    "high": 165,
-    "medium": 343,
+    "high": 167,
+    "medium": 351,
     "low": 20,
     "unscored": 0
    },
    "funnel": {
-    "credited": 562,
-    "scored": 562,
-    "high_or_critical": 199,
-    "high_or_critical_pct": 35.4,
+    "credited": 572,
+    "scored": 572,
+    "high_or_critical": 201,
+    "high_or_critical_pct": 35.1,
     "poc": 15,
-    "poc_pct": 2.7,
+    "poc_pct": 2.6,
     "kev": 3,
     "kev_pct": 0.5
    },
@@ -375,28 +375,28 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 59894,
-  "scored": 59890,
-  "high_or_critical": 25343,
+  "credited": 60119,
+  "scored": 60108,
+  "high_or_critical": 25432,
   "high_or_critical_pct": 42.3,
-  "poc": 932,
+  "poc": 933,
   "poc_pct": 1.6,
   "kev": 80,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 5745,
-   "high": 19598,
-   "medium": 32783,
-   "low": 1764,
-   "unscored": 4
+   "critical": 5766,
+   "high": 19666,
+   "medium": 32903,
+   "low": 1773,
+   "unscored": 11
   }
  },
  "profile": {
   "llm": {
    "n": 268,
    "median_cvss": 7.6,
-   "median_epss_pctile": 26.5,
-   "epss_scored": 266,
+   "median_epss_pctile": 28.4,
+   "epss_scored": 268,
    "recent_days": 90,
    "recent_pct": 64.6,
    "poc_pct": 0.4,
@@ -410,27 +410,27 @@
    }
   },
   "vendor": {
-   "n": 562,
+   "n": 572,
    "median_cvss": 6.3,
    "median_epss_pctile": 31.6,
-   "epss_scored": 561,
+   "epss_scored": 564,
    "recent_days": 90,
-   "recent_pct": 38.3,
-   "poc_pct": 2.7,
+   "recent_pct": 38.5,
+   "poc_pct": 2.6,
    "kev_pct": 0.5,
-   "memory_pct": 26.2,
-   "cna_scored_pct": 84.7,
+   "memory_pct": 25.9,
+   "cna_scored_pct": 84.8,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 99,
-    "pct": 17.6
+    "n": 101,
+    "pct": 17.7
    }
   },
   "baseline": {
-   "n": 59894,
+   "n": 60119,
    "median_cvss": 6.9,
    "median_epss_pctile": 28.0,
-   "epss_scored": 59799,
+   "epss_scored": 59932,
    "recent_days": 90,
    "recent_pct": 25.1,
    "poc_pct": 1.6,
@@ -439,8 +439,8 @@
    "cna_scored_pct": 91.7,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 11779,
-    "pct": 19.7
+    "n": 11800,
+    "pct": 19.6
    }
   }
  },
@@ -454,11 +454,11 @@
      "pct": 38.4
     },
     "vendor": {
-     "n": 147,
-     "pct": 26.2
+     "n": 148,
+     "pct": 25.9
     },
     "baseline": {
-     "n": 5493,
+     "n": 5515,
      "pct": 9.2
     }
    },
@@ -470,12 +470,12 @@
      "pct": 5.2
     },
     "vendor": {
-     "n": 150,
-     "pct": 26.7
+     "n": 152,
+     "pct": 26.6
     },
     "baseline": {
-     "n": 22658,
-     "pct": 37.8
+     "n": 22694,
+     "pct": 37.7
     }
    },
    {
@@ -486,11 +486,11 @@
      "pct": 10.8
     },
     "vendor": {
-     "n": 66,
+     "n": 67,
      "pct": 11.7
     },
     "baseline": {
-     "n": 15029,
+     "n": 15099,
      "pct": 25.1
     }
    },
@@ -502,11 +502,11 @@
      "pct": 3.4
     },
     "vendor": {
-     "n": 60,
-     "pct": 10.7
+     "n": 62,
+     "pct": 10.8
     },
     "baseline": {
-     "n": 5396,
+     "n": 5413,
      "pct": 9.0
     }
    },
@@ -518,11 +518,11 @@
      "pct": 12.3
     },
     "vendor": {
-     "n": 27,
-     "pct": 4.8
+     "n": 28,
+     "pct": 4.9
     },
     "baseline": {
-     "n": 1044,
+     "n": 1052,
      "pct": 1.7
     }
    },
@@ -530,15 +530,15 @@
     "key": "logic",
     "label": "Input, state and resource handling",
     "llm": {
-     "n": 40,
-     "pct": 14.9
+     "n": 41,
+     "pct": 15.3
     },
     "vendor": {
-     "n": 46,
-     "pct": 8.2
+     "n": 48,
+     "pct": 8.4
     },
     "baseline": {
-     "n": 3653,
+     "n": 3681,
      "pct": 6.1
     }
    },
@@ -550,11 +550,11 @@
      "pct": 14.6
     },
     "vendor": {
-     "n": 64,
+     "n": 65,
      "pct": 11.4
     },
     "baseline": {
-     "n": 5734,
+     "n": 5771,
      "pct": 9.6
     }
    },
@@ -562,15 +562,15 @@
     "key": "none",
     "label": "No CWE listed",
     "llm": {
-     "n": 1,
-     "pct": 0.4
+     "n": 0,
+     "pct": 0.0
     },
     "vendor": {
      "n": 2,
-     "pct": 0.4
+     "pct": 0.3
     },
     "baseline": {
-     "n": 887,
+     "n": 894,
      "pct": 1.5
     }
    }
@@ -637,21 +637,26 @@
    ]
   },
   "vendor": {
-   "cves": 562,
-   "named": 562,
-   "distinct": 157,
+   "cves": 572,
+   "named": 572,
+   "distinct": 160,
    "top_share_n": 5,
-   "top_share_pct": 29.4,
+   "top_share_pct": 29.0,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
      "n": 89,
-     "pct": 15.8
+     "pct": 15.6
     },
     {
      "label": "OpenSSL",
      "n": 25,
      "pct": 4.4
+    },
+    {
+     "label": "FFmpeg",
+     "n": 18,
+     "pct": 3.1
     },
     {
      "label": "Apache Software Foundation / Apache HTTP Server",
@@ -676,15 +681,10 @@
     {
      "label": "SohuTV / CacheCloud",
      "n": 15,
-     "pct": 2.7
+     "pct": 2.6
     },
     {
      "label": "atjiu / pybbs",
-     "n": 13,
-     "pct": 2.3
-    },
-    {
-     "label": "FFmpeg",
      "n": 13,
      "pct": 2.3
     },
@@ -747,8 +747,8 @@
   },
   {
    "year": 2026,
-   "published": 75545,
-   "with_credits": 32362,
+   "published": 76052,
+   "with_credits": 32587,
    "pct": 42.8
   }
  ],
@@ -758,15 +758,15 @@
    "label": "AISLE",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 267,
-   "counted": 267,
-   "system": 73,
-   "org": 194,
+   "cves": 274,
+   "counted": 274,
+   "system": 74,
+   "org": 200,
    "fix": 0,
    "severity": {
     "critical": 15,
     "high": 102,
-    "medium": 134,
+    "medium": 141,
     "low": 16,
     "unscored": 0
    },
@@ -777,11 +777,11 @@
    "top_cnas": [
     {
      "cna": "redhat",
-     "n": 106
+     "n": 107
     },
     {
      "cna": "VulnCheck",
-     "n": 47
+     "n": 52
     },
     {
      "cna": "openssl",
@@ -794,10 +794,10 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 347,
+   "cves": 348,
    "counted": 228,
    "system": 228,
-   "org": 40,
+   "org": 41,
    "fix": 79,
    "severity": {
     "critical": 33,
@@ -922,6 +922,34 @@
    ]
   },
   {
+   "key": "codeant",
+   "label": "CodeAnt AI",
+   "group": "vendor",
+   "kind": "vendor",
+   "cves": 15,
+   "counted": 15,
+   "system": 15,
+   "org": 0,
+   "fix": 0,
+   "severity": {
+    "critical": 2,
+    "high": 10,
+    "medium": 3,
+    "low": 0,
+    "unscored": 0
+   },
+   "poc": 0,
+   "kev": 0,
+   "first_month": "2026-03",
+   "last_month": "2026-10",
+   "top_cnas": [
+    {
+     "cna": "VulnCheck",
+     "n": 15
+    }
+   ]
+  },
+  {
    "key": "depthfirst",
    "label": "depthfirst",
    "group": "vendor",
@@ -962,15 +990,15 @@
    "label": "striga.ai",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 14,
-   "counted": 14,
+   "cves": 15,
+   "counted": 15,
    "system": 0,
-   "org": 14,
+   "org": 15,
    "fix": 0,
    "severity": {
     "critical": 0,
     "high": 11,
-    "medium": 2,
+    "medium": 3,
     "low": 1,
     "unscored": 0
    },
@@ -981,7 +1009,7 @@
    "top_cnas": [
     {
      "cna": "CERT-PL",
-     "n": 8
+     "n": 9
     },
     {
      "cna": "apache",
@@ -1022,34 +1050,6 @@
     {
      "cna": "freebsd",
      "n": 2
-    }
-   ]
-  },
-  {
-   "key": "codeant",
-   "label": "CodeAnt AI",
-   "group": "vendor",
-   "kind": "vendor",
-   "cves": 13,
-   "counted": 13,
-   "system": 13,
-   "org": 0,
-   "fix": 0,
-   "severity": {
-    "critical": 2,
-    "high": 8,
-    "medium": 3,
-    "low": 0,
-    "unscored": 0
-   },
-   "poc": 0,
-   "kev": 0,
-   "first_month": "2026-03",
-   "last_month": "2026-10",
-   "top_cnas": [
-    {
-     "cna": "VulnCheck",
-     "n": 13
     }
    ]
   },
@@ -1554,7 +1554,7 @@
    "live": true,
    "source": "https://aisle.com/cve-discoveries",
    "note": "",
-   "credited": 267
+   "credited": 274
   },
   {
    "finder": "zeropath",

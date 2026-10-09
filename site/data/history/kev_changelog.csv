@@ -4377,3 +4377,10 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-10-03,CVE-2026-76504,added,,,,daily
 2026-10-03,CVE-2026-86950,added,,,,daily
 2026-10-05,CVE-2026-88779,added,,,,daily
+2026-10-09,CVE-2015-3306,added,,,,daily
+2026-10-09,CVE-2015-5477,added,,,,daily
+2026-10-09,CVE-2016-3081,added,,,,daily
+2026-10-09,CVE-2021-3199,added,,,,daily
+2026-10-09,CVE-2023-22894,added,,,,daily
+2026-10-09,CVE-2022-0995,field_changed,dueDate,2026-09-09,2026-08-29,daily
+2026-10-09,CVE-2026-86950,field_changed,dueDate,2026-10-02,2026-10-13,daily

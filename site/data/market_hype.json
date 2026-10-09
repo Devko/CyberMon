@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -13247,8 +13247,8 @@
      },
      {
       "month": "2026-08",
-      "n": 1071,
-      "index": 46.3
+      "n": 1072,
+      "index": 46.4
      },
      {
       "month": "2026-09",
@@ -13285,7 +13285,7 @@
     "edgar": {
      "latest_month": "2026-09",
      "pct_change": 16.0,
-     "n_latest_12m": 14367,
+     "n_latest_12m": 14368,
      "n_prior_12m": 12382
     }
    },
@@ -17205,8 +17205,8 @@
      },
      {
       "month": "2026-03",
-      "n": 3,
-      "index": 30.0
+      "n": 2,
+      "index": 20.0
      },
      {
       "month": "2026-04",
@@ -17849,8 +17849,8 @@
     },
     "arxiv": {
      "latest_month": "2026-09",
-     "pct_change": 12.7,
-     "n_latest_12m": 71,
+     "pct_change": 11.1,
+     "n_latest_12m": 70,
      "n_prior_12m": 63
     },
     "wiki": {
@@ -19228,8 +19228,8 @@
      },
      {
       "month": "2025-12",
-      "n": 5,
-      "index": 33.3
+      "n": 6,
+      "index": 40.0
      },
      {
       "month": "2026-01",
@@ -19268,8 +19268,8 @@
      },
      {
       "month": "2026-08",
-      "n": 8,
-      "index": 53.3
+      "n": 10,
+      "index": 66.7
      },
      {
       "month": "2026-09",
@@ -19305,8 +19305,8 @@
     },
     "edgar": {
      "latest_month": "2026-09",
-     "pct_change": 400.0,
-     "n_latest_12m": 95,
+     "pct_change": 415.8,
+     "n_latest_12m": 98,
      "n_prior_12m": 19
     }
    },

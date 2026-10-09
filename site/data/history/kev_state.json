@@ -2074,6 +2074,17 @@
    "ransom": "Unknown",
    "vendor": "Red Hat"
   },
+  "CVE-2015-3306": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-08",
+   "desc": "12b4deff5408",
+   "due": "2026-10-11",
+   "name": "ProFTPD Improper Access Control Vulnerability",
+   "notes": "8af0c67bd997",
+   "product": "ProFTPD",
+   "ransom": "Unknown",
+   "vendor": "ProFTPD"
+  },
   "CVE-2015-4068": {
    "action": "975dbe03c141",
    "added": "2022-03-25",
@@ -2172,6 +2183,17 @@
    "product": "Jenkins User Interface (UI)",
    "ransom": "Unknown",
    "vendor": "Jenkins"
+  },
+  "CVE-2015-5477": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-08",
+   "desc": "74ed1243dc32",
+   "due": "2026-10-11",
+   "name": "ISC BIND Data Processing Errors Vulnerability",
+   "notes": "779cd1e092da",
+   "product": "BIND",
+   "ransom": "Unknown",
+   "vendor": "ISC"
   },
   "CVE-2015-6175": {
    "action": "975dbe03c141",
@@ -2458,6 +2480,17 @@
    "product": "NetWeaver",
    "ransom": "Unknown",
    "vendor": "SAP"
+  },
+  "CVE-2016-3081": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-08",
+   "desc": "813b75adcbcd",
+   "due": "2026-10-11",
+   "name": "Apache Struts Command Injection Vulnerability",
+   "notes": "14feac2acc9b",
+   "product": "Struts",
+   "ransom": "Unknown",
+   "vendor": "Apache"
   },
   "CVE-2016-3088": {
    "action": "975dbe03c141",
@@ -9202,6 +9235,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2021-3199": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-08",
+   "desc": "7ca16c05a7aa",
+   "due": "2026-10-11",
+   "name": "ONLYOFFICE Docs Server Path Traversal Vulnerability",
+   "notes": "13229cb83a9c",
+   "product": "Docs",
+   "ransom": "Unknown",
+   "vendor": "ONLYOFFICE"
+  },
   "CVE-2021-32030": {
    "action": "f09df147152e",
    "added": "2025-06-02",
@@ -10152,7 +10196,7 @@
    "action": "ba0d649eb29b",
    "added": "2026-08-26",
    "desc": "f0822f5fb761",
-   "due": "2026-09-09",
+   "due": "2026-08-29",
    "name": "Linux Kernel Out-of-Bounds Write Vulnerability",
    "notes": "bc5e7b3b7729",
    "product": "Kernel",
@@ -11819,6 +11863,17 @@
    "product": "Confluence Data Center and Server",
    "ransom": "Known",
    "vendor": "Atlassian"
+  },
+  "CVE-2023-22894": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-08",
+   "desc": "387c07dddac3",
+   "due": "2026-10-11",
+   "name": "Strapi Cleartext Storage of Sensitive Information Vulnerability",
+   "notes": "e1cc5042ca60",
+   "product": "Strapi",
+   "ransom": "Unknown",
+   "vendor": "Strapi"
   },
   "CVE-2023-22952": {
    "action": "975dbe03c141",
@@ -18941,7 +18996,7 @@
    "action": "ba0d649eb29b",
    "added": "2026-09-29",
    "desc": "147b91ed8989",
-   "due": "2026-10-02",
+   "due": "2026-10-13",
    "name": "Apple Multiple Products Out-of-Bounds Write Vulnerability",
    "notes": "1b1483678125",
    "product": "Multiple Products",
@@ -19081,7 +19136,7 @@
    "vendor": "Sangoma"
   }
  },
- "last_observed": "2026-10-08",
+ "last_observed": "2026-10-09",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

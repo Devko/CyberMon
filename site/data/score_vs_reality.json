@@ -1,20 +1,20 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "grid": [
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "<0.1%",
-   "n": 149
+   "n": 150
   },
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "0.1-1%",
-   "n": 8403
+   "n": 8417
   },
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "1-10%",
-   "n": 725
+   "n": 726
   },
   {
    "cvss_bucket": "0.0-3.9",
@@ -24,42 +24,42 @@
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "<0.1%",
-   "n": 1320
+   "n": 1346
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "0.1-1%",
-   "n": 87748
+   "n": 87881
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "1-10%",
-   "n": 8187
+   "n": 8195
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "\u226510%",
-   "n": 840
+   "n": 842
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "<0.1%",
-   "n": 840
+   "n": 875
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "0.1-1%",
-   "n": 64219
+   "n": 64299
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "1-10%",
-   "n": 14737
+   "n": 14761
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "\u226510%",
-   "n": 2194
+   "n": 2195
   },
   {
    "cvss_bucket": "9.0-10.0",
@@ -69,17 +69,17 @@
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "0.1-1%",
-   "n": 14421
+   "n": 14453
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "1-10%",
-   "n": 6400
+   "n": 6405
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "\u226510%",
-   "n": 1664
+   "n": 1670
   }
  ],
  "cvss_buckets": [
@@ -96,10 +96,10 @@
  ],
  "headline": {
   "pct_critical_epss_below_1pct": 64.2,
-  "n_critical_with_epss": 22496
+  "n_critical_with_epss": 22539
  },
  "kev": {
-  "total": 1734,
+  "total": 1739,
   "below_high": 212,
   "pct_below_high": 12.2,
   "cvss_distribution": [
@@ -113,11 +113,11 @@
    },
    {
     "bucket": "7.0-8.9",
-    "n": 912
+    "n": 915
    },
    {
     "bucket": "9.0-10.0",
-    "n": 610
+    "n": 612
    }
   ]
  }

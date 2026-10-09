@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "min_n": 500,
  "years": [
   {
@@ -155,9 +155,9 @@
   {
    "year": 2015,
    "n": 6494,
-   "missing_cwe": 6427,
-   "pct_missing_cwe": 99.0,
-   "missing_cvss": 6415,
+   "missing_cwe": 6425,
+   "pct_missing_cwe": 98.9,
+   "missing_cvss": 6413,
    "pct_missing_cvss": 98.8,
    "missing_affected": 6472,
    "pct_missing_affected": 99.7
@@ -165,9 +165,9 @@
   {
    "year": 2016,
    "n": 6457,
-   "missing_cwe": 6390,
-   "pct_missing_cwe": 99.0,
-   "missing_cvss": 6358,
+   "missing_cwe": 6389,
+   "pct_missing_cwe": 98.9,
+   "missing_cvss": 6357,
    "pct_missing_cvss": 98.5,
    "missing_affected": 6166,
    "pct_missing_affected": 95.5
@@ -187,7 +187,7 @@
    "n": 16510,
    "missing_cwe": 13974,
    "pct_missing_cwe": 84.6,
-   "missing_cvss": 14766,
+   "missing_cvss": 14765,
    "pct_missing_cvss": 89.4,
    "missing_affected": 8892,
    "pct_missing_affected": 53.9
@@ -205,9 +205,9 @@
   {
    "year": 2020,
    "n": 18363,
-   "missing_cwe": 14617,
+   "missing_cwe": 14614,
    "pct_missing_cwe": 79.6,
-   "missing_cvss": 12285,
+   "missing_cvss": 12282,
    "pct_missing_cvss": 66.9,
    "missing_affected": 9398,
    "pct_missing_affected": 51.2
@@ -215,9 +215,9 @@
   {
    "year": 2021,
    "n": 20177,
-   "missing_cwe": 12963,
+   "missing_cwe": 12961,
    "pct_missing_cwe": 64.2,
-   "missing_cvss": 11791,
+   "missing_cvss": 11789,
    "pct_missing_cvss": 58.4,
    "missing_affected": 9609,
    "pct_missing_affected": 47.6
@@ -225,9 +225,9 @@
   {
    "year": 2022,
    "n": 24999,
-   "missing_cwe": 10873,
+   "missing_cwe": 10870,
    "pct_missing_cwe": 43.5,
-   "missing_cvss": 10224,
+   "missing_cvss": 10221,
    "pct_missing_cvss": 40.9,
    "missing_affected": 11780,
    "pct_missing_affected": 47.1
@@ -264,12 +264,12 @@
   },
   {
    "year": 2026,
-   "n": 75545,
-   "missing_cwe": 7776,
-   "pct_missing_cwe": 10.3,
-   "missing_cvss": 4321,
+   "n": 76052,
+   "missing_cwe": 7795,
+   "pct_missing_cwe": 10.2,
+   "missing_cvss": 4316,
    "pct_missing_cvss": 5.7,
-   "missing_affected": 3083,
+   "missing_affected": 3099,
    "pct_missing_affected": 4.1
   }
  ]

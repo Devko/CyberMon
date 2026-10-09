@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -17327,6 +17327,191 @@
      "tier": "system",
      "roles": [
       "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-103663",
+   "published": "2026-10-08",
+   "cna": "CERT-PL",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "striga",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-104077",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "codeant",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-104078",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "codeant",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107466",
+   "published": "2026-10-08",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107570",
+   "published": "2026-10-08",
+   "cna": "GitLab",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107660",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107675",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107676",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107677",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107678",
+   "published": "2026-10-08",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-66082",
+   "published": "2026-10-08",
+   "cna": "apache",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
      ]
     }
    ]

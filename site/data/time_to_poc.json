@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "hero": {
   "matched": {
    "dated_cves": 25091,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-07-10",
+  "observed_through": "2026-07-11",
   "min_n": 30,
   "years": [
    {
@@ -484,21 +484,21 @@
    },
    {
     "year": 2026,
-    "n": 72,
-    "median_days": 35.0,
-    "pct_within_week": 11.1,
-    "pct_negative": 8.3,
+    "n": 74,
+    "median_days": 33.0,
+    "pct_within_week": 10.8,
+    "pct_negative": 8.1,
     "provisional": true
    }
   ]
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1734,
+  "total_kev": 1739,
   "trend": {
-   "with_poc_date": 123,
-   "preempted": 67,
-   "pct_preempted": 54.5
+   "with_poc_date": 126,
+   "preempted": 70,
+   "pct_preempted": 55.6
   },
   "seeding": {
    "with_poc_date": 329,
@@ -543,10 +543,10 @@
    },
    {
     "year": 2026,
-    "total_added": 250,
-    "with_poc_date": 24,
-    "preempted": 11,
-    "pct_preempted": 45.8
+    "total_added": 255,
+    "with_poc_date": 27,
+    "preempted": 14,
+    "pct_preempted": 51.9
    }
   ]
  },
@@ -597,21 +597,21 @@
    "dated_cves": 25091
   },
   "metasploit": {
-   "modules": 7189,
-   "with_cve": 3122,
-   "exploit_modules_with_cve": 2414,
-   "cves": 2579,
-   "other_cves": 639,
+   "modules": 7207,
+   "with_cve": 3128,
+   "exploit_modules_with_cve": 2419,
+   "cves": 2584,
+   "other_cves": 640,
    "dated_cves": 0,
-   "disclosure_dated_cves": 3055
+   "disclosure_dated_cves": 3061
   },
   "nuclei": {
    "templates": 4459,
    "cves": 4459
   },
-  "exploit_cves": 25988,
-  "union_cves": 29641,
+  "exploit_cves": 25993,
+  "union_cves": 29645,
   "dated_cves": 25091,
-  "matched_in_corpus": 25940
+  "matched_in_corpus": 25945
  }
 }

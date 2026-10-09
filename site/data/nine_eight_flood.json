@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-08T09:27:01Z",
+ "generated_at": "2026-10-09T09:36:50Z",
  "years": [
   {
    "year": 1999,
@@ -131,19 +131,19 @@
   },
   {
    "year": 2015,
-   "critical": 19,
-   "high": 47,
+   "critical": 20,
+   "high": 48,
    "medium": 11,
    "low": 2,
-   "unscored": 6415
+   "unscored": 6413
   },
   {
    "year": 2016,
    "critical": 12,
-   "high": 67,
+   "high": 68,
    "medium": 20,
    "low": 0,
-   "unscored": 6358
+   "unscored": 6357
   },
   {
    "year": 2017,
@@ -156,10 +156,10 @@
   {
    "year": 2018,
    "critical": 175,
-   "high": 637,
+   "high": 638,
    "medium": 828,
    "low": 104,
-   "unscored": 14766
+   "unscored": 14765
   },
   {
    "year": 2019,
@@ -171,32 +171,32 @@
   },
   {
    "year": 2020,
-   "critical": 506,
+   "critical": 508,
    "high": 2394,
-   "medium": 2865,
+   "medium": 2866,
    "low": 313,
-   "unscored": 12285
+   "unscored": 12282
   },
   {
    "year": 2021,
-   "critical": 761,
+   "critical": 762,
    "high": 3577,
    "medium": 3558,
-   "low": 490,
-   "unscored": 11791
+   "low": 491,
+   "unscored": 11789
   },
   {
    "year": 2022,
    "critical": 1669,
-   "high": 5682,
-   "medium": 6488,
+   "high": 5684,
+   "medium": 6489,
    "low": 936,
-   "unscored": 10224
+   "unscored": 10221
   },
   {
    "year": 2023,
-   "critical": 2357,
-   "high": 8133,
+   "critical": 2356,
+   "high": 8134,
    "medium": 11334,
    "low": 1333,
    "unscored": 5690
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "critical": 8659,
-   "high": 30278,
-   "medium": 29346,
-   "low": 2941,
-   "unscored": 4321
+   "critical": 8710,
+   "high": 30476,
+   "medium": 29586,
+   "low": 2964,
+   "unscored": 4316
   }
  ],
  "record_era": {
@@ -232,8 +232,8 @@
  },
  "projection": {
   "year": 2026,
-  "total": 98128,
-  "elapsed": 0.77
+  "total": 98436,
+  "elapsed": 0.773
  },
  "without_linux": {
   "cna": "Linux",
@@ -368,19 +368,19 @@
    },
    {
     "year": 2015,
-    "critical": 19,
-    "high": 47,
+    "critical": 20,
+    "high": 48,
     "medium": 11,
     "low": 2,
-    "unscored": 6415
+    "unscored": 6413
    },
    {
     "year": 2016,
     "critical": 12,
-    "high": 67,
+    "high": 68,
     "medium": 20,
     "low": 0,
-    "unscored": 6358
+    "unscored": 6357
    },
    {
     "year": 2017,
@@ -393,10 +393,10 @@
    {
     "year": 2018,
     "critical": 175,
-    "high": 637,
+    "high": 638,
     "medium": 828,
     "low": 104,
-    "unscored": 14766
+    "unscored": 14765
    },
    {
     "year": 2019,
@@ -408,32 +408,32 @@
    },
    {
     "year": 2020,
-    "critical": 506,
+    "critical": 508,
     "high": 2394,
-    "medium": 2865,
+    "medium": 2866,
     "low": 313,
-    "unscored": 12285
+    "unscored": 12282
    },
    {
     "year": 2021,
-    "critical": 761,
+    "critical": 762,
     "high": 3577,
     "medium": 3558,
-    "low": 490,
-    "unscored": 11791
+    "low": 491,
+    "unscored": 11789
    },
    {
     "year": 2022,
     "critical": 1669,
-    "high": 5682,
-    "medium": 6488,
+    "high": 5684,
+    "medium": 6489,
     "low": 936,
-    "unscored": 10224
+    "unscored": 10221
    },
    {
     "year": 2023,
-    "critical": 2357,
-    "high": 8133,
+    "critical": 2356,
+    "high": 8134,
     "medium": 11334,
     "low": 1333,
     "unscored": 5690
@@ -456,17 +456,17 @@
    },
    {
     "year": 2026,
-    "critical": 8120,
-    "high": 27713,
-    "medium": 29343,
-    "low": 2941,
-    "unscored": 64
+    "critical": 8171,
+    "high": 27911,
+    "medium": 29583,
+    "low": 2964,
+    "unscored": 59
    }
   ],
   "projection": {
    "year": 2026,
-   "total": 88563,
-   "elapsed": 0.77
+   "total": 88905,
+   "elapsed": 0.773
   }
  }
 }
