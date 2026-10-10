@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-09T09:36:50Z",
+ "generated_at": "2026-10-10T08:59:24Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -99,17 +99,17 @@
   },
   {
    "week": "2026-W41",
-   "rescore_up": 2,
+   "rescore_up": 4,
    "rescore_down": 0,
    "first_score": 54,
-   "version_shift": 0,
+   "version_shift": 1,
    "score_removed": 0
   }
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 104,
-  "up": 41,
+  "n": 106,
+  "up": 43,
   "down": 63,
   "buckets": [
    {
@@ -126,7 +126,7 @@
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 27
+    "n": 29
    },
    {
     "bucket": "+2.0..+3.9",
@@ -144,8 +144,8 @@
   "cnas": [
    {
     "cna": "VulnCheck",
-    "rescores": 31,
-    "up": 5,
+    "rescores": 32,
+    "up": 6,
     "down": 26
    },
    {
@@ -181,15 +181,15 @@
   ]
  },
  "catalog": {
-  "state_size": 384931,
-  "corpus_release": "cve_2026-10-09_0900Z",
+  "state_size": 385233,
+  "corpus_release": "cve_2026-10-10_0800Z",
   "totals": {
-   "rescore": 104,
-   "version_shift": 28,
+   "rescore": 106,
+   "version_shift": 29,
    "first_score": 5422,
    "score_removed": 4
   },
-  "events_total": 5558,
+  "events_total": 5561,
   "first_observed": "2026-07-15"
  }
 }

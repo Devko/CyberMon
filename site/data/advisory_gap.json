@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-09T09:36:50Z",
- "as_of": "2026-10-09",
+ "generated_at": "2026-10-10T08:59:24Z",
+ "as_of": "2026-10-10",
  "ecosystems_read": [
   "GitHub Actions",
   "Go",
@@ -16,15 +16,15 @@
   "npm"
  ],
  "young_days": 90,
- "young_since": "2026-07-11",
+ "young_since": "2026-07-12",
  "min_n": 50,
  "catalog": {
-  "advisories": 35516,
-  "with_cve": 32594,
-  "without_cve": 2922,
-  "without_cve_young": 193,
+  "advisories": 35581,
+  "with_cve": 32647,
+  "without_cve": 2934,
+  "without_cve_young": 205,
   "without_cve_pct": 8.2,
-  "withdrawn_excluded": 1202,
+  "withdrawn_excluded": 1218,
   "not_reviewed": 0,
   "multi_ecosystem": 304,
   "first_year": 2017,
@@ -114,19 +114,19 @@
   },
   {
    "year": 2026,
-   "total": 10854,
-   "with_cve": 10122,
-   "without_cve": 732,
-   "without_cve_young": 193,
-   "without_cve_pct": 6.7,
+   "total": 10919,
+   "with_cve": 10175,
+   "without_cve": 744,
+   "without_cve_young": 205,
+   "without_cve_pct": 6.8,
    "partial": true
   }
  ],
  "ecosystems": [
   {
    "ecosystem": "npm",
-   "total": 7433,
-   "with_cve": 6337,
+   "total": 7436,
+   "with_cve": 6340,
    "without_cve": 1096,
    "without_cve_young": 69,
    "without_cve_pct": 14.7,
@@ -205,8 +205,8 @@
     },
     {
      "year": 2026,
-     "total": 3183,
-     "with_cve": 2943,
+     "total": 3186,
+     "with_cve": 2946,
      "without_cve": 240,
      "without_cve_young": 69,
      "without_cve_pct": 7.5
@@ -305,8 +305,8 @@
   },
   {
    "ecosystem": "Packagist",
-   "total": 6428,
-   "with_cve": 5799,
+   "total": 6435,
+   "with_cve": 5806,
    "without_cve": 629,
    "without_cve_young": 21,
    "without_cve_pct": 9.8,
@@ -385,8 +385,8 @@
     },
     {
      "year": 2026,
-     "total": 1401,
-     "with_cve": 1339,
+     "total": 1408,
+     "with_cve": 1346,
      "without_cve": 62,
      "without_cve_young": 21,
      "without_cve_pct": 4.4
@@ -395,11 +395,11 @@
   },
   {
    "ecosystem": "PyPI",
-   "total": 6317,
-   "with_cve": 6058,
-   "without_cve": 259,
-   "without_cve_young": 41,
-   "without_cve_pct": 4.1,
+   "total": 6330,
+   "with_cve": 6064,
+   "without_cve": 266,
+   "without_cve_young": 48,
+   "without_cve_pct": 4.2,
    "years": [
     {
      "year": 2017,
@@ -475,20 +475,20 @@
     },
     {
      "year": 2026,
-     "total": 2223,
-     "with_cve": 2115,
-     "without_cve": 108,
-     "without_cve_young": 41,
-     "without_cve_pct": 4.9
+     "total": 2236,
+     "with_cve": 2121,
+     "without_cve": 115,
+     "without_cve_young": 48,
+     "without_cve_pct": 5.1
     }
    ]
   },
   {
    "ecosystem": "Go",
-   "total": 4784,
-   "with_cve": 4425,
-   "without_cve": 359,
-   "without_cve_young": 31,
+   "total": 4826,
+   "with_cve": 4462,
+   "without_cve": 364,
+   "without_cve_young": 36,
    "without_cve_pct": 7.5,
    "years": [
     {
@@ -565,11 +565,11 @@
     },
     {
      "year": 2026,
-     "total": 2032,
-     "with_cve": 1897,
-     "without_cve": 135,
-     "without_cve_young": 31,
-     "without_cve_pct": 6.6
+     "total": 2074,
+     "with_cve": 1934,
+     "without_cve": 140,
+     "without_cve_young": 36,
+     "without_cve_pct": 6.8
     }
    ]
   },
@@ -1207,29 +1207,29 @@
  "severity": [
   {
    "level": "CRITICAL",
-   "with_cve": 4017,
+   "with_cve": 4021,
    "without_cve": 644,
    "with_cve_pct": 12.3,
-   "without_cve_pct": 22.0
+   "without_cve_pct": 21.9
   },
   {
    "level": "HIGH",
-   "with_cve": 12027,
-   "without_cve": 855,
+   "with_cve": 12054,
+   "without_cve": 860,
    "with_cve_pct": 36.9,
    "without_cve_pct": 29.3
   },
   {
    "level": "MODERATE",
-   "with_cve": 14365,
-   "without_cve": 1051,
+   "with_cve": 14385,
+   "without_cve": 1057,
    "with_cve_pct": 44.1,
    "without_cve_pct": 36.0
   },
   {
    "level": "LOW",
-   "with_cve": 2185,
-   "without_cve": 372,
+   "with_cve": 2187,
+   "without_cve": 373,
    "with_cve_pct": 6.7,
    "without_cve_pct": 12.7
   },
@@ -1242,7 +1242,7 @@
   }
  ],
  "cve_lag": {
-  "n": 27337,
+  "n": 27345,
   "later_30d": 204,
   "later_90d": 113,
   "later_365d": 31

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-09T09:36:50Z",
+ "generated_at": "2026-10-10T08:59:24Z",
  "since_month": "2023-11",
  "container": "cna",
  "classes": [
@@ -284,18 +284,18 @@
   {
    "month": "2026-09",
    "published": 14943,
-   "v4_only": 1477,
+   "v4_only": 1476,
    "both": 2915,
-   "v3_only": 6905,
+   "v3_only": 6906,
    "neither": 3646
   },
   {
    "month": "2026-10",
-   "published": 3240,
-   "v4_only": 519,
-   "both": 584,
-   "v3_only": 1358,
-   "neither": 779
+   "published": 3542,
+   "v4_only": 549,
+   "both": 622,
+   "v3_only": 1552,
+   "neither": 819
   }
  ],
  "years": [
@@ -331,21 +331,21 @@
   },
   {
    "year": 2026,
-   "published": 76052,
-   "v4_only": 9535,
-   "both": 14519,
-   "v3_only": 35993,
-   "neither": 16005,
-   "neither_adp": 11689,
-   "v4_cnas": 258
+   "published": 76354,
+   "v4_only": 9564,
+   "both": 14557,
+   "v3_only": 36188,
+   "neither": 16045,
+   "neither_adp": 11739,
+   "v4_cnas": 260
   }
  ],
  "adopters": {
   "window_from": "2023-11",
   "min_v4": 50,
-  "window_published": 169244,
-  "window_v4": 40062,
-  "adopter_count": 307,
+  "window_published": 169546,
+  "window_v4": 40129,
+  "adopter_count": 308,
   "top_share_pct": 80.0,
   "cnas": [
    {
@@ -358,35 +358,35 @@
    },
    {
     "cna": "VulnCheck",
-    "published": 8228,
-    "v4": 8152,
+    "published": 8240,
+    "v4": 8164,
     "v4_only": 1129,
     "v4_share_pct": 99.1,
     "v4_only_share_pct": 13.7
    },
    {
     "cna": "GitHub_M",
-    "published": 16600,
-    "v4": 5359,
-    "v4_only": 5355,
-    "v4_share_pct": 32.3,
-    "v4_only_share_pct": 32.3
+    "published": 16662,
+    "v4": 5369,
+    "v4_only": 5365,
+    "v4_share_pct": 32.2,
+    "v4_only_share_pct": 32.2
    },
    {
     "cna": "icscert",
-    "published": 1107,
-    "v4": 891,
+    "published": 1121,
+    "v4": 905,
     "v4_only": 117,
-    "v4_share_pct": 80.5,
-    "v4_only_share_pct": 10.6
+    "v4_share_pct": 80.7,
+    "v4_only_share_pct": 10.4
    },
    {
     "cna": "INCIBE",
-    "published": 1015,
-    "v4": 592,
-    "v4_only": 591,
-    "v4_share_pct": 58.3,
-    "v4_only_share_pct": 58.2
+    "published": 1016,
+    "v4": 593,
+    "v4_only": 592,
+    "v4_share_pct": 58.4,
+    "v4_only_share_pct": 58.3
    },
    {
     "cna": "siemens",
@@ -430,9 +430,9 @@
    },
    {
     "cna": "EEF",
-    "published": 322,
-    "v4": 322,
-    "v4_only": 322,
+    "published": 324,
+    "v4": 324,
+    "v4_only": 324,
     "v4_share_pct": 100.0,
     "v4_only_share_pct": 100.0
    },
@@ -462,21 +462,21 @@
    },
    {
     "cna": "apache",
-    "published": 1556,
+    "published": 1569,
     "v4": 252,
     "v4_only": 207,
-    "v4_share_pct": 16.2,
-    "v4_only_share_pct": 13.3
+    "v4_share_pct": 16.1,
+    "v4_only_share_pct": 13.2
    }
   ]
  },
  "compare": {
-  "n": 25058,
+  "n": 25096,
   "median_delta": -0.1,
-  "same_band": 17353,
-  "v4_higher": 3654,
-  "v4_lower": 4051,
-  "same_band_pct": 69.3,
+  "same_band": 17378,
+  "v4_higher": 3664,
+  "v4_lower": 4054,
+  "same_band_pct": 69.2,
   "v4_higher_pct": 14.6,
   "v4_lower_pct": 16.2,
   "bins": [
@@ -496,7 +496,7 @@
     "center": -2.0,
     "lo": -2.2,
     "hi": -1.8,
-    "n": 230
+    "n": 229
    },
    {
     "center": -1.5,
@@ -508,55 +508,55 @@
     "center": -1.0,
     "lo": -1.2,
     "hi": -0.8,
-    "n": 4265
+    "n": 4270
    },
    {
     "center": -0.5,
     "lo": -0.7,
     "hi": -0.3,
-    "n": 5622
+    "n": 5630
    },
    {
     "center": 0.0,
     "lo": -0.2,
     "hi": 0.2,
-    "n": 3323
+    "n": 3334
    },
    {
     "center": 0.5,
     "lo": 0.3,
     "hi": 0.7,
-    "n": 3666
+    "n": 3667
    },
    {
     "center": 1.0,
     "lo": 0.8,
     "hi": 1.2,
-    "n": 2979
+    "n": 2990
    },
    {
     "center": 1.5,
     "lo": 1.3,
     "hi": 1.7,
-    "n": 2622
+    "n": 2623
    },
    {
     "center": 2.0,
     "lo": 1.8,
     "hi": 2.2,
-    "n": 479
+    "n": 481
    },
    {
     "center": 2.5,
     "lo": 2.3,
     "hi": 2.7,
-    "n": 978
+    "n": 977
    },
    {
     "center": 3.0,
     "lo": 2.8,
     "hi": 10.0,
-    "n": 67
+    "n": 68
    }
   ],
   "min_n": 100,
@@ -571,7 +571,7 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 7024,
+    "n": 7036,
     "median_delta": 0.5,
     "same_band_pct": 78.9,
     "v4_higher_pct": 13.9,
@@ -579,11 +579,11 @@
    },
    {
     "cna": "icscert",
-    "n": 775,
+    "n": 789,
     "median_delta": 0.4,
-    "same_band_pct": 82.7,
-    "v4_higher_pct": 12.0,
-    "v4_lower_pct": 5.3
+    "same_band_pct": 82.5,
+    "v4_higher_pct": 12.3,
+    "v4_lower_pct": 5.2
    },
    {
     "cna": "siemens",
@@ -631,10 +631,10 @@
   "current_year": 2026,
   "current_month": "2026-10",
   "v4_share_current_pct": 31.6,
-  "v4_current": 24054,
-  "published_current": 76052,
+  "v4_current": 24121,
+  "published_current": 76354,
   "latest_year": 2025,
   "v4_share_latest_pct": 25.8,
-  "v4_cnas_current": 258
+  "v4_cnas_current": 260
  }
 }

@@ -5557,3 +5557,6 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-10-08,CVE-2026-98367,Linux,first_score,,,v3.1,7.8
 2026-10-08,CVE-2026-98368,Linux,first_score,,,v3.1,7.8
 2026-10-08,CVE-2026-98369,Linux,first_score,,,v3.1,7.8
+2026-10-10,CVE-2026-100833,VulnCheck,rescore,v4.0,7.6,v4.0,8.6
+2026-10-10,CVE-2026-49243,GitHub_M,version_shift,v4.0,5.1,v3.1,9.6
+2026-10-10,CVE-2026-76459,cisco,rescore,v3.1,8.8,v3.1,9.8
