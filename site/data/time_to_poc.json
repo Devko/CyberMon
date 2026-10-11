@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T08:59:24Z",
+ "generated_at": "2026-10-11T09:17:40Z",
  "hero": {
   "matched": {
    "dated_cves": 25091,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-07-12",
+  "observed_through": "2026-07-13",
   "min_n": 30,
   "years": [
    {
@@ -606,11 +606,11 @@
    "disclosure_dated_cves": 3061
   },
   "nuclei": {
-   "templates": 4459,
-   "cves": 4459
+   "templates": 4460,
+   "cves": 4460
   },
   "exploit_cves": 25993,
-  "union_cves": 29645,
+  "union_cves": 29646,
   "dated_cves": 25091,
   "matched_in_corpus": 25945
  }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-10T08:59:24Z",
+ "generated_at": "2026-10-11T09:17:40Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -150,11 +150,11 @@
   {
    "cna": "ProgressSoftware",
    "org": "ProgressSoftware",
-   "n": 222,
+   "n": 224,
    "avg_cvss": 7.7,
    "median_cvss": 8.0,
-   "pct_geq_9": 17.1,
-   "pct_geq_7": 77.0
+   "pct_geq_9": 17.0,
+   "pct_geq_7": 76.3
   },
   {
    "cna": "ivanti",
@@ -195,11 +195,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 8218,
+   "n": 8331,
    "avg_cvss": 7.4,
-   "median_cvss": 8.2,
-   "pct_geq_9": 14.9,
-   "pct_geq_7": 64.0
+   "median_cvss": 7.7,
+   "pct_geq_9": 14.8,
+   "pct_geq_7": 63.4
   },
   {
    "cna": "CERTVDE",
@@ -213,11 +213,11 @@
   {
    "cna": "Fluid Attacks",
    "org": "Fluid Attacks",
-   "n": 151,
+   "n": 152,
    "avg_cvss": 6.9,
-   "median_cvss": 6.9,
-   "pct_geq_9": 14.6,
-   "pct_geq_7": 49.7
+   "median_cvss": 7.0,
+   "pct_geq_9": 14.5,
+   "pct_geq_7": 50.0
   },
   {
    "cna": "hpe",
@@ -454,6 +454,15 @@
    "pct_geq_7": 63.1
   },
   {
+   "cna": "Patchstack",
+   "org": "Patchstack",
+   "n": 16184,
+   "avg_cvss": 6.7,
+   "median_cvss": 6.5,
+   "pct_geq_9": 8.6,
+   "pct_geq_7": 48.3
+  },
+  {
    "cna": "openjs",
    "org": "openjs",
    "n": 128,
@@ -461,15 +470,6 @@
    "median_cvss": 7.5,
    "pct_geq_9": 8.6,
    "pct_geq_7": 57.8
-  },
-  {
-   "cna": "Patchstack",
-   "org": "Patchstack",
-   "n": 16024,
-   "avg_cvss": 6.7,
-   "median_cvss": 6.5,
-   "pct_geq_9": 8.3,
-   "pct_geq_7": 47.8
   },
   {
    "cna": "Liferay",
@@ -546,11 +546,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10226,
+   "n": 10331,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.5,
-   "pct_geq_7": 26.7
+   "pct_geq_7": 26.8
   },
   {
    "cna": "Acronis",
@@ -564,11 +564,11 @@
   {
    "cna": "EEF",
    "org": "EEF",
-   "n": 324,
+   "n": 325,
    "avg_cvss": 6.4,
    "median_cvss": 6.9,
-   "pct_geq_9": 5.9,
-   "pct_geq_7": 45.7
+   "pct_geq_9": 5.8,
+   "pct_geq_7": 45.5
   },
   {
    "cna": "OpenText",
