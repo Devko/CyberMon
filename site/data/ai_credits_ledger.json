@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-11T09:17:40Z",
+ "generated_at": "2026-10-12T09:44:39Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -17576,6 +17576,23 @@
     {
      "finder": "openai",
      "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-96227",
+   "published": "2026-10-11",
+   "cna": "WPScan",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
      "roles": [
       "finder"
      ]

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-11T09:17:40Z",
+ "generated_at": "2026-10-12T09:44:39Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -105,11 +105,11 @@
   {
    "cna": "INCD",
    "org": "INCD",
-   "n": 122,
+   "n": 124,
    "avg_cvss": 7.2,
    "median_cvss": 7.5,
-   "pct_geq_9": 20.5,
-   "pct_geq_7": 57.4
+   "pct_geq_9": 20.2,
+   "pct_geq_7": 56.5
   },
   {
    "cna": "@huntr_ai",
@@ -193,15 +193,6 @@
    "pct_geq_7": 48.2
   },
   {
-   "cna": "VulnCheck",
-   "org": "VulnCheck",
-   "n": 8331,
-   "avg_cvss": 7.4,
-   "median_cvss": 7.7,
-   "pct_geq_9": 14.8,
-   "pct_geq_7": 63.4
-  },
-  {
    "cna": "CERTVDE",
    "org": "CERTVDE",
    "n": 423,
@@ -209,6 +200,15 @@
    "median_cvss": 7.5,
    "pct_geq_9": 14.7,
    "pct_geq_7": 75.7
+  },
+  {
+   "cna": "VulnCheck",
+   "org": "VulnCheck",
+   "n": 8447,
+   "avg_cvss": 7.4,
+   "median_cvss": 7.7,
+   "pct_geq_9": 14.6,
+   "pct_geq_7": 62.9
   },
   {
    "cna": "Fluid Attacks",
@@ -258,11 +258,11 @@
   {
    "cna": "samsung.tv_appliance",
    "org": "samsung.tv_appliance",
-   "n": 100,
+   "n": 101,
    "avg_cvss": 6.9,
    "median_cvss": 6.5,
-   "pct_geq_9": 14.0,
-   "pct_geq_7": 35.0
+   "pct_geq_9": 13.9,
+   "pct_geq_7": 34.7
   },
   {
    "cna": "Linux",
@@ -393,11 +393,11 @@
   {
    "cna": "mitre",
    "org": "mitre",
-   "n": 1731,
+   "n": 1734,
    "avg_cvss": 6.1,
    "median_cvss": 6.2,
    "pct_geq_9": 9.5,
-   "pct_geq_7": 38.1
+   "pct_geq_7": 38.2
   },
   {
    "cna": "Nozomi",
@@ -717,19 +717,19 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 14342,
+   "n": 14381,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.4,
-   "pct_geq_7": 14.3
+   "pct_geq_7": 14.2
   },
   {
    "cna": "zephyr",
    "org": "zephyr",
-   "n": 193,
+   "n": 204,
    "avg_cvss": 6.3,
    "median_cvss": 6.5,
-   "pct_geq_9": 2.1,
+   "pct_geq_9": 2.0,
    "pct_geq_7": 36.8
   },
   {

@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-11T09:17:40Z",
- "as_of": "2026-10-11",
+ "generated_at": "2026-10-12T09:44:39Z",
+ "as_of": "2026-10-12",
  "ecosystems_read": [
   "GitHub Actions",
   "Go",
@@ -16,13 +16,13 @@
   "npm"
  ],
  "young_days": 90,
- "young_since": "2026-07-13",
+ "young_since": "2026-07-14",
  "min_n": 50,
  "catalog": {
   "advisories": 35581,
   "with_cve": 32647,
   "without_cve": 2934,
-  "without_cve_young": 205,
+  "without_cve_young": 202,
   "without_cve_pct": 8.2,
   "withdrawn_excluded": 1218,
   "not_reviewed": 0,
@@ -117,7 +117,7 @@
    "total": 10919,
    "with_cve": 10175,
    "without_cve": 744,
-   "without_cve_young": 205,
+   "without_cve_young": 202,
    "without_cve_pct": 6.8,
    "partial": true
   }
@@ -398,7 +398,7 @@
    "total": 6330,
    "with_cve": 6064,
    "without_cve": 266,
-   "without_cve_young": 48,
+   "without_cve_young": 45,
    "without_cve_pct": 4.2,
    "years": [
     {
@@ -478,7 +478,7 @@
      "total": 2236,
      "with_cve": 2121,
      "without_cve": 115,
-     "without_cve_young": 48,
+     "without_cve_young": 45,
      "without_cve_pct": 5.1
     }
    ]

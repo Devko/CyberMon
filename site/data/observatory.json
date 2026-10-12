@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-11T09:17:40Z",
+ "generated_at": "2026-10-12T09:44:39Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-10-10",
+ "last_observed": "2026-10-11",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -46,8 +46,8 @@
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 69,
-   "nights": 78,
+   "events": 70,
+   "nights": 79,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
@@ -63,9 +63,9 @@
   "version_shift": 29,
   "first_score": 5422,
   "score_removed": 4,
-  "epss_move": 69
+  "epss_move": 70
  },
- "cves": 7333,
+ "cves": 7334,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10081,6 +10081,7 @@
   "1752|CVE-2026-100833|6|v4.0 7.6->v4.0 8.6 (VulnCheck)|0",
   "1752|CVE-2026-76459|6|v3.1 8.8->v3.1 9.8 (cisco)|0",
   "1752|CVE-2026-49243|7|v4.0 5.1->v3.1 9.6 (GitHub_M)|0",
-  "1752|CVE-2025-54988|10|0.36660->0.48518|0"
+  "1752|CVE-2025-54988|10|0.36660->0.48518|0",
+  "1753|CVE-2018-7092|10|0.52749->0.24207|0"
  ]
 }
