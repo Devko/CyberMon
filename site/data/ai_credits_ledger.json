@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12T09:44:39Z",
+ "generated_at": "2026-10-13T09:43:57Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -17595,6 +17595,38 @@
      "tier": "system",
      "roles": [
       "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-103658",
+   "published": "2026-10-12",
+   "cna": "Anthropic",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-108094",
+   "published": "2026-10-12",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
      ]
     }
    ]

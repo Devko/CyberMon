@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-12T09:44:39Z",
+ "generated_at": "2026-10-13T09:43:57Z",
  "min_n": 50,
  "months": [
   {
@@ -247,8 +247,8 @@
   },
   {
    "month": "2026-09",
-   "enriched": 12966,
-   "ssvc": 12966,
+   "enriched": 12965,
+   "ssvc": 12965,
    "cvss": 2501,
    "cwe": 2678,
    "legacy": 128,
@@ -256,28 +256,28 @@
   },
   {
    "month": "2026-10",
-   "enriched": 4533,
-   "ssvc": 4532,
-   "cvss": 875,
-   "cwe": 595,
-   "legacy": 591,
+   "enriched": 4611,
+   "ssvc": 4610,
+   "cvss": 882,
+   "cwe": 608,
+   "legacy": 592,
    "backfill": false
   }
  ],
  "adds": {
-  "total": 197529,
-  "ssvc": 197527,
+  "total": 197606,
+  "ssvc": 197604,
   "pct_ssvc": 100.0,
-  "cvss": 43701,
+  "cvss": 43708,
   "pct_cvss": 22.1,
-  "cwe": 39741,
+  "cwe": 39754,
   "pct_cwe": 20.1
  },
  "providers": [
   {
    "provider": "CISA-ADP",
-   "n": 197529,
-   "pct": 51.2
+   "n": 197606,
+   "pct": 51.1
   },
   {
    "provider": "redhat-SADP",
@@ -286,13 +286,13 @@
   }
  ],
  "headline": {
-  "total_published": 385880,
-  "total_cisa": 197529,
-  "pct_cisa": 51.2,
+  "total_published": 386585,
+  "total_cisa": 197606,
+  "pct_cisa": 51.1,
   "first_month": "2024-06",
   "last_month": "2026-10",
   "peak_month": "2026-09",
-  "peak_enriched": 12966,
+  "peak_enriched": 12965,
   "sole_enricher": "CISA-ADP",
   "backfill_month_count": 3
  }

@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-12T09:44:39Z",
+ "generated_at": "2026-10-13T09:43:57Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-10-11",
+ "last_observed": "2026-10-13",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -42,12 +42,12 @@
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5561
+   "events": 5565
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 70,
-   "nights": 79,
+   "events": 71,
+   "nights": 80,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
@@ -59,13 +59,13 @@
   "kev_due": 22,
   "kev_field": 785,
   "kev_text": 1815,
-  "rescore": 106,
+  "rescore": 109,
   "version_shift": 29,
-  "first_score": 5422,
+  "first_score": 5423,
   "score_removed": 4,
-  "epss_move": 70
+  "epss_move": 71
  },
- "cves": 7334,
+ "cves": 7336,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10082,6 +10082,11 @@
   "1752|CVE-2026-76459|6|v3.1 8.8->v3.1 9.8 (cisco)|0",
   "1752|CVE-2026-49243|7|v4.0 5.1->v3.1 9.6 (GitHub_M)|0",
   "1752|CVE-2025-54988|10|0.36660->0.48518|0",
-  "1753|CVE-2018-7092|10|0.52749->0.24207|0"
+  "1753|CVE-2018-7092|10|0.52749->0.24207|0",
+  "1754|CVE-2026-35273|10|0.09444->0.96678|0",
+  "1755|CVE-2021-47796|6|v4.0 9.3->v4.0 8.7 (VulnCheck)|0",
+  "1755|CVE-2026-66787|6|v3.1 5.4->v3.1 8.7 (redhat)|0",
+  "1755|CVE-2026-66788|6|v3.1 3.7->v3.1 9.9 (redhat)|0",
+  "1755|CVE-2025-10162|8|v3.1 8.6 (WPScan)|0"
  ]
 }
