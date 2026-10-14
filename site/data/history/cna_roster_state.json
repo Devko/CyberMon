@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-10-13",
+ "last_observed": "2026-10-14",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -1818,8 +1818,8 @@
   "OTRS": {
    "cna_id": "CNA-2019-0015",
    "country": "Germany",
-   "org": "OTRS AG",
-   "scope": "6bbf08795c4a",
+   "org": "EasyVista-OTRS GmbH",
+   "scope": "e472fed86463",
    "type": "Vendor"
   },
   "OX": {
@@ -3250,6 +3250,13 @@
    "scope": "54fd8d09edf2",
    "type": "Open Source"
   },
+  "gnutls": {
+   "cna_id": "CNA-2026-0074",
+   "country": "n/a",
+   "org": "GnuTLS Project",
+   "scope": "a6f57e1172ae",
+   "type": "Open Source"
+  },
   "google_android": {
    "cna_id": "CNA-2011-0002",
    "country": "USA",
@@ -3626,6 +3633,13 @@
    "country": "USA",
    "org": "Red Hat, Inc.",
    "scope": "6cbcea456d72",
+   "type": "Open Source + Vendor"
+  },
+  "rt-labs": {
+   "cna_id": "CNA-2026-0075",
+   "country": "Sweden",
+   "org": "RT-Labs AB",
+   "scope": "d905077ef6c6",
    "type": "Open Source + Vendor"
   },
   "runZero": {
@@ -4216,6 +4230,10 @@
   [
    "2026-10-13",
    555
+  ],
+  [
+   "2026-10-14",
+   557
   ]
  ],
  "version": 1

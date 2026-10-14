@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-13T09:43:57Z",
+ "generated_at": "2026-10-14T08:00:16Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -107,17 +107,17 @@
   },
   {
    "week": "2026-W42",
-   "rescore_up": 2,
+   "rescore_up": 3,
    "rescore_down": 1,
-   "first_score": 1,
+   "first_score": 5,
    "version_shift": 0,
    "score_removed": 0
   }
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 109,
-  "up": 45,
+  "n": 110,
+  "up": 46,
   "down": 64,
   "buckets": [
    {
@@ -142,10 +142,10 @@
    },
    {
     "bucket": ">=+4.0",
-    "n": 6
+    "n": 7
    }
   ],
-  "median_delta": -0.4
+  "median_delta": -0.3
  },
  "cna_board": {
   "min_events": 3,
@@ -158,8 +158,8 @@
    },
    {
     "cna": "redhat",
-    "rescores": 18,
-    "up": 7,
+    "rescores": 19,
+    "up": 8,
     "down": 11
    },
    {
@@ -189,15 +189,15 @@
   ]
  },
  "catalog": {
-  "state_size": 386585,
-  "corpus_release": "cve_2026-10-13_0900Z",
+  "state_size": 388850,
+  "corpus_release": "cve_2026-10-14_0700Z",
   "totals": {
-   "rescore": 109,
+   "rescore": 110,
    "version_shift": 29,
-   "first_score": 5423,
+   "first_score": 5427,
    "score_removed": 4
   },
-  "events_total": 5565,
+  "events_total": 5570,
   "first_observed": "2026-07-15"
  }
 }

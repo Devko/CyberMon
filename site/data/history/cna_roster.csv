@@ -34,3 +34,6 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-03,Westell,onboarded,"Westell Technologies, Inc.",USA,Vendor,
 2026-10-07,flock,onboarded,Flock,USA,Vendor,
 2026-10-07,Patchstack,scope_changed,Patchstack,Estonia,Bug Bounty Provider + Hosted Service + Open Source + Researcher + Vendor,
+2026-10-14,gnutls,onboarded,GnuTLS Project,n/a,Open Source,
+2026-10-14,rt-labs,onboarded,RT-Labs AB,Sweden,Open Source + Vendor,
+2026-10-14,OTRS,scope_changed,EasyVista-OTRS GmbH,Germany,Vendor,

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-13T09:43:57Z",
+ "generated_at": "2026-10-14T08:00:16Z",
  "min_n": 500,
  "window": {
   "start_year": 2016,
@@ -76,7 +76,7 @@
   },
   {
    "year": 2019,
-   "n_tagged": 2395,
+   "n_tagged": 2396,
    "n_published": 17308,
    "pct_tagged": 13.8,
    "shares": {
@@ -93,7 +93,7 @@
   },
   {
    "year": 2020,
-   "n_tagged": 3749,
+   "n_tagged": 3752,
    "n_published": 18363,
    "pct_tagged": 20.4,
    "shares": {
@@ -105,7 +105,7 @@
     "CWE-20": 7.1,
     "CWE-125": 2.7,
     "CWE-22": 2.4,
-    "other": 71.9
+    "other": 72.0
    }
   },
   {

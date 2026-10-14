@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-13T09:43:57Z",
+ "generated_at": "2026-10-14T08:00:16Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,20 +35,20 @@
   },
   {
    "year": 2026,
-   "total": 255,
-   "security": 44,
-   "pct_security": 17.3
+   "total": 257,
+   "security": 45,
+   "pct_security": 17.5
   }
  ],
  "vendors": [
   {
    "vendor": "Microsoft",
-   "entries": 389,
-   "dated_entries": 389,
+   "entries": 390,
+   "dated_entries": 390,
    "security_entries": 7,
    "pct_security": 1.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-25",
+   "last_added": "2026-10-13",
    "median_gap_days": 0.0
   },
   {
@@ -113,13 +113,13 @@
   },
   {
    "vendor": "Ivanti",
-   "entries": 35,
-   "dated_entries": 35,
-   "security_entries": 29,
-   "pct_security": 82.9,
+   "entries": 36,
+   "dated_entries": 36,
+   "security_entries": 30,
+   "pct_security": 83.3,
    "first_added": "2021-11-03",
-   "last_added": "2026-06-11",
-   "median_gap_days": 7.5
+   "last_added": "2026-10-13",
+   "median_gap_days": 8.0
   },
   {
    "vendor": "Fortinet",
@@ -564,19 +564,19 @@
  ],
  "ransomware": {
   "security": {
-   "total": 214,
+   "total": 215,
    "known": 79,
-   "pct_known": 36.9
+   "pct_known": 36.7
   },
   "other": {
-   "total": 1525,
+   "total": 1526,
    "known": 282,
    "pct_known": 18.5
   }
  },
  "catalog": {
-  "total": 1739,
-  "security": 214,
+  "total": 1741,
+  "security": 215,
   "pct_security": 12.3,
   "classifier_version": 2,
   "classifier_rules": 35

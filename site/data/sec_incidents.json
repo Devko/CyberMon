@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-13T09:43:57Z",
+ "generated_at": "2026-10-14T08:00:16Z",
  "status": "ok",
  "window": {
   "start": "2023-12-18",
-  "end": "2026-10-13"
+  "end": "2026-10-14"
  },
  "definitions": {
   "item_105": {
@@ -258,7 +258,7 @@
   },
   {
    "month": "2026-10",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 0,
    "partial": true
@@ -351,22 +351,22 @@
   },
   {
    "quarter": "2026-Q4",
-   "originals": 0,
+   "originals": 1,
    "amendments": 0,
    "voluntary": 0,
    "partial": true
   }
  ],
  "totals": {
-  "originals": 58,
+  "originals": 59,
   "amendments": 26,
   "voluntary": 74,
   "companies_105": 57,
   "companies_801": 58,
-  "latest_105": "2026-09-23"
+  "latest_105": "2026-10-13"
  },
  "amendment_lag": {
-  "originals": 58,
+  "originals": 59,
   "amended": 19,
   "matched_amendments": 25,
   "unmatched_amendments": 1,
@@ -400,6 +400,15 @@
   ]
  },
  "recent": [
+  {
+   "date": "2026-10-13",
+   "form": "8-K",
+   "company": "Park Dental Partners, Inc.",
+   "ticker": "PARK",
+   "cik": "2069604",
+   "adsh": "0001104659-26-115541",
+   "url": "https://www.sec.gov/Archives/edgar/data/2069604/000110465926115541/0001104659-26-115541-index.htm"
+  },
   {
    "date": "2026-09-23",
    "form": "8-K",
@@ -627,23 +636,12 @@
    "url": "https://www.sec.gov/Archives/edgar/data/1560143/000168316826000732/0001683168-26-000732-index.htm",
    "original_date": "2025-08-29",
    "lag_days": 158
-  },
-  {
-   "date": "2025-12-29",
-   "form": "8-K/A",
-   "company": "Coupang, Inc.",
-   "ticker": "CPNG",
-   "cik": "1834584",
-   "adsh": "0001834584-25-000202",
-   "url": "https://www.sec.gov/Archives/edgar/data/1834584/000183458425000202/0001834584-25-000202-index.htm",
-   "original_date": "2025-12-16",
-   "lag_days": 13
   }
  ],
  "diagnostics": {
-  "hits_105": 94,
+  "hits_105": 95,
   "hits_801": 1171,
-  "filings_105": 94,
+  "filings_105": 95,
   "filings_801": 1027,
   "dropped_105": 0,
   "dropped_801": 0,

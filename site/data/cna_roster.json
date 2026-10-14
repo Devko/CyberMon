@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-13T09:43:57Z",
+ "generated_at": "2026-10-14T08:00:16Z",
  "roster_size": {
   "min_n": 2,
-  "current": 555,
-  "net_change": 25,
+  "current": 557,
+  "net_change": 27,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -333,6 +333,10 @@
    {
     "date": "2026-10-13",
     "size": 555
+   },
+   {
+    "date": "2026-10-14",
+    "size": 557
    }
   ]
  },
@@ -361,31 +365,31 @@
    },
    {
     "month": "2026-10",
-    "onboarded": 5,
+    "onboarded": 7,
     "departed": 0,
     "renamed": 0,
-    "scope_changed": 1
+    "scope_changed": 2
    }
   ],
   "totals": {
-   "onboarded": 25,
+   "onboarded": 27,
    "departed": 0,
    "renamed": 1,
-   "scope_changed": 9
+   "scope_changed": 10
   },
-  "events_total": 35,
+  "events_total": 38,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 555,
+  "total": 557,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 454
+    "n": 455
    },
    {
     "label": "Open Source",
-    "n": 144
+    "n": 146
    },
    {
     "label": "Researcher",
@@ -419,7 +423,7 @@
   "by_role": [
    {
     "label": "CNA",
-    "n": 552
+    "n": 554
    },
    {
     "label": "Root",
@@ -445,7 +449,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 462
+    "n": 464
    },
    {
     "label": "CISA",
@@ -459,7 +463,7 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 388
+    "n": 389
    },
    {
     "label": "icscert",
@@ -467,7 +471,7 @@
    },
    {
     "label": "ENISA",
-    "n": 26
+    "n": 27
    },
    {
     "label": "redhat",
@@ -532,6 +536,10 @@
     "n": 11
    },
    {
+    "label": "Sweden",
+    "n": 10
+   },
+   {
     "label": "Canada",
     "n": 9
    },
@@ -541,10 +549,6 @@
    },
    {
     "label": "Netherlands",
-    "n": 9
-   },
-   {
-    "label": "Sweden",
     "n": 9
    },
    {
@@ -620,6 +624,10 @@
     "n": 2
    },
    {
+    "label": "n/a",
+    "n": 2
+   },
+   {
     "label": "Colombia",
     "n": 1
    },
@@ -662,21 +670,17 @@
    {
     "label": "Vietnam",
     "n": 1
-   },
-   {
-    "label": "n/a",
-    "n": 1
    }
   ]
  },
  "headline": {
-  "roster_total": 555,
+  "roster_total": 557,
   "top_type": "Vendor",
-  "top_type_n": 454,
+  "top_type_n": 455,
   "country_count": 43,
   "root_count": 7,
-  "mitre_n": 462,
+  "mitre_n": 464,
   "cisa_n": 91,
-  "assigning_n": 554
+  "assigning_n": 556
  }
 }

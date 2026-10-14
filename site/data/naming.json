@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-13T09:43:57Z",
- "version": "19.2",
- "released": "2026-08-05",
+ "generated_at": "2026-10-14T08:00:16Z",
+ "version": "20.0",
+ "released": "2026-10-13",
  "groups": [
   {
    "name": "APT28",
@@ -729,6 +729,15 @@
    "alt_count": 3
   },
   {
+   "name": "NIMBUS MANTICORE",
+   "aliases": [
+    "UNC1549",
+    "TA455",
+    "COBALT SMOKEY"
+   ],
+   "alt_count": 3
+  },
+  {
    "name": "TA505",
    "aliases": [
     "Hive0065",
@@ -854,6 +863,14 @@
    "aliases": [
     "GOLD CABIN",
     "Shathak"
+   ],
+   "alt_count": 2
+  },
+  {
+   "name": "The Gentlemen",
+   "aliases": [
+    "Storm-2697",
+    "GOLD SHERWOOD"
    ],
    "alt_count": 2
   },
@@ -1082,11 +1099,11 @@
   },
   {
    "alt_count": 2,
-   "n": 18
+   "n": 19
   },
   {
    "alt_count": 3,
-   "n": 12
+   "n": 13
   },
   {
    "alt_count": 4,
@@ -1138,10 +1155,10 @@
   }
  ],
  "headline": {
-  "total_groups": 176,
-  "groups_with_aliases": 107,
-  "total_alias_strings": 425,
-  "distinct_alias_strings": 424,
+  "total_groups": 178,
+  "groups_with_aliases": 109,
+  "total_alias_strings": 430,
+  "distinct_alias_strings": 429,
   "most_renamed": "APT28",
   "most_renamed_alt_count": 15
  }

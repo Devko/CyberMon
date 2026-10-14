@@ -17342,6 +17342,17 @@
    "ransom": "Unknown",
    "vendor": "Fortinet"
   },
+  "CVE-2026-104935": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-13",
+   "desc": "6e69a0cb6fb4",
+   "due": "2026-10-16",
+   "name": "Ivanti Connect Secure Authentication Bypass by Spoofing Vulnerability",
+   "notes": "f3e341c90a1d",
+   "product": "Connect Secure",
+   "ransom": "Unknown",
+   "vendor": "Ivanti"
+  },
   "CVE-2026-10520": {
    "action": "ba0d649eb29b",
    "added": "2026-06-11",
@@ -19134,9 +19145,20 @@
    "product": "Switchvox",
    "ransom": "Unknown",
    "vendor": "Sangoma"
+  },
+  "CVE-2026-96951": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-13",
+   "desc": "826fc20d6bcf",
+   "due": "2026-10-16",
+   "name": "Microsoft Windows Command Injection Vulnerability",
+   "notes": "3e1386193570",
+   "product": "Windows",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-13",
+ "last_observed": "2026-10-14",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
