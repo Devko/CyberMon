@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-14T08:00:16Z",
+ "generated_at": "2026-10-15T07:43:15Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -17872,6 +17872,228 @@
    "cve": "CVE-2026-79611",
    "published": "2026-10-13",
    "cna": "XEN",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107350",
+   "published": "2026-10-14",
+   "cna": "PostgreSQL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-59774",
+   "published": "2026-10-14",
+   "cna": "Gitea",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "xbow",
+     "tier": "system",
+     "roles": [
+      "analyst",
+      "coordinator",
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86561",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86562",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86563",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86566",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86845",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86846",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86847",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86856",
+   "published": "2026-10-14",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-89071",
+   "published": "2026-10-14",
+   "cna": "ProgressSoftware",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "bugbunny",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-89075",
+   "published": "2026-10-14",
+   "cna": "ProgressSoftware",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "bugbunny",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-89077",
+   "published": "2026-10-14",
+   "cna": "ProgressSoftware",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "bugbunny",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92392",
+   "published": "2026-10-14",
+   "cna": "curl",
    "counts_for": [
     "llm"
    ],

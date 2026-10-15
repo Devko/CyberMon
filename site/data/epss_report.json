@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-14T08:00:16Z",
+ "generated_at": "2026-10-15T07:43:15Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,15 +96,15 @@
   },
   {
    "year": 2026,
-   "graded": 185,
-   "n_below_1pct": 94,
-   "n_1_to_10pct": 39,
+   "graded": 187,
+   "n_below_1pct": 95,
+   "n_1_to_10pct": 40,
    "n_above_10pct": 52,
    "pct_below_1pct": 50.8,
-   "pct_1_to_10pct": 21.1,
-   "pct_above_10pct": 28.1,
+   "pct_1_to_10pct": 21.4,
+   "pct_above_10pct": 27.8,
    "ungradeable": 70,
-   "pending": 2
+   "pending": 4
   }
  ],
  "distribution": {
@@ -157,11 +157,11 @@
    },
    {
     "model": "v5",
-    "n": 82,
+    "n": 84,
     "counts": {
      "<0.1%": 0,
-     "0.1-1%": 43,
-     "1-10%": 21,
+     "0.1-1%": 44,
+     "1-10%": 22,
      "\u226510%": 18
     }
    }
@@ -172,21 +172,21 @@
    {
     "bucket": "0-25",
     "n": 198,
-    "pct": 14.0
+    "pct": 13.9
    },
    {
     "bucket": "25-50",
-    "n": 228,
+    "n": 229,
     "pct": 16.1
    },
    {
     "bucket": "50-75",
     "n": 191,
-    "pct": 13.5
+    "pct": 13.4
    },
    {
     "bucket": "75-90",
-    "n": 191,
+    "n": 192,
     "pct": 13.5
    },
    {
@@ -197,28 +197,28 @@
    {
     "bucket": "99-100",
     "n": 279,
-    "pct": 19.7
+    "pct": 19.6
    }
   ],
-  "n": 1419,
+  "n": 1421,
   "bottom_half": {
-   "n": 426,
+   "n": 427,
    "pct": 30.0
   },
-  "median_percentile": 83.5
+  "median_percentile": 83.4
  },
  "catalog": {
-  "total": 1741,
-  "graded": 1419,
+  "total": 1745,
+  "graded": 1421,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 227,
    "no_prior_score": 93
   },
-  "pending_backfill": 2
+  "pending_backfill": 4
  },
  "headline": {
-  "graded": 1419,
+  "graded": 1421,
   "pct_below_1pct": 32.6,
   "latest_year": 2025,
   "graded_latest": 184,
@@ -15873,6 +15873,24 @@
    "score_date": "2026-10-07",
    "epss": 0.01658,
    "percentile": 0.75895,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-105133",
+   "date_added": "2026-10-14",
+   "score_date": "2026-10-13",
+   "epss": 0.00383,
+   "percentile": 0.30496,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-105134",
+   "date_added": "2026-10-14",
+   "score_date": "2026-10-13",
+   "epss": 0.01843,
+   "percentile": 0.78474,
    "model": "v5",
    "reason": null
   }

@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-14T08:00:16Z",
+ "generated_at": "2026-10-15T07:43:15Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-10-14",
+ "last_observed": "2026-10-15",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -38,34 +38,34 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4387
+   "events": 4391
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5570
+   "events": 5574
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 72,
-   "nights": 81,
+   "events": 73,
+   "nights": 82,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
  },
  "counts": {
-  "kev_added": 1439,
+  "kev_added": 1443,
   "kev_removed": 9,
   "kev_flag": 317,
   "kev_due": 22,
   "kev_field": 785,
   "kev_text": 1815,
-  "rescore": 110,
+  "rescore": 113,
   "version_shift": 29,
-  "first_score": 5427,
+  "first_score": 5428,
   "score_removed": 4,
-  "epss_move": 72
+  "epss_move": 73
  },
- "cves": 7342,
+ "cves": 7351,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10095,6 +10095,15 @@
   "1756|CVE-2019-5589|8|v3.1 8.6 (fortinet)|0",
   "1756|CVE-2020-12811|8|v3.1 4.9 (fortinet)|0",
   "1756|CVE-2020-9287|8|v3.1 7.5 (fortinet)|0",
-  "1756|CVE-2020-9290|8|v3.1 7.1 (fortinet)|0"
+  "1756|CVE-2020-9290|8|v3.1 7.1 (fortinet)|0",
+  "1756|CVE-2001-1342|10|0.12006->0.30738|0",
+  "1757|CVE-2026-0322|0||0",
+  "1757|CVE-2026-105133|0||0",
+  "1757|CVE-2026-105134|0||0",
+  "1757|CVE-2026-76519|0||0",
+  "1757|CVE-2026-35001|6|v4.0 8.4->v4.0 7.1 (VulnCheck)|0",
+  "1757|CVE-2026-77532|6|v3.1 9.6->v3.1 8.8 (Ubiquiti)|0",
+  "1757|CVE-2026-78501|6|v3.1 7.4->v3.1 8.6 (microsoft)|0",
+  "1757|CVE-2026-89309|8|v4.0 10.0 (ENISA)|0"
  ]
 }

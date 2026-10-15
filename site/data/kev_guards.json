@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-14T08:00:16Z",
+ "generated_at": "2026-10-15T07:43:15Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 257,
-   "security": 45,
-   "pct_security": 17.5
+   "total": 261,
+   "security": 46,
+   "pct_security": 17.6
   }
  ],
  "vendors": [
@@ -53,12 +53,12 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 100,
-   "dated_entries": 100,
+   "entries": 101,
+   "dated_entries": 101,
    "security_entries": 23,
-   "pct_security": 23.0,
+   "pct_security": 22.8,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-30",
+   "last_added": "2026-10-14",
    "median_gap_days": 0.0
   },
   {
@@ -203,13 +203,13 @@
   },
   {
    "vendor": "Palo Alto Networks",
-   "entries": 15,
-   "dated_entries": 15,
-   "security_entries": 15,
+   "entries": 16,
+   "dated_entries": 16,
+   "security_entries": 16,
    "pct_security": 100.0,
    "first_added": "2022-01-10",
-   "last_added": "2026-05-29",
-   "median_gap_days": 32.5
+   "last_added": "2026-10-14",
+   "median_gap_days": 42.0
   },
   {
    "vendor": "Samsung",
@@ -564,20 +564,20 @@
  ],
  "ransomware": {
   "security": {
-   "total": 215,
+   "total": 216,
    "known": 79,
-   "pct_known": 36.7
+   "pct_known": 36.6
   },
   "other": {
-   "total": 1526,
+   "total": 1529,
    "known": 282,
-   "pct_known": 18.5
+   "pct_known": 18.4
   }
  },
  "catalog": {
-  "total": 1741,
-  "security": 215,
-  "pct_security": 12.3,
+  "total": 1745,
+  "security": 216,
+  "pct_security": 12.4,
   "classifier_version": 2,
   "classifier_rules": 35
  }

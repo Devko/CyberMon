@@ -17298,6 +17298,17 @@
    "ransom": "Unknown",
    "vendor": "Palo Alto Networks"
   },
+  "CVE-2026-0322": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-14",
+   "desc": "3df463cd1562",
+   "due": "2026-10-17",
+   "name": "Palo Alto Networks PAN-OS Code Injection Vulnerability",
+   "notes": "13fbde9d62c8",
+   "product": "PAN-OS",
+   "ransom": "Unknown",
+   "vendor": "Palo Alto Networks"
+  },
   "CVE-2026-0770": {
    "action": "ba0d649eb29b",
    "added": "2026-07-21",
@@ -17352,6 +17363,28 @@
    "product": "Connect Secure",
    "ransom": "Unknown",
    "vendor": "Ivanti"
+  },
+  "CVE-2026-105133": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-14",
+   "desc": "8130fc1a948f",
+   "due": "2026-10-17",
+   "name": "Ahsay AhsayCBS Improper Authentication Vulnerability",
+   "notes": "56c266470ca1",
+   "product": "AhsayCBS",
+   "ransom": "Unknown",
+   "vendor": "Ahsay"
+  },
+  "CVE-2026-105134": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-14",
+   "desc": "55413a3d5f9e",
+   "due": "2026-10-17",
+   "name": "Ahsay AhsayCBS Command Injection Vulnerability",
+   "notes": "8f89e4deeebb",
+   "product": "AhsayCBS",
+   "ransom": "Unknown",
+   "vendor": "Ahsay"
   },
   "CVE-2026-10520": {
    "action": "ba0d649eb29b",
@@ -18827,6 +18860,17 @@
    "ransom": "Unknown",
    "vendor": "Cisco"
   },
+  "CVE-2026-76519": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-14",
+   "desc": "b4f58da54b9a",
+   "due": "2026-10-17",
+   "name": "Cisco Secure Email Gateway Relative Path Traversal Vulnerability",
+   "notes": "3be4abc47a35",
+   "product": "Secure Email Gateway",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2026-8037": {
    "action": "ba0d649eb29b",
    "added": "2026-08-07",
@@ -19158,7 +19202,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-14",
+ "last_observed": "2026-10-15",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
