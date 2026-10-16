@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-15T07:43:15Z",
+ "generated_at": "2026-10-16T07:30:34Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -9436,7 +9436,7 @@
      {
       "month": "2021-11",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2021-12",
@@ -9451,12 +9451,12 @@
      {
       "month": "2022-02",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2022-03",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2022-04",
@@ -9476,12 +9476,12 @@
      {
       "month": "2022-07",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2022-08",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2022-09",
@@ -9501,7 +9501,7 @@
      {
       "month": "2022-12",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2023-01",
@@ -9511,7 +9511,7 @@
      {
       "month": "2023-02",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2023-03",
@@ -9521,7 +9521,7 @@
      {
       "month": "2023-04",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2023-05",
@@ -9531,7 +9531,7 @@
      {
       "month": "2023-06",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2023-07",
@@ -9541,12 +9541,12 @@
      {
       "month": "2023-08",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2023-09",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2023-10",
@@ -9556,22 +9556,22 @@
      {
       "month": "2023-11",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2023-12",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2024-01",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2024-02",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2024-03",
@@ -9581,12 +9581,12 @@
      {
       "month": "2024-04",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2024-05",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2024-06",
@@ -9596,7 +9596,7 @@
      {
       "month": "2024-07",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2024-08",
@@ -9611,7 +9611,7 @@
      {
       "month": "2024-10",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2024-11",
@@ -9621,111 +9621,111 @@
      {
       "month": "2024-12",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2025-01",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2025-02",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2025-03",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2025-04",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2025-05",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2025-06",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2025-07",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2025-08",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2025-09",
       "n": 1,
-      "index": 10.0
+      "index": 11.1
      },
      {
       "month": "2025-10",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2025-11",
       "n": 6,
-      "index": 60.0
+      "index": 66.7
      },
      {
       "month": "2025-12",
       "n": 7,
-      "index": 70.0
+      "index": 77.8
      },
      {
       "month": "2026-01",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2026-02",
       "n": 6,
-      "index": 60.0
+      "index": 66.7
      },
      {
       "month": "2026-03",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2026-04",
       "n": 6,
-      "index": 60.0
+      "index": 66.7
      },
      {
       "month": "2026-05",
       "n": 8,
-      "index": 80.0
+      "index": 88.9
      },
      {
       "month": "2026-06",
       "n": 9,
-      "index": 90.0
+      "index": 100.0
      },
      {
       "month": "2026-07",
       "n": 4,
-      "index": 40.0
+      "index": 44.4
      },
      {
       "month": "2026-08",
       "n": 2,
-      "index": 20.0
+      "index": 22.2
      },
      {
       "month": "2026-09",
-      "n": 10,
+      "n": 9,
       "index": 100.0
      }
     ],
@@ -10339,8 +10339,8 @@
     },
     "arxiv": {
      "latest_month": "2026-09",
-     "pct_change": 142.9,
-     "n_latest_12m": 68,
+     "pct_change": 139.3,
+     "n_latest_12m": 67,
      "n_prior_12m": 28
     },
     "wiki": {
@@ -10358,8 +10358,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 95.9,
-    "arxiv_index_avg3m": 53.3,
-    "research_vs_media_index": -42.6,
+    "arxiv_index_avg3m": 55.5,
+    "research_vs_media_index": -40.4,
     "direction": "media_leads"
    }
   },
@@ -11254,8 +11254,8 @@
      },
      {
       "month": "2026-09",
-      "n": 15,
-      "index": 71.4
+      "n": 14,
+      "index": 66.7
      }
     ],
     "wiki": [
@@ -11743,8 +11743,8 @@
     },
     "arxiv": {
      "latest_month": "2026-09",
-     "pct_change": 503.4,
-     "n_latest_12m": 175,
+     "pct_change": 500.0,
+     "n_latest_12m": 174,
      "n_prior_12m": 29
     },
     "wiki": {
@@ -11762,8 +11762,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 65.7,
-    "arxiv_index_avg3m": 65.1,
-    "research_vs_media_index": -0.6,
+    "arxiv_index_avg3m": 63.5,
+    "research_vs_media_index": -2.2,
     "direction": "aligned"
    }
   },
@@ -12982,8 +12982,8 @@
      },
      {
       "month": "2022-03",
-      "n": 1327,
-      "index": 57.4
+      "n": 1328,
+      "index": 57.5
      },
      {
       "month": "2022-04",
@@ -13252,7 +13252,7 @@
      },
      {
       "month": "2026-09",
-      "n": 705,
+      "n": 706,
       "index": 30.5
      }
     ]
@@ -13285,7 +13285,7 @@
     "edgar": {
      "latest_month": "2026-09",
      "pct_change": 16.2,
-     "n_latest_12m": 14382,
+     "n_latest_12m": 14383,
      "n_prior_12m": 12382
     }
    },
@@ -20702,7 +20702,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "source": "arxiv",
-   "pct_change": 503.4
+   "pct_change": 500.0
   },
   "top_faller": {
    "term_id": "sbom",

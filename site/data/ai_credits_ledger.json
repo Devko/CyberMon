@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-15T07:43:15Z",
+ "generated_at": "2026-10-16T07:30:34Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -18103,6 +18103,170 @@
      "tier": "system",
      "roles": [
       "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-101303",
+   "published": "2026-10-15",
+   "cna": "freebsd",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "zai",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-101309",
+   "published": "2026-10-15",
+   "cna": "freebsd",
+   "counts_for": [
+    "llm",
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "zai",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-101310",
+   "published": "2026-10-15",
+   "cna": "freebsd",
+   "counts_for": [
+    "llm",
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "zai",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-101311",
+   "published": "2026-10-15",
+   "cna": "freebsd",
+   "counts_for": [
+    "llm",
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "zai",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-94134",
+   "published": "2026-10-15",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-94135",
+   "published": "2026-10-15",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-111210",
+   "published": "2026-10-16",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
      ]
     }
    ]

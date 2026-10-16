@@ -17815,6 +17815,17 @@
    "ransom": "Unknown",
    "vendor": "Microsoft"
   },
+  "CVE-2026-21589": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-15",
+   "desc": "3f573284ad5c",
+   "due": "2026-10-18",
+   "name": "Atlassian Multiple Products Files or Directories Accessible to External Parties Vulnerability",
+   "notes": "3e615ed05a1c",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Atlassian"
+  },
   "CVE-2026-21643": {
    "action": "f09df147152e",
    "added": "2026-04-13",
@@ -19202,7 +19213,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-15",
+ "last_observed": "2026-10-16",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

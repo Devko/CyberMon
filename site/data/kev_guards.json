@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-15T07:43:15Z",
+ "generated_at": "2026-10-16T07:30:34Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,7 +35,7 @@
   },
   {
    "year": 2026,
-   "total": 261,
+   "total": 262,
    "security": 46,
    "pct_security": 17.6
   }
@@ -222,6 +222,16 @@
    "median_gap_days": 19.5
   },
   {
+   "vendor": "Atlassian",
+   "entries": 14,
+   "dated_entries": 14,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-10-15",
+   "median_gap_days": 63.0
+  },
+  {
    "vendor": "SAP",
    "entries": 14,
    "dated_entries": 14,
@@ -230,16 +240,6 @@
    "first_added": "2021-11-03",
    "last_added": "2025-05-15",
    "median_gap_days": 0.0
-  },
-  {
-   "vendor": "Atlassian",
-   "entries": 13,
-   "dated_entries": 13,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2024-11-12",
-   "median_gap_days": 60.0
   },
   {
    "vendor": "Mozilla",
@@ -569,13 +569,13 @@
    "pct_known": 36.6
   },
   "other": {
-   "total": 1529,
+   "total": 1530,
    "known": 282,
    "pct_known": 18.4
   }
  },
  "catalog": {
-  "total": 1745,
+  "total": 1746,
   "security": 216,
   "pct_security": 12.4,
   "classifier_version": 2,
