@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-16T07:30:34Z",
+ "generated_at": "2026-10-17T07:11:20Z",
  "min_n": 10,
  "catalog": {
   "total": 1045,
@@ -385,6 +385,6 @@
  "projection": {
   "year": 2026,
   "breaches": 136,
-  "elapsed": 0.792
+  "elapsed": 0.795
  }
 }

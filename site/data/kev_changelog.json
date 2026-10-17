@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-16T07:30:34Z",
+ "generated_at": "2026-10-17T07:11:20Z",
  "min_n": 10,
  "months": [
   {
@@ -788,18 +788,18 @@
   ]
  },
  "catalog": {
-  "entries": 1746,
+  "entries": 1748,
   "removed_total": 9,
-  "events_total": 4392,
+  "events_total": 4394,
   "edits_total": 2948,
-  "additions_excluded": 1444,
+  "additions_excluded": 1446,
   "first_observed": "2021-12-23",
-  "last_observed": "2026-10-16",
+  "last_observed": "2026-10-17",
   "backfill_captures": 53
  },
  "headline": {
   "edits_total": 2948,
-  "edits_per_100_entries": 168.8,
+  "edits_per_100_entries": 168.6,
   "pct_flag_flips": 4.0
  },
  "flag_lag": {

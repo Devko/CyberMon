@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-16T07:30:34Z",
+ "generated_at": "2026-10-17T07:11:20Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -18255,6 +18255,36 @@
    ]
   },
   {
+   "cve": "CVE-2026-109587",
+   "published": "2026-10-16",
+   "cna": "AMZN",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-109588",
+   "published": "2026-10-16",
+   "cna": "AMZN",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
    "cve": "CVE-2026-111210",
    "published": "2026-10-16",
    "cna": "VulDB",
@@ -18267,6 +18297,74 @@
      "tier": "system",
      "roles": [
       "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-18799",
+   "published": "2026-10-16",
+   "cna": "Mattermost",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-85977",
+   "published": "2026-10-16",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-89085",
+   "published": "2026-10-16",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-89088",
+   "published": "2026-10-16",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
      ]
     }
    ]

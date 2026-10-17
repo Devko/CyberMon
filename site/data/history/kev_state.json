@@ -16957,6 +16957,17 @@
    "ransom": "Known",
    "vendor": "Microsoft"
   },
+  "CVE-2025-61624": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-16",
+   "desc": "9087e7386710",
+   "due": "2026-10-19",
+   "name": "Fortinet Multiple Products Path Traversal Vulnerability",
+   "notes": "65a4813b9a32",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Fortinet"
+  },
   "CVE-2025-61757": {
    "action": "f09df147152e",
    "added": "2025-11-21",
@@ -17341,6 +17352,17 @@
    "product": "Zammad",
    "ransom": "Unknown",
    "vendor": "Zammad GmbH"
+  },
+  "CVE-2026-102764": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-16",
+   "desc": "c61b86128841",
+   "due": "2026-10-19",
+   "name": "BeyondTrust Remote Support Authentication Bypass by Spoofing Vulnerability",
+   "notes": "274c1afb7a18",
+   "product": "Remote Support",
+   "ransom": "Unknown",
+   "vendor": "BeyondTrust"
   },
   "CVE-2026-104286": {
    "action": "ba0d649eb29b",
@@ -19213,7 +19235,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-16",
+ "last_observed": "2026-10-17",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
