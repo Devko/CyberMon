@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-17T07:11:20Z",
+ "generated_at": "2026-10-18T07:25:09Z",
  "min_known_duration": 30,
  "queue": {
   "median_days": 4.0,
@@ -831,6 +831,15 @@
    "entered_awaiting": 349,
    "analyzed_from_awaiting": 378,
    "deferred_from_awaiting": 652,
+   "resweep": false,
+   "after_resweep": false
+  },
+  {
+   "date": "2026-10-18",
+   "received_new": 57,
+   "entered_awaiting": 0,
+   "analyzed_from_awaiting": 0,
+   "deferred_from_awaiting": 0,
    "resweep": false,
    "after_resweep": false
   }
