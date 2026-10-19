@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T07:25:09Z",
+ "generated_at": "2026-10-19T08:04:58Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -18371,6 +18371,23 @@
   },
   {
    "cve": "CVE-2026-111868",
+   "published": "2026-10-18",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-111869",
    "published": "2026-10-18",
    "cna": "VulDB",
    "counts_for": [

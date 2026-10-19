@@ -5574,3 +5574,4 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-10-15,CVE-2026-78501,microsoft,rescore,v3.1,7.4,v3.1,8.6
 2026-10-15,CVE-2026-89309,ENISA,first_score,,,v4.0,10.0
 2026-10-17,CVE-2026-107635,VulnCheck,rescore,v4.0,6.8,v4.0,6.9
+2026-10-19,CVE-2026-96658,redhat,rescore,v3.1,9.9,v3.1,8.8
