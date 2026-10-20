@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-19T08:04:58Z",
+ "generated_at": "2026-10-20T07:55:08Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,9 +206,9 @@
   },
   {
    "year": 2026,
-   "published": 82459,
+   "published": 82893,
    "counts": {
-    "unsupported-when-assigned": 420,
+    "unsupported-when-assigned": 424,
     "disputed": 68,
     "exclusively-hosted-service": 241
    }
@@ -221,32 +221,32 @@
  },
  "boards": {
   "unsupported-when-assigned": {
-   "total": 1193,
+   "total": 1197,
    "cna_count": 50,
    "active_cnas": 481,
-   "top1_share_pct": 38.4,
-   "top3_share_pct": 69.2,
+   "top1_share_pct": 38.3,
+   "top3_share_pct": 69.3,
    "min_n": 5,
    "cnas": [
     {
      "cna": "VulDB",
      "n": 458,
-     "share_pct": 38.4,
-     "cna_published": 17380,
+     "share_pct": 38.3,
+     "cna_published": 17461,
      "rate_pct": 2.6
     },
     {
      "cna": "VulnCheck",
-     "n": 253,
-     "share_pct": 21.2,
-     "cna_published": 9463,
+     "n": 257,
+     "share_pct": 21.5,
+     "cna_published": 9542,
      "rate_pct": 2.7
     },
     {
      "cna": "mitre",
      "n": 115,
      "share_pct": 9.6,
-     "cna_published": 28539,
+     "cna_published": 28549,
      "rate_pct": 0.4
     },
     {
@@ -267,8 +267,8 @@
      "cna": "apache",
      "n": 34,
      "share_pct": 2.8,
-     "cna_published": 2025,
-     "rate_pct": 1.7
+     "cna_published": 2087,
+     "rate_pct": 1.6
     },
     {
      "cna": "TR-CERT",
@@ -281,14 +281,14 @@
      "cna": "INCIBE",
      "n": 30,
      "share_pct": 2.5,
-     "cna_published": 1155,
+     "cna_published": 1157,
      "rate_pct": 2.6
     },
     {
      "cna": "jpcert",
      "n": 24,
      "share_pct": 2.0,
-     "cna_published": 1361,
+     "cna_published": 1362,
      "rate_pct": 1.8
     },
     {
@@ -309,8 +309,8 @@
      "cna": "TPLink",
      "n": 13,
      "share_pct": 1.1,
-     "cna_published": 205,
-     "rate_pct": 6.3
+     "cna_published": 208,
+     "rate_pct": 6.2
     }
    ]
   },
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 465,
      "share_pct": 81.3,
-     "cna_published": 28539,
+     "cna_published": 28549,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 91,
      "share_pct": 15.9,
-     "cna_published": 17380,
+     "cna_published": 17461,
      "rate_pct": 0.5
     }
    ]
@@ -341,26 +341,26 @@
  },
  "severity": {
   "all": {
-   "critical": 21179,
-   "high": 76754,
-   "medium": 92060,
-   "low": 8461,
-   "unscored": 25927
+   "critical": 21210,
+   "high": 76884,
+   "medium": 92315,
+   "low": 8481,
+   "unscored": 25925
   },
   "unsupported-when-assigned": {
    "tagged": {
-    "critical": 211,
-    "high": 447,
+    "critical": 212,
+    "high": 450,
     "medium": 451,
     "low": 40,
     "unscored": 44
    },
    "same_cnas_untagged": {
-    "critical": 10416,
-    "high": 27553,
-    "medium": 41931,
-    "low": 2984,
-    "unscored": 10087
+    "critical": 10431,
+    "high": 27620,
+    "medium": 42112,
+    "low": 2997,
+    "unscored": 10104
    }
   },
   "disputed": {
@@ -372,11 +372,11 @@
     "unscored": 162
    },
    "same_cnas_untagged": {
-    "critical": 6535,
-    "high": 14802,
-    "medium": 25709,
-    "low": 2322,
-    "unscored": 9145
+    "critical": 6547,
+    "high": 14840,
+    "medium": 25830,
+    "low": 2330,
+    "unscored": 9140
    }
   }
  },
@@ -384,15 +384,15 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 3136
+    "n": 3175
    },
    {
     "tag": "x_freeware",
-    "n": 1945
+    "n": 1950
    },
    {
     "tag": "x_known-exploited-vulnerability",
-    "n": 177
+    "n": 180
    },
    {
     "tag": "x_Charger",
@@ -415,7 +415,7 @@
    }
   ],
   "schema_totals": {
-   "unsupported-when-assigned": 1284,
+   "unsupported-when-assigned": 1288,
    "disputed": 1511,
    "exclusively-hosted-service": 420
   }
@@ -427,7 +427,7 @@
   "unsupported_latest": 423,
   "unsupported_latest_share_pct": 0.9,
   "current_year": 2026,
-  "unsupported_current": 420,
+  "unsupported_current": 424,
   "disputed_from": 2020,
   "disputed_to": 2025,
   "disputed_min": 85,

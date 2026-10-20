@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-19T08:04:58Z",
+ "generated_at": "2026-10-20T07:55:08Z",
  "years": [
   {
    "year": 1999,
@@ -222,8 +222,8 @@
    "cna_count": 393,
    "newcomer_count": 59,
    "top5_share": 46.7,
-   "top10_share": 68.3,
-   "hhi": 593.3
+   "top10_share": 68.2,
+   "hhi": 592.9
   }
  ],
  "rejection_leaderboard": {
@@ -256,9 +256,9 @@
    },
    {
     "cna": "Fluid Attacks",
-    "total": 423,
+    "total": 424,
     "rejected": 68,
-    "rejected_rate_pct": 16.1
+    "rejected_rate_pct": 16.0
    },
    {
     "cna": "sap",
@@ -274,7 +274,7 @@
    },
    {
     "cna": "redhat",
-    "total": 3075,
+    "total": 3085,
     "rejected": 190,
     "rejected_rate_pct": 6.2
    },
@@ -339,10 +339,10 @@
     "rejected_rate_pct": 2.0
    },
    {
-    "cna": "atlassian",
-    "total": 100,
-    "rejected": 2,
-    "rejected_rate_pct": 2.0
+    "cna": "Linux",
+    "total": 18135,
+    "rejected": 320,
+    "rejected_rate_pct": 1.8
    },
    {
     "cna": "ABB",
@@ -355,12 +355,6 @@
     "total": 57,
     "rejected": 1,
     "rejected_rate_pct": 1.8
-   },
-   {
-    "cna": "Linux",
-    "total": 18135,
-    "rejected": 316,
-    "rejected_rate_pct": 1.7
    },
    {
     "cna": "@huntrdev",
@@ -400,13 +394,13 @@
    },
    {
     "cna": "Google",
-    "total": 241,
+    "total": 243,
     "rejected": 3,
     "rejected_rate_pct": 1.2
    },
    {
     "cna": "VulnCheck",
-    "total": 9573,
+    "total": 9652,
     "rejected": 110,
     "rejected_rate_pct": 1.1
    },
@@ -430,8 +424,14 @@
    },
    {
     "cna": "mitre",
-    "total": 28815,
+    "total": 28825,
     "rejected": 276,
+    "rejected_rate_pct": 1.0
+   },
+   {
+    "cna": "atlassian",
+    "total": 100,
+    "rejected": 1,
     "rejected_rate_pct": 1.0
    },
    {
@@ -496,13 +496,13 @@
    },
    {
     "cna": "rapid7",
-    "total": 192,
+    "total": 195,
     "rejected": 1,
     "rejected_rate_pct": 0.5
    },
    {
     "cna": "Wordfence",
-    "total": 11625,
+    "total": 11626,
     "rejected": 51,
     "rejected_rate_pct": 0.4
    },
@@ -514,7 +514,7 @@
    },
    {
     "cna": "apache",
-    "total": 2033,
+    "total": 2095,
     "rejected": 8,
     "rejected_rate_pct": 0.4
    },
@@ -532,7 +532,7 @@
    },
    {
     "cna": "zephyr",
-    "total": 254,
+    "total": 258,
     "rejected": 1,
     "rejected_rate_pct": 0.4
    },
@@ -544,7 +544,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 17424,
+    "total": 17505,
     "rejected": 44,
     "rejected_rate_pct": 0.3
    },
@@ -574,13 +574,13 @@
    },
    {
     "cna": "GitHub_M",
-    "total": 19823,
+    "total": 19870,
     "rejected": 32,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "Patchstack",
-    "total": 18897,
+    "total": 18916,
     "rejected": 30,
     "rejected_rate_pct": 0.2
    },
@@ -628,7 +628,7 @@
    },
    {
     "cna": "GitLab",
-    "total": 1156,
+    "total": 1161,
     "rejected": 2,
     "rejected_rate_pct": 0.2
    },
@@ -658,13 +658,13 @@
    },
    {
     "cna": "jpcert",
-    "total": 1362,
+    "total": 1363,
     "rejected": 1,
     "rejected_rate_pct": 0.1
    },
    {
     "cna": "INCIBE",
-    "total": 1156,
+    "total": 1158,
     "rejected": 1,
     "rejected_rate_pct": 0.1
    },
@@ -676,7 +676,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5218,
+    "total": 5238,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -688,13 +688,13 @@
    },
    {
     "cna": "ibm",
-    "total": 3373,
+    "total": 3411,
     "rejected": 1,
     "rejected_rate_pct": 0.0
    },
    {
     "cna": "dell",
-    "total": 1479,
+    "total": 1483,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -718,7 +718,7 @@
    },
    {
     "cna": "hpe",
-    "total": 856,
+    "total": 858,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -783,14 +783,14 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "drupal",
-    "total": 374,
+    "cna": "CPANSec",
+    "total": 376,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "CPANSec",
-    "total": 360,
+    "cna": "drupal",
+    "total": 374,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -832,7 +832,7 @@
    },
    {
     "cna": "mongodb",
-    "total": 286,
+    "total": 287,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -861,14 +861,14 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "suse",
-    "total": 238,
+    "cna": "CIRCL",
+    "total": 244,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "CIRCL",
-    "total": 236,
+    "cna": "suse",
+    "total": 238,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -898,13 +898,13 @@
    },
    {
     "cna": "TPLink",
-    "total": 205,
+    "total": 208,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
     "cna": "NCSC.ch",
-    "total": 197,
+    "total": 199,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1000,7 +1000,7 @@
    },
    {
     "cna": "openjs",
-    "total": 139,
+    "total": 140,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1077,6 +1077,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "WSO2",
+    "total": 102,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "zte",
     "total": 102,
     "rejected": 0,
@@ -1109,12 +1115,6 @@
    {
     "cna": "Foxit",
     "total": 96,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "WSO2",
-    "total": 95,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1161,14 +1161,14 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "PSF",
-    "total": 83,
+    "cna": "GV",
+    "total": 84,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "GV",
-    "total": 82,
+    "cna": "PSF",
+    "total": 83,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1608,13 +1608,13 @@
     "cna_count": 392,
     "top5_share": 47.0,
     "top10_share": 67.3,
-    "hhi": 614.0
+    "hhi": 613.9
    }
   ]
  },
  "projection": {
   "year": 2026,
-  "newcomers": 74,
-  "elapsed": 0.8
+  "newcomers": 73,
+  "elapsed": 0.803
  }
 }

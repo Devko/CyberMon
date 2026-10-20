@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-19T08:04:58Z",
+ "generated_at": "2026-10-20T07:55:08Z",
  "min_n": 50,
  "months": [
   {
@@ -103,8 +103,8 @@
   },
   {
    "month": "2025-05",
-   "enriched": 6811,
-   "ssvc": 6811,
+   "enriched": 6810,
+   "ssvc": 6810,
    "cvss": 3117,
    "cwe": 2618,
    "legacy": 3260,
@@ -130,8 +130,8 @@
   },
   {
    "month": "2025-08",
-   "enriched": 3319,
-   "ssvc": 3319,
+   "enriched": 3317,
+   "ssvc": 3317,
    "cvss": 625,
    "cwe": 542,
    "legacy": 231,
@@ -220,8 +220,8 @@
   },
   {
    "month": "2026-06",
-   "enriched": 7571,
-   "ssvc": 7571,
+   "enriched": 7461,
+   "ssvc": 7461,
    "cvss": 1560,
    "cwe": 1217,
    "legacy": 462,
@@ -238,46 +238,46 @@
   },
   {
    "month": "2026-08",
-   "enriched": 10440,
-   "ssvc": 10440,
-   "cvss": 1735,
-   "cwe": 2235,
+   "enriched": 10437,
+   "ssvc": 10437,
+   "cvss": 1732,
+   "cwe": 2234,
    "legacy": 164,
    "backfill": false
   },
   {
    "month": "2026-09",
-   "enriched": 12956,
-   "ssvc": 12956,
-   "cvss": 2501,
-   "cwe": 2678,
+   "enriched": 12955,
+   "ssvc": 12955,
+   "cvss": 2500,
+   "cwe": 2677,
    "legacy": 128,
    "backfill": false
   },
   {
    "month": "2026-10",
-   "enriched": 11679,
-   "ssvc": 11678,
-   "cvss": 1210,
-   "cwe": 884,
-   "legacy": 1014,
+   "enriched": 12247,
+   "ssvc": 12246,
+   "cvss": 1270,
+   "cwe": 2020,
+   "legacy": 1015,
    "backfill": false
   }
  ],
  "adds": {
-  "total": 204660,
-  "ssvc": 204658,
+  "total": 205111,
+  "ssvc": 205109,
   "pct_ssvc": 100.0,
-  "cvss": 44035,
+  "cvss": 44091,
   "pct_cvss": 21.5,
-  "cwe": 40029,
-  "pct_cwe": 19.6
+  "cwe": 41163,
+  "pct_cwe": 20.1
  },
  "providers": [
   {
    "provider": "CISA-ADP",
-   "n": 204660,
-   "pct": 52.3
+   "n": 205111,
+   "pct": 52.4
   },
   {
    "provider": "redhat-SADP",
@@ -286,13 +286,13 @@
   }
  ],
  "headline": {
-  "total_published": 391338,
-  "total_cisa": 204660,
-  "pct_cisa": 52.3,
+  "total_published": 391772,
+  "total_cisa": 205111,
+  "pct_cisa": 52.4,
   "first_month": "2024-06",
   "last_month": "2026-10",
   "peak_month": "2026-09",
-  "peak_enriched": 12956,
+  "peak_enriched": 12955,
   "sole_enricher": "CISA-ADP",
   "backfill_month_count": 3
  }

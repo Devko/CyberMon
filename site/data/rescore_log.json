@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-19T08:04:58Z",
+ "generated_at": "2026-10-20T07:55:08Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -116,7 +116,7 @@
   {
    "week": "2026-W43",
    "rescore_up": 0,
-   "rescore_down": 1,
+   "rescore_down": 2,
    "first_score": 0,
    "version_shift": 0,
    "score_removed": 0
@@ -124,9 +124,9 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 115,
+  "n": 116,
   "up": 48,
-  "down": 67,
+  "down": 68,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -138,7 +138,7 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 49
+    "n": 50
    },
    {
     "bucket": "+0.1..+1.9",
@@ -153,7 +153,7 @@
     "n": 7
    }
   ],
-  "median_delta": -0.4
+  "median_delta": -0.3
  },
  "cna_board": {
   "min_events": 3,
@@ -193,19 +193,25 @@
     "rescores": 3,
     "up": 1,
     "down": 2
+   },
+   {
+    "cna": "fortinet",
+    "rescores": 3,
+    "up": 0,
+    "down": 3
    }
   ]
  },
  "catalog": {
-  "state_size": 391338,
-  "corpus_release": "cve_2026-10-19_0700Z",
+  "state_size": 391772,
+  "corpus_release": "cve_2026-10-20_0700Z",
   "totals": {
-   "rescore": 115,
+   "rescore": 116,
    "version_shift": 29,
    "first_score": 5428,
    "score_removed": 4
   },
-  "events_total": 5576,
+  "events_total": 5577,
   "first_observed": "2026-07-15"
  }
 }

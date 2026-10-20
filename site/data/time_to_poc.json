@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-19T08:04:58Z",
+ "generated_at": "2026-10-20T07:55:08Z",
  "hero": {
   "matched": {
    "dated_cves": 25091,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-07-21",
+  "observed_through": "2026-07-22",
   "min_n": 30,
   "years": [
    {
@@ -597,21 +597,21 @@
    "dated_cves": 25091
   },
   "metasploit": {
-   "modules": 7213,
-   "with_cve": 3131,
-   "exploit_modules_with_cve": 2421,
-   "cves": 2587,
+   "modules": 7214,
+   "with_cve": 3132,
+   "exploit_modules_with_cve": 2422,
+   "cves": 2588,
    "other_cves": 641,
    "dated_cves": 0,
-   "disclosure_dated_cves": 3065
+   "disclosure_dated_cves": 3066
   },
   "nuclei": {
    "templates": 4481,
    "cves": 4481
   },
-  "exploit_cves": 25996,
+  "exploit_cves": 25997,
   "union_cves": 29667,
   "dated_cves": 25091,
-  "matched_in_corpus": 25948
+  "matched_in_corpus": 25949
  }
 }
