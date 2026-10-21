@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-10-20",
+ "last_observed": "2026-10-21",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -1493,6 +1493,13 @@
    "scope": "033ca511cab8",
    "type": "Vendor"
   },
+  "Linaro": {
+   "cna_id": "CNA-2026-0076",
+   "country": "UK",
+   "org": "Linaro",
+   "scope": "825ae7523772",
+   "type": "Open Source"
+  },
   "Linux": {
    "cna_id": "CNA-2024-0016",
    "country": "USA",
@@ -1729,6 +1736,13 @@
    "country": "Japan",
    "org": "Nintendo Co., Ltd.",
    "scope": "491dc9c33d08",
+   "type": "Vendor"
+  },
+  "Nitro": {
+   "cna_id": "CNA-2026-0077",
+   "country": "USA",
+   "org": "Nitro Software, Inc.",
+   "scope": "efa23fb347e3",
    "type": "Vendor"
   },
   "Nokia": {
@@ -4258,6 +4272,10 @@
   [
    "2026-10-20",
    557
+  ],
+  [
+   "2026-10-21",
+   559
   ]
  ],
  "version": 1

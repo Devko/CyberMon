@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-20T07:55:08Z",
+ "generated_at": "2026-10-21T07:59:12Z",
  "min_n": 500,
  "years": [
   {
@@ -264,13 +264,13 @@
   },
   {
    "year": 2026,
-   "n": 82893,
-   "missing_cwe": 7302,
-   "pct_missing_cwe": 8.8,
-   "missing_cvss": 4846,
+   "n": 84908,
+   "missing_cwe": 8400,
+   "pct_missing_cwe": 9.9,
+   "missing_cvss": 4944,
    "pct_missing_cvss": 5.8,
-   "missing_affected": 3173,
-   "pct_missing_affected": 3.8
+   "missing_affected": 3176,
+   "pct_missing_affected": 3.7
   }
  ]
 }

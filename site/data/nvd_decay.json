@@ -1,37 +1,37 @@
 {
- "generated_at": "2026-10-20T07:55:08Z",
+ "generated_at": "2026-10-21T07:59:12Z",
  "current": {
   "statuses": [
    {
     "status": "Modified",
-    "n": 244580
+    "n": 244603
    },
    {
     "status": "Analyzed",
-    "n": 76008
+    "n": 76175
    },
    {
     "status": "Deferred",
-    "n": 56750
+    "n": 57035
    },
    {
     "status": "Rejected",
-    "n": 18605
+    "n": 18620
    },
    {
     "status": "Awaiting Analysis",
-    "n": 7555
+    "n": 7652
    },
    {
     "status": "Received",
-    "n": 5393
+    "n": 6857
    },
    {
     "status": "Undergoing Analysis",
-    "n": 1295
+    "n": 1275
    }
   ],
-  "backlog_total": 14243
+  "backlog_total": 15784
  },
  "history": [
   {
@@ -523,6 +523,11 @@
    "date": "2026-10-20",
    "backlog_total": 14243,
    "awaiting_analysis": 7555
+  },
+  {
+   "date": "2026-10-21",
+   "backlog_total": 15784,
+   "awaiting_analysis": 7652
   }
  ]
 }

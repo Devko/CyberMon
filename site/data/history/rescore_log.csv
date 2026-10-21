@@ -5576,3 +5576,8 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-10-17,CVE-2026-107635,VulnCheck,rescore,v4.0,6.8,v4.0,6.9
 2026-10-19,CVE-2026-96658,redhat,rescore,v3.1,9.9,v3.1,8.8
 2026-10-20,CVE-2025-54821,fortinet,rescore,v3.1,1.8,v3.1,1.7
+2026-10-21,CVE-2026-43829,CSA,first_score,,,v4.0,9.2
+2026-10-21,CVE-2026-43830,CSA,first_score,,,v4.0,8.6
+2026-10-21,CVE-2026-43831,CSA,first_score,,,v4.0,9.2
+2026-10-21,CVE-2026-43832,CSA,first_score,,,v4.0,9.2
+2026-10-21,CVE-2026-43833,CSA,first_score,,,v4.0,7.5

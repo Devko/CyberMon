@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-20T07:55:08Z",
+ "generated_at": "2026-10-21T07:59:12Z",
  "min_n": 500,
  "id_age": {
   "years": [
@@ -291,14 +291,14 @@
    },
    {
     "year": 2026,
-    "n": 82893,
-    "same_year": 75351,
-    "one_year": 5269,
-    "two_plus": 2273,
-    "pct_same_year": 90.9,
-    "pct_one_year": 6.4,
+    "n": 84908,
+    "same_year": 77336,
+    "one_year": 5274,
+    "two_plus": 2298,
+    "pct_same_year": 91.1,
+    "pct_one_year": 6.2,
     "pct_two_plus": 2.7,
-    "pct_prior_year": 9.1
+    "pct_prior_year": 8.9
    }
   ],
   "clamped_negative": 0,
@@ -885,24 +885,24 @@
    },
    {
     "year": 2026,
-    "n": 82893,
+    "n": 84908,
     "counts": [
      11466,
-     22075,
-     15074,
-     14276,
+     23998,
+     15167,
+     14275,
      11726,
      4613,
      3663
     ],
     "pct": [
+     13.5,
+     28.3,
+     17.9,
+     16.8,
      13.8,
-     26.6,
-     18.2,
-     17.2,
-     14.1,
-     5.6,
-     4.4
+     5.4,
+     4.3
     ]
    }
   ],
@@ -1202,10 +1202,10 @@
    },
    {
     "year": 2026,
-    "n": 82893,
+    "n": 84908,
     "on_pt": 8537,
-    "pct": 10.3,
-    "tuesday_baseline_pct": 5.3,
+    "pct": 10.1,
+    "tuesday_baseline_pct": 5.7,
     "top_day": {
      "date": "2026-10-13",
      "n": 2291

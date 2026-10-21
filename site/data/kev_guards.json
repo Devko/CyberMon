@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-20T07:55:08Z",
+ "generated_at": "2026-10-21T07:59:12Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 264,
+   "total": 270,
    "security": 48,
-   "pct_security": 18.2
+   "pct_security": 17.8
   }
  ],
  "vendors": [
@@ -552,6 +552,16 @@
    "median_gap_days": 199.5
   },
   {
+   "vendor": "Plex",
+   "entries": 5,
+   "dated_entries": 5,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2023-03-10",
+   "last_added": "2026-10-20",
+   "median_gap_days": 0.0
+  },
+  {
    "vendor": "RARLAB",
    "entries": 5,
    "dated_entries": 5,
@@ -569,15 +579,15 @@
    "pct_known": 36.2
   },
   "other": {
-   "total": 1530,
+   "total": 1536,
    "known": 282,
    "pct_known": 18.4
   }
  },
  "catalog": {
-  "total": 1748,
+  "total": 1754,
   "security": 218,
-  "pct_security": 12.5,
+  "pct_security": 12.4,
   "classifier_version": 2,
   "classifier_rules": 35
  }

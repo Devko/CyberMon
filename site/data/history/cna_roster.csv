@@ -37,3 +37,5 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-14,gnutls,onboarded,GnuTLS Project,n/a,Open Source,
 2026-10-14,rt-labs,onboarded,RT-Labs AB,Sweden,Open Source + Vendor,
 2026-10-14,OTRS,scope_changed,EasyVista-OTRS GmbH,Germany,Vendor,
+2026-10-21,Linaro,onboarded,Linaro,UK,Open Source,
+2026-10-21,Nitro,onboarded,"Nitro Software, Inc.",USA,Vendor,

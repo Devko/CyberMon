@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-20T07:55:08Z",
+ "generated_at": "2026-10-21T07:59:12Z",
  "grid": [
   {
    "cvss_bucket": "0.0-3.9",
@@ -9,12 +9,12 @@
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "0.1-1%",
-   "n": 8583
+   "n": 8603
   },
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "1-10%",
-   "n": 734
+   "n": 735
   },
   {
    "cvss_bucket": "0.0-3.9",
@@ -24,17 +24,17 @@
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "<0.1%",
-   "n": 1384
+   "n": 1386
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "0.1-1%",
-   "n": 90354
+   "n": 90596
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "1-10%",
-   "n": 8316
+   "n": 8320
   },
   {
    "cvss_bucket": "4.0-6.9",
@@ -44,22 +44,22 @@
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "<0.1%",
-   "n": 890
+   "n": 909
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "0.1-1%",
-   "n": 67034
+   "n": 67169
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "1-10%",
-   "n": 14971
+   "n": 14992
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "\u226510%",
-   "n": 2201
+   "n": 2202
   },
   {
    "cvss_bucket": "9.0-10.0",
@@ -69,17 +69,17 @@
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "0.1-1%",
-   "n": 14926
+   "n": 14966
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "1-10%",
-   "n": 6519
+   "n": 6527
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "\u226510%",
-   "n": 1676
+   "n": 1677
   }
  ],
  "cvss_buckets": [
@@ -96,12 +96,12 @@
  ],
  "headline": {
   "pct_critical_epss_below_1pct": 64.6,
-  "n_critical_with_epss": 23131
+  "n_critical_with_epss": 23180
  },
  "kev": {
-  "total": 1748,
-  "below_high": 214,
-  "pct_below_high": 12.2,
+  "total": 1754,
+  "below_high": 217,
+  "pct_below_high": 12.4,
   "cvss_distribution": [
    {
     "bucket": "0.0-3.9",
@@ -109,11 +109,11 @@
    },
    {
     "bucket": "4.0-6.9",
-    "n": 205
+    "n": 208
    },
    {
     "bucket": "7.0-8.9",
-    "n": 918
+    "n": 921
    },
    {
     "bucket": "9.0-10.0",

@@ -17419,6 +17419,28 @@
    "ransom": "Unknown",
    "vendor": "Ivanti"
   },
+  "CVE-2026-106931": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-20",
+   "desc": "b8d2b696a7b5",
+   "due": "2026-10-23",
+   "name": "EG Secure Solutions SiteGuard Server Edition OS Command Injection Vulnerability",
+   "notes": "740267d8092e",
+   "product": "SiteGuard Server Edition",
+   "ransom": "Unknown",
+   "vendor": "EG Secure Solutions"
+  },
+  "CVE-2026-110936": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-20",
+   "desc": "06d4d75d108b",
+   "due": "2026-11-03",
+   "name": "Siemens Software Center Uncontrolled Search Path Element Vulnerability",
+   "notes": "337b4db0bfeb",
+   "product": "Software Center",
+   "ransom": "Unknown",
+   "vendor": "Siemens"
+  },
   "CVE-2026-11645": {
    "action": "f09df147152e",
    "added": "2026-06-09",
@@ -19223,6 +19245,50 @@
    "ransom": "Unknown",
    "vendor": "Sangoma"
   },
+  "CVE-2026-96652": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-20",
+   "desc": "e461ec21b4e5",
+   "due": "2026-11-03",
+   "name": "Plex Media Server Server-Side Request Forgery (SSRF) Vulnerability",
+   "notes": "959c13bfe1af",
+   "product": "Media Server",
+   "ransom": "Unknown",
+   "vendor": "Plex"
+  },
+  "CVE-2026-96654": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-20",
+   "desc": "164eebab0d96",
+   "due": "2026-10-23",
+   "name": "Plex Media Server Improper Neutralization of Encoded URI Schemes in a Web Page Vulnerability",
+   "notes": "675977c4ae1c",
+   "product": "Media Server",
+   "ransom": "Unknown",
+   "vendor": "Plex"
+  },
+  "CVE-2026-96655": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-20",
+   "desc": "f31868c09411",
+   "due": "2026-11-03",
+   "name": "Plex Media Server Server-Side Request Forgery (SSRF) Vulnerability",
+   "notes": "51705d2a9913",
+   "product": "Media Server",
+   "ransom": "Unknown",
+   "vendor": "Plex"
+  },
+  "CVE-2026-96656": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-20",
+   "desc": "bba98f1cb9e9",
+   "due": "2026-10-23",
+   "name": "Plex Media Server External Control of File Name or Path Vulnerability",
+   "notes": "d7f3cb024015",
+   "product": "Media Server",
+   "ransom": "Unknown",
+   "vendor": "Plex"
+  },
   "CVE-2026-96951": {
    "action": "ba0d649eb29b",
    "added": "2026-10-13",
@@ -19235,7 +19301,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-20",
+ "last_observed": "2026-10-21",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

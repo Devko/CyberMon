@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-20T07:55:08Z",
+ "generated_at": "2026-10-21T07:59:12Z",
  "roster_size": {
   "min_n": 2,
-  "current": 557,
-  "net_change": 27,
+  "current": 559,
+  "net_change": 29,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -361,6 +361,10 @@
    {
     "date": "2026-10-20",
     "size": 557
+   },
+   {
+    "date": "2026-10-21",
+    "size": 559
    }
   ]
  },
@@ -389,31 +393,31 @@
    },
    {
     "month": "2026-10",
-    "onboarded": 7,
+    "onboarded": 9,
     "departed": 0,
     "renamed": 0,
     "scope_changed": 2
    }
   ],
   "totals": {
-   "onboarded": 27,
+   "onboarded": 29,
    "departed": 0,
    "renamed": 1,
    "scope_changed": 10
   },
-  "events_total": 38,
+  "events_total": 40,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 557,
+  "total": 559,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 455
+    "n": 456
    },
    {
     "label": "Open Source",
-    "n": 146
+    "n": 147
    },
    {
     "label": "Researcher",
@@ -447,7 +451,7 @@
   "by_role": [
    {
     "label": "CNA",
-    "n": 554
+    "n": 556
    },
    {
     "label": "Root",
@@ -473,7 +477,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 464
+    "n": 466
    },
    {
     "label": "CISA",
@@ -495,11 +499,11 @@
    },
    {
     "label": "ENISA",
-    "n": 27
+    "n": 28
    },
    {
     "label": "redhat",
-    "n": 18
+    "n": 19
    },
    {
     "label": "INCIBE",
@@ -521,7 +525,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 291
+    "n": 292
    },
    {
     "label": "Germany",
@@ -557,7 +561,7 @@
    },
    {
     "label": "UK",
-    "n": 11
+    "n": 12
    },
    {
     "label": "Sweden",
@@ -698,13 +702,13 @@
   ]
  },
  "headline": {
-  "roster_total": 557,
+  "roster_total": 559,
   "top_type": "Vendor",
-  "top_type_n": 455,
+  "top_type_n": 456,
   "country_count": 43,
   "root_count": 7,
-  "mitre_n": 464,
+  "mitre_n": 466,
   "cisa_n": 91,
-  "assigning_n": 556
+  "assigning_n": 558
  }
 }
