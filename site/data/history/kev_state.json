@@ -18767,7 +18767,7 @@
    "desc": "b67e5d9636b6",
    "due": "2026-09-28",
    "name": "Mikrotik RouterOS Improper Enforcement of Behavioral Workflow Vulnerability",
-   "notes": "6a694555d1bd",
+   "notes": "601f93017a6a",
    "product": "RouterOS",
    "ransom": "Unknown",
    "vendor": "MikroTik"
@@ -19301,7 +19301,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-21",
+ "last_observed": "2026-10-22",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

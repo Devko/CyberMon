@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-21T07:59:12Z",
+ "generated_at": "2026-10-22T07:56:26Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,7 +12,7 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120195,
+ "measured_total": 120194,
  "kev_total": 1539,
  "ranks": [
   {
@@ -155,7 +155,7 @@
    "name": "Heap-based buffer overflow",
    "official_rank": 16,
    "measured_rank": 18,
-   "measured_n": 1574,
+   "measured_n": 1573,
    "measured_share": 1.3,
    "kev_n": 20
   },

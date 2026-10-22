@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-21T07:59:12Z",
+ "generated_at": "2026-10-22T07:56:26Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-10-21",
+ "last_observed": "2026-10-22",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -38,7 +38,7 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4400
+   "events": 4401
   },
   "rescore": {
    "first_observed": "2026-07-15",
@@ -46,8 +46,8 @@
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 79,
-   "nights": 88,
+   "events": 80,
+   "nights": 89,
    "excluded_reset": 0,
    "excluded_anomaly": 9
   }
@@ -58,12 +58,12 @@
   "kev_flag": 317,
   "kev_due": 22,
   "kev_field": 785,
-  "kev_text": 1815,
+  "kev_text": 1816,
   "rescore": 116,
   "version_shift": 29,
   "first_score": 5433,
   "score_removed": 4,
-  "epss_move": 79
+  "epss_move": 80
  },
  "cves": 7372,
  "events": [
@@ -10127,6 +10127,8 @@
   "1763|CVE-2026-43830|8|v4.0 8.6 (CSA)|0",
   "1763|CVE-2026-43831|8|v4.0 9.2 (CSA)|0",
   "1763|CVE-2026-43832|8|v4.0 9.2 (CSA)|0",
-  "1763|CVE-2026-43833|8|v4.0 7.5 (CSA)|0"
+  "1763|CVE-2026-43833|8|v4.0 7.5 (CSA)|0",
+  "1763|CVE-2026-35616|10|0.09098->0.93983|0",
+  "1764|CVE-2026-67279|5|notes|0"
  ]
 }

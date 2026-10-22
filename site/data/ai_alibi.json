@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-21T07:59:12Z",
+ "generated_at": "2026-10-22T07:56:26Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -320,8 +320,8 @@
      },
      {
       "year": 2024,
-      "value": 166.5,
-      "n": 154,
+      "value": 169.0,
+      "n": 155,
       "provisional": false
      },
      {
@@ -490,8 +490,8 @@
      },
      {
       "year": 2024,
-      "value": 13.0,
-      "n": 154,
+      "value": 12.9,
+      "n": 155,
       "provisional": false
      },
      {
@@ -660,8 +660,8 @@
      },
      {
       "year": 2024,
-      "value": 7.8,
-      "n": 154,
+      "value": 7.7,
+      "n": 155,
       "provisional": false
      },
      {
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-07-23",
+  "observed_through": "2026-07-24",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -955,13 +955,13 @@
        "n": 3916
       },
       "post": {
-       "value": 91.0,
+       "value": 92.2,
        "years": 2,
-       "n": 424
+       "n": 425
       },
-      "era_shift": 89.2,
-      "pct_banked": 71.0,
-      "shift_share_pct": -29.0,
+      "era_shift": 90.4,
+      "pct_banked": 70.8,
+      "shift_share_pct": -29.2,
       "verdict": "decelerated"
      },
      {
@@ -979,11 +979,11 @@
        "n": 2839
       },
       "post": {
-       "value": 166.5,
+       "value": 169.0,
        "years": 1,
-       "n": 154
+       "n": 155
       },
-      "era_shift": 160.5,
+      "era_shift": 163.0,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -998,9 +998,9 @@
        "n": 1902
       },
       "pre": {
-       "value": 42.2,
+       "value": 42.7,
        "years": 5,
-       "n": 1417
+       "n": 1418
       },
       "post": {
        "value": null,
@@ -1036,11 +1036,11 @@
        "n": 3916
       },
       "post": {
-       "value": 27.1,
+       "value": 27.0,
        "years": 2,
-       "n": 424
+       "n": 425
       },
-      "era_shift": -41.6,
+      "era_shift": -41.7,
       "pct_banked": 40.1,
       "shift_share_pct": -59.9,
       "verdict": "decelerated"
@@ -1060,11 +1060,11 @@
        "n": 2839
       },
       "post": {
-       "value": 13.0,
+       "value": 12.9,
        "years": 1,
-       "n": 154
+       "n": 155
       },
-      "era_shift": -46.7,
+      "era_shift": -46.8,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1081,7 +1081,7 @@
       "pre": {
        "value": 40.8,
        "years": 5,
-       "n": 1417
+       "n": 1418
       },
       "post": {
        "value": null,
@@ -1119,7 +1119,7 @@
       "post": {
        "value": 15.2,
        "years": 2,
-       "n": 424
+       "n": 425
       },
       "era_shift": -23.8,
       "pct_banked": 70.4,
@@ -1141,11 +1141,11 @@
        "n": 2839
       },
       "post": {
-       "value": 7.8,
+       "value": 7.7,
        "years": 1,
-       "n": 154
+       "n": 155
       },
-      "era_shift": -24.1,
+      "era_shift": -24.2,
       "pct_banked": null,
       "shift_share_pct": null,
       "verdict": "insufficient"
@@ -1162,7 +1162,7 @@
       "pre": {
        "value": 20.6,
        "years": 5,
-       "n": 1417
+       "n": 1418
       },
       "post": {
        "value": null,

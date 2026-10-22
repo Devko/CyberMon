@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-21T07:59:12Z",
+ "generated_at": "2026-10-22T07:56:26Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -634,10 +634,10 @@
    }
   ],
   "latest": {
-   "date": "2026-10-19",
+   "date": "2026-10-20",
    "validating_pc": 39.8,
    "partial_pc": 9.0,
-   "seen": 511667143
+   "seen": 508054063
   },
   "baseline": {
    "month": "2016-10",
@@ -1086,7 +1086,7 @@
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 55.6,
+   "latest_pc": 55.8,
    "series": [
     {
      "month": "2013-12",
@@ -1298,14 +1298,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 55.6
+     "validating_pc": 55.8
     }
    ]
   },
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 53.1,
+   "latest_pc": 52.8,
    "series": [
     {
      "month": "2013-12",
@@ -1517,14 +1517,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 53.1
+     "validating_pc": 52.8
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 48.5,
+   "latest_pc": 48.0,
    "series": [
     {
      "month": "2013-12",
@@ -1736,7 +1736,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 48.5
+     "validating_pc": 48.0
     }
    ]
   },
@@ -2400,7 +2400,7 @@
   {
    "cc": "JP",
    "name": "Japan",
-   "latest_pc": 14.6,
+   "latest_pc": 14.5,
    "series": [
     {
      "month": "2013-12",
@@ -2612,7 +2612,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 14.6
+     "validating_pc": 14.5
     }
    ]
   },
@@ -2854,11 +2854,11 @@
    },
    {
     "bucket": "50-75%",
-    "n": 49
+    "n": 48
    },
    {
     "bucket": "75%+",
-    "n": 68
+    "n": 69
    }
   ]
  }

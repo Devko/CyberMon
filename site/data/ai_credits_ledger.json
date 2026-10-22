@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-21T07:59:12Z",
+ "generated_at": "2026-10-22T07:56:26Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -19331,6 +19331,53 @@
    ]
   },
   {
+   "cve": "CVE-2026-105926",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-109618",
+   "published": "2026-10-21",
+   "cna": "php",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-109619",
+   "published": "2026-10-21",
+   "cna": "php",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
    "cve": "CVE-2026-114038",
    "published": "2026-10-21",
    "cna": "redhat",
@@ -19343,6 +19390,291 @@
      "tier": "system",
      "roles": [
       "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-78058",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-78066",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-78334",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-79704",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-80463",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-81755",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-82210",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-82953",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-84747",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-84748",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-86146",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-87849",
+   "published": "2026-10-21",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92822",
+   "published": "2026-10-21",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92823",
+   "published": "2026-10-21",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-92824",
+   "published": "2026-10-21",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-94300",
+   "published": "2026-10-21",
+   "cna": "isc",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-96405",
+   "published": "2026-10-21",
+   "cna": "NLnet Labs",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "zai",
+     "tier": "org",
+     "roles": [
+      "finder"
      ]
     }
    ]
