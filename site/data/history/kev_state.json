@@ -19301,7 +19301,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-22",
+ "last_observed": "2026-10-23",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-22T07:56:26Z",
+ "generated_at": "2026-10-23T15:47:16Z",
  "status": "ok",
  "window": {
   "start": "2023-12-18",
-  "end": "2026-10-22"
+  "end": "2026-10-23"
  },
  "definitions": {
   "item_105": {
@@ -260,7 +260,7 @@
    "month": "2026-10",
    "originals": 1,
    "amendments": 0,
-   "voluntary": 0,
+   "voluntary": 1,
    "partial": true
   }
  ],
@@ -353,16 +353,16 @@
    "quarter": "2026-Q4",
    "originals": 1,
    "amendments": 0,
-   "voluntary": 0,
+   "voluntary": 1,
    "partial": true
   }
  ],
  "totals": {
   "originals": 59,
   "amendments": 26,
-  "voluntary": 74,
+  "voluntary": 75,
   "companies_105": 57,
-  "companies_801": 58,
+  "companies_801": 59,
   "latest_105": "2026-10-13"
  },
  "amendment_lag": {
@@ -640,9 +640,9 @@
  ],
  "diagnostics": {
   "hits_105": 95,
-  "hits_801": 1181,
+  "hits_801": 1194,
   "filings_105": 95,
-  "filings_801": 1034,
+  "filings_801": 1044,
   "dropped_105": 0,
   "dropped_801": 0,
   "phrase_fallback_105": 0,

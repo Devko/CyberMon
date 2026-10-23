@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-22T07:56:26Z",
+ "generated_at": "2026-10-23T15:47:16Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -19672,6 +19672,21 @@
    "matches": [
     {
      "finder": "zai",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-97631",
+   "published": "2026-10-22",
+   "cna": "TianoCore",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
      "tier": "org",
      "roles": [
       "finder"

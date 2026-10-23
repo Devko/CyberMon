@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-22T07:56:26Z",
+ "generated_at": "2026-10-23T15:47:16Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -11723,8 +11723,8 @@
      },
      {
       "month": "2026-09",
-      "n": 174,
-      "index": 52.7
+      "n": 175,
+      "index": 53.0
      }
     ]
    },
@@ -11755,8 +11755,8 @@
     },
     "edgar": {
      "latest_month": "2026-09",
-     "pct_change": 326.5,
-     "n_latest_12m": 2478,
+     "pct_change": 326.7,
+     "n_latest_12m": 2479,
      "n_prior_12m": 581
     }
    },
