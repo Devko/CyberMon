@@ -15,7 +15,12 @@ and the two sync paths split by cost:
   ``FEED_STALENESS`` so the next incremental pull re-covers the gap.
 * **incremental** (fresh state) — the API, asked only for records modified
   since the last sync (``lastModStartDate`` — typically a few thousand
-  records, i.e. seconds), merged into the cached map.
+  records, i.e. seconds), merged into the cached map. If that pull fails
+  (retries exhausted, or a page it refuses to trust), the night falls
+  back to a full feed sweep instead of failing: from 2026-10-21 the API
+  stalled more and more requests from GitHub's runners, then all of them
+  (10-23), while the same queries answered from elsewhere and the CDN
+  feeds kept working from the runners.
 
 Drift/corruption guards — the state is a cache, never a source of truth:
 
@@ -113,7 +118,8 @@ def _collect_statuses(session, api_key: str | None, timeout: float,
     under load; treating that as "done" would merge a partial delta and
     stamp ``last_sync`` past records never seen — the very drift the
     weekly resweep exists to bound, silently shipped every night until
-    then. The caller's retry is the next nightly."""
+    then. ``sync_status_state`` answers a refusal with a full feed sweep,
+    which never sees the partial delta."""
     delay = _DELAY_KEYED if api_key else _DELAY_KEYLESS
     statuses: dict[str, str] = {}
     start_index = 0
@@ -272,7 +278,8 @@ def sync_status_state(state: dict | None, session=None,
                       now: datetime | None = None) -> dict:
     """Return up-to-date sync state (``{version, last_full_sync, last_sync,
     statuses}``), via an incremental ``lastModStartDate`` API pull when the
-    given state allows it and a full feed-based sweep when it doesn't."""
+    given state allows it and a full feed-based sweep when it doesn't — or
+    when the API pull fails. Only a failed feed sweep raises."""
     import requests
 
     session = session or requests.Session()
@@ -285,10 +292,16 @@ def sync_status_state(state: dict | None, session=None,
                                 sleep=sleep)
 
     window_start = _parse_iso(state["last_sync"]) - _OVERLAP
-    changed = _collect_statuses(
-        session, api_key, timeout, sleep, log,
-        extra_params={"lastModStartDate": _fmt_nvd(window_start),
-                      "lastModEndDate": _fmt_nvd(now)})
+    try:
+        changed = _collect_statuses(
+            session, api_key, timeout, sleep, log,
+            extra_params={"lastModStartDate": _fmt_nvd(window_start),
+                          "lastModEndDate": _fmt_nvd(now)})
+    except RuntimeError as exc:
+        log(f"  WARNING: NVD incremental API sync failed ({exc}); "
+            f"falling back to a full sweep via yearly feeds")
+        return full_sweep_state(session=session, log=log, now=now,
+                                sleep=sleep)
     log(f"  NVD: incremental sync, {len(changed)} record(s) modified "
         f"since {state['last_sync']}")
     statuses = dict(state["statuses"])

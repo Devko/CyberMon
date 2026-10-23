@@ -288,18 +288,35 @@ def test_incremental_sync_pages_the_whole_delta(monkeypatch):
     assert sleeps == [fetch_nvd._DELAY_KEYLESS]   # paced between pages
 
 
+SWEPT = {2026: _feed([("CVE-1", "Analyzed"), ("CVE-9", "Received")])}
+
+
+def _assert_fell_back_to_feeds(state, logs, reason):
+    """The night was rescued by a full feed sweep: the state is exactly
+    the feed snapshot (no partial API delta merged into it), stamped as a
+    fresh full sweep, and the fallback says why."""
+    assert state["statuses"] == {"CVE-1": "Analyzed", "CVE-9": "Received"}
+    assert state["last_full_sync"] == "2026-07-09T06:00:00Z"
+    assert state["last_sync"] == "2026-07-08T05:00:00Z"   # FEED_STALENESS
+    assert any("falling back to a full sweep" in m and reason in m
+               for m in logs)
+
+
 def test_incremental_sync_refuses_an_empty_page_before_total_results():
     # NVD has answered 200 with an empty page under load. Treating it as
     # "done" merged a partial delta and stamped last_sync past records
-    # never seen; now the night fails loudly and the prior state stands.
+    # never seen; now the delta is refused and the night falls back to a
+    # full feed sweep, which never sees the partial page.
     prior = _fresh_prior()
     session = FakeSession([_page([("CVE-2", "Analyzed")], total=3),
-                           _page([], total=3)])
-    with pytest.raises(RuntimeError,
-                       match="empty page at startIndex=1 of totalResults=3"):
-        fetch_nvd.sync_status_state(prior, session=session, sleep=_no_sleep,
-                                    log=lambda m: None, now=NOW)
-    assert prior == _fresh_prior()   # nothing merged, nothing stamped
+                           _page([], total=3)], feeds=SWEPT)
+    logs = []
+    state = fetch_nvd.sync_status_state(prior, session=session,
+                                        sleep=_no_sleep, log=logs.append,
+                                        now=NOW)
+    _assert_fell_back_to_feeds(
+        state, logs, "empty page at startIndex=1 of totalResults=3")
+    assert prior == _fresh_prior()   # prior state never mutated
 
 
 @pytest.mark.parametrize("total", [None, "3", 3.0, True])
@@ -309,9 +326,45 @@ def test_incremental_sync_refuses_a_page_without_integer_total(total):
         del page["totalResults"]
     else:
         page["totalResults"] = total
-    with pytest.raises(RuntimeError, match="no integer totalResults"):
-        fetch_nvd.sync_status_state(_fresh_prior(),
-                                    session=FakeSession([page]),
+    logs = []
+    state = fetch_nvd.sync_status_state(
+        _fresh_prior(), session=FakeSession([page], feeds=SWEPT),
+        sleep=_no_sleep, log=logs.append, now=NOW)
+    _assert_fell_back_to_feeds(state, logs, "no integer totalResults")
+
+
+class DeadApiSession(FakeSession):
+    """The API times out on every request; the CDN feeds still answer.
+    What GitHub's runners saw on 2026-10-23 (12 of 12 attempts)."""
+
+    def get(self, url, params=None, headers=None, timeout=None):
+        if "feeds/json" not in url:
+            self.requests.append(params)
+            raise OSError("HTTPSConnectionPool(host='services.nvd.nist.gov',"
+                          " port=443): Read timed out.")
+        return super().get(url, params, headers, timeout)
+
+
+def test_dead_api_falls_back_to_a_full_feed_sweep():
+    session = DeadApiSession(feeds=SWEPT)
+    logs = []
+    state = fetch_nvd.sync_status_state(_fresh_prior(), session=session,
+                                        sleep=_no_sleep, log=logs.append,
+                                        now=NOW)
+    assert len(session.requests) == fetch_nvd._MAX_ATTEMPTS  # ladder first
+    assert len(session.feed_requests) == len(FEED_YEARS)
+    _assert_fell_back_to_feeds(state, logs, "Read timed out")
+
+
+def test_fallback_sweep_failure_stays_fatal():
+    class EverythingDown(DeadApiSession):
+        def get(self, url, params=None, headers=None, timeout=None):
+            if "feeds/json" in url:
+                return FakeResponse(status_code=503)
+            return super().get(url, params, headers, timeout)
+
+    with pytest.raises(RuntimeError, match="NVD feed 2002 returned HTTP 503"):
+        fetch_nvd.sync_status_state(_fresh_prior(), session=EverythingDown(),
                                     sleep=_no_sleep, log=lambda m: None,
                                     now=NOW)
 
