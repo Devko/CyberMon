@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-23T15:47:16Z",
+ "generated_at": "2026-10-24T07:35:19Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,11 +206,11 @@
   },
   {
    "year": 2026,
-   "published": 85842,
+   "published": 86329,
    "counts": {
-    "unsupported-when-assigned": 460,
+    "unsupported-when-assigned": 463,
     "disputed": 69,
-    "exclusively-hosted-service": 248
+    "exclusively-hosted-service": 249
    }
   }
  ],
@@ -221,40 +221,40 @@
  },
  "boards": {
   "unsupported-when-assigned": {
-   "total": 1233,
+   "total": 1236,
    "cna_count": 50,
    "active_cnas": 482,
-   "top1_share_pct": 38.0,
-   "top3_share_pct": 69.8,
+   "top1_share_pct": 37.9,
+   "top3_share_pct": 69.7,
    "min_n": 5,
    "cnas": [
     {
      "cna": "VulDB",
-     "n": 468,
-     "share_pct": 38.0,
-     "cna_published": 17547,
+     "n": 469,
+     "share_pct": 37.9,
+     "cna_published": 17553,
      "rate_pct": 2.7
     },
     {
      "cna": "VulnCheck",
      "n": 278,
      "share_pct": 22.5,
-     "cna_published": 9861,
+     "cna_published": 9879,
      "rate_pct": 2.8
     },
     {
      "cna": "mitre",
      "n": 115,
      "share_pct": 9.3,
-     "cna_published": 28596,
+     "cna_published": 28606,
      "rate_pct": 0.4
     },
     {
      "cna": "CERT-PL",
      "n": 42,
      "share_pct": 3.4,
-     "cna_published": 554,
-     "rate_pct": 7.6
+     "cna_published": 565,
+     "rate_pct": 7.4
     },
     {
      "cna": "icscert",
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 464,
      "share_pct": 81.1,
-     "cna_published": 28596,
+     "cna_published": 28606,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 92,
      "share_pct": 16.1,
-     "cna_published": 17547,
+     "cna_published": 17553,
      "rate_pct": 0.5
     }
    ]
@@ -341,26 +341,26 @@
  },
  "severity": {
   "all": {
-   "critical": 21493,
-   "high": 78018,
-   "medium": 93568,
-   "low": 8666,
-   "unscored": 26018
+   "critical": 21528,
+   "high": 78133,
+   "medium": 93662,
+   "low": 8685,
+   "unscored": 26242
   },
   "unsupported-when-assigned": {
    "tagged": {
-    "critical": 218,
+    "critical": 219,
     "high": 464,
-    "medium": 464,
+    "medium": 466,
     "low": 40,
     "unscored": 47
    },
    "same_cnas_untagged": {
-    "critical": 10567,
-    "high": 27878,
-    "medium": 42421,
-    "low": 3027,
-    "unscored": 10142
+    "critical": 10585,
+    "high": 27900,
+    "medium": 42450,
+    "low": 3032,
+    "unscored": 10145
    }
   },
   "disputed": {
@@ -372,11 +372,11 @@
     "unscored": 162
    },
    "same_cnas_untagged": {
-    "critical": 6594,
-    "high": 15001,
-    "medium": 26058,
-    "low": 2352,
-    "unscored": 9149
+    "critical": 6599,
+    "high": 15019,
+    "medium": 26077,
+    "low": 2357,
+    "unscored": 9152
    }
   }
  },
@@ -384,7 +384,7 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 3291
+    "n": 3307
    },
    {
     "tag": "x_freeware",
@@ -415,9 +415,9 @@
    }
   ],
   "schema_totals": {
-   "unsupported-when-assigned": 1324,
+   "unsupported-when-assigned": 1327,
    "disputed": 1511,
-   "exclusively-hosted-service": 427
+   "exclusively-hosted-service": 428
   }
  },
  "headline": {
@@ -427,7 +427,7 @@
   "unsupported_latest": 423,
   "unsupported_latest_share_pct": 0.9,
   "current_year": 2026,
-  "unsupported_current": 460,
+  "unsupported_current": 463,
   "disputed_from": 2020,
   "disputed_to": 2025,
   "disputed_min": 85,

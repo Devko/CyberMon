@@ -17430,6 +17430,17 @@
    "ransom": "Unknown",
    "vendor": "EG Secure Solutions"
   },
+  "CVE-2026-110447": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-23",
+   "desc": "710460c7820b",
+   "due": "2026-10-26",
+   "name": "Collabora Online \u2013 Built-in CODE Server OS Command Injection Vulnerability",
+   "notes": "f798c1f33069",
+   "product": "Collabora Online \u2013 Built-in CODE Server",
+   "ransom": "Unknown",
+   "vendor": "Collabora"
+  },
   "CVE-2026-110936": {
    "action": "ba0d649eb29b",
    "added": "2026-10-20",
@@ -17440,6 +17451,17 @@
    "product": "Software Center",
    "ransom": "Unknown",
    "vendor": "Siemens"
+  },
+  "CVE-2026-114625": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-23",
+   "desc": "558c2c6c3da7",
+   "due": "2026-10-26",
+   "name": "Arista VeloCloud Orchestrator SQL Injection Vulnerability",
+   "notes": "5b75dbcabc6a",
+   "product": "VeloCloud Orchestrator",
+   "ransom": "Unknown",
+   "vendor": "Arista"
   },
   "CVE-2026-11645": {
    "action": "f09df147152e",
@@ -19301,7 +19323,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-23",
+ "last_observed": "2026-10-24",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

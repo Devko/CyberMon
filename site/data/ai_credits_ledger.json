@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-23T15:47:16Z",
+ "generated_at": "2026-10-24T07:35:19Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -19680,9 +19680,41 @@
    ]
   },
   {
+   "cve": "CVE-2026-111497",
+   "published": "2026-10-22",
+   "cna": "Google",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
    "cve": "CVE-2026-97631",
    "published": "2026-10-22",
    "cna": "TianoCore",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-115931",
+   "published": "2026-10-23",
+   "cna": "postiz",
    "counts_for": [],
    "matches": [
     {

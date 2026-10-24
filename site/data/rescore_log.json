@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-23T15:47:16Z",
+ "generated_at": "2026-10-24T07:35:19Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -115,8 +115,8 @@
   },
   {
    "week": "2026-W43",
-   "rescore_up": 5,
-   "rescore_down": 6,
+   "rescore_up": 6,
+   "rescore_down": 8,
    "first_score": 5,
    "version_shift": 0,
    "score_removed": 0
@@ -124,9 +124,9 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 125,
-  "up": 53,
-  "down": 72,
+  "n": 128,
+  "up": 54,
+  "down": 74,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -138,11 +138,11 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 54
+    "n": 56
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 35
+    "n": 36
    },
    {
     "bucket": "+2.0..+3.9",
@@ -160,9 +160,9 @@
   "cnas": [
    {
     "cna": "VulnCheck",
-    "rescores": 39,
-    "up": 11,
-    "down": 28
+    "rescores": 41,
+    "up": 12,
+    "down": 29
    },
    {
     "cna": "redhat",
@@ -172,9 +172,9 @@
    },
    {
     "cna": "microsoft",
-    "rescores": 13,
+    "rescores": 14,
     "up": 11,
-    "down": 2
+    "down": 3
    },
    {
     "cna": "adobe",
@@ -203,15 +203,15 @@
   ]
  },
  "catalog": {
-  "state_size": 394720,
-  "corpus_release": "cve_2026-10-23_1500Z",
+  "state_size": 395207,
+  "corpus_release": "cve_2026-10-24_0700Z",
   "totals": {
-   "rescore": 125,
+   "rescore": 128,
    "version_shift": 29,
    "first_score": 5433,
    "score_removed": 4
   },
-  "events_total": 5591,
+  "events_total": 5594,
   "first_observed": "2026-07-15"
  }
 }

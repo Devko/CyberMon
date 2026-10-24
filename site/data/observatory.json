@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-10-23T15:47:16Z",
+ "generated_at": "2026-10-24T07:35:19Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-10-23",
+ "last_observed": "2026-10-24",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -38,11 +38,11 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4401
+   "events": 4403
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5591
+   "events": 5594
   },
   "epss": {
    "first_observed": "2026-07-18",
@@ -53,19 +53,19 @@
   }
  },
  "counts": {
-  "kev_added": 1452,
+  "kev_added": 1454,
   "kev_removed": 9,
   "kev_flag": 317,
   "kev_due": 22,
   "kev_field": 785,
   "kev_text": 1816,
-  "rescore": 125,
+  "rescore": 128,
   "version_shift": 29,
   "first_score": 5433,
   "score_removed": 4,
   "epss_move": 81
  },
- "cves": 7381,
+ "cves": 7386,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10139,6 +10139,11 @@
   "1765|CVE-2026-6554|6|v3.1 5.5->v3.1 7.5 (Tcpdump)|0",
   "1765|CVE-2026-77930|6|v4.0 8.7->v4.0 9.3 (VulnCheck)|0",
   "1765|CVE-2026-92812|6|v4.0 7.6->v4.0 9.3 (VulnCheck)|0",
-  "1765|CVE-2026-28318|10|0.01942->0.43651|2"
+  "1765|CVE-2026-28318|10|0.01942->0.43651|2",
+  "1766|CVE-2026-110447|0||0",
+  "1766|CVE-2026-114625|0||0",
+  "1766|CVE-2026-109295|6|v4.0 7.1->v4.0 5.3 (VulnCheck)|0",
+  "1766|CVE-2026-114392|6|v4.0 5.3->v4.0 6.9 (VulnCheck)|0",
+  "1766|CVE-2026-83862|6|v3.1 9.8->v3.1 8.8 (microsoft)|0"
  ]
 }
