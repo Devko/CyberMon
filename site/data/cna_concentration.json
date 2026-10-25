@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-24T07:35:19Z",
+ "generated_at": "2026-10-25T07:48:18Z",
  "years": [
   {
    "year": 1999,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "cna_count": 396,
-   "newcomer_count": 60,
+   "cna_count": 397,
+   "newcomer_count": 61,
    "top5_share": 46.0,
    "top10_share": 68.4,
-   "hhi": 586.0
+   "hhi": 585.8
   }
  ],
  "rejection_leaderboard": {
@@ -394,7 +394,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 9989,
+    "total": 10002,
     "rejected": 110,
     "rejected_rate_pct": 1.1
    },
@@ -502,7 +502,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 11632,
+    "total": 11635,
     "rejected": 51,
     "rejected_rate_pct": 0.4
    },
@@ -549,12 +549,6 @@
     "rejected_rate_pct": 0.4
    },
    {
-    "cna": "VulDB",
-    "total": 17597,
-    "rejected": 44,
-    "rejected_rate_pct": 0.3
-   },
-   {
     "cna": "icscert",
     "total": 1941,
     "rejected": 6,
@@ -586,8 +580,14 @@
    },
    {
     "cna": "Patchstack",
-    "total": 19004,
+    "total": 19023,
     "rejected": 30,
+    "rejected_rate_pct": 0.2
+   },
+   {
+    "cna": "VulDB",
+    "total": 17609,
+    "rejected": 44,
     "rejected_rate_pct": 0.2
    },
    {
@@ -676,13 +676,13 @@
    },
    {
     "cna": "oracle",
-    "total": 5549,
+    "total": 5550,
     "rejected": 1,
     "rejected_rate_pct": 0.0
    },
    {
     "cna": "WPScan",
-    "total": 5328,
+    "total": 5344,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -754,7 +754,7 @@
    },
    {
     "cna": "HCL",
-    "total": 579,
+    "total": 580,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -790,7 +790,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 386,
+    "total": 387,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -819,13 +819,13 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "Nozomi",
-    "total": 301,
+    "cna": "mongodb",
+    "total": 302,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "mongodb",
+    "cna": "Nozomi",
     "total": 301,
     "rejected": 0,
     "rejected_rate_pct": 0.0
@@ -1167,6 +1167,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "PSF",
+    "total": 85,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "bcorg",
     "total": 85,
     "rejected": 0,
@@ -1180,12 +1186,6 @@
    },
    {
     "cna": "GV",
-    "total": 84,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "PSF",
     "total": 84,
     "rejected": 0,
     "rejected_rate_pct": 0.0
@@ -1605,16 +1605,16 @@
    },
    {
     "year": 2026,
-    "cna_count": 395,
+    "cna_count": 396,
     "top5_share": 46.1,
     "top10_share": 67.6,
-    "hhi": 606.7
+    "hhi": 606.6
    }
   ]
  },
  "projection": {
   "year": 2026,
-  "newcomers": 74,
-  "elapsed": 0.814
+  "newcomers": 75,
+  "elapsed": 0.816
  }
 }

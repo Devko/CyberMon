@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-24T07:35:19Z",
+ "generated_at": "2026-10-25T07:48:18Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -19714,6 +19714,36 @@
   {
    "cve": "CVE-2026-115931",
    "published": "2026-10-23",
+   "cna": "postiz",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-115932",
+   "published": "2026-10-24",
+   "cna": "postiz",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-115933",
+   "published": "2026-10-24",
    "cna": "postiz",
    "counts_for": [],
    "matches": [
