@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-25T07:48:18Z",
+ "generated_at": "2026-10-26T08:06:25Z",
  "base_date": "2021-12-23",
  "last_observed": "2026-10-25",
  "kinds": [
@@ -47,9 +47,9 @@
   "epss": {
    "first_observed": "2026-07-18",
    "events": 82,
-   "nights": 91,
+   "nights": 92,
    "excluded_reset": 0,
-   "excluded_anomaly": 9
+   "excluded_anomaly": 10
   }
  },
  "counts": {

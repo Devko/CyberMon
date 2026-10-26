@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-25T07:48:18Z",
- "as_of": "2026-10-25",
+ "generated_at": "2026-10-26T08:06:25Z",
+ "as_of": "2026-10-26",
  "ecosystems_read": [
   "GitHub Actions",
   "Go",
@@ -16,7 +16,7 @@
   "npm"
  ],
  "young_days": 90,
- "young_since": "2026-07-27",
+ "young_since": "2026-07-28",
  "min_n": 50,
  "catalog": {
   "advisories": 35975,

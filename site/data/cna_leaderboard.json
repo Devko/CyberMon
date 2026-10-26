@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-25T07:48:18Z",
+ "generated_at": "2026-10-26T08:06:25Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -258,11 +258,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 9860,
+   "n": 9941,
    "avg_cvss": 7.3,
    "median_cvss": 7.2,
-   "pct_geq_9": 13.7,
-   "pct_geq_7": 61.0
+   "pct_geq_9": 13.6,
+   "pct_geq_7": 60.8
   },
   {
    "cna": "Linux",
@@ -598,15 +598,6 @@
    "pct_geq_7": 46.2
   },
   {
-   "cna": "EEF",
-   "org": "EEF",
-   "n": 346,
-   "avg_cvss": 6.4,
-   "median_cvss": 6.9,
-   "pct_geq_9": 5.8,
-   "pct_geq_7": 45.4
-  },
-  {
    "cna": "adobe",
    "org": "adobe",
    "n": 2591,
@@ -614,6 +605,15 @@
    "median_cvss": 5.5,
    "pct_geq_9": 5.7,
    "pct_geq_7": 43.4
+  },
+  {
+   "cna": "EEF",
+   "org": "EEF",
+   "n": 349,
+   "avg_cvss": 6.4,
+   "median_cvss": 6.9,
+   "pct_geq_9": 5.7,
+   "pct_geq_7": 45.0
   },
   {
    "cna": "f5",
@@ -744,7 +744,7 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 14781,
+   "n": 14813,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 2.6,
