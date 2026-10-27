@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T08:06:25Z",
+ "generated_at": "2026-10-27T08:22:13Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -19752,6 +19752,127 @@
      "tier": "org",
      "roles": [
       "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116119",
+   "published": "2026-10-26",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116120",
+   "published": "2026-10-26",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116121",
+   "published": "2026-10-26",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116122",
+   "published": "2026-10-26",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116123",
+   "published": "2026-10-26",
+   "cna": "VulDB",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "zast",
+     "tier": "system",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116372",
+   "published": "2026-10-26",
+   "cna": "CIRCL",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "remediation developer",
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-116469",
+   "published": "2026-10-26",
+   "cna": "CIRCL",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "remediation developer",
+      "tool"
      ]
     }
    ]

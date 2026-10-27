@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T08:06:25Z",
+ "generated_at": "2026-10-27T08:22:13Z",
  "since_month": "2023-11",
  "container": "cna",
  "classes": [
@@ -275,10 +275,10 @@
   },
   {
    "month": "2026-08",
-   "published": 12260,
+   "published": 12259,
    "v4_only": 1378,
    "both": 2145,
-   "v3_only": 6206,
+   "v3_only": 6205,
    "neither": 2531
   },
   {
@@ -291,11 +291,11 @@
   },
   {
    "month": "2026-10",
-   "published": 13737,
-   "v4_only": 1221,
-   "both": 3145,
-   "v3_only": 6685,
-   "neither": 2686
+   "published": 14501,
+   "v4_only": 1285,
+   "both": 3336,
+   "v3_only": 6826,
+   "neither": 3054
   }
  ],
  "years": [
@@ -331,44 +331,44 @@
   },
   {
    "year": 2026,
-   "published": 86539,
-   "v4_only": 10242,
-   "both": 17076,
-   "v3_only": 41315,
-   "neither": 17906,
-   "neither_adp": 12824,
-   "v4_cnas": 267
+   "published": 87302,
+   "v4_only": 10306,
+   "both": 17267,
+   "v3_only": 41455,
+   "neither": 18274,
+   "neither_adp": 12919,
+   "v4_cnas": 268
   }
  ],
  "adopters": {
   "window_from": "2023-11",
   "min_v4": 50,
-  "window_published": 179730,
-  "window_v4": 43326,
+  "window_published": 180493,
+  "window_v4": 43581,
   "adopter_count": 313,
   "top_share_pct": 80.5,
   "cnas": [
    {
     "cna": "VulDB",
-    "published": 15078,
-    "v4": 13691,
+    "published": 15167,
+    "v4": 13780,
     "v4_only": 2,
-    "v4_share_pct": 90.8,
+    "v4_share_pct": 90.9,
     "v4_only_share_pct": 0.0
    },
    {
     "cna": "VulnCheck",
-    "published": 9963,
-    "v4": 9887,
+    "published": 10047,
+    "v4": 9971,
     "v4_only": 1157,
     "v4_share_pct": 99.2,
-    "v4_only_share_pct": 11.6
+    "v4_only_share_pct": 11.5
    },
    {
     "cna": "GitHub_M",
-    "published": 17340,
-    "v4": 5569,
-    "v4_only": 5565,
+    "published": 17384,
+    "v4": 5581,
+    "v4_only": 5577,
     "v4_share_pct": 32.1,
     "v4_only_share_pct": 32.1
    },
@@ -382,17 +382,17 @@
    },
    {
     "cna": "siemens",
-    "published": 737,
-    "v4": 617,
+    "published": 738,
+    "v4": 618,
     "v4_only": 0,
     "v4_share_pct": 83.7,
     "v4_only_share_pct": 0.0
    },
    {
     "cna": "INCIBE",
-    "published": 1028,
-    "v4": 605,
-    "v4_only": 604,
+    "published": 1030,
+    "v4": 607,
+    "v4_only": 606,
     "v4_share_pct": 58.9,
     "v4_only_share_pct": 58.8
    },
@@ -406,18 +406,18 @@
    },
    {
     "cna": "CERT-PL",
-    "published": 562,
-    "v4": 510,
-    "v4_only": 510,
-    "v4_share_pct": 90.7,
-    "v4_only_share_pct": 90.7
+    "published": 573,
+    "v4": 521,
+    "v4_only": 521,
+    "v4_share_pct": 90.9,
+    "v4_only_share_pct": 90.9
    },
    {
     "cna": "jpcert",
-    "published": 879,
-    "v4": 468,
+    "published": 888,
+    "v4": 477,
     "v4_only": 0,
-    "v4_share_pct": 53.2,
+    "v4_share_pct": 53.7,
     "v4_only_share_pct": 0.0
    },
    {
@@ -430,9 +430,9 @@
    },
    {
     "cna": "EEF",
-    "published": 349,
-    "v4": 349,
-    "v4_only": 349,
+    "published": 374,
+    "v4": 374,
+    "v4_only": 374,
     "v4_share_pct": 100.0,
     "v4_only_share_pct": 100.0
    },
@@ -454,11 +454,11 @@
    },
    {
     "cna": "apache",
-    "published": 1747,
+    "published": 1759,
     "v4": 290,
     "v4_only": 229,
-    "v4_share_pct": 16.6,
-    "v4_only_share_pct": 13.1
+    "v4_share_pct": 16.5,
+    "v4_only_share_pct": 13.0
    },
    {
     "cna": "twcert",
@@ -471,13 +471,13 @@
   ]
  },
  "compare": {
-  "n": 27615,
+  "n": 27806,
   "median_delta": -0.1,
-  "same_band": 19195,
-  "v4_higher": 4183,
-  "v4_lower": 4237,
+  "same_band": 19326,
+  "v4_higher": 4228,
+  "v4_lower": 4252,
   "same_band_pct": 69.5,
-  "v4_higher_pct": 15.1,
+  "v4_higher_pct": 15.2,
   "v4_lower_pct": 15.3,
   "bins": [
    {
@@ -490,7 +490,7 @@
     "center": -2.5,
     "lo": -2.7,
     "hi": -2.3,
-    "n": 206
+    "n": 209
    },
    {
     "center": -2.0,
@@ -502,55 +502,55 @@
     "center": -1.5,
     "lo": -1.7,
     "hi": -1.3,
-    "n": 511
+    "n": 512
    },
    {
     "center": -1.0,
     "lo": -1.2,
     "hi": -0.8,
-    "n": 4484
+    "n": 4509
    },
    {
     "center": -0.5,
     "lo": -0.7,
     "hi": -0.3,
-    "n": 5961
+    "n": 5986
    },
    {
     "center": 0.0,
     "lo": -0.2,
     "hi": 0.2,
-    "n": 3681
+    "n": 3694
    },
    {
     "center": 0.5,
     "lo": 0.3,
     "hi": 0.7,
-    "n": 4128
+    "n": 4168
    },
    {
     "center": 1.0,
     "lo": 0.8,
     "hi": 1.2,
-    "n": 3621
+    "n": 3650
    },
    {
     "center": 1.5,
     "lo": 1.3,
     "hi": 1.7,
-    "n": 2931
+    "n": 2967
    },
    {
     "center": 2.0,
     "lo": 1.8,
     "hi": 2.2,
-    "n": 514
+    "n": 518
    },
    {
     "center": 2.5,
     "lo": 2.3,
     "hi": 2.7,
-    "n": 1089
+    "n": 1104
    },
    {
     "center": 3.0,
@@ -563,18 +563,18 @@
   "cnas": [
    {
     "cna": "VulDB",
-    "n": 13713,
+    "n": 13802,
     "median_delta": -0.4,
     "same_band_pct": 60.7,
-    "v4_higher_pct": 14.5,
-    "v4_lower_pct": 24.8
+    "v4_higher_pct": 14.6,
+    "v4_lower_pct": 24.7
    },
    {
     "cna": "VulnCheck",
-    "n": 8731,
+    "n": 8815,
     "median_delta": 0.6,
-    "same_band_pct": 78.1,
-    "v4_higher_pct": 15.5,
+    "same_band_pct": 77.9,
+    "v4_higher_pct": 15.7,
     "v4_lower_pct": 6.4
    },
    {
@@ -587,18 +587,18 @@
    },
    {
     "cna": "siemens",
-    "n": 652,
+    "n": 653,
     "median_delta": 0.1,
-    "same_band_pct": 84.5,
-    "v4_higher_pct": 12.7,
+    "same_band_pct": 84.4,
+    "v4_higher_pct": 12.9,
     "v4_lower_pct": 2.8
    },
    {
     "cna": "jpcert",
-    "n": 468,
+    "n": 477,
     "median_delta": 0.6,
-    "same_band_pct": 86.5,
-    "v4_higher_pct": 9.6,
+    "same_band_pct": 86.8,
+    "v4_higher_pct": 9.4,
     "v4_lower_pct": 3.8
    },
    {
@@ -631,10 +631,10 @@
   "current_year": 2026,
   "current_month": "2026-10",
   "v4_share_current_pct": 31.6,
-  "v4_current": 27318,
-  "published_current": 86539,
+  "v4_current": 27573,
+  "published_current": 87302,
   "latest_year": 2025,
   "v4_share_latest_pct": 25.8,
-  "v4_cnas_current": 267
+  "v4_cnas_current": 268
  }
 }

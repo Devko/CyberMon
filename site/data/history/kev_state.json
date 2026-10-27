@@ -17430,6 +17430,28 @@
    "ransom": "Unknown",
    "vendor": "EG Secure Solutions"
   },
+  "CVE-2026-109618": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-26",
+   "desc": "8ea256acb672",
+   "due": "2026-10-29",
+   "name": "PHP Memory Corruption Vulnerability",
+   "notes": "3f27a5df5639",
+   "product": "PHP",
+   "ransom": "Unknown",
+   "vendor": "PHP Group"
+  },
+  "CVE-2026-109619": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-26",
+   "desc": "f4f94b716b1c",
+   "due": "2026-10-29",
+   "name": "PHP Stale Internal Request-State Vulnerability",
+   "notes": "283419d11b28",
+   "product": "PHP",
+   "ransom": "Unknown",
+   "vendor": "PHP Group"
+  },
   "CVE-2026-110447": {
    "action": "ba0d649eb29b",
    "added": "2026-10-23",
@@ -19323,7 +19345,7 @@
    "vendor": "Microsoft"
   }
  },
- "last_observed": "2026-10-26",
+ "last_observed": "2026-10-27",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

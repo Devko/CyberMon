@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T08:06:25Z",
+ "generated_at": "2026-10-27T08:22:13Z",
  "years": [
   {
    "year": 1999,
@@ -219,11 +219,11 @@
   },
   {
    "year": 2026,
-   "critical": 9624,
-   "high": 34793,
-   "medium": 33680,
-   "low": 3360,
-   "unscored": 5082
+   "critical": 9657,
+   "high": 34926,
+   "medium": 33978,
+   "low": 3386,
+   "unscored": 5355
   }
  ],
  "record_era": {
@@ -232,8 +232,8 @@
  },
  "projection": {
   "year": 2026,
-  "total": 105641,
-  "elapsed": 0.819
+  "total": 106217,
+  "elapsed": 0.822
  },
  "without_linux": {
   "cna": "Linux",
@@ -456,17 +456,17 @@
    },
    {
     "year": 2026,
-    "critical": 9077,
-    "high": 32137,
-    "medium": 33677,
-    "low": 3360,
-    "unscored": 215
+    "critical": 9110,
+    "high": 32270,
+    "medium": 33975,
+    "low": 3386,
+    "unscored": 477
    }
   ],
   "projection": {
    "year": 2026,
-   "total": 95786,
-   "elapsed": 0.819
+   "total": 96382,
+   "elapsed": 0.822
   }
  }
 }

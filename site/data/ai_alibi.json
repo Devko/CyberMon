@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T08:06:25Z",
+ "generated_at": "2026-10-27T08:22:13Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-07-28",
+  "observed_through": "2026-07-29",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -1468,17 +1468,17 @@
      },
      {
       "month": "2026-07",
-      "index": 53.7,
+      "index": 53.8,
       "sources": 5
      },
      {
       "month": "2026-08",
-      "index": 48.5,
+      "index": 48.6,
       "sources": 5
      },
      {
       "month": "2026-09",
-      "index": 64.4,
+      "index": 64.5,
       "sources": 5
      }
     ]
@@ -1764,12 +1764,12 @@
      },
      {
       "month": "2026-06",
-      "index": 76.0,
+      "index": 76.1,
       "sources": 5
      },
      {
       "month": "2026-07",
-      "index": 64.2,
+      "index": 64.3,
       "sources": 5
      },
      {
@@ -1779,7 +1779,7 @@
      },
      {
       "month": "2026-09",
-      "index": 66.2,
+      "index": 66.3,
       "sources": 5
      }
     ]
@@ -1809,7 +1809,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "index_first": 0.0,
-   "index_last": 66.2,
+   "index_last": 66.3,
    "month_first": "2021-11",
    "month_last": "2026-09",
    "clock_min": 4.5,

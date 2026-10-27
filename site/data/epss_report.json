@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T08:06:25Z",
+ "generated_at": "2026-10-27T08:22:13Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,13 +96,13 @@
   },
   {
    "year": 2026,
-   "graded": 196,
+   "graded": 198,
    "n_below_1pct": 102,
    "n_1_to_10pct": 42,
-   "n_above_10pct": 52,
-   "pct_below_1pct": 52.0,
-   "pct_1_to_10pct": 21.4,
-   "pct_above_10pct": 26.5,
+   "n_above_10pct": 54,
+   "pct_below_1pct": 51.5,
+   "pct_1_to_10pct": 21.2,
+   "pct_above_10pct": 27.3,
    "ungradeable": 76,
    "pending": 0
   }
@@ -157,12 +157,12 @@
    },
    {
     "model": "v5",
-    "n": 93,
+    "n": 95,
     "counts": {
      "<0.1%": 0,
      "0.1-1%": 51,
      "1-10%": 24,
-     "\u226510%": 18
+     "\u226510%": 20
     }
    }
   ]
@@ -177,7 +177,7 @@
    {
     "bucket": "25-50",
     "n": 231,
-    "pct": 16.2
+    "pct": 16.1
    },
    {
     "bucket": "50-75",
@@ -196,20 +196,20 @@
    },
    {
     "bucket": "99-100",
-    "n": 279,
-    "pct": 19.5
+    "n": 281,
+    "pct": 19.6
    }
   ],
-  "n": 1430,
+  "n": 1432,
   "bottom_half": {
    "n": 433,
-   "pct": 30.3
+   "pct": 30.2
   },
-  "median_percentile": 83.1
+  "median_percentile": 83.2
  },
  "catalog": {
-  "total": 1756,
-  "graded": 1430,
+  "total": 1758,
+  "graded": 1432,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 231,
@@ -218,8 +218,8 @@
   "pending_backfill": 0
  },
  "headline": {
-  "graded": 1430,
-  "pct_below_1pct": 32.9,
+  "graded": 1432,
+  "pct_below_1pct": 32.8,
   "latest_year": 2025,
   "graded_latest": 184,
   "pct_below_1pct_latest": 59.2
@@ -16028,6 +16028,24 @@
    "percentile": null,
    "model": null,
    "reason": "no_score_for_date"
+  },
+  {
+   "cve": "CVE-2026-109618",
+   "date_added": "2026-10-26",
+   "score_date": "2026-10-25",
+   "epss": 0.99981,
+   "percentile": 0.99981,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-109619",
+   "date_added": "2026-10-26",
+   "score_date": "2026-10-25",
+   "epss": 0.99997,
+   "percentile": 0.99989,
+   "model": "v5",
+   "reason": null
   }
  ]
 }

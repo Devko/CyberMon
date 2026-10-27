@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-10-26T08:06:25Z",
- "as_of": "2026-10-26",
+ "generated_at": "2026-10-27T08:22:13Z",
+ "as_of": "2026-10-27",
  "ecosystems_read": [
   "GitHub Actions",
   "Go",
@@ -16,13 +16,13 @@
   "npm"
  ],
  "young_days": 90,
- "young_since": "2026-07-28",
+ "young_since": "2026-07-29",
  "min_n": 50,
  "catalog": {
   "advisories": 35975,
   "with_cve": 33064,
   "without_cve": 2911,
-  "without_cve_young": 159,
+  "without_cve_young": 155,
   "without_cve_pct": 8.1,
   "withdrawn_excluded": 1236,
   "not_reviewed": 0,
@@ -117,7 +117,7 @@
    "total": 11313,
    "with_cve": 10584,
    "without_cve": 729,
-   "without_cve_young": 159,
+   "without_cve_young": 155,
    "without_cve_pct": 6.4,
    "partial": true
   }
@@ -128,7 +128,7 @@
    "total": 7564,
    "with_cve": 6476,
    "without_cve": 1088,
-   "without_cve_young": 59,
+   "without_cve_young": 58,
    "without_cve_pct": 14.4,
    "years": [
     {
@@ -208,7 +208,7 @@
      "total": 3314,
      "with_cve": 3080,
      "without_cve": 234,
-     "without_cve_young": 59,
+     "without_cve_young": 58,
      "without_cve_pct": 7.1
     }
    ]
@@ -488,7 +488,7 @@
    "total": 4885,
    "with_cve": 4529,
    "without_cve": 356,
-   "without_cve_young": 24,
+   "without_cve_young": 23,
    "without_cve_pct": 7.3,
    "years": [
     {
@@ -568,7 +568,7 @@
      "total": 2133,
      "with_cve": 1999,
      "without_cve": 134,
-     "without_cve_young": 24,
+     "without_cve_young": 23,
      "without_cve_pct": 6.3
     }
    ]
@@ -578,7 +578,7 @@
    "total": 1516,
    "with_cve": 1116,
    "without_cve": 400,
-   "without_cve_young": 23,
+   "without_cve_young": 21,
    "without_cve_pct": 26.4,
    "years": [
     {
@@ -658,7 +658,7 @@
      "total": 483,
      "with_cve": 342,
      "without_cve": 141,
-     "without_cve_young": 23,
+     "without_cve_young": 21,
      "without_cve_pct": 29.2
     }
    ]
@@ -1221,14 +1221,14 @@
   },
   {
    "level": "MODERATE",
-   "with_cve": 14560,
+   "with_cve": 14561,
    "without_cve": 1043,
    "with_cve_pct": 44.0,
    "without_cve_pct": 35.8
   },
   {
    "level": "LOW",
-   "with_cve": 2233,
+   "with_cve": 2232,
    "without_cve": 368,
    "with_cve_pct": 6.8,
    "without_cve_pct": 12.6
@@ -1242,8 +1242,8 @@
   }
  ],
  "cve_lag": {
-  "n": 27600,
-  "later_30d": 204,
+  "n": 27605,
+  "later_30d": 205,
   "later_90d": 113,
   "later_365d": 31
  }
