@@ -39,3 +39,11 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-14,OTRS,scope_changed,EasyVista-OTRS GmbH,Germany,Vendor,
 2026-10-21,Linaro,onboarded,Linaro,UK,Open Source,
 2026-10-21,Nitro,onboarded,"Nitro Software, Inc.",USA,Vendor,
+2026-10-28,Akrites,onboarded,Akrites SIRT,USA,Open Source,
+2026-10-28,POSIT,onboarded,"Posit, PBC",USA,Hosted Service + Open Source + Vendor,
+2026-10-28,Pentaho,onboarded,Pentaho Canada Inc.,Canada,Vendor,
+2026-10-28,samsungsemiconductor,onboarded,Samsung Semiconductor,South Korea,Open Source + Vendor,
+2026-10-28,pretix,renamed,pretix GmbH,Germany,Hosted Service + Open Source + Vendor,rami.io
+2026-10-28,pretix,scope_changed,pretix GmbH,Germany,Hosted Service + Open Source + Vendor,
+2026-10-28,CISA,scope_changed,Cybersecurity and Infrastructure Security Agency (CISA),USA,N/A,
+2026-10-28,mitre,scope_changed,MITRE Corporation,USA,N/A,

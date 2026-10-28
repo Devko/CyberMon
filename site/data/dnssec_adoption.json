@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T08:22:13Z",
+ "generated_at": "2026-10-28T08:58:26Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -634,10 +634,10 @@
    }
   ],
   "latest": {
-   "date": "2026-10-25",
+   "date": "2026-10-26",
    "validating_pc": 40.0,
    "partial_pc": 8.9,
-   "seen": 538154363
+   "seen": 536216425
   },
   "baseline": {
    "month": "2016-10",
@@ -1086,7 +1086,7 @@
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 56.3,
+   "latest_pc": 56.6,
    "series": [
     {
      "month": "2013-12",
@@ -1298,14 +1298,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 56.3
+     "validating_pc": 56.6
     }
    ]
   },
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 52.3,
+   "latest_pc": 52.1,
    "series": [
     {
      "month": "2013-12",
@@ -1517,14 +1517,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 52.3
+     "validating_pc": 52.1
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 46.8,
+   "latest_pc": 46.4,
    "series": [
     {
      "month": "2013-12",
@@ -1736,7 +1736,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 46.8
+     "validating_pc": 46.4
     }
    ]
   },
@@ -1962,7 +1962,7 @@
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 36.6,
+   "latest_pc": 36.5,
    "series": [
     {
      "month": "2013-12",
@@ -2174,7 +2174,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 36.6
+     "validating_pc": 36.5
     }
    ]
   },
@@ -2619,7 +2619,7 @@
   {
    "cc": "CN",
    "name": "China",
-   "latest_pc": 0.9,
+   "latest_pc": 0.8,
    "series": [
     {
      "month": "2013-12",
@@ -2831,7 +2831,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 0.9
+     "validating_pc": 0.8
     }
    ]
   }
@@ -2850,7 +2850,7 @@
    },
    {
     "bucket": "25-50%",
-    "n": 44
+    "n": 45
    },
    {
     "bucket": "50-75%",
@@ -2858,7 +2858,7 @@
    },
    {
     "bucket": "75%+",
-    "n": 70
+    "n": 69
    }
   ]
  }

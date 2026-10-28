@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T08:22:13Z",
+ "generated_at": "2026-10-28T08:58:26Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,13 +96,13 @@
   },
   {
    "year": 2026,
-   "graded": 198,
+   "graded": 200,
    "n_below_1pct": 102,
-   "n_1_to_10pct": 42,
-   "n_above_10pct": 54,
-   "pct_below_1pct": 51.5,
-   "pct_1_to_10pct": 21.2,
-   "pct_above_10pct": 27.3,
+   "n_1_to_10pct": 43,
+   "n_above_10pct": 55,
+   "pct_below_1pct": 51.0,
+   "pct_1_to_10pct": 21.5,
+   "pct_above_10pct": 27.5,
    "ungradeable": 76,
    "pending": 0
   }
@@ -157,12 +157,12 @@
    },
    {
     "model": "v5",
-    "n": 95,
+    "n": 97,
     "counts": {
      "<0.1%": 0,
      "0.1-1%": 51,
-     "1-10%": 24,
-     "\u226510%": 20
+     "1-10%": 25,
+     "\u226510%": 21
     }
    }
   ]
@@ -181,7 +181,7 @@
    },
    {
     "bucket": "50-75",
-    "n": 193,
+    "n": 194,
     "pct": 13.5
    },
    {
@@ -191,7 +191,7 @@
    },
    {
     "bucket": "90-99",
-    "n": 332,
+    "n": 333,
     "pct": 23.2
    },
    {
@@ -200,7 +200,7 @@
     "pct": 19.6
    }
   ],
-  "n": 1432,
+  "n": 1434,
   "bottom_half": {
    "n": 433,
    "pct": 30.2
@@ -208,8 +208,8 @@
   "median_percentile": 83.2
  },
  "catalog": {
-  "total": 1758,
-  "graded": 1432,
+  "total": 1760,
+  "graded": 1434,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 231,
@@ -218,7 +218,7 @@
   "pending_backfill": 0
  },
  "headline": {
-  "graded": 1432,
+  "graded": 1434,
   "pct_below_1pct": 32.8,
   "latest_year": 2025,
   "graded_latest": 184,
@@ -16044,6 +16044,24 @@
    "score_date": "2026-10-25",
    "epss": 0.99997,
    "percentile": 0.99989,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-111497",
+   "date_added": "2026-10-27",
+   "score_date": "2026-10-26",
+   "epss": 0.36027,
+   "percentile": 0.98463,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-48356",
+   "date_added": "2026-10-27",
+   "score_date": "2026-10-26",
+   "epss": 0.01001,
+   "percentile": 0.62599,
    "model": "v5",
    "reason": null
   }

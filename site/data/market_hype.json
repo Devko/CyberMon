@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T08:22:13Z",
+ "generated_at": "2026-10-28T08:58:26Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -623,17 +623,17 @@
      {
       "month": "2022-01",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2022-02",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2022-03",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2022-04",
@@ -643,12 +643,12 @@
      {
       "month": "2022-05",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2022-06",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2022-07",
@@ -663,17 +663,17 @@
      {
       "month": "2022-09",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2022-10",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2022-11",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2022-12",
@@ -683,77 +683,77 @@
      {
       "month": "2023-01",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2023-02",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2023-03",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2023-04",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2023-05",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2023-06",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2023-07",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2023-08",
       "n": 4,
-      "index": 44.4
+      "index": 40.0
      },
      {
       "month": "2023-09",
       "n": 4,
-      "index": 44.4
+      "index": 40.0
      },
      {
       "month": "2023-10",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2023-11",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2023-12",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2024-01",
       "n": 4,
-      "index": 44.4
+      "index": 40.0
      },
      {
       "month": "2024-02",
       "n": 5,
-      "index": 55.6
+      "index": 50.0
      },
      {
       "month": "2024-03",
       "n": 4,
-      "index": 44.4
+      "index": 40.0
      },
      {
       "month": "2024-04",
@@ -763,22 +763,22 @@
      {
       "month": "2024-05",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2024-06",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2024-07",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2024-08",
       "n": 1,
-      "index": 11.1
+      "index": 10.0
      },
      {
       "month": "2024-09",
@@ -788,122 +788,122 @@
      {
       "month": "2024-10",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2024-11",
       "n": 6,
-      "index": 66.7
+      "index": 60.0
      },
      {
       "month": "2024-12",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2025-01",
       "n": 4,
-      "index": 44.4
+      "index": 40.0
      },
      {
       "month": "2025-02",
       "n": 5,
-      "index": 55.6
+      "index": 50.0
      },
      {
       "month": "2025-03",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2025-04",
       "n": 9,
-      "index": 100.0
+      "index": 90.0
      },
      {
       "month": "2025-05",
       "n": 8,
-      "index": 88.9
+      "index": 80.0
      },
      {
       "month": "2025-06",
       "n": 2,
-      "index": 22.2
+      "index": 20.0
      },
      {
       "month": "2025-07",
       "n": 8,
-      "index": 88.9
+      "index": 80.0
      },
      {
       "month": "2025-08",
       "n": 8,
-      "index": 88.9
+      "index": 80.0
      },
      {
       "month": "2025-09",
       "n": 9,
-      "index": 100.0
+      "index": 90.0
      },
      {
       "month": "2025-10",
       "n": 8,
-      "index": 88.9
+      "index": 80.0
      },
      {
       "month": "2025-11",
       "n": 7,
-      "index": 77.8
+      "index": 70.0
      },
      {
       "month": "2025-12",
       "n": 3,
-      "index": 33.3
+      "index": 30.0
      },
      {
       "month": "2026-01",
       "n": 6,
-      "index": 66.7
+      "index": 60.0
      },
      {
       "month": "2026-02",
       "n": 6,
-      "index": 66.7
+      "index": 60.0
      },
      {
       "month": "2026-03",
       "n": 9,
-      "index": 100.0
+      "index": 90.0
      },
      {
       "month": "2026-04",
       "n": 8,
-      "index": 88.9
+      "index": 80.0
      },
      {
       "month": "2026-05",
       "n": 5,
-      "index": 55.6
+      "index": 50.0
      },
      {
       "month": "2026-06",
       "n": 7,
-      "index": 77.8
+      "index": 70.0
      },
      {
       "month": "2026-07",
       "n": 9,
-      "index": 100.0
+      "index": 90.0
      },
      {
       "month": "2026-08",
-      "n": 9,
+      "n": 10,
       "index": 100.0
      },
      {
       "month": "2026-09",
       "n": 4,
-      "index": 44.4
+      "index": 40.0
      }
     ],
     "wiki": [
@@ -1516,8 +1516,8 @@
     },
     "arxiv": {
      "latest_month": "2026-09",
-     "pct_change": 20.9,
-     "n_latest_12m": 81,
+     "pct_change": 22.4,
+     "n_latest_12m": 82,
      "n_prior_12m": 67
     },
     "wiki": {
@@ -1535,8 +1535,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 28.7,
-    "arxiv_index_avg3m": 81.5,
-    "research_vs_media_index": 52.8,
+    "arxiv_index_avg3m": 76.7,
+    "research_vs_media_index": 48.0,
     "direction": "research_leads"
    }
   },
@@ -10957,8 +10957,8 @@
      },
      {
       "month": "2026-09",
-      "n": 109,
-      "index": 57.7
+      "n": 108,
+      "index": 57.1
      }
     ],
     "arxiv": [
@@ -11737,8 +11737,8 @@
     },
     "hn": {
      "latest_month": "2026-09",
-     "pct_change": 155.1,
-     "n_latest_12m": 1666,
+     "pct_change": 155.0,
+     "n_latest_12m": 1665,
      "n_prior_12m": 653
     },
     "arxiv": {

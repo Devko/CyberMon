@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-10-27",
+ "last_observed": "2026-10-28",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -155,6 +155,13 @@
    "org": "Airoha Technology Corp.",
    "scope": "729f1192e8a6",
    "type": "Vendor"
+  },
+  "Akrites": {
+   "cna_id": "CNA-2026-0080",
+   "country": "USA",
+   "org": "Akrites SIRT",
+   "scope": "ba061b031624",
+   "type": "Open Source"
   },
   "AlgoSec": {
    "cna_id": "CNA-2023-0060",
@@ -440,7 +447,7 @@
    "cna_id": "CNA-2023-0047",
    "country": "USA",
    "org": "Cybersecurity and Infrastructure Security Agency (CISA)",
-   "scope": "5d548df9b8fe",
+   "scope": "0c3d2697ccf1",
    "type": "N/A"
   },
   "CODRA": {
@@ -1913,6 +1920,13 @@
    "scope": "78e7ca386de3",
    "type": "Open Source + Vendor"
   },
+  "POSIT": {
+   "cna_id": "CNA-2026-0078",
+   "country": "USA",
+   "org": "Posit, PBC",
+   "scope": "ad5c4b5222bb",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
   "PRJBLK": {
    "cna_id": "CNA-2026-0008",
    "country": "Australia",
@@ -1995,6 +2009,13 @@
    "country": "USA",
    "org": "Pegasystems Inc.",
    "scope": "400914be8256",
+   "type": "Vendor"
+  },
+  "Pentaho": {
+   "cna_id": "CNA-2026-0079",
+   "country": "Canada",
+   "org": "Pentaho Canada Inc.",
+   "scope": "b71f3d8641e2",
    "type": "Vendor"
   },
   "Pentraze": {
@@ -3485,7 +3506,7 @@
    "cna_id": "CNA-1999-0001",
    "country": "USA",
    "org": "MITRE Corporation",
-   "scope": "6ae42b8ba055",
+   "scope": "d4a31f50c846",
    "type": "N/A"
   },
   "mongodb": {
@@ -3614,6 +3635,13 @@
    "scope": "0dfa36939001",
    "type": "Hosted Service + Open Source + Vendor"
   },
+  "pretix": {
+   "cna_id": "CNA-2024-0023",
+   "country": "Germany",
+   "org": "pretix GmbH",
+   "scope": "9648d1c45343",
+   "type": "Hosted Service + Open Source + Vendor"
+  },
   "qnap": {
    "cna_id": "CNA-2017-0030",
    "country": "Taiwan",
@@ -3627,13 +3655,6 @@
    "org": "Qualcomm, Inc.",
    "scope": "9d3bbbaaaa41",
    "type": "Vendor"
-  },
-  "rami.io": {
-   "cna_id": "CNA-2024-0023",
-   "country": "Germany",
-   "org": "rami.io GmbH",
-   "scope": "b9c2344f6a2e",
-   "type": "Hosted Service + Open Source + Vendor"
   },
   "rapid7": {
    "cna_id": "CNA-2016-0024",
@@ -3676,6 +3697,13 @@
    "org": "Samsung TV & Appliance",
    "scope": "cb669246f142",
    "type": "Open Source + Researcher + Vendor"
+  },
+  "samsungsemiconductor": {
+   "cna_id": "CNA-2026-0081",
+   "country": "South Korea",
+   "org": "Samsung Semiconductor",
+   "scope": "e2eb6fb48917",
+   "type": "Open Source + Vendor"
   },
   "sap": {
    "cna_id": "CNA-2017-0038",
@@ -4300,6 +4328,10 @@
   [
    "2026-10-27",
    559
+  ],
+  [
+   "2026-10-28",
+   563
   ]
  ],
  "version": 1

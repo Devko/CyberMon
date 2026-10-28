@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T08:22:13Z",
+ "generated_at": "2026-10-28T08:58:26Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 274,
+   "total": 276,
    "security": 48,
-   "pct_security": 17.5
+   "pct_security": 17.4
   }
  ],
  "vendors": [
@@ -73,22 +73,22 @@
   },
   {
    "vendor": "Adobe",
-   "entries": 82,
-   "dated_entries": 82,
+   "entries": 83,
+   "dated_entries": 83,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-24",
+   "last_added": "2026-10-27",
    "median_gap_days": 0.0
   },
   {
    "vendor": "Google",
-   "entries": 75,
-   "dated_entries": 75,
+   "entries": 76,
+   "dated_entries": 76,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-16",
+   "last_added": "2026-10-27",
    "median_gap_days": 7.0
   },
   {
@@ -579,13 +579,13 @@
    "pct_known": 36.2
   },
   "other": {
-   "total": 1540,
+   "total": 1542,
    "known": 282,
    "pct_known": 18.3
   }
  },
  "catalog": {
-  "total": 1758,
+  "total": 1760,
   "security": 218,
   "pct_security": 12.4,
   "classifier_version": 2,

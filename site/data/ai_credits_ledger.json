@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T08:22:13Z",
+ "generated_at": "2026-10-28T08:58:26Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -19873,6 +19873,689 @@
      "roles": [
       "remediation developer",
       "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117876",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117878",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117879",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117881",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117882",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117883",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117921",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117922",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117930",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117931",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117932",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117933",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117934",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117935",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117936",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117937",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117938",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117939",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117940",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117941",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117942",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117943",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117944",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117945",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117946",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117947",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117948",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117949",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117950",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117951",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117952",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117953",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-117954",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118008",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118011",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118012",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118013",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118014",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118015",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118016",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-118017",
+   "published": "2026-10-27",
+   "cna": "mozilla",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "system",
+     "roles": [
+      "unspecified"
      ]
     }
    ]
