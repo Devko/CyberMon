@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-28T08:58:26Z",
+ "generated_at": "2026-10-29T08:54:36Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 276,
+   "total": 278,
    "security": 48,
-   "pct_security": 17.4
+   "pct_security": 17.3
   }
  ],
  "vendors": [
@@ -133,13 +133,13 @@
   },
   {
    "vendor": "Linux",
-   "entries": 31,
-   "dated_entries": 31,
+   "entries": 32,
+   "dated_entries": 32,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-12-10",
-   "last_added": "2026-09-18",
-   "median_gap_days": 33.5
+   "last_added": "2026-10-28",
+   "median_gap_days": 35.0
   },
   {
    "vendor": "Citrix",
@@ -412,6 +412,16 @@
    "median_gap_days": 159.0
   },
   {
+   "vendor": "Broadcom",
+   "entries": 6,
+   "dated_entries": 6,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2025-04-28",
+   "last_added": "2026-10-28",
+   "median_gap_days": 85.0
+  },
+  {
    "vendor": "Jenkins",
    "entries": 6,
    "dated_entries": 6,
@@ -440,16 +450,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-09-25",
    "median_gap_days": 0.0
-  },
-  {
-   "vendor": "Broadcom",
-   "entries": 5,
-   "dated_entries": 5,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2025-04-28",
-   "last_added": "2026-08-18",
-   "median_gap_days": 126.5
   },
   {
    "vendor": "Check Point",
@@ -579,13 +579,13 @@
    "pct_known": 36.2
   },
   "other": {
-   "total": 1542,
+   "total": 1544,
    "known": 282,
    "pct_known": 18.3
   }
  },
  "catalog": {
-  "total": 1760,
+  "total": 1762,
   "security": 218,
   "pct_security": 12.4,
   "classifier_version": 2,

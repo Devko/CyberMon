@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-10-28T08:58:26Z",
+ "generated_at": "2026-10-29T08:54:36Z",
  "matched": {
-  "total_kev": 1760,
-  "matched_cve": 1760,
+  "total_kev": 1762,
+  "matched_cve": 1762,
   "unmatched_cve": 0
  },
  "launch_backfill": {
@@ -40,12 +40,12 @@
   },
   {
    "year": 2026,
-   "n": 276,
-   "median_days": 13.5,
+   "n": 278,
+   "median_days": 14.0,
    "p25_days": 1.0,
-   "p75_days": 167.0,
+   "p75_days": 166.0,
    "pct_negative": 1.1,
-   "pct_over_365d": 18.1
+   "pct_over_365d": 18.0
   }
  ],
  "latency_buckets": [
@@ -57,7 +57,7 @@
   {
    "bucket": "0-7d",
    "n": 353,
-   "pct": 39.5
+   "pct": 39.4
   },
   {
    "bucket": "8-30d",
@@ -66,13 +66,13 @@
   },
   {
    "bucket": "31-90d",
-   "n": 93,
-   "pct": 10.4
+   "n": 94,
+   "pct": 10.5
   },
   {
    "bucket": "91-365d",
-   "n": 118,
-   "pct": 13.2
+   "n": 119,
+   "pct": 13.3
   },
   {
    "bucket": "1-3y",
@@ -82,7 +82,7 @@
   {
    "bucket": "3y+",
    "n": 123,
-   "pct": 13.8
+   "pct": 13.7
   }
  ],
  "remediation_span_by_year": [
@@ -123,7 +123,7 @@
   },
   {
    "year": 2026,
-   "n": 276,
+   "n": 278,
    "median_days": 3.0,
    "p25_days": 3.0,
    "p75_days": 14.0

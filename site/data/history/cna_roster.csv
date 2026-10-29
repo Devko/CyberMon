@@ -47,3 +47,5 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-28,pretix,scope_changed,pretix GmbH,Germany,Hosted Service + Open Source + Vendor,
 2026-10-28,CISA,scope_changed,Cybersecurity and Infrastructure Security Agency (CISA),USA,N/A,
 2026-10-28,mitre,scope_changed,MITRE Corporation,USA,N/A,
+2026-10-29,NetDEF,onboarded,Network Device Education Foundation,USA,Open Source,
+2026-10-29,OpenBMC,departed,The OpenBMC Project,USA,Open Source + Vendor,

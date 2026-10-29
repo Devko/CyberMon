@@ -1,20 +1,20 @@
 {
- "generated_at": "2026-10-28T08:58:26Z",
+ "generated_at": "2026-10-29T08:54:36Z",
  "grid": [
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "<0.1%",
-   "n": 180
+   "n": 179
   },
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "0.1-1%",
-   "n": 8808
+   "n": 8844
   },
   {
    "cvss_bucket": "0.0-3.9",
    "epss_bucket": "1-10%",
-   "n": 743
+   "n": 744
   },
   {
    "cvss_bucket": "0.0-3.9",
@@ -24,17 +24,17 @@
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "<0.1%",
-   "n": 1451
+   "n": 1454
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "0.1-1%",
-   "n": 92189
+   "n": 92416
   },
   {
    "cvss_bucket": "4.0-6.9",
    "epss_bucket": "1-10%",
-   "n": 8358
+   "n": 8361
   },
   {
    "cvss_bucket": "4.0-6.9",
@@ -44,22 +44,22 @@
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "<0.1%",
-   "n": 899
+   "n": 900
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "0.1-1%",
-   "n": 68753
+   "n": 68934
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "1-10%",
-   "n": 14828
+   "n": 14844
   },
   {
    "cvss_bucket": "7.0-8.9",
    "epss_bucket": "\u226510%",
-   "n": 2266
+   "n": 2265
   },
   {
    "cvss_bucket": "9.0-10.0",
@@ -69,17 +69,17 @@
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "0.1-1%",
-   "n": 15249
+   "n": 15295
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "1-10%",
-   "n": 6531
+   "n": 6542
   },
   {
    "cvss_bucket": "9.0-10.0",
    "epss_bucket": "\u226510%",
-   "n": 1757
+   "n": 1756
   }
  ],
  "cvss_buckets": [
@@ -96,16 +96,16 @@
  ],
  "headline": {
   "pct_critical_epss_below_1pct": 64.8,
-  "n_critical_with_epss": 23550
+  "n_critical_with_epss": 23606
  },
  "kev": {
-  "total": 1760,
-  "below_high": 217,
-  "pct_below_high": 12.3,
+  "total": 1762,
+  "below_high": 218,
+  "pct_below_high": 12.4,
   "cvss_distribution": [
    {
     "bucket": "0.0-3.9",
-    "n": 9
+    "n": 10
    },
    {
     "bucket": "4.0-6.9",
@@ -113,7 +113,7 @@
    },
    {
     "bucket": "7.0-8.9",
-    "n": 921
+    "n": 922
    },
    {
     "bucket": "9.0-10.0",

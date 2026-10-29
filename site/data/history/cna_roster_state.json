@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-10-28",
+ "last_observed": "2026-10-29",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -1717,6 +1717,13 @@
    "scope": "19749e44feca",
    "type": "Open Source + Vendor"
   },
+  "NetDEF": {
+   "cna_id": "CNA-2026-0082",
+   "country": "USA",
+   "org": "Network Device Education Foundation",
+   "scope": "fd0ea7e5a7f4",
+   "type": "Open Source"
+  },
   "NetRise": {
    "cna_id": "CNA-2022-0036",
    "country": "USA",
@@ -1877,13 +1884,6 @@
    "org": "OnLogic",
    "scope": "afb7e6ce2ff9",
    "type": "Vendor"
-  },
-  "OpenBMC": {
-   "cna_id": "CNA-2021-0066",
-   "country": "USA",
-   "org": "The OpenBMC Project",
-   "scope": "fc1ab75c9ca2",
-   "type": "Open Source + Vendor"
   },
   "OpenHarmony": {
    "cna_id": "CNA-2022-0026",
@@ -4331,6 +4331,10 @@
   ],
   [
    "2026-10-28",
+   563
+  ],
+  [
+   "2026-10-29",
    563
   ]
  ],

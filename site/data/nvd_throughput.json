@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-28T08:58:26Z",
+ "generated_at": "2026-10-29T08:54:36Z",
  "min_known_duration": 30,
  "queue": {
   "median_days": 5.0,
-  "n_known_duration": 13953
+  "n_known_duration": 14295
  },
  "history": [
   {
@@ -930,6 +930,15 @@
    "entered_awaiting": 367,
    "analyzed_from_awaiting": 205,
    "deferred_from_awaiting": 83,
+   "resweep": false,
+   "after_resweep": false
+  },
+  {
+   "date": "2026-10-29",
+   "received_new": 368,
+   "entered_awaiting": 225,
+   "analyzed_from_awaiting": 371,
+   "deferred_from_awaiting": 176,
    "resweep": false,
    "after_resweep": false
   }

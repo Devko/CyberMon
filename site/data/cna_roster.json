@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-28T08:58:26Z",
+ "generated_at": "2026-10-29T08:54:36Z",
  "roster_size": {
   "min_n": 2,
   "current": 563,
@@ -393,6 +393,10 @@
    {
     "date": "2026-10-28",
     "size": 563
+   },
+   {
+    "date": "2026-10-29",
+    "size": 563
    }
   ]
  },
@@ -421,19 +425,19 @@
    },
    {
     "month": "2026-10",
-    "onboarded": 13,
-    "departed": 0,
+    "onboarded": 14,
+    "departed": 1,
     "renamed": 1,
     "scope_changed": 5
    }
   ],
   "totals": {
-   "onboarded": 33,
-   "departed": 0,
+   "onboarded": 34,
+   "departed": 1,
    "renamed": 2,
    "scope_changed": 13
   },
-  "events_total": 48,
+  "events_total": 50,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
@@ -441,7 +445,7 @@
   "by_type": [
    {
     "label": "Vendor",
-    "n": 459
+    "n": 458
    },
    {
     "label": "Open Source",
@@ -519,7 +523,7 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 394
+    "n": 393
    },
    {
     "label": "icscert",
@@ -527,7 +531,7 @@
    },
    {
     "label": "ENISA",
-    "n": 28
+    "n": 29
    },
    {
     "label": "redhat",
@@ -732,7 +736,7 @@
  "headline": {
   "roster_total": 563,
   "top_type": "Vendor",
-  "top_type_n": 459,
+  "top_type_n": 458,
   "country_count": 43,
   "root_count": 7,
   "mitre_n": 470,
