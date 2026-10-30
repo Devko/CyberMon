@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-29T08:54:36Z",
+ "generated_at": "2026-10-30T08:58:53Z",
  "since_month": "2023-11",
  "container": "cna",
  "classes": [
@@ -291,11 +291,11 @@
   },
   {
    "month": "2026-10",
-   "published": 15746,
-   "v4_only": 1424,
-   "both": 3528,
-   "v3_only": 7297,
-   "neither": 3497
+   "published": 16278,
+   "v4_only": 1499,
+   "both": 3582,
+   "v3_only": 7615,
+   "neither": 3582
   }
  ],
  "years": [
@@ -331,22 +331,22 @@
   },
   {
    "year": 2026,
-   "published": 88547,
-   "v4_only": 10445,
-   "both": 17459,
-   "v3_only": 41926,
-   "neither": 18717,
-   "neither_adp": 13006,
-   "v4_cnas": 271
+   "published": 89079,
+   "v4_only": 10520,
+   "both": 17513,
+   "v3_only": 42244,
+   "neither": 18802,
+   "neither_adp": 13119,
+   "v4_cnas": 273
   }
  ],
  "adopters": {
   "window_from": "2023-11",
   "min_v4": 50,
-  "window_published": 181738,
-  "window_v4": 43912,
-  "adopter_count": 316,
-  "top_share_pct": 80.5,
+  "window_published": 182270,
+  "window_v4": 44041,
+  "adopter_count": 318,
+  "top_share_pct": 80.4,
   "cnas": [
    {
     "cna": "VulDB",
@@ -358,17 +358,17 @@
    },
    {
     "cna": "VulnCheck",
-    "published": 10188,
-    "v4": 10110,
+    "published": 10233,
+    "v4": 10154,
     "v4_only": 1157,
     "v4_share_pct": 99.2,
-    "v4_only_share_pct": 11.4
+    "v4_only_share_pct": 11.3
    },
    {
     "cna": "GitHub_M",
-    "published": 17524,
-    "v4": 5632,
-    "v4_only": 5628,
+    "published": 17592,
+    "v4": 5652,
+    "v4_only": 5648,
     "v4_share_pct": 32.1,
     "v4_only_share_pct": 32.1
    },
@@ -381,20 +381,20 @@
     "v4_only_share_pct": 10.1
    },
    {
+    "cna": "INCIBE",
+    "published": 1042,
+    "v4": 619,
+    "v4_only": 618,
+    "v4_share_pct": 59.4,
+    "v4_only_share_pct": 59.3
+   },
+   {
     "cna": "siemens",
     "published": 738,
     "v4": 618,
     "v4_only": 0,
     "v4_share_pct": 83.7,
     "v4_only_share_pct": 0.0
-   },
-   {
-    "cna": "INCIBE",
-    "published": 1036,
-    "v4": 613,
-    "v4_only": 612,
-    "v4_share_pct": 59.2,
-    "v4_only_share_pct": 59.1
    },
    {
     "cna": "intel",
@@ -406,18 +406,18 @@
    },
    {
     "cna": "CERT-PL",
-    "published": 578,
-    "v4": 526,
-    "v4_only": 526,
-    "v4_share_pct": 91.0,
-    "v4_only_share_pct": 91.0
+    "published": 583,
+    "v4": 531,
+    "v4_only": 531,
+    "v4_share_pct": 91.1,
+    "v4_only_share_pct": 91.1
    },
    {
     "cna": "jpcert",
-    "published": 891,
-    "v4": 480,
+    "published": 895,
+    "v4": 484,
     "v4_only": 0,
-    "v4_share_pct": 53.9,
+    "v4_share_pct": 54.1,
     "v4_only_share_pct": 0.0
    },
    {
@@ -438,11 +438,11 @@
    },
    {
     "cna": "qnap",
-    "published": 463,
-    "v4": 345,
-    "v4_only": 345,
-    "v4_share_pct": 74.5,
-    "v4_only_share_pct": 74.5
+    "published": 465,
+    "v4": 347,
+    "v4_only": 347,
+    "v4_share_pct": 74.6,
+    "v4_only_share_pct": 74.6
    },
    {
     "cna": "Joomla",
@@ -454,10 +454,10 @@
    },
    {
     "cna": "apache",
-    "published": 1771,
+    "published": 1776,
     "v4": 290,
     "v4_only": 229,
-    "v4_share_pct": 16.4,
+    "v4_share_pct": 16.3,
     "v4_only_share_pct": 12.9
    },
    {
@@ -471,11 +471,11 @@
   ]
  },
  "compare": {
-  "n": 27998,
+  "n": 28052,
   "median_delta": -0.1,
-  "same_band": 19463,
-  "v4_higher": 4256,
-  "v4_lower": 4279,
+  "same_band": 19507,
+  "v4_higher": 4265,
+  "v4_lower": 4280,
   "same_band_pct": 69.5,
   "v4_higher_pct": 15.2,
   "v4_lower_pct": 15.3,
@@ -496,7 +496,7 @@
     "center": -2.0,
     "lo": -2.2,
     "hi": -1.8,
-    "n": 275
+    "n": 276
    },
    {
     "center": -1.5,
@@ -508,49 +508,49 @@
     "center": -1.0,
     "lo": -1.2,
     "hi": -0.8,
-    "n": 4526
+    "n": 4528
    },
    {
     "center": -0.5,
     "lo": -0.7,
     "hi": -0.3,
-    "n": 6012
+    "n": 6020
    },
    {
     "center": 0.0,
     "lo": -0.2,
     "hi": 0.2,
-    "n": 3724
+    "n": 3733
    },
    {
     "center": 0.5,
     "lo": 0.3,
     "hi": 0.7,
-    "n": 4194
+    "n": 4201
    },
    {
     "center": 1.0,
     "lo": 0.8,
     "hi": 1.2,
-    "n": 3686
+    "n": 3701
    },
    {
     "center": 1.5,
     "lo": 1.3,
     "hi": 1.7,
-    "n": 2994
+    "n": 3003
    },
    {
     "center": 2.0,
     "lo": 1.8,
     "hi": 2.2,
-    "n": 521
+    "n": 522
    },
    {
     "center": 2.5,
     "lo": 2.3,
     "hi": 2.7,
-    "n": 1115
+    "n": 1117
    },
    {
     "center": 3.0,
@@ -571,11 +571,11 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 8954,
+    "n": 8998,
     "median_delta": 0.6,
     "same_band_pct": 77.9,
     "v4_higher_pct": 15.7,
-    "v4_lower_pct": 6.5
+    "v4_lower_pct": 6.4
    },
    {
     "cna": "icscert",
@@ -595,11 +595,11 @@
    },
    {
     "cna": "jpcert",
-    "n": 480,
+    "n": 484,
     "median_delta": 0.6,
-    "same_band_pct": 86.5,
-    "v4_higher_pct": 9.4,
-    "v4_lower_pct": 4.2
+    "same_band_pct": 86.2,
+    "v4_higher_pct": 9.7,
+    "v4_lower_pct": 4.1
    },
    {
     "cna": "intel",
@@ -631,10 +631,10 @@
   "current_year": 2026,
   "current_month": "2026-10",
   "v4_share_current_pct": 31.5,
-  "v4_current": 27904,
-  "published_current": 88547,
+  "v4_current": 28033,
+  "published_current": 89079,
   "latest_year": 2025,
   "v4_share_latest_pct": 25.8,
-  "v4_cnas_current": 271
+  "v4_cnas_current": 273
  }
 }

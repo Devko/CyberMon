@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-29T08:54:36Z",
+ "generated_at": "2026-10-30T08:58:53Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 278,
-   "security": 48,
-   "pct_security": 17.3
+   "total": 280,
+   "security": 49,
+   "pct_security": 17.5
   }
  ],
  "vendors": [
@@ -53,12 +53,12 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 101,
-   "dated_entries": 101,
-   "security_entries": 23,
-   "pct_security": 22.8,
+   "entries": 102,
+   "dated_entries": 102,
+   "security_entries": 24,
+   "pct_security": 23.5,
    "first_added": "2021-11-03",
-   "last_added": "2026-10-14",
+   "last_added": "2026-10-29",
    "median_gap_days": 0.0
   },
   {
@@ -422,6 +422,16 @@
    "median_gap_days": 85.0
   },
   {
+   "vendor": "GitLab",
+   "entries": 6,
+   "dated_entries": 6,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-10-29",
+   "median_gap_days": 205.0
+  },
+  {
    "vendor": "Jenkins",
    "entries": 6,
    "dated_entries": 6,
@@ -490,16 +500,6 @@
    "first_added": "2021-11-03",
    "last_added": "2022-03-25",
    "median_gap_days": 37.0
-  },
-  {
-   "vendor": "GitLab",
-   "entries": 5,
-   "dated_entries": 5,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-09-11",
-   "median_gap_days": 424.0
   },
   {
    "vendor": "GNU",
@@ -574,19 +574,19 @@
  ],
  "ransomware": {
   "security": {
-   "total": 218,
+   "total": 219,
    "known": 79,
-   "pct_known": 36.2
+   "pct_known": 36.1
   },
   "other": {
-   "total": 1544,
+   "total": 1545,
    "known": 282,
    "pct_known": 18.3
   }
  },
  "catalog": {
-  "total": 1762,
-  "security": 218,
+  "total": 1764,
+  "security": 219,
   "pct_security": 12.4,
   "classifier_version": 2,
   "classifier_rules": 35

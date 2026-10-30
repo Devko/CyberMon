@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-29T08:54:36Z",
+ "generated_at": "2026-10-30T08:58:53Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -18056,6 +18056,21 @@
     {
      "finder": "anthropic",
      "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-97629",
+   "published": "2026-10-14",
+   "cna": "f5",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
      "roles": [
       "finder"
      ]

@@ -18970,6 +18970,17 @@
    "ransom": "Unknown",
    "vendor": "Adobe"
   },
+  "CVE-2026-76418": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-29",
+   "desc": "3421711c1a20",
+   "due": "2026-11-01",
+   "name": "Cisco Secure Firewall ASA Software and Cisco Secure FTD Software Unchecked Return Value to NULL Pointer Dereference Vulnerability",
+   "notes": "468ca9af773a",
+   "product": "Secure Firewall ASA Software and Cisco Secure FTD Software",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2026-76460": {
    "action": "ba0d649eb29b",
    "added": "2026-09-16",
@@ -19387,9 +19398,20 @@
    "product": "Windows",
    "ransom": "Unknown",
    "vendor": "Microsoft"
+  },
+  "CVE-2026-97229": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-29",
+   "desc": "6086769eba9d",
+   "due": "2026-11-01",
+   "name": "GitLab Community Edition and Enterprise Edition Integer Overflow or Wraparound Vulnerability",
+   "notes": "aadb8994831a",
+   "product": "Community Edition and Enterprise Edition",
+   "ransom": "Unknown",
+   "vendor": "GitLab"
   }
  },
- "last_observed": "2026-10-29",
+ "last_observed": "2026-10-30",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

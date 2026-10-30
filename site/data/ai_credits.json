@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-29T08:54:36Z",
+ "generated_at": "2026-10-30T08:58:53Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -352,17 +352,17 @@
     }
    ],
    "severity": {
-    "critical": 37,
-    "high": 175,
+    "critical": 38,
+    "high": 180,
     "medium": 369,
     "low": 21,
-    "unscored": 22
+    "unscored": 16
    },
    "funnel": {
     "credited": 624,
-    "scored": 602,
-    "high_or_critical": 212,
-    "high_or_critical_pct": 34.0,
+    "scored": 608,
+    "high_or_critical": 218,
+    "high_or_critical_pct": 34.9,
     "poc": 16,
     "poc_pct": 2.6,
     "kev": 3,
@@ -377,28 +377,28 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 65771,
-  "scored": 65488,
-  "high_or_critical": 27782,
-  "high_or_critical_pct": 42.2,
-  "poc": 997,
+  "credited": 66089,
+  "scored": 65824,
+  "high_or_critical": 27949,
+  "high_or_critical_pct": 42.3,
+  "poc": 998,
   "poc_pct": 1.5,
-  "kev": 90,
+  "kev": 91,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6332,
-   "high": 21450,
-   "medium": 35689,
-   "low": 2017,
-   "unscored": 283
+   "critical": 6382,
+   "high": 21567,
+   "medium": 35845,
+   "low": 2030,
+   "unscored": 265
   }
  },
  "profile": {
   "llm": {
    "n": 364,
    "median_cvss": 7.5,
-   "median_epss_pctile": 27.5,
-   "epss_scored": 363,
+   "median_epss_pctile": 27.4,
+   "epss_scored": 364,
    "recent_days": 90,
    "recent_pct": 71.7,
    "poc_pct": 0.3,
@@ -414,10 +414,10 @@
   "vendor": {
    "n": 624,
    "median_cvss": 6.3,
-   "median_epss_pctile": 29.6,
-   "epss_scored": 619,
+   "median_epss_pctile": 29.5,
+   "epss_scored": 624,
    "recent_days": 90,
-   "recent_pct": 39.9,
+   "recent_pct": 39.6,
    "poc_pct": 2.6,
    "kev_pct": 0.5,
    "memory_pct": 25.2,
@@ -429,19 +429,19 @@
    }
   },
   "baseline": {
-   "n": 65771,
+   "n": 66089,
    "median_cvss": 6.9,
    "median_epss_pctile": 27.7,
-   "epss_scored": 65639,
+   "epss_scored": 65851,
    "recent_days": 90,
-   "recent_pct": 28.0,
+   "recent_pct": 28.2,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
    "memory_pct": 9.3,
    "cna_scored_pct": 91.0,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 12492,
+    "n": 12563,
     "pct": 19.0
    }
   }
@@ -460,7 +460,7 @@
      "pct": 25.2
     },
     "baseline": {
-     "n": 6147,
+     "n": 6168,
      "pct": 9.3
     }
    },
@@ -476,7 +476,7 @@
      "pct": 24.8
     },
     "baseline": {
-     "n": 24039,
+     "n": 24142,
      "pct": 36.5
     }
    },
@@ -492,7 +492,7 @@
      "pct": 11.4
     },
     "baseline": {
-     "n": 16766,
+     "n": 16848,
      "pct": 25.5
     }
    },
@@ -508,7 +508,7 @@
      "pct": 10.3
     },
     "baseline": {
-     "n": 5886,
+     "n": 5909,
      "pct": 8.9
     }
    },
@@ -520,11 +520,11 @@
      "pct": 9.9
     },
     "vendor": {
-     "n": 29,
-     "pct": 4.6
+     "n": 30,
+     "pct": 4.8
     },
     "baseline": {
-     "n": 1203,
+     "n": 1211,
      "pct": 1.8
     }
    },
@@ -536,11 +536,11 @@
      "pct": 15.4
     },
     "vendor": {
-     "n": 56,
-     "pct": 9.0
+     "n": 59,
+     "pct": 9.5
     },
     "baseline": {
-     "n": 4183,
+     "n": 4247,
      "pct": 6.4
     }
    },
@@ -552,11 +552,11 @@
      "pct": 16.2
     },
     "vendor": {
-     "n": 70,
-     "pct": 11.2
+     "n": 72,
+     "pct": 11.5
     },
     "baseline": {
-     "n": 6412,
+     "n": 6441,
      "pct": 9.7
     }
    },
@@ -568,11 +568,11 @@
      "pct": 9.6
     },
     "vendor": {
-     "n": 22,
-     "pct": 3.5
+     "n": 16,
+     "pct": 2.6
     },
     "baseline": {
-     "n": 1135,
+     "n": 1123,
      "pct": 1.7
     }
    }
@@ -641,14 +641,14 @@
   "vendor": {
    "cves": 624,
    "named": 624,
-   "distinct": 170,
+   "distinct": 169,
    "top_share_n": 5,
-   "top_share_pct": 30.6,
+   "top_share_pct": 30.8,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 96,
-     "pct": 15.4
+     "n": 97,
+     "pct": 15.5
     },
     {
      "label": "curl",
@@ -749,9 +749,9 @@
   },
   {
    "year": 2026,
-   "published": 88547,
-   "with_credits": 38239,
-   "pct": 43.2
+   "published": 89079,
+   "with_credits": 38557,
+   "pct": 43.3
   }
  ],
  "board": [
@@ -766,11 +766,11 @@
    "org": 227,
    "fix": 0,
    "severity": {
-    "critical": 15,
-    "high": 106,
+    "critical": 16,
+    "high": 111,
     "medium": 149,
     "low": 17,
-    "unscored": 18
+    "unscored": 12
    },
    "poc": 0,
    "kev": 0,
@@ -796,10 +796,10 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 428,
+   "cves": 429,
    "counted": 284,
    "system": 284,
-   "org": 57,
+   "org": 58,
    "fix": 87,
    "severity": {
     "critical": 35,
