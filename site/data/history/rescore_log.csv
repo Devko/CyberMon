@@ -5698,3 +5698,16 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-10-29,CVE-2023-3932,GitLab,rescore,v3.1,5.3,v3.1,8.2
 2026-10-29,CVE-2023-5009,GitLab,rescore,v3.1,9.6,v3.1,8.2
 2026-10-29,CVE-2026-116171,VulnCheck,rescore,v4.0,8.7,v4.0,5.9
+2026-10-31,CVE-2006-4339,redhat,first_score,,,v3.1,9.1
+2026-10-31,CVE-2011-4346,redhat,first_score,,,v3.1,4.6
+2026-10-31,CVE-2012-3427,redhat,first_score,,,v3.1,5.5
+2026-10-31,CVE-2012-4574,redhat,first_score,,,v3.1,5.5
+2026-10-31,CVE-2012-5605,redhat,first_score,,,v3.1,3.3
+2026-10-31,CVE-2012-5625,redhat,first_score,,,v3.1,6.5
+2026-10-31,CVE-2013-1840,redhat,first_score,,,v3.1,6.5
+2026-10-31,CVE-2013-2056,redhat,first_score,,,v3.1,7.5
+2026-10-31,CVE-2026-11822,VulnCheck,rescore,v4.0,8.5,v4.0,6.8
+2026-10-31,CVE-2026-118764,GitHub_M,rescore,v4.0,8.7,v4.0,6.9
+2026-10-31,CVE-2026-39910,VulnCheck,rescore,v4.0,8.7,v4.0,7.7
+2026-10-31,CVE-2026-69399,microsoft,score_removed,v3.1,10.0,,
+2026-10-31,CVE-2026-70125,microsoft,rescore,v3.1,8.8,v3.1,7.8

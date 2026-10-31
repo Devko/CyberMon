@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T08:58:53Z",
+ "generated_at": "2026-10-31T08:51:26Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,11 +206,11 @@
   },
   {
    "year": 2026,
-   "published": 89079,
+   "published": 89749,
    "counts": {
-    "unsupported-when-assigned": 477,
+    "unsupported-when-assigned": 481,
     "disputed": 70,
-    "exclusively-hosted-service": 250
+    "exclusively-hosted-service": 252
    }
   }
  ],
@@ -221,45 +221,45 @@
  },
  "boards": {
   "unsupported-when-assigned": {
-   "total": 1250,
+   "total": 1254,
    "cna_count": 52,
    "active_cnas": 488,
-   "top1_share_pct": 38.2,
-   "top3_share_pct": 69.7,
+   "top1_share_pct": 38.1,
+   "top3_share_pct": 69.8,
    "min_n": 5,
    "cnas": [
     {
      "cna": "VulDB",
      "n": 478,
-     "share_pct": 38.2,
-     "cna_published": 17721,
+     "share_pct": 38.1,
+     "cna_published": 17723,
      "rate_pct": 2.7
     },
     {
      "cna": "VulnCheck",
-     "n": 278,
-     "share_pct": 22.2,
-     "cna_published": 10243,
+     "n": 282,
+     "share_pct": 22.5,
+     "cna_published": 10388,
      "rate_pct": 2.7
     },
     {
      "cna": "mitre",
      "n": 115,
      "share_pct": 9.2,
-     "cna_published": 28681,
+     "cna_published": 28691,
      "rate_pct": 0.4
     },
     {
      "cna": "CERT-PL",
      "n": 42,
-     "share_pct": 3.4,
-     "cna_published": 586,
-     "rate_pct": 7.2
+     "share_pct": 3.3,
+     "cna_published": 597,
+     "rate_pct": 7.0
     },
     {
      "cna": "icscert",
      "n": 42,
-     "share_pct": 3.4,
+     "share_pct": 3.3,
      "cna_published": 1939,
      "rate_pct": 2.2
     },
@@ -267,21 +267,21 @@
      "cna": "apache",
      "n": 41,
      "share_pct": 3.3,
-     "cna_published": 2207,
+     "cna_published": 2210,
      "rate_pct": 1.9
     },
     {
      "cna": "TR-CERT",
      "n": 31,
      "share_pct": 2.5,
-     "cna_published": 868,
+     "cna_published": 869,
      "rate_pct": 3.6
     },
     {
      "cna": "INCIBE",
      "n": 30,
      "share_pct": 2.4,
-     "cna_published": 1173,
+     "cna_published": 1174,
      "rate_pct": 2.6
     },
     {
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 465,
      "share_pct": 81.2,
-     "cna_published": 28681,
+     "cna_published": 28691,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 92,
      "share_pct": 16.1,
-     "cna_published": 17721,
+     "cna_published": 17723,
      "rate_pct": 0.5
     }
    ]
@@ -341,26 +341,26 @@
  },
  "severity": {
   "all": {
-   "critical": 21756,
-   "high": 78987,
-   "medium": 94702,
-   "low": 8793,
-   "unscored": 26762
+   "critical": 21822,
+   "high": 79259,
+   "medium": 94994,
+   "low": 8829,
+   "unscored": 26766
   },
   "unsupported-when-assigned": {
    "tagged": {
-    "critical": 219,
-    "high": 472,
+    "critical": 222,
+    "high": 473,
     "medium": 475,
     "low": 40,
     "unscored": 44
    },
    "same_cnas_untagged": {
-    "critical": 10719,
-    "high": 28249,
-    "medium": 43084,
-    "low": 3079,
-    "unscored": 10206
+    "critical": 10743,
+    "high": 28366,
+    "medium": 43220,
+    "low": 3092,
+    "unscored": 10157
    }
   },
   "disputed": {
@@ -372,11 +372,11 @@
     "unscored": 162
    },
    "same_cnas_untagged": {
-    "critical": 6642,
-    "high": 15198,
-    "medium": 26449,
-    "low": 2386,
-    "unscored": 9193
+    "critical": 6656,
+    "high": 15260,
+    "medium": 26542,
+    "low": 2398,
+    "unscored": 9182
    }
   }
  },
@@ -384,7 +384,7 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 3526
+    "n": 3557
    },
    {
     "tag": "x_freeware",
@@ -392,7 +392,7 @@
    },
    {
     "tag": "x_known-exploited-vulnerability",
-    "n": 237
+    "n": 239
    },
    {
     "tag": "x_Charger",
@@ -415,9 +415,9 @@
    }
   ],
   "schema_totals": {
-   "unsupported-when-assigned": 1341,
+   "unsupported-when-assigned": 1345,
    "disputed": 1512,
-   "exclusively-hosted-service": 429
+   "exclusively-hosted-service": 431
   }
  },
  "headline": {
@@ -427,7 +427,7 @@
   "unsupported_latest": 423,
   "unsupported_latest_share_pct": 0.9,
   "current_year": 2026,
-  "unsupported_current": 477,
+  "unsupported_current": 481,
   "disputed_from": 2020,
   "disputed_to": 2025,
   "disputed_min": 85,

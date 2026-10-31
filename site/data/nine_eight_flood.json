@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T08:58:53Z",
+ "generated_at": "2026-10-31T08:51:26Z",
  "years": [
   {
    "year": 1999,
@@ -59,11 +59,11 @@
   },
   {
    "year": 2006,
-   "critical": 11,
+   "critical": 12,
    "high": 13,
    "medium": 11,
    "low": 1,
-   "unscored": 6849
+   "unscored": 6848
   },
   {
    "year": 2007,
@@ -101,33 +101,33 @@
    "year": 2011,
    "critical": 4,
    "high": 25,
-   "medium": 7,
+   "medium": 8,
    "low": 0,
-   "unscored": 4114
+   "unscored": 4113
   },
   {
    "year": 2012,
    "critical": 14,
    "high": 35,
-   "medium": 14,
+   "medium": 15,
    "low": 0,
-   "unscored": 5225
+   "unscored": 5224
   },
   {
    "year": 2013,
    "critical": 11,
-   "high": 51,
-   "medium": 15,
-   "low": 3,
-   "unscored": 5107
+   "high": 52,
+   "medium": 17,
+   "low": 4,
+   "unscored": 5103
   },
   {
    "year": 2014,
    "critical": 16,
    "high": 74,
-   "medium": 47,
+   "medium": 48,
    "low": 5,
-   "unscored": 7786
+   "unscored": 7785
   },
   {
    "year": 2015,
@@ -211,19 +211,19 @@
   },
   {
    "year": 2025,
-   "critical": 4110,
-   "high": 15762,
+   "critical": 4111,
+   "high": 15761,
    "medium": 23721,
    "low": 1603,
    "unscored": 2955
   },
   {
    "year": 2026,
-   "critical": 9831,
-   "high": 35502,
-   "medium": 34606,
-   "low": 3457,
-   "unscored": 5683
+   "critical": 9896,
+   "high": 35775,
+   "medium": 34898,
+   "low": 3493,
+   "unscored": 5687
   }
  ],
  "record_era": {
@@ -232,8 +232,8 @@
  },
  "projection": {
   "year": 2026,
-  "total": 107306,
-  "elapsed": 0.83
+  "total": 107758,
+  "elapsed": 0.833
  },
  "without_linux": {
   "cna": "Linux",
@@ -296,11 +296,11 @@
    },
    {
     "year": 2006,
-    "critical": 11,
+    "critical": 12,
     "high": 13,
     "medium": 11,
     "low": 1,
-    "unscored": 6849
+    "unscored": 6848
    },
    {
     "year": 2007,
@@ -338,33 +338,33 @@
     "year": 2011,
     "critical": 4,
     "high": 25,
-    "medium": 7,
+    "medium": 8,
     "low": 0,
-    "unscored": 4114
+    "unscored": 4113
    },
    {
     "year": 2012,
     "critical": 14,
     "high": 35,
-    "medium": 14,
+    "medium": 15,
     "low": 0,
-    "unscored": 5225
+    "unscored": 5224
    },
    {
     "year": 2013,
     "critical": 11,
-    "high": 51,
-    "medium": 15,
-    "low": 3,
-    "unscored": 5107
+    "high": 52,
+    "medium": 17,
+    "low": 4,
+    "unscored": 5103
    },
    {
     "year": 2014,
     "critical": 16,
     "high": 74,
-    "medium": 47,
+    "medium": 48,
     "low": 5,
-    "unscored": 7786
+    "unscored": 7785
    },
    {
     "year": 2015,
@@ -448,25 +448,25 @@
    },
    {
     "year": 2025,
-    "critical": 3951,
-    "high": 14018,
+    "critical": 3952,
+    "high": 14017,
     "medium": 22906,
     "low": 1602,
     "unscored": 0
    },
    {
     "year": 2026,
-    "critical": 9284,
-    "high": 32846,
-    "medium": 34603,
-    "low": 3457,
-    "unscored": 688
+    "critical": 9349,
+    "high": 33119,
+    "medium": 34895,
+    "low": 3493,
+    "unscored": 692
    }
   ],
   "projection": {
    "year": 2026,
-   "total": 97427,
-   "elapsed": 0.83
+   "total": 97911,
+   "elapsed": 0.833
   }
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T08:58:53Z",
+ "generated_at": "2026-10-31T08:51:26Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -634,10 +634,10 @@
    }
   ],
   "latest": {
-   "date": "2026-10-28",
+   "date": "2026-10-29",
    "validating_pc": 40.1,
    "partial_pc": 8.9,
-   "seen": 534657251
+   "seen": 535294303
   },
   "baseline": {
    "month": "2016-10",
@@ -867,7 +867,7 @@
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 60.6,
+   "latest_pc": 60.4,
    "series": [
     {
      "month": "2013-12",
@@ -1079,14 +1079,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 60.6
+     "validating_pc": 60.4
     }
    ]
   },
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 57.1,
+   "latest_pc": 57.3,
    "series": [
     {
      "month": "2013-12",
@@ -1298,14 +1298,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 57.1
+     "validating_pc": 57.3
     }
    ]
   },
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 51.8,
+   "latest_pc": 51.6,
    "series": [
     {
      "month": "2013-12",
@@ -1517,14 +1517,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 51.8
+     "validating_pc": 51.6
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 45.7,
+   "latest_pc": 45.8,
    "series": [
     {
      "month": "2013-12",
@@ -1736,7 +1736,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 45.7
+     "validating_pc": 45.8
     }
    ]
   },
@@ -1962,7 +1962,7 @@
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 36.2,
+   "latest_pc": 36.1,
    "series": [
     {
      "month": "2013-12",
@@ -2174,14 +2174,14 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 36.2
+     "validating_pc": 36.1
     }
    ]
   },
   {
    "cc": "MX",
    "name": "Mexico",
-   "latest_pc": 21.4,
+   "latest_pc": 21.5,
    "series": [
     {
      "month": "2013-12",
@@ -2393,7 +2393,7 @@
     },
     {
      "month": "2026-10",
-     "validating_pc": 21.4
+     "validating_pc": 21.5
     }
    ]
   },

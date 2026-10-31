@@ -17474,6 +17474,17 @@
    "ransom": "Unknown",
    "vendor": "Siemens"
   },
+  "CVE-2026-111357": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-30",
+   "desc": "c910c2245edb",
+   "due": "2026-11-02",
+   "name": "Ivanti Connect Secure Missing Authentication for Critical Function Vulnerability",
+   "notes": "433e19adba29",
+   "product": "Connect Secure",
+   "ransom": "Unknown",
+   "vendor": "Ivanti"
+  },
   "CVE-2026-111497": {
    "action": "ba0d649eb29b",
    "added": "2026-10-27",
@@ -17506,6 +17517,17 @@
    "product": "Chromium V8",
    "ransom": "Unknown",
    "vendor": "Google"
+  },
+  "CVE-2026-118527": {
+   "action": "ba0d649eb29b",
+   "added": "2026-10-30",
+   "desc": "f89dbd795a13",
+   "due": "2026-11-13",
+   "name": "Ivanti Connect Secure Generation of Predictable Numbers or Identifiers Vulnerability",
+   "notes": "7a7a8b35df48",
+   "product": "Connect Secure",
+   "ransom": "Unknown",
+   "vendor": "Ivanti"
   },
   "CVE-2026-12569": {
    "action": "ba0d649eb29b",
@@ -19411,7 +19433,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-10-30",
+ "last_observed": "2026-10-31",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

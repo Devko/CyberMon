@@ -1,11 +1,11 @@
 {
- "generated_at": "2026-10-30T08:58:53Z",
+ "generated_at": "2026-10-31T08:51:26Z",
  "kinds": {
   "llm": {
    "headline": {
-    "cves": 364,
+    "cves": 365,
     "this_year": 2026,
-    "cves_this_year": 346,
+    "cves_this_year": 347,
     "finders": 4,
     "first_month": "2024-10"
    },
@@ -210,25 +210,25 @@
     },
     {
      "month": "2026-10",
-     "anthropic": 107,
+     "anthropic": 108,
      "openai": 36,
      "google": 0,
      "other_llm": 4,
-     "total": 147
+     "total": 148
     }
    ],
    "severity": {
-    "critical": 36,
-    "high": 157,
-    "medium": 117,
+    "critical": 37,
+    "high": 167,
+    "medium": 118,
     "low": 8,
-    "unscored": 46
+    "unscored": 35
    },
    "funnel": {
-    "credited": 364,
-    "scored": 318,
-    "high_or_critical": 193,
-    "high_or_critical_pct": 53.0,
+    "credited": 365,
+    "scored": 330,
+    "high_or_critical": 204,
+    "high_or_critical_pct": 55.9,
     "poc": 1,
     "poc_pct": 0.3,
     "kev": 1,
@@ -240,9 +240,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 624,
+    "cves": 629,
     "this_year": 2026,
-    "cves_this_year": 499,
+    "cves_this_year": 504,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -347,24 +347,24 @@
     },
     {
      "month": "2026-10",
-     "vendor": 91,
-     "total": 91
+     "vendor": 96,
+     "total": 96
     }
    ],
    "severity": {
-    "critical": 38,
-    "high": 180,
-    "medium": 369,
-    "low": 21,
-    "unscored": 16
+    "critical": 42,
+    "high": 189,
+    "medium": 372,
+    "low": 22,
+    "unscored": 4
    },
    "funnel": {
-    "credited": 624,
-    "scored": 608,
-    "high_or_critical": 218,
-    "high_or_critical_pct": 34.9,
+    "credited": 629,
+    "scored": 625,
+    "high_or_critical": 231,
+    "high_or_critical_pct": 36.7,
     "poc": 16,
-    "poc_pct": 2.6,
+    "poc_pct": 2.5,
     "kev": 3,
     "kev_pct": 0.5
    },
@@ -377,71 +377,71 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 66089,
-  "scored": 65824,
-  "high_or_critical": 27949,
+  "credited": 66523,
+  "scored": 66242,
+  "high_or_critical": 28145,
   "high_or_critical_pct": 42.3,
-  "poc": 998,
+  "poc": 999,
   "poc_pct": 1.5,
   "kev": 91,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6382,
-   "high": 21567,
-   "medium": 35845,
-   "low": 2030,
-   "unscored": 265
+   "critical": 6420,
+   "high": 21725,
+   "medium": 36046,
+   "low": 2051,
+   "unscored": 281
   }
  },
  "profile": {
   "llm": {
-   "n": 364,
+   "n": 365,
    "median_cvss": 7.5,
-   "median_epss_pctile": 27.4,
+   "median_epss_pctile": 27.7,
    "epss_scored": 364,
    "recent_days": 90,
-   "recent_pct": 71.7,
+   "recent_pct": 71.8,
    "poc_pct": 0.3,
    "kev_pct": 0.3,
-   "memory_pct": 31.0,
-   "cna_scored_pct": 58.2,
+   "memory_pct": 31.5,
+   "cna_scored_pct": 58.4,
    "top_cwe": {
     "cwe": "CWE-416",
-    "n": 24,
-    "pct": 6.6
+    "n": 25,
+    "pct": 6.8
    }
   },
   "vendor": {
-   "n": 624,
+   "n": 629,
    "median_cvss": 6.3,
-   "median_epss_pctile": 29.5,
-   "epss_scored": 624,
+   "median_epss_pctile": 29.9,
+   "epss_scored": 629,
    "recent_days": 90,
-   "recent_pct": 39.6,
-   "poc_pct": 2.6,
+   "recent_pct": 40.1,
+   "poc_pct": 2.5,
    "kev_pct": 0.5,
-   "memory_pct": 25.2,
-   "cna_scored_pct": 81.9,
+   "memory_pct": 25.8,
+   "cna_scored_pct": 82.0,
    "top_cwe": {
     "cwe": "CWE-79",
     "n": 101,
-    "pct": 16.2
+    "pct": 16.1
    }
   },
   "baseline": {
-   "n": 66089,
+   "n": 66523,
    "median_cvss": 6.9,
    "median_epss_pctile": 27.7,
-   "epss_scored": 65851,
+   "epss_scored": 66232,
    "recent_days": 90,
-   "recent_pct": 28.2,
+   "recent_pct": 28.5,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
    "memory_pct": 9.3,
-   "cna_scored_pct": 91.0,
+   "cna_scored_pct": 90.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 12563,
+    "n": 12640,
     "pct": 19.0
    }
   }
@@ -452,15 +452,15 @@
     "key": "memory",
     "label": "Memory safety",
     "llm": {
-     "n": 113,
-     "pct": 31.0
+     "n": 115,
+     "pct": 31.5
     },
     "vendor": {
-     "n": 157,
-     "pct": 25.2
+     "n": 162,
+     "pct": 25.8
     },
     "baseline": {
-     "n": 6168,
+     "n": 6210,
      "pct": 9.3
     }
    },
@@ -473,10 +473,10 @@
     },
     "vendor": {
      "n": 155,
-     "pct": 24.8
+     "pct": 24.6
     },
     "baseline": {
-     "n": 24142,
+     "n": 24272,
      "pct": 36.5
     }
    },
@@ -488,12 +488,12 @@
      "pct": 10.7
     },
     "vendor": {
-     "n": 71,
+     "n": 72,
      "pct": 11.4
     },
     "baseline": {
-     "n": 16848,
-     "pct": 25.5
+     "n": 17020,
+     "pct": 25.6
     }
    },
    {
@@ -504,11 +504,11 @@
      "pct": 3.0
     },
     "vendor": {
-     "n": 64,
+     "n": 65,
      "pct": 10.3
     },
     "baseline": {
-     "n": 5909,
+     "n": 5938,
      "pct": 8.9
     }
    },
@@ -524,7 +524,7 @@
      "pct": 4.8
     },
     "baseline": {
-     "n": 1211,
+     "n": 1219,
      "pct": 1.8
     }
    },
@@ -533,14 +533,14 @@
     "label": "Input, state and resource handling",
     "llm": {
      "n": 56,
-     "pct": 15.4
+     "pct": 15.3
     },
     "vendor": {
-     "n": 59,
-     "pct": 9.5
+     "n": 61,
+     "pct": 9.7
     },
     "baseline": {
-     "n": 4247,
+     "n": 4276,
      "pct": 6.4
     }
    },
@@ -552,44 +552,44 @@
      "pct": 16.2
     },
     "vendor": {
-     "n": 72,
-     "pct": 11.5
+     "n": 80,
+     "pct": 12.7
     },
     "baseline": {
-     "n": 6441,
-     "pct": 9.7
+     "n": 6504,
+     "pct": 9.8
     }
    },
    {
     "key": "none",
     "label": "No CWE listed",
     "llm": {
-     "n": 35,
-     "pct": 9.6
+     "n": 34,
+     "pct": 9.3
     },
     "vendor": {
-     "n": 16,
-     "pct": 2.6
+     "n": 4,
+     "pct": 0.6
     },
     "baseline": {
-     "n": 1123,
-     "pct": 1.7
+     "n": 1084,
+     "pct": 1.6
     }
    }
   ]
  },
  "targets": {
   "llm": {
-   "cves": 364,
-   "named": 364,
+   "cves": 365,
+   "named": 365,
    "distinct": 75,
    "top_share_n": 5,
-   "top_share_pct": 43.7,
+   "top_share_pct": 43.6,
    "projects": [
     {
      "label": "Mozilla / Firefox",
      "n": 65,
-     "pct": 17.9
+     "pct": 17.8
     },
     {
      "label": "Legion of the Bouncy Castle Inc. / BC-JAVA",
@@ -639,16 +639,16 @@
    ]
   },
   "vendor": {
-   "cves": 624,
-   "named": 624,
+   "cves": 629,
+   "named": 629,
    "distinct": 169,
    "top_share_n": 5,
-   "top_share_pct": 30.8,
+   "top_share_pct": 31.3,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 97,
-     "pct": 15.5
+     "n": 102,
+     "pct": 16.2
     },
     {
      "label": "curl",
@@ -678,7 +678,7 @@
     {
      "label": "OpenClaw",
      "n": 16,
-     "pct": 2.6
+     "pct": 2.5
     },
     {
      "label": "SohuTV / CacheCloud",
@@ -749,9 +749,9 @@
   },
   {
    "year": 2026,
-   "published": 89079,
-   "with_credits": 38557,
-   "pct": 43.3
+   "published": 89749,
+   "with_credits": 38991,
+   "pct": 43.4
   }
  ],
  "board": [
@@ -760,17 +760,17 @@
    "label": "AISLE",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 305,
-   "counted": 305,
-   "system": 78,
+   "cves": 310,
+   "counted": 310,
+   "system": 83,
    "org": 227,
    "fix": 0,
    "severity": {
-    "critical": 16,
-    "high": 111,
-    "medium": 149,
-    "low": 17,
-    "unscored": 12
+    "critical": 20,
+    "high": 120,
+    "medium": 152,
+    "low": 18,
+    "unscored": 0
    },
    "poc": 0,
    "kev": 0,
@@ -779,7 +779,7 @@
    "top_cnas": [
     {
      "cna": "redhat",
-     "n": 117
+     "n": 122
     },
     {
      "cna": "VulnCheck",
@@ -796,17 +796,17 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 429,
-   "counted": 284,
-   "system": 284,
+   "cves": 430,
+   "counted": 285,
+   "system": 285,
    "org": 58,
    "fix": 87,
    "severity": {
-    "critical": 35,
-    "high": 129,
-    "medium": 104,
+    "critical": 36,
+    "high": 139,
+    "medium": 105,
     "low": 5,
-    "unscored": 11
+    "unscored": 0
    },
    "poc": 0,
    "kev": 0,
@@ -1476,7 +1476,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/zero-days",
    "note": "Claude Opus 4.6, open-source code; the post gives no CVE count.",
-   "credited": 284
+   "credited": 285
   },
   {
    "finder": "anthropic",
@@ -1490,7 +1490,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
    "note": "Total for Anthropic and about 50 Project Glasswing partners, whose scans cover their own software as well as open source; some findings may never receive a public CVE.",
-   "credited": 284
+   "credited": 285
   },
   {
    "finder": "anthropic",
@@ -1504,7 +1504,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
    "note": "",
-   "credited": 284
+   "credited": 285
   },
   {
    "finder": "openai",
@@ -1560,7 +1560,7 @@
    "live": true,
    "source": "https://aisle.com/cve-discoveries",
    "note": "",
-   "credited": 305
+   "credited": 310
   },
   {
    "finder": "zeropath",

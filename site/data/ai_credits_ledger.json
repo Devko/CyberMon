@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T08:58:53Z",
+ "generated_at": "2026-10-31T08:51:26Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -20680,6 +20680,108 @@
      "tier": "org",
      "roles": [
       "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-103963",
+   "published": "2026-10-30",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-110133",
+   "published": "2026-10-30",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-112922",
+   "published": "2026-10-30",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-114690",
+   "published": "2026-10-30",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-114691",
+   "published": "2026-10-30",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "system",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-119378",
+   "published": "2026-10-30",
+   "cna": "VulnCheck",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
      ]
     }
    ]
