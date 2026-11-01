@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-31T08:51:26Z",
+ "generated_at": "2026-11-01T09:42:03Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-08-02",
+  "observed_through": "2026-08-03",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -1187,11 +1187,6 @@
     "label": "AI Security",
     "months": [
      {
-      "month": "2021-11",
-      "index": 22.1,
-      "sources": 5
-     },
-     {
       "month": "2021-12",
       "index": 17.5,
       "sources": 5
@@ -1480,6 +1475,11 @@
       "month": "2026-09",
       "index": 64.5,
       "sources": 5
+     },
+     {
+      "month": "2026-10",
+      "index": 42.5,
+      "sources": 4
      }
     ]
    },
@@ -1487,11 +1487,6 @@
     "id": "agentic_ai",
     "label": "Agentic AI",
     "months": [
-     {
-      "month": "2021-11",
-      "index": 0.0,
-      "sources": 4
-     },
      {
       "month": "2021-12",
       "index": 0.0,
@@ -1781,6 +1776,11 @@
       "month": "2026-09",
       "index": 66.2,
       "sources": 5
+     },
+     {
+      "month": "2026-10",
+      "index": 64.2,
+      "sources": 4
      }
     ]
    }
@@ -1809,9 +1809,9 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "index_first": 0.0,
-   "index_last": 66.2,
-   "month_first": "2021-11",
-   "month_last": "2026-09",
+   "index_last": 64.2,
+   "month_first": "2021-12",
+   "month_last": "2026-10",
    "clock_min": 4.5,
    "clock_max": 11.0,
    "clock_mean": 7.4,

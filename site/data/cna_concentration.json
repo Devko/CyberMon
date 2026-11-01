@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-31T08:51:26Z",
+ "generated_at": "2026-11-01T09:42:03Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 403,
    "newcomer_count": 65,
-   "top5_share": 45.9,
+   "top5_share": 45.8,
    "top10_share": 67.8,
-   "hhi": 579.3
+   "hhi": 578.8
   }
  ],
  "rejection_leaderboard": {
@@ -274,7 +274,7 @@
    },
    {
     "cna": "redhat",
-    "total": 3155,
+    "total": 3160,
     "rejected": 198,
     "rejected_rate_pct": 6.3
    },
@@ -394,7 +394,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 10499,
+    "total": 10511,
     "rejected": 111,
     "rejected_rate_pct": 1.1
    },
@@ -465,12 +465,6 @@
     "rejected_rate_pct": 0.8
    },
    {
-    "cna": "fedora",
-    "total": 306,
-    "rejected": 2,
-    "rejected_rate_pct": 0.7
-   },
-   {
     "cna": "Silabs",
     "total": 141,
     "rejected": 1,
@@ -481,6 +475,12 @@
     "total": 134,
     "rejected": 1,
     "rejected_rate_pct": 0.7
+   },
+   {
+    "cna": "fedora",
+    "total": 308,
+    "rejected": 2,
+    "rejected_rate_pct": 0.6
    },
    {
     "cna": "TR-CERT",
@@ -502,7 +502,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 11769,
+    "total": 11837,
     "rejected": 51,
     "rejected_rate_pct": 0.4
    },
@@ -514,7 +514,7 @@
    },
    {
     "cna": "apache",
-    "total": 2218,
+    "total": 2220,
     "rejected": 8,
     "rejected_rate_pct": 0.4
    },
@@ -586,7 +586,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 17767,
+    "total": 17770,
     "rejected": 44,
     "rejected_rate_pct": 0.2
    },
@@ -670,7 +670,7 @@
    },
    {
     "cna": "microsoft",
-    "total": 8703,
+    "total": 8704,
     "rejected": 3,
     "rejected_rate_pct": 0.0
    },
@@ -682,7 +682,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5452,
+    "total": 5463,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -766,7 +766,7 @@
    },
    {
     "cna": "drupal",
-    "total": 551,
+    "total": 552,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -784,7 +784,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 432,
+    "total": 438,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1612,15 +1612,15 @@
    {
     "year": 2026,
     "cna_count": 402,
-    "top5_share": 45.9,
+    "top5_share": 45.8,
     "top10_share": 67.0,
-    "hhi": 600.5
+    "hhi": 600.1
    }
   ]
  },
  "projection": {
   "year": 2026,
   "newcomers": 78,
-  "elapsed": 0.833
+  "elapsed": 0.836
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-31T08:51:26Z",
+ "generated_at": "2026-11-01T09:42:03Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -267,7 +267,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 10356,
+   "n": 10368,
    "avg_cvss": 7.3,
    "median_cvss": 7.2,
    "pct_geq_9": 13.3,
@@ -276,10 +276,10 @@
   {
    "cna": "Linux",
    "org": "Linux",
-   "n": 6517,
+   "n": 6548,
    "avg_cvss": 8.1,
    "median_cvss": 7.8,
-   "pct_geq_9": 13.1,
+   "pct_geq_9": 13.0,
    "pct_geq_7": 100.0
   },
   {
@@ -328,6 +328,15 @@
    "pct_geq_7": 26.7
   },
   {
+   "cna": "apache",
+   "org": "apache",
+   "n": 444,
+   "avg_cvss": 6.9,
+   "median_cvss": 7.2,
+   "pct_geq_9": 11.3,
+   "pct_geq_7": 54.3
+  },
+  {
    "cna": "eclipse",
    "org": "eclipse",
    "n": 265,
@@ -335,15 +344,6 @@
    "median_cvss": 7.1,
    "pct_geq_9": 11.3,
    "pct_geq_7": 52.5
-  },
-  {
-   "cna": "apache",
-   "org": "apache",
-   "n": 442,
-   "avg_cvss": 6.9,
-   "median_cvss": 7.2,
-   "pct_geq_9": 11.1,
-   "pct_geq_7": 54.1
   },
   {
    "cna": "canonical",
@@ -591,11 +591,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10669,
+   "n": 10737,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.5,
-   "pct_geq_7": 27.5
+   "pct_geq_7": 27.6
   },
   {
    "cna": "Acronis",
@@ -654,7 +654,7 @@
   {
    "cna": "microsoft",
    "org": "microsoft",
-   "n": 6774,
+   "n": 6776,
    "avg_cvss": 7.4,
    "median_cvss": 7.8,
    "pct_geq_9": 5.2,
@@ -708,11 +708,11 @@
   {
    "cna": "redhat",
    "org": "redhat",
-   "n": 1875,
+   "n": 1880,
    "avg_cvss": 6.4,
    "median_cvss": 6.5,
    "pct_geq_9": 4.1,
-   "pct_geq_7": 40.1
+   "pct_geq_7": 40.3
   },
   {
    "cna": "Zoom",
@@ -762,10 +762,10 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 14939,
+   "n": 14942,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
-   "pct_geq_9": 2.6,
+   "pct_geq_9": 2.7,
    "pct_geq_7": 14.1
   },
   {
@@ -861,11 +861,11 @@
   {
    "cna": "fedora",
    "org": "fedora",
-   "n": 157,
+   "n": 159,
    "avg_cvss": 6.1,
    "median_cvss": 5.8,
    "pct_geq_9": 0.6,
-   "pct_geq_7": 41.4
+   "pct_geq_7": 40.9
   },
   {
    "cna": "SamsungMobile",
