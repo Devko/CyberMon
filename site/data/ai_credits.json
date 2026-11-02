@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-01T09:42:03Z",
+ "generated_at": "2026-11-02T09:56:12Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -390,20 +390,20 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 66627,
-  "scored": 66335,
-  "high_or_critical": 28194,
+  "credited": 66724,
+  "scored": 66423,
+  "high_or_critical": 28232,
   "high_or_critical_pct": 42.3,
-  "poc": 999,
+  "poc": 1002,
   "poc_pct": 1.5,
   "kev": 91,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6431,
-   "high": 21763,
-   "medium": 36090,
-   "low": 2051,
-   "unscored": 292
+   "critical": 6455,
+   "high": 21777,
+   "medium": 36133,
+   "low": 2058,
+   "unscored": 301
   }
  },
  "profile": {
@@ -413,7 +413,7 @@
    "median_epss_pctile": 29.2,
    "epss_scored": 365,
    "recent_days": 90,
-   "recent_pct": 71.8,
+   "recent_pct": 63.8,
    "poc_pct": 0.3,
    "kev_pct": 0.3,
    "memory_pct": 31.5,
@@ -442,19 +442,19 @@
    }
   },
   "baseline": {
-   "n": 66627,
+   "n": 66724,
    "median_cvss": 6.9,
    "median_epss_pctile": 27.8,
-   "epss_scored": 66607,
+   "epss_scored": 66671,
    "recent_days": 90,
-   "recent_pct": 28.5,
+   "recent_pct": 28.3,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
    "memory_pct": 9.3,
    "cna_scored_pct": 90.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 12676,
+    "n": 12688,
     "pct": 19.0
    }
   }
@@ -473,7 +473,7 @@
      "pct": 25.8
     },
     "baseline": {
-     "n": 6213,
+     "n": 6223,
      "pct": 9.3
     }
    },
@@ -489,7 +489,7 @@
      "pct": 24.6
     },
     "baseline": {
-     "n": 24319,
+     "n": 24351,
      "pct": 36.5
     }
    },
@@ -505,7 +505,7 @@
      "pct": 11.4
     },
     "baseline": {
-     "n": 17042,
+     "n": 17067,
      "pct": 25.6
     }
    },
@@ -521,7 +521,7 @@
      "pct": 10.3
     },
     "baseline": {
-     "n": 5946,
+     "n": 5953,
      "pct": 8.9
     }
    },
@@ -537,7 +537,7 @@
      "pct": 4.8
     },
     "baseline": {
-     "n": 1221,
+     "n": 1224,
      "pct": 1.8
     }
    },
@@ -553,7 +553,7 @@
      "pct": 9.7
     },
     "baseline": {
-     "n": 4281,
+     "n": 4290,
      "pct": 6.4
     }
    },
@@ -569,7 +569,7 @@
      "pct": 12.7
     },
     "baseline": {
-     "n": 6511,
+     "n": 6530,
      "pct": 9.8
     }
    },
@@ -585,7 +585,7 @@
      "pct": 0.6
     },
     "baseline": {
-     "n": 1094,
+     "n": 1086,
      "pct": 1.6
     }
    }
@@ -762,9 +762,9 @@
   },
   {
    "year": 2026,
-   "published": 89862,
-   "with_credits": 39095,
-   "pct": 43.5
+   "published": 89962,
+   "with_credits": 39192,
+   "pct": 43.6
   }
  ],
  "board": [

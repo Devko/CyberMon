@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-01T09:42:03Z",
+ "generated_at": "2026-11-02T09:56:12Z",
  "years": [
   {
    "year": 1999,
@@ -223,7 +223,7 @@
    "newcomer_count": 65,
    "top5_share": 45.8,
    "top10_share": 67.8,
-   "hhi": 578.8
+   "hhi": 578.5
   }
  ],
  "rejection_leaderboard": {
@@ -394,7 +394,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 10511,
+    "total": 10521,
     "rejected": 111,
     "rejected_rate_pct": 1.1
    },
@@ -514,7 +514,7 @@
    },
    {
     "cna": "apache",
-    "total": 2220,
+    "total": 2239,
     "rejected": 8,
     "rejected_rate_pct": 0.4
    },
@@ -580,13 +580,13 @@
    },
    {
     "cna": "Patchstack",
-    "total": 19271,
+    "total": 19274,
     "rejected": 31,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "VulDB",
-    "total": 17770,
+    "total": 17805,
     "rejected": 44,
     "rejected_rate_pct": 0.2
    },
@@ -682,7 +682,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5463,
+    "total": 5468,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -784,7 +784,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 438,
+    "total": 441,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -796,7 +796,7 @@
    },
    {
     "cna": "EEF",
-    "total": 382,
+    "total": 383,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -915,6 +915,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "Gitea",
+    "total": 195,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "DEVOLUTIONS",
     "total": 192,
     "rejected": 0,
@@ -939,12 +945,6 @@
     "rejected_rate_pct": 0.0
    },
    {
-    "cna": "Gitea",
-    "total": 175,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
     "cna": "SolarWinds",
     "total": 174,
     "rejected": 0,
@@ -964,7 +964,7 @@
    },
    {
     "cna": "JFROG",
-    "total": 163,
+    "total": 167,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1614,13 +1614,13 @@
     "cna_count": 402,
     "top5_share": 45.8,
     "top10_share": 67.0,
-    "hhi": 600.1
+    "hhi": 599.7
    }
   ]
  },
  "projection": {
   "year": 2026,
   "newcomers": 78,
-  "elapsed": 0.836
+  "elapsed": 0.838
  }
 }

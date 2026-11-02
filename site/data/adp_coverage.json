@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-01T09:42:03Z",
+ "generated_at": "2026-11-02T09:56:12Z",
  "min_n": 50,
  "months": [
   {
@@ -262,21 +262,30 @@
    "cwe": 3506,
    "legacy": 1081,
    "backfill": false
+  },
+  {
+   "month": "2026-11",
+   "enriched": 55,
+   "ssvc": 55,
+   "cvss": 16,
+   "cwe": 16,
+   "legacy": 0,
+   "backfill": false
   }
  ],
  "adds": {
-  "total": 210260,
-  "ssvc": 210258,
+  "total": 210315,
+  "ssvc": 210313,
   "pct_ssvc": 100.0,
-  "cvss": 45178,
+  "cvss": 45194,
   "pct_cvss": 21.5,
-  "cwe": 42647,
+  "cwe": 42663,
   "pct_cwe": 20.3
  },
  "providers": [
   {
    "provider": "CISA-ADP",
-   "n": 210260,
+   "n": 210315,
    "pct": 52.7
   },
   {
@@ -286,11 +295,11 @@
   }
  ],
  "headline": {
-  "total_published": 398740,
-  "total_cisa": 210260,
+  "total_published": 398840,
+  "total_cisa": 210315,
   "pct_cisa": 52.7,
   "first_month": "2024-06",
-  "last_month": "2026-10",
+  "last_month": "2026-11",
   "peak_month": "2026-10",
   "peak_enriched": 17408,
   "sole_enricher": "CISA-ADP",
