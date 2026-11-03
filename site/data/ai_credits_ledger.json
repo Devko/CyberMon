@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-02T09:56:12Z",
+ "generated_at": "2026-11-03T10:02:59Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -20780,6 +20780,66 @@
     {
      "finder": "anthropic",
      "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-109140",
+   "published": "2026-11-02",
+   "cna": "NLnet Labs",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-109141",
+   "published": "2026-11-02",
+   "cna": "NLnet Labs",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-109142",
+   "published": "2026-11-02",
+   "cna": "NLnet Labs",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-111959",
+   "published": "2026-11-02",
+   "cna": "apache",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
      "roles": [
       "finder"
      ]

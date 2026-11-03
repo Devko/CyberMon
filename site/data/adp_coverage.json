@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-02T09:56:12Z",
+ "generated_at": "2026-11-03T10:02:59Z",
  "min_n": 50,
  "months": [
   {
@@ -202,10 +202,10 @@
   },
   {
    "month": "2026-04",
-   "enriched": 8073,
-   "ssvc": 8073,
-   "cvss": 990,
-   "cwe": 679,
+   "enriched": 8072,
+   "ssvc": 8072,
+   "cvss": 989,
+   "cwe": 678,
    "legacy": 287,
    "backfill": false
   },
@@ -238,55 +238,55 @@
   },
   {
    "month": "2026-08",
-   "enriched": 10435,
-   "ssvc": 10435,
-   "cvss": 1732,
+   "enriched": 10434,
+   "ssvc": 10434,
+   "cvss": 1731,
    "cwe": 2234,
    "legacy": 164,
    "backfill": false
   },
   {
    "month": "2026-09",
-   "enriched": 12951,
-   "ssvc": 12951,
-   "cvss": 2500,
+   "enriched": 12947,
+   "ssvc": 12947,
+   "cvss": 2497,
    "cwe": 2677,
    "legacy": 128,
    "backfill": false
   },
   {
    "month": "2026-10",
-   "enriched": 17408,
-   "ssvc": 17407,
-   "cvss": 2359,
-   "cwe": 3506,
+   "enriched": 17402,
+   "ssvc": 17401,
+   "cvss": 2357,
+   "cwe": 3505,
    "legacy": 1081,
    "backfill": false
   },
   {
    "month": "2026-11",
-   "enriched": 55,
-   "ssvc": 55,
-   "cvss": 16,
-   "cwe": 16,
-   "legacy": 0,
+   "enriched": 864,
+   "ssvc": 864,
+   "cvss": 178,
+   "cwe": 128,
+   "legacy": 129,
    "backfill": false
   }
  ],
  "adds": {
-  "total": 210315,
-  "ssvc": 210313,
+  "total": 211112,
+  "ssvc": 211110,
   "pct_ssvc": 100.0,
-  "cvss": 45194,
+  "cvss": 45349,
   "pct_cvss": 21.5,
-  "cwe": 42663,
+  "cwe": 42773,
   "pct_cwe": 20.3
  },
  "providers": [
   {
    "provider": "CISA-ADP",
-   "n": 210315,
-   "pct": 52.7
+   "n": 211112,
+   "pct": 52.9
   },
   {
    "provider": "redhat-SADP",
@@ -295,13 +295,13 @@
   }
  ],
  "headline": {
-  "total_published": 398840,
-  "total_cisa": 210315,
-  "pct_cisa": 52.7,
+  "total_published": 399311,
+  "total_cisa": 211112,
+  "pct_cisa": 52.9,
   "first_month": "2024-06",
   "last_month": "2026-11",
   "peak_month": "2026-10",
-  "peak_enriched": 17408,
+  "peak_enriched": 17402,
   "sole_enricher": "CISA-ADP",
   "backfill_month_count": 3
  }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-02T09:56:12Z",
+ "generated_at": "2026-11-03T10:02:59Z",
  "hero": {
   "matched": {
    "dated_cves": 25094,
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-08-04",
+  "observed_through": "2026-08-05",
   "min_n": 30,
   "years": [
    {
@@ -562,17 +562,17 @@
    },
    {
     "bucket": "4.0-6.9",
-    "total": 23721,
+    "total": 23722,
     "with_poc": 72,
     "pct": 0.3,
-    "with_detection": 183
+    "with_detection": 184
    },
    {
     "bucket": "7.0-8.9",
-    "total": 15761,
+    "total": 15760,
     "with_poc": 182,
     "pct": 1.2,
-    "with_detection": 145
+    "with_detection": 144
    },
    {
     "bucket": "9.0-10.0",
@@ -597,21 +597,21 @@
    "dated_cves": 25094
   },
   "metasploit": {
-   "modules": 7226,
-   "with_cve": 3137,
-   "exploit_modules_with_cve": 2426,
-   "cves": 2594,
-   "other_cves": 642,
+   "modules": 7261,
+   "with_cve": 3140,
+   "exploit_modules_with_cve": 2428,
+   "cves": 2597,
+   "other_cves": 643,
    "dated_cves": 0,
-   "disclosure_dated_cves": 3073
+   "disclosure_dated_cves": 3077
   },
   "nuclei": {
-   "templates": 4552,
-   "cves": 4552
+   "templates": 4560,
+   "cves": 4560
   },
-  "exploit_cves": 26006,
-  "union_cves": 29744,
+  "exploit_cves": 26009,
+  "union_cves": 29753,
   "dated_cves": 25094,
-  "matched_in_corpus": 25958
+  "matched_in_corpus": 25961
  }
 }

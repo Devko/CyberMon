@@ -5743,3 +5743,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-11-01,CVE-2026-99212,Linux,first_score,,,v3.1,7.0
 2026-11-01,CVE-2026-99213,Linux,first_score,,,v3.1,7.8
 2026-11-01,CVE-2026-99216,Linux,first_score,,,v3.1,8.4
+2026-11-03,CVE-2025-63387,mitre,first_score,,,v3.1,4.3
+2026-11-03,CVE-2026-119716,VulnCheck,rescore,v4.0,9.2,v4.0,9.3
