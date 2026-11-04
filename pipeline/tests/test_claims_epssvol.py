@@ -73,9 +73,10 @@ def test_anomaly_rule_matches_the_copy():
 
 
 def test_no_trend_night_is_a_lurch():
-    # churn caption: lurch nights "are quarantined from these bars" — so no
-    # night left in the trend exceeds the rule's cutoff over the trend's own
-    # median (judged only once the rule has its baseline).
+    # hero methodology: anomalous nights "are excluded from every chart on
+    # this page" — so no night left in the trend exceeds the rule's cutoff
+    # over the trend's own median (judged only once the rule has its
+    # baseline).
     gap = load_obj()["gap"]
     shares = sorted(d["prob_moved"] for d in gap["days"])
     if len(shares) < 5:
@@ -86,11 +87,13 @@ def test_no_trend_night_is_a_lurch():
     assert max(shares) <= max(5.0 * median, 5.0)
 
 
-def test_material_crossings_are_vanishingly_rare():
-    # churn caption: "material crossings are vanishingly rare" set against
-    # the percentile churn — over the trend, crossings of any line are
-    # under one percent of percentile moves.
-    d = load_obj()
+def check_crossings_under_one_per_thousand(d: dict) -> None:
+    # churn caption: "Over the clean nights, crossings number fewer than one
+    # for every thousand percentile changes." Crossings of any threshold
+    # against percentile moves, both over the trend nights. (2026-11-04:
+    # 5,417 crossings against 31,420,299 percentile moves, one in 5,800.)
+    # Until 2026-11-04 the copy said "fewer than one for every hundred",
+    # true by a factor of 58, and this was held to 1%.
     cat = d["catalog"]
     if not d["gap"]["days"]:
         pytest.skip("gap gate closed — nothing charted yet")
@@ -99,7 +102,26 @@ def test_material_crossings_are_vanishingly_rare():
                     if r["observed_date"] in trend_dates)
     crossings = sum(cat["crossed_totals"].values())
     assert pct_moves > 0
-    assert crossings / pct_moves < 0.01
+    assert crossings / pct_moves < 0.001, (
+        f"'fewer than one for every thousand percentile changes' vs "
+        f"{crossings:,} crossings and {pct_moves:,} percentile moves")
+
+
+def check_scored_set_grows_a_few_hundred_a_day(d: dict) -> None:
+    # gap caption: "the scored set grows by a few hundred CVEs a day". The
+    # log's n_scored from its first row to its last, per calendar day.
+    # (2026-11-04: 349,390 on 2026-07-18 to 399,388 on 2026-11-03, 463 a
+    # day.)
+    from datetime import date
+    rows = load_csv()
+    if len(rows) < 14:
+        pytest.skip("under two weeks of log — too short to judge")
+    first, last = rows[0], rows[-1]
+    days = (date.fromisoformat(last["observed_date"])
+            - date.fromisoformat(first["observed_date"])).days
+    per_day = (int(last["n_scored"]) - int(first["n_scored"])) / days
+    assert 100 <= per_day < 1000, (
+        f"'grows by a few hundred CVEs a day' vs {per_day:.0f} a day")
 
 
 def test_gap_gate_fires_consistently():
@@ -204,6 +226,17 @@ CLAIMS = [
         "compared.",
         "epss_volatility.json",
         check_most_clean_nights_move_ten_points,
+    ),
+    (
+        "Over the clean nights, crossings number fewer than one for every "
+        "thousand percentile changes.",
+        "epss_volatility.json",
+        check_crossings_under_one_per_thousand,
+    ),
+    (
+        "the scored set grows by a few hundred CVEs a day",
+        "epss_volatility.json",
+        check_scored_set_grows_a_few_hundred_a_day,
     ),
 ]
 

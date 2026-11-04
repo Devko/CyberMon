@@ -2678,17 +2678,16 @@ export const editorial = {
     epssvol_gap: {
       num: "01",
       kicker: "Percentile vs probability",
-      source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
+      source: "EPSS (FIRST.org) · CyberMon nightly diffs",
       headline: "On an average night, EPSS percentiles move for nearly all CVEs and probabilities for about 1%.",
       caption:
-        "EPSS publishes two figures per CVE: a probability of exploitation and a " +
-        "percentile that ranks it against all other scored CVEs. The percentile " +
-        "changes for nearly every CVE on an average night, the probability for far " +
-        "fewer. For a CVE whose probability is unchanged, a percentile change comes " +
-        "from the rest of the ranking: the scored set grows by a few hundred CVEs a " +
-        "day, and other CVEs' scores move. The two lines are the nightly shares of " +
-        "compared CVEs whose percentile and whose probability changed; exact figures " +
-        "are in the stat and the tooltips.",
+        "EPSS, FIRST's Exploit Prediction Scoring System, publishes two figures per " +
+        "CVE: a probability of exploitation in the next 30 days and a percentile " +
+        "that ranks that probability against all other scored CVEs. The two lines " +
+        "are the nightly shares of compared CVEs whose percentile and whose " +
+        "probability changed. A percentile can change while the probability stays " +
+        "the same, because other CVEs' scores move and the scored set grows by a " +
+        "few hundred CVEs a day.",
       // {first_date} is filled from the data (the log's first observed date);
       // the empty variant renders while the log has no diff-nights yet.
       note:
@@ -2710,61 +2709,44 @@ export const editorial = {
       placeholderEmpty:
         "No diff-nights on record yet. The record begins at first deploy, and the " +
         "first comparable night draws the first point.",
-      statLabel: "Share of compared CVEs whose EPSS percentile moved overnight",
+      statLabel: "Average share of compared CVEs whose EPSS percentile moved overnight",
       statVersus: "vs {prob} whose probability moved · {days} clean nights on record",
       legendPct: "Percentile moved",
       legendProb: "Probability moved",
       yAxisLabel: "share of compared CVEs",
       methodology:
-        "Every night the pipeline fingerprints the EPSS feed already fetched for the " +
-        "rest of the site (each CVE's raw probability and published percentile) and " +
-        "diffs it against the previous night's fingerprint, which is kept in the " +
-        "pipeline's cache; losing the cache costs one night's diff, never a log row. " +
-        "A re-run against the same EPSS score_date is detected and skipped, so " +
-        "nothing is counted twice. Only CVEs present on both nights are compared: a " +
-        "CVE new to tonight's feed has no prior value, and new arrivals are part of " +
-        "what shifts the percentiles. “Moved” means the value changed at the " +
-        "five-decimal precision EPSS publishes. The two lines are the shares of " +
-        "compared CVEs whose percentile moved and whose probability moved. They " +
-        "diverge because FIRST recomputes every percentile nightly against that day's " +
-        "full set of scored CVEs, while the raw probability is the model's estimate " +
-        "for that CVE alone. When the feed's model_version changes, a new model " +
-        "rescores the corpus overnight and nearly every value moves for reasons " +
-        "unrelated to any one CVE; that night is logged, flagged and excluded from " +
-        "all trends here, as the CVSS Score Changes page does with its seeding. Two more kinds of " +
-        "night are excluded by rules applied to the log itself, so the result is " +
-        "reproducible: a night whose diff pools more than one snapshot because the " +
-        "runs between it and the previous row failed, and an anomalous night, on which " +
-        "the share of probabilities that moved is more than five times the clean-night " +
-        "median (and above five percent) with no model change. The second rule covers " +
+        "Each night the pipeline compares every CVE's raw probability and published " +
+        "percentile in the EPSS feed with the previous night's values. A re-run " +
+        "against the same EPSS score_date is skipped, so no night is counted twice. " +
+        "Only CVEs present on both nights are compared; new arrivals have no prior " +
+        "value, but they shift the percentiles of the rest. “Moved” means the value " +
+        "changed at the five-decimal precision EPSS publishes. FIRST recomputes " +
+        "every percentile nightly against that day's full set of scored CVEs; the " +
+        "probability is the model's estimate for that CVE alone. Three kinds of " +
+        "night are excluded from every chart on this page and listed with their " +
+        "reason in the data file's catalog block. The first is a night on which the " +
+        "feed's model_version changed, since a new model rescores the whole corpus. " +
+        "The second is a night whose diff pools more than one snapshot because the " +
+        "runs before it failed. The third is an anomalous night, on which the share " +
+        "of probabilities that moved is more than five times the clean-night median " +
+        "(and above five percent) with no model change. This rule covers " +
         "corpus-wide jumps like those first seen in August 2026, when about one CVE " +
-        "in eight moved and then moved back. Every excluded night is listed with its " +
-        "reason in the data file's catalog block. This measures stability, not " +
-        "accuracy; the EPSS Before KEV page shows where scores stood the day before a KEV " +
-        "listing without judging whether the model was right. Limits: the record " +
-        "starts at first deploy, so it is short and grows nightly; and FIRST's dated " +
-        "daily snapshots are publicly archived, so this is the only maintained " +
-        "per-CVE EPSS change log but not the only one that could be built.",
+        "in eight moved and then moved back. Excluded and missed nights are left " +
+        "off the date axis, not drawn as gaps. This measures how often EPSS values " +
+        "change, not whether the model is right.",
     },
 
     // --------------------------------- epssvol.html · 2
     epssvol_churn: {
       num: "02",
       kicker: "Threshold crossings",
-      source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
-      headline: "Crossings of the 0.1%, 1% and 5% probability lines are rare next to percentile moves.",
+      source: "EPSS (FIRST.org) · CyberMon nightly diffs",
+      headline: "Crossings of the 0.1%, 1% and 5% probability thresholds are rare next to percentile moves.",
       caption:
-        "A percentile change moves a CVE's rank without changing the model's " +
-        "probability for it. These bars count the other kind of change: CVEs whose " +
-        "raw probability crossed 0.1%, 1% or 5%, in either direction, summed per " +
-        "week. Next to the percentile changes in section 01 these crossings are rare, " +
-        "fewer than one for every hundred percentile changes over the clean nights. " +
-        "Nights on which a large share of the corpus moved and then moved back are " +
-        "excluded from these bars and listed in the data file.",
-      note:
-        "Thresholds: 0.001 / 0.01 / 0.05, chosen by CyberMon. A crossing counts in " +
-        "either direction, and the three counts are independent: one large jump can " +
-        "cross all three.",
+        "These bars count CVEs whose raw probability crossed 0.1%, 1% or 5%, in " +
+        "either direction, summed per week. Over the clean nights, crossings number " +
+        "fewer than one for every thousand percentile changes. Weeks differ in how " +
+        "many clean nights they sum; the tooltip gives each week's count.",
       legendLo: "crossed 0.1%",
       legendMid: "crossed 1%",
       legendHi: "crossed 5%",
@@ -2773,36 +2755,28 @@ export const editorial = {
         "No diff-nights on the log yet; crossings appear once there are two nights " +
         "to compare.",
       methodology:
-        "For each CVE compared on two consecutive EPSS snapshots (the fingerprint and " +
-        "exclusion rules are in section 01's methodology), the pipeline checks whether " +
-        "its raw probability crossed any of three fixed thresholds, 0.001, 0.01 and " +
-        "0.05, meaning the “≥ threshold” side changed between the two nights, up or " +
-        "down. Bars sum the per-night counts by ISO week of the observation date " +
-        "(UTC); the week in progress is starred and fills until it closes, and empty " +
-        "weeks between observed ones chart at zero so the axis does not skip time. " +
-        "The three series are counted independently, so a probability that jumps from " +
-        "near zero to above 5% counts under all three. Reset nights, pooled nights " +
-        "and corpus-wide jumps are excluded, as everywhere on this page. The " +
-        "thresholds are CyberMon's, not FIRST's; they are stated here so a reader can " +
-        "apply different ones.",
+        "For each CVE compared on two consecutive nights (rules and exclusions in " +
+        "section 01's methodology), the pipeline checks whether its raw probability " +
+        "crossed 0.001, 0.01 or 0.05: at or above the threshold on one night and " +
+        "below it on the other. The three counts are independent, so a jump from " +
+        "near zero to above 5% counts under all three. Bars sum the nightly counts " +
+        "by ISO week of the observation date (UTC). The week in progress is starred, " +
+        "and a week with no observed night would chart at zero. The thresholds are " +
+        "CyberMon's choice, not FIRST's.",
     },
 
     // --------------------------------- epssvol.html · 3
     epssvol_movers: {
       num: "03",
       kicker: "Biggest single-night moves",
-      source: "EPSS (FIRST.org) · CyberMon's own nightly diffs",
+      source: "EPSS (FIRST.org) · CyberMon nightly diffs",
       headline: "The twenty largest single-night EPSS probability moves each exceed 25 percentage points.",
       caption:
-        "The largest single-night changes in raw EPSS probability on record. Each row " +
-        "is one CVE on one night, ranked by the size of the change; the arrow and the " +
-        "from→to column give its direction. On most clean nights some CVE's " +
-        "probability moves by ten percentage points or more, but it is one CVE among the " +
-        "hundreds of thousands compared.",
-      note:
-        "The board keeps each night's single largest move. A night with several " +
-        "large moves contributes only its largest, so the board understates " +
-        "volatility on those nights.",
+        "The largest single-night changes in raw EPSS probability on record, ranked " +
+        "by size. Each row is the largest move of one night, so a night with " +
+        "several large moves shows only its largest. On most clean nights some " +
+        "CVE's probability moves by ten percentage points or more, but it is one " +
+        "CVE among the hundreds of thousands compared.",
       windowTemplate: "{context} · {shown} shown · min move {min_delta}",
       boardNote: "{days} clean nights since {first_date}",
       boardNoteEmpty: "no diff-nights on the log yet; collection has started",
@@ -2815,17 +2789,11 @@ export const editorial = {
         "fills as the record grows.",
       methodology:
         "Each clean night contributes its largest absolute change in raw probability " +
-        "among the CVEs compared that night (fingerprint rules are in section 01's " +
-        "methodology). The board ranks these nightly maxima across the record by the " +
-        "size of the move; the sign is shown but not used for ranking. It keeps the " +
-        "largest twenty at or above a minimum move (production threshold 0.1, i.e. 10 " +
-        "percentage points; the threshold ships in the data file). Probabilities are " +
-        "shown as percentages to three decimals and moves in percentage points. " +
-        "Because only one move is kept per night, a night with several large " +
-        "independent changes is represented by its largest alone, so the board is a " +
-        "lower bound on volatility, not a complete list. Excluded nights (model " +
-        "resets, pooled nights and corpus-wide jumps, by the rules in section 01's " +
-        "methodology) do not contribute: a corpus-wide move is not one CVE moving.",
+        "among the CVEs compared that night. The board ranks these nightly maxima by " +
+        "absolute size and keeps the largest twenty at or above a minimum move of 10 " +
+        "percentage points (min_delta in the data file). Probabilities are shown as " +
+        "percentages to three decimals and moves in percentage points. Nights " +
+        "excluded under section 01's rules contribute no rows.",
     },
 
     // --------------------------------- roster.html · 1 · hero
@@ -2952,21 +2920,18 @@ export const editorial = {
       source: "Exploit-DB (OffSec) · cvelistV5 (MITRE)",
       headline: "Since 2022, the median first public exploit has come two weeks or more after the CVE record.",
       caption:
-        "For every CVE with dated public exploit code: the days from the CVE record's " +
-        "publication to the first public exploit, as a median and interquartile range " +
-        "per publication year. In the program's first years the median was deeply " +
-        "negative: early CVE records catalogued exploits that already existed. " +
-        "From the mid-2000s through 2020 the median sat within a month of zero, and in " +
-        "most of those years it was negative: among CVEs that got public exploit code, " +
-        "the code usually existed by the time the record was published. Values below " +
-        "zero are exploits published with the advisory, or years before a CVE ID was " +
-        "assigned. Since 2021 the median has been positive, and since 2022 it has been " +
-        "two weeks or more. The cohorts since 2021 are a fraction of their earlier " +
-        "size, one to three hundred CVEs each, and the youngest are still being indexed " +
-        "by the archive, so the AI and PoC Timing page marks them provisional. Only the " +
-        "2024 cohort has a median above three months. This is public exploit code in " +
-        "one archive, not exploitation in the wild, which vendors measuring attacks " +
-        "from incident data report as much faster.",
+        "For every CVE with dated public exploit code (a proof of concept, or PoC): " +
+        "the days from the CVE record's publication to the first public exploit, as " +
+        "a median and interquartile range per publication year. Values below zero " +
+        "mean the exploit was public before the CVE record. In the program's first " +
+        "years the median was deeply negative: early CVE records catalogued exploits " +
+        "that already existed. From the mid-2000s through 2020 the median sat within " +
+        "a month of zero, and in most of those years it was negative. Since 2021 the " +
+        "median has been positive. Only the 2024 cohort has a median above three " +
+        "months. The cohorts since 2021 hold one to three hundred CVEs each, and the " +
+        "youngest are still being indexed by the archive. This is public exploit " +
+        "code in one archive, not exploitation in the wild, which vendors measure " +
+        "from incident data and report as faster.",
       statLabel: "Median days from CVE publication to first public exploit code",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -2978,30 +2943,25 @@ export const editorial = {
         "Only Exploit-DB dates the exploit itself, so only Exploit-DB dates this chart: " +
         "its date_published field records when the exploit was published (which can be " +
         "earlier than its addition to the archive), and the earliest entry per CVE is " +
-        "used. Metasploit's module metadata carries a disclosure_date, which is the " +
-        "module author's record of when the vulnerability was disclosed, not when the " +
-        "module shipped; the merge date would need the repository's git history, which " +
-        "this pipeline does not clone. A Metasploit exploit module therefore counts as " +
-        "public exploit code for its CVE but never dates it, and a CVE with only a " +
-        "Metasploit module is absent from this chart. Until 2026-09-20 the Metasploit " +
-        "disclosure date stood in for a code date here; it no longer does, and the " +
-        "series was rebuilt. Nuclei templates are detection checks, not exploits, and " +
-        "carry no date: they count only toward a separate detection line in the " +
-        "coverage chart below. The gap is the Exploit-DB date minus the CVE record's " +
-        "datePublished, in days, grouped by the CVE's publication year; a year plots " +
-        "only with at least 10 matched CVEs. Negative gaps are kept, as on the KEV " +
-        "Latency page: exploit code published before the CVE record (an advisory " +
-        "shipped with its exploit, or an old exploit assigned a CVE years later) is a " +
-        "real event, and flooring it at zero would hide the cases where the code came " +
-        "first. Placeholder dates are treated as absent. The current year (marked *) " +
-        "is partial. Limits: this counts public exploit code that one archive dates, a " +
+        "used. Metasploit's module metadata carries a disclosure_date, which records " +
+        "when the vulnerability was disclosed rather than when the module shipped. A " +
+        "Metasploit exploit module therefore counts as public exploit code for its CVE " +
+        "but never dates it, and a CVE with only a Metasploit module is absent from " +
+        "this chart. Nuclei templates are detection checks, not exploits, and carry no " +
+        "date; they appear only as a separate count in the severity chart's tooltip. " +
+        "The gap is the Exploit-DB date minus the CVE record's datePublished, in days, " +
+        "grouped by the CVE's publication year; a year plots only with at least 10 " +
+        "matched CVEs. Negative gaps (an advisory shipped with its exploit, or an old " +
+        "exploit assigned a CVE years later) are kept, not floored at zero. " +
+        "Placeholder dates are treated as absent. The current year (marked *) is " +
+        "partial. Limits: this counts public exploit code that one archive dates, a " +
         "lower bound that misses private exploits and code published elsewhere. The " +
         "cohort is self-selected: only a few percent of records ever get a tracked " +
-        "public exploit, so the chart describes the CVEs that attracted one, and recent " +
-        "years are also right-censored (a young CVE has had less time to attract code). " +
-        "The source has also shrunk: the dated cohort per year is now well under a " +
-        "fifth of its late-2000s size, so a trend here is also a trend in what " +
-        "Exploit-DB indexes.",
+        "public exploit, so the chart describes the CVEs that attracted one, and " +
+        "recent years are also right-censored (a young CVE has had less time to " +
+        "attract code). The source has also shrunk: the dated cohort per year is now " +
+        "well under a fifth of its late-2000s size, so a trend here is also a trend " +
+        "in what Exploit-DB indexes.",
     },
 
     // --------------------------------- exploits.html · 2
@@ -3016,26 +2976,22 @@ export const editorial = {
         "whose CVE has a dated public exploit, each bar is the share whose exploit code " +
         "was public before the day CISA listed the entry. The 2021–22 seeding years are " +
         "drawn muted: the catalog's launch imported years-old CVEs, and their exploit " +
-        "code, where dated, almost always came first. From 2023 on, about half of " +
-        "the listings with a dated PoC had the code published before the listing day.",
+        "code, where dated, almost always came first.",
       note:
         "Since {cutoff_year}: for {trend_pct} of the {trend_n} KEV listings with a " +
         "dated public PoC, the code was published before the listing day.",
       methodology:
-        "Each KEV entry is joined to the first public exploit date used in the chart " +
-        "above (Exploit-DB's date_published; Metasploit dates the disclosure, not the " +
-        "module, and Nuclei is undated, so neither is used here). An entry counts as " +
-        "preempted when that date is strictly earlier than the catalog's dateAdded; a " +
-        "PoC published on the listing day does not count. The denominator is entries " +
-        "with a dated PoC, roughly a quarter of the catalog. An entry with no tracked " +
-        "public exploit gives no information on which came first, so it is excluded. " +
-        "The 2021–22 seeding era (entries added before 2023-01-01, the same cutoff the " +
-        "KEV Latency module uses) is kept out of the headline figure because the launch " +
-        "backfill imported years-old CVEs whose exploits are as old as the CVEs; those " +
-        "years are drawn muted. A year plots only with at least 10 matched entries. The " +
-        "KEV data is the same feed the rest of the site uses. The exploit side has the " +
-        "limits of the chart above: tracked public code only, so the share is a lower " +
-        "bound on how often exploit code was public before the listing.",
+        "Each KEV entry is joined to the first Exploit-DB date used in the chart " +
+        "above. An entry counts toward the share when that date is strictly earlier " +
+        "than the catalog's dateAdded; a PoC published on the listing day does not " +
+        "count. The denominator is entries with a dated PoC, roughly a quarter of the " +
+        "catalog; an entry with no tracked public exploit gives no information on " +
+        "which came first and is excluded. Entries added before 2023-01-01, the " +
+        "2021–22 seeding era (the same cutoff the KEV Latency module uses), are kept " +
+        "out of the headline figure. A year plots only with at least 10 matched " +
+        "entries. The exploit side has the limits of the chart above: tracked public " +
+        "code only, so the share is a lower bound on how often exploit code was " +
+        "public before the listing.",
     },
 
     // --------------------------------- exploits.html · 3
@@ -3046,34 +3002,27 @@ export const editorial = {
       headline: "Public exploit code is most common on CVEs rated critical.",
       caption:
         "For CVE records published in the latest complete year, the share in each " +
-        "CVSS severity bucket that has tracked public exploit code: an Exploit-DB entry " +
-        "or a Metasploit exploit module. Nuclei detection templates appear in the " +
-        "tooltip as a separate count, since a detection check is not an exploit. " +
-        "Coverage is low in every bucket: the overwhelming majority of records have no " +
-        "tracked public exploit code. It is highest for critical-rated records, at more " +
-        "than ten times the rate of medium-rated records, and below half a percent for " +
-        "low- and medium-rated ones. Score vs. Reality, on the CVE Ecosystem page, sets " +
-        "the same severity buckets against EPSS forecasts of exploitation; this chart " +
-        "counts exploit code already published.",
+        "CVSS severity bucket that has tracked public exploit code: an Exploit-DB " +
+        "entry or a Metasploit exploit module. Records without a score are the muted " +
+        "bar. Nuclei detection templates are a separate count in the tooltip, since a " +
+        "detection check is not an exploit. In every bucket the overwhelming majority " +
+        "of records have no tracked public exploit code. Critical-rated records have " +
+        "it at more than ten times the rate of medium-rated records, and the rate is " +
+        "below half a percent for low- and medium-rated ones.",
       note:
         "Records published in {window_year}, the latest complete year. A young record " +
         "has had limited time to attract code and coverage can only grow, so each bar " +
         "is a lower bound.",
       methodology:
         "For the latest complete calendar year, every published CVE record is bucketed " +
-        "by the same effective score the Score-vs-Reality grid uses (the newest-version " +
-        "base score anywhere in the record; records without one count as unscored). A " +
-        "record is marked covered when tracked public exploit code references its id: " +
-        "an Exploit-DB entry, with or without a usable date, or a Metasploit module " +
-        "whose type is exploit. Auxiliary scanners and post modules reference CVEs " +
-        "without being exploits for them and do not count. Nuclei CVE templates are " +
-        "detection checks; they are counted separately, shown in the tooltip, and not " +
-        "included in the bar. Severity buckets with fewer than 10 records are withheld. " +
-        "Coverage is a share of that year's published records, so the chart reflects " +
-        "the corpus's own composition; records without a base score rarely have " +
-        "tracked exploit code either. The window is one complete recent year, stated " +
-        "on the chart, chosen to show the current rate instead of decades of " +
-        "accumulation; the cost is the right-censoring described in the note above.",
+        "by the newest-version CVSS base score anywhere in the record, the same score " +
+        "the CVE Ecosystem page uses; records without one count as unscored. A record " +
+        "is covered when tracked public exploit code references its id: an Exploit-DB " +
+        "entry, with or without a usable date, or a Metasploit module whose type is " +
+        "exploit. Auxiliary scanners and post modules reference CVEs without being " +
+        "exploits for them and do not count. Severity buckets with fewer than 10 " +
+        "records are withheld. One complete year is used so the bars show a recent " +
+        "rate, not decades of accumulation.",
     },
 
     // --------------------------------- c2.html · 1 (hero)
@@ -3206,39 +3155,34 @@ export const editorial = {
       },
       caption:
         "This page measures when public exploit code appears, not when attackers " +
-        "exploit a vulnerability. The two can move in opposite directions. " +
+        "exploit a vulnerability, and the two can move in opposite directions. " +
         "Mandiant, which measures exploitation in the wild from its own incident " +
         "data, reports an average time-to-exploit of 63 days in 2018–19 and five " +
         "days in 2023, a year in which 70% of the vulnerabilities it saw exploited " +
         "were zero-days. Attackers can move sooner with private exploit code while " +
-        "public archives receive fewer exploits, and later; this page cannot " +
-        "separate the two, and Exploit-DB now dates far fewer CVEs than it did " +
-        "(the note under the chart gives the counts). " +
-        "The red line is the public exploit clock from the Time to PoC module: for " +
-        "each CVE whose first public exploit code Exploit-DB dates, the median " +
-        "number of days from the CVE record's publication to that exploit, by " +
-        "publication year. The dots along the top are the AI timeline: model " +
-        "releases, threat-intelligence reports that looked for offensive uplift, " +
-        "defensive milestones and the first documented cases of AI used in real " +
-        "operations. Every dot is dated, categorised and linked below the chart. " +
-        "The shaded band starts at the AI-era date chosen in the menu. The raw " +
-        "median made most of its move toward zero by 2013, a decade before the " +
-        "ChatGPT band opens, and inside the band it moves later if it moves at " +
-        "all. The pale line counts only exploits dated within 90 days either side " +
+        "public archives receive fewer exploits, and receive them later; this page " +
+        "cannot separate the two. " +
+        "The red line is the raw median of days from a CVE record's publication to " +
+        "its first public exploit code as Exploit-DB dates it, by publication year. " +
+        "The pale line counts only exploits dated within 90 days either side " +
         "of publication, and only cohorts at least 90 days old, so every year is " +
         "measured over the same window and a year can be drawn before it ends. " +
-        "Every settled year since 2005 has sat inside a three-week band around " +
-        "zero. Up on the vertical axis means the exploit arrived later. Years " +
-        "the exploit trackers are still indexing are drawn hollow: they lack " +
-        "exploits that will be indexed later, so they read slow, and no verdict " +
-        "on this page uses them. " +
-        "Where the two lines differ, the raw line includes exploits outside the " +
-        "pale line's 90-day window: on the left, old exploits that received CVE " +
-        "ids years later; on the right, exploit code published months after the " +
-        "CVE. Neither difference shows public code appearing sooner. Right of the marked " +
-        "edge there is no complete year of data. The 2026 milestones, which " +
-        "include models and programmes aimed at finding vulnerabilities, sit " +
-        "beyond what this page can test.",
+        "Years the exploit trackers are still indexing are drawn hollow, and no " +
+        "verdict on this page uses them. The dots along the top are the AI " +
+        "timeline: model releases, threat-intelligence reports that looked for " +
+        "offensive uplift, defensive milestones, lab research and the first " +
+        "documented cases of AI used in real operations. Every dot is dated, " +
+        "categorised and linked below the chart. The shaded band starts at the " +
+        "AI-era date chosen in the menu. " +
+        "The raw median made most of its move toward zero by 2013, a decade before " +
+        "the ChatGPT band opens, and inside the band it moves later if it moves at " +
+        "all. On the pale line, every settled year since 2005 has sat inside a " +
+        "three-week band around zero. Where the two lines differ, the red line " +
+        "includes exploits outside the 90-day window: on the left, old exploits " +
+        "that received CVE ids years later; on the right, exploit code published " +
+        "months after the CVE. Right of the marked edge there is no complete year " +
+        "of data. The 2026 milestones, which include models and programmes aimed " +
+        "at finding vulnerabilities, sit beyond what this page can test.",
       selectLabel: "AI era begins",
       evidenceEdge: "last complete year: {year}",
       rawLabel: "As recorded (all gaps)",
@@ -3246,8 +3190,8 @@ export const editorial = {
       axisSlower: "↑ exploit\n  arrives\n  later",
       axisFaster: "↓ exploit\n  arrives\n  sooner",
       provisionalFrom: "provisional →",
-      statLabel: "Public-exploit timing metrics that moved earlier after the cutoff",
-      statOf: "of {judged} judged metric-era tests",
+      statLabel: "Timing tests (one metric at one AI-era cutoff) in which public exploit code came earlier",
+      statOf: "of {judged} judged",
       statUplift: "vendor threat reports (2024 to early 2025) that looked for offensive uplift and reported none",
       bandLabel: "AI era · from {label}",
       tipMonth: "{date} · month precision",
@@ -3261,12 +3205,9 @@ export const editorial = {
         "medians rest on far fewer CVEs; exploits published only elsewhere, " +
         "such as on GitHub, are not counted.",
       methodology:
-        "The clock series is copied from the Time to PoC module " +
-        "(time_to_poc.json) without recomputation: the same median, matched " +
-        "cohort and caveats, so the two pages agree. The current year is left " +
-        "out of this series instead of being marked partial, because this " +
-        "module tests where a series changes direction and a half-finished year " +
-        "at the right-hand edge can look like such a change. The AI timeline is " +
+        "The red line is the Time to PoC module's series (time_to_poc.json), " +
+        "unchanged, except that the current year is left out: a part-year at the " +
+        "right-hand edge can look like a change of direction. The AI timeline is " +
         "a small hand-maintained table (pipeline/ai_timeline_data.py). Each row " +
         "has a source URL and a date precision; rows without a single " +
         "unambiguous date are marked month-precision and plotted at mid-month, " +
@@ -3275,33 +3216,27 @@ export const editorial = {
         "research. An event gets a row if it is security-relevant, which " +
         "includes improvements in finding vulnerabilities as well as in " +
         "exploiting them; a frontier model release with no security claim " +
-        "attached does not qualify. The no-uplift rows are central: two of " +
-        "the largest vendor threat-intelligence teams looked specifically for " +
-        "offensive capability uplift in 2024 and early 2025 and reported finding " +
-        "none, so a 2018–2023 trend cannot be attributed to a 2025 capability. " +
+        "attached does not qualify. The stat's no-uplift reports are Microsoft " +
+        "with OpenAI (February 2024) and Google's Threat Intelligence Group " +
+        "(January 2025); both looked specifically for offensive capability " +
+        "uplift and reported finding none. " +
         "The vertical axis is logarithmic in both directions and linear within a " +
         "month of zero, because the series runs from about -770 days to a few " +
-        "months. On a linear axis the 1999 cohort would set the scale, and " +
-        "everything from 2004 on would be squeezed into a fifth of the chart's " +
-        "height, most of it a flat line. The transform changes no number, and " +
-        "the tooltips give the real values in days. Widely cited vendor figures " +
-        "that point the other way, Mandiant's average time-to-exploit (63 days " +
-        "in 2018–19, five in 2023) and the DBIR's edge-device share, are not " +
-        "plotted: they measure exploitation in the wild from private incident " +
-        "corpora and cannot be reproduced from this pipeline. " +
-        "They are recorded with attribution in the repository " +
-        "(pipeline/ai_timeline_data.EXTERNAL_CONTEXT) and are never drawn on an " +
-        "axis here. The module inherits three limits from the clock and does not " +
-        "fix them. First, the clock measures public exploit code dated by one " +
-        "archive over a self-selected cohort, so it is a lower bound, not a " +
-        "census. Second, recent years are right-censored: a CVE enters the cohort " +
-        "only once it has a public exploit, so a record whose exploit appears " +
-        "years after publication is missing until then, and recent cohorts lose " +
-        "their slowest cases. That bias makes recent years look faster, which " +
-        "favours this page's conclusion: censoring would produce an apparent acceleration, " +
-        "and none appears. Third, collection has thinned: the dated cohort per " +
-        "year is well under a fifth of its late-2000s size, so a slowing verdict " +
-        "is also consistent with the trackers indexing less.",
+        "months. On a linear axis everything from 2004 on would fill about a " +
+        "fifth of the chart's height. The tooltips give the real values in days. " +
+        "Vendor figures on exploitation in the wild, such as Mandiant's " +
+        "time-to-exploit and the edge-device share in Verizon's Data Breach " +
+        "Investigations Report (DBIR), come from private incident data and are " +
+        "not plotted; they are recorded with attribution in the repository " +
+        "(pipeline/ai_timeline_data.EXTERNAL_CONTEXT). " +
+        "Three limits come from the clock. First, it counts public exploit code " +
+        "that one archive dates, for the self-selected set of CVEs that got such " +
+        "code. Second, recent years are right-censored: a CVE enters the cohort " +
+        "only once it has a public exploit, so recent cohorts lack their slowest " +
+        "cases and look faster, a bias that works against this page's finding. " +
+        "Third, the dated cohort per year is well under a fifth of its " +
+        "late-2000s size, so a later verdict is also consistent with Exploit-DB " +
+        "indexing less.",
     },
 
     // --------------------------------- ai.html · 2
@@ -3311,23 +3246,19 @@ export const editorial = {
       source: "Exploit-DB (OffSec) · cvelistV5 (MITRE)",
       headline: "No judged timing metric moved toward earlier public exploit code after the cutoff.",
       caption:
-        "This chart puts the comparison in chart 01 into numbers. The top bar is " +
-        "the like-for-like clock, the one measure here that is not biased by " +
-        "recent cohorts having had less time to attract exploit code, and it " +
-        "comes first because it is the strongest evidence. The three bars below " +
-        "it read the full matched cohort in three ways. For each metric the test " +
-        "takes three levels: the start of the record, the five years before the " +
-        "cutoff, and the settled years since. It then asks what share of the " +
-        "metric's total movement the AI era accounts for, and in which " +
-        "direction. Bars to the right mean the era moved that metric toward " +
-        "earlier public exploit code; only those would support the claim that " +
-        "AI brought public exploits sooner, and they are drawn in the accent " +
-        "colour. Bars to the left mean public code came later. The table below " +
-        "gives each level and how many CVEs it rests on. None of this measures " +
-        "exploitation in the wild (see chart 01). Changing the cutoff at the " +
-        "top of the page redraws the bars.",
+        "The top bar is the like-for-like clock (chart 01's pale line), the only " +
+        "measure here not biased by recent cohorts having had less time to attract " +
+        "exploit code. The three bars below it read the full matched cohort in " +
+        "three ways. For each metric the test takes three levels: the start of the " +
+        "record, the five years before the cutoff, and the settled years since. " +
+        "Each bar is the share of the metric's total movement that came after the " +
+        "cutoff. Bars to the right mean public exploit code came earlier and are " +
+        "drawn in the accent colour; bars to the left mean it came later. The table " +
+        "below gives each level and how many CVEs it rests on. None of this " +
+        "measures exploitation in the wild. Changing the cutoff at the top of the " +
+        "page redraws the bars.",
       axisLabel: "share of the metric's total movement, since the cutoff (→ earlier)",
-      primaryTag: "strongest evidence: fixed 90-day window",
+      primaryTag: "fixed 90-day window, no cohort-age bias",
       tableCaption: "Levels behind each bar, {era} cutoff ({date}):",
       tipEarly: "start of record:",
       tipPre: "5 years to {cut_year}:",
@@ -3359,56 +3290,40 @@ export const editorial = {
         "are still indexing does not count). The test runs once two such years " +
         "exist.",
       methodology:
-        "There are four metrics, and the first differs from the other three. The " +
-        "like-for-like clock counts only exploits dated within 90 days either " +
-        "side of publication, and only cohorts at least 90 days old, so every " +
-        "year, including a year still in progress, has had the same window in " +
-        "which exploit code could appear. The lower bound of the window matters " +
-        "as much as the upper one: a gap of -4,452 days is an old exploit " +
-        "receiving a CVE id, a cataloguing event and not a fast exploit, and " +
-        "such gaps pull a one-sided median arbitrarily far negative. The clock " +
-        "is not a rate over all published CVEs. That rate was about 45% for " +
+        "The like-for-like clock's window has a lower bound as well as an upper " +
+        "one because a gap such as -4,452 days is an old exploit receiving a CVE " +
+        "id, and such gaps pull a one-sided median far negative. The clock is not " +
+        "a rate over all published CVEs. That rate was about 45% for " +
         "CVEs published in 2008 and 2009 and under 1% for those published in " +
-        "2024: over those years annual CVE volume grew from roughly 5,700 to " +
+        "2024. Over those years annual CVE volume grew from roughly 5,700 to " +
         "40,000, and the number of CVEs whose public exploit Exploit-DB dates " +
-        "fell to under a tenth of its 2008 level. One bias remains: the exploit " +
-        "trackers add entries for older disclosures over time, so the newest cohort is " +
-        "still missing exploits that will be added later and reads slightly " +
-        "slow. A cohort still being indexed is therefore drawn hollow and never " +
-        "counts toward a verdict. The other three metrics are read from the same " +
-        "matched cohort and share one denominator: the median gap in days from " +
-        "publication to first public exploit, the share of the cohort whose " +
-        "public code arrived no later than a week after publication, and the " +
-        "share whose exploit code predates the CVE record. The second metric's " +
-        "underlying field is “gap at most 7 days”, which includes every negative " +
-        "gap, so a PoC published a year before its CVE counts. That is why the " +
-        "early years read above 95%: the catalogue was recording exploits that " +
-        "already existed. These three are not independent tests. They are three " +
-        "summary statistics of one distribution over one cohort, and the third " +
-        "is a strict subset of the second (every negative gap is also under " +
-        "seven days). A median can stay put while a tail moves, so three views " +
-        "are useful, but counting them as separate evidence counts the same data " +
-        "three times. The same applies to the ChatGPT and GPT-4 cutoffs, which " +
-        "share most of their years. KEV latency is left out: its series is " +
-        "quarantined to begin in 2023, which leaves two of the three cutoffs " +
-        "with no pre-cutoff years to compare against, and a metric whose history " +
-        "starts inside the era under test cannot test that era. Each metric gets " +
-        "three levels, means of complete years instead of single-year " +
-        "endpoints: the first five years of the record, the five years ending " +
-        "at the cutoff, and every settled year since. Single years are not used " +
-        "because the 1999 cohort is about a hundred CVEs at a median two years " +
-        "negative, and a ratio anchored on it would depend on one small, unusual " +
-        "year. A cutoff's pre window ends with the last year that ends before " +
-        "its date, and its post window starts with the first year that begins " +
-        "after it, so the year containing the cutoff (2022 for ChatGPT) is " +
-        "charted but counts for neither side. A shift smaller than 10% of the " +
-        "metric's total travelled distance is reported as no inflection, and an " +
-        "era with fewer than 2 complete, settled years behind it (years the " +
-        "trackers are still indexing do not count) is not judged; its verdict " +
-        "appears once the record has those years. The direction sign is " +
-        "computed in the pipeline, not in the chart code: a falling gap and a " +
-        "rising within-a-week share both mean faster, and keeping that rule in " +
-        "one place avoids sign errors in the charts.",
+        "fell to under a tenth of its 2008 level. Exploit-DB adds entries for " +
+        "older disclosures over time, so the newest cohorts are still missing " +
+        "exploits that will be added later and read slightly slow; a cohort " +
+        "still being indexed is drawn hollow and never counts toward a verdict. " +
+        "The other three metrics are read from the full matched cohort and share " +
+        "one denominator. They are the median gap in days from publication to " +
+        "first public exploit, the share whose public code arrived no later than a " +
+        "week after publication, and the share whose exploit code predates the " +
+        "CVE record. The within-a-week share counts every gap of seven days or " +
+        "less, negative gaps included, which is why the early years read above " +
+        "95%. These three summarise one distribution and are not independent " +
+        "tests: every negative gap also counts as within a week. The ChatGPT and " +
+        "GPT-4 cutoffs likewise share most of their years. KEV latency (days " +
+        "from CVE publication to listing in CISA's Known Exploited " +
+        "Vulnerabilities catalog) is left out. Its trend series starts in 2023, " +
+        "after the catalog's 2021–22 seeding era, so two of the three cutoffs " +
+        "have no earlier years to compare against. Each level is a mean of " +
+        "complete years: the first five years of the record, the five years " +
+        "ending at the cutoff, and every settled year since. Single years are " +
+        "not used because the 1999 cohort is about a hundred CVEs at a median " +
+        "two years negative, and a ratio anchored on it would depend on one " +
+        "small, unusual year. A cutoff's pre window ends with the last year that " +
+        "ends before its date, and its post window starts with the first year " +
+        "that begins after it. The year containing the cutoff (2022 for " +
+        "ChatGPT) is therefore charted but counts for neither side. An era with " +
+        "fewer than two complete, settled years after it is not judged. A falling " +
+        "gap and a rising share both count as earlier.",
     },
 
     // --------------------------------- ai.html · 3
@@ -3422,44 +3337,34 @@ export const editorial = {
         "of the Buzzword Attention module, averaged per term, with each lane " +
         "indexed to its own peak. The dashed line is the like-for-like exploit " +
         "clock (the pale line in chart 01, settled years only) over the same " +
-        "window, held flat across each year because it is measured annually. " +
-        "Over the window attention to both terms rose, while the clock's annual " +
-        "median stayed inside a band of days. Had public exploit code started " +
-        "appearing sooner as attention rose, the dashed line would fall; it " +
-        "does not. It measures public code, not attacks.",
+        "window, held flat across each year because it is measured annually. A " +
+        "falling dashed line would mean public exploit code appearing sooner. It " +
+        "measures public code, not attacks.",
       clockLabel: "Public exploit clock (median gap)",
       axisAttention: "attention index",
       axisClock: "median gap",
       unavailable:
-        "The attention lanes are missing from this edition because the Security " +
-        "Market data did not load. The two sections above are unaffected.",
+        "The attention lanes are missing from this edition because the Buzzword " +
+        "Attention data did not load. The two sections above are unaffected.",
       note:
         "{label} ran from an index of {index_first} in {month_first} to " +
         "{index_last} in {month_last}. Over the same window the clock's annual " +
         "median stayed between {clock_min}d and {clock_max}d ({year_first}–{year_last}).",
       methodology:
         "The attention lanes come from the Buzzword Attention module " +
-        "(market_hype.json): the curated terms “AI Security” and “Agentic AI”, " +
-        "selected from that module's reviewable watchlist. Each term's monthly " +
-        "value is the mean of its per-source indexes over the sources that have " +
-        "a value that month. The Buzzword Attention module already indexes each " +
-        "lane to its own peak, so this is a mean of comparable 0-100 series, and " +
-        "a term whose Wikipedia lane starts late is not penalised for the gap. " +
-        "The number of sources behind each point is in the payload. The clock is " +
-        "chart 01's like-for-like series (exploits within 90 days either side of " +
-        "publication, settled cohorts only, so a year still being indexed cannot " +
-        "move it), drawn as a step: interpolating an annual median across twelve " +
-        "months would draw monthly values that were never measured. The two " +
-        "series share no unit and no sampling rate, so they have separate axes, " +
-        "and the chart claims no correlation between them. The clock's axis " +
-        "always spans at least plus or minus 90 days instead of being fitted to " +
-        "the data. Over this window the clock varies by less than two weeks, and " +
-        "an axis fitted to that range would stretch it to the full chart height " +
-        "and make it look like a large change. Ninety days, about a quarter, is " +
-        "an editorial choice, and the axis widens if the data ever exceeds it. " +
-        "The window is the market module's 60 months, and the note under the " +
-        "chart gives the month it starts. That is too short for the long-run " +
-        "comparison, which charts 01 and 02 make.",
+        "(market_hype.json): the terms “AI Security” and “Agentic AI” from that " +
+        "module's watchlist. Each term's monthly value is the mean of its " +
+        "per-lane indexes over the lanes that have a value that month, so a term " +
+        "whose Wikipedia lane starts late is not pulled down by the gap. The " +
+        "number of lanes behind each point is in the data file. The two series " +
+        "share no unit and no sampling rate, so they have separate axes, and the " +
+        "chart claims no correlation between them. The clock's axis always spans " +
+        "at least plus or minus 90 days, an editorial choice, and widens if the " +
+        "data exceeds it. Over this window the clock varies by less than two " +
+        "weeks, and an axis fitted to that range would stretch it to the full " +
+        "chart height. The window is the Buzzword Attention module's 60 months, " +
+        "and the note under the chart gives the month it starts. That is too " +
+        "short for the long-run comparison, which charts 01 and 02 make.",
     },
 
     // --------------------------------- credits.html · 1 · hero
