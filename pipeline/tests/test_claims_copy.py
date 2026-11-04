@@ -155,7 +155,12 @@ def check_classes_swing_20_points(d: dict) -> None:
 
 
 def check_fewer_larger_after_2021(d: dict) -> None:
-    # payments headline: "far fewer and far larger after 2021"
+    # payments headline: "After 2021 the ledger holds fewer than half as many
+    # payments a year as in 2016–2021, at medians more than ten times
+    # higher." Read strictly: every year after 2021 against the smallest
+    # 2016–2021 count and the largest 2016–2021 median. (2026-11-04: 146
+    # at most against 735; $99,389 at least against $3,451.) Said "far
+    # fewer and far larger" until 2026-11-04.
     by = {r["year"]: r for r in d["payments_by_year"]}
     before = [by[y] for y in range(2016, 2022)]
     after = [r for y, r in by.items() if 2022 <= y < GENERATION_YEAR]
@@ -472,7 +477,8 @@ CLAIMS = [
     ("Japan and the United States", "dnssec_adoption.json", check_japan_us_below_half),
     ("some by more than 20 points from one year to the next",
      "breach_ledger.json", check_classes_swing_20_points),
-    ("The ledger's payments became far fewer and far larger after 2021.",
+    ("After 2021 the ledger holds fewer than half as many payments a year as in "
+     "2016–2021, at medians more than ten times higher.",
      "extortion_ledger.json", check_fewer_larger_after_2021),
     ("More CVEs were published in each year since 2017 than in the year before.",
      "volume_curve.json", check_volume_rises_every_year),

@@ -67,8 +67,9 @@ def check_subtechniques_outnumber_techniques(d: dict) -> None:
 
 
 def check_forty_odd_releases(d: dict) -> None:
-    # editorial.js (attack.html churn): "Forty-odd releases in" — at two
-    # releases a year, ~40 stays "forty-odd" for years either side.
+    # editorial.js (attack.html churn): "Across its forty-odd releases" — at
+    # two releases a year, ~40 stays "forty-odd" for years either side.
+    # (2026-11-04: 42, the newest v20.0 of 2026-10-13.)
     n = len(d["versions"])
     assert 36 <= n <= 49, (
         f"'Forty-odd releases in' claims ~40 enterprise releases; the data "
@@ -129,17 +130,26 @@ def check_v7_largest_change(d: dict) -> None:
         f"{moved(biggest)} entries against v7.0's {moved(v7)}")
 
 
-def check_catalogs_grew_since_2018(d: dict) -> None:
-    # editorial.js (attack.html catalog headline): "ATT&CK's catalogs of
-    # groups and software have grown since 2018". 2026-10-03: groups 60 ->
-    # 176, software 189 -> 825 from v1.0 to v19.2.
+def check_catalog_multiples(d: dict) -> None:
+    # editorial.js (attack.html catalog headline): "ATT&CK lists about three
+    # times as many groups and more than four times as many software
+    # entries as v1.0 in 2018." 2026-11-04 (v20.0): groups 60 -> 178
+    # (2.97x), software 189 -> 842 (4.46x). Until 2026-11-04 the headline
+    # said only that both catalogs "have grown since 2018". At the recent
+    # pace (+2 to +6 groups a release) "about three times" (2.5-3.5x) holds
+    # for years.
     first, latest = d["versions"][0], d["versions"][-1]
-    assert first["released"].startswith("2018"), first["released"]
-    for key in ("groups", "software"):
-        assert latest[key] > first[key], (
-            f"'catalogs of groups and software have grown since 2018' — "
-            f"{key}: v{first['version']} {first[key]}, "
-            f"v{latest['version']} {latest[key]}")
+    assert first["version"] == "1.0" and first["released"].startswith(
+        "2018"), (first["version"], first["released"])
+    groups = latest["groups"] / first["groups"]
+    software = latest["software"] / first["software"]
+    assert 2.5 <= groups <= 3.5, (
+        f"'about three times as many groups' — v{latest['version']} has "
+        f"{latest['groups']} against {first['groups']} ({groups:.2f}x)")
+    assert software > 4, (
+        f"'more than four times as many software entries' — "
+        f"v{latest['version']} has {latest['software']} against "
+        f"{first['software']} ({software:.2f}x)")
 
 
 # --------------------------------------------------------------------------
@@ -180,9 +190,10 @@ CLAIMS = [
         check_v7_largest_change,
     ),
     (
-        "ATT&CK's catalogs of groups and software have grown since 2018.",
+        "ATT&CK lists about three times as many groups and more than four "
+        "times as many software entries as v1.0 in 2018.",
         "attack_churn.json",
-        check_catalogs_grew_since_2018,
+        check_catalog_multiples,
     ),
 ]
 

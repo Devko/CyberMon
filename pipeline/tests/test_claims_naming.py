@@ -1,4 +1,4 @@
-"""Claims audit for the Threat-actor Naming Chaos module (pattern:
+"""Claims audit for the Threat Group Aliases module (pattern:
 test_claims_attack.py).
 
 The naming.html copy (site/js/editorial.js) makes verbal claims about numbers
@@ -87,8 +87,9 @@ def check_short_tail_of_ten_or_more(d: dict) -> None:
 
 
 def check_roughly_four_in_ten_have_no_alias(d: dict) -> None:
-    # editorial.js (naming.html hero): "roughly four in ten tracked groups
-    # carry no second name at all"
+    # editorial.js (naming.html alias counts): "Roughly four in ten groups
+    # have none in ATT&CK" (the hero caption repeated it until 2026-11-04).
+    # (2026-11-04, v20.0: 69 of 178, 38.8%.)
     total = d["headline"]["total_groups"]
     zero = next((b["n"] for b in d["distribution"] if b["alt_count"] == 0), 0)
     pct = 100.0 * zero / total if total else 0.0
@@ -108,19 +109,9 @@ CLAIMS = [
         check_most_renamed_at_least_a_dozen,
     ),
     (
-        "a dozen or more names apiece",
-        "naming.json",
-        check_most_renamed_at_least_a_dozen,
-    ),
-    (
         "ATT&CK's most-renamed threat groups carry more than a dozen other names each.",
         "naming.json",
         check_most_renamed_more_than_a_dozen,
-    ),
-    (
-        "roughly four in ten tracked groups carry no second name",
-        "naming.json",
-        check_roughly_four_in_ten_have_no_alias,
     ),
     (
         "Roughly four in ten groups have none",
