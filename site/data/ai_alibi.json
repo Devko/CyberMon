@@ -144,7 +144,7 @@
    "precision": "day",
    "kind": "defensive",
    "label": "Glasswing reports 10,000+ high/critical vulnerabilities in six weeks",
-   "note": "Anthropic and about 50 partners report more than ten thousand high- or critical-severity findings in systemically important software since the April launch; of 1,752 findings from Anthropic's own open-source scan that independent firms assessed, 90.6% were valid true positives. This counts discoveries; any effect on exploitation speed is not yet visible in this module's charts.",
+   "note": "Anthropic and about 50 partners report more than ten thousand high- or critical-severity findings in systemically important software since the April launch; of 1,752 findings from Anthropic's own open-source scan that independent firms assessed, 90.6% were valid true positives. This counts discoveries. Whether public exploit code has appeared sooner since then is not yet measurable in this module's charts.",
    "source": "https://www.anthropic.com/research/glasswing-initial-update"
   },
   {

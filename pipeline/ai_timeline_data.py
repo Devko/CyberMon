@@ -215,8 +215,8 @@ MILESTONES: list[Milestone] = [
         "since the April launch; of 1,752 findings from Anthropic's own "
         "open-source scan that independent firms assessed, 90.6% were valid "
         "true positives. "
-        "This counts discoveries; any effect on exploitation speed is not "
-        "yet visible in this module's charts.",
+        "This counts discoveries. Whether public exploit code has appeared "
+        "sooner since then is not yet measurable in this module's charts.",
         "https://www.anthropic.com/research/glasswing-initial-update",
     ),
     Milestone(
