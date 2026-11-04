@@ -17,7 +17,7 @@ export function render(slots, data) {
   const economies = data.economies || [];
   if (!economies.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", editorial.ui.nodata));
     return;
   }
 

@@ -2,7 +2,7 @@
 // site/data/naming.json. A plain histogram: x = alternate-name count,
 // y = number of tracked groups. The zero bucket (groups the taxonomy never
 // renamed) is muted so the eye reads the renamed tail.
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import {
   C, MONO, mkChart, catAxis, valAxis, baseGrid, baseTooltip, fmtInt,
   escapeHtml,
@@ -10,6 +10,7 @@ import {
 
 export function render(slots, data) {
   const ed = editorial.sections.naming_dist;
+  const L = ed.labels;
   const dist = data.distribution || [];
   if (!dist.length) {
     slots.chart.classList.remove("chart", "chart-tall");
@@ -27,12 +28,12 @@ export function render(slots, data) {
       formatter: (params) => {
         const p = params[0];
         const k = p.axisValue;
-        const plural = k === "1" ? "" : "s";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
-          `${escapeHtml(k)} alternate name${plural}</div>` +
-          `<strong>${fmtInt(p.value)}</strong> tracked group` +
-          `${p.value === 1 ? "" : "s"}`
+          `${escapeHtml(tpl(k === "1" ? L.tipName : L.tipNames, { n: k }))}</div>` +
+          tpl(escapeHtml(p.value === 1 ? L.tipGroup : L.tipGroups), {
+            n: `<strong>${fmtInt(p.value)}</strong>`,
+          })
         );
       },
     },
@@ -49,7 +50,7 @@ export function render(slots, data) {
     }),
     series: [
       {
-        name: "Tracked groups",
+        name: L.groups,
         type: "bar",
         barWidth: "62%",
         data: dist.map((d) => ({

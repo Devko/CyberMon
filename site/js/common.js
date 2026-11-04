@@ -186,7 +186,7 @@ export function showError(slots, file, err = null) {
   // (the payload did not arrive) would otherwise show raw {braces}.
   const section = slots.panel.closest(".chart-section");
   section?.querySelectorAll(".section-caption, .method-body > p:first-child").forEach((p) => {
-    if (/\{\w+\}/.test(p.textContent)) p.textContent = p.textContent.replace(/\{\w+\}/g, "n/a");
+    if (/\{\w+\}/.test(p.textContent)) p.textContent = p.textContent.replace(/\{\w+\}/g, editorial.ui.na);
   });
   clear(slots.chart).classList.remove("chart", "chart-tall");
   slots.chart.removeAttribute("role");
@@ -225,8 +225,8 @@ export function groupNav() {
 
 // [id, href, label] — the nav's instrument links, in display order.
 const INSTRUMENT_LINKS = [
-  ["field", "field.html", "The Field →"],
-  ["observatory", "observatory.html", "Observatory →"],
+  ["field", "field.html", editorial.ui.navField],
+  ["observatory", "observatory.html", editorial.ui.navObservatory],
 ];
 
 // Grouped nav. Phones: one row per group (label over its tabs) inside a
@@ -283,7 +283,7 @@ function renderNav(activeId) {
   groupBar.append(...instrumentLinks("site-nav-field"));
 
   const instruments = el("div", "site-nav-row site-nav-row-instruments");
-  instruments.append(el("span", "site-nav-group-label", "Instruments"), ...instrumentLinks(null));
+  instruments.append(el("span", "site-nav-group-label", editorial.ui.navInstruments), ...instrumentLinks(null));
   nav.append(groupBar, instruments);
 
   if (leading.length) {
@@ -328,8 +328,8 @@ function renderToc() {
   const sections = main ? [...main.querySelectorAll(":scope > .chart-section[id]")] : [];
   if (sections.length < 3) return;
   const toc = el("nav", "page-toc");
-  toc.setAttribute("aria-label", editorial.tocLabel);
-  toc.append(el("span", "page-toc-label", editorial.tocLabel));
+  toc.setAttribute("aria-label", editorial.ui.onThisPage);
+  toc.append(el("span", "page-toc-label", editorial.ui.onThisPage));
   const list = el("ol", "page-toc-list");
   for (const s of sections) {
     const kicker = s.querySelector(".section-kicker")?.textContent?.trim();
@@ -350,7 +350,7 @@ function renderMasthead() {
   if (title && document.body.classList.contains("page-module") && !title.querySelector("a")) {
     const home = el("a", "masthead-home");
     home.href = "index.html";
-    home.setAttribute("aria-label", "CyberMon overview");
+    home.setAttribute("aria-label", editorial.ui.homeLink);
     home.append(...title.childNodes);
     title.append(home);
   }
@@ -424,6 +424,9 @@ function renderMeta(meta) {
     // Unparsable generated_at: do nothing — a broken date is not proof of age.
   }
   const s = meta.sources || {};
+  // Appended to a source's fetch date when the nightly read failed and the
+  // previous edition's value was kept.
+  const carried = ` ${editorial.footer.carriedForward}`;
   const metaEl = clear(document.getElementById("footer-meta"));
   metaEl.append(
     el("p", "mono", tpl(editorial.footer.generatedTemplate, { generated_at: meta.generated_at })),
@@ -434,18 +437,18 @@ function renderMeta(meta) {
       epss_date: s.epss?.score_date ?? "?",
       kev_version: s.kev?.catalog_version ?? "?",
       kev_count: (s.kev?.count ?? 0).toLocaleString("en-US"),
-      nvd_fetched: (s.nvd?.fetched_at ?? "?") + (s.nvd?.stale ? " (carried forward)" : ""),
-      market_fetched: (s.market?.fetched_at ?? "?") + (s.market?.stale ? " (carried forward)" : ""),
-      hibp_fetched: (s.hibp?.fetched_at ?? "?") + (s.hibp?.stale ? " (carried forward)" : ""),
+      nvd_fetched: (s.nvd?.fetched_at ?? "?") + (s.nvd?.stale ? carried : ""),
+      market_fetched: (s.market?.fetched_at ?? "?") + (s.market?.stale ? carried : ""),
+      hibp_fetched: (s.hibp?.fetched_at ?? "?") + (s.hibp?.stale ? carried : ""),
       hibp_count: (s.hibp?.breach_count ?? 0).toLocaleString("en-US"),
       ransomwhere_addresses: (s.ransomwhere?.address_count ?? 0).toLocaleString("en-US"),
       ransomwhere_txs: (s.ransomwhere?.tx_count ?? 0).toLocaleString("en-US"),
-      ransomwhere_fetched: (s.ransomwhere?.fetched_at ?? "?") + (s.ransomwhere?.stale ? " (carried forward)" : ""),
-      attack_version: (s.attack?.latest_version ?? "?") + (s.attack?.stale ? " (carried forward)" : ""),
+      ransomwhere_fetched: (s.ransomwhere?.fetched_at ?? "?") + (s.ransomwhere?.stale ? carried : ""),
+      attack_version: (s.attack?.latest_version ?? "?") + (s.attack?.stale ? carried : ""),
       attack_versions: (s.attack?.version_count ?? 0).toLocaleString("en-US"),
-      apnic_fetched: (s.apnic?.fetched_at ?? "?") + (s.apnic?.stale ? " (carried forward)" : ""),
+      apnic_fetched: (s.apnic?.fetched_at ?? "?") + (s.apnic?.stale ? carried : ""),
       epss_graded: (s.epss_history?.graded ?? 0).toLocaleString("en-US") +
-        (s.epss_history?.stale ? " (carried forward)" : ""),
+        (s.epss_history?.stale ? carried : ""),
       rescore_events: (s.rescores?.events_total ?? 0).toLocaleString("en-US"),
       kev_changelog_events: (s.kev_changelog?.events_total ?? 0).toLocaleString("en-US"),
       exploitdb_entries: (s.exploitdb?.entry_count ?? 0).toLocaleString("en-US"),
@@ -459,12 +462,12 @@ function renderMeta(meta) {
             filings_105: (s.sec_incidents.filings_105 ?? 0).toLocaleString("en-US"),
             filings_801: (s.sec_incidents.filings_801 ?? 0).toLocaleString("en-US"),
             fetched: s.sec_incidents.fetched_at +
-              (s.sec_incidents.stale ? " (carried forward)" : ""),
+              (s.sec_incidents.stale ? carried : ""),
           })
         : editorial.footer.secPending,
       osv_ghsa: (s.osv?.ghsa_advisories ?? 0).toLocaleString("en-US"),
       osv_mal: (s.osv?.mal_reports ?? 0).toLocaleString("en-US"),
-      osv_fetched: (s.osv?.fetched_at ?? "?") + (s.osv?.stale ? " (carried forward)" : ""),
+      osv_fetched: (s.osv?.fetched_at ?? "?") + (s.osv?.stale ? carried : ""),
     }))
   );
 }

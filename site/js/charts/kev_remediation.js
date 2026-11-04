@@ -14,7 +14,7 @@ export function render(slots, data) {
   const rows = data.remediation_span_by_year || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -42,7 +42,8 @@ export function render(slots, data) {
   }
   const cats = rows.map((r) => (r.year === genYear ? `${r.year}*` : String(r.year)));
 
-  const medianName = "Median deadline span";
+  const L = ed.labels;
+  const medianName = L.median;
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 50, top: 24 },
@@ -55,8 +56,11 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.axisValueLabel ?? p.name))}</div>` +
-          `median <strong>${fmtDays(r.median_days)}</strong> · IQR ${fmtDays(r.p25_days)}–${fmtDays(r.p75_days)}<br>` +
-          `${fmtInt(r.n)} entries listed`
+          tpl(escapeHtml(L.tipSpread), {
+            median: `<strong>${fmtDays(r.median_days)}</strong>`,
+            p25: fmtDays(r.p25_days), p75: fmtDays(r.p75_days),
+          }) + "<br>" +
+          escapeHtml(tpl(L.tipCount, { n: fmtInt(r.n) }))
         );
       },
     },

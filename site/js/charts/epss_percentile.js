@@ -36,7 +36,7 @@ export function render(slots, data) {
   // ---- chart ----------------------------------------------------------------
   if (!rows.length || !pct.n) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -49,9 +49,9 @@ export function render(slots, data) {
         const r = rows[p.dataIndex];
         if (!r) return "";
         return (
-          `<div style="color:${C.muted};margin-bottom:4px;">day-before percentile ${escapeHtml(String(r.bucket))}</div>` +
-          `<strong>${fmtPct(r.pct)}</strong> of ranked entries<br>` +
-          `${fmtInt(r.n)} of ${fmtInt(pct.n)} scored entries`
+          `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(tpl(ed.labels.tipBucket, { bucket: String(r.bucket) }))}</div>` +
+          `<strong>${fmtPct(r.pct)}</strong> ${escapeHtml(ed.labels.tipShare)}<br>` +
+          escapeHtml(tpl(ed.labels.tipCount, { n: fmtInt(r.n), total: fmtInt(pct.n) }))
         );
       },
     },

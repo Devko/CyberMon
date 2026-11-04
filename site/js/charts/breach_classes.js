@@ -4,6 +4,7 @@
 // lines are independent — deliberately NOT a 100% stack (quality.js
 // idiom, not cwe_share.js).
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 // Newsprint ramp for up to 6 classes, loudest inks first (the class list
@@ -11,12 +12,14 @@ import { el } from "../dom.js";
 const RAMP = ["#ded7c2", "#c08a45", "#a89f8a", "#8a6f4d", "#847e6d", "#77715f"];
 
 export function render(slots, data) {
+  const ed = editorial.sections.leaks;
+  const L = ed.labels;
   const shares = data.class_shares || {};
   const classes = shares.classes || [];
   const rows = shares.years || [];
   if (!rows.length || !classes.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -39,7 +42,7 @@ export function render(slots, data) {
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(String(params[0].axisValueLabel ?? params[0].name))}` +
-          ` · ${fmtInt(r.n)} breaches</div>`;
+          ` · ${escapeHtml(tpl(L.tipBreaches, { n: fmtInt(r.n) }))}</div>`;
         const body = lines.map(({ name, color }) =>
           `<div style="display:flex;gap:10px;justify-content:space-between;align-items:baseline;">` +
           `<span><span style="display:inline-block;width:8px;height:8px;background:${color};margin-right:6px;"></span>` +

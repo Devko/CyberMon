@@ -12,6 +12,7 @@ import { el, frag } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.c2_age;
+  const L = ed.labels;
   const age = data.c2_age || {};
   const buckets = age.buckets || [];
 
@@ -50,7 +51,7 @@ export function render(slots, data) {
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(p.axisValue)}</div>` +
-          `<strong>${fmtInt(p.value)}</strong> C2 servers`
+          `<strong>${fmtInt(p.value)}</strong> ${escapeHtml(L.servers)}`
         );
       },
     },
@@ -64,7 +65,7 @@ export function render(slots, data) {
     }),
     series: [
       {
-        name: "C2 servers",
+        name: L.servers,
         type: "bar",
         barMaxWidth: 48,
         data: buckets.map((b) => ({

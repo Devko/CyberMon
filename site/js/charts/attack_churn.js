@@ -5,15 +5,16 @@
 // calendar interval, so bars sit at release order (the methodology says
 // so out loud). The first indexed release has no predecessor: no bar.
 import { C, mkChart, catAxis, valAxis, baseText, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml, MONO } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.churn;
+  const L = ed.labels;
   const rows = (data.versions || []).filter((v) => v.churn);
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -34,8 +35,9 @@ export function render(slots, data) {
           `${escapeHtml(`v${r.version} · ${r.released}`)}</div>` +
           `${escapeHtml(ed.legendAdded)} <strong>${fmtInt(r.churn.added)}</strong><br>` +
           `${escapeHtml(ed.legendRetired)} <strong>${fmtInt(r.churn.deprecated + r.churn.revoked)}</strong> ` +
-          `<span style="color:${C.muted};">(${fmtInt(r.churn.deprecated)} deprecated · ` +
-          `${fmtInt(r.churn.revoked)} revoked)</span>`
+          `<span style="color:${C.muted};">${escapeHtml(tpl(L.tipRetired, {
+            deprecated: fmtInt(r.churn.deprecated), revoked: fmtInt(r.churn.revoked),
+          }))}</span>`
         );
       },
     },
@@ -44,7 +46,7 @@ export function render(slots, data) {
       axisLabel: { ...baseText, rotate: 45 },
     }),
     yAxis: valAxis({
-      name: "techniques + sub-techniques",
+      name: L.yAxis,
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
     }),
     series: [

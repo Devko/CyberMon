@@ -27,7 +27,7 @@ export function render(slots, data) {
       }))
     );
   } else {
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
@@ -36,7 +36,7 @@ export function render(slots, data) {
   const rows = data.years || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -54,8 +54,8 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>` +
-          `<strong>${fmtPct(r.pct_security)}</strong> security products<br>` +
-          `${fmtInt(r.security)} of ${fmtInt(r.total)} entries added`
+          `<strong>${fmtPct(r.pct_security)}</strong> ${escapeHtml(ed.labels.tipShare)}<br>` +
+          escapeHtml(tpl(ed.labels.tipCount, { n: fmtInt(r.security), total: fmtInt(r.total) }))
         );
       },
     },

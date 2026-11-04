@@ -23,7 +23,7 @@ const fmtSigned = (v) => `${v > 0 ? "+" : ""}${Number(v).toFixed(1)}%`;
 
 // Honest empty state for launch-time payloads (backfill still running).
 function noDataCard() {
-  return el("div", "nodata-card", "Not enough data yet.");
+  return el("div", "nodata-card", editorial.ui.nodata);
 }
 
 function statCard(entry, labelText) {
@@ -31,7 +31,7 @@ function statCard(entry, labelText) {
   if (!entry || entry.pct_change === null || entry.pct_change === undefined) {
     card.classList.add("is-empty");
     card.append(
-      el("div", "stat-lead muted", "Not enough data yet."),
+      el("div", "stat-lead muted", editorial.ui.nodata),
       el("div", "stat-note", labelText)
     );
     return card;
@@ -145,7 +145,7 @@ export function render(slots, data) {
           const fill = el("div", r.pct_change >= 0 ? "pos" : "neg");
           fill.style.width = `${((clipped / scaleMax) * 50).toFixed(1)}%`;
           if (Math.abs(r.pct_change) > BAR_CAP_PCT) {
-            cell.title = `bar clipped at ±${BAR_CAP_PCT}%`;
+            cell.title = tpl(ed.labels.barClipped, { cap: BAR_CAP_PCT });
           }
           cell.append(fill, el("span", "cellbar-val", fmtSigned(r.pct_change)));
           td.append(cell);

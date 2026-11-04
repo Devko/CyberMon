@@ -22,7 +22,7 @@ export function render(slots, data) {
   const rows = [...(board.most_edited || [])];
   slots.chart.classList.remove("chart");
   if (!rows.length) {
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
   } else {
     const maxEdits = Math.max(...rows.map((r) => r.edits));
     const state = { key: "edits", dir: -1 }; // default: edits, descending

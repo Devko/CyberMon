@@ -63,7 +63,7 @@ export function render(slots, data) {
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(p.axisValue)}</div>` +
-          `<strong>${fmtInt(p.value)}</strong> organizations`
+          tpl(escapeHtml(ed.labels.tipOrgs), { n: `<strong>${fmtInt(p.value)}</strong>` })
         );
       },
     },
@@ -74,7 +74,7 @@ export function render(slots, data) {
       nameTextStyle: { color: C.muted, fontSize: 11 } }),
     series: [
       {
-        name: "Roster size",
+        name: ed.labels.size,
         type: "line",
         smooth: false,
         symbol: "circle",

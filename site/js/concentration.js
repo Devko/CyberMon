@@ -30,7 +30,7 @@ function fillTemplates(cfg, refs, data) {
   if (cfg.id === "concentration") {
     const hhi = data.headline?.hhi_latest;
     refs.methodText.textContent = tpl(editorial.sections.concentration.methodology, {
-      hhi_latest: Number.isFinite(hhi) ? fmtInt(Math.round(hhi)) : "n/a",
+      hhi_latest: Number.isFinite(hhi) ? fmtInt(Math.round(hhi)) : editorial.ui.na,
     });
   } else if (cfg.id === "rejection") {
     const rl = data.rejection_leaderboard || {};

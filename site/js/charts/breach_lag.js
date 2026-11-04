@@ -26,13 +26,13 @@ export function render(slots, data) {
     row.append(
       el("span", "hero-num accent", fmtDays(h.median_days)),
       el("span", "hero-when", tpl(ed.statWhole, { trend_start: trendStart })),
-      el("span", "hero-vs", "vs"),
+      el("span", "hero-vs", editorial.ui.vs),
       el("span", "hero-num", fmtDays(h.median_days_latest)),
       el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year }))
     );
   } else {
     // Young cohort: no invented comparison, just an honest muted state.
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
@@ -58,7 +58,7 @@ export function render(slots, data) {
   const rows = data.lag_by_year || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -66,7 +66,8 @@ export function render(slots, data) {
   const genYear = Number(data.generated_at.slice(0, 4));
   const cats = rows.map((r) => (r.year === genYear ? `${r.year}*` : String(r.year)));
 
-  const medianName = "Median lag";
+  const L = ed.labels;
+  const medianName = L.median;
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 50, top: 24 },
@@ -78,12 +79,15 @@ export function render(slots, data) {
         const r = p && rows[p.dataIndex];
         if (!r) return "";
         const negative = r.pct_negative > 0
-          ? ` · ${fmtPct(r.pct_negative)} before stated breach date`
+          ? ` · ${escapeHtml(tpl(L.tipNegative, { pct: fmtPct(r.pct_negative) }))}`
           : "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.axisValueLabel ?? p.name))}</div>` +
-          `median <strong>${fmtDays(r.median_days)}</strong> · IQR ${fmtDays(r.p25_days)}–${fmtDays(r.p75_days)}<br>` +
-          `${fmtInt(r.n)} breaches · ${fmtPct(r.pct_over_365d)} over a year${negative}`
+          tpl(escapeHtml(L.tipSpread), {
+            median: `<strong>${fmtDays(r.median_days)}</strong>`,
+            p25: fmtDays(r.p25_days), p75: fmtDays(r.p75_days),
+          }) + "<br>" +
+          escapeHtml(tpl(L.tipCount, { n: fmtInt(r.n), over: fmtPct(r.pct_over_365d) })) + negative
         );
       },
     },

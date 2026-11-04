@@ -9,7 +9,7 @@ import { el } from "../dom.js";
 
 // Honest empty state for launch-time payloads (backfill still running).
 function noDataCard() {
-  return el("div", "nodata-card", "Not enough data yet.");
+  return el("div", "nodata-card", editorial.ui.nodata);
 }
 
 const fmtSignedPts = (v) => `${Number(v) > 0 ? "+" : ""}${Number(v).toFixed(0)}`;
@@ -40,7 +40,7 @@ export function render(slots, data) {
   if (!td || td.research_vs_media_index === null || td.research_vs_media_index === undefined) {
     card.classList.add("is-empty");
     card.append(
-      el("div", "stat-lead muted", "Not enough data yet."),
+      el("div", "stat-lead muted", ed.nodata || editorial.ui.nodata),
       el("div", "stat-note", ed.statLabel)
     );
   } else {

@@ -4,6 +4,7 @@
 // actually graded entries. The split is the point — v1..v5 are different
 // models, and pooling them would be the CVSS-v2-vs-v3 landmine again.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 // Newsprint ramp, oldest era darkest — the accent stays reserved for the
@@ -17,12 +18,14 @@ const ERA_COLORS = {
 };
 
 export function render(slots, data) {
+  const ed = editorial.sections.distribution;
+  const L = ed.labels;
   const dist = data.distribution || {};
   const buckets = dist.buckets || [];
   const byModel = dist.by_model || [];
   if (!buckets.length || !byModel.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -30,8 +33,11 @@ export function render(slots, data) {
   const eras = new Map((data.model_eras || []).map((e) => [e.label, e]));
   const seriesName = (m) => {
     const era = eras.get(m.model);
-    return era ? `EPSS ${m.model} (${era.from.slice(0, 4)}–${era.to ? era.to.slice(0, 4) : "now"})`
-               : `EPSS ${m.model}`;
+    return era
+      ? tpl(L.seriesEra, {
+        model: m.model, from: era.from.slice(0, 4), to: era.to ? era.to.slice(0, 4) : L.eraOpen,
+      })
+      : tpl(L.seriesModel, { model: m.model });
   };
 
   const chart = mkChart(slots.chart);
@@ -49,14 +55,14 @@ export function render(slots, data) {
             if (!m) return "";
             const n = m.counts[bucket] ?? 0;
             return `${p.marker} ${escapeHtml(p.seriesName)} ` +
-              `<strong>${fmtInt(n)}</strong> of ${fmtInt(m.n)} scored`;
+              tpl(escapeHtml(L.tipCount), { n: `<strong>${fmtInt(n)}</strong>`, total: fmtInt(m.n) });
           })
           .join("<br>");
-        return `<div style="color:${C.muted};margin-bottom:4px;">day-before score ${escapeHtml(String(bucket))}</div>` + rows;
+        return `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(tpl(L.tipBucket, { bucket: String(bucket) }))}</div>` + rows;
       },
     },
     xAxis: catAxis(buckets.map(String)),
-    yAxis: valAxis({ name: "scored entries", nameTextStyle: { color: C.faint, fontSize: 10 } }),
+    yAxis: valAxis({ name: L.yAxis, nameTextStyle: { color: C.faint, fontSize: 10 } }),
     series: byModel.map((m) => ({
       name: seriesName(m),
       type: "bar",

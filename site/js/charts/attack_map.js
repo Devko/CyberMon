@@ -10,6 +10,7 @@ import { el } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.map;
+  const L = ed.labels;
   const rows = data.versions || [];
 
   // ---- headline stat: active technique+sub-technique total, first vs latest
@@ -23,7 +24,7 @@ export function render(slots, data) {
       el("span", "hero-when", tpl(ed.statLatest, {
         version: h.latest_version, year: h.released_latest.slice(0, 4),
       })),
-      el("span", "hero-vs", "vs"),
+      el("span", "hero-vs", editorial.ui.vs),
       el("span", "hero-num", fmtInt(h.techniques_first + h.subtechniques_first)),
       el("span", "hero-when", tpl(ed.statAgo, {
         version: h.first_version, year: h.released_first.slice(0, 4),
@@ -31,7 +32,7 @@ export function render(slots, data) {
     );
   } else {
     // Empty history: no invented comparison, just an honest muted state.
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
@@ -39,7 +40,7 @@ export function render(slots, data) {
   // ---- chart ----------------------------------------------------------------
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -63,7 +64,7 @@ export function render(slots, data) {
     },
     xAxis: timeAxis(),
     yAxis: valAxis({
-      name: "active entries",
+      name: L.yAxis,
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
     }),
     series: [

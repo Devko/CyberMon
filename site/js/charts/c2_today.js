@@ -62,8 +62,10 @@ export function render(slots, data) {
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(r.label)}</div>` +
-          `<strong>${fmtInt(r.listed)}</strong> listed · ` +
-          `<strong>${fmtInt(r.online)}</strong> online`
+          tpl(escapeHtml(ed.labels.tipCounts), {
+            listed: `<strong>${fmtInt(r.listed)}</strong>`,
+            online: `<strong>${fmtInt(r.online)}</strong>`,
+          })
         );
       },
     },

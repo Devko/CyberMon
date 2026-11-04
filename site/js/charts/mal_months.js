@@ -108,8 +108,8 @@ export function render(slots, data, refs) {
           return (
             `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(monthLabel(m.month))}${m.partial ? " *" : ""}</div>` +
             rows +
-            `<div style="color:${C.muted};margin-top:4px;">${fmtInt(m.total)} reports` +
-            (m.withdrawn ? ` · ${fmtInt(m.withdrawn)} withdrawn` : "") + `</div>`
+            `<div style="color:${C.muted};margin-top:4px;">${escapeHtml(tpl(ed.labels.tipReports, { n: fmtInt(m.total) }))}` +
+            (m.withdrawn ? ` · ${escapeHtml(tpl(ed.labels.tipWithdrawn, { n: fmtInt(m.withdrawn) }))}` : "") + `</div>`
           );
         },
       },

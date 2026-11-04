@@ -6,6 +6,7 @@ import { mkToggle } from "../ui.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.volume;
+  const L = ed.labels;
   const edp = editorial.projection;
   const edl = editorial.linuxToggle;
   // Label the still-filling generation year so its dip reads as "partial".
@@ -64,8 +65,8 @@ export function render(slots, data) {
       let html = tooltipRows(params, fmtInt);
       if (hasProj && params.some((p) => p.dataIndex === projIdx)) {
         html += tooltipFootnote([
-          tpl(edp.tooltipProjected, { name: "Published", n: fmtInt(proj.published) }),
-          tpl(edp.tooltipProjected, { name: "Rejected", n: fmtInt(proj.rejected) }),
+          tpl(edp.tooltipProjected, { name: L.published, n: fmtInt(proj.published) }),
+          tpl(edp.tooltipProjected, { name: L.rejected, n: fmtInt(proj.rejected) }),
           tpl(edp.tooltipElapsed, { pct: fmtPct(proj.elapsed * 100) }),
         ]);
       }
@@ -75,7 +76,7 @@ export function render(slots, data) {
     chart.setOption(
       {
         grid: { ...baseGrid, left: 54, top: 44 },
-        legend: { ...baseLegend, data: ["Published", "Rejected"] },
+        legend: { ...baseLegend, data: [L.published, L.rejected] },
         tooltip: { ...baseTooltip, trigger: "axis", formatter: fmtTooltip },
         xAxis: catAxis(years, { boundaryGap: false }),
         yAxis: {
@@ -91,17 +92,18 @@ export function render(slots, data) {
         },
         series: [
           {
-            name: "Published", type: "line",
+            name: L.published, type: "line",
             data: rows.map((d) => d.published),
             color: C.ink, symbol: "none", lineStyle: { width: 2 },
             areaStyle: { color: C.ink, opacity: 0.05 },
           },
           {
-            name: "Rejected", type: "line",
+            name: L.rejected, type: "line",
             data: rows.map((d) => d.rejected),
             color: C.accent, symbol: "none", lineStyle: { width: 1.5 },
           },
           ...(hasProj
+            // internal ids ("_Published projected"), never shown
             ? [projSeries("Published", "published", C.ink),
                projSeries("Rejected", "rejected", C.accent)]
             : []),

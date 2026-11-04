@@ -27,7 +27,7 @@ const SECTIONS = [
 
 const pctOf = (counts, key) => {
   const total = Object.values(counts || {}).reduce((a, b) => a + b, 0);
-  return total ? fmtPct((counts[key] / total) * 100) : "n/a";
+  return total ? fmtPct((counts[key] / total) * 100) : editorial.ui.na;
 };
 
 // Fill editorial {placeholders} from the contract itself.
@@ -39,11 +39,11 @@ export function fillTemplates(id, refs, data) {
   let vars = common;
   if (id === "tags_trend") {
     vars = {
-      first: fmtInt(h.unsupported_first), first_year: h.unsupported_first_year ?? "n/a",
-      latest: fmtInt(h.unsupported_latest), latest_year: h.latest_year ?? "n/a",
-      current: fmtInt(h.unsupported_current), current_year: h.current_year ?? "n/a",
+      first: fmtInt(h.unsupported_first), first_year: h.unsupported_first_year ?? editorial.ui.na,
+      latest: fmtInt(h.unsupported_latest), latest_year: h.latest_year ?? editorial.ui.na,
+      current: fmtInt(h.unsupported_current), current_year: h.current_year ?? editorial.ui.na,
       dmin: fmtInt(h.disputed_min), dmax: fmtInt(h.disputed_max),
-      dfrom: h.disputed_from ?? "n/a", dto: h.disputed_to ?? "n/a",
+      dfrom: h.disputed_from ?? editorial.ui.na, dto: h.disputed_to ?? editorial.ui.na,
     };
   } else if (id === "tags_board") {
     const u = data.boards?.[UWA] || {};
@@ -52,7 +52,7 @@ export function fillTemplates(id, refs, data) {
       ...common,
       u_cnas: fmtInt(u.cna_count), active: fmtInt(u.active_cnas),
       u_top3: fmtPct(u.top3_share_pct),
-      d_top: d.cnas?.[0]?.cna ?? "n/a", d_top1: fmtPct(d.top1_share_pct),
+      d_top: d.cnas?.[0]?.cna ?? editorial.ui.na, d_top1: fmtPct(d.top1_share_pct),
       min_n: fmtInt(u.min_n),
     };
   } else if (id === "tags_severity") {

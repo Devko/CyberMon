@@ -3,7 +3,7 @@
 // base score, and usable affected-version data. Newsprint-neutral palette —
 // this is a gap report, not an alarm, so the accent stays in its holster.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 export function render(slots, data) {
@@ -11,7 +11,7 @@ export function render(slots, data) {
   const rows = data.years || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -38,7 +38,7 @@ export function render(slots, data) {
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(String(params[0].axisValueLabel ?? params[0].name))}` +
-          ` · ${fmtInt(r.n)} records</div>`;
+          ` · ${escapeHtml(tpl(ed.labels.tipRecords, { n: fmtInt(r.n) }))}</div>`;
         const body = LINES.map(({ key, name, color }) =>
           `<div style="display:flex;gap:10px;justify-content:space-between;align-items:baseline;">` +
           `<span><span style="display:inline-block;width:8px;height:8px;background:${color};margin-right:6px;"></span>` +

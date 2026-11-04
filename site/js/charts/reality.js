@@ -15,6 +15,7 @@ function statCard(bigText, leadText, noteText, accent) {
 
 export function render(slots, data) {
   const ed = editorial.sections.reality;
+  const L = ed.labels;
 
   // ---- headline stats -------------------------------------------------------
   const hs = data.headline;
@@ -60,18 +61,19 @@ export function render(slots, data) {
     tooltip: {
       ...baseTooltip,
       formatter: (p) =>
-        `<div style="color:${C.muted};margin-bottom:4px;">CVSS ${escapeHtml(yCats[p.value[1]])} × EPSS ${escapeHtml(xCats[p.value[0]])}</div>` +
-        `<strong>${fmtInt(p.data.raw)}</strong> CVEs`,
+        `<div style="color:${C.muted};margin-bottom:4px;">` +
+        `${escapeHtml(tpl(L.tipCell, { cvss: yCats[p.value[1]], epss: xCats[p.value[0]] }))}</div>` +
+        tpl(escapeHtml(L.tipCves), { n: `<strong>${fmtInt(p.data.raw)}</strong>` }),
     },
     xAxis: catAxis(xCats, {
       position: "bottom",
-      name: "EPSS: predicted probability of exploitation →",
+      name: L.xAxis,
       nameLocation: "middle", nameGap: 32,
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
       splitArea: { show: false },
     }),
     yAxis: catAxis(yCats, {
-      name: "CVSS →", nameLocation: "end",
+      name: L.yAxis, nameLocation: "end",
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10, align: "right" },
     }),
     visualMap: {
@@ -100,7 +102,11 @@ export function render(slots, data) {
   const kevChart = mkChart(kevEl);
   kevChart.setOption({
     grid: { left: 74, right: 40, top: 8, bottom: 8 },
-    tooltip: { ...baseTooltip, formatter: (p) => `CVSS ${escapeHtml(p.name)}<br><strong>${fmtInt(p.value)}</strong> KEV entries` },
+    tooltip: {
+      ...baseTooltip,
+      formatter: (p) => `${escapeHtml(tpl(L.tipKevBucket, { bucket: p.name }))}<br>` +
+        tpl(escapeHtml(L.tipKev), { n: `<strong>${fmtInt(p.value)}</strong>` }),
+    },
     xAxis: { type: "value", show: false },
     yAxis: catAxis(kevCats, { axisLine: { show: false } }),
     series: [{

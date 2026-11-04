@@ -127,7 +127,9 @@ export function render(slots, data) {
           ).join("");
         const totals =
           `<div style="color:${C.muted};margin-top:4px;">` +
-          `${fmtInt(pt.online_total)} online / ${fmtInt(pt.listed_total)} listed</div>`;
+          `${escapeHtml(tpl(ed.labels.tipTotals, {
+            online: fmtInt(pt.online_total), listed: fmtInt(pt.listed_total),
+          }))}</div>`;
         return head + (rows || "") + totals;
       },
     },
