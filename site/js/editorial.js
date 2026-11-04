@@ -128,13 +128,13 @@ export const editorial = {
           href: "field.html",
           num: "3D",
           label: "The Field",
-          headline: "Every published CVE is placed as one point in a 3D view.",
+          headline: "Every published CVE as one point in a 3D view.",
           blurb:
-            "Published records from the cvelistV5 corpus in a WebGL view. Arrange them by " +
-            "publication date, score and EPSS; by days from publication to the first public " +
-            "exploit and to the KEV listing; by CVSS and EPSS bucket; or by assigner, vendor, " +
-            "weakness or NVD status. Hover to read a record; a link keeps the arrangement and " +
-            "filters. Rebuilt nightly from the same corpus pass as the charts.",
+            "Arrange the cvelistV5 corpus by publication date, score and EPSS, by days to " +
+            "the first public exploit and to the KEV listing, on a CVSS × EPSS grid, or by " +
+            "assigner, vendor, weakness or NVD status. Filter it, look up a CVE, or list " +
+            "the shown records as a table; the page address keeps the view. Rebuilt " +
+            "nightly with the charts.",
         },
         {
           id: "observatory",
