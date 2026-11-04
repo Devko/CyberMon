@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-11-03",
+ "last_observed": "2026-11-04",
  "kinds": [
   "kev_added",
   "kev_removed",
@@ -38,34 +38,34 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4413
+   "events": 4414
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5746
+   "events": 5757
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 90,
-   "nights": 100,
+   "events": 91,
+   "nights": 101,
    "excluded_reset": 0,
    "excluded_anomaly": 10
   }
  },
  "counts": {
-  "kev_added": 1464,
+  "kev_added": 1465,
   "kev_removed": 9,
   "kev_flag": 317,
   "kev_due": 22,
   "kev_field": 785,
   "kev_text": 1816,
-  "rescore": 137,
+  "rescore": 148,
   "version_shift": 29,
   "first_score": 5575,
   "score_removed": 5,
-  "epss_move": 90
+  "epss_move": 91
  },
- "cves": 7549,
+ "cves": 7561,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10315,6 +10315,19 @@
   "1774|CVE-2025-0411|10|0.67071->0.47574|0",
   "1775|CVE-2020-5504|10|0.39036->0.28046|0",
   "1776|CVE-2026-119716|6|v4.0 9.2->v4.0 9.3 (VulnCheck)|0",
-  "1776|CVE-2025-63387|8|v3.1 4.3 (mitre)|0"
+  "1776|CVE-2025-63387|8|v3.1 4.3 (mitre)|0",
+  "1776|CVE-2025-63387|10|0.29929->0.18712|0",
+  "1777|CVE-2026-119977|0||0",
+  "1777|CVE-2026-102710|6|v4.0 9.3->v4.0 8.5 (eclipse)|0",
+  "1777|CVE-2026-104080|6|v4.0 8.6->v4.0 8.5 (VulnCheck)|0",
+  "1777|CVE-2026-119728|6|v3.1 5.5->v3.1 6.5 (redhat)|0",
+  "1777|CVE-2026-119777|6|v3.1 7.8->v3.1 8.8 (redhat)|0",
+  "1777|CVE-2026-73696|6|v4.0 9.3->v4.0 8.6 (VulnCheck)|0",
+  "1777|CVE-2026-77876|6|v4.0 9.3->v4.0 8.7 (VulnCheck)|0",
+  "1777|CVE-2026-77877|6|v4.0 8.6->v4.0 8.5 (VulnCheck)|0",
+  "1777|CVE-2026-77878|6|v4.0 8.6->v4.0 8.5 (VulnCheck)|0",
+  "1777|CVE-2026-77879|6|v4.0 8.5->v4.0 8.4 (VulnCheck)|0",
+  "1777|CVE-2026-77880|6|v4.0 8.6->v4.0 8.5 (VulnCheck)|0",
+  "1777|CVE-2026-77881|6|v4.0 6.9->v4.0 6.8 (VulnCheck)|0"
  ]
 }

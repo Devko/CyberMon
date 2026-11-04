@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "roster_size": {
   "min_n": 2,
-  "current": 563,
-  "net_change": 33,
+  "current": 564,
+  "net_change": 34,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -417,6 +417,10 @@
    {
     "date": "2026-11-03",
     "size": 563
+   },
+   {
+    "date": "2026-11-04",
+    "size": 564
    }
   ]
  },
@@ -449,23 +453,30 @@
     "departed": 1,
     "renamed": 1,
     "scope_changed": 5
+   },
+   {
+    "month": "2026-11",
+    "onboarded": 1,
+    "departed": 0,
+    "renamed": 0,
+    "scope_changed": 1
    }
   ],
   "totals": {
-   "onboarded": 34,
+   "onboarded": 35,
    "departed": 1,
    "renamed": 2,
-   "scope_changed": 13
+   "scope_changed": 14
   },
-  "events_total": 50,
+  "events_total": 52,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 563,
+  "total": 564,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 458
+    "n": 459
    },
    {
     "label": "Open Source",
@@ -503,7 +514,7 @@
   "by_role": [
    {
     "label": "CNA",
-    "n": 560
+    "n": 561
    },
    {
     "label": "Root",
@@ -529,7 +540,7 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 470
+    "n": 471
    },
    {
     "label": "CISA",
@@ -551,7 +562,7 @@
    },
    {
     "label": "ENISA",
-    "n": 29
+    "n": 30
    },
    {
     "label": "redhat",
@@ -581,7 +592,7 @@
    },
    {
     "label": "Germany",
-    "n": 28
+    "n": 29
    },
    {
     "label": "China",
@@ -754,13 +765,13 @@
   ]
  },
  "headline": {
-  "roster_total": 563,
+  "roster_total": 564,
   "top_type": "Vendor",
-  "top_type_n": 458,
+  "top_type_n": 459,
   "country_count": 43,
   "root_count": 7,
-  "mitre_n": 470,
+  "mitre_n": 471,
   "cisa_n": 91,
-  "assigning_n": 562
+  "assigning_n": 563
  }
 }

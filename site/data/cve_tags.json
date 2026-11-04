@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -197,7 +197,7 @@
   },
   {
    "year": 2025,
-   "published": 48151,
+   "published": 48150,
    "counts": {
     "unsupported-when-assigned": 423,
     "disputed": 138,
@@ -206,9 +206,9 @@
   },
   {
    "year": 2026,
-   "published": 90433,
+   "published": 91214,
    "counts": {
-    "unsupported-when-assigned": 484,
+    "unsupported-when-assigned": 493,
     "disputed": 70,
     "exclusively-hosted-service": 257
    }
@@ -221,33 +221,40 @@
  },
  "boards": {
   "unsupported-when-assigned": {
-   "total": 1257,
+   "total": 1266,
    "cna_count": 52,
-   "active_cnas": 489,
-   "top1_share_pct": 38.2,
-   "top3_share_pct": 69.8,
+   "active_cnas": 490,
+   "top1_share_pct": 37.9,
+   "top3_share_pct": 69.3,
    "min_n": 5,
    "cnas": [
     {
      "cna": "VulDB",
      "n": 480,
-     "share_pct": 38.2,
-     "cna_published": 17787,
+     "share_pct": 37.9,
+     "cna_published": 17807,
      "rate_pct": 2.7
     },
     {
      "cna": "VulnCheck",
      "n": 282,
-     "share_pct": 22.4,
-     "cna_published": 10486,
+     "share_pct": 22.3,
+     "cna_published": 10608,
      "rate_pct": 2.7
     },
     {
      "cna": "mitre",
      "n": 115,
      "share_pct": 9.1,
-     "cna_published": 28703,
+     "cna_published": 28706,
      "rate_pct": 0.4
+    },
+    {
+     "cna": "apache",
+     "n": 44,
+     "share_pct": 3.5,
+     "cna_published": 2240,
+     "rate_pct": 2.0
     },
     {
      "cna": "CERT-PL",
@@ -257,23 +264,16 @@
      "rate_pct": 7.0
     },
     {
-     "cna": "apache",
-     "n": 42,
-     "share_pct": 3.3,
-     "cna_published": 2237,
-     "rate_pct": 1.9
-    },
-    {
      "cna": "icscert",
      "n": 42,
      "share_pct": 3.3,
-     "cna_published": 1939,
+     "cna_published": 1941,
      "rate_pct": 2.2
     },
     {
      "cna": "TR-CERT",
      "n": 31,
-     "share_pct": 2.5,
+     "share_pct": 2.4,
      "cna_published": 871,
      "rate_pct": 3.6
     },
@@ -281,27 +281,27 @@
      "cna": "INCIBE",
      "n": 30,
      "share_pct": 2.4,
-     "cna_published": 1174,
-     "rate_pct": 2.6
+     "cna_published": 1189,
+     "rate_pct": 2.5
     },
     {
      "cna": "jpcert",
      "n": 24,
      "share_pct": 1.9,
-     "cna_published": 1381,
+     "cna_published": 1382,
      "rate_pct": 1.7
     },
     {
      "cna": "Zyxel",
      "n": 18,
      "share_pct": 1.4,
-     "cna_published": 158,
-     "rate_pct": 11.4
+     "cna_published": 160,
+     "rate_pct": 11.2
     },
     {
      "cna": "twcert",
      "n": 17,
-     "share_pct": 1.4,
+     "share_pct": 1.3,
      "cna_published": 690,
      "rate_pct": 2.5
     },
@@ -309,7 +309,7 @@
      "cna": "TPLink",
      "n": 13,
      "share_pct": 1.0,
-     "cna_published": 215,
+     "cna_published": 218,
      "rate_pct": 6.0
     }
    ]
@@ -317,7 +317,7 @@
   "disputed": {
    "total": 573,
    "cna_count": 13,
-   "active_cnas": 489,
+   "active_cnas": 490,
    "top1_share_pct": 81.2,
    "top3_share_pct": 97.7,
    "min_n": 5,
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 465,
      "share_pct": 81.2,
-     "cna_published": 28703,
+     "cna_published": 28706,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 92,
      "share_pct": 16.1,
-     "cna_published": 17787,
+     "cna_published": 17807,
      "rate_pct": 0.5
     }
    ]
@@ -341,42 +341,42 @@
  },
  "severity": {
   "all": {
-   "critical": 21891,
-   "high": 79523,
-   "medium": 95248,
-   "low": 8847,
-   "unscored": 26845
+   "critical": 21967,
+   "high": 79872,
+   "medium": 95586,
+   "low": 8880,
+   "unscored": 26829
   },
   "unsupported-when-assigned": {
    "tagged": {
-    "critical": 222,
+    "critical": 223,
     "high": 473,
-    "medium": 477,
+    "medium": 483,
     "low": 41,
-    "unscored": 44
+    "unscored": 46
    },
    "same_cnas_untagged": {
-    "critical": 10783,
-    "high": 28448,
-    "medium": 43327,
-    "low": 3098,
-    "unscored": 10152
+    "critical": 10802,
+    "high": 28562,
+    "medium": 43463,
+    "low": 3113,
+    "unscored": 10126
    }
   },
   "disputed": {
    "tagged": {
     "critical": 76,
     "high": 114,
-    "medium": 174,
+    "medium": 175,
     "low": 47,
-    "unscored": 162
+    "unscored": 161
    },
    "same_cnas_untagged": {
-    "critical": 6692,
-    "high": 15325,
-    "medium": 26631,
-    "low": 2401,
-    "unscored": 9171
+    "critical": 6704,
+    "high": 15393,
+    "medium": 26707,
+    "low": 2411,
+    "unscored": 9153
    }
   }
  },
@@ -384,15 +384,15 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 3577
+    "n": 3607
    },
    {
     "tag": "x_freeware",
-    "n": 1980
+    "n": 1981
    },
    {
     "tag": "x_known-exploited-vulnerability",
-    "n": 243
+    "n": 244
    },
    {
     "tag": "x_Charger",
@@ -415,7 +415,7 @@
    }
   ],
   "schema_totals": {
-   "unsupported-when-assigned": 1348,
+   "unsupported-when-assigned": 1357,
    "disputed": 1512,
    "exclusively-hosted-service": 436
   }
@@ -427,7 +427,7 @@
   "unsupported_latest": 423,
   "unsupported_latest_share_pct": 0.9,
   "current_year": 2026,
-  "unsupported_current": 484,
+  "unsupported_current": 493,
   "disputed_from": 2020,
   "disputed_to": 2025,
   "disputed_min": 85,

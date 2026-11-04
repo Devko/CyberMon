@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -248,9 +248,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 629,
+    "cves": 630,
     "this_year": 2026,
-    "cves_this_year": 504,
+    "cves_this_year": 505,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -360,22 +360,22 @@
     },
     {
      "month": "2026-11",
-     "vendor": 0,
-     "total": 0
+     "vendor": 1,
+     "total": 1
     }
    ],
    "severity": {
     "critical": 42,
-    "high": 189,
+    "high": 190,
     "medium": 372,
     "low": 22,
     "unscored": 4
    },
    "funnel": {
-    "credited": 629,
-    "scored": 625,
-    "high_or_critical": 231,
-    "high_or_critical_pct": 36.7,
+    "credited": 630,
+    "scored": 626,
+    "high_or_critical": 232,
+    "high_or_critical_pct": 36.8,
     "poc": 16,
     "poc_pct": 2.5,
     "kev": 3,
@@ -390,20 +390,20 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 66878,
-  "scored": 66571,
-  "high_or_critical": 28312,
+  "credited": 67197,
+  "scored": 66888,
+  "high_or_critical": 28443,
   "high_or_critical_pct": 42.3,
-  "poc": 1007,
+  "poc": 1013,
   "poc_pct": 1.5,
-  "kev": 91,
+  "kev": 92,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6475,
-   "high": 21837,
-   "medium": 36196,
-   "low": 2063,
-   "unscored": 307
+   "critical": 6487,
+   "high": 21956,
+   "medium": 36362,
+   "low": 2083,
+   "unscored": 309
   }
  },
  "profile": {
@@ -425,37 +425,37 @@
    }
   },
   "vendor": {
-   "n": 629,
+   "n": 630,
    "median_cvss": 6.3,
-   "median_epss_pctile": 31.1,
+   "median_epss_pctile": 31.2,
    "epss_scored": 629,
    "recent_days": 90,
-   "recent_pct": 39.6,
+   "recent_pct": 38.7,
    "poc_pct": 2.5,
    "kev_pct": 0.5,
-   "memory_pct": 25.8,
-   "cna_scored_pct": 82.0,
+   "memory_pct": 25.7,
+   "cna_scored_pct": 82.1,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 101,
-    "pct": 16.1
+    "n": 102,
+    "pct": 16.2
    }
   },
   "baseline": {
-   "n": 66878,
+   "n": 67197,
    "median_cvss": 6.9,
    "median_epss_pctile": 27.8,
-   "epss_scored": 66701,
+   "epss_scored": 66932,
    "recent_days": 90,
    "recent_pct": 28.3,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
-   "memory_pct": 9.3,
+   "memory_pct": 9.4,
    "cna_scored_pct": 90.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 12698,
-    "pct": 19.0
+    "n": 12724,
+    "pct": 18.9
    }
   }
  },
@@ -470,11 +470,11 @@
     },
     "vendor": {
      "n": 162,
-     "pct": 25.8
+     "pct": 25.7
     },
     "baseline": {
-     "n": 6253,
-     "pct": 9.3
+     "n": 6285,
+     "pct": 9.4
     }
    },
    {
@@ -485,12 +485,12 @@
      "pct": 4.1
     },
     "vendor": {
-     "n": 155,
-     "pct": 24.6
+     "n": 156,
+     "pct": 24.8
     },
     "baseline": {
-     "n": 24385,
-     "pct": 36.5
+     "n": 24431,
+     "pct": 36.4
     }
    },
    {
@@ -505,7 +505,7 @@
      "pct": 11.4
     },
     "baseline": {
-     "n": 17107,
+     "n": 17174,
      "pct": 25.6
     }
    },
@@ -521,7 +521,7 @@
      "pct": 10.3
     },
     "baseline": {
-     "n": 5975,
+     "n": 6004,
      "pct": 8.9
     }
    },
@@ -537,7 +537,7 @@
      "pct": 4.8
     },
     "baseline": {
-     "n": 1229,
+     "n": 1234,
      "pct": 1.8
     }
    },
@@ -553,8 +553,8 @@
      "pct": 9.7
     },
     "baseline": {
-     "n": 4304,
-     "pct": 6.4
+     "n": 4345,
+     "pct": 6.5
     }
    },
    {
@@ -569,7 +569,7 @@
      "pct": 12.7
     },
     "baseline": {
-     "n": 6551,
+     "n": 6589,
      "pct": 9.8
     }
    },
@@ -585,8 +585,8 @@
      "pct": 0.6
     },
     "baseline": {
-     "n": 1074,
-     "pct": 1.6
+     "n": 1135,
+     "pct": 1.7
     }
    }
   ]
@@ -652,16 +652,16 @@
    ]
   },
   "vendor": {
-   "cves": 629,
-   "named": 629,
-   "distinct": 169,
+   "cves": 630,
+   "named": 630,
+   "distinct": 171,
    "top_share_n": 5,
-   "top_share_pct": 31.3,
+   "top_share_pct": 31.0,
    "projects": [
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 102,
-     "pct": 16.2
+     "n": 100,
+     "pct": 15.9
     },
     {
      "label": "curl",
@@ -756,14 +756,14 @@
   },
   {
    "year": 2025,
-   "published": 48151,
+   "published": 48150,
    "with_credits": 22712,
    "pct": 47.2
   },
   {
    "year": 2026,
-   "published": 90433,
-   "with_credits": 39346,
+   "published": 91214,
+   "with_credits": 39665,
    "pct": 43.5
   }
  ],
@@ -913,14 +913,14 @@
    "label": "Fluid Attacks AI SAST",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 41,
-   "counted": 41,
-   "system": 41,
+   "cves": 42,
+   "counted": 42,
+   "system": 42,
    "org": 0,
    "fix": 0,
    "severity": {
     "critical": 0,
-    "high": 14,
+    "high": 15,
     "medium": 27,
     "low": 0,
     "unscored": 0
@@ -928,11 +928,11 @@
    "poc": 0,
    "kev": 0,
    "first_month": "2026-04",
-   "last_month": "2026-10",
+   "last_month": "2026-11",
    "top_cnas": [
     {
      "cna": "Fluid Attacks",
-     "n": 41
+     "n": 42
     }
    ]
   },

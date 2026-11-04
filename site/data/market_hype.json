@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -305,6 +305,11 @@
       "month": "2026-09",
       "n": 192,
       "index": 17.7
+     },
+     {
+      "month": "2026-10",
+      "n": 120,
+      "index": 11.1
      }
     ],
     "hn": [
@@ -1497,7 +1502,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-10",
+     "pct_change": 1.8,
+     "n_latest_12m": 4449,
+     "n_prior_12m": 4371
+    },
     "hn": {
      "latest_month": "2026-10",
      "pct_change": 36.2,
@@ -1523,7 +1533,12 @@
      "n_prior_12m": 526
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 21.5,
+    "arxiv_index_avg3m": 73.3,
+    "research_vs_media_index": 51.8,
+    "direction": "research_leads"
+   }
   },
   {
    "id": "sbom",

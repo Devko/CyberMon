@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -13,14 +13,14 @@
  "window_years": 5,
  "min_n": 2000,
  "measured_total": 120195,
- "kev_total": 1550,
+ "kev_total": 1552,
  "ranks": [
   {
    "cwe": "CWE-79",
    "name": "Cross-site scripting",
    "official_rank": 1,
    "measured_rank": 1,
-   "measured_n": 21401,
+   "measured_n": 21402,
    "measured_share": 17.8,
    "kev_n": 31
   },
@@ -218,7 +218,7 @@
    "name": "Command injection",
    "official_rank": 23,
    "measured_rank": 20,
-   "measured_n": 1520,
+   "measured_n": 1519,
    "measured_share": 1.3,
    "kev_n": 35
   },
@@ -250,6 +250,6 @@
   "in_measured_top25": 22,
   "outside_measured_top25": 3,
   "in_kev": 24,
-  "kev_coverage_pct": 64.5
+  "kev_coverage_pct": 64.4
  }
 }

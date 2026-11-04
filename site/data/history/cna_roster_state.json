@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-11-03",
+ "last_observed": "2026-11-04",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -1948,6 +1948,13 @@
    "scope": "1dc636955c50",
    "type": "Vendor"
   },
+  "Paessler": {
+   "cna_id": "CNA-2026-0083",
+   "country": "Germany",
+   "org": "Paessler GmbH",
+   "scope": "19f31c0c239f",
+   "type": "Vendor"
+  },
   "Palantir": {
    "cna_id": "CNA-2021-0041",
    "country": "USA",
@@ -2827,7 +2834,7 @@
    "cna_id": "CNA-2021-0022",
    "country": "USA",
    "org": "Wordfence",
-   "scope": "a950c3244d04",
+   "scope": "027693ac7021",
    "type": "Researcher + Vendor"
   },
   "WrenSecurity": {
@@ -4356,6 +4363,10 @@
   [
    "2026-11-03",
    563
+  ],
+  [
+   "2026-11-04",
+   564
   ]
  ],
  "version": 1

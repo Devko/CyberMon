@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -20840,6 +20840,23 @@
     {
      "finder": "anthropic",
      "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-115541",
+   "published": "2026-11-03",
+   "cna": "Fluid Attacks",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "fluid",
+     "tier": "system",
      "roles": [
       "finder"
      ]

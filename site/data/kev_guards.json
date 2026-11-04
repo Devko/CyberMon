@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 282,
+   "total": 283,
    "security": 51,
-   "pct_security": 18.1
+   "pct_security": 18.0
   }
  ],
  "vendors": [
@@ -412,6 +412,16 @@
    "median_gap_days": 159.0
   },
   {
+   "vendor": "WordPress",
+   "entries": 7,
+   "dated_entries": 7,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-11-03",
+   "median_gap_days": 19.5
+  },
+  {
    "vendor": "Broadcom",
    "entries": 6,
    "dated_entries": 6,
@@ -450,16 +460,6 @@
    "first_added": "2022-03-25",
    "last_added": "2025-09-03",
    "median_gap_days": 78.0
-  },
-  {
-   "vendor": "WordPress",
-   "entries": 6,
-   "dated_entries": 6,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2026-09-25",
-   "median_gap_days": 0.0
   },
   {
    "vendor": "Check Point",
@@ -579,13 +579,13 @@
    "pct_known": 35.7
   },
   "other": {
-   "total": 1545,
+   "total": 1546,
    "known": 282,
-   "pct_known": 18.3
+   "pct_known": 18.2
   }
  },
  "catalog": {
-  "total": 1766,
+  "total": 1767,
   "security": 221,
   "pct_security": 12.5,
   "classifier_version": 2,

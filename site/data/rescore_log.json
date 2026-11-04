@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T10:02:59Z",
+ "generated_at": "2026-11-04T09:49:50Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -131,8 +131,8 @@
   },
   {
    "week": "2026-W45",
-   "rescore_up": 1,
-   "rescore_down": 0,
+   "rescore_up": 3,
+   "rescore_down": 9,
    "first_score": 1,
    "version_shift": 0,
    "score_removed": 0
@@ -140,9 +140,9 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 137,
-  "up": 56,
-  "down": 81,
+  "n": 148,
+  "up": 58,
+  "down": 90,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -154,11 +154,11 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 62
+    "n": 71
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 37
+    "n": 39
    },
    {
     "bucket": "+2.0..+3.9",
@@ -176,14 +176,14 @@
   "cnas": [
    {
     "cna": "VulnCheck",
-    "rescores": 46,
+    "rescores": 54,
     "up": 13,
-    "down": 33
+    "down": 41
    },
    {
     "cna": "redhat",
-    "rescores": 20,
-    "up": 8,
+    "rescores": 22,
+    "up": 10,
     "down": 12
    },
    {
@@ -219,15 +219,15 @@
   ]
  },
  "catalog": {
-  "state_size": 399311,
-  "corpus_release": "cve_2026-11-03_0900Z",
+  "state_size": 400091,
+  "corpus_release": "cve_2026-11-04_0900Z",
   "totals": {
-   "rescore": 137,
+   "rescore": 148,
    "version_shift": 29,
    "first_score": 5575,
    "score_removed": 5
   },
-  "events_total": 5746,
+  "events_total": 5757,
   "first_observed": "2026-07-15"
  }
 }

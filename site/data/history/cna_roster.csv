@@ -49,3 +49,5 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-28,mitre,scope_changed,MITRE Corporation,USA,N/A,
 2026-10-29,NetDEF,onboarded,Network Device Education Foundation,USA,Open Source,
 2026-10-29,OpenBMC,departed,The OpenBMC Project,USA,Open Source + Vendor,
+2026-11-04,Paessler,onboarded,Paessler GmbH,Germany,Vendor,
+2026-11-04,Wordfence,scope_changed,Wordfence,USA,Researcher + Vendor,
