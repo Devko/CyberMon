@@ -61,7 +61,7 @@ def check(site, synthetic, screenshots=None, allow_sample=False):
         load()
         assert count()==meta['n'], (count(),meta['n'])
         assert 'Built' in page.locator('#f-sources').inner_text()
-        assert meta['generated_at'] in page.locator('#f-edition').inner_text()
+        assert meta['generated_at'][:10] in page.locator('#f-edition').inner_text()
         for layout in ['clock','grid','cna','vendor','cwe','status']:
             page.locator(f'[data-layout={layout}]').click();page.wait_for_timeout(850)
             if layout in ['grid','cna','vendor','cwe','status']:
@@ -99,7 +99,7 @@ def check(site, synthetic, screenshots=None, allow_sample=False):
             assert count()==2
             page.locator('#f-select-shown').click()
             assert 'median 6.0' in page.locator('#f-sel').inner_text()
-            assert '1 · 50.0 % of 2' in page.locator('#f-sel').inner_text()
+            assert '1 · 50.0% of 2' in page.locator('#f-sel').inner_text()
             page.locator('#f-results-toggle').click()
             assert page.locator('#f-result-rows tr').count()==2
             page.locator('[data-record]').first.focus(); page.keyboard.press('Enter')
@@ -122,6 +122,10 @@ def check(site, synthetic, screenshots=None, allow_sample=False):
             view=page.evaluate('window.fieldView()')
             assert view['focus']=='CVE-2026-1002' and page.locator('#f-inspector').is_visible(),view
             assert [view['cam'][k] for k in ('tx','ty','tz')]==view['target'] and view['cam']['r']<=140,view
+            page.wait_for_timeout(300); assert page.locator('#f-focus').is_visible()
+            # an edited address re-reads the view without a reload
+            page.evaluate("location.hash='#cve=CVE-2026-1001'");page.wait_for_timeout(500)
+            assert page.evaluate('window.fieldView().focus')=='CVE-2026-1001'
             page.locator('#f-canvas').click(position={'x':5,'y':5})
             assert page.evaluate('window.fieldView().focus') is None and page.locator('#f-inspector').is_hidden()
             load()

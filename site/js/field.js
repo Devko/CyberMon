@@ -27,38 +27,38 @@ const $ = (id) => document.getElementById(id);
 const ARRANGE = {
   time: {
     k: "Timeline · date × score × EPSS",
-    thesis: "Records by publication day and current in-record severity. Depth shows the current EPSS probability of exploitation in the next 30 days; KEV marks confirmed exploitation.",
-    method: "x: datePublished (UTC day). y: the newest CVSS base score in the record, CNA container before CISA-ADP, the same score the CVE Ecosystem page uses for CVEs by severity and for CVSS against EPSS; records with no in-record score are placed at the bottom. z: log10 of the current EPSS probability, so each lane further back is ten times less likely; records without a current EPSS score are placed in the back lane.",
+    thesis: "Each record at its publication day (left to right) and CVSS base score (height). Depth is the current EPSS probability of exploitation in the next 30 days, higher toward the front.",
+    method: "x: datePublished (UTC day). y: the base score of the newest CVSS version in the record, CNA container before ADP containers, the score the CVE Ecosystem severity charts use; records with no score in the record sit in the “no score” row at the bottom. z: log10 of the current EPSS probability, one tick per factor of ten; records without a current EPSS score sit in the back row.",
   },
   grid: {
-    k: "Severity × predicted exploitation",
-    thesis: "EPSS estimates the probability of exploitation; CVSS describes severity. They measure different things, and no diagonal is expected. KEV marks confirmed exploitation separately.",
-    method: "The same sixteen buckets as the CVSS × EPSS grid on the CVE Ecosystem page (CVSS 0.0–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0 × EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no in-record score and a column for records without a current EPSS score. Point height is the base score.",
+    k: "CVSS × EPSS grid",
+    thesis: "Each cell holds the records in one CVSS severity band and one EPSS probability band. CVSS rates technical severity; EPSS estimates the probability of exploitation in the next 30 days.",
+    method: "The bands of the CVSS × EPSS grid on the CVE Ecosystem page (CVSS 0.0–3.9 / 4.0–6.9 / 7.0–8.9 / 9.0–10.0; EPSS <0.1% / 0.1–1% / 1–10% / ≥10%), plus a row for records with no score in the record and a column for records without a current EPSS score. The EPSS band is taken from the unrounded probability. Within a cell, point height is the base score.",
   },
   cna: {
     k: "By assigner",
-    thesis: "Records grouped by the CNA that assigned them: the 48 largest assigners in the current selection. Point height is the record's base score.",
-    method: "Grouped by the record's assignerShortName. Point height is the base score, so a group whose points sit at one height scored its records alike. The KEV count under each group is the number of that CNA's records in KEV.",
+    thesis: "Records grouped by the CNA (CVE Numbering Authority) that assigned them: the 48 largest assigners among the matching records.",
+    method: "Grouped by the record's assignerShortName. Point height is the base score, so a group whose points sit at one height scored its records alike. Each label gives the group's record count and how many of those records are in KEV.",
   },
   cwe: {
     k: "By weakness",
-    thesis: "Records grouped by weakness class: the 30 most common CWE ids in the current selection.",
-    method: "Grouped by the first cweId in the record, CNA container preferred; records whose problemTypes carry no CWE id are grouped as untagged. Names are the site's own short labels for the common classes.",
+    thesis: "Records grouped by weakness: the 30 most common CWE ids among the matching records.",
+    method: "Grouped by the first cweId in the record, CNA container preferred; records whose problemTypes carry no CWE id form the untagged group. Common classes carry a short name; other ids show the number only. Point height is the base score.",
   },
   status: {
-    k: "By NVD queue status",
+    k: "By NVD status",
     thesis: "Records grouped by their current NVD status, the statuses the NVD backlog chart counts.",
-    method: "vulnStatus from the nightly NVD sync (the same state the NVD backlog and throughput charts compare). Unknown means NVD has no record of the id, or the NVD stage was skipped for this build.",
+    method: "vulnStatus from the nightly NVD sync, the snapshot the NVD backlog and throughput charts use. Unknown means NVD has no record of the id, or the NVD stage did not run for this build. Point height is the base score.",
   },
   clock: {
-    k: "The clock · publication → PoC → KEV",
-    thesis: "Days from CVE publication to the first dated public exploit (front lane) and to the KEV listing (back lane). Points left of zero came before publication.",
-    method: "Only records with a dated public exploit or a KEV listing are placed. x is the signed gap in days on a log scale, capped at ±10 years; y is the base score. The exploit date is the earliest Exploit-DB entry: of the three exploit sources, only Exploit-DB dates the exploit itself (Metasploit metadata dates the vulnerability's disclosure, and Nuclei templates carry no date). The KEV date is CISA's dateAdded. A record with both is placed in the KEV lane, and the hover shows both gaps. These are the same joins the Time to PoC and KEV Latency modules use.",
+    k: "Days to PoC and KEV",
+    thesis: "Days from CVE publication to the first dated public exploit (front row) and to the KEV listing (back row). Points left of zero came before publication.",
+    method: "Only records with a dated public exploit or a KEV listing are placed. x is the signed gap in days on a log scale, capped at ±10 years; y is the base score. The exploit date is the earliest Exploit-DB entry; Exploit-DB is the only one of the three exploit sources that dates the exploit itself (Metasploit metadata dates the vulnerability's disclosure, and Nuclei templates carry no date). The KEV date is CISA's dateAdded. A record with both is placed in the KEV row, and its details show both gaps. The joins are the ones the Time to PoC and KEV Latency modules use.",
   },
   vendor: {
     k: "By vendor",
-    thesis: "Records grouped by the first affected vendor each record names: the 48 largest vendors in the current selection.",
-    method: "Grouped by the CNA container's first affected[].vendor, lower-cased and whitespace-normalised; placeholder vendors (n/a, unknown) and records naming none are grouped as \"other\" and not shown here. Vendor spelling is the record's own, so one company can appear under two names.",
+    thesis: "Records grouped by the first affected vendor each record names: the 48 largest vendors among the matching records.",
+    method: "Grouped by the CNA container's first affected[].vendor, lower-cased with whitespace normalized. Records that name no vendor, or a placeholder such as n/a or unknown, are left out of this arrangement. Vendor names are spelled as each record spells them, so one company can appear under two names. Point height is the base score.",
   },
 };
 
@@ -517,6 +517,12 @@ function main({ meta, buf }) {
     return groups.sort((a, b) => (m.get(b) || 0) - (m.get(a) || 0));
   }
   const fmt = (n) => Number(n).toLocaleString("en-US");
+  const records = (n) => `${fmt(n)} record${n === 1 ? "" : "s"}`;
+  // EPSS is stored as round(p × 10000), so 10000 means "at least 99.995%"
+  const epssText = (q) => (q >= 10000 ? "≈100%" : `${(q / 100).toFixed(2)}%`);
+  const vendorName = (v) => (v ? VENDORS[v] : "no vendor named");
+  const LIMIT_NOTE = { cna: "the 48 largest assigners", vendor: "the 48 largest vendors", cwe: "the 30 most common weaknesses" };
+  let placedCount = 0;
   const sevBucket = (i) => { const s = D.score[i]; return s === NO_SCORE ? 0 : s >= 90 ? 4 : s >= 70 ? 3 : s >= 40 ? 2 : 1; };
   const epssBucket = (i) => D.bucket[i];
 
@@ -550,10 +556,12 @@ function main({ meta, buf }) {
       clusterLayout((i) => sevBucket(i) * 5 + epssBucket(i), groups, 5, 48, 44, (g, n, k) => `${fmt(n)}${k ? ` · KEV ${fmt(k)}` : ""}`, -9);
       const EP = ["no EPSS", "<0.1%", "0.1–1%", "1–10%", "≥10%"], SV = ["no score", "Low", "Medium", "High", "Critical"];
       EP.forEach((t, c) => addLabel((c - 2) * 48, -9, 2.5 * 44 + 14, escapeHtml(t), "tick"));
-      addLabel(0, -9, 2.5 * 44 + 26, "EPSS exploitation probability →", "axis");
-      SV.forEach((t, r) => addLabel(-2.5 * 48 - 14, -9, (2 - r) * 44, t, "tick"));
-      addLabel(-2.5 * 48 - 14, -9, -2.5 * 44 - 12, "← CVSS", "axis");
+      addLabel(0, -9, 2.5 * 44 + 26, "EPSS band →", "axis");
+      SV.forEach((t, r) => addLabel(-2.5 * 48 - 6, -9, (2 - r) * 44, t, "tick row"));
+      addLabel(-2.5 * 48 - 6, -9, -2.5 * 44 - 12, "CVSS band", "axis row");
     }
+    placedCount = 0;
+    for (let i = 0; i < N; i++) placedCount += placed[i];
     const a = ARRANGE[state.layout];
     $("hud-k").textContent = a.k;
     $("hud-thesis").textContent = a.thesis;
@@ -616,7 +624,7 @@ function main({ meta, buf }) {
       ? cnaTop.map((c, i) => [PAL.cna[i].getStyle(), CNAS[c]]).concat([["#7d776a", "other assigners"]])
       : LEGEND[state.color];
     $("f-legend").innerHTML = leg.map(([hex, t]) => `<span><i style="background:${escapeHtml(hex)}"></i>${escapeHtml(t)}</span>`).join("")
-      + (state.color !== "expl" ? `<span>● Larger point: in KEV (colour follows this legend)</span>` : "");
+      + (state.color !== "expl" ? `<span>Larger points are in KEV.</span>` : "");
     invalidate();
   }
 
@@ -632,17 +640,17 @@ function main({ meta, buf }) {
     if ($("f-results").hidden) return;
     const ids = resultIndices(), pages = Math.max(1, Math.ceil(ids.length / PAGE_SIZE));
     resultPage = Math.min(resultPage, pages - 1);
-    $("f-result-summary").textContent = `${fmt(ids.length)} ${selCount ? "selected" : "shown"} records · page ${resultPage + 1} of ${pages}`;
+    $("f-result-summary").textContent = `${fmt(ids.length)} ${selCount ? "selected" : "shown"} records · page ${fmt(resultPage + 1)} of ${fmt(pages)}`;
     $("f-result-rows").innerHTML = ids.slice(resultPage * PAGE_SIZE, (resultPage + 1) * PAGE_SIZE).map((i) =>
-      `<tr><td><button type="button" data-record="${i}">${cveId(i)}</button></td><td>${dstr(D.day[i])}</td><td>${escapeHtml(CNAS[D.cna[i]])}</td><td>${escapeHtml(VENDORS[D.vendor[i]])}</td><td>${D.score[i] === NO_SCORE ? "—" : (D.score[i] / 10).toFixed(1)}</td><td>${D.epss[i] === NO_EPSS ? "—" : (D.epss[i] / 100).toFixed(2) + "%"}</td><td>${KEV(i) ? "Yes" : "No"}</td></tr>`).join("");
+      `<tr><td><button type="button" data-record="${i}">${cveId(i)}</button></td><td>${dstr(D.day[i])}</td><td>${escapeHtml(CNAS[D.cna[i]])}</td><td>${D.vendor[i] ? escapeHtml(VENDORS[D.vendor[i]]) : "—"}</td><td>${D.score[i] === NO_SCORE ? "—" : (D.score[i] / 10).toFixed(1)}</td><td>${D.epss[i] === NO_EPSS ? "—" : epssText(D.epss[i])}</td><td>${KEV(i) ? "Yes" : "No"}</td></tr>`).join("");
     $("f-prev").disabled = resultPage === 0; $("f-next").disabled = resultPage >= pages - 1;
   }
   function inspect(i) {
     focusIdx = i;
     $("f-inspector").hidden = false;
     $("f-record-detail").innerHTML = recordHtml(i)
-      + `<p><a href="https://www.cve.org/CVERecord?id=${cveId(i)}" target="_blank" rel="noopener">Open original CVE record ↗</a></p>`
-      + `<p><a href="rescores.html">CNA score change log</a> · <a href="epssvol.html">EPSS changes</a></p>`;
+      + `<p class="rec-links"><a href="https://www.cve.org/CVERecord?id=${cveId(i)}" target="_blank" rel="noopener">CVE record on cve.org ↗</a>`
+      + `<a href="observatory.html#cve=${cveId(i)}">Score, EPSS and KEV changes in the Observatory</a></p>`;
     colour();
   }
   function closeInspector() { $("f-inspector").hidden = true; focusIdx = -1; colour(); writeHash(); }
@@ -674,7 +682,7 @@ function main({ meta, buf }) {
   $("f-prev").onclick = () => { resultPage--; renderResults(); };
   $("f-next").onclick = () => { resultPage++; renderResults(); };
   $("f-export").addEventListener("click", () => {
-    const records = resultIndices().map((i) => ({ cve: cveId(i), published: dstr(D.day[i]), assigner: CNAS[D.cna[i]], vendor: VENDORS[D.vendor[i]], cwe: cweName(D.cwe[i]), cvss: D.score[i] === NO_SCORE ? null : D.score[i] / 10, epss_rounded: D.epss[i] === NO_EPSS ? null : D.epss[i] / 10000, epss_bucket: D.bucket[i], kev: !!KEV(i) }));
+    const records = resultIndices().map((i) => ({ cve: cveId(i), published: dstr(D.day[i]), assigner: CNAS[D.cna[i]], vendor: D.vendor[i] ? VENDORS[D.vendor[i]] : null, cwe: cweName(D.cwe[i]), cvss: D.score[i] === NO_SCORE ? null : D.score[i] / 10, epss_rounded: D.epss[i] === NO_EPSS ? null : D.epss[i] / 10000, epss_bucket: D.bucket[i], kev: !!KEV(i) }));
     const url = URL.createObjectURL(new Blob([JSON.stringify({ edition: meta.generated_at, view: location.hash, scope: selCount ? "selected" : "shown", count: records.length, records }, null, 2)], { type: "application/json" }));
     const a = document.createElement("a"); a.href = url; a.download = "cybermon-field-records.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
@@ -756,19 +764,19 @@ function main({ meta, buf }) {
     }
     scores.sort((a, b) => a - b);
     const median = scores.length ? ((scores[Math.floor((scores.length - 1) / 2)] + scores[Math.floor(scores.length / 2)]) / 20).toFixed(1) : "—";
-    const pct = (a, b) => (b ? `${((a / b) * 100).toFixed(1)} %` : "—");
+    const pct = (a, b) => (b ? `${((a / b) * 100).toFixed(1)}%` : "—");
     const list = (rows) => `<ol>${rows.map(([name, c]) => `<li><span>${escapeHtml(String(name))}</span><span>${fmt(c)}</span></li>`).join("")}</ol>`;
     selEl.innerHTML = `<div class="sel-head"><b><span>${fmt(selCount)}</span> selected</b><button type="button" class="sel-close" id="f-sel-clear">clear</button></div>`
       + `<dl><dt>of shown</dt><dd>${pct(selCount, visCount)} of ${fmt(visCount)}</dd>`
       + `<dt>published</dt><dd>${yMin === yMax ? yMin : `${yMin}–${yMax}`}</dd>`
       + `<dt>in KEV</dt><dd>${fmt(selKev)} · ${pct(selKev, selCount)}${ransom ? ` · ${fmt(ransom)} ransomware` : ""}</dd>`
       + `<dt>public PoC</dt><dd>${fmt(poc)} · ${pct(poc, selCount)}</dd>`
-      + `<dt>scored</dt><dd>${fmt(scored)} · median ${median} · Critical ${pct(crit, scored)}</dd>`
-      + `<dt>EPSS ≥ 1%</dt><dd>${fmt(hot)} · ${pct(hot, withEpss)} of ${fmt(withEpss)} scored by EPSS</dd></dl>`
+      + `<dt>scored</dt><dd>${fmt(scored)} · median ${median} · ${pct(crit, scored)} Critical</dd>`
+      + `<dt>EPSS ≥ 1%</dt><dd>${fmt(hot)} · ${pct(hot, withEpss)} of ${fmt(withEpss)} with an EPSS score</dd></dl>`
       + `<h4>Assigners</h4>${list(topN((i) => D.cna[i], (k) => CNAS[k]))}`
       + `<h4>Weaknesses</h4>${list(topN((i) => D.cwe[i], (k) => cweName(k)))}`
-      + `<h4>Vendors</h4>${list(topN((i) => D.vendor[i], (k) => VENDORS[k]))}`
-      + `<p class="sel-note">Counts are exact over the ${fmt(selCount)} selected records in this view. Re-arranging or filtering clears the selection.</p>`;
+      + `<h4>Vendors</h4>${list(topN((i) => D.vendor[i], vendorName))}`
+      + `<p class="sel-note">Changing the arrangement or a filter clears the selection.</p>`;
     selEl.hidden = false;
     $("f-sel-clear").addEventListener("click", () => clearSelection());
   }
@@ -779,8 +787,11 @@ function main({ meta, buf }) {
     const k = live ? selKev : visKev;
     $("f-count").textContent = fmt(n);
     $("f-kev").textContent = fmt(k);
-    $("f-share").textContent = n ? `${((k / n) * 100).toFixed(2)} %` : "—";
-    $("f-coverage").textContent = `${fmt(visCount)} placed through this month · ${fmt(shownCount)} match the filters across all months. Top-group limits may exclude matches.`;
+    $("f-share").textContent = n ? `${((k / n) * 100).toFixed(2)}%` : "—";
+    $("f-coverage").textContent = (placedCount < shownCount
+      ? `${fmt(placedCount)} of ${records(shownCount)} matching the filters are placed; this arrangement shows ${LIMIT_NOTE[state.layout]}.`
+      : `All ${records(shownCount)} matching the filters are placed.`)
+      + (timed ? ` ${fmt(visCount)} of them were published by the end of ${MONTHS[state.asOf].label}.` : "");
     $("f-empty").hidden = visCount > 0;
     updateGroupLabels();
     resultPage = 0; renderResults();
@@ -888,19 +899,26 @@ function main({ meta, buf }) {
     return i >= 0 && i < N && shown[i] && pos[i * 3 + 1] > -500 ? i : -1;
   }
   const lagText = (lag) => (lag < 0 ? `${fmt(-lag)} d before publication` : lag === 0 ? "the day it published" : `${fmt(lag)} d after publication`);
-  function recordHtml(i) {
-    const sc = D.score[i] === NO_SCORE ? "no score in record" : `CVSS ${(D.score[i] / 10).toFixed(1)} (v${D.ver[i]})`;
-    const ep = D.epss[i] === NO_EPSS ? "no EPSS" : `EPSS ${(D.epss[i] / 100).toFixed(2)}%`;
-    return `<b>${cveId(i)}</b>`
-      + `<span>published ${dstr(D.day[i])} · ${sc} · ${ep}</span>`
-      + `<span>${escapeHtml(CNAS[D.cna[i]])} · ${escapeHtml(VENDORS[D.vendor[i]])} · ${escapeHtml(cweName(D.cwe[i]))}</span>`
-      + `<span>NVD: ${escapeHtml(STATUS[NVD(i)])}${POC(i) && !D.pocday[i] ? " · public PoC (undated)" : ""}</span>`
-      + (D.pocday[i] ? `<span>first public PoC ${dstr(D.pocday[i])} · ${lagText(pocLag(i))}</span>` : "")
-      + (KEV(i) ? `<em>KEV since ${dstr(D.kevday[i])} · ${lagText(kevLag(i))}${RANSOM(i) ? " · known ransomware use" : ""}</em>` : "")
-      + (RESCORED(D.flags[i]) ? `<span>CNA score added or changed within ${meta.window_days} days of this edition.</span>` : "")
-      + (CROSSED(D.flags[i]) ? `<span>EPSS crossed the 1% threshold within ${meta.window_days} days of this edition.</span>` : "")
-      + ((D.flags[i] & 0xC0) ? `<span>This snapshot does not retain the change date, direction, or old value; see the change logs.</span>` : "")
-      + `<i>Click or tap to inspect this record.</i>`;
+  // Record details, shared by the hover tip and the pinned inspector.
+  function recordHtml(i, hint = false) {
+    const rows = [
+      ["Published", dstr(D.day[i])],
+      ["CVSS", D.score[i] === NO_SCORE ? "no score in the record" : `${(D.score[i] / 10).toFixed(1)} (v${D.ver[i]})`],
+      ["EPSS", D.epss[i] === NO_EPSS ? "no current score" : epssText(D.epss[i])],
+      ["Assigner", escapeHtml(CNAS[D.cna[i]])],
+      ["Vendor", escapeHtml(vendorName(D.vendor[i]))],
+      ["Weakness", escapeHtml(cweName(D.cwe[i]))],
+      ["NVD", escapeHtml(STATUS[NVD(i)])],
+    ];
+    if (D.pocday[i]) rows.push(["Public PoC", `${dstr(D.pocday[i])}, ${lagText(pocLag(i))}`]);
+    else if (POC(i)) rows.push(["Public PoC", "yes, undated"]);
+    if (KEV(i)) rows.push(["KEV", `${dstr(D.kevday[i])}, ${lagText(kevLag(i))}${RANSOM(i) ? "; known ransomware use" : ""}`]);
+    const notes = [];
+    if (RESCORED(D.flags[i])) notes.push(`CNA score added or changed within ${meta.window_days} days of this edition.`);
+    if (CROSSED(D.flags[i])) notes.push(`EPSS crossed the 1% line within ${meta.window_days} days of this edition.`);
+    return `<b>${cveId(i)}</b><dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd${k === "KEV" ? ' class="kev"' : ""}>${v}</dd>`).join("")}</dl>`
+      + notes.map((t) => `<p>${t}</p>`).join("")
+      + (hint ? `<p class="hint">Click for links to the record and its change history.</p>` : "");
   }
   function hover(e) {
     const now = performance.now();
@@ -908,15 +926,17 @@ function main({ meta, buf }) {
     hoverAt = now;
     const i = pick(e);
     if (i < 0) { tip.style.opacity = 0; return; }
-    tip.innerHTML = recordHtml(i);
+    tip.innerHTML = recordHtml(i, true);
     const r = canvas.getBoundingClientRect();
     tip.style.left = `${Math.min(e.clientX - r.left + 14, Math.max(8, r.width - 330))}px`;
     tip.style.top = `${Math.min(e.clientY - r.top + 14, Math.max(8, r.height - tip.offsetHeight - 8))}px`;
     tip.style.opacity = 1;
   }
+  // A click on a point pins its details; a click on empty canvas releases
+  // them. Dragging (orbit, pan) leaves a pinned record alone.
   function click(e) {
     const i = pick(e);
-    if (i >= 0) { inspect(i); writeHash(); }
+    if (i >= 0) { inspect(i); writeHash(); } else if (focusIdx >= 0) closeInspector();
   }
 
   // ---- render loop ----------------------------------------------------------
@@ -947,7 +967,22 @@ function main({ meta, buf }) {
     }
     thinTicks();
     avoidCollisions();
+    placeFocusRing();
     if (animStart) invalidate();
+  }
+
+  // A pinned record gets a ring in screen space, so it stays findable among
+  // thousands of points of the same colour.
+  const focusEl = $("f-focus");
+  function placeFocusRing() {
+    if (focusIdx < 0 || !visible(focusIdx)) { focusEl.hidden = true; return; }
+    v.set(pos[focusIdx * 3], pos[focusIdx * 3 + 1], pos[focusIdx * 3 + 2]).project(camera);
+    const on = v.z < 1 && Math.abs(v.x) < 1 && Math.abs(v.y) < 1;
+    focusEl.hidden = !on;
+    if (on) {
+      focusEl.style.left = `${(v.x * 0.5 + 0.5) * canvas.clientWidth}px`;
+      focusEl.style.top = `${(-v.y * 0.5 + 0.5) * canvas.clientHeight}px`;
+    }
   }
 
   // Timeline ticks: months show only when a year spans enough pixels for
@@ -1054,19 +1089,33 @@ function main({ meta, buf }) {
   }
 
   // ---- controls -------------------------------------------------------------
+  // Default angles per arrangement. The group arrangements look down more
+  // steeply so their rows of labels separate; the distance is fitted below.
   const CAMS = {
-    time: { theta: 0.55, phi: 0.98, r: 600, tx: 60, ty: 6, tz: 0 }, grid: { theta: 0.2, phi: 0.95, r: 360, tx: 0, ty: 8, tz: 0 },
-    cna: { theta: 0.15, phi: 0.72, r: 480, tx: 0, ty: 8, tz: 0 }, cwe: { theta: 0.15, phi: 0.72, r: 440, tx: 0, ty: 8, tz: 0 },
-    status: { theta: 0.15, phi: 0.72, r: 420, tx: 0, ty: 8, tz: 0 }, vendor: { theta: 0.15, phi: 0.72, r: 480, tx: 0, ty: 8, tz: 0 },
-    clock: { theta: 0.3, phi: 1.0, r: 560, tx: 0, ty: 6, tz: 0 },
+    time: { theta: 0.5, phi: 1.0, ty: 6 }, clock: { theta: 0.3, phi: 1.0, ty: 6 },
+    grid: { theta: 0.12, phi: 0.62, ty: 0 }, cna: { theta: 0.1, phi: 0.6, ty: 0 },
+    vendor: { theta: 0.1, phi: 0.6, ty: 0 }, cwe: { theta: 0.1, phi: 0.6, ty: 0 }, status: { theta: 0.1, phi: 0.6, ty: 0 },
   };
+  // Half extents [x, z, y] of each arrangement, labels included.
+  const EXTENT = {
+    time: [255, 52, 24], clock: [250, 48, 24], grid: [150, 140, 8],
+    cna: [180, 130, 8], vendor: [180, 130, 8], cwe: [180, 135, 8], status: [205, 100, 8],
+  };
+  // Distance at which the arrangement's extent, seen from the current
+  // angles, fits the canvas in both directions.
+  function fitRadius() {
+    const [hx, hz, hy] = EXTENT[state.layout];
+    const t = Math.tan(camera.fov * Math.PI / 360);
+    const c = Math.abs(Math.cos(cam.theta)), sn = Math.abs(Math.sin(cam.theta));
+    const across = hx * c + hz * sn, along = hz * c + hx * sn;
+    const fitW = across / (t * camera.aspect), fitH = (along * Math.cos(cam.phi) + hy * Math.sin(cam.phi)) / t;
+    // the near half of the scene draws larger than the far half: pad for it
+    return 1.06 * Math.max(fitW, fitH) + along * Math.sin(cam.phi) * 0.25;
+  }
   function resetCamera() {
-    Object.assign(cam, CAMS[state.layout]);
-    cam.tx = 0;
+    Object.assign(cam, CAMS[state.layout], { tx: 0, tz: 0 });
     if (state.flat) { cam.theta = 0; cam.phi = ["time", "clock"].includes(state.layout) ? Math.PI / 2 : 0.001; }
-    // Fit the horizontal extent plus label margins on narrow viewports.
-    const horizontal = ["time", "clock"].includes(state.layout) ? 310 : 260;
-    cam.r = Math.max(cam.r, horizontal / (Math.tan(camera.fov * Math.PI / 360) * camera.aspect));
+    cam.r = fitRadius();
     invalidate();
   }
 
@@ -1103,7 +1152,7 @@ function main({ meta, buf }) {
   let playTimer = null;
   function stopPlay() {
     if (!playTimer) return;
-    clearInterval(playTimer); playTimer = null; $("f-play").textContent = "▶ Play the months";
+    clearInterval(playTimer); playTimer = null; $("f-play").textContent = "▶ Play by month";
     writeHash();
   }
   $("f-play").addEventListener("click", () => {
@@ -1140,8 +1189,6 @@ function main({ meta, buf }) {
     document.querySelectorAll("[data-color]").forEach((x) => x.setAttribute("aria-pressed", x === b));
     colour(); writeHash();
   }));
-  // a click anywhere on the canvas releases a pinned focus
-  canvas.addEventListener("pointerdown", () => { if (focusIdx >= 0) closeInspector(); });
   // read-only view state for tools/field_smoke.py
   window.fieldView = () => ({ focus: focusIdx >= 0 ? cveId(focusIdx) : null, cam: { ...cam },
     target: focusIdx >= 0 ? [target[focusIdx * 3], target[focusIdx * 3 + 1], target[focusIdx * 3 + 2]] : null });
@@ -1150,23 +1197,31 @@ function main({ meta, buf }) {
   const s = meta.sources || {};
   const skipped = meta.skipped || {};
   const str = (x) => escapeHtml(x == null ? "?" : String(x));
+  const left = [`${fmt(skipped.rejected || 0)} rejected`].concat(skipped.undated ? [`${fmt(skipped.undated)} undated`] : []).join(" and ");
   $("f-sources").innerHTML =
-    `${fmt(meta.n)} published CVEs placed · ${fmt(skipped.rejected || 0)} rejected and ${fmt(skipped.undated || 0)} undated records left out · `
-    + `${fmt(meta.counts.scored)} carry a score in the record · ${fmt(meta.counts.epss)} have an EPSS score · ${fmt(meta.counts.poc_dated || 0)} have a dated public PoC.<br>`
-    + (meta.layout.version >= 3
-      ? `Changed in the last ${fmt(meta.window_days || 30)} days: ${fmt(meta.counts.rescored || 0)} CNA scores (the CVSS Score Changes log) · ${fmt(meta.counts.crossed || 0)} crossed the 1% EPSS line (the Volatility diff, including nights that page quarantines).<br>`
-      : "")
-    + `cvelistV5 ${str(s.cvelist?.release)} · CISA KEV ${str(s.kev?.catalog_version)} (${fmt(s.kev?.count || 0)} entries) · `
-    + `EPSS ${str(s.epss?.model_version)} of ${str(s.epss?.score_date)} · `
+    `${fmt(meta.n)} published CVEs placed; ${left} records left out. `
+    + `${fmt(meta.counts.scored)} carry a CVSS score in the record, ${fmt(meta.counts.epss)} a current EPSS score, ${fmt(meta.counts.poc_dated || 0)} a dated public exploit.<br>`
+    + `In the last ${fmt(meta.window_days || 30)} days: ${fmt(meta.counts.rescored || 0)} records with a CNA score change (CVSS Score Changes log) and ${fmt(meta.counts.crossed || 0)} whose EPSS crossed 1% (EPSS Volatility diff, including nights that module quarantines).<br>`
+    + `Sources: cvelistV5 ${str(s.cvelist?.release)} · CISA KEV ${str(s.kev?.catalog_version)} (${fmt(s.kev?.count || 0)} entries) · `
+    + `EPSS ${str(s.epss?.model_version)} scores of ${str(s.epss?.score_date)} · `
     + `NVD statuses ${s.nvd?.fetched_at ? `fetched ${str(s.nvd.fetched_at)}` : "not fetched"} · `
-    + `PoC corpora: ${fmt(s.poc?.cve_count || 0)} CVEs referenced.<br>`
+    + `exploit corpora covering ${fmt(s.poc?.cve_count || 0)} CVEs.<br>`
     + `Built ${str(meta.generated_at)} by <a href="https://github.com/Devko/CyberMon/blob/main/pipeline/field_export.py">pipeline/field_export.py</a>. `
-    + `The charted version of this corpus is <a href="cve.html">the CVE Ecosystem page</a>.`;
+    + `<a href="cve.html">CVE Ecosystem</a> charts the same corpus.`;
+
+  // An edited address (or back/forward between hashes) re-reads the view.
+  // writeHash() uses replaceState, which never fires this event.
+  addEventListener("hashchange", () => {
+    stopPlay(); setSelectMode(false);
+    Object.assign(state, initialState);
+    readHash(); showYears(); showAsOf(); resetCamera(); refresh();
+  });
 
   // ---- go -------------------------------------------------------------------
   pos.fill(0); for (let i = 0; i < N; i++) pos[i * 3 + 1] = -999;
   readHash(); showYears(); showAsOf(); resetCamera(); refresh();
-  $("f-edition").textContent = `${meta.sample ? "SAMPLE / VISUAL TEST. " : ""}Attributes from ${meta.generated_at}. Publication playback does not reconstruct historical scores or exploitation status.`;
+  const edition = String(meta.generated_at).replace("T", " ").replace(/:\d\dZ$/, " UTC");
+  $("f-edition").textContent = `${meta.sample ? "Sample data for tests. " : ""}Edition ${edition}. Playback keeps this edition's scores, EPSS and KEV status.`;
   notice.hidden = true;
   ready = true; invalidate();
 }
