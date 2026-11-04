@@ -1,14 +1,23 @@
 """Generate synthetic sample data conforming to docs/data-contracts.md.
 
-Lets the site be developed and demoed before the first real pipeline run.
-meta.json carries "sample": true so the site shows its synthetic-data banner.
-Deterministic on purpose: no randomness, just shaped curves.
+Lets the site be developed and demoed without a pipeline run. meta.json
+carries "sample": true so the site shows its synthetic-data banner, and the
+claims audit skips sample data. Deterministic: no randomness, just shaped
+curves. It covers only the CVE Ecosystem files.
+
+    python tools/make_sample_data.py --out /tmp/cybermon-sample/data
+
+It refuses to write into the committed site/data, whose real edition (and
+the history CSVs it would overwrite) cannot be recreated from this script.
 """
+import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parent.parent / "site" / "data"
+COMMITTED = (Path(__file__).resolve().parent.parent / "site" / "data").resolve()
+OUT = COMMITTED  # set by main() from --out
 GENERATED_AT = "2026-07-09T00:00:00Z"
 
 
@@ -212,4 +221,12 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("--out", type=Path, required=True,
+                        help="directory to write the sample data files into")
+    args = parser.parse_args()
+    if args.out.resolve() == COMMITTED:
+        sys.exit("refusing to overwrite the committed edition in site/data; "
+                 "pass a scratch directory to --out")
+    OUT = args.out.resolve()
     main()

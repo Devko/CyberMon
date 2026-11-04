@@ -48,12 +48,14 @@ def load(name: str) -> dict:
 
 
 def check_billion_dollar_floor(d: dict) -> None:
-    # editorial.js (extortion.html hero): "Over a billion dollars, settled
-    # in public view." The dataset is append-only crowdsourcing, so the
-    # total should only grow; the ceiling guards against a unit error.
+    # editorial.js (extortion.html hero): "Verified ransom payments on the
+    # Ransomwhere ledger total over a billion dollars." (home card: "…total
+    # more than a billion dollars.") The dataset is append-only
+    # crowdsourcing, so the total should only grow; the ceiling guards
+    # against a unit error.
     total = d["headline"]["total_usd"]
     assert 1_000_000_000 <= total <= 10_000_000_000, (
-        f"'Over a billion dollars, settled in public view' needs total "
+        f"'total over a billion dollars' needs total "
         f"confirmed USD in [$1B, $10B]; data says ${total:,}"
     )
 

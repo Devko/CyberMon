@@ -767,9 +767,10 @@ anonymous rate limit on the cvelistV5 release lookup. `--skip-nvd`,
 `--skip-market`, `--skip-attack` and `--skip-epss-report` skip a slow stage
 and carry its previous output forward, marked stale.
 
-Do not run `tools/make_sample_data.py` in a checkout you commit from. It
-predates the nightly and overwrites `site/data/meta.json`, seven CVE
-Ecosystem files and the two NVD history CSVs with synthetic data.
+`tools/make_sample_data.py --out <dir>` writes synthetic CVE Ecosystem
+data (marked `"sample": true`, which the claims audit skips) for UI work
+without a pipeline run. It refuses to write into the committed
+`site/data`.
 
 `site/carousels/` (LinkedIn PDFs) and `site/motion/` (animated clips) are
 deploy-time build products: gitignored, rebuilt into the Pages artifact on

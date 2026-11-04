@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CyberMon — The Alias Graph. One adversary, one name per shop.</title>
-  <meta name="description" content="Every tracked threat actor placed between the vendor naming schemes that name it — Microsoft's weather, CrowdStrike's animals, Mandiant's numbers, Secureworks' metals, Unit 42's constellations — as a force-directed graph.">
-  <meta property="og:title" content="CyberMon — The Alias Graph. One adversary, one name per shop.">
-  <meta property="og:description" content="Every tracked threat actor placed between the vendor naming schemes that name it, as a force-directed graph.">
+  <title>CyberMon — The Alias Graph: threat groups linked to the vendor naming schemes that name them</title>
+  <meta name="description" content="A force-directed graph of tracked threat groups, each placed between the vendor naming schemes that name it: Microsoft, CrowdStrike, Mandiant, Secureworks and Unit 42.">
+  <meta property="og:title" content="CyberMon — The Alias Graph: threat groups linked to the vendor naming schemes that name them">
+  <meta property="og:description" content="A force-directed graph of tracked threat groups, each placed between the vendor naming schemes that name it.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="CyberMon">
   <meta property="og:url" content="https://devko.github.io/CyberMon/alias.html">
@@ -27,7 +27,7 @@
       <a class="field-wordmark" href="index.html" aria-label="CyberMon overview">CYBER<span class="accent">MON</span></a>
       <span class="field-kicker">Instrument</span>
       <h1 class="field-title">The Alias Graph</h1>
-      <p class="field-thesis">One adversary, one name per shop. Each house naming scheme is a hub; every actor sits where its names pull it.</p>
+      <p class="field-thesis">Each vendor naming scheme is a hub, and each threat group sits between the schemes that name it.</p>
     </div>
     <dl class="field-counters" aria-live="polite">
       <div><dt>actors with aliases</dt><dd id="a-actors">—</dd></div>
@@ -75,9 +75,9 @@
       <aside class="field-sel alias-panel" id="a-panel" hidden aria-label="Actor names"></aside>
       <div class="field-hud">
         <p class="hud-k">Actors × naming schemes</p>
-        <p class="hud-thesis">The crowded middle is the industry's map disagreeing with itself: the more shops name an actor, the more names it answers to.</p>
+        <p class="hud-thesis">Groups near the middle are named by several schemes, so each carries several names for the same activity.</p>
         <details class="hud-method">
-          <summary>how this is placed</summary>
+          <summary>How this is placed</summary>
           <p id="a-method"></p>
         </details>
       </div>

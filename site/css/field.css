@@ -135,6 +135,7 @@
 /* ------------------------------------------------------------------ grid -- */
 
 .field-body-grid {
+  grid-row: -2 / -1; /* last row, with or without a toolbar (alias.html has none) */
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
   min-height: 0;
