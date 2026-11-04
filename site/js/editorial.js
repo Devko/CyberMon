@@ -681,10 +681,11 @@ export const editorial = {
       headline: "Each term is scaled to its own busiest month of the last five years.",
       caption:
         "Monthly counts for one term at a time from five sources: news articles (GDELT), " +
-        "Hacker News stories and comments, arXiv cs.CR preprints, Wikipedia pageviews and " +
-        "SEC EDGAR filings. Each source's series is indexed to its own five-year peak " +
-        "(peak = 100), so a source with a few papers a month and one with thousands of " +
-        "articles can share one axis. Pick a term from the list or click a card.",
+        "Hacker News stories and comments, arXiv cs.CR (cryptography and security) " +
+        "preprints, Wikipedia pageviews and SEC EDGAR filings. Each source's series is " +
+        "indexed to its own five-year peak (peak = 100), so a source with a few papers a " +
+        "month and one with thousands of articles can share one axis. Pick a term from " +
+        "the list.",
       selectLabel: "Term",
       termCountNote: "{n} terms tracked; the list is in pipeline/market_terms.py",
       sparklineNote:
@@ -692,24 +693,23 @@ export const editorial = {
         "a term with no GDELT data yet shows a label instead of a line.",
       methodology:
         "For each tracked term the pipeline pulls a monthly count over a rolling five-year " +
-        "window from five sources: GDELT 2.0 (news article volume); Hacker News (Algolia " +
-        "search API, stories and comments); arXiv (cs.CR preprint count); Wikipedia " +
-        "(monthly pageviews of one curated on-topic article per term, summed over the " +
-        "article's earlier titles when it was moved, bot traffic excluded); and SEC EDGAR " +
-        "full-text search (filings matching the term as a quoted phrase, with acronyms " +
-        "spelled out to avoid matches on unrelated financial terms). The term-to-article " +
+        "window from five sources. GDELT 2.0 counts news articles. Hacker News (Algolia " +
+        "search API) counts stories and comments. The arXiv count is cs.CR preprints. " +
+        "Wikipedia counts monthly pageviews of one curated on-topic article per term, " +
+        "summed over the article's earlier titles when it was moved, bot traffic " +
+        "excluded. SEC EDGAR full-text search counts filings matching the term as a " +
+        "quoted phrase, with acronyms spelled out to avoid matches on unrelated financial " +
+        "terms. The term-to-article " +
         "mapping is in pipeline/market_terms.py, and a term with no on-topic article has " +
-        "no Wikipedia series. Each series is indexed to its own highest month in the " +
-        "window (peak = 100). The index is recomputed nightly, so a new peak lowers every " +
+        "no Wikipedia series. The index is recomputed nightly, so a new peak lowers every " +
         "earlier point proportionally. The tooltip shows the raw count for every point. " +
-        "Series are not shown as a share of the tracked term list, because adding or " +
-        "retiring a term would then change every other term's history. When a source's " +
-        "fetch fails or is rate-limited (GDELT rate-limits heavily), the previous night's " +
-        "counts stand. A month that closed while a term's fetch was failing stays blank " +
-        "until a later nightly run fills it, and a source with no successful fetch for " +
-        "more than three days keeps its curve but posts no year-over-year change or " +
-        "divergence. A GDELT, Hacker News, arXiv or EDGAR line that starts partway " +
-        "through the window marks a gap in collection. A Wikipedia line starts with the " +
+        "When a source's fetch fails or is rate-limited (GDELT rate-limits heavily), the " +
+        "previous night's counts stand. A month that closed while a term's fetch was " +
+        "failing stays blank until a later nightly run fills it. A source with no " +
+        "successful fetch for more than three days keeps its curve but posts no " +
+        "year-over-year change or divergence. A GDELT, Hacker News, arXiv or EDGAR " +
+        "line that starts partway through the window marks a gap in collection. A " +
+        "Wikipedia line starts with the " +
         "first month the Pageviews API reports for its article's titles. The month in " +
         "progress is collected but is not charted, ranked or averaged until it closes, " +
         "because a partial month would show as a drop at the end of every curve.",
@@ -735,23 +735,18 @@ export const editorial = {
       colChange: "YoY change",
       colVolume: "Last 12 months",
       eligibilityNote:
-        "A row needs all of the last twenty-four calendar months collected and a minimum " +
-        "volume. A term whose fetch for a source is incomplete (new, mid-backfill, waiting " +
-        "out an upstream rate limit, or missing a month inside the window) is left off " +
-        "until the fetch completes.",
+        "A term and source missing any of the twenty-four months, or below the minimum " +
+        "volume, have no row until the fetch completes.",
       methodology:
         "For each term and source, the pipeline sums raw monthly counts over the twelve " +
         "calendar months ending with the latest complete month (the month in progress is " +
         "excluded) and over the twelve months before those. YoY change is the percentage " +
-        "difference between the two sums. Both windows are fixed calendar spans anchored " +
-        "at that month for every term and source. A pair missing any month inside them " +
-        "posts no figure, because a missing month is unknown, not zero, and the window " +
-        "does not slide back past a gap to find twenty-four months that exist (until " +
-        "2026-09-20 it did, which could compare mismatched periods under one label). A " +
-        "pair is also excluded when its prior-year sum is zero, when both windows together " +
-        "hold fewer than thirty raw hits (too few for a meaningful percentage), or when " +
-        "its source has had no successful fetch for more than three days. Any column can " +
-        "be sorted; the default order is largest rise first.",
+        "difference between the two sums. A pair missing any month inside either window " +
+        "posts no figure, because a missing month is unknown, not zero; the window does " +
+        "not slide back past a gap. A pair is also excluded when its prior-year sum is " +
+        "zero, when both windows together hold fewer than thirty raw hits, or when its " +
+        "source has had no successful fetch for more than three days. Any column can be " +
+        "sorted; the default order is largest rise first.",
     },
 
     // ------------------------------------------- market.html · 3
@@ -783,14 +778,12 @@ export const editorial = {
       methodology:
         "Each axis is the term's own attention index (see the attention-curves " +
         "methodology), averaged over the same three calendar months in both sources: the " +
-        "three ending with the latest complete month, with the month in progress " +
-        "excluded. GDELT is the x-axis and arXiv the y-axis. A term missing any of those " +
+        "three ending with the latest complete month. GDELT is the x-axis and arXiv the " +
+        "y-axis; the other three sources are not used here. A term missing any of those " +
         "months in either source is omitted; it is not averaged over whichever months " +
-        "each source happens to have. Of the five collected sources, the chart uses only " +
-        "GDELT and arXiv, the clearest pairing of news and research: Wikipedia pageviews " +
-        "mix both audiences, SEC filings track investor language, and Hacker News sits " +
-        "between them. A term's divergence score is the y value minus the x value, in " +
-        "index points. Scores beyond ±10 are labelled “research leads” or “media leads”, " +
+        "each source happens to have. A term's divergence score is the y value minus " +
+        "the x value, in index points. Scores beyond ±10 are labelled “research leads” " +
+        "or “media leads”, " +
         "and scores inside that band “aligned”; the band is wide because both indices " +
         "vary from month to month. Terms with fewer than ten raw hits in either source " +
         "across the three months are also omitted, because two or three papers against a " +
@@ -1449,40 +1442,33 @@ export const editorial = {
       caption:
         "For each breach in the Have I Been Pwned (HIBP) catalog, the days between the " +
         "date the breach happened and the day HIBP added it, shown as the median and " +
-        "interquartile range for each year of cataloging. Breaches loaded around the " +
-        "catalog's December 2013 launch are reported in the note below and kept out of " +
-        "the trend. Since 2014 the typical gap is measured in months, and roughly a third " +
-        "of entries take more than a year to reach the catalog. The median for a " +
-        "single year has ranged from under a week, in 2014, to more than a year, in " +
-        "2017 and 2023. This differs from the " +
-        "dwell-time figures vendors report from their own customers' incidents: it runs " +
-        "from the breach to a public catalog that anyone can query.",
+        "interquartile range for each year of cataloging. " +
+        "Breaches loaded at the catalog's December 2013 launch are kept out of the trend. " +
+        "Roughly a third of entries take more than a year to reach the catalog. The " +
+        "median for a single year has ranged from under a week, in 2014, to more than a " +
+        "year, in 2017 and 2023. This is the time to a public catalog, not the dwell " +
+        "time vendors report from their customers' incidents.",
       statLabel: "Median days from breach to public catalog",
       statWhole: "since {trend_start}",
       statLatest: "{latest_year}",
       importNote:
-        "{n} breaches entered the catalog around its December 2013 launch (added before " +
-        "{added_before}), with a median nominal lag of {median_days} days. That figure " +
-        "reflects the initial import of breaches that were already public, so it is kept " +
-        "out of the trend above.",
+        "{n} breaches entered the catalog at its December 2013 launch (added before " +
+        "{added_before}), with a median nominal lag of {median_days} days. They were " +
+        "already public when HIBP imported them, so they are kept out of the trend above.",
       methodology:
         "Lag is a breach's AddedDate minus its BreachDate, in days, for each cohort breach " +
         "in the HIBP catalog (the cohort rules are in the volume chart's methodology). " +
         "BreachDate is HIBP's best estimate of when the incident happened. HIBP's " +
         "documentation says it is not always accurate, and some entries carry only month " +
-        "precision, so individual lags are noisy; the medians absorb most of that noise. " +
-        "The line is the median lag of the breaches cataloged each year, and the shaded " +
-        "band spans the 25th to 75th percentile. The trend starts in 2014. HIBP launched " +
-        "on 2013-12-04 by importing breaches that were already public: six of its seven " +
-        "opening-import entries predate the service itself, and the seven carry a median " +
-        "nominal lag of well over a year. In 2014, the first full calendar year of live " +
-        "cataloging, the median lag was 5 days. Older breaches have entered the catalog " +
-        "in every year since and stay in the trend, because a breach reaching the catalog " +
-        "years late is what the chart measures; only the launch import is set aside. A " +
-        "lag can be negative (a breach cataloged before its stated breach date). Negative " +
-        "lags are kept, as in the KEV latency chart, because they point to date-quality " +
-        "problems in the source record. A year plots only with at least 10 cohort " +
-        "breaches. The current year (marked *) is partial and updates nightly.",
+        "precision, so individual lags are noisy. The line is the median lag of the " +
+        "breaches cataloged each year, and the shaded band spans the 25th to 75th " +
+        "percentile. The trend starts in 2014. HIBP launched on 2013-12-04 by importing " +
+        "breaches that were already public, and six of its seven opening-import entries " +
+        "predate the service itself. Older breaches have entered the catalog in every " +
+        "year since and stay in the trend; only the launch import is set aside. Negative " +
+        "lags (a breach cataloged before its stated breach date) would point to date " +
+        "errors in the source record and are kept. A year plots only with at least 10 " +
+        "cohort breaches. The current year (marked *) is partial and updates nightly.",
     },
 
     // ------------------------------------------------ breaches.html · 2
@@ -1490,7 +1476,7 @@ export const editorial = {
       num: "02",
       kicker: "Volume",
       source: "Have I Been Pwned breach catalog",
-      headline: "Every year since 2014, HIBP loaded tens of millions of breached accounts or more.",
+      headline: "In every complete year since 2014, HIBP loaded tens of millions of breached accounts or more.",
       caption:
         "Bars count the breaches cataloged each year; the line counts the accounts in " +
         "them, on a log axis because one large breach can outweigh a typical year's " +
@@ -1499,32 +1485,28 @@ export const editorial = {
       catalogNote:
         "Cohort: {cohort} of {total} cataloged breaches. Excluded: {fabricated} " +
         "fabricated, {spam_list} spam lists, {malware} malware corpora, {stealer_log} " +
-        "stealer-log batches. The last two hold real stolen data but no single breached " +
-        "organization, which is the unit this ledger counts.",
+        "stealer-log batches.",
       legendBreaches: "Breaches cataloged",
       legendRecords: "Accounts exposed",
       methodology:
         "Counts come from the full HIBP breach catalog, grouped by the calendar year of " +
         "AddedDate. The cohort excludes, in this order of precedence: fabricated entries " +
-        "(IsFabricated, breaches HIBP judges to be fabricated), spam lists (IsSpamList, " +
-        "address collections with no breached organization), malware corpora (IsMalware) " +
-        "and stealer logs (IsStealerLog). The last two are real credential theft, " +
-        "collected device by device from malware victims. They have no single breached " +
-        "organization, and their nominal breach date describes when the corpus was " +
-        "compiled, which would distort the lag chart above. Each excluded entry counts " +
-        "under its first matching reason, so the exclusions plus the cohort always add up " +
-        "to the catalog total; the note under the chart lists them. Accounts per year is " +
-        "the sum of PwnCount, HIBP's count of the accounts it loaded from each breach. A " +
-        "person appears once for each breach they are in, so the sum counts exposures, " +
-        "not people. The December 2013 launch additions are charted here like any other " +
-        "year; only the lag chart sets them aside. In the bars, a dashed hollow extension " +
-        "projects the partial current year's breach count to twelve months: the count so " +
-        "far divided by the fraction of the UTC calendar year elapsed at generation time. " +
-        "It is shown only once 12.5% of the year has passed (about mid-February) and " +
-        "assumes that cataloging runs at an even rate through the year, which is a strong " +
-        "assumption. The accounts line is not projected: one large breach can carry more " +
-        "accounts than the rest of its year combined, so a projection would turn a single " +
-        "upload into a forecast.",
+        "(IsFabricated), spam lists (IsSpamList, address collections with no breached " +
+        "organization), malware corpora (IsMalware) and stealer logs (IsStealerLog). The " +
+        "last two hold real credentials stolen from infected devices but no single " +
+        "breached organization, and their nominal breach date is when the corpus was " +
+        "compiled, which would distort the lag chart. Each excluded entry counts under " +
+        "its first matching reason, so the exclusions plus the cohort add up to the " +
+        "catalog total. Accounts per year is the sum of PwnCount, HIBP's count of the " +
+        "accounts it loaded from each breach. A person appears once for each breach they " +
+        "are in, so the sum counts exposures, not people. The December 2013 launch " +
+        "additions are charted here like any other year. In the bars, a dashed hollow " +
+        "extension projects the partial current year's breach count to twelve months: " +
+        "the count so far divided by the fraction of the UTC calendar year elapsed at " +
+        "generation time. It is shown only once 12.5% of the year has passed (about " +
+        "mid-February) and assumes that cataloging runs at an even rate through the " +
+        "year. The accounts line is not projected, because one large breach can carry " +
+        "more accounts than the rest of its year combined.",
     },
 
     // ------------------------------------------------ breaches.html · 3
@@ -1537,23 +1519,19 @@ export const editorial = {
         "The six data classes listed most often across the cataloged breaches, each shown " +
         "as the share of that year's breaches that contain it. A breach can list many " +
         "classes, so the shares are independent and do not add up to 100%. Email " +
-        "addresses appear in at least 95% of each year's breaches since 2015. " +
-        "Passwords appeared in nine of ten breaches cataloged in 2014, about four in " +
-        "ten by 2025, and a lower share " +
-        "every year since 2019. The other classes move up and down, some by more than 20 " +
-        "points from one year to the next.",
+        "addresses appear in at least 95% of the breaches in each complete year since " +
+        "2015. Passwords appeared in nine of ten breaches cataloged in 2014, about four " +
+        "in ten in 2025, and a lower share in each complete year since 2019. The other " +
+        "classes move up and down, some by more than 20 points from one year to the next.",
       methodology:
         "The class list is rebuilt from the data every night: all data classes in the " +
         "cohort are ranked by the number of breaches listing them, and the top six are " +
-        "charted. The catalog distinguishes well over a hundred classes, most of them " +
-        "rare. Each line is the share of that year's cohort breaches, grouped by " +
-        "AddedDate year, whose DataClasses field lists the class, counting each class at " +
-        "most once per breach. The launch import is not set apart here, but 2013's seven " +
-        "breaches fall below the plotting floor. Because a breach can list many classes, " +
-        "the shares are independent: there is no “other” bucket and no 100% stack. The " +
-        "ranking can change as the catalog grows, and a change in rank changes which " +
-        "lines appear, by design. A year plots only with at least 10 cohort breaches. The " +
-        "current year (marked *) is partial and updates nightly.",
+        "charted. When the ranking changes, the charted lines change with it. Each line " +
+        "is the share of that year's cohort breaches, grouped by AddedDate year, whose " +
+        "DataClasses field lists the class, counting each class at most once per breach. " +
+        "A year plots only with at least 10 cohort breaches, so 2013's seven " +
+        "launch-import breaches are not drawn. The current year (marked *) is partial " +
+        "and updates nightly.",
     },
 
     // --------------------------------------- extortion.html · 1 · hero
@@ -1564,31 +1542,27 @@ export const editorial = {
       headline: "Verified ransom payments on the Ransomwhere ledger total over a billion dollars.",
       caption:
         "Bitcoin payments to reported ransomware addresses, summed by the quarter in which " +
-        "they were sent and valued at that day's exchange rate. The data comes from " +
-        "Ransomwhere: crowdsourced reports of extortion addresses, each reviewed before it " +
-        "is included, with the payments read from the blockchain. A payment appears only " +
-        "after someone reported the receiving wallet, so every bar is a lower bound on " +
-        "ransom revenue, not an estimate of the market. Reporting has stalled: the " +
-        "ledger's last verified payment landed in Q3 2024, and the chart ends there. The " +
-        "data cannot show whether ransom payments declined after that or only the " +
-        "reporting did.",
+        "they were sent and valued at that day's exchange rate. Ransomwhere collects " +
+        "crowdsourced reports of extortion addresses, reviews each one before including " +
+        "it, and reads the payments from the blockchain. A payment appears only after " +
+        "someone reported the receiving wallet, so every bar is a lower bound on ransom " +
+        "revenue. The ledger's last verified payment landed in Q3 2024, and the chart " +
+        "ends there. The data cannot show whether ransom payments declined after that or " +
+        "only the reporting did.",
       statLabel: "Confirmed ransom revenue on the Ransomwhere ledger, all time",
       statNote: "a lower bound: {payments} verified payments; {addresses} addresses tracked",
       methodology:
         "Ransomwhere's CC0 export lists tracked extortion addresses, each with its " +
         "verified inbound transactions. The pipeline adds each transaction's amountUSD to " +
         "the UTC calendar quarter of its on-chain timestamp. amountUSD is Ransomwhere's " +
-        "conversion at the BTC/USD rate of the transaction date. The implied rate for " +
-        "each year follows the price history, so a 2016 payment is counted in 2016 " +
-        "dollars and is not revalued at today's price. The export lists a transaction " +
-        "once per receiving tracked address, so a transfer split across several tracked " +
-        "wallets contributes each output it sent to them. Exact repeated entries (about " +
-        "one percent of total USD) are summed as published, since they cannot be checked " +
-        "without chain data. Every quarter between the first and last observed payment is " +
-        "charted, at zero when empty. No full-year projection is drawn for a partial " +
-        "current year, because reports arrive late and a projection assumes an even flow " +
-        "through the year. Because the data is crowdsourced and verified, every total on " +
-        "this page is a lower bound.",
+        "conversion at the BTC/USD rate of the transaction date, so a 2016 payment is " +
+        "counted in 2016 dollars. The export lists a transaction once per receiving " +
+        "tracked address, so a transfer split across several tracked wallets contributes " +
+        "each output it sent to them. Exact repeated entries (about one percent of total " +
+        "USD) are summed as published, since they cannot be checked without chain data. " +
+        "Every quarter between the first and last observed payment is charted, at zero " +
+        "when empty. No full-year projection is drawn for a partial current year, " +
+        "because reports arrive late.",
     },
 
     // --------------------------------------- extortion.html · 2
@@ -1596,13 +1570,13 @@ export const editorial = {
       num: "02",
       kicker: "Payments",
       source: "Ransomwhere (CC0)",
-      headline: "The ledger's payments became far fewer and far larger after 2021.",
+      headline: "After 2021 the ledger holds fewer than half as many payments a year as in 2016–2021, at medians more than ten times higher.",
       caption:
         "Bars count verified payments per year; the line is the median payment in " +
         "dollars at the rate of the transfer day, on a log scale. The medians for 2013 to " +
         "2015 (under three dollars) are not ransom amounts: most transfers to the tracked " +
-        "wallets in those years were under ten dollars. From 2016 to 2022 the median grew " +
-        "some 250-fold. From 2016 through 2021 the ledger holds hundreds to thousands of " +
+        "wallets in those years were under ten dollars. From 2016 through 2021 the " +
+        "ledger holds hundreds to thousands of " +
         "payments a year, with medians between about $90 and $3,500. It holds about 150 " +
         "payments for 2022 and about 20 for each of 2023 and 2024, with medians around " +
         "$100,000 or higher. Thinner crowdsourced " +
@@ -1614,15 +1588,12 @@ export const editorial = {
         "A payment is one distinct on-chain transaction. The export lists a transaction " +
         "once per receiving tracked address, so transfers split across several tracked " +
         "wallets are merged by transaction hash, with their outputs summed, before " +
-        "anything is counted; on current data about 22,000 ledger entries become about " +
+        "anything is counted. On current data about 22,000 ledger entries become about " +
         "19,000 payments. Years follow the transaction's on-chain UTC timestamp, and the " +
         "median is taken over per-payment USD at the rate of the transfer day. A year's " +
-        "median is plotted only when the year has at least 10 payments, since a median " +
-        "of three payments says little; the payment count is always plotted. A year is " +
-        "marked * only when it is the partial generation year. The record currently ends " +
-        "earlier (last verified payment: Q3 2024), so the final bar is where the " +
-        "reporting stops. No projection is drawn, for the reporting-lag reason given in " +
-        "the revenue methodology.",
+        "median is plotted only when the year has at least 10 payments; the payment " +
+        "count is always plotted. A year is marked * only when it is the partial " +
+        "generation year.",
     },
 
     // --------------------------------------- extortion.html · 3
@@ -1634,15 +1605,12 @@ export const editorial = {
       caption:
         "The eight labeled families with the most confirmed revenue, with their payment " +
         "counts and the years each family's reported wallets first and last received " +
-        "money. Two limits apply. The revenue with no family label, about two thirds of " +
-        "the total, is larger than any family's and is reported in the note below the " +
-        "board. A family's rank also depends on how many of its wallets were reported: " +
-        "some families have many reported wallets, others one. Because reports for a " +
-        "family arrive in bursts, the board ranks all-time totals; yearly shares would " +
-        "mostly track when volunteers filed reports.",
+        "money. A family's rank depends on how many of its wallets were reported: some " +
+        "families have many reported wallets, others one. Revenue with no family label " +
+        "is left off the board and given in the note below it.",
       note:
         "{unattributed_usd} ({unattributed_pct} of all confirmed revenue) is verified but " +
-        "has no family label. It is reported here and left off the board.",
+        "has no family label, more than any one family's total.",
       colFamily: "Family",
       colUsd: "confirmed USD",
       colPayments: "payments",
@@ -1651,18 +1619,16 @@ export const editorial = {
       otherTemplate:
         "+ {families} more labeled families not shown · {usd} confirmed · {payments} payments",
       methodology:
-        "Family names are Ransomwhere's own labels, used as identifiers without further " +
-        "judgment. For each family, confirmed revenue is the sum of transaction amountUSD " +
-        "across its addresses at the rate of the transfer day; payments are the distinct " +
-        "transaction hashes among those addresses; first and last seen are the years of " +
-        "its earliest and latest verified transactions. The board ranks the top eight " +
-        "labeled families by all-time confirmed USD, and every other labeled family is " +
-        "pooled into the line below the board. The export's “Unlabeled” bucket (verified " +
-        "payments with no attribution) is left out of the ranking and reported in the " +
-        "note instead; ranked, a gap in attribution would appear as the leading family. " +
-        "A share-per-year chart was considered and rejected: wallets are often reported " +
-        "long after a campaign ran, so yearly family shares would partly chart reporting " +
-        "dates.",
+        "Family names are Ransomwhere's own labels. For each family, confirmed revenue is " +
+        "the sum of transaction amountUSD across its addresses at the rate of the " +
+        "transfer day. Payments are the distinct transaction hashes among those " +
+        "addresses, and first and last seen are the years of its earliest and latest " +
+        "verified transactions. The board ranks the top eight labeled families by " +
+        "all-time confirmed USD, and every other labeled family is pooled into the line " +
+        "below the board. The export's “Unlabeled” bucket (verified payments with no " +
+        "attribution) is left out of the ranking. The board ranks all-time totals " +
+        "because wallets are often reported long after a campaign ran, so yearly family " +
+        "shares would partly chart reporting dates.",
     },
 
     // --------------------------------------------- attack.html · 1 · hero
@@ -1673,11 +1639,9 @@ export const editorial = {
       headline: "ATT&CK's enterprise matrix has more than three times the techniques and sub-techniques of v1.0 in 2018.",
       caption:
         "Active techniques and sub-techniques on the MITRE ATT&CK enterprise matrix, one " +
-        "point per release, placed on the release dates MITRE's STIX index records. A " +
-        "detection-coverage percentage measured against an earlier matrix falls when the " +
-        "matrix grows, unless the new entries are covered too. Sub-techniques now " +
-        "outnumber the techniques they refine (the red line is sub-techniques), and " +
-        "most of the growth since 2018 has been in sub-techniques.",
+        "point per release, placed on the release dates in MITRE's release index. " +
+        "Sub-techniques now outnumber the techniques they refine, and most of the growth " +
+        "since 2018 has been in sub-techniques.",
       statLabel: "Active techniques + sub-techniques, enterprise matrix",
       statLatest: "v{version} ({year})",
       statAgo: "v{version} ({year})",
@@ -1685,18 +1649,17 @@ export const editorial = {
       legendSubtechniques: "Sub-techniques",
       methodology:
         "Each point is one release of the MITRE ATT&CK enterprise matrix, read from its " +
-        "STIX 2.1 bundle in the mitre-attack/attack-stix-data repository. Its x-position " +
-        "is the release date in that repository's index.json, so gaps between points are " +
-        "calendar gaps (major releases come about twice a year, with point releases " +
-        "between). One date is early: the index dates v7.0, the release that introduced " +
-        "sub-techniques, 2020-03-31, the date of their beta, while MITRE's versions page " +
-        "dates the release July 2020, so that step is drawn about three months early. A " +
-        "technique is a STIX attack-pattern object whose x_mitre_is_subtechnique flag is " +
-        "false or absent; a sub-technique is the same object type with the flag true. Both " +
-        "lines count active objects only: objects with revoked: true or " +
-        "x_mitre_deprecated: true are excluded here and counted as churn below. A released " +
-        "bundle does not change, so each version's counts are computed once and cached; a " +
-        "normal nightly run reads only the index. The lines step because a release's " +
+        "STIX 2.1 bundle (a JSON format for threat data) in the " +
+        "mitre-attack/attack-stix-data repository. Its x-position is the release date in " +
+        "that repository's index.json, so gaps between points are calendar gaps (major " +
+        "releases come about twice a year, with point releases between). One date is " +
+        "early. The index gives v7.0, the release that introduced sub-techniques, the " +
+        "date of their beta, 2020-03-31. MITRE's versions page dates the release July " +
+        "2020, so that step is drawn about three months early. A technique is a STIX " +
+        "attack-pattern object whose x_mitre_is_subtechnique flag is false or absent; a " +
+        "sub-technique is the same object type with the flag true. Both lines count " +
+        "active objects only: objects with revoked: true or x_mitre_deprecated: true are " +
+        "excluded here and counted as churn below. The lines step because a release's " +
         "counts hold until the next release.",
     },
 
@@ -1710,9 +1673,7 @@ export const editorial = {
         "For each ATT&CK release, how many techniques and sub-techniques it added and how " +
         "many it deprecated or revoked, compared by STIX object id with the release before " +
         "it. Across its forty-odd releases, the largest change was v7.0, which introduced " +
-        "sub-techniques: it added 302 and revoked or deprecated 140. A detection rule " +
-        "mapped to a technique that is later retired still runs, but its ATT&CK mapping " +
-        "then points to a deprecated or revoked entry.",
+        "sub-techniques: it added 302 and revoked or deprecated 140.",
       legendAdded: "Added",
       legendRetired: "Deprecated + revoked",
       methodology:
@@ -1725,9 +1686,9 @@ export const editorial = {
         "an object that arrives already deprecated counts only as an addition, and an " +
         "object retired in an earlier release is not counted again. The earliest indexed " +
         "release (v1.0) has no predecessor and is not drawn. The x-axis spaces releases " +
-        "evenly because the unit here is a release; gaps between releases range from zero " +
-        "days (two point releases on one day) to about half a year, and the two time-axis " +
-        "charts on this page show the calendar.",
+        "evenly, one slot per release. Gaps between releases range from zero days (two " +
+        "point releases on one day) to about half a year; the other two charts on this " +
+        "page use a calendar axis.",
     },
 
     // --------------------------------------------- attack.html · 3
@@ -1735,23 +1696,21 @@ export const editorial = {
       num: "03",
       kicker: "Groups and software",
       source: "MITRE ATT&CK® STIX bundles",
-      headline: "ATT&CK's catalogs of groups and software have grown since 2018.",
+      headline: "ATT&CK lists about three times as many groups and more than four times as many software entries as v1.0 in 2018.",
       caption:
         "Active adversary groups (intrusion sets) and software (malware and tools, " +
         "counted together) per release, on the same release-date axis as the first chart. " +
         "Technique entries cite the groups observed using them and the software that " +
-        "implements them. An entry leaves these counts when MITRE deprecates or revokes it.",
+        "implements them.",
       legendGroups: "Groups (intrusion sets)",
       legendSoftware: "Software (malware + tools)",
       methodology:
-        "Groups are STIX intrusion-set objects; software is malware and tool objects, " +
-        "counted together. The same activity rule as the first chart applies: objects " +
-        "with revoked: true or x_mitre_deprecated: true are excluded. Campaigns, tactics, " +
-        "mitigations, data sources, detection strategies and relationship records in the " +
-        "bundle are out of scope; this chart counts the named groups and their software, " +
-        "the two catalogs a technique entry cites. Points sit at index.json release dates " +
-        "and step between releases, as in the first chart; the counts come from the same " +
-        "cached per-version stats.",
+        "Groups are STIX intrusion-set objects; software is malware and tool objects. " +
+        "The same activity rule as the first chart applies: objects with revoked: true " +
+        "or x_mitre_deprecated: true are excluded. Campaigns, tactics, mitigations, data " +
+        "sources, detection strategies and relationship records in the bundle are not " +
+        "counted. Points sit at index.json release dates and step between releases, as " +
+        "in the first chart.",
     },
 
     // --------------------------------------------- hygiene.html · 1 · hero
@@ -1763,11 +1722,10 @@ export const editorial = {
       caption:
         "DNSSEC lets a resolver verify that a DNS answer is the one the domain owner " +
         "signed. The standard has been complete since 2005, and turning validation on is " +
-        "a resolver configuration setting, free of charge. The line is APNIC's measured " +
-        "share of internet users whose resolvers perform that check, climbing from under " +
-        "a tenth when the record starts in 2013 to roughly four in ten today. At the " +
-        "average rate of the last ten years, reaching every user would take more than " +
-        "twenty years.",
+        "a resolver configuration setting. The line is APNIC's measured share of " +
+        "internet users whose resolvers perform that check; it was under a tenth when " +
+        "the record started in 2013. At the average rate of the last ten years, " +
+        "reaching every user would take more than twenty years.",
       statLabel: "Share of internet users behind validating resolvers",
       statLatest: "{latest_month}",
       statAgo: "{ago_month}",
@@ -1780,15 +1738,14 @@ export const editorial = {
         "queries reach a mix of validating and non-validating resolvers counts as " +
         "partially validating; that rate is included in the data file with the latest " +
         "reading and is kept out of the line. The chart plots APNIC's world aggregate " +
-        "(code XA), 30-day smoothed window, sampled by CyberMon to the last published day " +
-        "of each calendar month. The full daily series is refetched from " +
-        "stats.labs.apnic.net every night, so upstream corrections carry through. The " +
-        "stat compares the newest month with the month ten years earlier (or with the " +
-        "record's first month until the record is ten years long). APNIC states the " +
-        "measurement's limits: samples arrive where the ad network delivers, so coverage " +
-        "follows ad reach, and APNIC weights each economy's results by its estimated " +
-        "internet population. The figures are estimates from hundreds of millions of " +
-        "samples a month, reliable for the trend and less so in the decimals.",
+        "(code XA), 30-day smoothed window, sampled at the last published day of each " +
+        "calendar month. The full daily series is refetched from stats.labs.apnic.net " +
+        "every night, so upstream corrections carry through. The stat compares the " +
+        "newest month with the month ten years earlier. APNIC states the measurement's " +
+        "limits: samples arrive where the ad network delivers, so coverage follows ad " +
+        "reach, and APNIC weights each economy's results by its estimated internet " +
+        "population. The figures are estimates from hundreds of millions of samples a " +
+        "month.",
     },
 
     // --------------------------------------------- hygiene.html · 2
@@ -1799,28 +1756,25 @@ export const editorial = {
       headline: "In the ten largest economies, validation ranges from nine in ten users to almost none.",
       caption:
         "The same measured rate for a fixed set of ten: the economies with the most " +
-        "internet users, by APNIC's own weighting. The highest validates for roughly nine " +
-        "of every ten users and the lowest for almost none; Japan and the United States " +
-        "are both below half. The dashed line is APNIC's world rate, which weights each " +
-        "economy by its estimated number of internet users.",
+        "internet users, by APNIC's own weighting. Japan and the United States are both " +
+        "below half. The dashed line is APNIC's world rate, which weights each economy " +
+        "by its estimated number of internet users.",
       worldLine: "World average",
       note:
         "Lines are quarterly samples of APNIC's 30-day windows. The legend is ordered by " +
-        "current rate; the dashed line is the user-weighted world average.",
+        "current rate, highest first.",
       methodology:
-        "The set is fixed: the ten largest economies by APNIC's weighted sample count, " +
-        "which is its estimate of each economy's internet-user population, as measured " +
-        "when this module launched in July 2026. They are China, India, the United " +
-        "States, Brazil, Indonesia, Japan, Mexico, Russia, the Philippines and Nigeria. " +
-        "Membership is frozen by design, because re-picking the list nightly would mix " +
-        "changes in membership with changes in adoption. For each economy the pipeline " +
-        "pulls APNIC's full daily series and samples the last published day of each " +
-        "quarter-end month (30-day smoothed window), plus the newest available day. The " +
-        "legend is ordered by current rate, highest first. APNIC notes that samples " +
-        "arrive where the measurement ads are delivered and that delivery volume varies " +
-        "by economy. Where it is thin, the measured rate is noisier; at this module's " +
-        "launch in mid-2026, Russia yielded a small fraction of the samples of " +
-        "comparable economies.",
+        "The set is the ten largest economies by APNIC's weighted sample count (its " +
+        "estimate of each economy's internet-user population) when this module launched " +
+        "in July 2026: China, India, the United States, Brazil, Indonesia, Japan, " +
+        "Mexico, Russia, the Philippines and Nigeria. The list is not re-picked, because " +
+        "a changing list would mix changes in membership with changes in adoption. For " +
+        "each economy the pipeline pulls APNIC's full daily series and samples the last " +
+        "published day of each quarter-end month (30-day smoothed window), plus the " +
+        "newest available day. Delivery of APNIC's measurement ads varies by economy, " +
+        "and where it is thin the measured rate is noisier; at this module's launch in " +
+        "mid-2026, Russia yielded a small fraction of the samples of comparable " +
+        "economies.",
     },
 
     // --------------------------------------------- hygiene.html · 3
@@ -1830,11 +1784,10 @@ export const editorial = {
       source: "APNIC Labs DNSSEC measurement",
       headline: "In most measured economies, at least half of users have validating resolvers.",
       caption:
-        "Each economy APNIC measures with at least 10,000 samples, grouped by its current " +
-        "validation rate and counted once regardless of size. Counted this way the result " +
-        "is better than the user-weighted world line: the stat counts the economies where " +
-        "at least half of users are behind validating resolvers. The difference comes " +
-        "from a few very populous economies with low rates, such as China at nearly zero.",
+        "Each measured economy, grouped by its current validation rate and counted once " +
+        "regardless of size. The user-weighted world rate is lower than this count " +
+        "suggests because a few populous economies have low rates, such as China at " +
+        "nearly zero.",
       statBig: "{n} of {total}",
       statLead: "measured economies where at least half of users are behind validating resolvers",
       statNote: "economies with at least {min_seen} samples in the current 30-day window",
@@ -1846,14 +1799,8 @@ export const editorial = {
         "10,000 measurements in the current 30-day window; below that floor a rate is too " +
         "uncertain to use. Economies are grouped by the share of sampled users behind " +
         "validating resolvers: under 10%, 10–25%, 25–50%, 50–75%, and 75% or higher " +
-        "(lower edges inclusive). Each economy counts once regardless of size, which is " +
-        "why this chart can look better than the user-weighted world line above. Values " +
-        "are parsed nightly from the world-map table APNIC publishes. APNIC also " +
-        "publishes a JSON series per economy, but fetching about two hundred forty of " +
-        "them every night to build one histogram would put needless load on the source; " +
-        "the table is a single request. As on the rest of the page, the rates are " +
-        "estimates from ad-delivered samples, and the sample floor keeps out the most " +
-        "thinly sampled economies.",
+        "(lower edges inclusive). Values are parsed nightly from the world-map table " +
+        "APNIC publishes.",
     },
     // --------------------------------------------- guards.html · 1 · hero
     guards: {
@@ -2534,13 +2481,9 @@ export const editorial = {
       caption:
         "MITRE ATT&CK files each tracked threat group under one name and records " +
         "aliases used by other vendors: APT28 is also listed as Fancy Bear, Forest " +
-        "Blizzard, Sofacy and STRONTIUM. The most-renamed groups carry a dozen " +
-        "or more names apiece. MITRE notes that an associated name may describe an " +
-        "overlapping activity cluster rather than the same group. This table counts " +
-        "the names besides the canonical one. The alias list is MITRE's selection and " +
-        "does not record every vendor's naming. Roughly four in ten tracked groups " +
-        "carry no second name in ATT&CK, which says nothing about what other vendors " +
-        "call them.",
+        "Blizzard, Sofacy and STRONTIUM. This table counts the names besides the " +
+        "canonical one. MITRE notes that an associated name may describe an " +
+        "overlapping activity cluster rather than the same group.",
       statTemplate:
         "ATT&CK v{version} · the {shown} groups with the most aliases, of " +
         "{with_aliases} that have any, out of {total} tracked",
@@ -2570,8 +2513,8 @@ export const editorial = {
       headline: "Most ATT&CK groups have three or fewer alternate names.",
       caption:
         "Each bar counts the active tracked groups with that many alternate names. " +
-        "Roughly four in ten groups have none (ATT&CK lists no other name for them), " +
-        "while a short tail of groups has ten or more.",
+        "Roughly four in ten groups have none in ATT&CK, and a short tail of groups " +
+        "has ten or more.",
       xAxis: "alternate names per group",
       yAxis: "tracked groups",
       nodata: "Not enough data yet.",
@@ -2579,8 +2522,7 @@ export const editorial = {
         "The same active intrusion sets as the table above, grouped by how many " +
         "alternate names each has. Every count from zero to the maximum is shown, " +
         "including empty ones. The zero bucket (groups ATT&CK lists under a single " +
-        "name) is drawn muted. This is a snapshot of the current release and does " +
-        "not show change over time.",
+        "name) is drawn muted.",
     },
 
     // --------------------------------- top25.html · 1 · hero
@@ -3203,17 +3145,15 @@ export const editorial = {
       num: "01",
       kicker: "C2 servers over time",
       source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
-      headline: "CyberMon counts the servers on Feodo Tracker's botnet C2 blocklist every night.",
+      headline: "Every nightly snapshot of Feodo Tracker's botnet C2 blocklist since July 2026 lists fewer than ten servers.",
       caption:
-        "Each night CyberMon counts the botnet command-and-control (C2) servers " +
-        "on abuse.ch's Feodo Tracker blocklist and stores the counts; the " +
-        "tracker publishes only the current list. The tracker's FAQ attributes " +
-        "its empty datasets to law-enforcement takedowns, naming Emotet in 2021 " +
-        "and Operation Endgame in 2024, so a count in the single digits can " +
-        "follow a takedown. It can also mean the tracker has stopped updating: " +
-        "a snapshot records what the feed says, not whether the feed is current, " +
-        "and the two look the same on this chart. Servers the tracker newly " +
-        "lists appear here as a rise in the count.",
+        "The botnet command-and-control (C2) servers on abuse.ch's Feodo Tracker " +
+        "blocklist, counted each night; the tracker publishes only the current " +
+        "list, so CyberMon stores the counts. Stacked bars count the servers the " +
+        "tracker marks online, by malware family; the dashed line is the total " +
+        "listed. The tracker's FAQ attributes its empty datasets to " +
+        "law-enforcement takedowns, naming Emotet in 2021 and Operation Endgame " +
+        "in 2024.",
       yAxis: "C2 servers",
       statLabel: "C2 servers the tracker marks online",
       statWhen: "of {listed} listed · snapshots since {first_date}",
@@ -3221,21 +3161,18 @@ export const editorial = {
       legendListed: "All listed",
       // {first_date} fills from the record's actual start; the empty
       // variant renders while there is only one snapshot on file.
-      note:
-        "Feodo Tracker publishes only the current list; CyberMon has recorded " +
-        "it nightly since {first_date}.",
+      note: "CyberMon has recorded the list nightly since {first_date}.",
       // Renders instead of `note` once the last {nights} snapshots are
       // identical (at least a week of them): the counts alone cannot say
       // whether the servers are unchanged or the feed has stalled.
       noteFlat:
-        "Feodo Tracker publishes only the current list; CyberMon has recorded " +
-        "it nightly since {first_date}. The last {nights} snapshots, since " +
-        "{since}, all show the same counts: {listed} listed, {online} online. " +
-        "Identical counts can mean no change in the servers or a tracker that " +
-        "has stopped updating; the counts cannot tell which.",
+        "CyberMon has recorded the list nightly since {first_date}. The last " +
+        "{nights} snapshots, since {since}, all show the same counts: {listed} " +
+        "listed, {online} online. Identical counts can mean no change in the " +
+        "servers or a tracker that has stopped updating; the counts cannot tell " +
+        "which.",
       noteEmpty:
-        "Feodo Tracker publishes only the current list; CyberMon's record " +
-        "starts with tonight's snapshot and adds one each night.",
+        "CyberMon's record starts with tonight's snapshot and adds one each night.",
       methodology:
         "Each night the pipeline fetches Feodo Tracker's public botnet C2 " +
         "blocklist (ipblocklist.json) and reduces it to per-family counts: " +
@@ -3243,14 +3180,9 @@ export const editorial = {
         "server that answered like a botnet C2 on its last probe). The pipeline " +
         "does not read the tracker's last-online dates, so an online status can " +
         "be old. The counts are appended to a committed history file " +
-        "(data/history/botnet_c2.csv), a dataset this project accumulates, like " +
-        "the NVD backlog record, because the tracker publishes only the current " +
-        "list. The chart stacks the online count by malware family; the dashed " +
-        "line is the total listed. The pipeline has no minimum-count check: a " +
-        "drop to zero, as after a takedown, is recorded as data, while a " +
-        "malformed or unreachable feed stops the run and records nothing. " +
-        "abuse.ch publishes Feodo Tracker data under CC0. The record starts at " +
-        "the module's first deploy.",
+        "(data/history/botnet_c2.csv). The pipeline has no minimum-count check: " +
+        "a drop to zero, as after a takedown, is recorded as data, while a " +
+        "malformed or unreachable feed stops the run and records nothing.",
     },
 
     // --------------------------------- c2.html · 2
@@ -3261,11 +3193,10 @@ export const editorial = {
       headline: "Tonight's blocklist holds a handful of C2 servers.",
       caption:
         "Every server on tonight's blocklist, counted by malware family. The " +
-        "accent segment is the servers the tracker marks online (they answered " +
-        "as a C2 on the tracker's last probe); the rest are listed but offline. " +
-        "Below, the same servers counted by hosting country and by network. The " +
-        "module publishes counts only, never the blocklist itself, so no address " +
-        "appears here; the raw list is available from the tracker's feed.",
+        "highlighted part of each bar is the servers the tracker marks online; " +
+        "the rest are listed but offline. Below, the same servers counted by " +
+        "hosting country and by network. The module publishes counts only, " +
+        "never the blocklist itself.",
       statTemplate: "{listed} C2s listed · {online} online · {families} malware families",
       legendOnline: "Online (answered as C2)",
       legendDark: "Listed, offline",
@@ -3275,14 +3206,12 @@ export const editorial = {
       nodata:
         "The blocklist is empty tonight, as the tracker reports it.",
       methodology:
-        "The composition comes from tonight's snapshot alone, so it was complete " +
-        "from the first night. Each listed server counts once toward its malware " +
-        "family, its hosting country and its network (tallied by autonomous-system " +
-        "number and labelled with the AS name the tracker publishes). Online means " +
-        "the server responded like a botnet C2 on the tracker's last probe; the " +
-        "tracker states that it adds an address only after it returns a valid C2 " +
-        "response. Countries and networks are shown as text counts. Per-server " +
-        "details (addresses, ports, hostnames) stay in the pipeline, and the output " +
+        "The composition comes from tonight's snapshot alone. Each listed server " +
+        "counts once toward its malware family, its hosting country and its " +
+        "network (tallied by autonomous-system number and labelled with the AS " +
+        "name the tracker publishes). The tracker states that it adds an address " +
+        "only after it returns a valid C2 response. Per-server details " +
+        "(addresses, ports, hostnames) stay in the pipeline, and the output " +
         "contract rejects them.",
     },
 
@@ -3291,7 +3220,7 @@ export const editorial = {
       num: "03",
       kicker: "Age on the tracker",
       source: "abuse.ch Feodo Tracker · CyberMon nightly snapshots",
-      headline: "Each listed C2 server is aged from the day Feodo Tracker first saw it.",
+      headline: "At least half of tonight's listed C2 servers were first seen by Feodo Tracker more than six months ago.",
       caption:
         "For every server on tonight's blocklist, the days since Feodo Tracker " +
         "first saw it. This is its age on the tracker; it does not show that the " +
@@ -3299,7 +3228,7 @@ export const editorial = {
         "from under 30 days to over two years; a bucket is empty when no listed " +
         "server was first seen in that range. The median changes when entries are " +
         "added or removed; while the list is unchanged it rises by one day each " +
-        "night. Tonight's value is shown above the chart.",
+        "night.",
       statLabel: "Median age of tonight's listed C2s",
       statValue: "{median} days",
       statWhen: "oldest {oldest} days",
@@ -3308,11 +3237,9 @@ export const editorial = {
       methodology:
         "Age is the number of whole days between a server's first_seen " +
         "stamp on Feodo Tracker and tonight's snapshot date, grouped into fixed " +
-        "buckets from under 30 days to over 2 years. The median and the oldest " +
-        "are computed over every listed server, online or offline, since an " +
-        "offline server that remains listed is still on the tracker's record. " +
-        "Like the composition chart, this uses tonight's snapshot only and needs " +
-        "no accumulated history.",
+        "buckets. The median and the oldest are computed over every listed " +
+        "server, online or offline, since an offline server that remains listed " +
+        "is still on the tracker's record.",
     },
 
     // --------------------------------- ai.html · 1 · hero
@@ -3958,13 +3885,12 @@ export const editorial = {
         "companies), a US public company that decides a cybersecurity " +
         "incident is material must disclose it on Form 8-K under Item 1.05 " +
         "within four business days of that decision. The bars count those " +
-        "filings per month by the date the 8-K reached EDGAR. The date of " +
-        "the incident appears only in a filing's text, and not every filing " +
-        "gives one. " +
-        "Amendments (8-K/A) are a separate series. The third series is " +
-        "Item 8.01 filings that describe a cybersecurity incident: the " +
-        "voluntary item that SEC staff guidance of May 2024 suggested for " +
-        "incidents a company has not, or not yet, judged material.",
+        "filings by the date the 8-K reached EDGAR. The date of the incident " +
+        "appears only in a filing's text, and not every filing gives one. " +
+        "Amendments (8-K/A) are a separate series. The third series counts " +
+        "Item 8.01 filings that describe a cybersecurity incident. SEC staff " +
+        "guidance of May 2024 suggested this voluntary item for incidents a " +
+        "company has not, or not yet, judged material.",
       statLabel: "Item 1.05 incident disclosures on EDGAR (original 8-Ks)",
       statWhen:
         "from {companies} companies since {start} · {amendments} amendments · " +
@@ -4002,9 +3928,9 @@ export const editorial = {
         "press releases would otherwise add routine announcements. " +
         "Full-text search returns one hit per document, so filings are " +
         "de-duplicated by accession number, and companies are counted once " +
-        "per primary filer (CIK). Months are calendar months of the filing " +
-        "date EDGAR records; the first month counts from the rule's " +
-        "effective date. Where a response lacks a filing's item list, the " +
+        "per primary filer (CIK, EDGAR's company identifier). Months are " +
+        "calendar months of the filing date EDGAR records. Where a response " +
+        "lacks a filing's item list, the " +
         "phrase match decides, and the edition records how many filings " +
         "rested on that fallback. If EDGAR cannot be read, the previous " +
         "edition is carried forward and marked as such in the footer.",
@@ -4018,10 +3944,8 @@ export const editorial = {
       headline: "About a third of Item 1.05 disclosures have been amended, most within 90 days.",
       caption:
         "Item 1.05 lets a company file before it knows an incident's full " +
-        "scope or impact; it must then amend the 8-K once it does. Each " +
-        "Item 1.05 amendment is matched to the same company's most recent " +
-        "Item 1.05 original filed on or before it. The bars count the days " +
-        "from each original to its first amendment.",
+        "scope or impact; it must then amend the 8-K once it does. The bars " +
+        "count the days from each original disclosure to its first amendment.",
       statLabel: "Median days from an Item 1.05 filing to its first amendment",
       statValue: "{median} days",
       statWhen: "{amended} of {originals} disclosures amended so far · longest {max} days",
@@ -4048,8 +3972,7 @@ export const editorial = {
         "amendments to the same original count as filings in the chart " +
         "above but not again here. An amendment whose filer has no earlier " +
         "Item 1.05 original since 18 December 2023 is counted as unmatched " +
-        "and left out. The lag runs between filing dates; nothing on this " +
-        "page measures the time from an incident to its disclosure.",
+        "and left out.",
     },
 
     // --------------------------------- incidents.html · 3
@@ -4059,11 +3982,8 @@ export const editorial = {
       source: "SEC EDGAR (sec.gov/Archives)",
       headline: "Each recent Item 1.05 filing below links to its record on EDGAR.",
       caption:
-        "The most recent Item 1.05 filings, originals and amendments, each " +
-        "linked to its filing index on EDGAR; the filing date is the link. " +
-        "These are the companies' own public disclosures, listed under the " +
-        "filer's name as EDGAR records it. Where a company gives the date " +
-        "of the incident, it is in the filing's text.",
+        "Originals and amendments, newest first; the filing date links to the " +
+        "filing index on EDGAR. Filers are named as EDGAR records them.",
       colDate: "Filed",
       colForm: "Form",
       colCompany: "Filer",
@@ -4081,7 +4001,8 @@ export const editorial = {
         "is built from the filer's CIK and the accession number " +
         "(sec.gov/Archives/edgar/data/<CIK>/<accession>/<accession>-index.htm). " +
         "For an amendment, “days after original” is the lag to the " +
-        "original it was matched to, as in the chart above.",
+        "original it was matched to, as in the chart above; an unmatched " +
+        "amendment shows no lag.",
     },
 
     // --------------------------------- advisories.html · 1 (hero)

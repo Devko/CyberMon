@@ -51,8 +51,9 @@ def load(name: str) -> dict:
 
 def check_typical_gap_in_months(d: dict) -> None:
     # editorial.js (breaches.html hero): headline "Since 2014, the median
-    # breach has reached HIBP's catalog months after it happened" and
-    # caption "the typical gap is measured in months" — the pooled
+    # breach has reached HIBP's catalog months after it happened" (the
+    # caption's repeat, "the typical gap is measured in months", was cut on
+    # 2026-11-04) — the pooled
     # live-era median, the hero stat's accent figure, must sit in month
     # territory, not days and not years. (Live fetch 2026-07: 144 days;
     # 137.5 on 09-23, 137.0 on 2026-10-03.) The stat's second figure, the
@@ -61,7 +62,7 @@ def check_typical_gap_in_months(d: dict) -> None:
     # which takes that slot in January, is at 23 days so far.
     median = d["headline"]["median_days"]
     assert 60 <= median <= 365, (
-        f"'the typical gap is measured in months' needs the pooled trend "
+        f"'months after it happened' needs the pooled trend "
         f"median between ~2 and ~12 months; data says {median} days "
         f"(over {d['headline']['trend_n']} breaches)"
     )
@@ -69,15 +70,13 @@ def check_typical_gap_in_months(d: dict) -> None:
 
 def check_import_era_callout(d: dict) -> None:
     # editorial.js (breach lag methodology): "six of its seven
-    # opening-import entries predate the service itself, and the seven
-    # carry a median nominal lag of well over a year" — import_era is a
+    # opening-import entries predate the service itself" — import_era is a
     # fixed historical set (n=7, 511 d; PixelFederation is dated launch
-    # day, the other six before it).
+    # day, the other six before it). The median lag is printed from the
+    # data in the import note; since 2026-11-04 the copy no longer
+    # characterizes it ("well over a year" was cut as a repeat).
     era = d["import_era"]
     assert era["n"] == 7, f"'its seven opening-import entries' vs n={era['n']}"
-    assert 365 <= era["median_days"] <= 1000, (
-        f"'a median nominal lag of well over a year' vs {era['median_days']} d"
-    )
 
 
 def check_single_years_vary(d: dict) -> None:
@@ -104,14 +103,16 @@ def _email_rows(d: dict) -> list[dict]:
 
 def check_email_every_year_since_2015(d: dict) -> None:
     # editorial.js (breaches.html leaks caption): "Email addresses appear in
-    # at least 95% of each year's breaches since 2015." (2026-10-03,
-    # unchanged since 09-23: lowest 97.0% in 2015 and 98.6% in 2021,
-    # 98.8% in 2025, 100% in 2026 so far over 102 breaches; 2014 was 88.9%.)
+    # at least 95% of the breaches in each complete year since 2015."
+    # (2026-10-03, unchanged since 09-23: lowest 97.0% in 2015 and 98.6% in
+    # 2021, 98.8% in 2025, 100% in 2026 so far over 102 breaches; 2014 was
+    # 88.9%.) The copy names complete years; the guard also holds a partial
+    # year to it once it has CLASS_SHARE_MIN_BREACHES breaches.
     rows = [(y["year"], y["shares"].get("Email addresses", 0.0))
             for y in _email_rows(d) if y["year"] >= 2015]
     assert rows and rows[0][0] == 2015, rows[:1]
     low = [(y, s) for y, s in rows if s < 95]
-    assert not low, f"'at least 95% of each year's breaches since 2015' vs {low}"
+    assert not low, f"'at least 95% of the breaches in each complete year since 2015' vs {low}"
 
 
 def check_email_nearly_every_breach(d: dict) -> None:
@@ -129,8 +130,9 @@ def check_email_nearly_every_breach(d: dict) -> None:
 
 
 def check_third_take_over_a_year(d: dict) -> None:
-    # editorial.js (breaches.html hero): "roughly a third of entries take
-    # more than a year to reach the catalog". (Live fetch 2026-07: 35.5%.)
+    # editorial.js (breaches.html hero caption): "Roughly a third of entries
+    # take more than a year to reach the catalog." (Live fetch 2026-07:
+    # 35.5%; 34.8% on 2026-11-04.)
     pct = d["headline"]["pct_over_365d"]
     assert 25 <= pct <= 45, (
         f"'roughly a third of entries take more than a year to reach the catalog' "
@@ -139,25 +141,46 @@ def check_third_take_over_a_year(d: dict) -> None:
 
 
 def check_passwords_trend(d: dict) -> None:
-    # editorial.js (breaches.html leaks caption): "Passwords are the trend:
-    # in nine of ten breaches cataloged in 2014, about four in ten by 2025,
-    # and lower every year since 2019." Named years: 2014-2025 are settled.
+    # editorial.js (breaches.html leaks caption): "Passwords appeared in
+    # nine of ten breaches cataloged in 2014, about four in ten in 2025, and
+    # a lower share in each complete year since 2019." Named years are
+    # settled; the run covers every complete year, so 2026 (16.1% over 112
+    # breaches on 2026-11-04) joins it when it closes. Until 2026-11-04 the
+    # copy said "every year" and the run stopped at 2025.
     by = {y["year"]: y["shares"].get("Passwords") for y in d["class_shares"]["years"]}
     assert by[2014] is not None and 85 <= by[2014] <= 95, by.get(2014)
     assert by[2025] is not None and 35 <= by[2025] <= 45, by.get(2025)
-    run = [by[y] for y in range(2019, 2026)]
+    years = [y for y in sorted(by) if y >= 2019 and claims_support.judged(y)]
+    run = [by[y] for y in years]
     assert all(a > b for a, b in zip(run, run[1:])), (
-        f"'lower every year since 2019' vs {list(zip(range(2019, 2026), run))}")
+        f"'a lower share in each complete year since 2019' vs "
+        f"{list(zip(years, run))}")
+
+
+# "Tens of millions or more": a complete year below ten million accounts
+# breaks the exposure headline.
+TENS_OF_MILLIONS = 10_000_000
+
+
+def check_tens_of_millions_each_complete_year(d: dict) -> None:
+    # editorial.js (breaches.html volume headline): "In every complete year
+    # since 2014, HIBP loaded tens of millions of breached accounts or
+    # more." (2026-11-04: lowest 31.3M in 2014, then 82.9M in 2015; every
+    # year since 2016 above 275M.) Until 2026-11-04 the headline said
+    # "Every year since 2014", which a January partial year would break.
+    rows = [r for r in d["volume_by_year"]
+            if r["year"] >= 2014 and claims_support.judged(r["year"])]
+    assert rows and rows[0]["year"] == 2014, rows[:1]
+    low = [(r["year"], r["records"]) for r in rows
+           if r["records"] < TENS_OF_MILLIONS]
+    assert not low, (
+        f"'tens of millions of breached accounts or more' in every complete "
+        f"year since 2014 vs {low}")
 
 
 CLAIMS = [
     (
         "Since 2014, the median breach has reached HIBP's catalog months after it happened.",
-        "breach_ledger.json",
-        check_typical_gap_in_months,
-    ),
-    (
-        "the typical gap is measured in months",
         "breach_ledger.json",
         check_typical_gap_in_months,
     ),
@@ -174,9 +197,14 @@ CLAIMS = [
         check_single_years_vary,
     ),
     (
-        "Email addresses appear in at least 95% of each year's breaches since 2015.",
+        "Email addresses appear in at least 95% of the breaches in each complete year since 2015.",
         "breach_ledger.json",
         check_email_every_year_since_2015,
+    ),
+    (
+        "In every complete year since 2014, HIBP loaded tens of millions of breached accounts or more.",
+        "breach_ledger.json",
+        check_tens_of_millions_each_complete_year,
     ),
     (
         "Nearly every cataloged breach includes email addresses; a falling share includes passwords.",
@@ -189,17 +217,17 @@ CLAIMS = [
         check_passwords_trend,
     ),
     (
-        "six of its seven opening-import entries predate the service itself, and the seven carry a median nominal lag of well over a year",
+        "six of its seven opening-import entries predate the service itself",
         "breach_ledger.json",
         check_import_era_callout,
     ),
     (
-        "roughly a third of entries take more than a year to reach the catalog",
+        "Roughly a third of entries take more than a year to reach the catalog.",
         "breach_ledger.json",
         check_third_take_over_a_year,
     ),
     (
-        "Passwords appeared in nine of ten breaches cataloged in 2014, about four in ten by 2025, and a lower share every year since 2019",
+        "Passwords appeared in nine of ten breaches cataloged in 2014, about four in ten in 2025, and a lower share in each complete year since 2019.",
         "breach_ledger.json",
         check_passwords_trend,
     ),

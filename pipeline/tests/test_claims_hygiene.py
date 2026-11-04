@@ -46,18 +46,26 @@ FOUR_IN_TEN = (35.0, 45.0)
 
 
 def check_world_line(d: dict) -> None:
-    # editorial.js (hygiene.html hero): "climbing from under a tenth when
-    # the record starts in 2013 to roughly four in ten today"
+    # editorial.js (hygiene.html hero caption): "it was under a tenth when
+    # the record started in 2013". Until 2026-11-04 it went on "to roughly
+    # four in ten today", a repeat of the headline
+    # (check_four_in_ten_validate).
     first = d["world"]["series"][0]
     assert first["month"].startswith("2013"), (
-        f"'when the record starts in 2013' — series now starts "
+        f"'when the record started in 2013' — series now starts "
         f"{first['month']}; update the copy"
     )
-    assert first["validating_pc"] <= 10, (
+    assert first["validating_pc"] < 10, (
         f"'from under a tenth' claims the 2013 start sat below 10%; "
         f"data says {first['validating_pc']}%"
     )
-    check_four_in_ten_validate(d)
+
+
+def check_china_near_zero(d: dict) -> None:
+    # editorial.js (hygiene.html spread caption): "a few populous economies
+    # have low rates, such as China at nearly zero". (2026-11-04: 0.7%.)
+    by = {e["cc"]: e["latest_pc"] for e in d["economies"]}
+    assert by["CN"] <= 2, f"'China at nearly zero' vs {by['CN']}%"
 
 
 def check_four_in_ten_validate(d: dict) -> None:
@@ -105,9 +113,9 @@ def check_more_than_twenty_years_to_everyone(d: dict) -> None:
 
 
 def check_giants_gap(d: dict) -> None:
-    # editorial.js (hygiene.html economies): "the top of this list
-    # validates for roughly nine of every ten users, the bottom for
-    # almost none"
+    # editorial.js (hygiene.html economies headline): "In the ten largest
+    # economies, validation ranges from nine in ten users to almost none."
+    # (2026-11-04: the Philippines 93.7%, China 0.7%.)
     economies = d["economies"]
     assert economies, "no economies in dnssec_adoption.json"
     top, bottom = economies[0], economies[-1]
@@ -123,14 +131,14 @@ def check_giants_gap(d: dict) -> None:
 
 CLAIMS = [
     (
-        "climbing from under a tenth when the record starts in 2013 to roughly four in ten today",
+        "it was under a tenth when the record started in 2013",
         "dnssec_adoption.json",
         check_world_line,
     ),
     (
-        "The highest validates for roughly nine of every ten users and the lowest for almost none",
+        "such as China at nearly zero",
         "dnssec_adoption.json",
-        check_giants_gap,
+        check_china_near_zero,
     ),
     (
         "In the ten largest economies, validation ranges from nine in ten users to almost none.",

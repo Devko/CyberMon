@@ -92,8 +92,9 @@ def check_receipts_size(d: dict) -> None:
 
 
 def check_receipts_link_to_edgar(d: dict) -> None:
-    # editorial.js (incidents_receipts caption): "each linked to its filing
-    # index on EDGAR"
+    # editorial.js (incidents_receipts caption): "the filing date links to
+    # the filing index on EDGAR" (until 2026-11-04: "each linked to its
+    # filing index on EDGAR")
     for r in d["recent"]:
         assert _EDGAR_URL.match(r["url"]), r["url"]
         assert r["adsh"] in r["url"] and f"/data/{r['cik']}/" in r["url"]
@@ -175,7 +176,7 @@ CLAIMS = [
      check_partial_periods),
     ("Up to the 25 newest Item 1.05 filings in the window, newest first",
      "sec_incidents.json", check_receipts_size),
-    ("each linked to its filing index on EDGAR", "sec_incidents.json",
+    ("the filing date links to the filing index on EDGAR", "sec_incidents.json",
      check_receipts_link_to_edgar),
     ("nothing has been counted, so nothing is drawn as zero",
      "sec_incidents.json", check_empty_claims_nothing),

@@ -59,8 +59,10 @@ def check_billion_dollar_floor(d: dict) -> None:
 
 
 def check_unattributed_two_thirds(d: dict) -> None:
-    # editorial.js (extortion.html families): "The single largest slice of
-    # verified revenue — about two thirds — carries no family label at all"
+    # editorial.js (extortion.html families): headline "About two thirds of
+    # verified ransom revenue carries no family label." and note "... has no
+    # family label, more than any one family's total." (2026-11-04: 67.0%,
+    # $682.1M against Conti's $101.6M.)
     unattributed = d["families"]["unattributed"]["usd"]
     total = d["catalog"]["total_usd"]
     share = 100.0 * unattributed / total if total else 0.0
@@ -70,8 +72,8 @@ def check_unattributed_two_thirds(d: dict) -> None:
     )
     top_usd = max((f["usd"] for f in d["families"]["top"]), default=0)
     assert unattributed > top_usd, (
-        f"'The single largest slice' needs unattributed (${unattributed:,}) "
-        f"above the top-ranked family (${top_usd:,})"
+        f"'more than any one family's total' needs unattributed "
+        f"(${unattributed:,}) above the top-ranked family (${top_usd:,})"
     )
 
 
@@ -79,8 +81,9 @@ def check_unattributed_two_thirds(d: dict) -> None:
 def check_last_verified_payment_quarter(d: dict) -> None:
     # editorial.js (extortion): "the ledger's last verified payment landed
     # in Q3 2024" — a hard date one new crowdsourced report invalidates
-    # overnight. Failing here means a newer payment landed: update BOTH
-    # copy occurrences (revenue caption + payments methodology).
+    # overnight. Failing here means a newer payment landed: update the
+    # revenue caption (the payments methodology repeated the date until
+    # 2026-11-04).
     # The TINY rehearsals fail here by construction: they clone the latest
     # quarter (2024 Q3, paid) into the rehearsal year, which is a new
     # payment. A real new year adds no quarter: the series runs from the
@@ -125,21 +128,12 @@ def check_payment_counts_by_era(d: dict) -> None:
         f"'medians around $100,000 or higher' vs {late}")
 
 
-def check_median_grew_250_fold(d: dict) -> None:
-    # editorial.js (extortion payments caption): "From 2016 to 2022 the
-    # median grew some 250-fold." Both years are settled history
-    # ($575.54 -> $147,038.94, x255).
-    by = {r["year"]: r.get("median_usd") for r in d["payments_by_year"]}
-    ratio = by[2022] / by[2016]
-    assert 200 <= ratio <= 320, f"'some 250-fold' vs x{ratio:.0f}"
+# "From 2016 to 2022 the median grew some 250-fold." and its check were
+# removed on 2026-11-04: the payments headline and the caption's per-era
+# medians (check_payment_counts_by_era) already state the change.
 
 
 CLAIMS = [
-    (
-        "From 2016 to 2022 the median grew some 250-fold.",
-        "extortion_ledger.json",
-        check_median_grew_250_fold,
-    ),
     (
         "the ledger's last verified payment landed in Q3 2024",
         "extortion_ledger.json",
@@ -164,7 +158,12 @@ CLAIMS = [
         check_billion_dollar_floor,
     ),
     (
-        "The revenue with no family label, about two thirds of the total, is larger than any family's",
+        "About two thirds of verified ransom revenue carries no family label.",
+        "extortion_ledger.json",
+        check_unattributed_two_thirds,
+    ),
+    (
+        "is verified but has no family label, more than any one family's total.",
         "extortion_ledger.json",
         check_unattributed_two_thirds,
     ),

@@ -1,11 +1,11 @@
-"""Claims audit for the Botnet Weather module (pattern:
+"""Claims audit for the Botnet C2 Servers module (pattern:
 test_claims_roster.py).
 
 The c2.html copy (site/js/editorial.js) makes verbal claims about
-site/data/botnet_weather.json. The hero series is launch-thin by design and
-its copy makes no history-based numeric claim; the claims audited here are
-structural (the aggregates-only red line) or snapshot-based (tonight's
-blocklist size), so they hold from day one. Each CLAIMS entry quotes the
+site/data/botnet_weather.json. The claims audited here are structural (the
+aggregates-only red line), snapshot-based (tonight's blocklist size and
+ages) or read the whole nightly record (the hero's "fewer than ten
+servers" since July 2026). Each CLAIMS entry quotes the
 copy verbatim (grep for it in editorial.js) and asserts the underlying data
 still sits where the sentence stays true. Ranges are tolerant — normal
 night-to-night drift must not trip them; only a claim becoming untrue
@@ -54,16 +54,18 @@ def load(name: str) -> dict:
 _IPV4_RE = re.compile(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b")
 
 
-def check_weather_not_blocklist(d: dict) -> None:
-    # editorial.js (c2.html composition caption): "the module is the weather,
-    # not the blocklist" — structural red line: the emitted file must hold
-    # aggregates only. No per-server key, no IP-shaped string, anywhere.
+def check_counts_not_blocklist(d: dict) -> None:
+    # editorial.js (c2.html composition caption): "The module publishes
+    # counts only, never the blocklist itself" — structural red line: the
+    # emitted file must hold aggregates only. No per-server key, no
+    # IP-shaped string, anywhere.
     def walk(node, path="botnet_weather"):
         if isinstance(node, dict):
             for k, v in node.items():
                 assert k not in ("ip_address", "hostname", "ip", "port"), (
                     f"{path}.{k}: per-server field in the emitted file — "
-                    f"'the weather, not the blocklist' is no longer true"
+                    f"'counts only, never the blocklist itself' is no "
+                    f"longer true"
                 )
                 walk(v, f"{path}.{k}")
         elif isinstance(node, list):
@@ -72,10 +74,43 @@ def check_weather_not_blocklist(d: dict) -> None:
         elif isinstance(node, str):
             assert not _IPV4_RE.search(node), (
                 f"{path}: {node!r} looks like an IP address in the emitted "
-                f"file — 'the weather, not the blocklist' is no longer true"
+                f"file — 'counts only, never the blocklist itself' is no "
+                f"longer true"
             )
 
     walk(d)
+
+
+def check_fewer_than_ten_every_night(d: dict) -> None:
+    # editorial.js (c2.html hero headline): "Every nightly snapshot of Feodo
+    # Tracker's botnet C2 blocklist since July 2026 lists fewer than ten
+    # servers." (2026-11-04: 101 snapshots since 2026-07-21, every one 5
+    # listed.) Replaced "CyberMon counts the servers ... every night", which
+    # stated the method, not a finding. A night with ten or more listed
+    # servers breaks it: reword the headline.
+    w = d["c2_weather"]
+    assert w["first_observed"].startswith("2026-07"), (
+        f"'since July 2026' — the record now starts {w['first_observed']}")
+    series = w["series"]
+    assert series, "no nightly snapshots on file"
+    big = [(s["date"], s["listed_total"]) for s in series
+           if s["listed_total"] >= 10]
+    assert not big, f"'fewer than ten servers' every night vs {big[:5]}"
+
+
+def check_half_first_seen_over_six_months(d: dict) -> None:
+    # editorial.js (c2.html age headline): "At least half of tonight's
+    # listed C2 servers were first seen by Feodo Tracker more than six
+    # months ago." A median age above 183 days puts at least half the list
+    # past six months, for odd and even list sizes. (2026-11-04: median 295
+    # days over 5 servers; it rises a day a night while the list is
+    # unchanged, and a batch of new listings would pull it under.) An empty
+    # blocklist breaks the sentence too.
+    age = d["c2_age"]
+    assert age["n"] > 0, "'tonight's listed C2 servers' — the blocklist is empty"
+    assert age["median_age_days"] > 183, (
+        f"'more than six months ago' for at least half the list vs a "
+        f"median age of {age['median_age_days']} days")
 
 
 def check_a_handful_listed(d: dict) -> None:
@@ -110,7 +145,13 @@ CLAIMS = [
     (
         "The module publishes counts only, never the blocklist itself",
         "botnet_weather.json",
-        check_weather_not_blocklist,
+        check_counts_not_blocklist,
+    ),
+    (
+        "Every nightly snapshot of Feodo Tracker's botnet C2 blocklist since "
+        "July 2026 lists fewer than ten servers.",
+        "botnet_weather.json",
+        check_fewer_than_ten_every_night,
     ),
     (
         "Tonight's blocklist holds a handful of C2 servers.",
@@ -122,6 +163,12 @@ CLAIMS = [
         "empty when no listed server was first seen in that range.",
         "botnet_weather.json",
         check_age_buckets_span,
+    ),
+    (
+        "At least half of tonight's listed C2 servers were first seen by "
+        "Feodo Tracker more than six months ago.",
+        "botnet_weather.json",
+        check_half_first_seen_over_six_months,
     ),
 ]
 
