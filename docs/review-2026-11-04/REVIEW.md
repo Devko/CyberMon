@@ -11,7 +11,7 @@ pass of its own. The Field display review is in [FIELD.md](FIELD.md).
 
 ## How it was checked
 
-- `python -m pytest pipeline/tests`: 1,875 passed before, **1,884 passed**
+- `python -m pytest pipeline/tests`: 1,875 passed before, **1,888 passed**
   after.
 - January rehearsals (`CYBERMON_REHEARSE_YEAR=2027`, plain / `TINY=low` /
   `TINY=high`). Before, `check_unscored_is_kernel` failed in all three
@@ -131,22 +131,54 @@ headline"). Corrections:
 - `pipeline/nvd_throughput.py`: the docstring said "last run per date
   wins"; `merge_row` adds same-date rows.
 
+## Follow-up (same day)
+
+The owner asked for the items left open to be fixed as well.
+
+- **Strings outside `editorial.js`.** 150 strings moved: 137 chart labels
+  (series and axis names, tooltip phrases) into `sections.<id>.labels`
+  blocks across 55 sections; 9 shared strings into a new `ui` block; and
+  the 55 hard-coded "Not enough data yet." lines now read
+  `ed.nodata || editorial.ui.nodata`. The motion clip reads its band
+  names from the flood chart's labels, so the two cannot drift. The
+  header now states exactly what lives in `editorial.js` and what stays
+  in code (internal ids, bare units, number formatting, proper names,
+  developer messages, the two instruments). No wording changed. Every
+  page, carousel slide and clip rendered identically before and after,
+  tooltips included.
+- **Claims due to fail, reworded with margin.**
+  - Advisories: "About one Rust advisory in four" → Rust lacks a CVE id
+    more often than any other large registry (1,000+ advisories).
+  - SEC incidents: "About a third … amended" → "More than one in four"
+    (19 of 59; holds to 76 originals with no new amendment).
+  - AI Credits hero: "credit each kind with hundreds" → the largest
+    announcement exceeds all credited records combined (10,000 vs 995).
+    "The AI columns are small:" cut from the methodology.
+  - The C2 flat note no longer repeats the start date.
+- **Buzzword Attention headlines are findings:**
+  - Hero, home card and `<title>`: "Most tracked buzzwords had their
+    busiest month of news coverage more than two years ago." (10 of 14
+    terms on every edition since 09-23.)
+  - Divergence: "More terms sit above the diagonal, with research nearer
+    its five-year peak than news coverage, than below it." (Above has led
+    below by two or more every night since 09-23.)
+- **Alias Graph draft:** title, meta and theses rewritten. Its body grid
+  now lays out without a toolbar row.
+- **`tools/make_sample_data.py`** requires `--out` and refuses
+  `site/data`.
+- **The Field:** a sortable records table (see FIELD.md).
+- **Carousels:** the deploy of `7b709fc` rebuilt them with the new
+  headlines.
+
 ## Left open
 
-- Strings outside `editorial.js`, although its header says every string
-  lives there: "Not enough data yet.", "Median gap", "days (log)", and
-  tooltip text in `site/js/charts/poc_preempt.js` and `poc_coverage.js`.
-- `site/alias.html`, the unwired draft, keeps the title "One adversary, one
-  name per shop."
-- Buzzword Attention's hero and divergence headlines, and the `<title>` of
-  `market.html`, still describe the method. A finding would name one term
-  or flip early each month while only two terms can be plotted.
-- Planned trips: Rust "about one in four" (25.4% vs floor 21, about four
-  months); SEC "about a third amended" (spring 2027 without a new
-  amendment); C2 median age (if the tracker lists new servers); the
-  ransomware flag's "often more than a year later" share will drift down
-  as recent listings flip faster (2026 listing-year median 34 days).
-- The carousel PDFs carry the old headlines until the next deploy
-  rebuilds them.
-- `tools/make_sample_data.py` writes into `site/data`; it should write to
-  a scratch directory or be removed.
+- `site/alias.html` loads a `js/alias.js` that is not in the repo
+  (backlog). The page shows its header and controls but no graph.
+- The C2 median-age guard fails if the tracker starts listing new
+  servers. That is a change in the world, and the copy should change then.
+- The ransomware flag's "often more than a year later" (60 of 111 flips,
+  floor a third) drifts down as recent listings flip faster (2026
+  listing-year median 34 days). It has wide margin today.
+- The nightly workflow's "CANNOT be regenerated" comments stand: they
+  describe the files, which exist only in this repository, even where an
+  upstream git history holds the raw edits.
