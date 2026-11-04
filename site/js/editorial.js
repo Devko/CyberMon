@@ -3478,20 +3478,16 @@ export const editorial = {
         label: "AI and PoC Timing →",
       },
       caption:
-        "Labs and vendors report their results in their own units: " +
-        "vulnerabilities found, reports submitted, advisories published. This " +
-        "page counts a narrower set: published CVE records whose credits name " +
-        "the lab's model or the vendor. The two sets differ, and neither " +
-        "verifies the other. An announced finding may still be undisclosed, may " +
-        "be in private code that never receives a CVE, or may be published " +
-        "without a credit. An LLM lab is counted only when a credit for finding " +
-        "or reporting the bug names its model. A vendor is counted whenever such " +
-        "a credit names it, which is weaker evidence: four or five in ten vendor " +
-        "credits name the company only through a person there or in a thank-you " +
-        "line. The two columns are never added together. Each finder's announced " +
-        "numbers are listed with their unit and source, and only an announced " +
-        "CVE count is drawn as a bar beside the credited count. The measured " +
-        "rows below them are rebuilt nightly.",
+        "Each column lists what its finders announce, in their own units, " +
+        "above the published CVE records whose credits name the lab's model or " +
+        "the vendor. The two sets differ, and neither verifies the other. An " +
+        "announced finding may still be undisclosed, may be in private code that " +
+        "never receives a CVE, or may be published without a credit. Only an " +
+        "announcement counted in CVEs is drawn as a bar beside the credited " +
+        "count. A vendor count is weaker evidence than a lab count. A lab counts " +
+        "only when a finding credit names its model, while four or five in ten " +
+        "vendor credits name the company only through a person there or in a " +
+        "thank-you line. The two columns are never added together.",
       kindLabels: { llm: "LLM labs", vendor: "AI-security vendors" },
       kindRules: {
         llm: "counted when a finding credit names the model",
@@ -3525,13 +3521,14 @@ export const editorial = {
         "high or critical, {poc_pct} in an exploit corpus, {kev_pct} on KEV " +
         "({kev} of {credited}).",
       kevNote:
-        "KEV lists exploitation that CISA has confirmed and catalogued. A CVE " +
-        "that is not on it has not been shown to be unexploited, and these " +
-        "cohorts are young (last row of chart 02). KEV-listed here: {cves}.",
+        "CISA's Known Exploited Vulnerabilities catalog (KEV) lists exploitation " +
+        "that CISA has confirmed. A CVE that is not on it has not been shown to " +
+        "be unexploited, and these cohorts are young (last row of chart 02). " +
+        "KEV-listed here: {cves}.",
       kevNoteNone:
-        "KEV lists exploitation that CISA has confirmed and catalogued. A CVE " +
-        "that is not on it has not been shown to be unexploited, and these " +
-        "cohorts are young (last row of chart 02).",
+        "CISA's Known Exploited Vulnerabilities catalog (KEV) lists exploitation " +
+        "that CISA has confirmed. A CVE that is not on it has not been shown to " +
+        "be unexploited, and these cohorts are young (last row of chart 02).",
       ledgerNote:
         "Every matched record, with its finder, evidence tier and credit role:",
       ledgerLinkText: "ai_credits_ledger.json",
@@ -3539,9 +3536,9 @@ export const editorial = {
       methodology:
         "A published CVE record can carry a credits field. Each credit is " +
         "matched against a hand-curated registry of AI finders in the pipeline " +
-        "(ai_credits_data.py). The registry is narrow because a loose match " +
-        "catches Capgemini, a researcher named Ai and every .ai domain, and it " +
-        "matches only names it lists: the first version missed Google's " +
+        "(ai_credits_data.py). The registry is narrow, because a loose match " +
+        "catches Capgemini, a researcher named Ai and every .ai domain. It " +
+        "matches only the names it lists, and its first version missed Google's " +
         "OSS-Fuzz-Gen. A match gets one of three tiers. “System” means the " +
         "credit names an AI system such as Claude, Codex or Big Sleep, or, for " +
         "some vendors, the vendor's own name standing alone as the finder. " +
@@ -3552,16 +3549,15 @@ export const editorial = {
         "labs count at the system tier only; vendors count at system or org. A " +
         "match does not show how a bug was found; it records what the CVE " +
         "record says. Severity is the base score of the newest CVSS version in " +
-        "the record, taken from the CNA where the CNA scored that version and " +
-        "from CISA's enrichment otherwise. “In an exploit corpus” means " +
+        "the record, taken from the CNA (the CVE Numbering Authority that " +
+        "published the record) where the CNA scored that version and from " +
+        "CISA's enrichment otherwise. “In an exploit corpus” means " +
         "Exploit-DB, a Metasploit module or a Nuclei template references the " +
         "CVE. Nuclei templates are detection checks and only sometimes exploits, " +
         "and exploit code published anywhere else is not seen. Each measured " +
         "row is a share of the credited CVEs; the rows are not nested. Announced " +
         "figures are not measured here. Each is the finder's own published " +
-        "figure, recorded with its wording, date and source, and it is drawn as " +
-        "a hatched “announced” bar beside the credited count only when its unit " +
-        "is CVEs assigned; an announcement in any other unit gets no bar. " +
+        "figure, recorded with its wording, date and source. " +
         "“Credited here to date” is this page's all-time count for that finder. " +
         "The announcement has its own cut-off date and its own list of CVEs, so " +
         "the pair is not a verification rate. Credit text is never republished " +
@@ -3578,22 +3574,19 @@ export const editorial = {
       num: "02",
       kicker: "Side by side",
       source: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
-      headline: "Lab-credited CVEs have a higher median CVSS score than all credited CVEs.",
+      headline: "Lab-credited CVEs are rated high or critical more often than all credited CVEs.",
       caption:
         "Nine measurements for three populations: CVEs crediting an LLM lab's " +
         "model, CVEs crediting an AI-security vendor, and all CVEs that carry a " +
-        "credit. The baseline is drawn into each bar as a tick. Lab-credited " +
-        "records have a higher median CVSS score and a much larger share of " +
-        "memory-safety weaknesses. Median EPSS percentile is within ten points " +
-        "of the baseline in both AI columns. On KEV membership, each AI column " +
-        "is within a handful of records of what the baseline rate would give a " +
-        "population its size. On exploit-corpus listing, the lab column has " +
-        "fewer records than that rate would give and the vendor column has " +
-        "more. The comparison is descriptive and is not adjusted for " +
-        "publication age, target mix or crediting practice. The last row shows " +
-        "why age matters: the lab-credited cohort is much younger than the baseline, and exploit " +
-        "listings and KEV entries accumulate over time. The baseline is all " +
-        "credited CVEs; it is not a human-only control group.",
+        "credit (the baseline, which is not a human-only control group). Median " +
+        "EPSS percentile is within ten points of the baseline in both AI " +
+        "columns. On KEV membership, each AI column is within a handful of " +
+        "records of what the baseline rate would give a population its size. " +
+        "On exploit-corpus listing, the lab column has fewer records than that " +
+        "rate would give and the vendor column has more. The comparison is not " +
+        "adjusted for publication age, target mix or crediting practice. Exploit " +
+        "listings and KEV entries accumulate over time, and the last row shows " +
+        "that the lab-credited cohort is much younger than the baseline.",
       columns: {
         llm: "LLM labs",
         vendor: "AI-security vendors",
@@ -3635,21 +3628,19 @@ export const editorial = {
       methodology:
         "All three columns cover the same calendar window, from the first month " +
         "either kind is credited to this edition, but not the same follow-up " +
-        "time: a record published last month has had one month in which to be " +
-        "listed anywhere. The baseline is every published CVE whose record " +
+        "time. The baseline is every published CVE whose record " +
         "carries a credit, the AI-credited ones included; they are under two " +
         "percent of it, and it may contain AI-assisted work whose credits do not " +
-        "say so. Median CVSS uses each record's newest base score. CVSS is " +
-        "assigned by the CNA or by CISA, so a higher median describes recorded " +
-        "severity. EPSS is FIRST's estimate of exploitation probability; the row " +
+        "say so. The severity rows use the recorded CVSS score described under " +
+        "chart 01. “High or critical” is a score of 7.0 or more, as a share of all the " +
+        "population's CVEs, unscored ones included. EPSS (the Exploit Prediction " +
+        "Scoring System) is FIRST's estimate of exploitation probability; the row " +
         "is the median of its published percentile, and all three medians are " +
         "well under 50. “In an exploit corpus” covers Exploit-DB, Metasploit and " +
         "Nuclei only. “Scored by its own CNA” is the share whose CVSS score came " +
         "from the assigning CNA and not from CISA's enrichment; it is low where " +
         "a CNA such as Mozilla's publishes no scores. The AI columns are small: " +
-        "one CVE moves the labs' exploit-corpus row by half a point or less. A " +
-        "stronger comparison would measure outcomes a fixed number of days after " +
-        "publication and match on product and CNA; this page does not do that.",
+        "one CVE moves the labs' exploit-corpus row by half a point or less.",
     },
 
     // --------------------------------- credits.html · 3
@@ -3661,10 +3652,9 @@ export const editorial = {
       caption:
         "CVEs whose finding credits name a registry entity, by publication " +
         "month. The earliest match is an OpenSSL CVE from October 2024 credited " +
-        "to Google's OSS-Fuzz-Gen. That describes this registry: a credit naming " +
-        "a system the registry does not list is not counted, and the first " +
-        "version of this page missed that record and said there was none before " +
-        "2025. Lab credits then arrive in single-month clusters with empty " +
+        "to Google's OSS-Fuzz-Gen. A credit naming a system the registry does " +
+        "not list is not counted, so this start date is the registry's. Lab " +
+        "credits then arrive in single-month clusters with empty " +
         "months between them, and appear in every month from February 2026. " +
         "Vendor credits begin in March 2025. The toggle switches between the two " +
         "kinds, which are never stacked together. The last bar is a partial " +
@@ -3692,7 +3682,7 @@ export const editorial = {
       num: "04",
       kicker: "Who is credited",
       source: "CVE List V5 (MITRE) · CISA KEV",
-      headline: "In each column one or two finders hold most of the credits, with very different severity mixes.",
+      headline: "Among labs and among vendors, one or two finders hold most of the credits.",
       caption:
         "Every registry entity matched in at least one record, ranked by the " +
         "CVEs that count under its kind's rule. ZAST.AI's credits are almost " +
@@ -3702,8 +3692,9 @@ export const editorial = {
         "because their credits name a person or only the company. “Not counted” " +
         "is what the rule leaves out: for a lab, records that name the " +
         "organisation but no model, and for any row, records that credit it " +
-        "only for the fix. OpenAI is named on several times more records than " +
-        "its models are, mostly as a person's employer or as a collaborator.",
+        "only for the fix. OpenAI is named without a model on most of the " +
+        "records that name it, usually as a person's employer or as a " +
+        "collaborator.",
       colFinder: "Finder",
       colCounted: "credited CVEs",
       colSeverity: "severity mix",
@@ -3718,11 +3709,10 @@ export const editorial = {
       uncountedFix: "{n} credit it for the fix only",
       nodata: "Not enough data yet.",
       methodology:
-        "One row per registry finder that appears in at least one published " +
-        "record. “Credited CVEs” applies the kind's counting rule; the severity " +
+        "“Credited CVEs” applies the kind's counting rule; the severity " +
         "strip, the high-plus-critical share and the KEV column describe those " +
-        "CVEs. “Names the AI” counts records at the system tier. “Not counted” " +
-        "is the remainder; hover over a cell for its make-up. “Credited most by” " +
+        "CVEs. “Names the AI” counts records at the system tier. Hover over a " +
+        "“not counted” cell for its make-up. “Credited most by” " +
         "lists the CNAs whose records carry the credited CVEs (a finder with " +
         "none shows “—”). The CNA writes the credit line, so a vendor that is " +
         "its own CNA writes its own.",
@@ -3735,12 +3725,11 @@ export const editorial = {
       source: "CVE List V5 (MITRE)",
       headline: "Memory safety leads the lab-credited CVEs, while injection leads the baseline.",
       caption:
-        "Each CVE's first-listed weakness, grouped into six families. In the " +
-        "baseline, injection (cross-site scripting, SQL injection, command " +
-        "injection) is the largest family, at more than a third. Among " +
-        "lab-credited CVEs memory safety is the largest, at several times the " +
-        "baseline share; crypto and certificate weaknesses are also several " +
-        "times the baseline share, and injection is small. The vendor-credited " +
+        "Each CVE's first-listed weakness, grouped into six families. Injection " +
+        "covers cross-site scripting, SQL injection and command injection. " +
+        "Among lab-credited CVEs, the shares of memory-safety weaknesses and of " +
+        "crypto and certificate weaknesses are each more than twice the " +
+        "baseline's, and injection is small. The vendor-credited " +
         "population falls between the two on injection and has a larger " +
         "memory-safety share than the baseline. " +
         "The record does not say what was examined. The lab-credited records " +
@@ -3776,10 +3765,9 @@ export const editorial = {
         "The affected product each record lists first, ranked per kind. In the " +
         "lab-credited list, Bouncy Castle's Java crypto library and the Firefox " +
         "browser are both in the top five. The record does not say how those " +
-        "targets were chosen. The vendor-credited list is less concentrated, " +
-        "with its top five holding about a quarter. Its first row " +
-        "is Red Hat Enterprise Linux, which Red Hat, as CNA, lists first in its " +
-        "records, including records for flaws in upstream packages.",
+        "targets were chosen. The vendor-credited list's first row is Red Hat " +
+        "Enterprise Linux, which Red Hat, as CNA, lists first in its records, " +
+        "including records for flaws in upstream packages.",
       shareTemplate:
         "top {top_n} hold {share} of the {named} CVEs naming a product · " +
         "{distinct} products in all",
@@ -3816,8 +3804,8 @@ export const editorial = {
         "For each publication year, the published records with a non-empty " +
         "credits list over all published records. Rejected records and records " +
         "without a publication date are left out of both counts. The current " +
-        "year is partial, but the figure is a share, so it is comparable as it " +
-        "stands. Credits are written by the CNA, not the finder, and practice " +
+        "year is partial; the tooltip gives the count behind its share. " +
+        "Credits are written by the CNA, not the finder, and practice " +
         "differs: some CNAs credit every reporter, some credit no one, and a " +
         "few write their own product into the line.",
     },
@@ -3967,7 +3955,7 @@ export const editorial = {
       num: "01",
       kicker: "Advisories without a CVE",
       source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
-      headline: "About one GitHub-reviewed advisory in twelve carries no CVE id.",
+      headline: "Fewer than one GitHub-reviewed advisory in ten carries no CVE id.",
       // {placeholders} fill from data/advisory_gap.json at render time.
       caption:
         "GitHub-reviewed security advisories for open-source packages, by " +
@@ -3975,8 +3963,8 @@ export const editorial = {
         "carries a CVE id. {without_pct} of the {advisories} live " +
         "advisories carry none. Those {without} advisories would not appear " +
         "in a vulnerability program that tracks only CVE ids. Some are " +
-        "notices of malicious packages, not vulnerabilities; most of those " +
-        "are npm packages GitHub listed in 2020. The year is GitHub's " +
+        "notices of malicious packages, most of them npm packages GitHub " +
+        "listed in 2020. The year is GitHub's " +
         "publication date, so an older vulnerability that GitHub reviewed " +
         "later counts in the year of the review. Pick an ecosystem to see " +
         "its split.",
@@ -3996,9 +3984,10 @@ export const editorial = {
       note:
         "* {year} is partial. The palest segment is provisional, because an " +
         "advisory can gain a CVE after publication. Of the {lag_n} " +
-        "advisories whose CVE has an NVD publication date, the CVE reached " +
-        "NVD more than 90 days after the advisory for {later_90}, and more " +
-        "than a year after for {later_365}.",
+        "advisories whose CVE has a publication date in NIST's National " +
+        "Vulnerability Database (NVD), the CVE reached NVD more than 90 days " +
+        "after the advisory for {later_90}, and more than a year after for " +
+        "{later_365}.",
       methodology:
         "The pipeline reads OSV.dev's per-ecosystem exports (all.zip for " +
         "each of the twelve GitHub advisory ecosystems) and keeps the records " +
@@ -4012,9 +4001,8 @@ export const editorial = {
         "CVE id among its aliases. OSV also adds links from the CVE side (a " +
         "CVE record that names the advisory), so its alias list can be " +
         "longer than GitHub's own, and the no-CVE count here is the lower of " +
-        "the two. Years are GitHub's publication dates. Advisories published " +
-        "in the {days} days before the edition are drawn as provisional, " +
-        "because a CVE can be added later. The lag figures in the note use " +
+        "the two. Advisories published in the {days} days before the edition " +
+        "are drawn as provisional. The lag figures in the note use " +
         "the NVD publication date GitHub records for the aliased CVE.",
     },
 
@@ -4023,7 +4011,7 @@ export const editorial = {
       num: "02",
       kicker: "By ecosystem",
       source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
-      headline: "About one Rust advisory in four has no CVE id; almost every Maven advisory has one.",
+      headline: "About one Rust advisory in four has no CVE id, while almost every Maven advisory has one.",
       caption:
         "The share of each ecosystem's reviewed advisories that carry no CVE " +
         "id, across all publication years. An advisory that affects " +
@@ -4037,10 +4025,8 @@ export const editorial = {
         "No edition yet. The nightly pipeline fills this page from OSV's exports.",
       methodology:
         "Per ecosystem, the live reviewed advisories that list a package in " +
-        "that ecosystem, split by whether OSV lists a CVE alias. The " +
-        "ecosystem names are OSV's: crates.io is Rust, Packagist is PHP, Hex " +
-        "is Erlang and Elixir, and Swift packages are listed by their source " +
-        "URL. Shares cover all publication years. An ecosystem with fewer " +
+        "that ecosystem, split by whether OSV lists a CVE alias. An ecosystem " +
+        "with fewer " +
         "than {min_n} advisories gets no share, because a percentage over so " +
         "few advisories moves with each one.",
     },
@@ -4050,15 +4036,13 @@ export const editorial = {
       num: "03",
       kicker: "Severity",
       source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
-      headline: "No-CVE advisories are rated Critical or Low more often; many Criticals are malware notices.",
+      headline: "No-CVE advisories are rated Critical or Low more often, and hundreds of the Criticals are malware notices.",
       caption:
         "GitHub's own severity rating, as a share of the advisories with a " +
         "CVE and of those without. {crit_without} of the no-CVE advisories " +
-        "are rated Critical, against {crit_with} of those with a CVE. More " +
-        "of them are rated Low as well. Hundreds of the no-CVE Critical " +
-        "advisories are notices of malicious packages, most of them npm " +
-        "packages GitHub listed in 2020. Without those notices, the no-CVE " +
-        "advisories are rated Critical less often than the ones with a CVE.",
+        "are rated Critical, against {crit_with} of those with a CVE. Without " +
+        "the malicious-package notices, the no-CVE advisories are rated " +
+        "Critical less often than the ones with a CVE.",
       rowWith: "With a CVE",
       rowWithout: "Without a CVE",
       levels: {
@@ -4078,8 +4062,9 @@ export const editorial = {
         "the aliased CVE. Each row sums to 100% of its advisories: all live " +
         "reviewed advisories with a CVE alias in one row, all without in " +
         "the other, across all publication years. The export does not flag " +
-        "malicious-package notices; the caption's count of them comes from " +
-        "GitHub's advisory API, checked on 23 September 2026.",
+        "malicious-package notices. By GitHub's advisory API, checked on 23 " +
+        "September 2026, about 400 of the no-CVE Critical advisories are such " +
+        "notices, 367 of them npm advisories from 2020.",
     },
 
     // --------------------------------- malware.html · 1 (hero)
@@ -4115,10 +4100,9 @@ export const editorial = {
         "The pipeline reads OSV.dev's per-ecosystem exports and keeps the " +
         "records whose id starts MAL-: the OpenSSF malicious-packages feed, " +
         "which OSV republishes. Each report counts once, in the month of its " +
-        "published date, which is when the report entered the feed. That is " +
-        "not the date the package appeared on the registry or the date it " +
-        "was removed. Withdrawn reports stay in the counts; the next section " +
-        "counts them separately. The contributor named for a month is the " +
+        "published date. That is not the date the package appeared on the " +
+        "registry or the date it was removed. Withdrawn reports stay in the " +
+        "counts. The contributor named for a month is the " +
         "source the feed credits most often in that month's reports; a " +
         "report can credit several sources, or none. Registries beyond the " +
         "four largest are folded into Other.",
@@ -4135,10 +4119,8 @@ export const editorial = {
       // so a few days of January never name a registry.
       caption:
         "Each year's reports, split by registry. npm holds {npm_share} of " +
-        "all reports on file, but the split varies by year: in 2023 PyPI " +
-        "carried most of the year's reports. Of the registries other than " +
-        "npm, {second} has the largest share of reports in {share_year}: " +
-        "{second_share}.",
+        "all reports on file. Among the registries other than npm, {second} " +
+        "has the largest share in {share_year} ({second_share}).",
       shareYearPartial: "{year} so far",
       yAxis: "% of the year's reports",
       tooltip: "{name}: {n} reports · {pct}",
@@ -4149,8 +4131,8 @@ export const editorial = {
         "reports. The registry is the one the report names. OSV files a VS " +
         "Code extension under VSCode whether it was published to the " +
         "Microsoft marketplace or to Open VSX, and this page does the same. " +
-        "The current year is partial, but its shares are comparable with " +
-        "full years; one large month can still shift them.",
+        "The current year is partial, so one large month can still shift its " +
+        "shares.",
     },
 
     // --------------------------------- malware.html · 3
@@ -4162,8 +4144,8 @@ export const editorial = {
       caption:
         "{withdrawn} of {reports} reports ({pct}) carry a withdrawal " +
         "date, meaning the feed retracted the report after publishing it. " +
-        "A withdrawn report stays in the export, so it is counted here by " +
-        "the year the report was first published.",
+        "Each bar counts withdrawn reports by the year they were first " +
+        "published, not the year they were withdrawn.",
       yAxis: "withdrawn reports",
       byEcosystem: "By registry",
       ecoTemplate: "{name} {n} of {reports}",
@@ -4172,9 +4154,8 @@ export const editorial = {
         "No edition yet. The nightly pipeline fills this page from OSV's exports.",
       methodology:
         "A report counts as withdrawn when its record carries a withdrawn " +
-        "timestamp. Bars are grouped by the year the report was published, " +
-        "not the year it was withdrawn. The record has no field for a " +
-        "reason, so this page gives none.",
+        "timestamp; a withdrawn report stays in the export. The record has " +
+        "no field for a reason, so this page gives none.",
     },
 
     // --------------------------------------------- tags.html · 1 · hero
