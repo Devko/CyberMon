@@ -79,14 +79,17 @@ def test_weekly_series_carry_the_same_events():
 
 
 def check_direction_exists_only_for_rescores(rows: list[dict]) -> None:
-    # magnitude caption: "the new score minus the old, always on the same
-    # CVSS version — an edit that changes version, 3.0 to 3.1 included, is
-    # a version shift and never lands here". On the committed log only
-    # rescore rows may read as a same-version score movement. Rows written
-    # before 2026-09-20 carry the version family only ("v3"); a rescore
-    # row diffed on the migration night pairs that family label with the
-    # exact one ("v3" -> "v3.1"), so the invariant is: both cells filled,
-    # same family, and — once both sides are exact — identical.
+    # magnitude methodology: "Since 2026-09-20 both scores are on the same
+    # exact CVSS version, so a 3.0-to-3.1 re-issue is a version shift and is
+    # not charted here." On the committed log only rescore rows may read as
+    # a same-version score movement. Rows written before 2026-09-20 carry
+    # the version family only ("v3"); a rescore row diffed on the migration
+    # night pairs that family label with the exact one ("v3" -> "v3.1"), so
+    # the invariant is: both cells filled, same family, and — once both
+    # sides are exact — identical. check_exact_versions_since_migration
+    # pins which rows may be family-only. (Until 2026-11-04 the caption said
+    # "always on the same CVSS version … 3.0 to 3.1 included", untrue for
+    # the 86 of 148 rescores logged before the migration.)
     for row in rows:
         t = row["change_type"]
         if t == "rescore":
@@ -110,10 +113,35 @@ def check_direction_exists_only_for_rescores(rows: list[dict]) -> None:
 
 
 def check_log_dates_monotonic(rows: list[dict]) -> None:
-    # hero caption: "This record starts at first deploy and deepens
-    # nightly." — an append-only log's dates never go backward.
+    # hero methodology: "Events are appended to a CSV in the repository" —
+    # an append-only log's dates never go backward.
     dates = [row["observed_date"] for row in rows]
     assert dates == sorted(dates)
+
+
+MIGRATION_DATE = "2026-09-20"
+
+
+def check_exact_versions_since_migration(rows: list[dict]) -> None:
+    # hero methodology: "Before 2026-09-20 the log stored only the version
+    # family (v3 or v4)"; magnitude methodology: "Rescores logged before that
+    # date matched on version family only (v3 or v4)" and "Since 2026-09-20
+    # both scores are on the same exact CVSS version". Rows dated before the
+    # migration carry family labels only; rows dated on or after it carry
+    # exact labels, except the old side on the first night the exact labels
+    # were compared against stored family labels. (2026-11-04: 5,515 family
+    # labels all before, 419 exact labels all after; no row on 09-20.)
+    after = sorted({r["observed_date"] for r in rows
+                    if r["observed_date"] >= MIGRATION_DATE})
+    first_night = after[0] if after else None
+    for row in rows:
+        labels = [row["version_old"], row["version_new"]]
+        if row["observed_date"] < MIGRATION_DATE:
+            assert all("." not in v for v in labels if v), row
+            continue
+        assert not row["version_new"] or "." in row["version_new"], row
+        if row["version_old"] and "." not in row["version_old"]:
+            assert row["observed_date"] == first_night, row
 
 
 def check_every_event_names_a_cna(rows: list[dict]) -> None:
@@ -143,13 +171,29 @@ def test_json_and_csv_agree_on_the_record():
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "an edit that changes version, 3.0 to 3.1 included, is a version "
-        "shift and never lands here",
+        "Since 2026-09-20 both scores are on the same exact CVSS version, so a "
+        "3.0-to-3.1 re-issue is a version shift and is not charted here.",
         "history/rescore_log.csv",
         check_direction_exists_only_for_rescores,
     ),
     (
-        "The log starts at first deploy and grows nightly.",
+        "Since 2026-09-20 both scores are on the same exact CVSS version",
+        "history/rescore_log.csv",
+        check_exact_versions_since_migration,
+    ),
+    (
+        "Rescores logged before that date matched on version family only "
+        "(v3 or v4)",
+        "history/rescore_log.csv",
+        check_exact_versions_since_migration,
+    ),
+    (
+        "Before 2026-09-20 the log stored only the version family (v3 or v4)",
+        "history/rescore_log.csv",
+        check_exact_versions_since_migration,
+    ),
+    (
+        "Events are appended to a CSV in the repository",
         "history/rescore_log.csv",
         check_log_dates_monotonic,
     ),

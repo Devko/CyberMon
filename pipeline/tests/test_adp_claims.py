@@ -49,12 +49,14 @@ def load(name: str) -> dict:
 
 
 def check_ssvc_rides_nearly_every_record(d: dict) -> None:
-    # editorial.js (adp_adds caption): "An SSVC assessment ... rides on
-    # nearly every one"
+    # editorial.js (adp_adds headline): "Nearly every CISA-ADP block carries
+    # SSVC decision points." (2026-11-04: 211,802 of 211,805, and 100.0% in
+    # every edition in this clone's history, back to 2026-09-23.) Raised from 85% to 95% on 2026-11-04:
+    # "nearly every" does not stretch to one record in seven.
     pct = d["adds"]["pct_ssvc"]
-    assert pct >= 85.0, (
-        f"'an SSVC decision rides on nearly every one' needs SSVC on at least "
-        f"85% of CISA-ADP records; it is on {pct:.1f}%"
+    assert pct >= 95.0, (
+        f"'Nearly every CISA-ADP block carries SSVC decision points' needs "
+        f"SSVC on at least 95% of CISA-ADP records; it is on {pct:.1f}%"
     )
 
 
@@ -79,14 +81,15 @@ def check_cisa_is_the_sole_substantive_enricher(d: dict) -> None:
 
 
 def check_one_other_publisher(d: dict) -> None:
-    # editorial.js (adp_providers caption and methodology): "One other
-    # publisher clears the bar: Red Hat's supplier ADP ... on well under 1%
-    # of records". The board has held exactly CISA-ADP and redhat-SADP in
-    # every edition since 2026-07-19 (redhat-SADP 1,168-1,169 records,
-    # 0.3%); a new publisher, or Red Hat leaving, changes the sentence.
+    # editorial.js (adp_providers caption): "One other publisher does so:
+    # Red Hat's supplier ADP (redhat-SADP) ... on well under 1% of records"
+    # ("does so": adds SSVC decision points, a CVSS score or a CWE). The
+    # board has held exactly CISA-ADP and redhat-SADP in every edition since
+    # 2026-07-19 (redhat-SADP 1,168-1,169 records, 0.3%); a new publisher,
+    # or Red Hat leaving, changes the sentence.
     names = {p["provider"] for p in d["providers"]}
     assert names == {"CISA-ADP", "redhat-SADP"}, (
-        f"'One other publisher clears the bar: Red Hat's supplier ADP' vs "
+        f"'One other publisher does so: Red Hat's supplier ADP' vs "
         f"the board {sorted(names)}"
     )
     redhat = next(p for p in d["providers"] if p["provider"] == "redhat-SADP")
@@ -99,7 +102,10 @@ def check_one_other_publisher(d: dict) -> None:
 def check_vulnrichment_card_adds(d: dict) -> None:
     # editorial.js (home card 16): "adds SSVC decision points to nearly
     # every record it covers, and a CVSS score or a CWE id to about a fifth
-    # each". (2026-10-03: SSVC 100.0%, CVSS 22.2%, CWE 20.3%; since July
+    # each"; adp_adds caption: "A CVSS score and a CWE weakness class each
+    # appear on about a fifth of the records" (2026-11-04: 21.6% and 20.3%;
+    # it said "on far fewer, added mostly where the CNA left the field
+    # blank", which the data does not measure). (2026-10-03: SSVC 100.0%, CVSS 22.2%, CWE 20.3%; since July
     # CVSS has run 22.2-22.8% and CWE 19.7-20.4%.)
     adds = d["adds"]
     assert adds["pct_ssvc"] >= 85.0, adds
@@ -129,9 +135,15 @@ def check_handoff_begins_in_the_vulnrichment_era(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "SSVC decision points, CISA's assessment of exploitation, automatability and technical impact, appear on nearly every one",
+        "Nearly every CISA-ADP block carries SSVC decision points.",
         "adp_coverage.json",
         check_ssvc_rides_nearly_every_record,
+    ),
+    (
+        "A CVSS score and a CWE weakness class each appear on about a fifth of "
+        "the records.",
+        "adp_coverage.json",
+        check_vulnrichment_card_adds,
     ),
     (
         "CISA adds almost all of the substantive ADP enrichment on CVE records.",
@@ -139,14 +151,8 @@ CLAIMS = [
         check_cisa_is_the_sole_substantive_enricher,
     ),
     (
-        "One other publisher clears the bar: Red Hat's supplier ADP, which adds "
-        "data about products Red Hat ships, on well under 1% of records.",
-        "adp_coverage.json",
-        check_one_other_publisher,
-    ),
-    (
-        "the one other publisher that clears the bar is Red Hat's supplier ADP "
-        "(redhat-SADP), on well under 1% of published records.",
+        "One other publisher does so: Red Hat's supplier ADP (redhat-SADP), "
+        "which covers products Red Hat ships, on well under 1% of records.",
         "adp_coverage.json",
         check_one_other_publisher,
     ),

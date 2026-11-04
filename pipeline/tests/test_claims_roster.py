@@ -86,15 +86,32 @@ def check_nearly_all_assigning(d: dict) -> None:
     )
 
 
+def check_roster_grew(d: dict) -> None:
+    # editorial.js (roster.html hero headline): "The CVE Program roster has
+    # grown since tracking began in July 2026." — tonight's size exceeds the
+    # first snapshot's, and the series starts in July 2026. (2026-11-04: 530
+    # on 2026-07-18, 564 tonight.)
+    rs = d["roster_size"]
+    series = rs["series"]
+    assert series and series[0]["date"].startswith("2026-07"), series[:1]
+    assert rs["current"] > series[0]["size"] and rs["net_change"] > 0, (
+        f"'has grown' vs {series[0]['size']} -> {rs['current']}")
+
+
 # --------------------------------------------------------------------------
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
         "Nearly all of the listed organizations hold an assigning role (CNA or "
-        "CNA-LR)",
+        "CNA-LR, a CNA of Last Resort)",
         "cna_roster.json",
         check_nearly_all_assigning,
+    ),
+    (
+        "The CVE Program roster has grown since tracking began in July 2026.",
+        "cna_roster.json",
+        check_roster_grew,
     ),
     (
         "Most organizations on the CVE roster are vendors.",
