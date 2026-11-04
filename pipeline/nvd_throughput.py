@@ -62,8 +62,9 @@ flag, ``after_resweep``, DERIVED at build time from the record (true on
 the row that follows a ``resweep`` row); the CSV keeps its committed
 shape, one ``resweep`` column, and no row's meaning changes.
 
-The CSV keeps one row per run date, last run per date wins, sorted
-ascending — the same rules as ``pipeline.history``. ``median_queue_days``
+The CSV keeps one row per run date, sorted ascending. Unlike
+``pipeline.history`` (last run per date wins), a second run on the same
+date ADDS its flow counts to that date's row (see ``merge_row``). ``median_queue_days``
 and ``n_known_duration`` are cumulative over the whole record (the median
 of every known duration observed so far); the median stays null until
 ``MIN_KNOWN_DURATIONS`` transitions have a known duration, because a
