@@ -174,8 +174,9 @@ def check_in_record_scoring_rise(d: dict) -> None:
 
 def check_seeding_era_latency(d: dict) -> None:
     # editorial.js (KEV latency methodology): "the seeding era's pooled
-    # median 'latency', in the callout, runs near two and a half years; of
-    # 2023 additions, twelve days" — 887.5 d pooled, 12.0 d for 2023.
+    # median latency runs near two and a half years, against
+    # {baseline_median} days for {baseline_year} additions" — 887.5 d
+    # pooled, 12.0 d for 2023 (the baseline year).
     pooled = d["launch_backfill"]["median_days"]
     assert 700 <= pooled <= 1100, (
         f"'near two and a half years' vs a pooled seeding-era median of "
@@ -258,11 +259,26 @@ def _bucket_pct(d: dict, bucket: str) -> float:
 
 
 def check_kev_week_bucket(d: dict) -> None:
-    # editorial.js (kev.html buckets): "Nearly four in ten KEV listings
-    # land inside a week."
+    # editorial.js (kev.html buckets): "Since 2023, nearly four in ten KEV
+    # listings come within a week of CVE publication". The buckets hold
+    # the 2023+ trend cohort only (2026-11-04: 39.4% of 901), which is what
+    # "Since 2023" names: the trend starts in 2023 and the buckets count the
+    # same entries (plus, early in a year, a current year too thin to plot;
+    # never the seeding era).
+    years = [r["year"] for r in d["latency_by_year"]]
+    assert years and min(years) == 2023, (
+        f"'Since 2023' — the trend cohort starts in {min(years, default=None)}")
+    bucketed = sum(b["n"] for b in d["latency_buckets"])
+    complete = sum(r["n"] for r in complete_years(d["latency_by_year"]))
+    trend = sum(r["n"] for r in d["latency_by_year"])
+    seeding = d["launch_backfill"]["n"]
+    assert complete <= bucketed < trend + seeding, (
+        f"'Since 2023' — the buckets hold {bucketed} entries against "
+        f"{trend} in the 2023+ trend ({complete} in complete years) and "
+        f"{seeding} in the seeding era")
     pct = _bucket_pct(d, "0-7d")
     assert 30 <= pct <= 48, (
-        f"'Nearly four in ten KEV listings land inside a week' claims ~40%; "
+        f"'nearly four in ten KEV listings come within a week' claims ~40%; "
         f"data says {pct}% in the 0-7d bucket"
     )
 
@@ -507,7 +523,7 @@ CLAIMS = [
         check_in_record_scoring_rise,
     ),
     (
-        "pooled median 'latency', in the callout, runs near two and a half years",
+        "the seeding era's pooled median latency runs near two and a half years",
         "kev_latency.json",
         check_seeding_era_latency,
     ),
@@ -533,7 +549,7 @@ CLAIMS = [
         check_largest_cnas_rate_few_nine_plus,
     ),
     (
-        "Nearly four in ten KEV listings come within a week",
+        "Since 2023, nearly four in ten KEV listings come within a week of CVE publication",
         "kev_latency.json",
         check_kev_week_bucket,
     ),

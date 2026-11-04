@@ -1215,14 +1215,12 @@ export const editorial = {
       headline: "The median KEV listing comes weeks after the CVE record is published.",
       caption:
         "Days from a CVE record's publication to the day CISA added the CVE to its " +
-        "Known Exploited Vulnerabilities catalog: median and interquartile range for " +
-        "each year of listing. Listings from the 2021–22 seeding era are left out (see " +
-        "the callout below the chart). The catalog opened with a backlog of years-old " +
-        "CVEs and kept importing older entries through 2022, and those latencies would " +
-        "dominate the chart. Among later listings the typical wait has {middle_verb}, " +
-        "from a median of {baseline_median} days for {baseline_year} listings to " +
-        "{latest_median} for {latest_year}, and the share listed more than a year " +
-        "after publication has {tail_verb}.",
+        "Known Exploited Vulnerabilities (KEV) catalog: median and interquartile range " +
+        "(IQR, the middle half) for each year of listing since 2023. Listings from the " +
+        "2021–22 seeding era are summarized below the chart. The typical wait has " +
+        "{middle_verb}, from a median of {baseline_median} days for {baseline_year} " +
+        "listings to {latest_median} for {latest_year}, and the share listed more than " +
+        "a year after publication has {tail_verb}.",
       // Appended by kev_latency.js when the generation year has at least
       // 10 matched listings. Latency is fixed on the listing day, so a
       // partial year is not right-censored — only thin.
@@ -1244,23 +1242,20 @@ export const editorial = {
       statAgo: "{ago_year}",
       backfillNote:
         "{n} entries were added in the catalog's seeding era, from the November 2021 " +
-        "launch through 2022 (dateAdded before {date_added_before}). Their median " +
-        "nominal latency is {median_days} days. That figure reflects the import of " +
-        "older CVEs, not the speed of listing, and is excluded from the chart above.",
+        "launch through 2022 (dateAdded before {date_added_before}), when CISA was " +
+        "importing a backlog of older CVEs. Their median latency is {median_days} days. " +
+        "That figure measures the age of the backlog, not the speed of listing, so these " +
+        "entries are not plotted.",
       methodology:
-        "For every entry in CISA's Known Exploited Vulnerabilities catalog that matches a CVE " +
-        "record in the cvelistV5 corpus, latency is the KEV dateAdded minus the CVE record's " +
-        "datePublished, in days. The trend starts with 2023 listings. The catalog launched in " +
-        "November 2021 with a backlog of years-old CVEs and kept bulk-importing older entries " +
-        "through 2022. The data shows the change: the seeding era's " +
-        "pooled median 'latency', in the callout, runs near two and a half years, against " +
-        "{baseline_median} days for {baseline_year} additions. A seeding-era latency " +
-        "therefore measures the age of the backlog, so those entries are reported in the " +
-        "callout and not plotted. Negative latencies are kept as negative: a KEV listing can " +
-        "come before the publication of its own CVE record, and flooring those values at " +
-        "zero would hide those listings. A year plots only if it has at least 10 matched " +
-        "entries. KEV entries with no matching CVE record in the corpus have no publication " +
-        "date; they are counted separately in the data file.",
+        "For every KEV entry that matches a CVE record in the cvelistV5 corpus, latency is " +
+        "the KEV dateAdded minus the CVE record's datePublished, in days. The trend starts " +
+        "with 2023 listings because the seeding era's pooled median latency runs near two " +
+        "and a half years, against {baseline_median} days for {baseline_year} additions. " +
+        "Negative latencies are kept: a KEV listing can come before its CVE record is " +
+        "published, and flooring those values at zero would hide those listings. A year " +
+        "plots only if it has at least 10 matched entries. KEV entries with no matching CVE " +
+        "record in the corpus have no publication date; they are counted separately in the " +
+        "data file.",
     },
 
     // --------------------------------------------- kev.html · 2
@@ -1268,19 +1263,15 @@ export const editorial = {
       num: "02",
       kicker: "Latency distribution",
       source: "CISA KEV · cvelistV5 (MITRE)",
-      headline: "Nearly four in ten KEV listings come within a week, one in seven after three years.",
+      headline: "Since 2023, nearly four in ten KEV listings come within a week of CVE publication, one in seven after three years.",
       caption:
-        "The same matched listings as the trend above, grouped by latency: before the " +
-        "CVE record was published, within a week, a month, a quarter or a year, after " +
-        "one to three years, and after more than three years. The red bar counts " +
-        "listings that came before the CVE record was published.",
+        "The listings in the trend above, grouped by days from CVE publication to KEV " +
+        "listing. The red bar counts listings made before the CVE record was published.",
       methodology:
-        "Every matched entry in the trend cohort (added 2023 or later; the 2021–22 seeding " +
-        "era is left out for the reason given above) falls in one bucket by its latency: " +
+        "Every matched entry added in 2023 or later falls in one bucket by its latency: " +
         "before publish (latency below zero), 0–7d, 8–30d, 31–90d, 91–365d, 1–3y, 3y+. " +
         "Lower edges are inclusive: a listing on day 8 is in 8–30d. Percentages are shares " +
-        "of the matched cohort, not of the full catalog; an entry with no matching CVE " +
-        "record has no publication date and therefore no latency.",
+        "of these entries, not of the full catalog.",
     },
 
     // --------------------------------------------- kev.html · 3
@@ -1303,15 +1294,12 @@ export const editorial = {
       methodology:
         "Remediation span is the KEV dueDate minus dateAdded, in days, for every catalog " +
         "entry carrying both fields and matched to a published CVE record (the same join " +
-        "as the latency chart), 2021 launch cohort included. The launch batch is left out " +
-        "of the latency trend because its nominal latency measures backlog age; its " +
-        "remediation spans are policy decisions made on the listing date, so they are " +
-        "charted here. Lines are the median span of entries added each year; shaded bands " +
-        "span the 25th–75th percentile. For context, BOD 22-01 set six months for CVEs " +
-        "with IDs assigned before 2021 and two weeks for all others. Entries added from " +
-        "2022 to 2025 had a median deadline of three weeks, and entries added in 2026 a " +
-        "median of two weeks or less. The chart shows the deadlines CISA assigned, " +
-        "which need not match the directive's defaults.",
+        "as the latency chart), 2021 launch cohort included. Lines are the median span of " +
+        "entries added each year; shaded bands span the 25th–75th percentile. Binding " +
+        "Operational Directive (BOD) 22-01, which requires federal agencies to meet " +
+        "these deadlines, set six months for CVEs with IDs assigned before 2021 and two " +
+        "weeks for all others. The chart shows the deadlines CISA assigned, which need " +
+        "not match those defaults.",
     },
 
     // --------------------------------------------- kev.html · 4
@@ -1322,25 +1310,20 @@ export const editorial = {
       headline: "CISA flags about one KEV entry in five as used in ransomware campaigns.",
       caption:
         "Each KEV entry records whether CISA knows the vulnerability to have been used " +
-        "in ransomware campaigns. Bars show the share of each year's new listings " +
-        "flagged “Known”; the year's counts are in the tooltip. The 2021–22 seeding " +
-        "years are included, as in the remediation chart, because the flag is a " +
-        "property of the entry and applies to back-catalog imports and new listings " +
-        "alike. The newest bars are lower bounds: CISA often sets the flag after " +
-        "listing, frequently more than a year later (the KEV Changelog page measures " +
-        "that lag), so recent years rise as flags are added.",
+        "in ransomware campaigns. Bars show the share of each year's listings flagged " +
+        "“Known”; the year's counts are in the tooltip. The 2021–22 seeding years are " +
+        "included because the flag describes the entry, whenever it was listed. The " +
+        "newest bars are lower bounds: CISA sets some flags after listing, often more " +
+        "than a year later (the KEV Changelog page measures that lag), so recent years " +
+        "rise as flags are added.",
       methodology:
-        "Every entry in CISA's Known Exploited Vulnerabilities catalog carries " +
-        "knownRansomwareCampaignUse (“Known” or “Unknown”); entries missing the field " +
-        "count as “Unknown.” For each calendar year of dateAdded the chart reports " +
-        "entries added, entries flagged “Known,” and the share. The catalog is read as " +
-        "a current snapshot, so each entry shows CISA's present assessment whichever " +
-        "year it was listed; that is why the seeding era is charted here while the " +
-        "latency trend leaves it out. The same snapshot rule right-censors recent " +
-        "years: a listing flagged “Known” next year counts as “Unknown” today, so the " +
-        "latest bars are lower bounds, and a dip there is not yet evidence of a " +
-        "decline. No CVE-record join is involved. A year plots only with at least 10 " +
-        "entries. The current year (marked *) is partial and refills nightly.",
+        "Every KEV entry carries knownRansomwareCampaignUse (“Known” or “Unknown”); " +
+        "entries missing the field count as “Unknown.” For each calendar year of " +
+        "dateAdded the chart reports entries added, entries flagged “Known,” and the " +
+        "share. The catalog is read as a current snapshot, so each entry shows CISA's " +
+        "present assessment, and an entry flagged next year counts as “Unknown” today. " +
+        "No CVE-record join is involved. A year plots only with at least 10 entries. " +
+        "The current year (marked *) is partial and refills nightly.",
     },
 
     // --------------------------------- concentration.html · 1 · hero
@@ -1862,39 +1845,34 @@ export const editorial = {
       source: "CISA KEV",
       headline: "More than one KEV entry in nine is in a security product.",
       caption:
-        "Every entry in CISA's Known Exploited Vulnerabilities catalog, classified by " +
-        "what the product is for. Bars show the share of each year's new listings that " +
+        "Every entry in CISA's Known Exploited Vulnerabilities (KEV) catalog, classified " +
+        "by what the product is for. Bars show the share of each year's listings that " +
         "are security products: VPN appliances, firewalls, endpoint protection, secure " +
         "gateways and similar products sold to enforce security. The stat gives the " +
-        "catalog-wide share, and each of the last two complete years was above it. The " +
-        "2021–22 seeding years are charted like other years, because the classification " +
-        "depends only on the product and applies to back-catalog imports and new listings " +
-        "alike.",
+        "catalog-wide share, and each of the last two complete years was above it.",
       statLabel: "Security products' share of the KEV catalog",
       statNote: "{security} of {total} KEV entries · classifier v{version}, {rules} rules, published in the repo",
       methodology:
         "“Security product” here means a product whose primary function is security " +
-        "enforcement or secure access: firewalls and UTMs, VPN and secure-access " +
-        "appliances, endpoint protection, email security gateways, identity and " +
-        "privileged-access management, mobile device management, security operations " +
-        "tooling, and dedicated secure file-transfer appliances from security vendors. " +
-        "Where that line falls is a judgment and the main methodological risk of this " +
-        "page, so it is written down once as a curated, versioned table " +
-        "(pipeline/security_products.py) and not inferred by matching product names " +
-        "against the word “secure”. Mixed vendors get explicit product rules: Cisco " +
-        "counts only its security products (ASA, Firepower/FTD, AnyConnect, ISE; not IOS " +
-        "or routers), Microsoft only Defender and Forefront TMG (not Exchange), Zyxel " +
-        "only its firewalls, Juniper only ScreenOS. The harder calls are documented in " +
-        "the module and applied consistently: MOVEit is file transfer, not security; " +
-        "ADCs count only where the exploited deployment is a secure-access gateway (F5 " +
-        "BIG-IP, Citrix NetScaler); desktop management, RMM and remote-support tools " +
-        "are IT operations; mail servers do not count, although email security gateways " +
-        "do; backup is resilience; Zoho ManageEngine stays unclassified because the " +
-        "catalog's product labels are too coarse to split. The data file records the " +
-        "classifier version behind its numbers. If a call looks wrong, open an issue: " +
-        "a one-line change to the table reclassifies the full history on the next " +
-        "nightly run. Years with fewer than 10 entries do not plot. The current year " +
-        "(marked *) is partial and refills nightly.",
+        "enforcement or secure access: firewalls and unified threat management (UTM) " +
+        "appliances, VPN and secure-access appliances, endpoint protection, email " +
+        "security gateways, identity and privileged-access management, mobile device " +
+        "management, security operations tooling, and dedicated secure file-transfer " +
+        "appliances from security vendors. Where that line falls is a judgment, written " +
+        "down as a curated, versioned table (pipeline/security_products.py). Mixed " +
+        "vendors get explicit product rules: Cisco counts only its security products " +
+        "(ASA, Firepower/FTD, AnyConnect, ISE; not IOS or routers), Microsoft only " +
+        "Defender and Forefront TMG (not Exchange), Zyxel only its firewalls, Juniper " +
+        "only ScreenOS. Other calls: MOVEit is file transfer; application delivery " +
+        "controllers count only where the exploited deployment is a secure-access " +
+        "gateway (F5 BIG-IP, Citrix NetScaler); desktop management, remote monitoring " +
+        "and remote-support tools are IT operations; mail servers do not count, although " +
+        "email security gateways do; backup does not count; Zoho ManageEngine is not " +
+        "counted, because the catalog's product labels are too coarse to separate its " +
+        "security products. The data file records the classifier version behind its " +
+        "numbers. To dispute a call, open an issue; a change to the table reclassifies " +
+        "the full history on the next nightly run. Years with fewer than 10 entries do " +
+        "not plot. The current year (marked *) is partial and refills nightly.",
     },
 
     // --------------------------------------------- guards.html · 2
@@ -1907,8 +1885,7 @@ export const editorial = {
         "Every vendor with at least five entries in the catalog, ranked by how many of " +
         "its vulnerabilities CISA has listed, with first and last listing dates and the " +
         "median gap in days between consecutive listings. Rows where security products " +
-        "make up at least half the vendor's entries are flagged; for the five most-listed " +
-        "of those, the median gap is days to weeks.",
+        "make up at least half the vendor's entries are flagged.",
       colVendor: "Vendor",
       colEntries: "KEV entries",
       colSecurity: "security",
@@ -1925,12 +1902,11 @@ export const editorial = {
         "on Ivanti's row, while the one still labelled Pulse Secure is counted " +
         "separately. For each label the board counts total entries, security-classified " +
         "entries (per the classifier described in section 01's methodology), first and " +
-        "last dateAdded, and the median gap in days between consecutive listings. A gap " +
-        "of 0 means CISA added two or more of the vendor's CVEs on the same day. Vendors " +
-        "with fewer than five entries are left off, because a median gap needs several " +
-        "listings. The security flag marks rows where at least half the entries " +
-        "classify as security products. Default sort: total entries, descending. Click " +
-        "any column header to re-sort.",
+        "last dateAdded, and the median gap in days between consecutive listings. A " +
+        "median gap of 0 means at least half of the vendor's listings came on the same " +
+        "day as its previous listing. Vendors with fewer than five entries are left off, " +
+        "because a median gap needs several listings. Default sort: total entries, " +
+        "descending. Click any column header to re-sort.",
     },
 
     // --------------------------------------------- guards.html · 3
@@ -1940,22 +1916,17 @@ export const editorial = {
       source: "CISA KEV",
       headline: "KEV entries in security products carry the ransomware flag about twice as often.",
       caption:
-        "CISA flags each KEV entry whose vulnerability is known to have been used in " +
-        "ransomware campaigns. Split by the classifier used on the rest of this page, " +
-        "entries on exploited security products carry that flag roughly twice as often " +
-        "as the rest of the catalog.",
+        "The share of KEV entries that CISA flags as known to have been used in " +
+        "ransomware campaigns, for security products (by the classifier in section 01) " +
+        "and for the rest of the catalog.",
       barSecurity: "Security products",
       barOther: "Rest of the catalog",
       methodology:
         "Both bars use the catalog's knownRansomwareCampaignUse field (“Known” against " +
-        "anything else; a missing field counts as not Known, the same rule as on the " +
-        "KEV Latency page) over the full catalog snapshot, seeding era included. The " +
-        "split is this page's classifier: security products in one bar, all other " +
-        "entries in the other, so together the two bars cover the catalog; each bar's " +
-        "entry counts are in its tooltip. The chart measures only whether the flag is " +
-        "more common on security products. It says nothing about which campaigns, when, " +
-        "or how many victims: the flag is CISA's current per-entry assessment and " +
-        "carries no date.",
+        "anything else; a missing field counts as not Known) over the full current " +
+        "catalog. Together the two bars cover the catalog; each bar's entry counts are " +
+        "in its tooltip. The flag is CISA's current assessment of each entry and carries " +
+        "no date, campaign or victim count.",
     },
 
     // --------------------------------------------- epss.html · 1 · hero
@@ -1963,18 +1934,16 @@ export const editorial = {
       num: "01",
       kicker: "Day-before scores",
       source: "EPSS (FIRST.org) · CISA KEV",
-      headline: "Roughly half or more of recent KEV additions scored under 1% the day before listing.",
+      headline: "More than half of scored KEV additions since 2023 had an EPSS score under 1% the day before listing.",
       caption:
-        "For each vulnerability added to CISA's KEV catalog, the chart shows its EPSS " +
-        "score on the day before listing, in three bands. This describes scores before " +
-        "catalog inclusion; it does not measure forecast accuracy. EPSS estimates the " +
-        "probability of exploitation within the next 30 days, and KEV dateAdded is not " +
-        "the date exploitation occurred. A low probability does not rule out an event, " +
-        "and this selected cohort cannot establish calibration or overall model " +
-        "performance. The 2022-to-2023 shift coincides with a model change (v2 to v3, " +
-        "March 2023) and the catalog's seeding cutoff, which cannot be separated here. " +
-        "Model versions are split in section 02; entries without a prior score are " +
-        "counted separately.",
+        "Each year's additions to CISA's Known Exploited Vulnerabilities (KEV) catalog, " +
+        "by their EPSS score the day before listing, in three bands. EPSS, FIRST's " +
+        "Exploit Prediction Scoring System, estimates the probability that a CVE is " +
+        "exploited in the next 30 days. The chart describes scores before listing; it " +
+        "does not test forecast accuracy, because KEV's dateAdded is not the date " +
+        "exploitation occurred. The 2022-to-2023 shift coincides with a model change (v2 " +
+        "to v3, March 2023) and with the end of the catalog's 2021–22 seeding era, when " +
+        "CISA bulk-imported older CVEs; the two cannot be separated here.",
       statLabel: "Scored KEV additions under 1% the day before listing",
       statLatest: "{latest_year}",
       statAgo: "full catalog, all model eras pooled",
@@ -1984,26 +1953,22 @@ export const editorial = {
       // Filled by the renderer from catalog counts; the pending sentence is
       // appended only while the historical backfill is still incomplete.
       note:
-        "{ungradeable} of {total} catalog entries have no day-before score and are " +
-        "counted separately, outside the bands: {before_pub} were listed on or before " +
-        "the day their CVE record was published, and the rest had no row in FIRST's " +
-        "data for that day.",
+        "{ungradeable} of {total} catalog entries have no day-before score and are not " +
+        "in the bands: {before_pub} were listed on or before the day their CVE record " +
+        "was published, and the rest had no row in FIRST's data for that day.",
       pendingNote:
         "{pending} entries are still awaiting their historical day-before lookup; the " +
         "numbers on this page cover only the lookups fetched so far.",
       methodology:
-        "For each current CISA KEV entry, the pipeline retrieves FIRST's historical " +
-        "EPSS score for the day before dateAdded. Bands are shares of entries with an " +
-        "available score; entries listed on or before publication, unavailable scores " +
-        "and pending lookups are reported separately. A year needs at least 10 scored " +
-        "entries; the current year is partial. KEV inclusion confirms known " +
-        "exploitation but supplies no event date for testing the next-30-day forecast, " +
-        "so this is a retrospective catalog cohort and not a calibration test or a " +
-        "false-negative rate. That kind of evaluation needs dated outcomes, a defined " +
-        "forecast window, comparison records and explicit observation coverage. " +
-        "Seeding-era entries may concern exploitation years before listing. Model " +
-        "versions are separated because their probability distributions differ. The " +
-        "published file keeps the historical lookups.",
+        "For each current KEV entry, the pipeline retrieves FIRST's historical EPSS " +
+        "score for the day before dateAdded. Bands are shares of entries with a score; " +
+        "entries listed on or before their CVE record's publication, unavailable scores " +
+        "and pending lookups are counted separately. A year needs at least 10 scored " +
+        "entries; the current year is partial. KEV confirms exploitation but gives no " +
+        "date for it, so these scores cannot be checked against EPSS's 30-day window: " +
+        "the chart is not a calibration test or a false-negative rate. Seeding-era " +
+        "entries may concern exploitation years before listing. The published file " +
+        "keeps the historical lookups.",
     },
 
     // --------------------------------------------- epss.html · 2
@@ -2013,16 +1978,14 @@ export const editorial = {
       source: "EPSS (FIRST.org) · CISA KEV",
       headline: "EPSS v2 scored most of these entries above 1%; v3 scored most below, and v4 about half.",
       caption:
-        "The same scored entries, in the four probability buckets of the " +
-        "Score-vs-reality grid, split by EPSS model version. Versions v1 through v5 " +
-        "are different models with materially different score distributions, so one " +
-        "pooled histogram would mix incomparable scores, as mixing CVSS v2 and v3 " +
-        "scores would. The v5 model has been in use since June 2026, and so far more " +
-        "than half of its small cohort scored below 1%.",
+        "The same scored entries in four probability buckets, split by EPSS model " +
+        "version. Versions v1 through v5 are different models with different score " +
+        "distributions, so they are not pooled. The v5 model has been in use since June " +
+        "2026, and so far more than half of its small cohort scored below 1%.",
       methodology:
         "Each scored entry contributes its day-before probability to one bucket: " +
         "under 0.1%, 0.1–1%, 1–10%, or 10% and higher (lower edges inclusive, the same " +
-        "arithmetic as the Score-vs-reality grid on the CVE Ecosystem page). The " +
+        "buckets as the severity-vs-exploitation grid on the CVE Ecosystem page). The " +
         "historical API does not return the model version, so it is derived from the " +
         "score date using the era table in the data file, checked against the version " +
         "headers of FIRST's daily CSV files: v1 through 2022-02-03, " +
@@ -2040,26 +2003,22 @@ export const editorial = {
       source: "EPSS (FIRST.org) · CISA KEV",
       headline: "About three in ten scored KEV additions ranked in EPSS's bottom half the day before.",
       caption:
-        "Raw probabilities are not comparable across model versions, because each model " +
-        "is calibrated differently. A percentile is comparable: it gives the share of " +
-        "all CVEs scored that same day with an equal or lower score. This view shows the " +
-        "same scored entries on that scale. About three in ten sat in the bottom half of " +
-        "the day's ranking; for a typical entry in that half, more than a hundred " +
-        "thousand CVEs ranked above it on the day before listing.",
+        "The same scored entries by their EPSS percentile the day before listing: the " +
+        "share of all CVEs scored that day with an equal or lower score. Unlike raw " +
+        "probabilities, percentiles can be compared across model versions. For a typical " +
+        "entry in the bottom half, more than a hundred thousand CVEs ranked above it on " +
+        "the day before listing.",
       statBig: "{n} of {total}",
       statLead: "scored entries ranked in EPSS's bottom half the day before listing",
       statNote: "median day-before percentile: {median}",
       yAxisLabel: "share of scored entries",
       methodology:
         "Each scored entry contributes the percentile EPSS published with its " +
-        "day-before score: the share of all CVEs scored that day with an equal or lower " +
-        "score. FIRST recomputes percentiles daily against that day's full set of scored " +
-        "CVEs, so they can be compared across model versions where raw probabilities " +
-        "cannot: a v2 probability and a v4 probability mean different things, but the " +
-        "bottom half of a day's ranking means the same in every era. Buckets are shares " +
-        "of scored entries. Every scored entry carries a day-before percentile, so this " +
-        "chart covers the same entries as the two probability charts. The stat's median " +
-        "is the median day-before percentile of these entries.",
+        "day-before score. FIRST recomputes percentiles daily against that day's full " +
+        "set of scored CVEs, so a percentile places an entry in its own day's ranking " +
+        "under any model version. Buckets are shares of scored entries. Every scored " +
+        "entry carries a day-before percentile, so this chart covers the same entries " +
+        "as the two probability charts.",
     },
 
     // --------------------------------------------- calendar.html · 1 · hero
@@ -2332,16 +2291,14 @@ export const editorial = {
     edits: {
       num: "01",
       kicker: "Catalog edits",
-      source: "CISA KEV · CyberMon's own nightly diffs",
+      source: "CISA KEV · CyberMon nightly diffs",
       headline: "CISA edits KEV entries in place after they are published.",
       caption:
-        "CISA edits entries in its Known Exploited Vulnerabilities catalog in place. " +
-        "The catalog page and feed carry no changelog; CISA's kev-data repository " +
-        "keeps the files' commit history. CyberMon diffs each fresh catalog against " +
-        "the last observed one, keeps every difference, and records the edits as a " +
-        "per-field ledger. Bars count edits per month: remediation deadlines moved, " +
-        "ransomware flags flipped, text revised, and entries removed. New listings are " +
-        "not counted; the chart counts changes to entries already published.",
+        "Edits per month to entries already in CISA's Known Exploited Vulnerabilities " +
+        "(KEV) catalog: remediation deadlines moved, ransomware flags changed, text " +
+        "revised and entries removed. The catalog page and feed carry no changelog; " +
+        "CyberMon compares each catalog with the previous one it saw and logs every " +
+        "difference by field.",
       statLabel: "Edits to already-published entries since the record began",
       statNote: "edits across a catalog of {entries} entries · new listings excluded: {additions}",
       legendDueDate: "Due date moved",
@@ -2364,39 +2321,33 @@ export const editorial = {
         "that a text changed without republishing it, and a whitespace-only change " +
         "does not count. The fresh catalog is diffed against the stored fingerprints, " +
         "and each difference is one event in an append-only CSV " +
-        "(data/history/kev_changelog.csv). Like the NVD backlog history, it is a " +
-        "dataset this project accumulates: the catalog feeds carry only the current " +
+        "(data/history/kev_changelog.csv). The catalog feeds carry only the current " +
         "snapshot, and CISA's kev-data git repository keeps whole-file commits, not " +
-        "per-field events. A missing ransomware flag reads as “Unknown,” the same " +
-        "rule as on the KEV Latency and Security Products in KEV pages. The first capture carrying that " +
-        "column therefore logged a flip for each entry already flagged as Known; " +
-        "section 02 names that step month and keeps it out of its statistics, while " +
-        "the edit total above includes it. Additions are logged but not charted as " +
-        "edits; removals are charted here and listed by name in section 04. Events " +
-        "carry a granularity flag. “Daily” events are dated to the nightly run that " +
-        "first saw them (if the pipeline misses nights, changes pool on the next " +
-        "run's date). “Capture” events come from the one-time Internet Archive " +
-        "backfill and are dated to the first capture showing them; with weeks to " +
-        "months between captures, a capture-era month is a lower-resolution bucket, " +
-        "and a single-capture spike can be one bulk revision by CISA. The record's " +
-        "first observation is a baseline: it writes the fingerprints and logs " +
-        "nothing, since there is nothing earlier to compare against.",
+        "per-field events. A missing ransomware flag reads as “Unknown,” so the first " +
+        "capture carrying that column logged a flip for each entry already flagged as " +
+        "Known; section 02 names that step month and keeps it out of its statistics, " +
+        "while the edit total above includes it. Additions are logged but not charted " +
+        "as edits; removals are charted here and listed by name in section 04. Events " +
+        "carry a granularity flag. “Daily” events are dated to the nightly run that first saw them (if the " +
+        "pipeline misses nights, changes pool on the next run's date). “Capture” " +
+        "events come from the one-time Internet Archive backfill; with weeks to months " +
+        "between captures, a capture-era month is a lower-resolution bucket, and a " +
+        "single-capture spike can be one bulk revision by CISA. The record's first " +
+        "observation is a baseline: it writes the fingerprints and logs nothing.",
     },
 
     // --------------------------------------------- changelog.html · 2
     flagflip: {
       num: "02",
       kicker: "Ransomware-flag flips",
-      source: "CISA KEV · CyberMon's own nightly diffs",
-      headline: "CISA often adds the ransomware flag months or years after listing.",
+      source: "CISA KEV · CyberMon nightly diffs",
+      headline: "CISA has changed the ransomware flag to “Known” on more than a hundred KEV entries after listing them.",
       caption:
-        "Each KEV entry carries CISA's assessment of whether the vulnerability is " +
-        "known to have been used in ransomware campaigns. CISA changes that flag from " +
-        "“Unknown” to “Known” on entries that have been in the catalog for months or " +
-        "years, so anyone who read an entry before the change saw “Unknown” (or, " +
-        "before October 2023, no flag). Bars count the flips observed each month and " +
-        "the line accumulates them; the stat counts flips after listing, and its note " +
-        "gives the median time from listing to the observed flip.",
+        "Each KEV entry records whether CISA knows the vulnerability to have been used " +
+        "in ransomware campaigns (“Known” or “Unknown”; the feed had no such field " +
+        "before October 2023). Bars count the changes from “Unknown” to “Known” " +
+        "(flips) observed each month on entries already listed, and the line " +
+        "accumulates them.",
       statBig: "{n}",
       statLead: "entries flipped to “Known” after they were already listed",
       // With a capture-seeded record the step month is set apart from the
@@ -2419,16 +2370,13 @@ export const editorial = {
       methodology:
         "A flip is a logged change of knownRansomwareCampaignUse to “Known” on an " +
         "entry already present in the previous observation. The gap runs from the " +
-        "entry's dateAdded to the date the flip was observed, so it is an upper bound: " +
-        "a flip CISA made between two Internet Archive captures is dated to the later " +
-        "capture. One step in the curve comes from the feed format. CISA added the " +
-        "ransomware column to the feed in October 2023, so the first capture carrying " +
-        "it logs a flip for each entry already flagged at that point. For those " +
-        "entries the gap mostly measures how long the entry sat in the catalog before " +
-        "the column existed, and the curve shows them as the step where the record's " +
-        "flag history begins. The median is published only with at least 10 observed " +
-        "flips; below that, only the count is published. Flips back to “Unknown” are " +
-        "tracked and reported in the data file as reversals, separately from the " +
+        "entry's dateAdded to the date the flip was first observed, so it is an upper " +
+        "bound. CISA added the ransomware column to the feed in October 2023, so the " +
+        "first capture carrying it logs a flip for each entry already flagged at that " +
+        "point: the step at the start of the curve. For those entries the gap mostly " +
+        "measures how long the entry sat in the catalog before the column existed. The " +
+        "median is published only with at least 10 observed flips. Flips back to " +
+        "“Unknown” are reported in the data file as reversals, separately from the " +
         "total.",
     },
 
@@ -2436,7 +2384,7 @@ export const editorial = {
     flaglag: {
       num: "03",
       kicker: "Time to the flag",
-      source: "CISA KEV · CyberMon's own nightly diffs · Internet Archive captures",
+      source: "CISA KEV · CyberMon nightly diffs · Internet Archive captures",
       headline: "Most ransomware-flag flips come more than three months after listing.",
       caption:
         "For each entry flipped from “Unknown” to “Known” ransomware use, the days from " +
@@ -2455,7 +2403,6 @@ export const editorial = {
       wentBack: "{went_back} of these flips later went back to “Unknown”",
       wentBackNone: "none of these flips has gone back to “Unknown”",
       note:
-        "Each date is the first observation of the flip, not the day CISA made it. " +
         "Recent listing years have had less time to be flipped, so their medians are " +
         "capped by their age.",
       noBlock: "This edition predates the flag-lag data; the next nightly build adds it.",
@@ -2475,33 +2422,29 @@ export const editorial = {
       },
       methodology:
         "The cohort is every logged change of knownRansomwareCampaignUse from " +
-        "“Unknown” to “Known” on an entry already in the catalog, minus the flips in " +
-        "the step month named in section 02 (the first capture carrying the flag " +
-        "column, when each entry already flagged flipped at once). The lag is the " +
-        "flip's observation date minus the entry's dateAdded, in days. Each flip is " +
-        "dated to its first observation, so each lag is an upper bound. “Daily” flips " +
-        "were seen by the nightly diff and are accurate to the day; “capture” flips " +
-        "come from the Internet Archive backfill and can trail the real change by " +
-        "weeks to months. For entries listed before CISA added the column in October " +
-        "2023, the lag includes time before the flag existed. The listing-year view " +
-        "groups flips by the year of dateAdded; its median and quartiles are " +
-        "published only with at least 10 flips in the year, and a recent year can " +
-        "only show lags as long as its entries are old. A flip that later went back " +
-        "to “Unknown” stays in the cohort and is counted separately.",
+        "“Unknown” to “Known” on an entry already in the catalog, minus the step-month " +
+        "flips described in section 02. The lag is the flip's first observation date " +
+        "minus the entry's dateAdded, in days. “Daily” flips were seen by the nightly " +
+        "diff and are accurate to the day; “capture” flips come from the Internet " +
+        "Archive backfill and can trail the real change by weeks to months. For " +
+        "entries listed before CISA added the column in October 2023, the lag includes " +
+        "time before the flag existed. The listing-year view groups flips by the year " +
+        "of dateAdded; its median and quartiles are published only with at least 10 " +
+        "flips in the year. A flip that later went back to “Unknown” stays in the " +
+        "cohort and is counted separately.",
     },
 
     // --------------------------------------------- changelog.html · 4
     receipts: {
       num: "04",
       kicker: "Most-edited entries",
-      source: "CISA KEV · CyberMon's own nightly diffs",
+      source: "CISA KEV · CyberMon nightly diffs",
       headline: "Some KEV entries have been edited eight or more times after listing.",
       caption:
-        "The twelve entries with the most logged edits to an already-published " +
-        "listing (the one-time ransomware-flag step of December 2023 included) and, " +
-        "below them, every entry observed leaving the catalog. Removals are named " +
-        "because KEV entries carry federal remediation deadlines under BOD 22-01, " +
-        "and a removed entry's deadline goes with it.",
+        "The twelve entries with the most logged edits since listing (the one-time " +
+        "ransomware-flag step of December 2023 included) and, below them, every entry " +
+        "observed leaving the catalog. A removed entry no longer carries a federal " +
+        "remediation deadline under Binding Operational Directive 22-01.",
       colCve: "CVE",
       colVendor: "Vendor",
       colProduct: "Product",
@@ -2517,12 +2460,11 @@ export const editorial = {
         "An entry's edit count is its logged field changes and text revisions over " +
         "the full record; additions and removals are not counted as edits. The board " +
         "shows the top dozen by edit count (ties break by CVE id, compared as text); " +
-        "“last change” is the date of the entry's most recent logged edit. Removals " +
-        "come from the state's removal ledger: an entry present in one observation " +
-        "and absent from the next is logged as removed and kept on this list even if " +
-        "it later returns (the return is logged as a new addition). Capture-era dates " +
-        "carry the same caveat as the rest of the page: they are the first capture " +
-        "that shows the change, which can be later than the day CISA made it.",
+        "“last change” is the date of the entry's most recent logged edit, which for " +
+        "capture-era edits is the first capture showing it. Removals come from the " +
+        "pipeline's removal ledger: an entry present in one observation and absent " +
+        "from the next is logged as removed and kept on this list even if it later " +
+        "returns (the return is logged as a new addition).",
     },
 
     // --------------------------------- naming.html · 1 · hero

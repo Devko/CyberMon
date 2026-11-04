@@ -67,8 +67,8 @@ def check_one_in_nine_guard_share(d: dict) -> None:
 
 
 def check_ransomware_roughly_twice(d: dict) -> None:
-    # editorial.js (guards.html overlap headline + caption): "about twice as
-    # often" / "roughly twice as often as the rest of the catalog". Ratio at
+    # editorial.js (guards.html overlap headline; the caption repeated it
+    # until 2026-11-04): "about twice as often". Ratio at
     # module creation: 37.2 / 17.9 = 2.08; 2026-10-03: 37.1 / 18.6 = 1.99
     # (2.01-2.07 since late August). Band narrowed from 1.6-2.6 to 1.7-2.3
     # on 2026-10-03: 1.6 reads as "about one and a half times".
@@ -103,9 +103,10 @@ def check_last_two_complete_years_above_catalog_share(d: dict) -> None:
 
 
 def check_top_security_vendors_gap_days_to_weeks(d: dict) -> None:
-    # editorial.js (guards.html recidivism headline + caption): "For the
-    # five most-listed security vendors, the median gap between KEV
-    # listings is days to weeks." A security vendor is a flagged row (at
+    # editorial.js (guards.html recidivism headline; the caption repeated
+    # it until 2026-11-04): "For the five most-listed security vendors, the
+    # median gap between KEV listings is days to weeks." A security vendor
+    # is a flagged row (at
     # least half its entries security products, the board's own rule);
     # "days to weeks" is read as at most 60 days. 2026-10-03: Ivanti 7.5,
     # Fortinet 42, Citrix 10, SonicWall 20, Palo Alto Networks 32.5 (F5 at
@@ -141,16 +142,6 @@ CLAIMS = [
         "For the five most-listed security vendors, the median gap between KEV listings is days to weeks.",
         "kev_guards.json",
         check_top_security_vendors_gap_days_to_weeks,
-    ),
-    (
-        "for the five most-listed of those, the median gap is days to weeks",
-        "kev_guards.json",
-        check_top_security_vendors_gap_days_to_weeks,
-    ),
-    (
-        "entries on exploited security products carry that flag roughly twice as often as the rest of the catalog",
-        "kev_guards.json",
-        check_ransomware_roughly_twice,
     ),
     (
         "KEV entries in security products carry the ransomware flag about twice as often.",
