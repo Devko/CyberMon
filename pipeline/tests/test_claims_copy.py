@@ -335,12 +335,24 @@ def check_joined_outnumber_left(d: dict) -> None:
 
 
 def check_cisa_about_half(d: dict) -> None:
-    # adp hero and home card: "about half of all published CVE records".
+    # home card: "about half of all published CVEs" (the adp hero said the
+    # same until 2026-11-04; see check_cisa_more_than_half).
     # (2026-07-19: 47.4%; 2026-10-03: 50.7%, rising about 1.3 points a
     # month. At that pace the share reaches 55% around January-February
     # 2027, and the copy then needs "more than half".)
     pct = d["headline"]["pct_cisa"]
     assert 45 <= pct <= 55, pct
+    assert d["headline"]["first_month"] >= "2024-01", d["headline"]["first_month"]
+
+
+def check_cisa_more_than_half(d: dict) -> None:
+    # adp hero headline: "CISA has enriched more than half of all published
+    # CVE records". It said "about half" until 2026-11-04, when the share
+    # (52.9%, from 50.3% on 09-23) was rising toward the 55% bound of
+    # check_cisa_about_half within weeks. "More than half" understates the
+    # share past two thirds; reword then.
+    pct = d["headline"]["pct_cisa"]
+    assert 50 < pct < 200 / 3, pct
     assert d["headline"]["first_month"] >= "2024-01", d["headline"]["first_month"]
 
 
@@ -505,8 +517,8 @@ CLAIMS = [
      "rescore_log.json", check_handful_made_most),
     ("Since July 2026, more organizations have joined the CVE roster than left it.",
      "cna_roster.json", check_joined_outnumber_left),
-    ("Since mid-2024, CISA has enriched about half of all published CVE records.",
-     "adp_coverage.json", check_cisa_about_half),
+    ("Since mid-2024, CISA has enriched more than half of all published CVE records.",
+     "adp_coverage.json", check_cisa_more_than_half),
     ("CISA's Vulnrichment program has added data to about half of all published CVEs.",
      "adp_coverage.json", check_cisa_about_half),
     ("Rejection rates differ by more than tenfold between CNAs.",

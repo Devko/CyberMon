@@ -89,11 +89,9 @@ def check_most_official_picks_in_the_measured_top25(d: dict) -> None:
 
 
 def check_almost_all_official_classes_are_exploited(d: dict) -> None:
-    # editorial.js (top25_exploited headline and caption): "Almost every CWE
-    # Top 25 class appears in KEV" / "almost every one of the official Top
-    # 25 turns up in the exploited set". (2026-10-03: 24 of 25; only CWE-770
-    # has no KEV entry.) Three or fewer missing still reads as "almost
-    # every".
+    # editorial.js (top25_exploited headline): "Almost every CWE Top 25
+    # class appears in KEV". (2026-10-03: 24 of 25; only CWE-770 has no KEV
+    # entry.) Three or fewer missing still reads as "almost every".
     h = _headline(d)
     n = h["in_kev"]
     assert n >= 22, (
@@ -103,8 +101,10 @@ def check_almost_all_official_classes_are_exploited(d: dict) -> None:
 
 
 def check_kev_counts_are_uneven(d: dict) -> None:
-    # editorial.js (top25_exploited caption): "from over a hundred entries
-    # for some classes to one or none for others". (2026-10-03: CWE-787
+    # editorial.js (top25_exploited headline; the caption until 2026-11-04):
+    # "from over a hundred entries for some classes to one or none for
+    # others". (2026-11-04: CWE-787 128, CWE-78 111, CWE-416 106; CWE-476
+    # and CWE-639 1, CWE-770 0. 2026-10-03: CWE-787
     # 125, CWE-78 108, CWE-416 104; CWE-476 and CWE-639 1, CWE-770 0.
     # KEV counts only grow while the official list stays the same.)
     counts = sorted(r["kev_n"] for r in d["ranks"])
@@ -135,22 +135,14 @@ CLAIMS = [
         check_most_official_picks_in_the_measured_top25,
     ),
     (
-        "Almost every CWE Top 25 class appears in KEV, in very uneven numbers.",
+        "Almost every CWE Top 25 class appears in KEV, from over a hundred "
+        "entries for some classes to one or none for others.",
         "cwe_top25.json",
         check_almost_all_official_classes_are_exploited,
     ),
     (
-        "almost every one of the official Top 25 turns up in the exploited set",
-        "cwe_top25.json",
-        check_almost_all_official_classes_are_exploited,
-    ),
-    (
-        "Almost every CWE Top 25 class appears in KEV, in very uneven numbers.",
-        "cwe_top25.json",
-        check_kev_counts_are_uneven,
-    ),
-    (
-        "from over a hundred entries for some classes to one or none for others",
+        "Almost every CWE Top 25 class appears in KEV, from over a hundred "
+        "entries for some classes to one or none for others.",
         "cwe_top25.json",
         check_kev_counts_are_uneven,
     ),

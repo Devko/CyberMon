@@ -2186,25 +2186,20 @@ export const editorial = {
     week: {
       num: "01",
       kicker: "Edits per week",
-      source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
+      source: "cvelistV5 (MITRE) · CyberMon nightly diffs",
       headline: "CNAs change severity scores on CVE records after publication.",
       caption:
-        "A CVE record can be edited after it is published, including its severity " +
-        "score: the assigning CNA can raise it, lower it, add one years later or " +
-        "remove it, and the record keeps no changelog of its own. Each night " +
-        "CyberMon reads the corpus and compares every record's CNA-assigned score " +
-        "with the previous night's. In the lower panel, bars above the line are " +
-        "scores raised and bars below are scores lowered. The upper panel counts " +
-        "first scores added to existing records, CVSS version changes and removed " +
-        "scores separately, because none of them is a new value for an existing " +
-        "score on the same CVSS version. The log starts at first deploy and grows " +
-        "nightly.",
+        "Each night CyberMon compares every CVE record's severity score, as set by " +
+        "its CVE Numbering Authority (CNA), with the previous night's. In the lower " +
+        "panel, bars above the line are scores raised and bars below are scores " +
+        "lowered. The upper panel counts first scores added to existing records, " +
+        "CVSS version changes and removed scores.",
       legendUp: "Score raised",
       legendDown: "Score lowered",
       legendFirst: "First score backfilled",
       legendShift: "CVSS version shift",
       legendRemoved: "Score removed",
-      statLabel: "Events on the committed log",
+      statLabel: "Events on the log",
       statSince: "since {first_date}",
       // {first_date} is filled from the data (the log's first observed
       // date); the empty variant renders while the log has no events yet.
@@ -2222,49 +2217,41 @@ export const editorial = {
       methodology:
         "Each night the pipeline reduces every published CVE record to a score " +
         "fingerprint: the CNA-assigned base score of the newest CVSS version the " +
-        "record carries, read by the same extraction the severity-inflation chart " +
-        "uses, so the two pages agree on a record's score. Tonight's fingerprints are " +
-        "compared with the previous night's, which are stored in the repository " +
-        "together with the corpus release tag. A re-run against the same release is " +
-        "detected and skipped, so no night is counted twice. A changed score on the " +
-        "same CVSS version is a rescore, raised or lowered. A change in the record's " +
-        "newest scored version is a version shift. Shifts are logged separately and " +
-        "not charted as raised or lowered, because v2, v3 and v4 are different " +
-        "scales and a move between them is a change of method, not an edit. The " +
-        "version is the exact one the record names, so a 3.0-to-3.1 re-issue is also " +
-        "a version shift. (Until 2026-09-20 the fingerprint stored only the version " +
-        "family, so older rows read v3 and v4. On the first night with exact labels, " +
-        "a family-only label was treated as the same version as an exact label in " +
-        "that family, so that night did not log a version shift for every scored " +
-        "record.) A record " +
-        "gaining its first CNA-assigned score is counted separately as a backfill, " +
-        "since it fills a blank field; a score disappearing from a live record is " +
-        "logged as removed. Brand-new records produce no event; their first scores " +
-        "are the subject of the severity-inflation chart. cvelistV5 is a public git " +
-        "repository whose commits record the edits; this log adds a normalized " +
-        "nightly diff of the CNA-assigned score that can be read without replaying " +
-        "commits. Events are appended to a CSV in the repository " +
-        "(data/history/rescore_log.csv), and the comparison state is stored beside " +
-        "it, so the two cannot diverge. They diverged once, in July 2026, while the " +
-        "state was cached outside the repository, and the duplicated events were " +
-        "removed from the log. If the state is lost, it is rebuilt from that night's " +
-        "corpus and that night logs zero events, so at most one night of edits goes " +
-        "unrecorded. Bars group by ISO week of the observation date (UTC); the " +
-        "current week keeps filling until it closes.",
+        "record carries, read the same way as on the CVE Ecosystem page's CVSS " +
+        "charts. Tonight's fingerprints are compared with the previous night's, " +
+        "which are stored in the repository together with the corpus release tag. " +
+        "A re-run against the same release is detected and skipped, so no night is " +
+        "counted twice. A changed score on the same CVSS version is a rescore, " +
+        "raised or lowered. A change in the record's newest scored version is a " +
+        "version shift; shifts are logged separately and not charted as raised or " +
+        "lowered, because each CVSS version computes the score with its own formula. " +
+        "The version is the exact one the record names, so a 3.0-to-3.1 re-issue is " +
+        "also a version shift. Before 2026-09-20 the log stored only the version " +
+        "family (v3 or v4), so until then a 3.0-to-3.1 re-issue that changed the " +
+        "score was logged as a rescore, and one that kept the score was not " +
+        "logged. A record gaining its first CNA-assigned score is " +
+        "counted separately as a backfill; a score disappearing from a live record " +
+        "is logged as removed. Brand-new records produce no event. Events are " +
+        "appended to a CSV in the repository (data/history/rescore_log.csv), and the " +
+        "comparison state is stored beside it, so the two cannot diverge. They " +
+        "diverged once, in July 2026, while the state was cached outside the " +
+        "repository, and the duplicated events were removed from the log. If the " +
+        "state is lost, it is rebuilt from that night's corpus and that night logs " +
+        "zero events, so at most one night of edits goes unrecorded. Bars group by " +
+        "ISO week of the observation date (UTC); the current week keeps filling " +
+        "until it closes.",
     },
 
     // --------------------------------------------- rescores.html · 2
     magnitude: {
       num: "02",
       kicker: "Magnitude",
-      source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
+      source: "cvelistV5 (MITRE) · CyberMon nightly diffs",
       headline: "Most rescores lower the score, and most move it by less than two points.",
       caption:
-        "Each rescore's change: the new score minus the old, always on the same CVSS " +
-        "version; an edit that changes version, 3.0 to 3.1 included, is a version " +
-        "shift and never lands here. The buckets separate small corrections of under " +
-        "two points from changes of four points or more. Below 30 rescores the panel " +
-        "shows the count instead of a histogram.",
+        "Each bar counts rescores by their change: the new score minus the old, on " +
+        "the same CVSS version. The buckets separate changes of under two points " +
+        "from changes of four points or more.",
       // Rendered instead of the chart while the log sits under the min-n
       // gate; both variants are filled from the data file, never hardcoded.
       placeholder:
@@ -2278,33 +2265,28 @@ export const editorial = {
       xAxisLabel: "score delta (new − old)",
       yAxisLabel: "rescore events",
       methodology:
-        "Delta is the new score minus the old for each rescore event. Both scores " +
-        "are on the same exact CVSS version, not only the same family, so every " +
-        "delta compares like with like. Version shifts, including 3.0-to-3.1 " +
-        "re-issues, are excluded from this chart, because a difference between two " +
-        "scoring scales is not a measurement. Deltas fall into fixed signed buckets " +
-        "(−4 and under, over −4 to −2, over −2 to −0.1, +0.1 to under +2, +2 to under " +
-        "+4, +4 and over) at the scores' one-decimal precision. A delta of zero " +
-        "cannot occur, since an unchanged score is not an event. The distribution " +
-        "and its median are not plotted until the log holds at least 30 rescore " +
-        "events, because a histogram of a few edits would mostly show noise. The " +
-        "threshold and the current count ship in the data file, and the text shown " +
-        "before the threshold is reached is built from them.",
+        "Delta is the new score minus the old for each rescore event. Since " +
+        "2026-09-20 both scores are on the same exact CVSS version, so a 3.0-to-3.1 " +
+        "re-issue is a version shift and is not charted here. Rescores logged " +
+        "before that date matched on version family only (v3 or v4). Deltas fall into " +
+        "fixed signed buckets (−4 and under, over −4 to −2, over −2 to −0.1, +0.1 to " +
+        "under +2, +2 to under +4, +4 and over) at the scores' one-decimal " +
+        "precision. A delta of zero cannot occur, since an unchanged score is not an " +
+        "event. The distribution and its median are drawn once the log holds at " +
+        "least 30 rescores; until then the panel shows the count.",
     },
 
     // --------------------------------------------- rescores.html · 3
     editors: {
       num: "03",
       kicker: "Rescores by CNA",
-      source: "cvelistV5 (MITRE) · CyberMon's own nightly diffs",
+      source: "cvelistV5 (MITRE) · CyberMon nightly diffs",
       headline: "A handful of CNAs made most of the rescores logged since July 2026.",
       caption:
         "Each rescore is filed under the CNA named as assigner on the record the night " +
-        "the edit was seen. That CNA is responsible for the score; it is usually, but " +
-        "not provably, the party that made the change. The board counts rescore " +
-        "events per CNA (same version, new score), split into raised and lowered. The " +
-        "log began in July 2026, so the board is still short; the line above it gives " +
-        "the number of rescores it is built on and the size of the whole log.",
+        "the edit was seen. That CNA is responsible for the score but may not be " +
+        "the party that made the change. The board counts rescore events per CNA, " +
+        "split into raised and lowered.",
       boardNote: "{rescores} rescore events among {events} logged since {first_date}",
       boardNoteEmpty: "no events on the log yet; collection is running",
       windowTemplate:
@@ -2317,14 +2299,10 @@ export const editorial = {
         "No CNA has enough logged rescores to rank yet; the board fills as the log " +
         "grows.",
       methodology:
-        "For each CNA (the record's assigner on the night the edit was observed), the " +
-        "board counts rescore events across the whole log, split by direction. " +
-        "Version shifts, backfilled first scores and removals are excluded, because " +
-        "the board counts new values for existing scores. CNAs with fewer than 3 " +
-        "logged rescores are left off the board; two edits are too few to show a " +
-        "pattern. There is no time window yet: the log is young, and a window would " +
-        "empty the board. When the log is long enough for a rolling window, this note " +
-        "will change. Default sort: rescore count, descending. Click any column " +
+        "The board counts each CNA's rescore events across the whole log, with no " +
+        "rolling window, split by direction. Version shifts, backfilled first scores " +
+        "and removals are excluded. CNAs with fewer than 3 logged rescores are left " +
+        "off the board. Default sort: rescore count, descending. Click any column " +
         "header to re-sort.",
     },
 
@@ -2590,15 +2568,17 @@ export const editorial = {
       source: "CVE List V5 (MITRE) · CISA KEV · CWE Top 25 (MITRE)",
       headline: "The CWE Top 25 order differs from weakness frequency in CVE records.",
       caption:
-        "MITRE publishes the CWE Top 25 annually, ranking the weakness classes it " +
-        "considers most dangerous. The table sets each class's official rank beside " +
-        "its measured rank: how often the class is the first-listed CWE on a " +
-        "published CVE record. The two orders differ, and not every official pick " +
-        "ranks among the 25 most common weaknesses in the measured window. The two ranks " +
-        "measure different things. MITRE weights each class's NVD frequency by the " +
-        "average CVSS severity of its CVEs over one year; the measured rank counts " +
-        "frequency alone over five years. The comparison shows where the definitions " +
-        "disagree and is not a correction of MITRE's list.",
+        "MITRE publishes the CWE Top 25 each year, ranking the Common Weakness " +
+        "Enumeration (CWE) classes it considers most dangerous. The table sets each " +
+        "class's official rank beside its measured rank: how often the class is the " +
+        "first-listed CWE on a published CVE record. The two orders differ, and not " +
+        "every official pick ranks among the 25 most common weaknesses in the " +
+        "measured window. MITRE multiplies each class's frequency in the National " +
+        "Vulnerability Database (NVD) by the average CVSS severity of its CVEs over " +
+        "one year; the measured rank counts frequency alone over five years. A gap " +
+        "between the two ranks reflects these different definitions, not an error " +
+        "in MITRE's list. KEV hits are the class's entries in CISA's Known Exploited " +
+        "Vulnerabilities (KEV) catalog.",
       statTemplate:
         "MITRE CWE Top 25 ({year}) · measured prevalence {start}–{end} · " +
         "{in_top25} of {total} also rank in the measured top 25",
@@ -2611,27 +2591,23 @@ export const editorial = {
       unrankedTitle: "never the first-listed CWE on a published record in the window",
       nodata: "Not enough data yet.",
       methodology:
-        "The official column is MITRE's published CWE Top 25 for the newest " +
-        "committed year: a static list transcribed by hand from cwe.mitre.org/" +
-        "top25, the module's only added source. The measured column ranks every " +
-        "weakness class that appears as the first-listed CWE (CNA container " +
-        "preferred, CISA-ADP as fallback) on a published CVE record over the " +
-        "last five complete calendar years, by how often it appears. An official " +
-        "pick can land anywhere in that ranking; a class that is never the " +
-        "first-listed CWE in the window is shown as “outside.” " +
-        "Prevalence is the class's share of all CWE-tagged published records in " +
-        "the window. KEV hits count the class among CISA Known Exploited " +
-        "Vulnerabilities entries that match a corpus record. Limit: MITRE's " +
-        "published methodology scores each CWE by combining its normalized " +
-        "frequency among NVD CVEs in a one-year window (June 1, 2024 through " +
-        "June 1, 2025 for the 2025 list) with the average CVSS v3 base severity of " +
-        "those CVEs, after a mapping review that considers multiple CWE mappings " +
-        "per record; KEV counts are shown beside MITRE's list but are not an input " +
-        "to its score. The measured rank uses a different measure on a different " +
-        "population (first-listed-CWE frequency alone, over five calendar years of " +
-        "cvelistV5), so differences between the two orders reflect different " +
-        "definitions and do not correct MITRE's list. Recomputed nightly; the " +
-        "newest committed official list is used. Click a column header to sort.",
+        "The official column is MITRE's CWE Top 25, copied by hand from " +
+        "cwe.mitre.org/top25; the year above the table is the newest list copied. " +
+        "The measured column ranks every weakness class that appears as the " +
+        "first-listed CWE on a published CVE record over the last five complete " +
+        "calendar years, by how often it appears. An official pick can land " +
+        "anywhere in that ranking; a class that is never the first-listed CWE in " +
+        "the window is shown as “outside.” The CWE is read from the container of " +
+        "the assigning CVE Numbering Authority (CNA), or from CISA's ADP container " +
+        "when the CNA lists none. Prevalence is the class's share of all CWE-tagged " +
+        "published records in the window. KEV hits count the class among KEV " +
+        "entries that match a corpus record, from all years, not only the window. " +
+        "MITRE's published methodology multiplies each CWE's normalized frequency " +
+        "among NVD CVEs in a one-year window (June 1, 2024 through June 1, 2025 for " +
+        "the 2025 list) by the normalized average CVSS v3 base score of those CVEs. " +
+        "Its mapping review can consider several CWE mappings per record, and KEV " +
+        "counts are shown beside its list but are not an input to its score. " +
+        "Recomputed nightly. Click a column header to sort.",
     },
 
     // --------------------------------- top25.html · 2
@@ -2639,31 +2615,26 @@ export const editorial = {
       num: "02",
       kicker: "Official classes in KEV",
       source: "CVE List V5 (MITRE) · CISA KEV · CWE Top 25 (MITRE)",
-      headline: "Almost every CWE Top 25 class appears in KEV, in very uneven numbers.",
+      headline:
+        "Almost every CWE Top 25 class appears in KEV, from over a hundred entries " +
+        "for some classes to one or none for others.",
       caption:
-        "The same official Top 25, counted against CISA's Known Exploited " +
-        "Vulnerabilities (KEV) catalog. Each bar is the number of KEV entries whose " +
-        "first-listed weakness is that class; classes with no KEV entry are drawn in " +
-        "gray. Almost every one of the official Top 25 turns up in the exploited set, " +
-        "but the counts are uneven, from over a hundred entries for some classes to " +
-        "one or none for others.",
+        "The same official Top 25, counted against the KEV catalog. Each bar is the " +
+        "number of KEV entries whose first-listed weakness is that class; classes " +
+        "with no KEV entry are drawn in gray.",
       statTemplate:
         "{in_kev} of {total} official classes appear in the exploited set · " +
-        "together {coverage} of tagged KEV entries",
+        "together {coverage} of CWE-tagged KEV entries",
       xAxis: "exploited (KEV) entries",
       nodata: "Not enough data yet.",
       methodology:
-        "Each bar is one of the official Top 25 classes: the number of CISA Known " +
-        "Exploited Vulnerabilities (KEV) entries whose first-listed CWE (CNA " +
-        "container preferred, CISA-ADP as fallback) is that class, among entries " +
-        "that match a record in the CVE corpus. Bars are sorted by count, highest " +
-        "first; a class with no KEV entry is drawn in gray. The combined share above " +
-        "the chart is the share of all tagged KEV entries whose class is on the " +
-        "official list. KEV is small next to the full corpus, and only entries " +
-        "matched to a corpus record carry a CWE here, so the counts are a lower " +
-        "bound. KEV is not an input to MITRE's score (see the table above). The " +
-        "two sources differ most on listed classes with no KEV entry and on " +
-        "heavily exploited classes the list ranks low. Recomputed nightly.",
+        "Each bar is one of the official Top 25 classes: the number of KEV entries " +
+        "whose first-listed CWE (CNA container preferred, CISA-ADP as fallback) is " +
+        "that class. Only KEV entries that match a published record in the CVE " +
+        "corpus carry a CWE here, so the counts are a lower bound. Bars are sorted " +
+        "by count, highest first. The combined share above the chart is the share " +
+        "of all CWE-tagged KEV entries whose class is on the official list. " +
+        "Recomputed nightly.",
     },
 
     // --------------------------------- adp.html · 1 · hero
@@ -2671,49 +2642,43 @@ export const editorial = {
       num: "01",
       kicker: "Enrichment by month",
       source: "CVE List V5 (MITRE) — CISA-ADP containers",
-      headline: "Since mid-2024, CISA has enriched about half of all published CVE records.",
+      headline: "Since mid-2024, CISA has enriched more than half of all published CVE records.",
       caption:
-        "Each bar counts the CVE records whose CISA-ADP (Vulnrichment) block was " +
-        "last updated that month. The date is the block's dateUpdated, a " +
-        "last-modified date: a record updated again moves to the later month, so " +
-        "early months are lower bounds. The chart does not use the CVE's " +
-        "publication date, because CISA adds blocks to older records in batches of " +
-        "thousands. The series starts at Vulnrichment's 2024 launch, in the months " +
-        "when NVD's own analysis had slowed sharply. Red bars mark back-fill months, " +
-        "when at least half of the month's enrichments went to old CVEs.",
+        "An Authorized Data Publisher (ADP) adds its own container to a CVE record, " +
+        "separate from that of the CVE Numbering Authority (CNA) that assigned the " +
+        "ID. Each bar counts the records whose CISA-ADP block, the container CISA's " +
+        "Vulnrichment program adds, was last updated that month. The date is the " +
+        "block's dateUpdated, a last-modified date: a record updated again moves to " +
+        "the later month, so early months are lower bounds. The series starts at " +
+        "Vulnrichment's 2024 launch. Red bars mark back-fill months, when at least " +
+        "half of the month's enrichments went to old CVEs.",
       statLabel: "Share of published CVE records carrying a CISA-ADP block",
       statNote: "{cisa} of {total} published records carry a CISA-ADP block",
       partialMonth: "month in progress",
       sweepTooltip: "Back-fill month",
       sweepNote:
-        "Red bars are back-fill months: at least half of that month's enrichments " +
-        "went to legacy CVEs, whose ID year is two or more years before the " +
-        "enrichment year. This is consistent with a bulk pass over old records, but " +
-        "a newly published record with an old ID, enriched the same month, also " +
-        "counts as legacy.",
+        "A newly published record with an old ID, enriched the same month, also " +
+        "counts as an old CVE, so a red month is not proof of a bulk pass over old " +
+        "records.",
       nvdContext:
         "For comparison, NVD's analysis backlog stands at {backlog} CVEs in " +
         "tonight's edition.",
       nodata: "Not enough data yet.",
       methodology:
-        "Every published CVE record is checked for a CISA-ADP container, the block " +
-        "CISA's Vulnrichment program adds, matched by its provider shortName " +
-        "“CISA-ADP” or by the Vulnrichment orgId. Each such record is placed in the " +
-        "month of that container's own dateUpdated, not the CVE's datePublished: " +
-        "CISA adds blocks to older records (a 2019 CVE's CISA-ADP block can be " +
-        "dated 2025), so a publication-date axis would show CISA activity before " +
-        "2024 that did not happen then. A month is flagged as a back-fill month " +
-        "(red) when it has at least 50 enrichments and at least half of them went to " +
-        "legacy CVEs, whose ID year is two or more years before the enrichment year. " +
-        "The series starts at the first month with at least 50 enrichments and " +
-        "continues without gaps to the latest month. The chart does not draw NVD's " +
-        "2024 analysis slowdown as a line: CyberMon's own NVD backlog record begins " +
-        "at launch, so there is no 2024 NVD series to chart. The slowdown is " +
-        "described in prose, and the backlog figure shown for comparison is read in " +
-        "the browser from the current nvd_decay.json and left out when that file was " +
-        "carried forward from an earlier night; it is context, not a trend. " +
-        "Counts are of the cvelistV5 corpus, which is the source of truth for the " +
-        "CVE List.",
+        "Every published CVE record is checked for a CISA-ADP container, matched by " +
+        "its provider shortName “CISA-ADP” or by the Vulnrichment orgId. Each such " +
+        "record is placed in the month of that container's own dateUpdated, not the " +
+        "CVE's datePublished: CISA adds blocks to older records (a 2019 CVE's " +
+        "CISA-ADP block can be dated 2025), so a publication-date axis would show " +
+        "CISA activity before 2024 that did not happen then. A month is flagged as a " +
+        "back-fill month (red) when it has at least 50 enrichments and at least half " +
+        "of them went to old CVEs, whose ID year is two or more years before the " +
+        "enrichment year. The series starts at the first month with at least 50 " +
+        "enrichments and continues without gaps to the latest month. The NVD backlog " +
+        "figure shown for comparison is read from the current nvd_decay.json and " +
+        "left out when that file was carried forward from an earlier night. " +
+        "CyberMon's NVD backlog record begins in July 2026, so there is no 2024 NVD " +
+        "series to chart beside this one.",
     },
 
     // --------------------------------- adp.html · 2
@@ -2724,11 +2689,10 @@ export const editorial = {
       headline: "Nearly every CISA-ADP block carries SSVC decision points.",
       caption:
         "Of the records CISA enriched, the share carrying each machine-readable " +
-        "addition. SSVC decision points, CISA's assessment of exploitation, " +
-        "automatability and technical impact, appear on nearly every one. A CVSS " +
-        "score and a CWE weakness class appear on far fewer, added mostly where the " +
-        "CNA left the field blank. A record can carry all three, so the bars are " +
-        "independent and do not sum to 100.",
+        "addition. SSVC decision points are CISA's assessment of exploitation, " +
+        "automatability and technical impact. A CVSS score and a CWE weakness class " +
+        "each appear on about a fifth of the records. A record can carry all three, " +
+        "so the bars do not sum to 100.",
       labelSsvc: "SSVC decision points",
       labelCvss: "CVSS score",
       labelCwe: "CWE class",
@@ -2739,10 +2703,8 @@ export const editorial = {
         "made against that container: SSVC decision points (a metrics entry whose " +
         "“other” block has type “ssvc”), a CVSS base score (any CVSS version in its " +
         "metrics) and a CWE (any problemTypes cweId). Each bar is the share of " +
-        "CISA-ADP records carrying that field. A record can carry all three, so the " +
-        "bars are independent and do not sum to 100. The denominator is every " +
-        "published record with a CISA-ADP block, whether or not its container is " +
-        "dated.",
+        "CISA-ADP records carrying that field. The denominator is every published " +
+        "record with a CISA-ADP block, whether or not its container is dated.",
     },
 
     // --------------------------------- adp.html · 3
@@ -2752,14 +2714,12 @@ export const editorial = {
       source: "CVE List V5 (MITRE) — ADP containers",
       headline: "CISA adds almost all of the substantive ADP enrichment on CVE records.",
       caption:
-        "An Authorized Data Publisher (ADP) adds its own container to a CVE record, " +
-        "separate from the assigning CNA's. The board ranks ADP publishers by the " +
-        "records where they added SSVC decision points, a CVSS score or a CWE; " +
-        "references alone do not count. CISA-ADP leads by a wide margin. One other " +
-        "publisher clears the bar: Red Hat's supplier ADP, which adds data about " +
-        "products Red Hat ships, on well under 1% of records. The CVE Program's own ADP " +
-        "container (the “CVE Program Container”) adds only references, so it does " +
-        "not appear.",
+        "The board ranks ADP publishers by the records where they added SSVC " +
+        "decision points, a CVSS score or a CWE; references alone do not count. One " +
+        "other publisher does so: Red Hat's supplier ADP (redhat-SADP), which " +
+        "covers products Red Hat ships, on well under 1% of records. The CVE " +
+        "Program's own ADP container (the “CVE Program Container”) adds only " +
+        "references, so it does not appear.",
       statTemplate: "{shown} ADP publishers with substantive enrichment · CISA-ADP on {pct} of the published corpus",
       colProvider: "Publisher",
       colRecords: "records",
@@ -2767,15 +2727,9 @@ export const editorial = {
       nodata: "Not enough data yet.",
       methodology:
         "Each published record's ADP containers are read for their provider " +
-        "shortName. A publisher is credited with a record only when its container " +
-        "added SSVC decision points, a CVSS score or a CWE; references alone do not " +
-        "count. Share is of all published records in the cvelistV5 corpus. ADP is " +
-        "the CVE v5 mechanism for an organization other than the assigning CNA to " +
-        "add data to a record. The CVE Program's own ADP container is on most " +
-        "records but adds only references, so it is not counted. CISA-ADP accounts " +
-        "for nearly all substantive enrichment; the one other publisher that clears " +
-        "the bar is Red Hat's supplier ADP (redhat-SADP), on well under 1% of " +
-        "published records.",
+        "shortName. A publisher is credited with a record when its container adds " +
+        "SSVC decision points, a CVSS score or a CWE. Share is of all published " +
+        "records in the cvelistV5 corpus.",
     },
 
     // --------------------------------- epssvol.html · 1 · hero
@@ -2939,13 +2893,12 @@ export const editorial = {
       source: "CVE.org organization roster · CyberMon nightly snapshots",
       headline: "The CVE Program roster has grown since tracking began in July 2026.",
       caption:
-        "The CVE Program lists every organization on its roster, the assigning CNAs " +
-        "plus the roots, ADPs and secretariat, but publishes no accreditation dates: " +
-        "none for when an organization joined, left or changed scope. The roster " +
-        "file is kept in a public git repository whose commits record each edit. " +
-        "CyberMon reads the roster every night and keeps a dated log of the " +
-        "differences. The line shows the number of organizations on the roster over " +
-        "time, starting from the first tracked night.",
+        "The CVE Program's roster lists every partner organization: the CVE " +
+        "Numbering Authorities (CNAs) that assign IDs, plus the roots, Authorized " +
+        "Data Publishers (ADPs) and the secretariat. It gives no date for when an " +
+        "organization joined, left or changed scope. CyberMon reads the roster " +
+        "every night, and the line shows how many organizations it lists, from the " +
+        "first tracked night.",
       yAxis: "organizations",
       statLabel: "Organizations on the roster",
       statSince: "tracked since {first_date}",
@@ -2953,13 +2906,11 @@ export const editorial = {
       // {first_date} is filled from the data (the record's first snapshot
       // date); the empty variant renders while there is only one snapshot.
       note:
-        "The roster file carries no accreditation dates. CyberMon has taken a " +
-        "nightly snapshot since {first_date}, and the line gains one point per " +
-        "snapshot.",
+        "CyberMon has taken a nightly snapshot since {first_date}; the line has " +
+        "one point per snapshot.",
       noteEmpty:
-        "The roster file carries no accreditation dates. CyberMon's record starts " +
-        "with tonight's snapshot; the line begins to move once there are two nights " +
-        "to compare.",
+        "CyberMon's record starts with tonight's snapshot; the line begins once " +
+        "there are two nights to compare.",
       emptyChart:
         "No snapshots on the record yet; the size series begins tonight.",
       methodology:
@@ -2968,15 +2919,12 @@ export const editorial = {
         "and reduces it to one fingerprint per organization, keyed by the shortName " +
         "the organization uses on CVE records. The count of organizations is " +
         "appended to a size history stored in the repository " +
-        "(data/history/cna_roster_state.json), and the line is drawn from it. The " +
-        "record starts at first deploy. The program publishes no accreditation " +
-        "dates, and the roster file's git history (CVEProject/cve-website) could in " +
-        "principle be replayed for earlier snapshots, but this log has not imported " +
-        "it, so the series begins with CyberMon's first snapshot. A fetch that " +
-        "returns less than half of the previous roster is treated as broken and " +
-        "refused, not charted. Roster data is CVE Program data, the same source " +
-        "family as the CVE List this site already uses; the program's terms permit " +
-        "reuse of the published data.",
+        "(data/history/cna_roster_state.json), and the line is drawn from it. A " +
+        "night without a snapshot has no point, and the axis closes up around it. " +
+        "The roster file's git history (CVEProject/cve-website) holds earlier " +
+        "edits, but this log has not imported it, so the series begins with " +
+        "CyberMon's first snapshot. A fetch that returns less than half of the " +
+        "previous roster is treated as broken and is not charted.",
     },
 
     // --------------------------------- roster.html · 2
@@ -2986,14 +2934,12 @@ export const editorial = {
       source: "CVE.org organization roster · CyberMon nightly snapshots",
       headline: "Since July 2026, more organizations have joined the CVE roster than left it.",
       caption:
-        "Organizations added to and removed from the roster each month, with scope " +
-        "changes and renames shown as separate bars. The program publishes no " +
-        "accreditation dates, so an onboarding here is the night an organization " +
-        "first appeared in CyberMon's snapshots, which start at first deploy; it is " +
-        "not the date the organization was accredited. Bars above the line are " +
-        "organizations that appeared, bars below are organizations that left. Scope " +
-        "changes and renames are counted separately from both, and a shortName that " +
-        "changes while the organization stays is counted as one rename.",
+        "Organizations that joined or left the roster each month: joins stack above " +
+        "the line, departures below it. Scope changes and renames stack in a " +
+        "separate bar; a shortName that changes while the organization stays counts " +
+        "as one rename. A join is dated to the night the organization first " +
+        "appeared in CyberMon's snapshots, not to its accreditation, which the " +
+        "program does not date.",
       statOnboarded: "organizations joined · {departed} left the roster",
       legendOnboarded: "Joined (first observed)",
       legendDeparted: "Departed",
@@ -3023,13 +2969,9 @@ export const editorial = {
         "unique cnaID CNA-2025-0016 in the roster file's history), was reconciled by " +
         "hand into one rename plus its scope change. Events are appended to a log in " +
         "the repository (data/history/cna_roster.csv); apart from that " +
-        "reconciliation, rows are only ever added. Like the NVD backlog history, it " +
-        "is a dataset this project accumulates: the roster file's git history holds " +
-        "the raw edits, and this log holds the events. Bars group by calendar month " +
-        "of the observation date, with empty months shown at zero. Because no " +
-        "accreditation dates are published, the log dates each organization to the " +
-        "night CyberMon first saw it, and the first run logged nothing because there " +
-        "was no earlier snapshot to compare.",
+        "reconciliation, rows are only ever added. Bars group by calendar month of " +
+        "the observation date, with empty months shown at zero. The first run " +
+        "logged nothing, because there was no earlier snapshot to compare.",
     },
 
     // --------------------------------- roster.html · 3
@@ -3041,12 +2983,12 @@ export const editorial = {
       caption:
         "Every organization on tonight's roster, counted by the organization types " +
         "it lists: vendor, open source, researcher, hosted service, CERT, bug bounty " +
-        "provider and others. Most are vendors. An organization can list more than " +
-        "one type, so the bars sum to more than the roster total. The total counts " +
-        "every organization listed, including the roots, ADPs and secretariat. " +
-        "Nearly all of the listed organizations hold an assigning role (CNA or " +
-        "CNA-LR); that count is shown beside the total. " +
-        "Two top-level roots, MITRE and CISA, oversee the rest.",
+        "provider and others. An organization can list more than one type, so the " +
+        "bars sum to more than the roster total. The total counts every " +
+        "organization listed, including the roots, ADPs and secretariat. Nearly all " +
+        "of the listed organizations hold an assigning role (CNA or CNA-LR, a CNA of " +
+        "Last Resort); that count is shown beside the total. Two top-level roots, " +
+        "MITRE and CISA, oversee the rest.",
       statTemplate:
         "{total} organizations listed, {assigning} with an assigning role · " +
         "{countries} countries · top-level roots MITRE {mitre} / CISA {cisa}",
@@ -3055,16 +2997,10 @@ export const editorial = {
       methodology:
         "The composition is read from tonight's roster fetch, so unlike the two " +
         "charts above it is complete from the first night. Each organization's " +
-        "CNA.type list is tallied: an organization that lists several types (a " +
-        "vendor that also maintains open-source projects) counts once in each, so " +
-        "the bars sum to more than the roster headcount. The data file also splits " +
-        "the roster by program role (CNA, CNA-LR, Root, Top-Level Root, ADP, " +
-        "Secretariat; also counted once per role held), with the number of " +
-        "organizations holding an assigning role, CNA or CNA-LR, reported beside " +
-        "the headcount. It also splits the roster by top-level root (MITRE or " +
-        "CISA), by reporting root and by country; each of these is a partition that " +
-        "sums to the total. This chart shows tonight's roster only; the size and " +
-        "change charts above show how it moves over time.",
+        "CNA.type list is tallied once per listed type. The assigning count is the " +
+        "organizations whose program roles include CNA or CNA-LR. The country count " +
+        "and the MITRE / CISA split use each organization's listed country and " +
+        "top-level root; an organization listed without one is left out.",
     },
 
     // --------------------------------- exploits.html · 1 · hero
@@ -4306,7 +4242,8 @@ export const editorial = {
       source: "CVE List V5 (MITRE)",
       headline: "More CVEs are tagged as issued for products the vendor no longer supports.",
       caption:
-        "The CVE record format lets the CNA attach tags to a record. " +
+        "The CVE record format lets the CVE Numbering Authority (CNA) that " +
+        "assigned the ID attach tags to the record. " +
         "“unsupported-when-assigned” means the product was already out of " +
         "vendor support when the CVE ID was assigned: {first} records " +
         "carried it in {first_year}, {latest} in {latest_year}, and " +
@@ -4392,10 +4329,10 @@ export const editorial = {
         "every other record from the CNAs that set the tag, and every record " +
         "published in those years. Records tagged “unsupported-when-assigned” " +
         "are rated Critical {u_crit} of the time, against {u_same} for the same " +
-        "CNAs' other records and {all_crit} across all records. The tagged row and " +
-        "the row of its CNAs' other records draw on the same CNAs, so each CNA's " +
-        "scoring habits appear in both. The comparison does not show why the " +
-        "tagged records score higher.",
+        "CNAs' other records and {all_crit} across all records. The same-CNA " +
+        "baseline draws on the same CNAs as the tagged row but weights them " +
+        "differently: a CNA that tags heavily makes up more of the tagged row than " +
+        "of the baseline.",
       rowLabels: {
         tagged: "{tag}",
         same_cnas_untagged: "its CNAs' other records",
@@ -4418,10 +4355,8 @@ export const editorial = {
         "CVE Ecosystem page uses for severity by year. The buckets are Critical " +
         "(≥ 9.0), High (7.0–8.9), Medium (4.0–6.9), Low (below 4.0), and no score. " +
         "“Its CNAs' other records” pools every record from any CNA that set the tag at " +
-        "least once in the window, minus the tagged ones. The two rows weight each " +
-        "CNA differently: a CNA that tags heavily makes up more of the tagged row " +
-        "than of the baseline. Bars are shares of each row's records; the " +
-        "tooltip carries the counts.",
+        "least once in the window, minus the tagged ones. Bars are shares of each " +
+        "row's records; the tooltip carries the counts.",
     },
   },
 
