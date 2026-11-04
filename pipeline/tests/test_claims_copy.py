@@ -247,8 +247,8 @@ def check_ransomware_one_in_five(d: dict) -> None:
 
 def check_deadlines_fell(d: dict) -> None:
     # remediation headline: "fell from six months in 2021 to three weeks in
-    # 2022–2025 and two weeks or less in 2026"; the methodology repeats the
-    # last two. (2026-10-03: 181 d in 2021; 21 d in each of 2022–2025; 2026
+    # 2022–2025 and two weeks or less in 2026" (the methodology repeated
+    # the last two until 2026-11-04). (2026-10-03: 181 d in 2021; 21 d in each of 2022–2025; 2026
     # so far 3 d over 249 listings with p25 3 and p75 14 — 14 d on 09-23
     # and 9.5 d on 09-28. CISA's 2026 deadlines sit at 3 and 14 days, so the
     # median moves between those two as listings arrive; it cannot pass two
@@ -477,9 +477,6 @@ CLAIMS = [
      "kev_ransomware.json", check_ransomware_one_in_five),
     ("Median remediation deadlines fell from six months in 2021 to three weeks in "
      "2022–2025 and two weeks or less in 2026.",
-     "kev_latency.json", check_deadlines_fell),
-    ("Entries added from 2022 to 2025 had a median deadline of three weeks, and "
-     "entries added in 2026 a median of two weeks or less.",
      "kev_latency.json", check_deadlines_fell),
     ("The median KEV listing comes weeks after the CVE record is published.",
      "kev_latency.json", check_listing_takes_weeks),

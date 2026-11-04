@@ -79,35 +79,47 @@ def backfilled_changelog() -> dict:
 # --------------------------------------------------------------------------
 
 
-def check_flag_arrives_late(d: dict) -> None:
-    # editorial.js (changelog.html flag section): headline "The ransomware
-    # flag arrives late." and caption "entries that have sat in the
-    # catalog for months or years" — trial: median 626 days over 285
-    # flips. The range tolerates drift down to two months (below that
-    # "months or years" dies) and up to a decade.
+def check_hundred_flips_after_listing(d: dict) -> None:
+    # editorial.js (changelog.html flag section headline, 2026-11-04): "CISA
+    # has changed the ransomware flag to “Known” on more than a hundred KEV
+    # entries after listing them." Flips after the step month only (the
+    # step records the new column, not reassessments). The ledger is
+    # append-only, so the count can only grow. 2026-11-04: 111 (206 in the
+    # step). It said "CISA often adds the ransomware flag months or years
+    # after listing" until 2026-11-04; section 03 owns the timing.
     flips = d["flips"]
-    assert flips["total"] >= 25, (
-        f"'the flag gets flipped on entries…' needs a real flip cohort "
-        f"({flips['total']} observed flips is an anecdote)"
+    step = flips.get("step_month_flips", flips["by_month"][0]["flips"])
+    after = flips.get("total_after_step", flips["total"] - step)
+    assert after > 100, (
+        f"'more than a hundred KEV entries' flipped after listing — the "
+        f"record holds {after} flips after the {flips.get('step_month')} step"
     )
-    median = flips["lag"]["median_days"]
-    assert median is not None, (
-        "'entries that have sat in the catalog for months or years' has "
-        "no published median to stand on"
-    )
-    # Additive since 2026-09-08: the post-step lag (flips observed after
-    # the month the flag column first appears) must tell the same story.
-    post = flips.get("lag_post_step")
-    if post is not None and post.get("median_days") is not None:
-        assert 60.0 <= post["median_days"] <= 3650.0, (
-            f"post-step median gap {post['median_days']}d no longer reads "
-            f"as 'months or years'"
-        )
-    assert 60.0 <= median <= 3650.0, (
-        f"'entries that have sat in the catalog for months or years' "
-        f"needs the median listing-to-flip gap ({median} days) to stay in "
-        f"months-to-years territory"
-    )
+
+
+def check_flags_often_a_year_late(d: dict) -> None:
+    # editorial.js (kev.html ransomware caption, 2026-11-04): "CISA sets
+    # some flags after listing, often more than a year later". "Often" is
+    # held to at least a third of the post-step flips landing more than 365
+    # days after dateAdded, and to at least a third of the day-accurate
+    # nightly-diff flips too, so capture dating alone cannot carry it.
+    # 2026-11-04: 60 of 111 (54%); nightly 20 of 33. Recent listings flip
+    # faster (2026 listing-year median 34 days), so this share will drift
+    # down. The caption said "frequently more than a year later" unguarded
+    # until 2026-11-04.
+    lag = d.get("flag_lag")
+    if lag is None:
+        pytest.skip("kev_changelog.json predates the flag_lag block")
+    n = lag["n_capture"] + lag["n_daily"]
+    assert n >= 25, f"'often more than a year later' rests on {n} flips"
+    late = sum(b["capture"] + b["daily"] for b in lag["buckets"]
+               if b["lo"] > 365)
+    late_daily = sum(b["daily"] for b in lag["buckets"] if b["lo"] > 365)
+    assert late / n >= 1 / 3, (
+        f"'often more than a year later' — {late} of {n} post-step flips "
+        f"came more than a year after listing")
+    assert lag["n_daily"] and late_daily / lag["n_daily"] >= 1 / 3, (
+        f"'often more than a year later' — {late_daily} of {lag['n_daily']} "
+        f"nightly-diff flips came more than a year after listing")
 
 
 def check_step_is_set_apart(d: dict) -> None:
@@ -161,9 +173,10 @@ def check_every_edit_kind_exists(d: dict) -> None:
 
 
 def check_additions_excluded(d: dict) -> None:
-    # editorial.js (changelog.html hero): "New listings are not counted;
-    # the chart counts changes to entries already published." — the
-    # exclusion must be real and disclosed (trial: 1,335 additions).
+    # editorial.js (changelog.html hero stat note): "new listings excluded:
+    # {additions}" (the caption also said "New listings are not counted"
+    # until 2026-11-04) — the exclusion must be real and disclosed (trial:
+    # 1,335 additions).
     catalog = d["catalog"]
     assert catalog["additions_excluded"] >= 100, (
         f"'new listings are deliberately not counted' implies a "
@@ -243,8 +256,11 @@ def check_flag_lag_lands_late(d: dict) -> None:
 # (verbatim claim from editorial.js, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    ("CISA often adds the ransomware flag months or years after listing",
-     check_flag_arrives_late),
+    ("CISA has changed the ransomware flag to “Known” on more than a hundred "
+     "KEV entries after listing them.",
+     check_hundred_flips_after_listing),
+    ("CISA sets some flags after listing, often more than a year later",
+     check_flags_often_a_year_late),
     (
         "not counting the {step_flips} flips logged together in "
         "{step_month}, the month the flag column first appears in the "
@@ -256,11 +272,7 @@ CLAIMS = [
         "and notes, and removed entries",
         check_every_edit_kind_exists,
     ),
-    (
-        "New listings are not counted; the chart counts changes to entries "
-        "already published.",
-        check_additions_excluded,
-    ),
+    ("new listings excluded: {additions}", check_additions_excluded),
     (
         "Most ransomware-flag flips come more than three months after listing",
         check_flag_lag_lands_late,

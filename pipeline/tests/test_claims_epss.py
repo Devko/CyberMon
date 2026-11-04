@@ -76,8 +76,8 @@ def graded_report() -> dict:
 
 
 def check_flip_coincides_with_model_change(d: dict) -> None:
-    # editorial.js (epss.html hero): "the sharp 2022-to-2023 flip in the
-    # bars coincides with a model change (v2 to v3, March 2023)" — the era
+    # editorial.js (epss.html hero caption): "The 2022-to-2023 shift
+    # coincides with a model change (v2 to v3, March 2023)" — the era
     # table must carry a boundary in March 2023 for that to be true.
     starts = [e["from"] for e in d["model_eras"] if e.get("label") == "v3"]
     assert starts and starts[0].startswith("2023-03"), (
@@ -92,9 +92,9 @@ RECENT_MIN_SCORED = 100
 
 
 def check_most_recent_below_1pct(d: dict) -> None:
-    # editorial.js (epss.html hero + home card): "Roughly half or more of
-    # recent KEV additions scored under 1% the day before listing" / "had
-    # an EPSS score under 1% the day before listing". Recent = the last
+    # editorial.js (home card; the epss.html hero said the same until
+    # 2026-11-04): "Roughly half or more of recent KEV additions had an
+    # EPSS score under 1% the day before listing." Recent = the last
     # three complete listing years, plus the current year once it holds
     # RECENT_MIN_SCORED scored entries; each must sit at 45% or more.
     # 2026-10-03: 2023 66.7%, 2024 63.2%, 2025 59.2%, 2026 52.2% (n=180;
@@ -115,6 +115,27 @@ def check_most_recent_below_1pct(d: dict) -> None:
         f"needs 45% or more in each of {[r['year'] for r in recent]}; "
         f"below it (year, %, n): {low}"
     )
+
+
+def check_most_scored_since_2023_below_1pct(d: dict) -> None:
+    # editorial.js (epss.html hero headline, 2026-11-04): "More than half of
+    # scored KEV additions since 2023 had an EPSS score under 1% the day
+    # before listing." Pooled over every listing year from 2023 (the first
+    # year after the seeding era and the first v3 year), current year
+    # included at whatever size it has: a few January records barely move
+    # a pool of 600+. 2026-11-04: 380 of 645 (58.9%); by year 66.7, 63.2,
+    # 59.2 and 51.2% (2026 so far). It said "Roughly half or more of recent
+    # KEV additions" until 2026-11-04, which also counted unscored entries
+    # in the denominator it implied.
+    rows = [r for r in d["grade_by_year"] if r["year"] >= 2023]
+    assert rows and min(r["year"] for r in rows) == 2023, (
+        f"'since 2023' — no 2023 row in {[r['year'] for r in rows]}")
+    below = sum(r["n_below_1pct"] for r in rows)
+    scored = sum(r["graded"] for r in rows)
+    assert scored >= 200, f"'since 2023' rests on only {scored} scored entries"
+    assert below / scored > 0.5, (
+        f"'More than half of scored KEV additions since 2023 had an EPSS "
+        f"score under 1%' — {below} of {scored} ({100 * below / scored:.1f}%)")
 
 
 def _below_1pct(d: dict, model: str) -> tuple[float, int, int]:
@@ -171,9 +192,9 @@ def check_every_scored_entry_has_a_percentile(d: dict) -> None:
 
 
 def check_hundred_thousand_ranked_above(d: dict) -> None:
-    # editorial.js (epss.html percentile caption): "for a typical entry in
-    # that half, more than a hundred thousand CVEs ranked above it on the
-    # day before listing". The report carries percentiles but not the size
+    # editorial.js (epss.html percentile caption): "For a typical entry in
+    # the bottom half, more than a hundred thousand CVEs ranked above it on
+    # the day before listing." The report carries percentiles but not the size
     # of each day's scored set, so this uses a floor for it: the CVE
     # records published before the score date's year (volume_curve.json),
     # all of which EPSS had scored by then. CVEs ranked above an entry =
@@ -221,8 +242,9 @@ CLAIMS = [
         check_flip_coincides_with_model_change,
     ),
     (
-        "Roughly half or more of recent KEV additions scored under 1% the day before listing",
-        check_most_recent_below_1pct,
+        "More than half of scored KEV additions since 2023 had an EPSS score "
+        "under 1% the day before listing.",
+        check_most_scored_since_2023_below_1pct,
     ),
     (
         "Roughly half or more of recent KEV additions had an EPSS score under 1% the day before listing.",
@@ -247,8 +269,8 @@ CLAIMS = [
         check_every_scored_entry_has_a_percentile,
     ),
     (
-        "for a typical entry in that half, more than a hundred thousand CVEs "
-        "ranked above it on the day before listing",
+        "For a typical entry in the bottom half, more than a hundred thousand "
+        "CVEs ranked above it on the day before listing.",
         check_hundred_thousand_ranked_above,
     ),
 ]
