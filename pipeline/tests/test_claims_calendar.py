@@ -83,8 +83,10 @@ def check_one_in_five_2021_to_2025(d: dict) -> None:
 
 
 def check_2026_lowest_since_2008(d: dict) -> None:
-    # editorial.js (calendar.html hero caption): "The 2026 share is the
-    # lowest since 2008." Holds on both sides of the rollover: 2026 below
+    # editorial.js (calendar.html hero caption): "The 2026 share of
+    # earlier-year IDs is the lowest since 2008." (It read "The 2026 share
+    # is ..." until 2026-11-04; 8.4% then, n=91,214.) Holds on both sides
+    # of the rollover: 2026 below
     # every year from 2009 to 2025 (lowest 13.6%, 2013) and not below
     # 2008's 4.9%. 2026-10-03: 10.1% (n=73,605), falling about 0.6 points
     # a fortnight; a year-end of 7-8% keeps it. Replaced "2026 is running
@@ -136,7 +138,9 @@ def check_tuesday_peak(d: dict) -> None:
 
 def check_tuesday_busiest_since_2022(d: dict) -> None:
     # editorial.js (home card): "Since 2022, more CVEs have been published
-    # on Tuesday than on any other day." Every complete year from 2022, and
+    # on Tuesday than on any other day."; patch tuesday caption: "Tuesday
+    # has been the busiest weekday since 2022" (it said "in recent years"
+    # until 2026-11-04). Every complete year from 2022, and
     # the current year once it has WEEKDAY_MIN_N dated records. 2026-10-03:
     # Tuesday leads 2022-2026 with 22.3-25.5% (runner-up 21.1%, Friday
     # 2022). Moved from test_claims_copy.py on 2026-10-03; it used to judge
@@ -169,7 +173,7 @@ def check_wednesday_baseline_and_clamps(d: dict) -> None:
         f"{comp['baseline_year']}'s peak weekday index is {peak} "
         f"(0 = Monday); it is not later than Tuesday; update the caption"
     )
-    # reservation methodology: "the real corpus currently contains none"
+    # reservation methodology: "(the corpus currently contains none)"
     # (clamped negative ID ages)
     assert d["id_age"]["clamped_negative"] == 0, (
         f"'the real corpus currently contains none' — clamped_negative is "
@@ -249,7 +253,7 @@ CLAIMS = [
         check_one_in_five_2021_to_2025,
     ),
     (
-        "The 2026 share is the lowest since 2008.",
+        "The 2026 share of earlier-year IDs is the lowest since 2008.",
         "cve_calendar.json",
         check_2026_lowest_since_2008,
     ),
@@ -267,6 +271,11 @@ CLAIMS = [
     (
         "Since 2022, more CVEs have been published on Tuesday than on any "
         "other day.",
+        "cve_calendar.json",
+        check_tuesday_busiest_since_2022,
+    ),
+    (
+        "Tuesday has been the busiest weekday since 2022",
         "cve_calendar.json",
         check_tuesday_busiest_since_2022,
     ),

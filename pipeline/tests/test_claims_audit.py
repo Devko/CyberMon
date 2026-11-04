@@ -155,21 +155,53 @@ def check_severity_gradient(d: dict) -> None:
     )
 
 
-def check_in_record_scoring_rise(d: dict) -> None:
-    # editorial.js (flood methodology): "in-record scoring was a rounding
-    # error in 2017 and covers well over nine in ten records today" — read
-    # from advisory_quality.json's missing-score share (2017: 97.1% missing;
-    # latest complete year: ~6% missing on the 2026-09-08 edition).
-    by_year = {y["year"]: y for y in d["years"]}
-    assert by_year[2017]["pct_missing_cvss"] >= 90, (
-        f"'a rounding error in 2017' vs {100 - by_year[2017]['pct_missing_cvss']:.1f}% "
-        f"of 2017 records scored in-record"
-    )
-    latest = max(complete_years(d["years"]), key=lambda r: r["year"])
-    assert latest["pct_missing_cvss"] <= 10, (
-        f"'well over nine in ten records today' vs {latest['pct_missing_cvss']}% "
-        f"missing a score in {latest['year']}"
-    )
+# A partial year is held to a share claim only from this many records (the
+# test_claims_copy.py bar): a few days of January can put a share anywhere.
+PARTIAL_YEAR_MIN_RECORDS = 20_000
+
+
+def check_flood_scored_since_2024(d: dict) -> None:
+    # editorial.js (flood caption): "since 2024 more than nine in ten
+    # published records carry a score. Records left of the vertical marker
+    # mostly carry none." Every year from 2024 (the current one once it
+    # holds PARTIAL_YEAR_MIN_RECORDS) under 10% unscored, and every year
+    # before the marker over half unscored. (2026-11-04: 5.5% / 6.1% / 6.3%
+    # unscored in 2024 / 2025 / 2026 so far; 97% in 2017, the marker at
+    # 2018.) Until 2026-11-04 the methodology carried the same claim and
+    # this guard read advisory_quality.json, whose missing-score count is
+    # the same test of the same records.
+    def total(r: dict) -> int:
+        return sum(r[k] for k in ("critical", "high", "medium", "low",
+                                  "unscored"))
+
+    rows = [r for r in d["years"] if r["year"] >= 2024
+            and claims_support.judged(r["year"], total(r),
+                                      min_n=PARTIAL_YEAR_MIN_RECORDS)]
+    assert any(r["year"] < GENERATION_YEAR for r in rows), rows
+    off = {r["year"]: round(100 * r["unscored"] / total(r), 1) for r in rows
+           if r["unscored"] >= 0.1 * total(r)}
+    assert not off, f"'since 2024 more than nine in ten … carry a score' vs {off}% unscored"
+    marker = d["record_era"]["year"]
+    early = {r["year"]: round(100 * r["unscored"] / total(r), 1)
+             for r in d["years"] if r["year"] < marker and total(r)
+             and r["unscored"] <= 0.5 * total(r)}
+    assert not early, (
+        f"'Records left of the vertical marker ({marker}) mostly carry none' "
+        f"vs years at most half unscored (% unscored): {early}")
+
+
+def check_flood_2026_double_2025(d: dict) -> None:
+    # editorial.js (flood caption): "The 2026 Critical count passed double
+    # the 2025 count with months of the year still to go". Named years, so
+    # it holds once 2026 closes. (2026-11-04: 10,041 against 4,111 = 2.4x at
+    # 84% of the year.) It said "passed four thousand" until 2026-11-04,
+    # true but by then a quarter of the count.
+    by_year = {r["year"]: r for r in d["years"]}
+    row, base = by_year.get(2026), by_year[2025]
+    assert row is not None and row["critical"] > 2 * base["critical"], (
+        f"'passed double the 2025 count' vs "
+        f"{row['critical'] if row else 0} Critical in 2026 against "
+        f"{base['critical']} in 2025")
 
 
 def check_seeding_era_latency(d: dict) -> None:
@@ -198,16 +230,12 @@ def check_kev_below_high(d: dict) -> None:
     )
 
 
-def check_modified_pile_ratio(d: dict) -> None:
-    # editorial.js (NVD decay methodology): "the Modified pile is more than
-    # an order of magnitude larger than the live queue" — 243,574 vs 8,875
-    # (27x) on the 2026-09-08 edition; the copy used to say two orders.
-    statuses = {s["status"]: s["n"] for s in d["current"]["statuses"]}
-    queue = d["current"]["backlog_total"]
-    assert queue > 0 and statuses["Modified"] / queue >= 10, (
-        f"'more than an order of magnitude larger than the live queue' vs "
-        f"Modified {statuses['Modified']} / queue {queue}"
-    )
+# The decay methodology said "the Modified count is more than an order of
+# magnitude larger than the live queue" until 2026-11-04 (245,515 against
+# 15,711, 15.6x, with the queue up from 2,242 in July); at that growth the
+# queue would pass a tenth of Modified by early 2027. The copy now gives the
+# log axis's purpose without a ratio, and check_modified_pile_ratio went
+# with the claim.
 
 
 def check_deferred_pile(d: dict) -> None:
@@ -329,8 +357,7 @@ def check_volume_belongs_to_a_handful(d: dict) -> None:
     # of 2025's CVEs" — a majority, in the named year (56.6% on 2026-10-03
     # and 09-23). It used to read the headline block's latest year with a
     # 40% floor, which would have judged 2026 against "most of 2025's" from
-    # 1 January; check_concentration_reversal pins the same 2025 figure for
-    # the caption.
+    # 1 January. (The caption repeated the figure until 2026-11-04.)
     by_year = {y["year"]: y for y in d["years"]}
     share = by_year[2025]["top5_share"]
     assert share > 50, (
@@ -340,10 +367,13 @@ def check_volume_belongs_to_a_handful(d: dict) -> None:
 
 
 def check_rejection_share_story(d: dict) -> None:
-    # editorial.js (volume curve): "it collapsed from a fifth of everything
-    # shipped in 2017 to under two percent by 2023 — and 2024 and 2025
-    # bent it back up." Named years: 2026 (0.4% so far) would have failed
+    # editorial.js (volume caption): "Rejections fell from a fifth of all
+    # records in 2017 to under one percent in 2023, and the share was higher
+    # in 2024 and 2025." Named years: 2026 (0.4% so far) would have failed
     # "the last two complete years" on 2027-01-01 with no data change.
+    # (2026-11-04: 19.2% / 0.48% / 0.87% / 0.65%.) It said "under two
+    # percent" and "rose again in 2024 and 2025" until 2026-11-04; 2025 is
+    # below 2024, so "rose" in both years overstated it.
     rows = complete_years(d["years"])
     by_year = {r["year"]: r for r in rows}
 
@@ -355,11 +385,11 @@ def check_rejection_share_story(d: dict) -> None:
     assert 15 <= share(2017) <= 27, (
         f"'a fifth of everything shipped in 2017' vs {share(2017):.2f}%"
     )
-    assert share(2023) < 2.0, (
-        f"'under two percent by 2023' vs {share(2023):.2f}%"
+    assert share(2023) < 1.0, (
+        f"'under one percent in 2023' vs {share(2023):.2f}%"
     )
     assert share(2024) > share(2023) and share(2025) > share(2023), (
-        f"'2024 and 2025 bent it back up' vs 2024: {share(2024):.2f}%, "
+        f"'the share was higher in 2024 and 2025' vs 2024: {share(2024):.2f}%, "
         f"2025: {share(2025):.2f}% against 2023's {share(2023):.2f}%"
     )
 
@@ -377,17 +407,17 @@ def check_flood_critical_volume(d: dict) -> None:
 
 
 def check_entrants_top3_recruiting(d: dict) -> None:
-    # editorial.js (concentration entrants): "every complete year since
-    # 2023 has brought in more new CNAs than any year before it". Complete
-    # years only: the partial current year is still counting. (2026-09-23:
-    # 77 / 64 / 70 for 2023-25 against a pre-2023 best of 50 in 2022.)
-    rows = complete_years(d["years"])
-    before = max(y["newcomer_count"] for y in rows if y["year"] < 2023)
-    since = [(y["year"], y["newcomer_count"]) for y in rows
-             if y["year"] >= 2023]
-    assert since and all(n > before for _, n in since), (
-        f"'every complete year since 2023 has brought in more new CNAs than "
-        f"any year before it' — pre-2023 best {before}, since: {since}"
+    # editorial.js (concentration entrants headline): "Each year from 2023
+    # to 2025 added more new CNAs than any year before 2023." Named years.
+    # (2026-11-04: 77 / 64 / 70 for 2023-25 against a pre-2023 best of 50
+    # in 2022.) The caption repeated it as "every complete year since 2023"
+    # until 2026-11-04, and this guard quoted that sentence.
+    by_year = {y["year"]: y["newcomer_count"] for y in d["years"]}
+    before = max(n for y, n in by_year.items() if y < 2023)
+    since = [(y, by_year[y]) for y in (2023, 2024, 2025)]
+    assert all(n > before for _, n in since), (
+        f"'Each year from 2023 to 2025 added more new CNAs than any year "
+        f"before 2023' — pre-2023 best {before}, 2023-25: {since}"
     )
 
 
@@ -411,37 +441,34 @@ def check_concentration_fell_then_rose(d: dict) -> None:
 
 
 def check_concentration_reversal(d: dict) -> None:
-    # editorial.js (concentration hero): "the roster grew seventeen-fold
-    # between 2015 and 2025, yet in 2025 five of its hundreds of names
-    # still shipped a majority of the year's records, their share climbing for a
-    # second straight year" (2023 is the low; 2024 and 2025 each rise).
-    # Named years: the partial 2026 (48.0%) would
-    # have failed "still ship a majority" on 2027-01-01.
+    # editorial.js (concentration hero caption): "The number of active CNAs
+    # grew seventeen-fold between 2015 and 2025." (2026-11-04: 21 -> 367 =
+    # 17.5x.) Until 2026-11-04 the sentence went on "yet in 2025 five CNAs
+    # still shipped a majority of the year's records, their share climbing
+    # for a second straight year", which repeated the headline
+    # (check_volume_belongs_to_a_handful) and the previous sentence
+    # (check_concentration_fell_then_rose); those two guards still hold
+    # both figures.
     by_year = {y["year"]: y for y in d["years"]}
-    a, b, c = by_year[2023], by_year[2024], by_year[2025]
-    assert c["top5_share"] > 50.0, (
-        f"'in 2025 … still shipped a majority' vs top5 {c['top5_share']}%"
-    )
-    assert a["top5_share"] < b["top5_share"] < c["top5_share"], (
-        f"'climbing for a second straight year' vs "
-        f"{[(y['year'], y['top5_share']) for y in (a, b, c)]}"
-    )
-    growth = c["cna_count"] / by_year[2015]["cna_count"]
-    assert 15 <= growth <= 20, (
+    growth = by_year[2025]["cna_count"] / by_year[2015]["cna_count"]
+    assert 16.5 <= growth < 18, (
         f"'grew seventeen-fold between 2015 and 2025' vs "
-        f"{by_year[2015]['cna_count']} -> {c['cna_count']} = {growth:.1f}x"
+        f"{by_year[2015]['cna_count']} -> {by_year[2025]['cna_count']} = "
+        f"{growth:.1f}x"
     )
 
 
-def check_flood_partial_year_mark(d: dict) -> None:
-    # editorial.js (flood caption): "2026 passed that mark with months of
-    # the year to spare" (the ~four-thousand-Critical mark). Named year:
-    # 7,048 at 69% of 2026, so the sentence stays true once 2026 closes.
-    row = next((y for y in d["years"] if y["year"] == 2026), None)
-    assert row is not None and row["critical"] >= 4400, (
-        f"'2026 passed that mark' vs {row['critical'] if row else 0} "
-        f"Critical in 2026"
-    )
+def check_hhi_against_top5(d: dict) -> None:
+    # editorial.js (concentration methodology): "between 2023 and 2024 the
+    # top-5 share rose while the index fell." Named years. (2026-11-04:
+    # top-5 45.3% -> 53.1%, HHI 682.5 -> 666.3.) Unguarded until
+    # 2026-11-04.
+    by_year = {y["year"]: y for y in d["years"]}
+    a, b = by_year[2023], by_year[2024]
+    assert b["top5_share"] > a["top5_share"] and b["hhi"] < a["hhi"], (
+        f"'between 2023 and 2024 the top-5 share rose while the index fell' "
+        f"vs top-5 {a['top5_share']} -> {b['top5_share']}, HHI {a['hhi']} -> "
+        f"{b['hhi']}")
 
 
 # --------------------------------------------------------------------------
@@ -450,14 +477,19 @@ def check_flood_partial_year_mark(d: dict) -> None:
 # --------------------------------------------------------------------------
 CLAIMS = [
     (
-        "every complete year since 2023 has brought in more new CNAs than any year before 2023",
+        "Each year from 2023 to 2025 added more new CNAs than any year before 2023.",
         "cna_concentration.json",
         check_entrants_top3_recruiting,
     ),
     (
-        "still shipped a majority of the year's records, their share climbing for a second straight year",
+        "The number of active CNAs grew seventeen-fold between 2015 and 2025.",
         "cna_concentration.json",
         check_concentration_reversal,
+    ),
+    (
+        "between 2023 and 2024 the top-5 share rose while the index fell.",
+        "cna_concentration.json",
+        check_hhi_against_top5,
     ),
     (
         "In the decade to 2023 the top-5 share mostly fell as the program added CNAs; from 2023 to 2025 it rose.",
@@ -465,9 +497,9 @@ CLAIMS = [
         check_concentration_fell_then_rose,
     ),
     (
-        "The Critical count for 2026 passed four thousand with months of the year still to go",
+        "The 2026 Critical count passed double the 2025 count with months of the year still to go",
         "nine_eight_flood.json",
-        check_flood_partial_year_mark,
+        check_flood_2026_double_2025,
     ),
     (
         "Close to four thousand CVEs a year were rated Critical in 2024 and 2025.",
@@ -497,14 +529,10 @@ CLAIMS = [
         check_severity_gradient,
     ),
     (
-        "the Modified count is more than an order of magnitude larger than the live queue",
-        "nvd_decay.json",
-        check_modified_pile_ratio,
-    ),
-    (
-        "In-record scoring covered fewer than one in ten of 2017's records and covers more than nine in ten today",
-        "advisory_quality.json",
-        check_in_record_scoring_rise,
+        "since 2024 more than nine in ten published records carry a score. Records "
+        "left of the vertical marker mostly carry none.",
+        "nine_eight_flood.json",
+        check_flood_scored_since_2024,
     ),
     (
         "pooled median 'latency', in the callout, runs near two and a half years",
@@ -563,7 +591,8 @@ CLAIMS = [
         check_volume_belongs_to_a_handful,
     ),
     (
-        "Rejections fell from a fifth of all records in 2017 to under two percent in 2023, then rose again in 2024 and 2025.",
+        "Rejections fell from a fifth of all records in 2017 to under one percent in 2023, and "
+        "the share was higher in 2024 and 2025.",
         "volume_curve.json",
         check_rejection_share_story,
     ),

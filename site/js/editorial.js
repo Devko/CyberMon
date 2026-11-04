@@ -653,8 +653,8 @@ export const editorial = {
   // docs/data-contracts.md, "Pace projections".
   projection: {
     note:
-      "Dashed or hollow marks show the partial year extended to twelve " +
-      "months at its pace so far. This is arithmetic, not a forecast.",
+      "Dashed or hollow marks extend the partial year to twelve months at " +
+      "its pace so far. They are not a forecast.",
     tooltipProjected: "{name} · full year at this pace ≈ {n}",
     tooltipElapsed: "{pct} of the year elapsed",
     floodLabel: "≈ {n} at this pace",
@@ -805,11 +805,13 @@ export const editorial = {
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "About half of scored CVEs are rated High or Critical.",
       caption:
-        "Median CVSS base score of newly published CVEs, by year and by scoring version. " +
+        "Median CVSS (Common Vulnerability Scoring System) base score of newly " +
+        "published CVEs, as scored by the CVE Numbering Authority (CNA) that " +
+        "published each record, by year and by scoring version. " +
         "Each CVSS version computes the base score with its own formula, so a separate " +
         "line per version keeps a change of version from looking like a change in " +
         "severity. The blended line starts in the first year in which CNA-assigned " +
-        "scores cover at least 20% of published records (see the methodology); the v3 " +
+        "scores cover at least 20% of published records; the v3 " +
         "line starts earlier, on much thinner coverage. From 2020 to 2025 the yearly " +
         "median stayed close to 7.0, the lower edge of High, and between 40% and 52% of " +
         "scored CVEs were rated 7.0 or higher each year, with no sustained rise.",
@@ -819,7 +821,7 @@ export const editorial = {
       methodology:
         "For every CVE in the cvelistV5 corpus, the CNA-assigned base score, split by " +
         "CVSS version (v2, v3.x, v4). Each line is the median score of CVEs published " +
-        "that year; shaded bands span the 25th to 75th percentile (IQR). A record scored " +
+        "that year; shaded bands span the 25th to 75th percentile. A record scored " +
         "under several versions appears in each version's series but only once in the " +
         "blended line, at its newest version's score. “% High or Critical” is the share " +
         "of scored CVEs that year with a base score of 7.0 or more; unscored CVEs are " +
@@ -844,32 +846,29 @@ export const editorial = {
       headline: "Close to four thousand CVEs a year were rated Critical in 2024 and 2025.",
       caption:
         "Published CVEs per year, grouped by the CVSS base score in the CVE record " +
-        "itself. The Critical count for 2026 passed four thousand with months of the " +
-        "year still to go, and since 2024 more than nine in ten published records carry " +
-        "a score. Records left of the vertical marker mostly carry none: in those years " +
-        "NVD kept severity in its own database, which this chart does not read, so the " +
-        "wide gray band reflects the record format of the time, not the vulnerabilities. " +
-        "The current year is partial.",
+        "itself. The 2026 Critical count passed double the 2025 count with months " +
+        "of the year still to go, and since 2024 more than nine in ten published " +
+        "records carry a score. Records left of the vertical marker mostly carry " +
+        "none. For those years NIST's National Vulnerability Database (NVD) kept " +
+        "scores in its own database, which this chart does not read, so the gray " +
+        "band reflects the record format of the time, not the vulnerabilities.",
       eraMarker: "← scored in NVD, not in the record",
       toggleAbsolute: "Absolute",
       toggleShare: "Share of year",
       linuxNote:
-        "Since 2024 nearly every record with no score anywhere in it is a " +
-        "kernel record; without the kernel, the gray “no score” band is close " +
-        "to zero.",
+        "Since 2024 most records with no score anywhere in them are kernel " +
+        "records; without the kernel, the gray “no score” band is close to " +
+        "zero.",
       methodology:
         "CVEs are grouped by base score, using the highest CVSS version in each record: " +
         "Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, Low 0.0–3.9. “No score in record” " +
         "counts CVEs published that year with no base score anywhere in the CVE record, " +
-        "in either the CNA container or an ADP container. The vertical marker is " +
-        "computed: it sits at the first year in which at least 10% of published records " +
-        "carry a score in the record. Before about 2018, CNAs rarely put scores in the " +
-        "record; NVD assigned CVSS scores in its own database, which this chart does not " +
-        "ingest. In-record scoring covered fewer than one in ten of 2017's records and " +
-        "covers more than nine in ten today (section 08 tracks the missing-score share). " +
-        "When NVD's enrichment slowed sharply in 2024, CISA's Vulnrichment program began " +
-        "adding scores through its ADP container; the Vulnrichment module measures what " +
-        "CISA adds and how much of it CNAs later cover with their own scores. " +
+        "in either the CNA container or an ADP container (data added by an Authorized " +
+        "Data Publisher, a program partner such as CISA). The vertical marker sits at " +
+        "the first year in which at least 10% of published records carry a score in " +
+        "the record. Scores held only in NVD's database are not counted. Since 2024, " +
+        "CISA's Vulnrichment program has added scores to records through its ADP " +
+        "container, and those count here. " +
         "The share view scales each year to 100%. The current year (marked *) is " +
         "partial and refills nightly. In the absolute view, a dashed marker at the " +
         "current-year edge extends the partial year's total (all published records, " +
@@ -877,8 +876,7 @@ export const editorial = {
         "of the UTC calendar year elapsed at generation time. It appears only once 12.5% " +
         "of the year has elapsed (about mid-February), assumes publication is uniform " +
         "through the year, and ignores seasonality and late-year backfill. The severity " +
-        "mix is not projected, and the share view has no marker because shares are " +
-        "already normalized to their year.",
+        "mix is not projected, and the share view has no marker.",
     },
 
     // ------------------------------------------------------------------- 3
@@ -889,11 +887,11 @@ export const editorial = {
       headline: "More than six in ten Critical-rated CVEs carry less than a 1% probability of exploitation.",
       caption:
         "Each scored CVE with a current EPSS score, placed on a grid by its CVSS severity " +
-        "and by EPSS's estimated probability of exploitation in the next 30 days. CVSS " +
-        "rates technical severity; EPSS estimates likelihood. The two are related: the " +
-        "share with a probability of 10% or more rises about twentyfold from Low to " +
-        "Critical. CISA's Known Exploited Vulnerabilities (KEV) catalog also includes " +
-        "entries rated below High.",
+        "and its EPSS score. EPSS, FIRST's Exploit Prediction Scoring System, estimates " +
+        "the probability of exploitation in the next 30 days; CVSS rates technical " +
+        "severity. The share with a probability of 10% or more rises about twentyfold " +
+        "from Low to Critical. The bars count the entries of CISA's Known Exploited " +
+        "Vulnerabilities (KEV) catalog in the same CVSS buckets.",
       statCriticalTemplate: "{pct} of Critical-rated CVEs have an EPSS probability below 1%",
       statCriticalNote: "across {n} Critical CVEs with a current EPSS score",
       statKevTemplate: "{pct} of CISA KEV entries are rated below High",
@@ -909,21 +907,20 @@ export const editorial = {
         "containers. v2, v3 and v4 scores share one axis here, although each version " +
         "computes the score with its own formula (section 01 separates them). For KEV " +
         "entries published before CNAs scored in the record, the score is usually " +
-        "CISA's own ADP score, so the KEV stat largely uses CISA's numbers. EPSS " +
-        "estimates the probability of exploitation " +
-        "in the next 30 days; it is a model's prediction, not a record of exploitation.",
+        "CISA's own ADP score, so the KEV stat largely uses CISA's numbers. EPSS is a " +
+        "model's prediction, not a record of exploitation.",
     },
 
     // ------------------------------------------------------------------- 4
     decay: {
       num: "04",
       kicker: "NVD backlog",
-      source: "NVD API 2.0 (NIST) · CyberMon's own nightly snapshots",
+      source: "NVD API 2.0 (NIST) · CyberMon nightly snapshots",
       headline: "Tens of thousands of CVEs carry NVD's “Deferred” status.",
       caption:
         "NVD adds analysis, CVSS scores and product data to CVE records. The bars count " +
-        "every CVE by its NVD status on a logarithmic axis; the three red bars at the " +
-        "bottom are the live queue (Received, Awaiting Analysis, Undergoing Analysis). " +
+        "every CVE by its NVD status on a logarithmic axis; the three red bars are " +
+        "the live queue (Received, Awaiting Analysis, Undergoing Analysis). " +
         "“Deferred” is NVD's label for CVEs it has set aside with no analysis scheduled. " +
         "The solid line tracks the size of the live queue, one snapshot per night; the " +
         "dashed line is its Awaiting Analysis part.",
@@ -936,32 +933,28 @@ export const editorial = {
         "Statuses come from NVD's vulnStatus field at fetch time (the full corpus, synced " +
         "incrementally from the API and re-read in full from NVD's yearly feeds about " +
         "once a week). “Backlog total” = Received + Awaiting Analysis + Undergoing " +
-        "Analysis; “Deferred” is NVD's label for CVEs it has decided not to enrich. The " +
-        "bar axis is logarithmic because the Modified count is more than an order of " +
-        "magnitude larger than the live queue, which would not be visible on a linear " +
-        "axis. NVD publishes no historical series, so CyberMon appends one row per " +
-        "nightly run to its own committed CSV (data/history/nvd_backlog.csv; the last run " +
-        "per date wins). The history starts when this record did. A night without a " +
-        "successful run has no row, and the chart's date axis skips it.",
+        "Analysis. The bar axis is logarithmic so that the smaller queue statuses stay " +
+        "visible beside the Modified count. Each nightly run appends one row to a " +
+        "committed CSV (data/history/nvd_backlog.csv); a second run on the same date " +
+        "replaces that date's row. A night without a successful run has no row, and " +
+        "the chart's date axis skips it.",
     },
 
     // ------------------------------------------------------------------- 5
     throughput: {
       num: "05",
       kicker: "NVD throughput",
-      source: "NVD API 2.0 (NIST) · CyberMon's own nightly snapshots",
-      headline: "CyberMon counts the CVEs entering and leaving NVD's analysis queue each night.",
+      source: "NVD API 2.0 (NIST) · CyberMon nightly snapshots",
+      headline: "Since July 2026, NVD has deferred close to half of the CVEs leaving its analysis queue.",
       caption:
-        "Section 04 counts the queue; this section counts the changes. Each night " +
-        "CyberMon compares every CVE's NVD status with the previous night's snapshot. " +
-        "The differences are that day's movements: new CVEs received, and CVEs leaving " +
-        "the analysis queue as Analyzed or as Deferred. The same comparisons also time " +
-        "the queue: how many days a CVE waits, as far as the snapshots can see, before it " +
-        "is analyzed. NVD itself publishes only the totals.",
+        "Each night CyberMon compares every CVE's NVD status with the previous " +
+        "night's snapshot. The lines count three kinds of change: CVEs newly " +
+        "received, and CVEs leaving the analysis queue as Analyzed or as Deferred. " +
+        "The same comparisons time how long a CVE waits in the queue before it is " +
+        "analyzed.",
       note:
-        "NVD publishes no transition history. CyberMon's record of these movements " +
-        "starts {first_date}. Waits are measured between CyberMon's nightly snapshots, " +
-        "so every duration is a lower bound.",
+        "NVD publishes no transition history. CyberMon's record starts on " +
+        "{first_date}.",
       lineTitle: "CVEs changing status, one point per nightly comparison",
       seriesAnalyzed: "Analyzed (left the queue)",
       seriesDeferred: "Deferred (left the queue)",
@@ -970,9 +963,9 @@ export const editorial = {
       statMedianBig: "{days} days",
       statMedianNote:
         "across {n} timed exits from the queue. Each wait is a lower bound, counted " +
-        "from the first snapshot that showed the CVE awaiting analysis. The record is " +
-        "young and cannot yet contain waits longer than its own age, so this median is " +
-        "likely to rise as the record grows.",
+        "from the first nightly snapshot that showed the CVE awaiting analysis. The " +
+        "record cannot yet contain waits longer than its own age, so the median can " +
+        "rise as the record grows.",
       statCountLabel: "timed queue exits collected so far",
       statCountNote:
         "the median is published once {min_known} exits have been timed; with fewer, " +
@@ -989,23 +982,22 @@ export const editorial = {
         "not drawn. The live queue includes “Received”; before 23 September 2026 the " +
         "Analyzed line counted exits from Awaiting Analysis and Undergoing Analysis " +
         "only, so a Received record analyzed between two snapshots was missed there. " +
-        "Only exits seen awaiting analysis are timed. NVD publishes no status-change " +
-        "timestamps, so each status is dated to the day CyberMon first saw it. A queue " +
-        "wait is the span between the snapshot that first showed the CVE in the queue " +
-        "and the snapshot that first showed it analyzed; it is a lower bound set by the " +
-        "nightly cadence, and it cannot see changes that happen between two snapshots. " +
-        "Statuses recorded before this tracker started have no entry date; their " +
-        "transitions count in the flow but are not timed, and no date is filled in for " +
-        "them. The median is not published until {min_known} exits have been timed, " +
-        "because a median of fewer is unreliable. A full re-read can repair missed sync " +
-        "windows and put several days of transitions on one date: the night after the " +
-        "re-read, because the re-read itself uses feed files that lag by about a day. " +
-        "That row is ringed on the chart and flagged in the tooltip. After a night with " +
-        "no run, the next comparison covers more than one day. One row per run date is " +
-        "appended to a committed CSV (data/history/nvd_throughput.csv; a second run on " +
-        "the same date adds its counts to that date's row). Like the backlog record in " +
-        "section 04, it cannot be rebuilt from any other source: the history starts " +
-        "when CyberMon started keeping it.",
+        "The headline's share is Deferred exits over Analyzed plus Deferred exits, " +
+        "summed over the whole record. NVD publishes no status-change timestamps, so " +
+        "each status is dated to the night CyberMon first saw it. A queue wait runs " +
+        "from the snapshot that first showed the CVE awaiting analysis (or undergoing " +
+        "it) to the snapshot that first showed it analyzed; time spent as “Received” " +
+        "is not counted, and a CVE analyzed straight from “Received” is not timed. " +
+        "CVEs already in a status when the tracker started have no entry date; their " +
+        "transitions count in the flow but are not timed. The median is not published " +
+        "until {min_known} exits have been timed, because a median of fewer is " +
+        "unreliable. A full re-read can catch transitions that incremental syncs " +
+        "missed. The feed files lag by about a day, so that catch-up lands in the row " +
+        "for the night after the re-read, which is ringed on the chart and flagged in " +
+        "the tooltip. After a night with no run, the next comparison covers more than " +
+        "one day. Each run date gets one row in a committed CSV " +
+        "(data/history/nvd_throughput.csv); a second run on the same date adds its " +
+        "counts to that date's row.",
     },
 
     // ------------------------------------------------------------------- 6
@@ -1015,11 +1007,12 @@ export const editorial = {
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "The highest-rating CNAs score more than a third of their CVEs 9.0 or higher.",
       caption:
-        "CVE Numbering Authorities (CNAs) can score the CVEs they publish. This board " +
+        "CNAs can score the CVEs they publish. This board " +
         "uses those scores, not NVD's, and ranks each CNA by the share it rates 9.0 or " +
         "higher. Some of the largest CNAs, with thousands of scored CVEs each, rate " +
-        "fewer than one in ten that high. The board does not show why: CNAs cover " +
-        "different products, and some score in CVSS 4.0 while others use 3.x.",
+        "fewer than one in ten that high. CNAs cover different products, and some " +
+        "score in CVSS 4.0 while others use 3.x, so the board does not show why their " +
+        "shares differ.",
       colCna: "CNA",
       colN: "scored CVEs",
       colAvg: "avg CVSS",
@@ -1045,10 +1038,8 @@ export const editorial = {
       headline: "More CVEs were published in each year since 2017 than in the year before.",
       caption:
         "Published CVE records per year, with rejected records alongside. Rejections " +
-        "fell from a fifth of all records in 2017 to under two percent in 2023, then " +
-        "rose again in 2024 and 2025. The current year is partial: its point at the " +
-        "right edge is the count so far, and the short dashed line extends it to twelve " +
-        "months at its pace so far.",
+        "fell from a fifth of all records in 2017 to under one percent in 2023, and " +
+        "the share was higher in 2024 and 2025.",
       toggleLinear: "Linear",
       toggleLog: "Log scale",
       linuxNote:
@@ -1059,9 +1050,8 @@ export const editorial = {
         "original publication year; “rejected” counts records in state REJECTED, also by " +
         "original publication year. REJECTED records that were never published " +
         "(withdrawn reservations, which have no datePublished) are excluded, not counted " +
-        "under the year in their ID; most rejections of recent-year IDs are of this " +
-        "kind. The log-scale toggle changes only the axis. The current year is labeled " +
-        "partial and refills nightly; it is not comparable with a complete year. The " +
+        "under the year in their ID. The current year is labeled partial and refills " +
+        "nightly. The " +
         "dashed segment and hollow marker extend the partial year to twelve months: the " +
         "count so far divided by the fraction of the UTC calendar year elapsed at " +
         "generation time. The projection appears only once 12.5% of the year has " +
@@ -1080,12 +1070,11 @@ export const editorial = {
       caption:
         "For each year's published CVE records, the share missing each of three " +
         "machine-readable fields: a weakness class (CWE), a CVSS base score, and " +
-        "structured affected-version data. Tools that read CVE records use these fields; " +
-        "when a record lacks one, each user of the record has to find it elsewhere. " +
-        "Before about 2018 all three were usually kept in NVD's database, not in the " +
-        "record (see the methodology). Since 2024, almost all records missing a score " +
-        "come from the Linux kernel CNA; the kernel toggle on the severity-by-year chart " +
-        "(section 02) shows this.",
+        "structured affected-version data. Before about 2018 all three were usually " +
+        "kept in NVD's database, not in the record, so the early plateau shows where " +
+        "the data was stored. Since 2024, most records missing a score come from the " +
+        "Linux kernel CNA; the kernel toggle on the severity-by-year chart (section 02) " +
+        "shows this.",
       legendCwe: "No CWE",
       legendCvss: "No CVSS score",
       legendAffected: "No usable version data",
@@ -1099,12 +1088,8 @@ export const editorial = {
         "“unspecified” do not count) or a defaultStatus of “affected” or “unaffected” " +
         "(“unknown” does not count). Each line is that year's missing count over its " +
         "published total; the tooltip gives the counts. A year is plotted only if it has " +
-        "at least 500 published records. Before about 2018, weakness classes, scores and " +
-        "affected-product data (as CPE configurations) were kept in NVD's own database, " +
-        "which this chart does not ingest. The early plateau therefore reflects where the " +
-        "data was stored, and the decline since reflects these fields moving into the " +
-        "record itself (section 02 shows the same shift for scores). The current year " +
-        "(marked *) is partial and refills nightly.",
+        "at least 500 published records. Data held only in NVD's database is not " +
+        "counted. The current year (marked *) is partial and refills nightly.",
     },
 
     // ------------------------------------------------------------------- 9
@@ -1116,8 +1101,8 @@ export const editorial = {
       caption:
         "The eight most common weakness classes of the last ten complete years, each " +
         "shown as its share of that year's CWE-tagged records, with all other classes " +
-        "pooled as “Other.” The eight are chosen from the whole period's totals, so no " +
-        "class can drop off this chart; what changes is each class's share. From 2017 " +
+        "pooled as “Other.” The eight are chosen from the whole period's totals, so " +
+        "the same eight appear in every year. From 2017 " +
         "to 2025, cross-site scripting rose from about 9% to about 18% of tagged " +
         "records and SQL injection from about 1% to about 9%. Missing authorization " +
         "rose from almost nothing to about 5%, improper input validation and " +
@@ -1125,18 +1110,16 @@ export const editorial = {
         "two points or less.",
       // rendered as a panel-note by cve.js (same slot the decay chart uses)
       note:
-        "Shares are of CWE-tagged records only; each year's tooltip gives the share " +
-        "of that year's records that carry a CWE.",
+        "The share of each year's records that carry a CWE varies widely; each " +
+        "year's tooltip gives it, with the tagged count.",
       otherLabel: "Other",
       methodology:
         "Each CWE-tagged published record contributes its first-listed CWE id (the CNA " +
         "container first, ADP containers as fallback), one class per record, so a " +
         "year's shares sum to roughly 100 after rounding. The top 8 are ranked by total " +
         "tagged volume across the last ten complete calendar years; the partial current " +
-        "year is excluded from both the window and the ranking, because a partial year " +
-        "would skew the ranking. Shares are of CWE-tagged records only, and coverage " +
-        "varies widely by year; each year's tooltip gives its tagged count and its share " +
-        "of all published records. A year is plotted only if it has at least 500 tagged " +
+        "year is excluded from both the window and the ranking. A year is plotted only " +
+        "if it has at least 500 tagged " +
         "records. Class names come from a small built-in map in the pipeline; ids the " +
         "map does not know are shown as bare CWE numbers.",
     },
@@ -1190,9 +1173,7 @@ export const editorial = {
         "For every published record in the cvelistV5 corpus, the CVSS versions its CNA " +
         "container scores: a v4.0 base score, a v3.x base score (3.0 and 3.1 count " +
         "alike), both, or neither. A record scored only in v2 counts as “neither”. " +
-        "Scores in ADP containers are not counted, because this section measures what " +
-        "the CNA of record scored; the note under the chart gives how many “neither” " +
-        "records an ADP scored. Months are publication months from {since}, the month " +
+        "Months are publication months from {since}, the month " +
         "CVSS 4.0 was published; years start in 2023. Shares are of all records " +
         "published in the month or year; the current month and year (marked *) are " +
         "partial. The adopters board covers records published since {since} and lists " +
@@ -1350,14 +1331,11 @@ export const editorial = {
       source: "cvelistV5 (MITRE)",
       headline: "There are more CNAs than ever, and five of them published most of 2025's CVEs.",
       caption:
-        "Three lines from one corpus: the number of CVE Numbering Authorities (CNAs) " +
-        "that published at least one record each year, and the share of that year's " +
-        "records from the top 5 and top 10 of them. In the decade to 2023 the top-5 " +
-        "share mostly fell as the program added CNAs; from 2023 to 2025 it rose. The " +
-        "roster grew seventeen-fold between 2015 and 2025, yet in 2025 five CNAs " +
-        "still shipped a majority of the year's records, their share climbing for a " +
-        "second straight year. Each CNA, vendor or not, writes the records it " +
-        "assigns, including any severity score.",
+        "The number of active CVE Numbering Authorities (CNAs) each year, and the " +
+        "share of that year's published records from the top 5 and top 10 of them. " +
+        "In the decade to 2023 the top-5 share mostly fell as the program added " +
+        "CNAs; from 2023 to 2025 it rose. The number of active CNAs grew " +
+        "seventeen-fold between 2015 and 2025.",
       statLabel: "Share of published CVEs from the year's top 5 CNAs",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -1369,16 +1347,13 @@ export const editorial = {
         "original publication year. A CNA is active in a year if it published or " +
         "rejected at least one record that year. Top-5 and top-10 share are the " +
         "fractions of that year's published records from its five or ten largest " +
-        "assigners. The top five are recomputed every year, so the names change even " +
-        "when the share does not. The pipeline also computes a Herfindahl–Hirschman " +
-        "Index (HHI) per year: the sum of squared shares, on the 0–10,000 scale " +
-        "antitrust regulators use, {hhi_latest} for the latest complete year. The HHI " +
-        "covers every assigner, not only the largest, and the two measures can move " +
-        "in opposite directions: between 2023 and 2024 the top-5 share rose while the " +
-        "index fell. The data file carries both for every year; the chart draws the " +
-        "shares and this note quotes the index. Years with no published records " +
-        "appear at zero, so the axis has no gaps. The current year is partial and " +
-        "refills nightly.",
+        "assigners, chosen afresh each year. The Herfindahl–Hirschman Index (HHI), " +
+        "the sum of squared shares on the 0–10,000 scale antitrust regulators use, " +
+        "was {hhi_latest} for the latest complete year; the data file carries it for " +
+        "every year, and the chart does not draw it. The HHI covers every assigner, " +
+        "not only the largest, so the two measures can move in opposite directions: " +
+        "between 2023 and 2024 the top-5 share rose while the index fell. The current " +
+        "year is partial and refills nightly.",
     },
 
     // --------------------------------- concentration.html · 2
@@ -1389,25 +1364,19 @@ export const editorial = {
       headline: "Each year from 2023 to 2025 added more new CNAs than any year before 2023.",
       caption:
         "Bars count CNAs that published their first CVE record that year; the line is " +
-        "the number of active CNAs. Every complete year since 2023 has brought in more " +
-        "new CNAs than any year before 2023. Over the same years the chart above shows " +
-        "the top-5 share rising in 2024 and 2025: the newcomers raised the CNA count, " +
-        "and the five largest CNAs still gained share.",
+        "the number of active CNAs.",
       methodology:
         "A newcomer in year Y is a CNA whose earliest record in the corpus (published " +
         "or rejected) falls in Y. This is its first appearance in the data; the corpus " +
         "carries no accreditation dates. The active-CNA line counts CNAs with at least " +
         "one published or rejected record that year, the same definition as the " +
-        "concentration chart. Because first appearance is computed against the full " +
-        "corpus, the first charted year counts every CNA active that year as new by " +
-        "construction. The current year is partial and refills nightly. The hollow " +
-        "extension above the current-year bar paces the newcomer count to twelve " +
-        "months: newcomers so far divided by the fraction of the UTC calendar year " +
-        "elapsed at generation time, shown only once 12.5% of the year has elapsed " +
-        "(roughly mid-February). First appearances are events, so they can be paced, " +
-        "but only under the strong assumption that newcomers arrive evenly through " +
-        "the year, ignoring seasonality and late-year backfill. The active-CNA line " +
-        "is not projected, because a headcount has no pace.",
+        "concentration chart. The current year is partial and refills nightly. The " +
+        "hollow extension above the current-year bar paces the newcomer count to " +
+        "twelve months: newcomers so far divided by the fraction of the UTC calendar " +
+        "year elapsed at generation time, shown only once 12.5% of the year has " +
+        "elapsed (roughly mid-February). It assumes newcomers arrive evenly through " +
+        "the year and ignores seasonality and late-year backfill. The active-CNA line " +
+        "is not projected.",
     },
 
     // --------------------------------- concentration.html · 3
@@ -1418,11 +1387,10 @@ export const editorial = {
       headline: "Rejection rates differ by more than tenfold between CNAs.",
       caption:
         "Each CNA's records from the last {window_years} years, split into published " +
-        "and rejected. A rejected record here is one that shipped and was later marked " +
-        "REJECTED, for example as a duplicate, a withdrawn assignment or a dispute " +
-        "settled against it. A high rate is not necessarily bad practice: rejection is " +
-        "how errors in published records get corrected, and a CNA that rejects nothing " +
-        "may not be re-checking its records.",
+        "and rejected. A rejected record here is one that was published and later " +
+        "marked REJECTED, for example as a duplicate, a withdrawn assignment or a " +
+        "dispute settled against it. Rejection is how errors in published records are " +
+        "corrected, so a high rate is not by itself a sign of poor practice.",
       colCna: "CNA",
       colTotal: "CVEs (pub+rej)",
       colRejected: "rejected",
@@ -1430,15 +1398,14 @@ export const editorial = {
       windowTemplate:
         "CVE record states by assigner · last {window_years} calendar years, the current one included · min {min_total} records (published + rejected)",
       methodology:
-        "For each assigner in cvelistV5, records dated in the last {window_years} " +
-        "years are counted by state, PUBLISHED or REJECTED. Rejection rate is rejected " +
-        "over (published + rejected). CNAs with fewer than {min_total} records in the " +
-        "window are excluded, because a rate over a few records (two rejections out " +
-        "of two, say) is an anecdote. Reserved IDs that were rejected without ever " +
-        "being published carry no publication date and are excluded from every " +
-        "rejection count on this site: the board counts records that shipped and were " +
-        "then withdrawn, not reservations that went unused. Default sort: rejection " +
-        "rate, descending. Click any column header to re-sort.",
+        "For each assigner in cvelistV5, records whose original publication year falls " +
+        "in the last {window_years} calendar years are counted by state, PUBLISHED or " +
+        "REJECTED. Rejection rate is rejected over (published + rejected). CNAs with " +
+        "fewer than {min_total} records in the window are excluded, so that a CNA with " +
+        "two rejections out of two records cannot top the board. Reserved IDs that " +
+        "were rejected without ever being published have no publication date and are " +
+        "not counted. Default sort: rejection rate, descending. Click any column " +
+        "header to re-sort.",
     },
     // ------------------------------------------------ breaches.html · 1 · hero
     disclosure: {
@@ -2073,8 +2040,8 @@ export const editorial = {
         "be the year the ID was reserved or the year the flaw was made public, and " +
         "either can be years before the record is published. The bands split each " +
         "year's newly published records by the age of their ID: same year, one year " +
-        "earlier, or two or more years earlier. The 2026 share is the lowest since " +
-        "2008. The age of an ID is not the age of the flaw it describes.",
+        "earlier, or two or more years earlier. The 2026 share of earlier-year IDs is " +
+        "the lowest since 2008. The age of an ID is not the age of the flaw it describes.",
       statLabel: "Share of newly published CVEs carrying an earlier-year ID",
       statLatest: "{latest_year}",
       statAgo: "{ago_year}",
@@ -2085,19 +2052,18 @@ export const editorial = {
         "For every published record in the cvelistV5 corpus (rejected records " +
         "excluded), the year in its CVE ID is compared with its publication year, the " +
         "UTC year of datePublished. Same-year, one-year-old and two-or-more-year-old " +
-        "IDs stack to 100%; the tooltip carries the counts. The ID year is not a " +
-        "reservation timestamp. CNAs request blocks of IDs and publish against them " +
-        "later, and a CNA may also give an ID the year its flaw was made public; the " +
-        "Linux kernel CNA does this at scale for years-old fixes. An old ID can " +
+        "IDs stack to 100%; the tooltip carries the counts. CNAs (CVE Numbering " +
+        "Authorities, the organizations that assign IDs) reserve blocks of IDs and " +
+        "publish against them later, and the Linux kernel CNA gives many years-old " +
+        "fixes an ID with the year the fix was made public. An old ID can " +
         "therefore mean a queued reservation, a long coordinated disclosure, a batch " +
         "conversion, or a new record for an old, already public flaw. The rare " +
-        "inverse, a next-year ID published in late December, is counted as age zero; " +
-        "the number of such records ships in the data file (the real corpus " +
-        "currently contains none). Records without a datePublished take their year " +
-        "from the ID and count as same-year by construction. A year plots only with " +
+        "inverse, a next-year ID published in late December, is counted as age zero " +
+        "(the corpus currently contains none). Records without a datePublished take " +
+        "their year from the ID and count as same-year. A year plots only with " +
         "at least 500 published records. The current year (marked *) is partial and " +
-        "refills nightly. The headline compares complete years only, and the " +
-        "baseline year is set in the data file, not derived by the page.",
+        "refills nightly. The stat compares the latest complete year with the year " +
+        "ten years earlier.",
     },
 
     // --------------------------------------------- calendar.html · 2
@@ -2116,15 +2082,12 @@ export const editorial = {
       tooltipN: "{n} dated records in {year}",
       methodology:
         "Each published record with a day-precision datePublished contributes its " +
-        "weekday. Bars are the share of that year's dated records on each day, for " +
-        "the latest complete year and the year a decade before it. Both years are " +
-        "set in the data file, not chosen by the page; until the record is ten years " +
-        "deep, the earliest charted year is used instead. Weekdays are judged in UTC, " +
+        "weekday; records without one are left out. Bars are the share of that " +
+        "year's dated records on each day. Weekdays are judged in UTC, " +
         "on the date the record carries. A late-evening publication in a US timezone " +
         "falls on the next UTC day, so a Tuesday release in California can count as " +
         "Wednesday here; a publisher east of UTC can shift the other way. The shift " +
-        "is not corrected, because the record carries no reliable local timezone. " +
-        "Records without a publication timestamp are excluded from this chart. A " +
+        "is not corrected, because the record carries no reliable local timezone. A " +
         "year enters the comparison only with at least 500 dated records.",
     },
 
@@ -2138,21 +2101,12 @@ export const editorial = {
         "Microsoft releases security updates on the second Tuesday of each month, and " +
         "several other vendors, Adobe and SAP among them, publish on the same day. " +
         "Bars show the share of each year's published records that land on those " +
-        "twelve days. The dashed line is what twelve days out of 365 would hold if " +
-        "publication ignored the calendar: 3.3 percent. The bar has cleared that line in " +
-        "every complete year since 2014. Tuesday has also been the busiest weekday in " +
-        "recent years, so a dotted step line shows what the same twelve days would " +
-        "carry as ordinary Tuesdays in the same year. The gap between the bar and " +
-        "that line is the excess on release days beyond the general Tuesday effect; " +
-        "it is a residual and does not isolate a cause. Every year since 2019 the bar " +
-        "has cleared what its own ordinary Tuesdays would carry.",
-      note:
-        "The comparison: twelve UTC days per year against two baselines, a uniform " +
-        "calendar (3.3%) and the year's own ordinary Tuesdays scaled to twelve days. " +
-        "A bar at three times the 3.3% line means those days held three times their " +
-        "calendar share; a bar at twice its dotted line means twice what the same " +
-        "twelve days would carry as ordinary Tuesdays. Neither ratio says anything " +
-        "about how severe or exploited the records were.",
+        "twelve days. The dashed line, 3.3 percent, is the share twelve days out of " +
+        "365 would hold if publication were spread evenly over the year. The bar has " +
+        "cleared that line in every complete year since 2014. Tuesday has been the " +
+        "busiest weekday since 2022, so a dotted step line shows what the same twelve " +
+        "days would carry as ordinary Tuesdays in the same year. Every year since " +
+        "2019 the bar has cleared what its own ordinary Tuesdays would carry.",
       baselineLabel: "uniform calendar · {pct}",
       tuesdayBaselineSeries: "as ordinary Tuesdays",
       tooltipShare: "{pct} of the year's dated records",
@@ -2164,20 +2118,16 @@ export const editorial = {
         "falls on the second Tuesday of its month, which is the Tuesday with " +
         "day-of-month 8 through 14; every year has exactly twelve such days. Bars are " +
         "the share of each year's dated records on those days. The dashed baseline " +
-        "is 3.3%: 12 of 365 days (12 of 366 in a leap year rounds to the same " +
-        "figure), the share those days would carry if publication were spread evenly " +
-        "over the calendar. The dotted baseline is the ordinary-Tuesday share. Within " +
-        "the year's observation window (first to last dated record), the records on " +
-        "the other Tuesdays are averaged per Tuesday, multiplied by the window's " +
-        "count of Patch Tuesdays and divided by the year's dated records. Tuesdays " +
-        "are counted from the actual dates, not assumed to be 52, and the baseline " +
-        "is left empty, not set to zero, when the window holds no other Tuesday. The " +
-        "chart claims those two ratios only: the excess over the Tuesday line is not " +
-        "attributed to a cause, and publication clustering on release days says " +
-        "nothing about severity or exploitation. The tooltip also names the year's " +
-        "busiest single publication day for context. That day is often a batch " +
-        "conversion or mass import rather than a Patch Tuesday, and it is not ranked " +
-        "or commented on. UTC day boundaries as in the weekday chart. A year plots " +
+        "is 12 of 365 days (12 of 366 in a leap year also rounds to 3.3%). The dotted " +
+        "baseline is the ordinary-Tuesday share: within the year's observation window " +
+        "(first to last dated record), the records on the other Tuesdays are averaged " +
+        "per Tuesday, multiplied by the window's count of Patch Tuesdays and divided " +
+        "by the year's dated records. Tuesdays are counted from the actual dates, and " +
+        "the baseline is left empty when the window holds no other Tuesday. The " +
+        "excess over the Tuesday line is not attributed to a cause, and the share " +
+        "published on release days says nothing about the records' severity or " +
+        "exploitation. The tooltip also names the year's busiest single publication " +
+        "day. UTC day boundaries as in the weekday chart. A year plots " +
         "only with at least 500 dated records. The current year (marked *) is " +
         "partial and refills nightly.",
     },
