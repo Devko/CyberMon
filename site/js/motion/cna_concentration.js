@@ -128,9 +128,10 @@ export const scene = {
     chrome.setClock(shown === genYear ? `${shown}*` : String(shown));
     // Both current values, so the sheet always states the two numbers whose
     // divergence is the whole point.
+    const cnas = Math.round(lerp(counts[s], counts[s2], t));
     chrome.setSub(
       `${fmtPct(lerp(shares[s], shares[s2], t))} · ` +
-      `${fmtInt(Math.round(lerp(counts[s], counts[s2], t)))} CNAs`
+      `${fmtInt(cnas)} ${cnas === 1 ? "CNA" : "CNAs"}`
     );
     chrome.setProgress(progress);
   },

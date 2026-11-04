@@ -246,12 +246,13 @@ def check_almost_none_withdrawn(d: dict) -> None:
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    # home card (Advisories Without a CVE)
+    # home card (Advisories Without a CVE). The Rust half said "a quarter
+    # of Rust's do not" until 2026-11-04 (25.4% that night, a point lower
+    # than on 10-03, against a floor of 21); it now states the ranking.
     ("Most GitHub-reviewed advisories carry a CVE id", "advisory_gap.json",
      check_most_get_a_cve),
-    ("A quarter of Rust's do not.", "advisory_gap.json", check_rust_quarter),
-    ("A quarter of Rust's do not.", "advisory_gap.json",
-     check_rust_highest_of_large),
+    ("Rust's lack one more often than those of any other large registry.",
+     "advisory_gap.json", check_rust_highest_of_large),
     # advisories.html
     ("Fewer than one GitHub-reviewed advisory in ten carries no CVE id.",
      "advisory_gap.json", check_fewer_than_one_in_ten),

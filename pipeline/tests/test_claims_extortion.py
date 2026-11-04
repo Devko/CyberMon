@@ -152,8 +152,10 @@ CLAIMS = [
         check_billion_dollar_floor,
     ),
     (
-        # home card (Ransom Payments); $1,018.6M on 2026-10-03
-        "Crowdsourced, blockchain-verified ransomware payments total more than a billion dollars.",
+        # home card (Ransom Payments); $1,018.6M on 2026-10-03. It read
+        # "Crowdsourced, blockchain-verified ransomware payments …" until
+        # 2026-11-04; the card now names the dataset.
+        "Ransomware payments recorded by Ransomwhere total more than a billion dollars.",
         "extortion_ledger.json",
         check_billion_dollar_floor,
     ),

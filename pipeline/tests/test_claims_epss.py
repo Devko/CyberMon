@@ -247,10 +247,6 @@ CLAIMS = [
         check_most_scored_since_2023_below_1pct,
     ),
     (
-        "Roughly half or more of recent KEV additions had an EPSS score under 1% the day before listing.",
-        check_most_recent_below_1pct,
-    ),
-    (
         "About three in ten scored KEV additions ranked in EPSS's bottom half",
         check_bottom_half_share,
     ),
