@@ -98,11 +98,12 @@ def check_two_weeks_or_more_since_2022(d: dict) -> None:
     _require_exploit_dated_clock(d)
     # editorial.js (exploits.html hero): headline "Since 2022, the median
     # first public exploit has come two weeks or more after the CVE record."
-    # and caption "Since 2021 the median has been positive, and since 2022
-    # it has been two weeks or more". (2026-10-03: 2021-2026 medians 8, 20,
-    # 15.5, 166.5, 38, 41 days; the thin margin is 2023's 15.5 against 14.
-    # A late Exploit-DB entry for an old CVE adds a long gap, so a complete
-    # year's median mostly moves up.)
+    # and caption "Since 2021 the median has been positive." (2026-10-03:
+    # 2021-2026 medians 8, 20, 15.5, 166.5, 38, 41 days; the thin margin is
+    # 2023's 15.5 against 14. A late Exploit-DB entry for an old CVE adds a
+    # long gap, so a complete year's median mostly moves up.) The caption
+    # repeated the headline's "since 2022 ... two weeks or more" until
+    # 2026-11-04.
     medians = _judged_medians(d)
     recent = {y: m for y, m in medians.items() if y >= 2021}
     assert len([y for y in recent if y < GENERATION_YEAR]) >= 4, (
@@ -145,17 +146,34 @@ def check_early_records_catalogued_an_arsenal(d: dict) -> None:
 def check_about_half_kev_preempted(d: dict) -> None:
     _require_exploit_dated_clock(d)
     # editorial.js (exploits.html #2): headline "public code preceded about
-    # half of KEV listings with a dated exploit" and caption "about half of
-    # the listings with a dated PoC had the code published before the
-    # listing day". (2026-09-29: 55.4% of 121; 2026-10-03: 54.5% of 123. The
-    # share drifts down as late Exploit-DB entries for listed CVEs count as
-    # code after the listing.)
+    # half of KEV listings with a dated exploit". (2026-09-29: 55.4% of 121;
+    # 2026-10-03: 54.5% of 123; 2026-11-04: 56.2% of 128. Late Exploit-DB
+    # entries for listed CVEs count as code after the listing.) The caption
+    # repeated it ("about half of the listings with a dated PoC …") until
+    # 2026-11-04.
     pct = d["kev_preempt"]["trend"]["pct_preempted"]
     n = d["kev_preempt"]["trend"]["with_poc_date"]
     assert 40 <= pct <= 60, (
-        f"'about half of the listings with a dated PoC' claims 40-60%; "
+        f"'about half of KEV listings with a dated exploit' claims 40-60%; "
         f"data says {pct}% (over {n} entries)"
     )
+
+
+def check_seeding_code_almost_always_first(d: dict) -> None:
+    # editorial.js (exploits.html #2 caption): the 2021–22 seeding years
+    # imported years-old CVEs, "and their exploit code, where dated, almost
+    # always came first". (2026-11-04: 318 of 329, 96.7%; 2021 97.2%, 2022
+    # 96.4%.) Held to nine in ten, pooled and for each seeding year.
+    kp = d["kev_preempt"]
+    cutoff = int(str(kp["cutoff"])[:4])
+    seeding = kp["seeding"]
+    assert seeding["with_poc_date"] > 0, "no dated seeding-era entries"
+    assert seeding["pct_preempted"] >= 90, (
+        f"'almost always came first' vs {seeding['pct_preempted']}% of "
+        f"{seeding['with_poc_date']} seeding-era entries")
+    off = [(r["year"], r["pct_preempted"]) for r in kp["years"]
+           if r["year"] < cutoff and r["pct_preempted"] < 90]
+    assert not off, f"'almost always came first' vs seeding years {off}"
 
 
 def check_quarter_of_catalog_matched(d: dict) -> None:
@@ -171,10 +189,17 @@ def check_quarter_of_catalog_matched(d: dict) -> None:
     )
 
 
+def _coverage_pct(row: dict) -> float:
+    # The published pct is rounded to 0.1; the counts are exact.
+    return 100.0 * row["with_poc"] / row["total"]
+
+
 def check_overwhelming_majority_uncovered(d: dict) -> None:
-    # editorial.js (exploits.html #3): "the overwhelming majority of
-    # records never attract tracked public exploit code at all".
-    # (Live 2026-07: 1.9% of the 2025 window covered.)
+    # editorial.js (exploits.html #3): "In every bucket the overwhelming
+    # majority of records have no tracked public exploit code". (Live
+    # 2026-07: 1.9% of the 2025 window covered; 2026-11-04: 1.0% overall,
+    # critical the highest bucket at 5.0%.) Held to 15% coverage overall
+    # and, since 2026-11-04, in every charted bucket.
     cov = d["coverage"]
     rows = cov["buckets"] + [cov["unscored"]]
     total = sum(r["total"] for r in rows)
@@ -182,38 +207,41 @@ def check_overwhelming_majority_uncovered(d: dict) -> None:
     assert total > 0
     share = 100.0 * covered / total
     assert share <= 15, (
-        f"'the overwhelming majority of records never attract tracked "
-        f"public exploit code' needs window coverage well under half; "
+        f"'the overwhelming majority of records have no tracked public "
+        f"exploit code' needs window coverage well under half; "
         f"data says {share:.1f}%"
     )
+    high = [(r["bucket"], round(_coverage_pct(r), 2)) for r in cov["buckets"]
+            if _coverage_pct(r) > 15]
+    assert not high, f"'In every bucket the overwhelming majority' vs {high}"
 
 
 def check_criticals_several_times_middle(d: dict) -> None:
-    # editorial.js (exploits.html #3): "criticals draw public exploit
-    # attention at more than ten times the rate of the middle of the
-    # scale". (Live 2026-07: 8.3% vs 1.0%; 2026-09-23: 5.0% vs 0.3%.)
+    # editorial.js (exploits.html #3): "Critical-rated records have it at
+    # more than ten times the rate of medium-rated records". (Live 2026-07:
+    # 8.3% vs 1.0%; 2026-09-23: 5.0% vs 0.3%; 2026-11-04: 5.01% vs 0.30%.)
+    # Exact counts, not the published one-decimal pct: the 2026 records
+    # give medium about 0.07%, which rounds to 0.1 and would read as 0.0
+    # if it fell below 0.05.
     rows = {r["bucket"]: r for r in d["coverage"]["buckets"]}
     critical = rows.get("9.0-10.0")
     medium = rows.get("4.0-6.9")
     assert critical and medium, "both buckets must survive the min-n gate"
-    assert medium["pct"] > 0, "middle-bucket coverage vanished entirely"
-    ratio = critical["pct"] / medium["pct"]
+    assert medium["with_poc"] > 0, "middle-bucket coverage vanished entirely"
+    ratio = _coverage_pct(critical) / _coverage_pct(medium)
     assert ratio > 10, (
-        f"'more than ten times the rate of the middle of the scale' needs "
+        f"'more than ten times the rate of medium-rated records' needs "
         f"the critical/medium coverage ratio above 10; data says "
-        f"{critical['pct']}% vs {medium['pct']}% (x{ratio:.1f})"
+        f"{_coverage_pct(critical):.2f}% vs {_coverage_pct(medium):.2f}% "
+        f"(x{ratio:.1f})"
     )
-
-
-def _coverage_pct(row: dict) -> float:
-    # The published pct is rounded to 0.1; the counts are exact.
-    return 100.0 * row["with_poc"] / row["total"]
 
 
 def check_highest_for_critical(d: dict) -> None:
     # editorial.js (exploits.html #3): headline "Public exploit code is most
-    # common on CVEs rated critical." and caption "It is highest for
-    # critical-rated records". (2026-10-03, 2025 window: critical 5.01%,
+    # common on CVEs rated critical." (The caption repeated it, "It is
+    # highest for critical-rated records", until 2026-11-04.) (2026-10-03,
+    # 2025 window: critical 5.01%,
     # high 1.15%, medium 0.30%, low 0.25%, unscored 0.03%. The 2026
     # records in the local corpus give 1.22% / 0.25% / 0.07% / 0.12%, so
     # the order holds when the window moves in January.)
@@ -297,8 +325,7 @@ CLAIMS = [
         check_two_weeks_or_more_since_2022,
     ),
     (
-        "Since 2021 the median has been positive, and since 2022 it has been "
-        "two weeks or more",
+        "Since 2021 the median has been positive.",
         "time_to_poc.json",
         check_two_weeks_or_more_since_2022,
     ),
@@ -329,9 +356,9 @@ CLAIMS = [
         check_about_half_kev_preempted,
     ),
     (
-        "about half of the listings with a dated PoC had the code published before the listing day",
+        "their exploit code, where dated, almost always came first",
         "time_to_poc.json",
-        check_about_half_kev_preempted,
+        check_seeding_code_almost_always_first,
     ),
     (
         "roughly a quarter of the catalog",
@@ -339,22 +366,19 @@ CLAIMS = [
         check_quarter_of_catalog_matched,
     ),
     (
-        "the overwhelming majority of records have no tracked public exploit code",
+        "In every bucket the overwhelming majority of records have no tracked "
+        "public exploit code",
         "time_to_poc.json",
         check_overwhelming_majority_uncovered,
     ),
     (
-        "at more than ten times the rate of medium-rated records",
+        "Critical-rated records have it at more than ten times the rate of "
+        "medium-rated records",
         "time_to_poc.json",
         check_criticals_several_times_middle,
     ),
     (
         "Public exploit code is most common on CVEs rated critical.",
-        "time_to_poc.json",
-        check_highest_for_critical,
-    ),
-    (
-        "It is highest for critical-rated records",
         "time_to_poc.json",
         check_highest_for_critical,
     ),

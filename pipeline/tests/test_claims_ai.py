@@ -141,15 +141,17 @@ def _window_means(months: list[dict], width: int = 12) -> tuple[float, float]:
 
 def check_attention_rose_clock_did_not(d: dict) -> None:
     # editorial.js (ai.html · 3): "Attention to AI security rose while the
-    # public exploit clock stayed within a narrow band." / "Over the window
-    # attention to both terms rose, while the clock's annual median stayed
-    # inside a band of days." Both terms (AI Security, Agentic AI) are held
-    # to it, each by the mean of its last twelve months against its first
-    # twelve, and "rose" means by 10 index points or more. (2026-10-03: AI
-    # Security 22.1 → 48.8, Agentic AI 0.0 → 61.1; clock 4.5–11.0 d over
-    # 2021–2024.) Until 2026-10-03 the copy said "multiplied" and only the
-    # lead term was checked; AI Security's single-month endpoints ran 2.4x
-    # (09-29) to 2.7x (10-03), and its start month moves with the window.
+    # public exploit clock stayed within a narrow band." The chart draws two
+    # terms (AI Security, Agentic AI) and both are held to "rose", each by
+    # the mean of its last twelve months against its first twelve, by 10
+    # index points or more. (2026-10-03: AI Security 22.1 → 48.8, Agentic AI
+    # 0.0 → 61.1; clock 4.5–11.0 d over 2021–2024. 2026-11-04: 22.4 → 50.9
+    # and 0.0 → 69.2.) Until 2026-10-03 the copy said "multiplied" and only
+    # the lead term was checked; AI Security's single-month endpoints ran
+    # 2.4x (09-29) to 2.7x (10-03), and its start month moves with the
+    # window. The caption's "attention to both terms rose, while the clock's
+    # annual median stayed inside a band of days" restated the headline and
+    # was cut on 2026-11-04.
     att = d["attention"]
     if not att.get("available") or not att.get("terms"):
         pytest.skip("attention lanes unavailable in this edition")
@@ -195,16 +197,17 @@ def check_clock_varies_under_two_weeks(d: dict) -> None:
 
 
 def check_attention_window_is_sixty_months(d: dict) -> None:
-    # editorial.js (ai.html · 3 methodology): "The window is the market
-    # module's 60 months, and the note under the chart gives the month it
-    # starts." (2026-10-03: 2021-11 to 2026-09.) Replaced "it starts roughly
-    # a year before ChatGPT", which the monthly window outgrows: 12 months
-    # before on 2026-10-03, none from late 2027.
+    # editorial.js (ai.html · 3 methodology): "The window is the Buzzword
+    # Attention module's 60 months, and the note under the chart gives the
+    # month it starts." (2026-10-03: 2021-11 to 2026-09.) Replaced "it starts
+    # roughly a year before ChatGPT", which the monthly window outgrows: 12
+    # months before on 2026-10-03, none from late 2027. Said "the market
+    # module" (its old name) until 2026-11-04.
     att = d["attention"]
     if not att.get("available"):
         pytest.skip("attention lanes unavailable in this edition")
     assert att["window_months"] == 60, (
-        f"'the market module's 60 months' — the window is now "
+        f"'the Buzzword Attention module's 60 months' — the window is now "
         f"{att['window_months']} months"
     )
     longest = max(len(t["months"]) for t in att["terms"])
@@ -218,7 +221,7 @@ def check_attention_window_is_sixty_months(d: dict) -> None:
 def check_cohort_rate_2008_to_2024(d: dict) -> None:
     # editorial.js (ai.html · 2 methodology): "That rate was about 45% for
     # CVEs published in 2008 and 2009 and under 1% for those published in
-    # 2024: over those years annual CVE volume grew from roughly 5,700 to
+    # 2024. Over those years annual CVE volume grew from roughly 5,700 to
     # 40,000, and the number of CVEs whose public exploit Exploit-DB dates
     # fell to under a tenth of its 2008 level." (2026-10-03: 2,550 of 5,673
     # = 44.9% and 2,634 of 5,732 = 46.0%; 154 of 39,924 = 0.4%; 154 is 6.0%
@@ -298,19 +301,19 @@ def check_chatgpt_none_earlier_later_dates_by_rule(d: dict) -> None:
 
 
 def check_two_shops_found_no_uplift(d: dict) -> None:
-    # editorial.js (ai.html hero methodology): "the two largest vendor
-    # threat-intel shops looked specifically for offensive capability
-    # uplift in 2024 and early 2025 and reported finding none". (Committed
-    # timeline: Microsoft+OpenAI 2024-02-14, Google GTIG 2025-01.)
+    # editorial.js (ai.html hero methodology): "The stat's no-uplift reports
+    # are Microsoft with OpenAI (February 2024) and Google's Threat
+    # Intelligence Group (January 2025)". (Committed timeline:
+    # Microsoft+OpenAI 2024-02-14, Google GTIG 2025-01.) Until 2026-11-04
+    # the copy called them "two of the largest vendor threat-intelligence
+    # teams", a ranking nothing here measured; it now names them, so the
+    # rows must be exactly those two.
     no_uplift = [m for m in d["milestones"] if m["kind"] == "no_uplift"]
-    assert len(no_uplift) >= 2, (
-        f"'the two largest vendor threat-intel shops' needs at least two "
-        f"no-uplift rows on the timeline; found {len(no_uplift)}"
-    )
-    years = {m["date"][:4] for m in no_uplift}
-    assert {"2024", "2025"} <= years, (
-        f"the claim dates those findings to 2024 and early 2025; the "
-        f"committed timeline carries no-uplift rows for {sorted(years)}"
+    named = sorted((m["date"][:7], m["label"].split()[0]) for m in no_uplift)
+    assert named == [("2024-02", "Microsoft"), ("2025-01", "Google")], (
+        f"the methodology names Microsoft with OpenAI (February 2024) and "
+        f"Google's Threat Intelligence Group (January 2025) as the no-uplift "
+        f"reports; the timeline's no-uplift rows are {named}"
     )
     assert d["headline"]["no_uplift_reports"] == len(no_uplift), (
         "the hero stat counts no-uplift reports and must agree with the "
@@ -402,22 +405,17 @@ CLAIMS = [
         check_attention_rose_clock_did_not,
     ),
     (
-        "attention to both terms rose, while the clock's annual median stayed inside a band of days",
-        "ai_alibi.json",
-        check_attention_rose_clock_did_not,
-    ),
-    (
         "Over this window the clock varies by less than two weeks",
         "ai_alibi.json",
         check_clock_varies_under_two_weeks,
     ),
     (
-        "The window is the market module's 60 months, and the note under the chart gives the month it starts.",
+        "The window is the Buzzword Attention module's 60 months, and the note under the chart gives the month it starts.",
         "ai_alibi.json",
         check_attention_window_is_sixty_months,
     ),
     (
-        "That rate was about 45% for CVEs published in 2008 and 2009 and under 1% for those published in 2024: over those years annual CVE volume grew from roughly 5,700 to 40,000, and the number of CVEs whose public exploit Exploit-DB dates fell to under a tenth of its 2008 level.",
+        "That rate was about 45% for CVEs published in 2008 and 2009 and under 1% for those published in 2024. Over those years annual CVE volume grew from roughly 5,700 to 40,000, and the number of CVEs whose public exploit Exploit-DB dates fell to under a tenth of its 2008 level.",
         "ai_alibi.json",
         check_cohort_rate_2008_to_2024,
     ),
@@ -432,7 +430,7 @@ CLAIMS = [
         check_chatgpt_none_earlier_later_dates_by_rule,
     ),
     (
-        "the largest vendor threat-intelligence teams looked specifically for offensive capability uplift in 2024 and early 2025 and reported finding none",
+        "The stat's no-uplift reports are Microsoft with OpenAI (February 2024) and Google's Threat Intelligence Group (January 2025); both looked specifically for offensive capability uplift and reported finding none.",
         "ai_alibi.json",
         check_two_shops_found_no_uplift,
     ),
