@@ -100,6 +100,29 @@ CNA Roster card, C2 card). The 09-23 "owner's voice" items had mostly gone
 already; "arithmetic, not a forecast" became "They are not a forecast", and
 no EPSS "grade" wording is left in rendered copy (the `grade` key stays).
 
+## README
+
+Rewritten to the same rule (7,017 → 6,835 words; about 600 cut, with
+missing developer detail added). Every module tagline now equals its
+landing-page headline verbatim (12 were stale), and the opening slogans
+are gone ("grades its own homework … keeps the receipts", "Provocative
+headline"). Corrections:
+
+- The CWE Top 25 score is NVD frequency × average CVSS; KEV is not an input.
+- Time to PoC: the median gap was within a month of zero through 2020 and
+  has been positive since 2021; it did not "hug zero".
+- The EPSS Volatility quarantine rule includes the 5% floor.
+- The history logs are not all unrecoverable: cvelistV5 and the roster's
+  upstream repository keep git history. Start dates and paths are now given.
+- The roster size, the Observatory file size and event count, and the
+  Exploit-DB coverage figures were updated. The 08:43 UTC catch-up run,
+  the claims gate, the NVD full-sweep fallback and the missing sources were
+  added to the architecture notes.
+- `tools/make_sample_data.py` overwrites committed `site/data` files with
+  synthetic data. The README called it a way to "regenerate the committed
+  sample data"; it now warns against running it in a checkout you commit
+  from. The tool itself is unchanged (left open).
+
 ## Maintenance done on the way
 
 - `pipeline/ai_credits_data.py`: AISLE and ZeroPath counters re-read.
@@ -125,3 +148,5 @@ no EPSS "grade" wording is left in rendered copy (the `grade` key stays).
   as recent listings flip faster (2026 listing-year median 34 days).
 - The carousel PDFs carry the old headlines until the next deploy
   rebuilds them.
+- `tools/make_sample_data.py` writes into `site/data`; it should write to
+  a scratch directory or be removed.
