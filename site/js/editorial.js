@@ -169,7 +169,7 @@ export const editorial = {
         href: "market.html",
         num: "02",
         label: "Buzzword Attention",
-        headline: "Attention to security buzzwords is tracked monthly in five public sources.",
+        headline: "Most tracked buzzwords had their busiest month of news coverage more than two years ago.",
         blurb:
           "News coverage (GDELT), Hacker News discussion, arXiv papers, Wikipedia pageviews " +
           "and SEC EDGAR filings, each term indexed to its own peak in a rolling five-year " +
@@ -671,7 +671,7 @@ export const editorial = {
       num: "01",
       kicker: "Attention curves",
       source: "GDELT 2.0 · Hacker News via Algolia · arXiv cs.CR · Wikipedia pageviews · SEC EDGAR full-text search",
-      headline: "Each term is scaled to its own busiest month of the last five years.",
+      headline: "Most tracked buzzwords had their busiest month of news coverage more than two years ago.",
       caption:
         "Monthly counts for one term at a time from five sources: news articles (GDELT), " +
         "Hacker News stories and comments, arXiv cs.CR (cryptography and security) " +
@@ -747,7 +747,7 @@ export const editorial = {
       num: "03",
       kicker: "Research vs. media divergence",
       source: "GDELT 2.0 · arXiv cs.CR",
-      headline: "Each term is placed by how near research and news are to their own peaks.",
+      headline: "More terms sit above the diagonal, with research nearer its five-year peak than news coverage, than below it.",
       caption:
         "Each term's position is its recent arXiv cs.CR index (vertical) against its " +
         "recent GDELT news index (horizontal), each measured against that source's own " +

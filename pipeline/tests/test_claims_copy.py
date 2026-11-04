@@ -488,9 +488,52 @@ def check_mandiant_figures_recorded(d: dict) -> None:
         assert bit in rec["claim"], (bit, rec["claim"])
 
 
+
+def _months_apart(a: str, b: str) -> int:
+    ya, ma = map(int, a.split("-")); yb, mb = map(int, b.split("-"))
+    return (yb - ya) * 12 + (mb - ma)
+
+
+def check_most_news_peaks_over_two_years_old(d: dict) -> None:
+    # Buzzword Attention hero headline and home card: "Most tracked
+    # buzzwords had their busiest month of news coverage more than two years
+    # ago." For each term with a GDELT series, the month indexed 100 is more
+    # than 24 months before the term's latest month. (2026-11-04: 10 of 14;
+    # 10 of 14 on every edition since 09-23. Recent peaks: Agentic AI
+    # 2026-05, Post-Quantum 2026-06, AI Security 2026-07, Deepfake 2026-01.)
+    # The headlines said what the chart does until 2026-11-04.
+    old = n = 0
+    for t in d["terms"]:
+        pts = [p for p in (t["series"].get("gdelt") or []) if p.get("index") is not None]
+        if not pts:
+            continue
+        n += 1
+        latest = max(p["month"] for p in pts)
+        peak = max(pts, key=lambda p: p["index"])["month"]
+        old += _months_apart(peak, latest) > 24
+    assert n >= 10, f"only {n} terms carry a GDELT series"
+    assert old > n / 2, f"{old} of {n} terms peaked in news more than two years ago"
+
+
+def check_more_terms_research_nearer_peak(d: dict) -> None:
+    # Divergence headline: "More terms sit above the diagonal, with research
+    # nearer its five-year peak than news coverage, than below it." Counts
+    # the plotted terms by direction; "aligned" terms sit on the diagonal.
+    # (2026-11-04: 5 above, 0 below, 1 aligned; since 09-23 above has led
+    # below by at least two every night, and at most one term, AI Security,
+    # has sat below. After a month rollover as few as two terms plot.)
+    dirs = [(t.get("divergence") or {}).get("direction") for t in d["terms"]]
+    above, below = dirs.count("research_leads"), dirs.count("media_leads")
+    assert above > below, f"{above} terms above the diagonal, {below} below"
+
+
 CLAIMS = [
     ("Agentic AI has the steepest year-over-year rise in news and in research papers.",
      "market_hype.json", check_agentic_ai_steepest),
+    ("Most tracked buzzwords had their busiest month of news coverage more than two years ago.",
+     "market_hype.json", check_most_news_peaks_over_two_years_old),
+    ("More terms sit above the diagonal, with research nearer its five-year peak than news coverage, than below it.",
+     "market_hype.json", check_more_terms_research_nearer_peak),
     ("In most measured economies, at least half of users have validating resolvers.",
      "dnssec_adoption.json", check_most_economies_half),
     ("Japan and the United States", "dnssec_adoption.json", check_japan_us_below_half),
