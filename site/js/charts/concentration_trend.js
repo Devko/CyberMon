@@ -9,9 +9,11 @@ import { editorial, tpl } from "../editorial.js";
 import { el, clear } from "../dom.js";
 import { mkToggle } from "../ui.js";
 
-const TOP5_NAME = "Top-5 share";
-const TOP10_NAME = "Top-10 share";
-const COUNT_NAME = "Active CNAs";
+// Series names double as the tooltip's lookup keys (COUNT_NAME below).
+const L = editorial.sections.concentration.labels;
+const TOP5_NAME = L.top5;
+const TOP10_NAME = L.top10;
+const COUNT_NAME = L.active;
 
 export function render(slots, data) {
   const ed = editorial.sections.concentration;
@@ -33,12 +35,12 @@ export function render(slots, data) {
       row.append(
         el("span", "hero-num accent", fmtPct(latest)),
         el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
-        el("span", "hero-vs", "vs"),
+        el("span", "hero-vs", editorial.ui.vs),
         el("span", "hero-num", fmtPct(base)),
         el("span", "hero-when", tpl(ed.statAgo, { ago_year: h.baseline_year }))
       );
     } else {
-      row.append(el("span", "hero-when muted", "Not enough data yet."));
+      row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
     }
   };
   drawStat(data.years || []);
@@ -49,7 +51,7 @@ export function render(slots, data) {
   const years = data.years || [];
   if (!years.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
   const wl = data.without_linux?.years;

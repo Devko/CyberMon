@@ -22,7 +22,7 @@ export function render(slots, data) {
     row.append(
       el("span", "hero-num accent", fmtPct(latest.validating_pc)),
       el("span", "hero-when", tpl(ed.statLatest, { latest_month: latest.date.slice(0, 7) })),
-      el("span", "hero-vs", "vs"),
+      el("span", "hero-vs", editorial.ui.vs),
       el("span", "hero-num", fmtPct(baseline.validating_pc)),
       // baseline comes from the payload: the month 120 months before the
       // newest one when APNIC's record reaches back that far, else the
@@ -30,7 +30,7 @@ export function render(slots, data) {
       el("span", "hero-when", tpl(ed.statAgo, { ago_month: baseline.month }))
     );
   } else {
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
@@ -38,7 +38,7 @@ export function render(slots, data) {
   // ---- chart ----------------------------------------------------------------
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -66,7 +66,7 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(r.month)}</div>` +
-          `<strong>${fmtPct(r.validating_pc)}</strong> of users behind validating resolvers`
+          `<strong>${fmtPct(r.validating_pc)}</strong> ${escapeHtml(ed.labels.tipShare)}`
         );
       },
     },
@@ -84,7 +84,7 @@ export function render(slots, data) {
       axisLabel: { ...valAxis().axisLabel, formatter: "{value}%" },
     }),
     series: [{
-      name: "Validating", type: "line",
+      name: ed.labels.validating, type: "line",
       data: rows.map((r) => r.validating_pc),
       color: C.accent, symbol: "none",
       lineStyle: { width: 2 },

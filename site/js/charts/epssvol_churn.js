@@ -6,7 +6,7 @@
 // like the partial week/year on the sibling modules. Empty log -> one honest
 // nodata card, never a fake bar.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 export function render(slots, data) {
@@ -47,7 +47,8 @@ export function render(slots, data) {
         if (!w) return "";
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
-          `${escapeHtml(w.week)} · ${fmtInt(w.days)} night${w.days === 1 ? "" : "s"}</div>`;
+          `${escapeHtml(w.week)} · ` +
+          `${escapeHtml(tpl(w.days === 1 ? ed.labels.tipNight : ed.labels.tipNights, { n: fmtInt(w.days) }))}</div>`;
         const body = SERIES.map(({ name, color, value }) =>
           `<div style="display:flex;gap:10px;justify-content:space-between;align-items:baseline;">` +
           `<span><span style="display:inline-block;width:8px;height:8px;background:${color};margin-right:6px;"></span>` +

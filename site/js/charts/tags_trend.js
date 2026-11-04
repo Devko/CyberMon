@@ -32,7 +32,7 @@ export function render(slots, data) {
     row.append(
       el("span", "hero-num accent", fmtInt(h.unsupported_latest)),
       el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
-      el("span", "hero-vs", "vs"),
+      el("span", "hero-vs", editorial.ui.vs),
       el("span", "hero-num", fmtInt(h.unsupported_first)),
       el("span", "hero-when", tpl(ed.statFirst, { first_year: h.unsupported_first_year })),
       el("span", "hero-when muted", "· " + tpl(ed.statCurrent, {
@@ -116,7 +116,7 @@ export function render(slots, data) {
     slots.extra.append(el("p", "panel-note", tpl(ed.contextNote, {
       private: fmtInt(ctx.private_tag_count),
       top: list(ctx.private_tags.slice(0, 3)),
-      adp: ctx.adp_tags?.length ? list(ctx.adp_tags) : "none",
+      adp: ctx.adp_tags?.length ? list(ctx.adp_tags) : ed.labels.none,
     })));
   }
 }

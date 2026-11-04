@@ -35,13 +35,15 @@ import { el } from "../dom.js";
 import { buildChrome, framePlan, lerp, mkMotionChart, MOTION_FONT } from "./chrome.js";
 
 // Stacking order: bottom -> top; Critical crowns the stack in accent red.
-// Mirrors BUCKETS in charts/flood.js so the clip and the site agree.
+// Mirrors BUCKETS in charts/flood.js and reads the same bucket names
+// (editorial.sections.flood.labels), so the clip and the site agree.
+const LEVELS = editorial.sections.flood.labels;
 const BUCKETS = [
-  { key: "unscored", label: "No score in record" },
-  { key: "low", label: "Low" },
-  { key: "medium", label: "Medium" },
-  { key: "high", label: "High" },
-  { key: "critical", label: "Critical (≥9.0)" },
+  { key: "unscored", label: LEVELS.unscored },
+  { key: "low", label: LEVELS.low },
+  { key: "medium", label: LEVELS.medium },
+  { key: "high", label: LEVELS.high },
+  { key: "critical", label: LEVELS.critical },
 ];
 
 // Frame budget @ 30fps: 20 + 27*13 + 55 = 426 frames ≈ 14.2s.
@@ -81,7 +83,7 @@ export const scene = {
 
     const ed = editorial.motion.scenes[this.id];
     const chrome = buildChrome(stage, this.id, tpl(ed.meta, {
-      era: eraYear ?? "the marker",
+      era: eraYear ?? ed.eraFallback,
       gen: genYear,
     }));
 
@@ -196,6 +198,8 @@ export const scene = {
     chrome.setProgress(progress);
 
     // Headline number for the year on screen: how many CVEs it published.
-    chrome.setSub(`${fmtInt(Math.round(lerp(totals[s], totals[s2], t)))} published`);
+    chrome.setSub(tpl(editorial.motion.scenes[this.id].sub, {
+      n: fmtInt(Math.round(lerp(totals[s], totals[s2], t))),
+    }));
   },
 };

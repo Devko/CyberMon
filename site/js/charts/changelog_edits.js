@@ -34,7 +34,7 @@ export function render(slots, data) {
     );
   } else {
     // Baseline night: the record exists but holds no events yet.
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
@@ -59,7 +59,7 @@ export function render(slots, data) {
   const rows = data.months || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -90,7 +90,7 @@ export function render(slots, data) {
             );
           }
         }
-        lines.push(`${fmtInt(r.total)} edits`);
+        lines.push(escapeHtml(tpl(ed.labels.tipTotal, { n: fmtInt(r.total) })));
         return lines.join("");
       },
     },

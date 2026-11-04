@@ -86,6 +86,7 @@ const SYM_TICK_DAYS = [-3000, -300, -30, 0, 30, 300];
 // passes nothing and gets an inert store pinned to the default era.
 export function render(slots, data, eraStore = makeEraStore(data)) {
   const ed = editorial.sections.ai_clock;
+  const L = ed.labels;
   const head = data.headline || {};
   const clock = data.clock || {};
   const gap = (clock.metrics || []).find((m) => m.id === "poc_gap");
@@ -104,14 +105,14 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       el("span", "hero-when", ed.statUplift)
     );
   } else {
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
 
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -219,7 +220,8 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
           if (!r) return "";
           return (
             `<div style="color:${C.muted};margin-bottom:4px;">${year} · ${escapeHtml(p.seriesName)}</div>` +
-            `median <strong>${fmtDays(r.value)}</strong> · ${fmtInt(r.n)} CVEs`
+            `${escapeHtml(L.tipMedian)} <strong>${fmtDays(r.value)}</strong> · ` +
+            `${escapeHtml(tpl(L.tipCves, { n: fmtInt(r.n) }))}`
           );
         },
       },
@@ -235,7 +237,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       },
       yAxis: [
         valAxis({
-          name: "days (log)",
+          name: L.yAxis,
           nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
           min: symMin,
           max: symMax,

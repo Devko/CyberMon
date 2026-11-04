@@ -13,6 +13,7 @@ import { el } from "../dom.js";
 
 export function render(slots, data, ctx) {
   const ed = editorial.sections.adp_handoff;
+  const L = ed.labels;
   const h = data.headline;
   const months = data.months || [];
 
@@ -56,15 +57,17 @@ export function render(slots, data, ctx) {
         let html =
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(m.month)}` +
           `${m.month === genMonth ? ` · ${escapeHtml(ed.partialMonth)}` : ""}</div>` +
-          `<strong>${fmtInt(m.enriched)}</strong> records enriched<br>` +
-          `<span style="color:${C.muted};">SSVC ${fmtInt(m.ssvc)} · ` +
-          `CVSS ${fmtInt(m.cvss)} · CWE ${fmtInt(m.cwe)}</span>`;
+          `<strong>${fmtInt(m.enriched)}</strong> ${escapeHtml(L.tipEnriched)}<br>` +
+          `<span style="color:${C.muted};">${escapeHtml(tpl(L.tipParts, {
+            ssvc: fmtInt(m.ssvc), cvss: fmtInt(m.cvss), cwe: fmtInt(m.cwe),
+          }))}</span>`;
         if (m.backfill) {
           html +=
             `<div style="margin-top:6px;padding-top:6px;border-top:1px dashed ${C.rule};` +
             `color:${C.accent};">${escapeHtml(ed.sweepTooltip)}</div>` +
-            `<span style="color:${C.muted};">${fmtInt(m.legacy)} of ` +
-            `${fmtInt(m.enriched)} on legacy CVEs</span>`;
+            `<span style="color:${C.muted};">${escapeHtml(tpl(L.tipLegacy, {
+              legacy: fmtInt(m.legacy), enriched: fmtInt(m.enriched),
+            }))}</span>`;
         }
         return html;
       },
@@ -90,7 +93,7 @@ export function render(slots, data, ctx) {
     }),
     series: [
       {
-        name: "Enriched",
+        name: L.enriched,
         type: "bar",
         barWidth: "70%",
         data: months.map((m) => ({

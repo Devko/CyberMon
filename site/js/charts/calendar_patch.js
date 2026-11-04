@@ -16,7 +16,7 @@ export function render(slots, data) {
   const rows = data.patch_tuesday.years || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
   const baseline = data.patch_tuesday.calendar_pct;

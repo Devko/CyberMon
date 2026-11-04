@@ -53,8 +53,8 @@ export function render(slots, data) {
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(p.axisValue)}</div>` +
-          `<strong>${fmtInt(p.value)}</strong> organizations ` +
-          `<span style="color:${C.muted}">(${pct.toFixed(0)}% of roster)</span>`
+          tpl(escapeHtml(ed.labels.tipOrgs), { n: `<strong>${fmtInt(p.value)}</strong>` }) + " " +
+          `<span style="color:${C.muted}">${escapeHtml(tpl(ed.labels.tipShare, { pct: pct.toFixed(0) }))}</span>`
         );
       },
     },
@@ -70,7 +70,7 @@ export function render(slots, data) {
     }),
     series: [
       {
-        name: "Organizations",
+        name: ed.labels.orgs,
         type: "bar",
         barWidth: "62%",
         data: rows.map((r) => ({

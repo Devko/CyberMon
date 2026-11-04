@@ -6,16 +6,17 @@
 // figures). Years below min_n carry no median in the payload; the line
 // simply skips them (absence is "not charted", never zero).
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml, MONO } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 import { fmtUSD, fmtUSDCompact } from "./extortion_fmt.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.payments;
+  const L = ed.labels;
   const rows = data.payments_by_year || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -41,11 +42,13 @@ export function render(slots, data) {
         // rounding it to "$0" would chart a payment that wasn't there).
         const fmtMedian = (v) => (v < 100 ? `$${Number(v).toFixed(2)}` : fmtUSD(v));
         const median = "median_usd" in r
-          ? `median payment <strong>${fmtMedian(r.median_usd)}</strong>`
-          : `median not shown (fewer than ${fmtInt(data.min_n)} payments)`;
+          ? `${escapeHtml(L.tipMedian)} <strong>${fmtMedian(r.median_usd)}</strong>`
+          : escapeHtml(tpl(L.tipNoMedian, { n: fmtInt(data.min_n) }));
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.axisValueLabel ?? p.name))}</div>` +
-          `<strong>${fmtInt(r.payments)}</strong> verified payments · ${fmtUSD(r.usd)} total<br>` +
+          tpl(escapeHtml(L.tipPayments), {
+            n: `<strong>${fmtInt(r.payments)}</strong>`, usd: fmtUSD(r.usd),
+          }) + "<br>" +
           median
         );
       },
@@ -59,7 +62,7 @@ export function render(slots, data) {
       }),
       valAxis({
         type: "log",
-        name: "median USD (log)",
+        name: L.yAxisMedian,
         nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
         position: "right",
         splitLine: { show: false },

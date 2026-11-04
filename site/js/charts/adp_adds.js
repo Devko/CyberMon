@@ -3,7 +3,7 @@
 // addition: an SSVC decision (near-universal, drawn in accent), a CVSS score,
 // a CWE class (selective patch-ins). Independent shares — a record can carry
 // all three — so the bars never sum to 100.
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import {
   C, MONO, mkChart, catAxis, valAxis, baseGrid, baseTooltip, fmtInt, fmtPct,
   escapeHtml,
@@ -11,6 +11,7 @@ import {
 
 export function render(slots, data) {
   const ed = editorial.sections.adp_adds;
+  const L = ed.labels;
   const adds = data.adds || {};
   if (!adds.total) {
     slots.chart.classList.remove("chart", "chart-tall");
@@ -39,8 +40,8 @@ export function render(slots, data) {
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(bar.label)}</div>` +
-          `<strong>${fmtPct(p.value)}</strong> of CISA-ADP records<br>` +
-          `<span style="color:${C.muted};">${fmtInt(n)} of ${fmtInt(adds.total)}</span>`
+          `<strong>${fmtPct(p.value)}</strong> ${escapeHtml(L.tipShare)}<br>` +
+          `<span style="color:${C.muted};">${escapeHtml(tpl(L.tipCount, { n: fmtInt(n), total: fmtInt(adds.total) }))}</span>`
         );
       },
     },
@@ -53,7 +54,7 @@ export function render(slots, data) {
     }),
     series: [
       {
-        name: "Share",
+        name: L.share,
         type: "bar",
         barWidth: "52%",
         data: bars.map((b) => ({

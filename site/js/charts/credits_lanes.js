@@ -7,7 +7,7 @@ import {
   C, MONO, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid,
   fmtInt, tooltipRows, tooltipFootnote,
 } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import { el, clear } from "../dom.js";
 import { mkToggle } from "../ui.js";
 
@@ -65,7 +65,7 @@ export function render(slots, data) {
         formatter: (params) => {
           const m = months[params[0]?.dataIndex];
           return tooltipRows(params.filter((p) => p.value), fmtInt) +
-            (m ? tooltipFootnote([`${fmtInt(m.total)} distinct CVEs`]) : "");
+            (m ? tooltipFootnote([tpl(ed.labels.tipDistinct, { n: fmtInt(m.total) })]) : "");
         },
       },
       xAxis: catAxis(months.map((m) => m.month), {

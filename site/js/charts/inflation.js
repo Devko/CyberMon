@@ -5,6 +5,7 @@ import { el, frag } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.inflation;
+  const L = ed.labels;
 
   // ---- headline stat --------------------------------------------------------
   const h = data.headline;
@@ -17,7 +18,7 @@ export function render(slots, data) {
         row.append(
           el("span", "hero-num accent", fmtPct(h.pct_high_critical_latest)),
           el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
-          el("span", "hero-vs", "vs"),
+          el("span", "hero-vs", editorial.ui.vs),
           el("span", "hero-num", fmtPct(h.pct_high_critical_baseline)),
           // baseline_year comes from the payload — per the contract, the
           // baseline is the earliest year that survived the sample-size
@@ -56,7 +57,7 @@ export function render(slots, data) {
     if (!rows.length) continue;
     const get = byYear(rows);
     const color = C.versions[v];
-    const name = `CVSS ${v} median`;
+    const name = tpl(L.versionMedian, { v });
     legendData.push(name);
     series.push(
       { // invisible IQR base (p25)
@@ -75,7 +76,7 @@ export function render(slots, data) {
     );
   }
 
-  const blendedName = "Blended median";
+  const blendedName = L.blended;
   legendData.push(blendedName);
   // Year-aligned, NOT positional: the axis is the union of all series'
   // years, so blended (which starts later than v3) must map by year or
@@ -108,7 +109,7 @@ export function render(slots, data) {
     xAxis: catAxis(cats, { boundaryGap: false }),
     yAxis: valAxis({
       min: 0, max: 10, interval: 2,
-      name: "CVSS base score",
+      name: L.yAxis,
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
     }),
     series,

@@ -64,7 +64,7 @@ export function render(slots, data) {
           formatter: (params) => {
             const row = rows[params[0]?.dataIndex];
             return tooltipRows(params, fmtPct) + (row
-              ? `<div style="color:${C.muted};margin-top:4px;">${fmtInt(row.published)} published</div>`
+              ? `<div style="color:${C.muted};margin-top:4px;">${escapeHtml(tpl(ed.labels.tipPublished, { n: fmtInt(row.published) }))}</div>`
               : "");
           },
         },
@@ -151,7 +151,7 @@ export function render(slots, data) {
   right.append(histEl);
   const bins = cmp.bins || [];
   const binLabel = (b) => (b.lo <= -10 ? `≤${fmtDelta(b.hi)}` : b.hi >= 10 ? `≥${fmtDelta(b.lo)}` : fmtDelta(b.center));
-  const binRange = (b) => (b.lo <= -10 ? `≤ ${fmtDelta(b.hi)}` : b.hi >= 10 ? `≥ ${fmtDelta(b.lo)}` : `${fmtDelta(b.lo)} to ${fmtDelta(b.hi)}`);
+  const binRange = (b) => (b.lo <= -10 ? `≤ ${fmtDelta(b.hi)}` : b.hi >= 10 ? `≥ ${fmtDelta(b.lo)}` : tpl(ed.labels.binRange, { lo: fmtDelta(b.lo), hi: fmtDelta(b.hi) }));
   const hist = mkChart(histEl);
   hist.setOption({
     grid: { ...baseGrid, left: 44, right: 10, top: 12, bottom: 44 },

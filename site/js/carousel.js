@@ -377,7 +377,8 @@ function wordmark() {
 function buildCover(moduleEd, meta) {
   const slide = el("section", "slide slide-cover");
   const top = el("div");
-  top.append(wordmark(), el("p", "cover-module", `Module ${moduleEd.num} — ${moduleEd.label}`));
+  top.append(wordmark(), el("p", "cover-module",
+    tpl(editorial.carousel.coverModule, { num: moduleEd.num, label: moduleEd.label })));
   const mid = el("div", "cover-mid");
   mid.append(
     el("h1", "cover-headline", moduleEd.headline),

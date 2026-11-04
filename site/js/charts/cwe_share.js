@@ -3,7 +3,7 @@
 // volume, biggest at the bottom, "Other" capping the stack in the faintest
 // ink. Shares sum to ~100 per year, so the stack reads as a full bar.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml } from "../theme.js";
-import { editorial } from "../editorial.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 // Newsprint ramp for up to 8 classes (volume order: loudest inks first).
@@ -17,7 +17,7 @@ export function render(slots, data) {
   const top = data.top_cwes || [];
   if (!rows.length || !top.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -43,7 +43,9 @@ export function render(slots, data) {
         if (!r) return "";
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(r.year))}` +
-          ` · ${fmtInt(r.n_tagged)} tagged (${fmtPct(r.pct_tagged)} of ${fmtInt(r.n_published)} published)</div>`;
+          ` · ${escapeHtml(tpl(ed.labels.tipTagged, {
+            n: fmtInt(r.n_tagged), pct: fmtPct(r.pct_tagged), published: fmtInt(r.n_published),
+          }))}</div>`;
         const body = params
           .filter((p) => p.value !== null && p.value !== undefined)
           .map((p) =>

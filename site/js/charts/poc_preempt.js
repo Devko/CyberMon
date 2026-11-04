@@ -11,6 +11,7 @@ import { el } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.poc_preempt;
+  const L = ed.labels;
   const kp = data.kev_preempt || {};
 
   // ---- trend-cohort note (panel-note template) ------------------------------
@@ -31,7 +32,7 @@ export function render(slots, data) {
   const rows = kp.years || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -48,13 +49,14 @@ export function render(slots, data) {
         const r = rows[p.dataIndex];
         if (!r) return "";
         const era = Number.isFinite(cutoffYear) && r.year < cutoffYear
-          ? `<br><span style="color:${C.muted};">seeding-era listings — kept out of the headline figure</span>`
+          ? `<br><span style="color:${C.muted};">${escapeHtml(L.tipSeeding)}</span>`
           : "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>` +
-          `<strong>${fmtPct(r.pct_preempted)}</strong> had public exploit code first<br>` +
-          `${fmtInt(r.preempted)} of ${fmtInt(r.with_poc_date)} matched · ` +
-          `${fmtInt(r.total_added)} listings added${era}`
+          `<strong>${fmtPct(r.pct_preempted)}</strong> ${escapeHtml(L.tipShare)}<br>` +
+          escapeHtml(tpl(L.tipCount, {
+            n: fmtInt(r.preempted), matched: fmtInt(r.with_poc_date), added: fmtInt(r.total_added),
+          })) + era
         );
       },
     },

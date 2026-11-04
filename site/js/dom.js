@@ -3,6 +3,7 @@
 // textContent (never markup), so editorial strings and pipeline data can't
 // inject HTML.
 // =============================================================================
+import { editorial } from "./editorial.js";
 
 export function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -46,7 +47,7 @@ export function withCveLinks(text, className = "cve-link") {
   for (const m of s.matchAll(CVE_ID)) {
     if (m.index > last) out.append(s.slice(last, m.index));
     const a = link(`field.html#cve=${encodeURIComponent(m[0])}`, m[0], className, { sameTab: true });
-    a.title = "Open this record in the Field";
+    a.title = editorial.ui.openInField;
     out.append(a);
     last = m.index + m[0].length;
   }

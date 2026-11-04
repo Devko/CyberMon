@@ -13,7 +13,7 @@ export function render(slots, data) {
   const noteEl = slots.panel.querySelector(".panel-note");
   if (noteEl) {
     noteEl.textContent = tpl(ed.note, {
-      first_date: hist[0]?.date ?? "today",
+      first_date: hist[0]?.date ?? ed.labels.firstDateFallback,
     });
   }
 

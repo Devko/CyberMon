@@ -54,7 +54,7 @@ export function render(slots, data) {
 
   if (!n) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 

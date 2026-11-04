@@ -50,7 +50,7 @@ export function render(slots, data) {
   }
   if (!terms.length || !clockRows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     slots.panel.querySelector(".panel-note")?.remove();
     return;
   }

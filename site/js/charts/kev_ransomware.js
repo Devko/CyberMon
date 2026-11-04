@@ -4,13 +4,15 @@
 // new listings flagged "Known" for ransomware campaign use. Accent ink on
 // purpose — the flag marks the catalog's costliest tail.
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 export function render(slots, data) {
+  const ed = editorial.sections.ransomware;
   const rows = data.years || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -28,8 +30,8 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>` +
-          `<strong>${fmtPct(r.pct_known)}</strong> flagged for ransomware use<br>` +
-          `${fmtInt(r.known)} of ${fmtInt(r.total)} entries added`
+          `<strong>${fmtPct(r.pct_known)}</strong> ${escapeHtml(ed.labels.tipShare)}<br>` +
+          escapeHtml(tpl(ed.labels.tipCount, { n: fmtInt(r.known), total: fmtInt(r.total) }))
         );
       },
     },

@@ -91,7 +91,7 @@ export function render(slots, data, refs) {
           (r.without_cve_young ? line(YOUNG, youngName, r.without_cve_young) : "") +
           `<div style="color:${C.muted};margin-top:4px;">` +
           `${escapeHtml(tpl(ed.tooltipShare, { pct: r.total ? fmtPct((100 * r.without_cve) / r.total) : "—" }))}` +
-          ` · ${fmtInt(r.total)} total</div>`
+          ` · ${escapeHtml(tpl(ed.labels.tipTotal, { n: fmtInt(r.total) }))}</div>`
         );
       },
     };

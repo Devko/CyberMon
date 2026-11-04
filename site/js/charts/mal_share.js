@@ -71,7 +71,8 @@ export function render(slots, data, refs) {
               pct: fmtPct((100 * folded[i][k]) / y.total),
             })) + `</div>`)
           .join("");
-        return `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(labels[i])} · ${fmtInt(y.total)} reports</div>` + rows;
+        return `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(labels[i])} · ` +
+          `${escapeHtml(tpl(ed.labels.tipReports, { n: fmtInt(y.total) }))}</div>` + rows;
       },
     },
     xAxis: catAxis(labels),

@@ -7,11 +7,13 @@ import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 export function render(slots, data) {
+  const ed = editorial.sections.entrants;
+  const L = ed.labels;
   const edp = editorial.projection;
   const years = data.years || [];
   if (!years.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -30,7 +32,7 @@ export function render(slots, data) {
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 50, top: 44 },
-    legend: { ...baseLegend, data: ["First-year CNAs", "Active CNAs"] },
+    legend: { ...baseLegend, data: [L.firstYear, L.active] },
     tooltip: {
       ...baseTooltip,
       trigger: "axis",
@@ -38,7 +40,7 @@ export function render(slots, data) {
         let html = tooltipRows(params, fmtInt);
         if (hasProj && params.some((p) => p.dataIndex === projIdx)) {
           html += tooltipFootnote([
-            tpl(edp.tooltipProjected, { name: "First-year CNAs", n: fmtInt(proj.newcomers) }),
+            tpl(edp.tooltipProjected, { name: L.firstYear, n: fmtInt(proj.newcomers) }),
             tpl(edp.tooltipElapsed, { pct: fmtPct(proj.elapsed * 100) }),
           ]);
         }
@@ -53,7 +55,7 @@ export function render(slots, data) {
     }),
     series: [
       {
-        name: "First-year CNAs", type: "bar", stack: "newcomers",
+        name: L.firstYear, type: "bar", stack: "newcomers",
         data: years.map((d) => d.newcomer_count),
         color: C.accent, itemStyle: { opacity: 0.75 },
         barMaxWidth: 18,
@@ -77,7 +79,7 @@ export function render(slots, data) {
           }]
         : []),
       {
-        name: "Active CNAs", type: "line",
+        name: L.active, type: "line",
         data: years.map((d) => d.cna_count),
         color: C.ink, symbol: "none", lineStyle: { width: 2 }, z: 5,
       },

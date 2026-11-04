@@ -12,7 +12,7 @@ export function render(slots, data) {
   const rows = data.id_age.years || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -28,7 +28,7 @@ export function render(slots, data) {
           row.append(
             el("span", "hero-num accent", fmtPct(h.pct_prior_year_latest)),
             el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
-            el("span", "hero-vs", "vs"),
+            el("span", "hero-vs", editorial.ui.vs),
             el("span", "hero-num", fmtPct(h.pct_prior_year_baseline)),
             el("span", "hero-when", tpl(ed.statAgo, { ago_year: h.baseline_year }))
           );
@@ -65,7 +65,7 @@ export function render(slots, data) {
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(String(params[0].axisValueLabel ?? params[0].name))}` +
-          ` · ${fmtInt(r.n)} records</div>`;
+          ` · ${escapeHtml(tpl(ed.labels.tipRecords, { n: fmtInt(r.n) }))}</div>`;
         const body = [...BANDS].reverse().map(({ pctKey, nKey, name, color }) =>
           `<div style="display:flex;gap:10px;justify-content:space-between;align-items:baseline;">` +
           `<span><span style="display:inline-block;width:8px;height:8px;background:${color};margin-right:6px;"></span>` +

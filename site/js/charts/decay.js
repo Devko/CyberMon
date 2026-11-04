@@ -11,7 +11,7 @@ export function render(slots, data) {
   const noteEl = slots.panel.querySelector(".panel-note");
   if (noteEl) {
     noteEl.textContent = tpl(ed.note, {
-      first_date: data.history[0]?.date ?? "today",
+      first_date: data.history[0]?.date ?? ed.labels.firstDateFallback,
     });
   }
 
@@ -40,7 +40,11 @@ export function render(slots, data) {
   const bars = mkChart(barsEl);
   bars.setOption({
     grid: { left: 8, right: 64, top: 10, bottom: 10, containLabel: true },
-    tooltip: { ...baseTooltip, formatter: (p) => `${escapeHtml(p.name)}<br><strong>${fmtInt(p.value)}</strong> CVEs` },
+    tooltip: {
+      ...baseTooltip,
+      formatter: (p) => `${escapeHtml(p.name)}<br>` +
+        tpl(escapeHtml(ed.labels.tipCves), { n: `<strong>${fmtInt(p.value)}</strong>` }),
+    },
     xAxis: { type: "log", show: false, min: 1 },
     yAxis: catAxis(statuses.map((s) => s.status), { axisLine: { show: false } }),
     series: [{
@@ -74,14 +78,14 @@ export function render(slots, data) {
     }),
     series: [
       {
-        name: "Backlog total", type: "line",
+        name: ed.labels.backlog, type: "line",
         data: hist.map((d) => d.backlog_total),
         color: C.accent, symbol: "circle", symbolSize: 5,
         lineStyle: { width: 2 },
         areaStyle: { color: C.accent, opacity: 0.07 },
       },
       {
-        name: "Awaiting analysis", type: "line",
+        name: ed.labels.awaiting, type: "line",
         data: hist.map((d) => d.awaiting_analysis),
         // visible symbol so a young history (one snapshot = no line
         // segment yet) still renders a point instead of nothing

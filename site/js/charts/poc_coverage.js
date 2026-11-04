@@ -13,6 +13,7 @@ import { el } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.poc_coverage;
+  const L = ed.labels;
   const cov = data.coverage || {};
 
   // ---- window note (panel-note template) ------------------------------------
@@ -28,11 +29,11 @@ export function render(slots, data) {
   const rows = (cov.buckets || []).map((b) => ({ ...b, muted: false }));
   const un = cov.unscored;
   if (un && un.total > 0) {
-    rows.push({ bucket: "unscored", ...un, muted: true });
+    rows.push({ bucket: L.unscored, ...un, muted: true });
   }
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -46,10 +47,12 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>` +
-          `<strong>${fmtPct(r.pct)}</strong> have public exploit code<br>` +
-          `${fmtInt(r.with_poc)} of ${fmtInt(r.total)} records published in ${cov.window_year}` +
+          `<strong>${fmtPct(r.pct)}</strong> ${escapeHtml(L.tipShare)}<br>` +
+          escapeHtml(tpl(L.tipCount, {
+            n: fmtInt(r.with_poc), total: fmtInt(r.total), year: cov.window_year,
+          })) +
           (Number.isFinite(r.with_detection)
-            ? `<br>${fmtInt(r.with_detection)} have a Nuclei detection template (counted separately)`
+            ? `<br>${escapeHtml(tpl(L.tipDetection, { n: fmtInt(r.with_detection) }))}`
             : "")
         );
       },

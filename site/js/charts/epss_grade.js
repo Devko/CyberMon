@@ -22,13 +22,13 @@ export function render(slots, data) {
     row.append(
       el("span", "hero-num accent", fmtPct(h.pct_below_1pct_latest)),
       el("span", "hero-when", tpl(ed.statLatest, { latest_year: h.latest_year })),
-      el("span", "hero-vs", "vs"),
+      el("span", "hero-vs", editorial.ui.vs),
       el("span", "hero-num", fmtPct(h.pct_below_1pct)),
       el("span", "hero-when", ed.statAgo)
     );
   } else {
     // Nothing graded yet (fresh backfill): an honest muted state, no invention.
-    row.append(el("span", "hero-when muted", "Not enough data yet."));
+    row.append(el("span", "hero-when muted", ed.nodata || editorial.ui.nodata));
   }
   stat.append(row);
   slots.stat.append(stat);
@@ -58,7 +58,7 @@ export function render(slots, data) {
   const rows = data.grade_by_year || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -66,6 +66,7 @@ export function render(slots, data) {
   const genYear = Number(data.generated_at.slice(0, 4));
   const cats = rows.map((r) => (r.year === genYear ? `${r.year}*` : String(r.year)));
 
+  const L = ed.labels;
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 50, top: 40 },
@@ -77,14 +78,14 @@ export function render(slots, data) {
         if (!r) return "";
         const lines = [
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>`,
-          `<span style="color:${BAND_COLORS.below}">under 1%</span> ` +
+          `<span style="color:${BAND_COLORS.below}">${escapeHtml(L.tipBelow)}</span> ` +
             `<strong>${fmtPct(r.pct_below_1pct)}</strong> (${fmtInt(r.n_below_1pct)})<br>`,
-          `1–10% ${fmtPct(r.pct_1_to_10pct)} (${fmtInt(r.n_1_to_10pct)})<br>`,
-          `10%+ ${fmtPct(r.pct_above_10pct)} (${fmtInt(r.n_above_10pct)})<br>`,
-          `${fmtInt(r.graded)} scored entries`,
+          `${escapeHtml(L.tipMid)} ${fmtPct(r.pct_1_to_10pct)} (${fmtInt(r.n_1_to_10pct)})<br>`,
+          `${escapeHtml(L.tipAbove)} ${fmtPct(r.pct_above_10pct)} (${fmtInt(r.n_above_10pct)})<br>`,
+          escapeHtml(tpl(L.tipScored, { n: fmtInt(r.graded) })),
         ];
-        if (r.ungradeable > 0) lines.push(` · ${fmtInt(r.ungradeable)} with no prior score`);
-        if (r.pending > 0) lines.push(` · ${fmtInt(r.pending)} awaiting lookup`);
+        if (r.ungradeable > 0) lines.push(` · ${escapeHtml(tpl(L.tipNoPrior, { n: fmtInt(r.ungradeable) }))}`);
+        if (r.pending > 0) lines.push(` · ${escapeHtml(tpl(L.tipPending, { n: fmtInt(r.pending) }))}`);
         return lines.join("");
       },
     },

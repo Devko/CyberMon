@@ -2,6 +2,7 @@
 // segment per bucket, widths = share of the row's counted CVEs) and its
 // legend. Fills come from the theme.js severity ramp — accent is Critical.
 import { C, fmtInt } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
 export const SEVERITIES = ["critical", "high", "medium", "low", "unscored"];
@@ -18,7 +19,11 @@ export function sevStrip(severity, labels) {
     const seg = el("span");
     seg.style.flex = `${severity[s]} 0 0`;
     seg.style.background = C.sev[s];
-    seg.title = `${labels[s]} ${fmtInt(severity[s])} of ${fmtInt(total)}`;
+    // Both callers pass credits_funnel's severityLabels; the hover title
+    // template sits beside them in that section.
+    seg.title = tpl(editorial.sections.credits_funnel.labels.sevTitle, {
+      label: labels[s], n: fmtInt(severity[s]), total: fmtInt(total),
+    });
     strip.append(seg);
   }
   return strip;

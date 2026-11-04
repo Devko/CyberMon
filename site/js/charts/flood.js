@@ -4,15 +4,18 @@ import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 import { mkToggle } from "../ui.js";
 
+// Bucket names live in editorial.sections.flood.labels; the animated clip
+// (motion/severity_flood.js) reads the same keys, so the two always agree.
+const L = editorial.sections.flood.labels;
 const BUCKETS = [
   // stacking order: bottom -> top; Critical crowns the stack in accent red.
   // "No score in record", not "Unscored": pre-2018 CVEs were mostly scored
   // by NVD in its own database, which this chart deliberately doesn't read.
-  { key: "unscored", label: "No score in record" },
-  { key: "low", label: "Low" },
-  { key: "medium", label: "Medium" },
-  { key: "high", label: "High" },
-  { key: "critical", label: "Critical (≥9.0)" },
+  { key: "unscored", label: L.unscored },
+  { key: "low", label: L.low },
+  { key: "medium", label: L.medium },
+  { key: "high", label: L.high },
+  { key: "critical", label: L.critical },
 ];
 
 export function render(slots, data) {

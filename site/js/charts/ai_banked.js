@@ -33,12 +33,13 @@ const fmtLevel = (v, unit) =>
 // default cutoff and never re-renders, which is exactly a printed slide.
 export function render(slots, data, eraStore = makeEraStore(data)) {
   const ed = editorial.sections.ai_banked;
+  const L = ed.labels;
   const banked = data.banked || {};
   const metrics = banked.metrics || [];
 
   if (!metrics.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -92,7 +93,7 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
               `${escapeHtml(ed.tipEarly)} <strong>${fmtLevel(block.early.value, u)}</strong><br>` +
               `${escapeHtml(tpl(ed.tipPre, { cut_year: block.cut_year }))} <strong>${fmtLevel(block.pre.value, u)}</strong><br>` +
               `${escapeHtml(ed.tipPost)} <strong>${fmtLevel(block.post.value, u)}</strong> ` +
-              `<span style="color:${C.muted};">(${block.post.years}y, ${fmtInt(block.post.n)} CVEs)</span><br>` +
+              `<span style="color:${C.muted};">${escapeHtml(tpl(L.tipPostN, { years: block.post.years, n: fmtInt(block.post.n) }))}</span><br>` +
               `<span style="color:${C.muted};">${escapeHtml(tpl(ed.tipBanked, { pct: block.pct_banked === null ? "—" : block.pct_banked.toFixed(1) }))}</span>`
             );
           },
@@ -141,9 +142,10 @@ export function render(slots, data, eraStore = makeEraStore(data)) {
       const rowEl = el("div", "verdict-row" + (metric.primary ? " is-primary" : ""));
       const badge = el("span", `verdict-badge verdict-${block.verdict}`, ed.verdicts[block.verdict]);
       const name = el("span", "verdict-metric", metric.label);
-      // The strongest evidence is named as such, not just placed first —
-      // row order is invisible to a screen reader and to anyone who
-      // quotes a single line out of the table.
+      // The primary metric carries a tag saying what sets it apart
+      // (ed.primaryTag), not just a place at the top: row order is
+      // invisible to a screen reader and to anyone who quotes a single
+      // line out of the table.
       if (metric.primary) name.append(el("span", "verdict-primary-tag", ed.primaryTag));
       rowEl.append(badge, name);
       const levels = block.verdict === "insufficient"

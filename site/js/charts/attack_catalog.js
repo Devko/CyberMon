@@ -8,10 +8,11 @@ import { el } from "../dom.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.catalog;
+  const L = ed.labels;
   const rows = data.versions || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -35,7 +36,7 @@ export function render(slots, data) {
     },
     xAxis: timeAxis(),
     yAxis: valAxis({
-      name: "active entries",
+      name: L.yAxis,
       nameTextStyle: { color: C.faint, fontFamily: MONO, fontSize: 10 },
     }),
     series: [

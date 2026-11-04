@@ -31,7 +31,7 @@ export function render(slots, data) {
   const rows = data.revenue_by_quarter || [];
   if (!rows.length) {
     slots.chart.classList.remove("chart", "chart-tall");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -49,8 +49,8 @@ export function render(slots, data) {
         if (!r) return "";
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(String(p.name))}</div>` +
-          `<strong>${fmtUSD(r.usd)}</strong> confirmed ransom revenue<br>` +
-          `dollars at day-of-transfer rates · lower bound`
+          `<strong>${fmtUSD(r.usd)}</strong> ${escapeHtml(ed.labels.tipRevenue)}<br>` +
+          escapeHtml(ed.labels.tipBasis)
         );
       },
     },

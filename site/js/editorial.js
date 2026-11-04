@@ -1,9 +1,40 @@
 // =============================================================================
-// editorial.js — EVERY user-facing string on the site lives here.
-// Rewrite the voice in this one file; nothing editorial is hardcoded elsewhere.
+// editorial.js — the text that the module pages, their charts, the carousel
+// slides and the animated clips show to a reader.
+//
+// What lives here:
+//   - page and section copy: kickers, headlines, captions, stats, notes,
+//     methodology, toggle and column labels, the nav and the footer;
+//   - `ui`: strings every page shares (the empty-state line, "vs", "n/a",
+//     the "On this page" list, the nav's instrument links, the hover title
+//     of CVE links);
+//   - `sections.<id>.labels`: each chart's short text: series and axis
+//     names, tooltip and hover phrases, and fallback words that a template
+//     fills in. Series names double as the keys ECharts matches legends and
+//     tooltips on, so the chart code reads them from here and compares
+//     against the same value;
+//   - `sections.<id>.nodata`: a section's own empty-state line; a chart
+//     whose section has none shows `ui.nodata`;
+//   - the carousel and motion-clip copy (`carousel`, `motion`).
+//
+// What stays in code, by design:
+//   - internal series ids (names starting with "_", never shown);
+//   - bare unit tokens: an axis name or count suffix that is only a unit
+//     ("days", "share", "payments", "CNAs", the "d" after a day count, "pp");
+//   - number and date formatting: signs and symbols (± ≤ ≥ ▲ ▼ → * #), the
+//     k/M/B suffixes, "n=", "—" and "?" for a missing value, and month
+//     abbreviations;
+//   - proper names of sources and statuses: GDELT, Hacker News, arXiv,
+//     Wikipedia, SEC EDGAR, the NVD status names, and the CYBERMON wordmark
+//     in the masthead and on the carousel slides;
+//   - developer error and console messages, and code comments;
+//   - the HTML shells (site/*.html): <title>, meta tags and <noscript> text;
+//   - the two instruments, the Field (field.js) and the Mutation Observatory
+//     (observatory.js), which keep their own copy in their own files.
 //
 // Templates use {placeholders}; values are filled from site/data/*.json at
-// render time so the copy never carries stale numbers.
+// render time so the copy never carries stale numbers. tpl() below fills
+// them.
 // =============================================================================
 
 const PIPELINE_URL = "https://github.com/Devko/CyberMon/blob/main/pipeline/";
@@ -517,9 +548,30 @@ export const editorial = {
       "load. The numbers are in {file}.",
   },
 
+  // Strings shared by every page and chart rather than owned by one section.
+  ui: {
+    // The empty state of any chart or stat whose section has no `nodata`
+    // line of its own.
+    nodata: "Not enough data yet.",
+    // The jump list over a module page's sections (common.js renderToc).
+    onThisPage: "On this page",
+    // Hover title on every CVE id linked into the Field (dom.js withCveLinks).
+    openInField: "Open this record in the Field",
+    // Between the latest and the baseline figure of a hero stat.
+    vs: "vs",
+    // Filled into a {placeholder} whose value is missing.
+    na: "n/a",
+    // The instruments' nav links and their row label on phones; the
+    // landing page's instrument cards use home.instruments instead.
+    navField: "The Field →",
+    navObservatory: "Observatory →",
+    navInstruments: "Instruments",
+    // aria-label of the masthead wordmark, which links home on module pages.
+    homeLink: "CyberMon overview",
+  },
+
   methodologyLabel: "How this is computed",
   navFoldLabel: "All modules",
-  tocLabel: "On this page",
   chartSourcePrefix: "Data: ",
   chartSourceLinkText: "all sources & licenses ↓",
   methodologySourcePrefix: "Source of truth: ",
@@ -706,6 +758,9 @@ export const editorial = {
         "first month the Pageviews API reports for its article's titles. The month in " +
         "progress is collected but is not charted, ranked or averaged until it closes, " +
         "because a partial month would show as a drop at the end of every curve.",
+      labels: {
+        sparklineEmpty: "no media data yet",
+      },
     },
 
     // ------------------------------------------- market.html · 2
@@ -740,6 +795,9 @@ export const editorial = {
         "zero, when both windows together hold fewer than thirty raw hits, or when its " +
         "source has had no successful fetch for more than three days. Any column can be " +
         "sorted; the default order is largest rise first.",
+      labels: {
+        barClipped: "bar clipped at ±{cap}%",
+      },
     },
 
     // ------------------------------------------- market.html · 3
@@ -822,6 +880,11 @@ export const editorial = {
         "the record goes back that far. The current year is plotted (labeled partial, " +
         "refilled nightly) but is not used in the headline stat, because a partial year " +
         "is not comparable with a complete one.",
+      labels: {
+        versionMedian: "CVSS {v} median",
+        blended: "Blended median",
+        yAxis: "CVSS base score",
+      },
     },
 
     // ------------------------------------------------------------------- 2
@@ -863,6 +926,13 @@ export const editorial = {
         "of the year has elapsed (about mid-February), assumes publication is uniform " +
         "through the year, and ignores seasonality and late-year backfill. The severity " +
         "mix is not projected, and the share view has no marker.",
+      labels: {
+        unscored: "No score in record",
+        low: "Low",
+        medium: "Medium",
+        high: "High",
+        critical: "Critical (≥9.0)",
+      },
     },
 
     // ------------------------------------------------------------------- 3
@@ -895,6 +965,14 @@ export const editorial = {
         "entries published before CNAs scored in the record, the score is usually " +
         "CISA's own ADP score, so the KEV stat largely uses CISA's numbers. EPSS is a " +
         "model's prediction, not a record of exploitation.",
+      labels: {
+        xAxis: "EPSS: predicted probability of exploitation →",
+        yAxis: "CVSS →",
+        tipCell: "CVSS {cvss} × EPSS {epss}",
+        tipCves: "{n} CVEs",
+        tipKevBucket: "CVSS {bucket}",
+        tipKev: "{n} KEV entries",
+      },
     },
 
     // ------------------------------------------------------------------- 4
@@ -924,6 +1002,12 @@ export const editorial = {
         "committed CSV (data/history/nvd_backlog.csv); a second run on the same date " +
         "replaces that date's row. A night without a successful run has no row, and " +
         "the chart's date axis skips it.",
+      labels: {
+        backlog: "Backlog total",
+        awaiting: "Awaiting analysis",
+        tipCves: "{n} CVEs",
+        firstDateFallback: "today",
+      },
     },
 
     // ------------------------------------------------------------------- 5
@@ -984,6 +1068,9 @@ export const editorial = {
         "one day. Each run date gets one row in a committed CSV " +
         "(data/history/nvd_throughput.csv); a second run on the same date adds its " +
         "counts to that date's row.",
+      labels: {
+        firstDateFallback: "today",
+      },
     },
 
     // ------------------------------------------------------------------- 6
@@ -1045,6 +1132,10 @@ export const editorial = {
         "estimate), assumes publication is uniform through the year, and ignores " +
         "seasonality and late-year backfill. The solid line shows the actual partial " +
         "count.",
+      labels: {
+        published: "Published",
+        rejected: "Rejected",
+      },
     },
 
     // ------------------------------------------------------------------- 8
@@ -1076,6 +1167,9 @@ export const editorial = {
         "published total; the tooltip gives the counts. A year is plotted only if it has " +
         "at least 500 published records. Data held only in NVD's database is not " +
         "counted. The current year (marked *) is partial and refills nightly.",
+      labels: {
+        tipRecords: "{n} records",
+      },
     },
 
     // ------------------------------------------------------------------- 9
@@ -1108,6 +1202,9 @@ export const editorial = {
         "if it has at least 500 tagged " +
         "records. Class names come from a small built-in map in the pipeline; ids the " +
         "map does not know are shown as bare CWE numbers.",
+      labels: {
+        tipTagged: "{n} tagged ({pct} of {published} published)",
+      },
     },
 
     // ------------------------------------------------------------------ 10
@@ -1172,6 +1269,10 @@ export const editorial = {
         "bands are the site's usual ones (Critical ≥ 9.0, High 7.0–8.9, Medium 4.0–6.9, " +
         "Low below 4.0). The two versions measure different things, so a difference " +
         "between them is not an error in either score.",
+      labels: {
+        tipPublished: "{n} published",
+        binRange: "{lo} to {hi}",
+      },
     },
 
     // --------------------------------------------- kev.html · 1 · hero
@@ -1223,6 +1324,11 @@ export const editorial = {
         "plots only if it has at least 10 matched entries. KEV entries with no matching CVE " +
         "record in the corpus have no publication date; they are counted separately in the " +
         "data file.",
+      labels: {
+        median: "Median latency",
+        tipSpread: "median {median} · IQR {p25}–{p75}",
+        tipCount: "{n} matched entries · {before} before publish · {over} over a year",
+      },
     },
 
     // --------------------------------------------- kev.html · 2
@@ -1239,6 +1345,18 @@ export const editorial = {
         "before publish (latency below zero), 0–7d, 8–30d, 31–90d, 91–365d, 1–3y, 3y+. " +
         "Lower edges are inclusive: a listing on day 8 is in 8–30d. Percentages are shares " +
         "of these entries, not of the full catalog.",
+      labels: {
+        buckets: {
+          before_publish: "before publish",
+          "0-7d": "0–7d",
+          "8-30d": "8–30d",
+          "31-90d": "31–90d",
+          "91-365d": "91–365d",
+          "1-3y": "1–3y",
+          "3y+": "3y+",
+        },
+        tipCount: "{n} entries",
+      },
     },
 
     // --------------------------------------------- kev.html · 3
@@ -1267,6 +1385,11 @@ export const editorial = {
         "these deadlines, set six months for CVEs with IDs assigned before 2021 and two " +
         "weeks for all others. The chart shows the deadlines CISA assigned, which need " +
         "not match those defaults.",
+      labels: {
+        median: "Median deadline span",
+        tipSpread: "median {median} · IQR {p25}–{p75}",
+        tipCount: "{n} entries listed",
+      },
     },
 
     // --------------------------------------------- kev.html · 4
@@ -1291,6 +1414,10 @@ export const editorial = {
         "present assessment, and an entry flagged next year counts as “Unknown” today. " +
         "No CVE-record join is involved. A year plots only with at least 10 entries. " +
         "The current year (marked *) is partial and refills nightly.",
+      labels: {
+        tipShare: "flagged for ransomware use",
+        tipCount: "{n} of {total} entries added",
+      },
     },
 
     // --------------------------------- concentration.html · 1 · hero
@@ -1323,6 +1450,11 @@ export const editorial = {
         "not only the largest, so the two measures can move in opposite directions: " +
         "between 2023 and 2024 the top-5 share rose while the index fell. The current " +
         "year is partial and refills nightly.",
+      labels: {
+        top5: "Top-5 share",
+        top10: "Top-10 share",
+        active: "Active CNAs",
+      },
     },
 
     // --------------------------------- concentration.html · 2
@@ -1346,6 +1478,10 @@ export const editorial = {
         "elapsed (roughly mid-February). It assumes newcomers arrive evenly through " +
         "the year and ignores seasonality and late-year backfill. The active-CNA line " +
         "is not projected.",
+      labels: {
+        firstYear: "First-year CNAs",
+        active: "Active CNAs",
+      },
     },
 
     // --------------------------------- concentration.html · 3
@@ -1412,6 +1548,12 @@ export const editorial = {
         "lags (a breach cataloged before its stated breach date) would point to date " +
         "errors in the source record and are kept. A year plots only with at least 10 " +
         "cohort breaches. The current year (marked *) is partial and updates nightly.",
+      labels: {
+        median: "Median lag",
+        tipSpread: "median {median} · IQR {p25}–{p75}",
+        tipCount: "{n} breaches · {over} over a year",
+        tipNegative: "{pct} before stated breach date",
+      },
     },
 
     // ------------------------------------------------ breaches.html · 2
@@ -1475,6 +1617,9 @@ export const editorial = {
         "A year plots only with at least 10 cohort breaches, so 2013's seven " +
         "launch-import breaches are not drawn. The current year (marked *) is partial " +
         "and updates nightly.",
+      labels: {
+        tipBreaches: "{n} breaches",
+      },
     },
 
     // --------------------------------------- extortion.html · 1 · hero
@@ -1506,6 +1651,10 @@ export const editorial = {
         "Every quarter between the first and last observed payment is charted, at zero " +
         "when empty. No full-year projection is drawn for a partial current year, " +
         "because reports arrive late.",
+      labels: {
+        tipRevenue: "confirmed ransom revenue",
+        tipBasis: "dollars at day-of-transfer rates · lower bound",
+      },
     },
 
     // --------------------------------------- extortion.html · 2
@@ -1537,6 +1686,12 @@ export const editorial = {
         "median is plotted only when the year has at least 10 payments; the payment " +
         "count is always plotted. A year is marked * only when it is the partial " +
         "generation year.",
+      labels: {
+        yAxisMedian: "median USD (log)",
+        tipPayments: "{n} verified payments · {usd} total",
+        tipMedian: "median payment",
+        tipNoMedian: "median not shown (fewer than {n} payments)",
+      },
     },
 
     // --------------------------------------- extortion.html · 3
@@ -1604,6 +1759,9 @@ export const editorial = {
         "active objects only: objects with revoked: true or x_mitre_deprecated: true are " +
         "excluded here and counted as churn below. The lines step because a release's " +
         "counts hold until the next release.",
+      labels: {
+        yAxis: "active entries",
+      },
     },
 
     // --------------------------------------------- attack.html · 2
@@ -1632,6 +1790,10 @@ export const editorial = {
         "evenly, one slot per release. Gaps between releases range from zero days (two " +
         "point releases on one day) to about half a year; the other two charts on this " +
         "page use a calendar axis.",
+      labels: {
+        yAxis: "techniques + sub-techniques",
+        tipRetired: "({deprecated} deprecated · {revoked} revoked)",
+      },
     },
 
     // --------------------------------------------- attack.html · 3
@@ -1654,6 +1816,9 @@ export const editorial = {
         "sources, detection strategies and relationship records in the bundle are not " +
         "counted. Points sit at index.json release dates and step between releases, as " +
         "in the first chart.",
+      labels: {
+        yAxis: "active entries",
+      },
     },
 
     // --------------------------------------------- hygiene.html · 1 · hero
@@ -1689,6 +1854,10 @@ export const editorial = {
         "reach, and APNIC weights each economy's results by its estimated internet " +
         "population. The figures are estimates from hundreds of millions of samples a " +
         "month.",
+      labels: {
+        validating: "Validating",
+        tipShare: "of users behind validating resolvers",
+      },
     },
 
     // --------------------------------------------- hygiene.html · 2
@@ -1780,6 +1949,10 @@ export const editorial = {
         "numbers. To dispute a call, open an issue; a change to the table reclassifies " +
         "the full history on the next nightly run. Years with fewer than 10 entries do " +
         "not plot. The current year (marked *) is partial and refills nightly.",
+      labels: {
+        tipShare: "security products",
+        tipCount: "{n} of {total} entries added",
+      },
     },
 
     // --------------------------------------------- guards.html · 2
@@ -1834,6 +2007,10 @@ export const editorial = {
         "catalog. Together the two bars cover the catalog; each bar's entry counts are " +
         "in its tooltip. The flag is CISA's current assessment of each entry and carries " +
         "no date, campaign or victim count.",
+      labels: {
+        tipShare: "flagged for ransomware use",
+        tipCount: "{n} of {total} catalog entries",
+      },
     },
 
     // --------------------------------------------- epss.html · 1 · hero
@@ -1876,6 +2053,14 @@ export const editorial = {
         "the chart is not a calibration test or a false-negative rate. Seeding-era " +
         "entries may concern exploitation years before listing. The published file " +
         "keeps the historical lookups.",
+      labels: {
+        tipBelow: "under 1%",
+        tipMid: "1–10%",
+        tipAbove: "10%+",
+        tipScored: "{n} scored entries",
+        tipNoPrior: "{n} with no prior score",
+        tipPending: "{n} awaiting lookup",
+      },
     },
 
     // --------------------------------------------- epss.html · 2
@@ -1901,6 +2086,14 @@ export const editorial = {
         "probabilities are stored at five decimals, an exception to CyberMon's " +
         "one-decimal rounding, because the difference between 0.04% and 0.4% is what " +
         "this chart separates.",
+      labels: {
+        yAxis: "scored entries",
+        seriesEra: "EPSS {model} ({from}–{to})",
+        seriesModel: "EPSS {model}",
+        eraOpen: "now",
+        tipCount: "{n} of {total} scored",
+        tipBucket: "day-before score {bucket}",
+      },
     },
 
     // --------------------------------------------- epss.html · 3
@@ -1926,6 +2119,11 @@ export const editorial = {
         "under any model version. Buckets are shares of scored entries. Every scored " +
         "entry carries a day-before percentile, so this chart covers the same entries " +
         "as the two probability charts.",
+      labels: {
+        tipBucket: "day-before percentile {bucket}",
+        tipShare: "of ranked entries",
+        tipCount: "{n} of {total} scored entries",
+      },
     },
 
     // --------------------------------------------- calendar.html · 1 · hero
@@ -1963,6 +2161,9 @@ export const editorial = {
         "at least 500 published records. The current year (marked *) is partial and " +
         "refills nightly. The stat compares the latest complete year with the year " +
         "ten years earlier.",
+      labels: {
+        tipRecords: "{n} records",
+      },
     },
 
     // --------------------------------------------- calendar.html · 2
@@ -2202,6 +2403,9 @@ export const editorial = {
         "between captures, a capture-era month is a lower-resolution bucket, and a " +
         "single-capture spike can be one bulk revision by CISA. The record's first " +
         "observation is a baseline: it writes the fingerprints and logs nothing.",
+      labels: {
+        tipTotal: "{n} edits",
+      },
     },
 
     // --------------------------------------------- changelog.html · 2
@@ -2386,6 +2590,13 @@ export const editorial = {
         "alternate names each has. Every count from zero to the maximum is shown, " +
         "including empty ones. The zero bucket (groups ATT&CK lists under a single " +
         "name) is drawn muted.",
+      labels: {
+        groups: "Tracked groups",
+        tipName: "{n} alternate name",
+        tipNames: "{n} alternate names",
+        tipGroup: "{n} tracked group",
+        tipGroups: "{n} tracked groups",
+      },
     },
 
     // --------------------------------- top25.html · 1 · hero
@@ -2462,6 +2673,12 @@ export const editorial = {
         "by count, highest first. The combined share above the chart is the share " +
         "of all CWE-tagged KEV entries whose class is on the official list. " +
         "Recomputed nightly.",
+      labels: {
+        series: "Exploited (KEV) entries",
+        tipEntry: "{n} exploited (KEV) entry",
+        tipEntries: "{n} exploited (KEV) entries",
+        tipShare: "{pct} of tagged KEV entries · official rank #{rank}",
+      },
     },
 
     // --------------------------------- adp.html · 1 · hero
@@ -2506,6 +2723,12 @@ export const editorial = {
         "left out when that file was carried forward from an earlier night. " +
         "CyberMon's NVD backlog record begins in July 2026, so there is no 2024 NVD " +
         "series to chart beside this one.",
+      labels: {
+        enriched: "Enriched",
+        tipEnriched: "records enriched",
+        tipParts: "SSVC {ssvc} · CVSS {cvss} · CWE {cwe}",
+        tipLegacy: "{legacy} of {enriched} on legacy CVEs",
+      },
     },
 
     // --------------------------------- adp.html · 2
@@ -2532,6 +2755,11 @@ export const editorial = {
         "metrics) and a CWE (any problemTypes cweId). Each bar is the share of " +
         "CISA-ADP records carrying that field. The denominator is every published " +
         "record with a CISA-ADP block, whether or not its container is dated.",
+      labels: {
+        share: "Share",
+        tipShare: "of CISA-ADP records",
+        tipCount: "{n} of {total}",
+      },
     },
 
     // --------------------------------- adp.html · 3
@@ -2619,6 +2847,13 @@ export const editorial = {
         "in eight moved and then moved back. Excluded and missed nights are left " +
         "off the date axis, not drawn as gaps. This measures how often EPSS values " +
         "change, not whether the model is right.",
+      labels: {
+        quarantineReasons: {
+          reset: "model reset",
+          gap: "pooled",
+          anomaly: "anomalous",
+        },
+      },
     },
 
     // --------------------------------- epssvol.html · 2
@@ -2648,6 +2883,10 @@ export const editorial = {
         "by ISO week of the observation date (UTC). The week in progress is starred, " +
         "and a week with no observed night would chart at zero. The thresholds are " +
         "CyberMon's choice, not FIRST's.",
+      labels: {
+        tipNight: "{n} night",
+        tipNights: "{n} nights",
+      },
     },
 
     // --------------------------------- epssvol.html · 3
@@ -2720,6 +2959,10 @@ export const editorial = {
         "edits, but this log has not imported it, so the series begins with " +
         "CyberMon's first snapshot. A fetch that returns less than half of the " +
         "previous roster is treated as broken and is not charted.",
+      labels: {
+        size: "Roster size",
+        tipOrgs: "{n} organizations",
+      },
     },
 
     // --------------------------------- roster.html · 2
@@ -2796,6 +3039,11 @@ export const editorial = {
         "organizations whose program roles include CNA or CNA-LR. The country count " +
         "and the MITRE / CISA split use each organization's listed country and " +
         "top-level root; an organization listed without one is left out.",
+      labels: {
+        orgs: "Organizations",
+        tipOrgs: "{n} organizations",
+        tipShare: "({pct}% of roster)",
+      },
     },
 
     // --------------------------------- exploits.html · 1 · hero
@@ -2847,6 +3095,11 @@ export const editorial = {
         "attract code). The source has also shrunk: the dated cohort per year is now " +
         "well under a fifth of its late-2000s size, so a trend here is also a trend " +
         "in what Exploit-DB indexes.",
+      labels: {
+        median: "Median gap",
+        tipSpread: "median {median} · IQR {p25}–{p75}",
+        tipCount: "{n} matched CVEs · {before} PoC before publish · {week} by day 7",
+      },
     },
 
     // --------------------------------- exploits.html · 2
@@ -2877,6 +3130,11 @@ export const editorial = {
         "entries. The exploit side has the limits of the chart above: tracked public " +
         "code only, so the share is a lower bound on how often exploit code was " +
         "public before the listing.",
+      labels: {
+        tipShare: "had public exploit code first",
+        tipCount: "{n} of {matched} matched · {added} listings added",
+        tipSeeding: "seeding-era listings — kept out of the headline figure",
+      },
     },
 
     // --------------------------------- exploits.html · 3
@@ -2908,6 +3166,12 @@ export const editorial = {
         "exploits for them and do not count. Severity buckets with fewer than 10 " +
         "records are withheld. One complete year is used so the bars show a recent " +
         "rate, not decades of accumulation.",
+      labels: {
+        unscored: "unscored",
+        tipShare: "have public exploit code",
+        tipCount: "{n} of {total} records published in {year}",
+        tipDetection: "{n} have a Nuclei detection template (counted separately)",
+      },
     },
 
     // --------------------------------- c2.html · 1 (hero)
@@ -2953,6 +3217,9 @@ export const editorial = {
         "(data/history/botnet_c2.csv). The pipeline has no minimum-count check: " +
         "a drop to zero, as after a takedown, is recorded as data, while a " +
         "malformed or unreachable feed stops the run and records nothing.",
+      labels: {
+        tipTotals: "{online} online / {listed} listed",
+      },
     },
 
     // --------------------------------- c2.html · 2
@@ -2983,6 +3250,9 @@ export const editorial = {
         "only after it returns a valid C2 response. Per-server details " +
         "(addresses, ports, hostnames) stay in the pipeline, and the output " +
         "contract rejects them.",
+      labels: {
+        tipCounts: "{listed} listed · {online} online",
+      },
     },
 
     // --------------------------------- c2.html · 3
@@ -3010,6 +3280,9 @@ export const editorial = {
         "buckets. The median and the oldest are computed over every listed " +
         "server, online or offline, since an offline server that remains listed " +
         "is still on the tracker's record.",
+      labels: {
+        servers: "C2 servers",
+      },
     },
 
     // --------------------------------- ai.html · 1 · hero
@@ -3107,6 +3380,11 @@ export const editorial = {
         "Third, the dated cohort per year is well under a fifth of its " +
         "late-2000s size, so a later verdict is also consistent with Exploit-DB " +
         "indexing less.",
+      labels: {
+        yAxis: "days (log)",
+        tipMedian: "median",
+        tipCves: "{n} CVEs",
+      },
     },
 
     // --------------------------------- ai.html · 2
@@ -3194,6 +3472,9 @@ export const editorial = {
         "ChatGPT) is therefore charted but counts for neither side. An era with " +
         "fewer than two complete, settled years after it is not judged. A falling " +
         "gap and a rising share both count as earlier.",
+      labels: {
+        tipPostN: "({years}y, {n} CVEs)",
+      },
     },
 
     // --------------------------------- ai.html · 3
@@ -3342,6 +3623,9 @@ export const editorial = {
         "review corrected an error that had inflated Anthropic's count. The " +
         "registry, the counting rule and every quoted claim are in the " +
         "repository.",
+      labels: {
+        sevTitle: "{label} {n} of {total}",
+      },
     },
 
     // --------------------------------- credits.html · 2
@@ -3450,6 +3734,9 @@ export const editorial = {
         "kept. A CVE crediting two labs adds to both lanes, so a stacked bar " +
         "can be slightly taller than the month's distinct-CVE total, which the " +
         "tooltip reports. Months are publication dates, not discovery dates.",
+      labels: {
+        tipDistinct: "{n} distinct CVEs",
+      },
     },
 
     // --------------------------------- credits.html · 4
@@ -3773,6 +4060,9 @@ export const editorial = {
         "the two. Advisories published in the {days} days before the edition " +
         "are drawn as provisional. The lag figures in the note use " +
         "the NVD publication date GitHub records for the aliased CVE.",
+      labels: {
+        tipTotal: "{n} total",
+      },
     },
 
     // --------------------------------- advisories.html · 2
@@ -3875,6 +4165,10 @@ export const editorial = {
         "source the feed credits most often in that month's reports; a " +
         "report can credit several sources, or none. Registries beyond the " +
         "four largest are folded into Other.",
+      labels: {
+        tipReports: "{n} reports",
+        tipWithdrawn: "{n} withdrawn",
+      },
     },
 
     // --------------------------------- malware.html · 2
@@ -3902,6 +4196,9 @@ export const editorial = {
         "Microsoft marketplace or to Open VSX, and this page does the same. " +
         "The current year is partial, so one large month can still shift its " +
         "shares.",
+      labels: {
+        tipReports: "{n} reports",
+      },
     },
 
     // --------------------------------- malware.html · 3
@@ -3977,6 +4274,9 @@ export const editorial = {
         "year shown is the first year any of the three tags appears. The current year " +
         "(marked *) is partial and refills nightly; its share is comparable with full " +
         "years, its count is not.",
+      labels: {
+        none: "none",
+      },
     },
 
     // --------------------------------------------- tags.html · 2
@@ -4049,6 +4349,9 @@ export const editorial = {
         "“Its CNAs' other records” pools every record from any CNA that set the tag at " +
         "least once in the window, minus the tagged ones. Bars are shares of each " +
         "row's records; the tooltip carries the counts.",
+      labels: {
+        tipOf: "{row} of {total}",
+      },
     },
   },
 
@@ -4078,6 +4381,10 @@ export const editorial = {
     // first nightly EDGAR read (meta.sources.sec_incidents.status "empty").
     secFetched: "{filings_105} Item 1.05 / {filings_801} Item 8.01 fetched {fetched}",
     secPending: "pending the first nightly read",
+    // Appended (after a space) to a source's fetch date or count in
+    // sourcesTemplate when the nightly read failed and the last good value
+    // was kept.
+    carriedForward: "(carried forward)",
     metaError: "Edition metadata (data/meta.json) failed to load.",
     disclaimer:
       "CyberMon is an independent project, not affiliated with, endorsed by or speaking for " +
@@ -4137,9 +4444,10 @@ export const editorial = {
   // Strings for the per-module slide decks (LinkedIn document-post PDFs).
   // Rendered by js/carousel.js, printed by tools/make_carousels.py.
   // Copy for the animated social clips (site/motion.html, rendered by
-  // tools/make_motion.py). Same rule as everywhere else: no user-facing string
-  // lives in a scene file, so pipeline/tests/test_claims_motion.py can audit
-  // every claim here against the committed data.
+  // tools/make_motion.py). Same rule as everywhere else: a scene file holds
+  // no copy beyond the exceptions the header of this file lists, so
+  // pipeline/tests/test_claims_motion.py can audit every claim here against
+  // the committed data.
   //
   // Headlines deliberately carry NO span figure. A clip's window grows every
   // night, so "four years of…" would quietly go stale; where a span or a count
@@ -4183,6 +4491,12 @@ export const editorial = {
           "severity scores were kept in NVD's database, which this chart does not read; " +
           "the gray band counts records with no score in the record. {gen}* is partial.",
         eraMarker: "scored in NVD, not in the record",
+        // {era} in meta when the payload names no record-era year.
+        eraFallback: "the marker",
+        // The count under the clock: CVEs published in the year on screen.
+        // The band names come from sections.flood.labels, so the clip's
+        // legend matches the site's chart.
+        sub: "{n} published",
       },
       "cna-concentration": {
         kicker: "CNA concentration",
@@ -4199,6 +4513,8 @@ export const editorial = {
 
   carousel: {
     edition: "Edition {generated_at}",
+    // The cover's module line, from the module's home.modules entry.
+    coverModule: "Module {num} — {label}",
     slideFooter: "CyberMon · devko.github.io/CyberMon · data: {sources}",
     siteUrl: "devko.github.io/CyberMon",
     closingSources: "Data: {sources}",

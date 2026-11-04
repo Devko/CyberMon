@@ -20,7 +20,7 @@ const SOURCES = [
 
 // Honest empty state for launch-time payloads (backfill still running).
 function noDataCard() {
-  return el("div", "nodata-card", "Not enough data yet.");
+  return el("div", "nodata-card", editorial.ui.nodata);
 }
 
 // Union of every month observed in any series of any term, sorted ascending.
@@ -90,7 +90,7 @@ export function render(slots, data) {
     // instead of an empty box that reads as a rendering bug.
     if (!(c.term.series?.gdelt || []).length) {
       c.mini.classList.add("sparkline-empty");
-      c.mini.textContent = "no media data yet";
+      c.mini.textContent = ed.labels.sparklineEmpty;
       continue;
     }
     c.chart = mkChart(c.mini);

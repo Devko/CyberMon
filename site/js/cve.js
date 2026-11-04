@@ -41,15 +41,15 @@ function fillCvss4(section, caption, methodText, data) {
   const cur = (data.years || []).find((r) => r.year === h.current_year);
   const since = data.since_month || "";
   const month = since ? new Date(`${since}-01T00:00:00Z`).toLocaleString("en-US",
-    { month: "short", year: "numeric", timeZone: "UTC" }) : "n/a";
+    { month: "short", year: "numeric", timeZone: "UTC" }) : editorial.ui.na;
   if (cur?.published) {
     section.querySelector(".section-headline").textContent =
       tpl(ed.headlineTemplate, { pct: fmtPct(h.v4_share_current_pct) });
   }
   caption.textContent = tpl(ed.caption, {
-    latest_year: h.latest_year || "n/a",
+    latest_year: h.latest_year || editorial.ui.na,
     latest_pct: fmtPct(h.v4_share_latest_pct),
-    current_year: h.current_year || "n/a",
+    current_year: h.current_year || editorial.ui.na,
     current_pct: fmtPct(h.v4_share_current_pct),
     v4_current: fmtInt(h.v4_current),
     published_current: fmtInt(h.published_current),

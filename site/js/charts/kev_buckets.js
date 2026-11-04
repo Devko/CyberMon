@@ -3,30 +3,26 @@
 // Horizontal bars in the contract's fixed bucket order, colored with the
 // C.latency ramp (accent reserved for "before publish").
 import { C, mkChart, catAxis, baseTooltip, fmtInt, fmtPct, escapeHtml, MONO } from "../theme.js";
+import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
 
-// Fixed contract order (top to bottom); keys double as C.latency ramp keys.
-const ORDER = [
-  { key: "before_publish", label: "before publish" },
-  { key: "0-7d", label: "0–7d" },
-  { key: "8-30d", label: "8–30d" },
-  { key: "31-90d", label: "31–90d" },
-  { key: "91-365d", label: "91–365d" },
-  { key: "1-3y", label: "1–3y" },
-  { key: "3y+", label: "3y+" },
-];
+// Fixed contract order (top to bottom); keys double as C.latency ramp keys
+// and as keys of editorial.sections.buckets.labels.buckets.
+const ORDER = ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d", "1-3y", "3y+"];
 
 export function render(slots, data) {
+  const ed = editorial.sections.buckets;
+  const L = ed.labels;
   const byKey = new Map((data.latency_buckets || []).map((b) => [b.bucket, b]));
-  const rows = ORDER.map((o) => {
-    const b = byKey.get(o.key);
-    return { ...o, n: b?.n ?? 0, pct: Number.isFinite(b?.pct) ? b.pct : 0 };
+  const rows = ORDER.map((key) => {
+    const b = byKey.get(key);
+    return { key, label: L.buckets[key], n: b?.n ?? 0, pct: Number.isFinite(b?.pct) ? b.pct : 0 };
   });
 
   if (!rows.some((r) => r.n > 0)) {
     // Empty cohort: an honest muted state, never a chart of zeros.
     slots.chart.classList.remove("chart");
-    slots.chart.append(el("div", "nodata-card", "Not enough data yet."));
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
     return;
   }
 
@@ -38,7 +34,8 @@ export function render(slots, data) {
       formatter: (p) => {
         const r = rows[p.dataIndex];
         if (!r) return "";
-        return `${escapeHtml(r.label)}<br><strong>${fmtPct(r.pct)}</strong> · ${fmtInt(r.n)} entries`;
+        return `${escapeHtml(r.label)}<br><strong>${fmtPct(r.pct)}</strong> · ` +
+          escapeHtml(tpl(L.tipCount, { n: fmtInt(r.n) }));
       },
     },
     xAxis: { type: "value", show: false },

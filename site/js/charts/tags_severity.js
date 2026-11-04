@@ -46,7 +46,9 @@ export function render(slots, data) {
         const key = BUCKETS[p.seriesIndex];
         return `<div style="color:${C.muted};margin-bottom:4px;">${escapeHtml(r.label)}</div>` +
           `${p.marker} ${escapeHtml(p.seriesName)} <strong>${fmtPct(p.value)}</strong><br>` +
-          `<span style="color:${C.muted};">${escapeHtml(tpl(ed.tooltipRow, { n: fmtInt(r.counts[key]) }))} of ${fmtInt(total(r.counts))}</span>`;
+          `<span style="color:${C.muted};">${escapeHtml(tpl(ed.labels.tipOf, {
+            row: tpl(ed.tooltipRow, { n: fmtInt(r.counts[key]) }), total: fmtInt(total(r.counts)),
+          }))}</span>`;
       },
     },
     xAxis: {
