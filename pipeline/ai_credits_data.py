@@ -205,7 +205,8 @@ def counts_toward_headline(group: str, tier: str) -> bool:
 # dated claim's older than ["dated"]) — re-open the page, update ``value``
 # and ``date`` for a counter, bump ``checked``. Never bump it unread.
 #
-# All nine entries below were opened and confirmed on 2026-09-20.
+# All nine entries below were opened and confirmed on 2026-09-20; the two
+# live counters were re-read on 2026-11-04 (AISLE 400 -> 528, ZeroPath 13).
 CLAIM_MAX_AGE_DAYS = {"live": 45, "dated": 365}
 CLAIM_UNIT_KINDS = ("cves", "advisories", "vulnerabilities", "submissions")
 CLAIM_QUALIFIERS = ("", "more than", "nearly")
@@ -258,10 +259,10 @@ CLAIMS: tuple[Claim, ...] = (
           "https://xbow.com/blog/top-1-how-xbow-did-it", "2026-09-20",
           note="130 resolved and 303 triaged at the time. Bug-bounty "
                "reports against live services usually do not receive CVEs."),
-    Claim("aisle", 400, "", "CVEs assigned", "cves", "2026-09-20",
-          "https://aisle.com/cve-discoveries", "2026-09-20", live=True),
-    Claim("zeropath", 13, "", "CVEs assigned", "cves", "2026-09-20",
-          "https://zeropath.com/wall", "2026-09-20", live=True),
+    Claim("aisle", 528, "", "CVEs assigned", "cves", "2026-11-04",
+          "https://aisle.com/cve-discoveries", "2026-11-04", live=True),
+    Claim("zeropath", 13, "", "CVEs assigned", "cves", "2026-11-04",
+          "https://zeropath.com/wall", "2026-11-04", live=True),
     Claim("depthfirst", 9, "", "CVE ids (of 21 FFmpeg zero-days)", "cves",
           "2026-06-02",
           "https://depthfirst.com/research/21-zero-days-in-ffmpeg",
