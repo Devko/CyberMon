@@ -253,18 +253,40 @@ def check_rejection_rebound_is_kernel(d: dict) -> None:
             f"{y}: rejections +{rise} over 2023, kernel {kernel}")
 
 
+# A partial year is held to the kernel-share claims only from this many
+# records (the test_claims_copy.py bar for a share).
+UNSCORED_MIN_RECORDS = 20_000
+
+
 def check_unscored_is_kernel(d: dict) -> None:
-    # flood linuxNote: "Since 2024 nearly every record with no score
-    # anywhere in it is a kernel record"
+    # flood linuxNote: "Since 2024 most records with no score anywhere in
+    # them are kernel records; without the kernel, the gray “no score” band
+    # is close to zero." and quality caption: "Since 2024, most records
+    # missing a score come from the Linux kernel CNA". Every year from 2024
+    # (the current one once judged): the kernel holds more than half of the
+    # unscored records, and without it under 2% of records are unscored.
+    # (2026-11-04: the kernel holds 99% / 100% / 87% of the unscored in
+    # 2024 / 2025 / 2026 so far; without it 0.06% / 0% / 0.9% unscored.)
+    # The copy said "nearly every" until 2026-11-04, and this guard pooled
+    # complete years at a 95% bar, which the January rehearsal failed once
+    # 2026 (87%) joined the pool.
+    def total(r: dict) -> int:
+        return sum(r[k] for k in ("critical", "high", "medium", "low",
+                                  "unscored"))
+
     full = {r["year"]: r for r in d["years"]}
     wl = {r["year"]: r for r in d["without_linux"]["years"]}
-    years = [y for y in full if 2024 <= y < GENERATION_YEAR]
-    assert years, "no complete year since 2024"
-    all_unscored = sum(full[y]["unscored"] for y in years)
-    left = sum(wl[y]["unscored"] for y in years)
-    assert all_unscored and left <= 0.05 * all_unscored, (
-        f"{left} of {all_unscored} unscored records since 2024 are not "
-        f"the kernel's — 'nearly every' no longer holds")
+    years = [y for y in full if y >= 2024 and claims_support.judged(
+        y, total(full[y]), min_n=UNSCORED_MIN_RECORDS)]
+    assert any(y < GENERATION_YEAR for y in years), "no complete year since 2024"
+    for y in years:
+        unscored, left = full[y]["unscored"], wl[y]["unscored"]
+        assert unscored and unscored - left > unscored / 2, (
+            f"{y}: the kernel holds {unscored - left} of {unscored} unscored "
+            f"records — 'most' no longer holds")
+        assert left <= 0.02 * total(wl[y]), (
+            f"{y}: without the kernel {left} of {total(wl[y])} records are "
+            f"unscored — 'close to zero' no longer holds")
 
 
 def check_concentration_survives(d: dict) -> None:
@@ -312,8 +334,11 @@ CLAIMS = [
      check_kernel_starts_2024),
     ("most of the rise in rejections in 2024 and 2025 comes from them", "volume_curve.json",
      check_rejection_rebound_is_kernel),
-    ("Since 2024 nearly every record with no score anywhere in it is a "
-     "kernel record", "nine_eight_flood.json", check_unscored_is_kernel),
+    ("Since 2024 most records with no score anywhere in them are kernel "
+     "records; without the kernel, the gray “no score” band is close to zero.",
+     "nine_eight_flood.json", check_unscored_is_kernel),
+    ("Since 2024, most records missing a score come from the Linux kernel CNA",
+     "nine_eight_flood.json", check_unscored_is_kernel),
     ("Without the kernel the top-5 share also rose from 2023 to 2025",
      "cna_concentration.json", check_concentration_survives),
 ]
