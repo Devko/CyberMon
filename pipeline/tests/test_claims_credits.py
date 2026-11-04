@@ -72,30 +72,22 @@ def _person_led_vendors(d: dict) -> list[str]:
 
 # ------------------------------------------------------------- 01 · funnel
 
-def check_thousands_announced_hundreds_credited(d: dict) -> None:
-    # editorial.js (credits.html hero headline): "AI finders announce
-    # thousands of vulnerabilities, and CVE records credit each kind with
-    # hundreds." / (home card): "AI finders announce thousands of
-    # vulnerabilities; CVE records credit labs and vendors with hundreds
-    # each." Each kind is judged alone, never the two summed (795 summed on
-    # 2026-10-03, past 1,000 within weeks). Only announcements counted in
-    # vulnerabilities or CVEs speak to "thousands of vulnerabilities"; XBOW's
-    # 1,060 HackerOne submissions do not. (2026-10-03: largest 10,000,
-    # Anthropic with its Glasswing partners; labs 257, vendors 538.)
+def check_largest_announcement_exceeds_credited(d: dict) -> None:
+    # editorial.js (credits.html hero headline): "The largest AI finder
+    # announcement alone counts more vulnerabilities than CVE records credit
+    # to all AI labs and vendors combined." It said "announce thousands …
+    # credit each kind with hundreds" until 2026-11-04, when the vendor count
+    # (630, about 85 a month) was on course to pass 1,000 in March 2027.
+    # Only announcements counted in vulnerabilities or CVEs compare; XBOW's
+    # HackerOne submissions do not. (2026-11-04: 10,000, Anthropic with its
+    # Glasswing partners, against 365 lab + 630 vendor credited records.)
     biggest = max((c["value"] for c in d["claims"]
                    if c["unit_kind"] in ("vulnerabilities", "cves")),
                   default=0)
-    assert biggest >= 2000, (
-        f"'announce thousands of vulnerabilities' needs a committed "
-        f"first-party count of at least 2,000 vulnerabilities or CVEs; the "
-        f"largest is {biggest}"
-    )
-    for kind in ("llm", "vendor"):
-        n = d["kinds"][kind]["funnel"]["credited"]
-        assert 100 <= n < 1000, (
-            f"'credit labs and vendors with hundreds each' needs each kind's "
-            f"credited count in 100–999; {kind} has {n}"
-        )
+    credited = sum(d["kinds"][k]["funnel"]["credited"] for k in ("llm", "vendor"))
+    assert biggest > credited, (
+        f"the largest announcement ({biggest}) no longer exceeds the "
+        f"{credited} records credited to labs and vendors")
 
 
 def check_four_or_five_in_ten_vendor_credits_name_a_person(d: dict) -> None:
@@ -221,8 +213,9 @@ def check_ai_credited_under_two_percent_of_baseline(d: dict) -> None:
 
 
 def check_small_columns_and_low_epss_medians(d: dict) -> None:
-    # editorial.js (credits.html 02 methodology): "The AI columns are small:
-    # one CVE moves the labs' exploit-corpus row by half a point or less." /
+    # editorial.js (credits.html 02 methodology): "One CVE moves the labs'
+    # exploit-corpus row by half a point or less." ("The AI columns are
+    # small:" was cut on 2026-11-04; it failed at 1,000 CVEs a column.) /
     # "all three medians are well under 50". One CVE is 100/n points; the
     # row prints one decimal, so 199 lab CVEs (0.503, shown 0.5) still read
     # as half a point. "Small" holds while each AI column is under 1,000
@@ -233,10 +226,6 @@ def check_small_columns_and_low_epss_medians(d: dict) -> None:
     assert round(100.0 / n, 1) <= 0.5, (
         f"'half a point or less' needs 100/n to round to 0.5 or less; "
         f"{n} lab CVEs give {100.0 / n:.2f} points"
-    )
-    sizes = {k: d["profile"][k]["n"] for k in ("llm", "vendor")}
-    assert all(s < 1000 for s in sizes.values()), (
-        f"'The AI columns are small' needs each under 1,000 CVEs; {sizes}"
     )
     medians = {k: c["median_epss_pctile"] for k, c in d["profile"].items()}
     assert all(m < 40 for m in medians.values()), (
@@ -520,9 +509,9 @@ def check_fewer_than_half_carry_a_credit(d: dict) -> None:
 # (verbatim claim from editorial.js, data file, assertion)
 # --------------------------------------------------------------------------
 CLAIMS = [
-    ("AI finders announce thousands of vulnerabilities, and CVE records "
-     "credit each kind with hundreds.",
-     "ai_credits.json", check_thousands_announced_hundreds_credited),
+    ("The largest AI finder announcement alone counts more vulnerabilities "
+     "than CVE records credit to all AI labs and vendors combined.",
+     "ai_credits.json", check_largest_announcement_exceeds_credited),
     ("four or five in ten vendor credits name the company only through a "
      "person there or in a thank-you line",
      "ai_credits.json", check_four_or_five_in_ten_vendor_credits_name_a_person),
@@ -545,8 +534,7 @@ CLAIMS = [
      "ai_credits.json", check_lab_cohort_much_younger),
     ("they are under two percent of it",
      "ai_credits.json", check_ai_credited_under_two_percent_of_baseline),
-    ("The AI columns are small: one CVE moves the labs' exploit-corpus row "
-     "by half a point or less.",
+    ("One CVE moves the labs' exploit-corpus row by half a point or less.",
      "ai_credits.json", check_small_columns_and_low_epss_medians),
     ("The registry matches one credit before 2025.",
      "ai_credits.json", check_one_counted_credit_before_2025),

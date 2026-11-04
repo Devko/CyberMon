@@ -86,15 +86,6 @@ def check_fewer_than_one_in_ten(d: dict) -> None:
         f"{cat['advisories']})")
 
 
-def check_rust_quarter(d: dict) -> None:
-    # "a quarter" / "one advisory in four": 21-30% reads as a quarter.
-    # (2026-10-03: 26.4%, 395 of 1,497.)
-    pct = _eco(d, "crates.io")["without_cve_pct"]
-    assert pct is not None and 21 <= pct <= 30, (
-        f"'a quarter of Rust's do not' needs crates.io's no-CVE share near "
-        f"25%; it is {pct}%")
-
-
 # Ecosystems a reader would set Rust beside: the large registries.
 _LARGE_ECOSYSTEM = 1000  # advisories, all publication years
 
@@ -256,10 +247,13 @@ CLAIMS = [
     # advisories.html
     ("Fewer than one GitHub-reviewed advisory in ten carries no CVE id.",
      "advisory_gap.json", check_fewer_than_one_in_ten),
-    ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
-     check_rust_quarter),
-    ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
-     check_rust_highest_of_large),
+    # Said "About one Rust advisory in four" until 2026-11-04 (25.4% against
+    # a floor of 21, falling about a point a month); the ranking holds with
+    # a wide margin (next large registry npm 14.2%).
+    ("Rust advisories lack a CVE id more often than those of any other large registry",
+     "advisory_gap.json", check_rust_highest_of_large),
+    ("In the headline, a large registry has 1,000 or more advisories.",
+     "advisory_gap.json", check_rust_highest_of_large),
     ("almost every Maven advisory has one", "advisory_gap.json",
      check_maven_almost_all),
     ("No-CVE advisories are rated Critical or Low more often",

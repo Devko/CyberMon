@@ -145,19 +145,19 @@ def check_one_or_two_a_month(d: dict) -> None:
     assert 1 <= med <= 2, f"median originals per complete month {med}"
 
 
-def check_third_amended_most_within_90(d: dict) -> None:
-    # incidents_amend headline: "About a third of Item 1.05 disclosures have
-    # been amended, most within 90 days." (2026-10-03: 19 of 58 = 32.8%; 17
-    # of the 19 first amendments within 90 days.) 29-38% reads as about a
-    # third; the old floor of 25 was a quarter. REVISIT IN JANUARY 2027: new
-    # originals arrive at ~1.5 a month and amendments lag them, so with no
-    # new amendment the share falls below 30% at 64 originals (~January-
-    # February) and below 29% at 66 (~March). If it trends there, reword.
+def check_quarter_amended_most_within_90(d: dict) -> None:
+    # incidents_amend headline: "More than one in four Item 1.05 disclosures
+    # has been amended, most within 90 days." It said "About a third" until
+    # 2026-11-04 (19 of 59, 32.2%): originals arrive at about 1.5 a month and
+    # amendments lag them, so with no new amendment "about a third" (29-38%)
+    # failed at 66 originals, around March 2027. "More than one in four"
+    # holds to 76 originals with no new amendment. Above half, the wording
+    # understates the share; reword then.
     if d["status"] != "ok":
         return
     lag = d["amendment_lag"]
     pct = 100.0 * lag["amended"] / lag["originals"]
-    assert 29 <= pct <= 38, f"{lag['amended']} of {lag['originals']} amended"
+    assert 25 < pct <= 50, f"{lag['amended']} of {lag['originals']} amended"
     within = sum(b["n"] for b in lag["buckets"][:3])  # 0-7, 8-30, 31-90
     assert within > lag["amended"] / 2, (within, lag["amended"])
 
@@ -165,8 +165,8 @@ def check_third_amended_most_within_90(d: dict) -> None:
 CLAIMS = [
     ("Companies file one or two Item 1.05 incident disclosures in a typical month.",
      "sec_incidents.json", check_one_or_two_a_month),
-    ("About a third of Item 1.05 disclosures have been amended, most within 90 days.",
-     "sec_incidents.json", check_third_amended_most_within_90),
+    ("More than one in four Item 1.05 disclosures has been amended, most within 90 days.",
+     "sec_incidents.json", check_quarter_amended_most_within_90),
     ("Item 1.05 incident disclosures on EDGAR (original 8-Ks)",
      "sec_incidents.json", check_originals_counted),
     ("the rule took effect on 18 December 2023", "sec_incidents.json",

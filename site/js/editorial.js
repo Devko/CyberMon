@@ -2936,8 +2936,7 @@ export const editorial = {
       // identical (at least a week of them): the counts alone cannot say
       // whether the servers are unchanged or the feed has stalled.
       noteFlat:
-        "CyberMon has recorded the list nightly since {first_date}. The last " +
-        "{nights} snapshots, since {since}, all show the same counts: {listed} " +
+        "The last {nights} snapshots, since {since}, all show the same counts: {listed} " +
         "listed, {online} online. Identical counts can mean no change in the " +
         "servers or a tracker that has stopped updating; the counts cannot tell " +
         "which.",
@@ -3246,7 +3245,7 @@ export const editorial = {
       num: "01",
       kicker: "Announced and credited",
       source: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit · Nuclei · finders' own announcements",
-      headline: "AI finders announce thousands of vulnerabilities, and CVE records credit each kind with hundreds.",
+      headline: "The largest AI finder announcement alone counts more vulnerabilities than CVE records credit to all AI labs and vendors combined.",
       seeAlso: {
         text: "When public exploit code appears, before and after the AI era:",
         href: "ai.html",
@@ -3414,8 +3413,8 @@ export const editorial = {
         "well under 50. “In an exploit corpus” covers Exploit-DB, Metasploit and " +
         "Nuclei only. “Scored by its own CNA” is the share whose CVSS score came " +
         "from the assigning CNA and not from CISA's enrichment; it is low where " +
-        "a CNA such as Mozilla's publishes no scores. The AI columns are small: " +
-        "one CVE moves the labs' exploit-corpus row by half a point or less.",
+        "a CNA such as Mozilla's publishes no scores. One CVE moves the labs' " +
+        "exploit-corpus row by half a point or less.",
     },
 
     // --------------------------------- credits.html · 3
@@ -3655,7 +3654,7 @@ export const editorial = {
       num: "02",
       kicker: "Amendments",
       source: "SEC EDGAR full-text search (Forms 8-K, 8-K/A)",
-      headline: "About a third of Item 1.05 disclosures have been amended, most within 90 days.",
+      headline: "More than one in four Item 1.05 disclosures has been amended, most within 90 days.",
       caption:
         "Item 1.05 lets a company file before it knows an incident's full " +
         "scope or impact; it must then amend the 8-K once it does. The bars " +
@@ -3780,7 +3779,7 @@ export const editorial = {
       num: "02",
       kicker: "By ecosystem",
       source: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
-      headline: "About one Rust advisory in four has no CVE id, while almost every Maven advisory has one.",
+      headline: "Rust advisories lack a CVE id more often than those of any other large registry, while almost every Maven advisory has one.",
       caption:
         "The share of each ecosystem's reviewed advisories that carry no CVE " +
         "id, across all publication years. An advisory that affects " +
@@ -3797,7 +3796,8 @@ export const editorial = {
         "that ecosystem, split by whether OSV lists a CVE alias. An ecosystem " +
         "with fewer " +
         "than {min_n} advisories gets no share, because a percentage over so " +
-        "few advisories moves with each one.",
+        "few advisories moves with each one. In the headline, a large registry " +
+        "has 1,000 or more advisories.",
     },
 
     // --------------------------------- advisories.html · 3
