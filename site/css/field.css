@@ -413,6 +413,9 @@
 .field-results table { border-collapse: collapse; min-width: 700px; width: 100%; }
 .field-results td, .field-results th { padding: 8px; text-align: left; border-bottom: 1px solid var(--rule); }
 .field-results td button { padding: 4px 8px; }
+.field-results th button { font: inherit; font-weight: 700; padding: 0; color: var(--ink); background: none; border: 0; cursor: pointer; text-align: left; }
+.field-results th[aria-sort="ascending"] button, .field-results th[aria-sort="descending"] button { color: var(--accent); }
+.field-results th button:hover { text-decoration: underline; }
 .result-toolbar { display: flex; gap: 8px; }
 
 .field-empty {

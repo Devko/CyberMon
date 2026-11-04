@@ -631,11 +631,61 @@ function main({ meta, buf }) {
   // Paginated, keyboard-accessible records share the canvas visibility mask.
   let resultPage = 0;
   const PAGE_SIZE = 40;
+  // Column sort. Each order is a permutation of every record, computed once
+  // per column and direction and cached, so a re-render (filters, playback)
+  // stays one pass over N. Missing values sort last in both directions.
+  const SORT_DEFAULT_DIR = { cve: 1, published: -1, assigner: 1, vendor: 1, cvss: -1, epss: -1, kev: -1 };
+  const nameRank = (names) => {
+    const order = names.map((n, i) => i).sort((a, b) => String(names[a]).localeCompare(String(names[b])));
+    const rank = new Uint32Array(names.length); order.forEach((i, r) => { rank[i] = r; });
+    return rank;
+  };
+  let cnaRankAZ = null, vendorRankAZ = null;
+  const SORT_KEY = {
+    cve: [() => 0, (i) => D.year[i] * 1e8 + D.seq[i]],
+    published: [() => 0, (i) => D.day[i]],
+    assigner: [() => 0, (i) => (cnaRankAZ ||= nameRank(CNAS))[D.cna[i]]],
+    vendor: [(i) => (D.vendor[i] ? 0 : 1), (i) => (vendorRankAZ ||= nameRank(VENDORS))[D.vendor[i]]],
+    cvss: [(i) => (D.score[i] === NO_SCORE ? 1 : 0), (i) => D.score[i]],
+    epss: [(i) => (D.epss[i] === NO_EPSS ? 1 : 0), (i) => D.epss[i]],
+    kev: [(i) => (KEV(i) ? 0 : 1), (i) => D.kevday[i]],
+  };
+  const resultSort = { key: "cve", dir: 1 };
+  const sortCache = new Map();
+  function sortOrder() {
+    const id = `${resultSort.key}:${resultSort.dir}`;
+    if (sortCache.has(id)) return sortCache.get(id);
+    const [missing, value] = SORT_KEY[resultSort.key], dir = resultSort.dir;
+    // numeric keys first, so the comparator touches typed arrays only;
+    // Infinity - Infinity is NaN, which falls through to the CVE tiebreak
+    const key = new Float64Array(N), cve = new Float64Array(N);
+    for (let i = 0; i < N; i++) { cve[i] = SORT_KEY.cve[1](i); key[i] = missing(i) ? Infinity : dir * value(i); }
+    const order = Uint32Array.from({ length: N }, (_, i) => i);
+    let sorted = true;
+    for (let i = 1; i < N && sorted; i++) sorted = key[i - 1] < key[i] || (key[i - 1] === key[i] && cve[i - 1] <= cve[i]);
+    if (!sorted) order.sort((a, b) => (key[a] - key[b]) || (cve[a] - cve[b]));
+    sortCache.clear(); sortCache.set(id, order);
+    return order;
+  }
   function resultIndices() {
-    const ids = [];
-    for (let i = 0; i < N; i++) if (visible(i) && (!selCount || selected[i])) ids.push(i);
+    const ids = [], order = sortOrder();
+    for (let k = 0; k < N; k++) { const i = order[k]; if (visible(i) && (!selCount || selected[i])) ids.push(i); }
     return ids;
   }
+  function showSort() {
+    document.querySelectorAll("#f-results th[data-sort]").forEach((th) => {
+      const on = th.dataset.sort === resultSort.key;
+      th.setAttribute("aria-sort", on ? (resultSort.dir > 0 ? "ascending" : "descending") : "none");
+      th.querySelector("span").textContent = on ? (resultSort.dir > 0 ? " ▲" : " ▼") : "";
+    });
+  }
+  document.querySelectorAll("#f-results th[data-sort] button").forEach((btn) => btn.addEventListener("click", () => {
+    const key = btn.parentElement.dataset.sort;
+    resultSort.dir = key === resultSort.key ? -resultSort.dir : SORT_DEFAULT_DIR[key];
+    resultSort.key = key; resultPage = 0;
+    showSort(); renderResults();
+  }));
+  showSort();
   function renderResults() {
     if ($("f-results").hidden) return;
     const ids = resultIndices(), pages = Math.max(1, Math.ceil(ids.length / PAGE_SIZE));

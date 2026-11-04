@@ -102,6 +102,12 @@ def check(site, synthetic, screenshots=None, allow_sample=False):
             assert '1 · 50.0% of 2' in page.locator('#f-sel').inner_text()
             page.locator('#f-results-toggle').click()
             assert page.locator('#f-result-rows tr').count()==2
+            # column sort: CVSS descending first, then ascending
+            page.locator('th[data-sort=cvss] button').click()
+            assert page.locator('[data-record]').first.inner_text()=='CVE-2026-1002'
+            assert page.locator('th[data-sort=cvss]').get_attribute('aria-sort')=='descending'
+            page.locator('th[data-sort=cvss] button').click()
+            assert page.locator('[data-record]').first.inner_text()=='CVE-2026-1001'
             page.locator('[data-record]').first.focus(); page.keyboard.press('Enter')
             assert page.locator('#f-inspector').is_visible()
             assert 'score added or changed' in page.locator('#f-record-detail').inner_text()

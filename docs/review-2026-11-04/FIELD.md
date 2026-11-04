@@ -46,6 +46,16 @@ from that run.
   edition stamp reads "Edition 2026-11-04 09:49 UTC. Playback keeps this
   edition's scores, EPSS and KEV status." instead of a raw ISO timestamp.
 
+## Follow-up (same day)
+
+- Browse records sorts by any column (click a heading; again to reverse).
+  Missing values sort last either way; each order is computed once per
+  column and cached, so playback with the table open stays one pass over
+  the records. On the live edition a sort takes 114–160 ms. The smoke test
+  checks both directions and `aria-sort`.
+- `field.css`: the body grid takes the last row, so the Alias Graph draft,
+  which shares the stylesheet but has no toolbar, lays out correctly.
+
 ## Copy
 
 All Field text lives in `site/js/field.js` and `site/field.html`, outside
@@ -91,5 +101,3 @@ block; the rendered layout was compared before and after.
   the default distance would need smaller type than the page uses.
 - The timeline is a long, flat ribbon (x spans 460 units, score 36, EPSS
   56); that is the design, not a framing problem.
-- The records table has no column sort; filters and the CVE search cover
-  the common uses.
