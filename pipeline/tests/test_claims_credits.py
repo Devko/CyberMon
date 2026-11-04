@@ -118,28 +118,22 @@ def check_four_or_five_in_ten_vendor_credits_name_a_person(d: dict) -> None:
 
 # ------------------------------------------------------------ 02 · profile
 
-def check_lab_median_cvss_higher(d: dict) -> None:
-    # editorial.js (credits.html 02 headline): "Lab-credited CVEs have a
-    # higher median CVSS score than all credited CVEs." Higher by at least
-    # half a point, so a rounding wobble is not a finding. (2026-10-03: 7.8
-    # vs 6.9; 7.7–7.8 vs 6.8–6.9 since 09-23.) Replaced "higher CVSS scores
-    # and similar EPSS, exploit and KEV figures": the lab exploit-corpus
-    # rate is a quarter of the baseline's (0.4% vs 1.6%).
-    llm, base = d["profile"]["llm"], d["profile"]["baseline"]
-    assert llm["median_cvss"] >= base["median_cvss"] + 0.5, (
-        f"'a higher median CVSS score' needs the lab median CVSS 0.5+ over "
-        f"the baseline; {llm['median_cvss']} vs {base['median_cvss']}"
-    )
-
-
-def check_lab_credited_score_higher_and_more_memory(d: dict) -> None:
-    # editorial.js (credits.html 02): "a higher median CVSS score and a much
-    # larger share of memory-safety weaknesses" (2026-10-03: 40.1% vs 9.2%)
-    check_lab_median_cvss_higher(d)
-    llm, base = d["profile"]["llm"], d["profile"]["baseline"]
-    assert llm["memory_pct"] >= 2.5 * base["memory_pct"], (
-        f"'a much larger share of memory-safety weaknesses' needs 2.5x the "
-        f"baseline; {llm['memory_pct']}% vs {base['memory_pct']}%"
+def check_lab_more_often_high_or_critical(d: dict) -> None:
+    # editorial.js (credits.html 02 headline): "Lab-credited CVEs are rated
+    # high or critical more often than all credited CVEs." By at least five
+    # points of the funnel's share (unscored records in the denominator), so
+    # sampling noise in a few hundred records is not a finding. (2026-11-04:
+    # 55.9% vs 42.3%; 64.8% on 09-23, 63.8% on 10-03. The lab CVEs added
+    # since 10-03 are 37% high or critical, so the gap narrows: about 300
+    # more at that mix reach the five-point floor.)
+    # Replaced on 2026-11-04 "have a higher median CVSS score" (guard: 0.5
+    # points over the baseline), which stood at 7.5 vs 6.9 after falling
+    # from 7.8 in October; one medium-heavy batch would have tripped it.
+    llm = d["kinds"]["llm"]["funnel"]["high_or_critical_pct"]
+    base = d["baseline"]["high_or_critical_pct"]
+    assert llm >= base + 5.0, (
+        f"'rated high or critical more often' needs the lab share 5+ points "
+        f"over the baseline's; {llm}% vs {base}%"
     )
 
 
@@ -302,11 +296,14 @@ def check_vendor_credits_begin_march_2025(d: dict) -> None:
 # -------------------------------------------------------------- 04 · board
 
 def check_three_finders_hold_most_credits(d: dict) -> None:
-    # editorial.js (credits.html 04 headline): "In each column one or two
-    # finders hold most of the credits" — judged per kind, never summed
-    # across labs and vendors (the two kinds count by different rules).
-    # (2026-09-23: Anthropic 159 of 199 lab credits; AISLE + ZAST.AI 383 of
-    # 508 vendor-credited CVEs.)
+    # editorial.js (credits.html 04 headline): "Among labs and among
+    # vendors, one or two finders hold most of the credits." — judged per
+    # kind, never summed across labs and vendors (the two kinds count by
+    # different rules). (2026-09-23: Anthropic 159 of 199 lab credits; AISLE
+    # + ZAST.AI 383 of 508 vendor-credited CVEs. 2026-11-04: 334 of 365 and
+    # 481 of 630.) The headline said "In each column" until 2026-11-04; the
+    # board has no columns per kind, and its unguarded "with very different
+    # severity mixes" was cut (the caption names ZAST.AI and Anthropic).
     for kind in ("llm", "vendor"):
         counted = sorted((r["counted"] for r in d["board"]
                           if r["kind"] == kind), reverse=True)
@@ -351,14 +348,18 @@ def check_several_vendors_name_a_person(d: dict) -> None:
     )
 
 
-def check_openai_named_far_more_than_codex(d: dict) -> None:
-    # editorial.js (credits.html 04): "OpenAI is named on several times more
-    # records than its models are"
+def check_openai_mostly_named_without_a_model(d: dict) -> None:
+    # editorial.js (credits.html 04): "OpenAI is named without a model on
+    # most of the records that name it" — the org tier (names the company,
+    # no model) is over half of OpenAI's matched records. (2026-11-04: 112
+    # of 161.) Was "named on several times more records than its models
+    # are" (guard: 3x), which a batch of Codex credits on 2026-10-28 took
+    # from 119 vs 14 to 161 vs 49, fourteen records above the 3x line.
     r = _finder(d, "openai")
-    assert r["cves"] >= 3 * r["counted"], (
-        f"'named on several times more records than its models are' needs OpenAI's "
-        f"matched records at 3x+ its counted CVEs; {r['cves']} vs "
-        f"{r['counted']}"
+    assert r["org"] > r["cves"] / 2, (
+        f"'named without a model on most of the records that name it' needs "
+        f"OpenAI's org-tier records over half of its {r['cves']} matched "
+        f"records; it has {r['org']}"
     )
 
 
@@ -376,33 +377,40 @@ def check_fix_credits_exist_and_never_count(d: dict) -> None:
 
 # ----------------------------------------------------------- 05 · weakness
 
-def check_baseline_largest_family_is_injection(d: dict) -> None:
-    # editorial.js (credits.html 05): "The baseline's largest family is
-    # injection." / "at more than a third"
-    largest = max(d["weaknesses"]["families"],
-                  key=lambda f: f["baseline"]["n"])
-    pct = _family(d, "injection")["baseline"]["pct"]
-    assert largest["key"] == "injection" and 33.4 <= pct <= 45.0, (
-        f"needs injection as the baseline's largest family at 33.4–45%; "
-        f"largest is {largest['key']}, injection is {pct}%"
+def check_memory_leads_labs_injection_leads_baseline(d: dict) -> None:
+    # editorial.js (credits.html 05 headline): "Memory safety leads the
+    # lab-credited CVEs, while injection leads the baseline." (2026-11-04:
+    # lab memory 31.5%, next "Other CWE" 16.2%; baseline injection 36.4%,
+    # next access control 25.6%.) The caption's "at more than a third" for
+    # the baseline was cut on 2026-11-04: the share fell from 38.3% (09-23)
+    # to 36.4% against a floor of 33.4, and the bar shows the value.
+    families = d["weaknesses"]["families"]
+    lab = max(families, key=lambda f: f["llm"]["n"])
+    base = max(families, key=lambda f: f["baseline"]["n"])
+    assert lab["key"] == "memory" and base["key"] == "injection", (
+        f"needs memory safety largest among lab-credited CVEs and injection "
+        f"largest in the baseline; they are {lab['key']} and {base['key']}"
     )
 
 
-def check_lab_memory_and_crypto_several_times_baseline(d: dict) -> None:
-    # editorial.js (credits.html 05): "memory safety is the largest, at
-    # several times the baseline share; crypto and certificate weaknesses
-    # are also several times the baseline share, and injection is small"
-    largest = max(d["weaknesses"]["families"], key=lambda f: f["llm"]["n"])
+def check_lab_memory_and_crypto_over_twice_baseline(d: dict) -> None:
+    # editorial.js (credits.html 05): "the shares of memory-safety weaknesses
+    # and of crypto and certificate weaknesses are each more than twice the
+    # baseline's, and injection is small" (2026-11-04: memory 31.5% vs 9.4%,
+    # x3.4; crypto 9.9% vs 1.8%, x5.5; lab injection 4.1%). Was "several
+    # times" (guard 2.5x) until 2026-11-04: the lab memory ratio fell from
+    # x5.0 (09-23) to x3.4 as the October batches added lab CVEs that are
+    # about 11% memory safety, and some 230 more at that mix would have
+    # reached x2.5. About 600 more reach x2.
     memory, crypto = _family(d, "memory"), _family(d, "crypto")
     injection = _family(d, "injection")
     m_ratio = memory["llm"]["pct"] / memory["baseline"]["pct"]
     c_ratio = crypto["llm"]["pct"] / crypto["baseline"]["pct"]
-    assert largest["key"] == "memory" and m_ratio >= 2.5 and \
-        c_ratio >= 2.5 and injection["llm"]["pct"] <= 10.0, (
-            f"needs lab memory safety largest and 2.5x+ baseline, crypto "
-            f"2.5x+, injection <=10%; largest {largest['key']}, memory "
-            f"x{m_ratio:.1f}, crypto x{c_ratio:.1f}, injection "
-            f"{injection['llm']['pct']}%"
+    assert m_ratio > 2.0 and c_ratio > 2.0 and \
+        injection["llm"]["pct"] <= 10.0, (
+            f"needs lab memory and crypto shares over 2x the baseline's and "
+            f"lab injection <=10%; memory x{m_ratio:.1f}, crypto "
+            f"x{c_ratio:.1f}, injection {injection['llm']['pct']}%"
         )
 
 
@@ -468,16 +476,15 @@ def check_bc_java_and_firefox_in_lab_top_five(d: dict) -> None:
         )
 
 
-def check_vendor_top_five_a_quarter_red_hat_first(d: dict) -> None:
-    # editorial.js (credits.html 06): "with its top five holding about a
-    # quarter. Its first row is Red Hat Enterprise Linux"
-    t = d["targets"]["vendor"]
-    assert 20.0 <= t["top_share_pct"] <= 33.0, (
-        f"'about a quarter' needs 20–33%; it is {t['top_share_pct']}%"
-    )
-    first = t["projects"][0]["label"]
+def check_vendor_first_row_red_hat(d: dict) -> None:
+    # editorial.js (credits.html 06): "The vendor-credited list's first row
+    # is Red Hat Enterprise Linux" (2026-11-04: 100 CVEs; curl next at 35).
+    # The caption's "with its top five holding about a quarter" was cut on
+    # 2026-11-04: the share rose from 26.2% to 31.3% in October against a
+    # cap of 33, and the share line under the list prints the value.
+    first = d["targets"]["vendor"]["projects"][0]["label"]
     assert "red hat enterprise linux" in first.lower(), (
-        f"'Its first row is Red Hat Enterprise Linux' — it is now {first!r}"
+        f"'first row is Red Hat Enterprise Linux' — it is now {first!r}"
     )
 
 
@@ -522,12 +529,9 @@ CLAIMS = [
     ("four or five in ten vendor credits name the company only through a "
      "person there or in a thank-you line",
      "ai_credits.json", check_four_or_five_in_ten_vendor_credits_name_a_person),
-    ("Lab-credited CVEs have a higher median CVSS score than all credited "
-     "CVEs.",
-     "ai_credits.json", check_lab_median_cvss_higher),
-    ("a higher median CVSS score and a much larger share of memory-safety "
-     "weaknesses",
-     "ai_credits.json", check_lab_credited_score_higher_and_more_memory),
+    ("Lab-credited CVEs are rated high or critical more often than all "
+     "credited CVEs.",
+     "ai_credits.json", check_lab_more_often_high_or_critical),
     ("Median EPSS percentile is within ten points of the baseline in both AI "
      "columns.",
      "ai_credits.json", check_epss_medians_within_ten_points),
@@ -554,7 +558,8 @@ CLAIMS = [
      "ai_credits.json", check_lab_clusters_then_every_month),
     ("Vendor credits begin in March 2025.",
      "ai_credits.json", check_vendor_credits_begin_march_2025),
-    ("In each column one or two finders hold most of the credits",
+    ("Among labs and among vendors, one or two finders hold most of the "
+     "credits.",
      "ai_credits.json", check_three_finders_hold_most_credits),
     ("ZAST.AI's credits are almost all medium-severity records published "
      "through one CNA",
@@ -563,15 +568,17 @@ CLAIMS = [
      "ai_credits.json", check_anthropic_has_most_criticals),
     ("for several vendors that is a minority or none",
      "ai_credits.json", check_several_vendors_name_a_person),
-    ("OpenAI is named on several times more records than its models are",
-     "ai_credits.json", check_openai_named_far_more_than_codex),
+    ("OpenAI is named without a model on most of the records that name it",
+     "ai_credits.json", check_openai_mostly_named_without_a_model),
     ("records that credit it only for the fix",
      "ai_credits.json", check_fix_credits_exist_and_never_count),
-    ("injection (cross-site scripting, SQL injection, command injection) is the largest family, at more than a third",
-     "ai_credits.json", check_baseline_largest_family_is_injection),
-    ("crypto and certificate weaknesses are also several times the baseline "
-     "share, and injection is small",
-     "ai_credits.json", check_lab_memory_and_crypto_several_times_baseline),
+    ("Memory safety leads the lab-credited CVEs, while injection leads the "
+     "baseline.",
+     "ai_credits.json", check_memory_leads_labs_injection_leads_baseline),
+    ("the shares of memory-safety weaknesses and of crypto and certificate "
+     "weaknesses are each more than twice the baseline's, and injection is "
+     "small",
+     "ai_credits.json", check_lab_memory_and_crypto_over_twice_baseline),
     ("The vendor-credited population falls between the two on injection and "
      "has a larger memory-safety share than the baseline.",
      "ai_credits.json",
@@ -582,8 +589,8 @@ CLAIMS = [
     ("Bouncy Castle's Java crypto library and the Firefox browser are both in "
      "the top five.",
      "ai_credits.json", check_bc_java_and_firefox_in_lab_top_five),
-    ("with its top five holding about a quarter",
-     "ai_credits.json", check_vendor_top_five_a_quarter_red_hat_first),
+    ("The vendor-credited list's first row is Red Hat Enterprise Linux",
+     "ai_credits.json", check_vendor_first_row_red_hat),
     ("Fewer than half of published CVEs carry any credit.",
      "ai_credits.json", check_fewer_than_half_carry_a_credit),
     ("It has risen from almost none in 2018 to more than four in ten.",

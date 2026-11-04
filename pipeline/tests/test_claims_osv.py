@@ -66,18 +66,24 @@ def check_most_get_a_cve(d: dict) -> None:
                       f"share below half; it is {pct}%")
 
 
-def check_one_in_twelve(d: dict) -> None:
-    # gap_years headline: "About one GitHub-reviewed advisory in twelve
-    # carries no CVE id." — between one in thirteen and one in eleven
-    # (7.7-9.1%). (2026-10-03: 2,909 of 35,137 = 8.3%; 8.2-8.4% in every
-    # edition since 2026-09-23. The 2026 advisories run at 6.9%, so the
-    # share drifts down slowly: about 26,000 more advisories at that rate,
-    # roughly two years at 2026's pace, before it reaches one in thirteen.)
+def check_fewer_than_one_in_ten(d: dict) -> None:
+    # gap_years headline: "Fewer than one GitHub-reviewed advisory in ten
+    # carries no CVE id." — under 10%, and no lower than one in sixteen
+    # (6.25%), below which the phrase would overstate the gap. (2026-11-04:
+    # 2,900 of 36,279 = 8.0%.) Was "About one … in twelve" (7.7-9.1%) until
+    # 2026-11-04. That guard's note expected two years of margin, but the
+    # no-CVE count does not grow: CVE aliases reach older advisories as fast
+    # as new no-CVE ones arrive (2,904 on 09-23, 2,900 on 11-04) while the
+    # total grows by about 1,100 a month, so the share fell 8.35% → 7.99%
+    # in six weeks and would have left "one in twelve" around December. With
+    # the count flat it reaches one in sixteen at about 46,400 advisories,
+    # around August 2027.
     cat = d["catalog"]
     pct = 100.0 * cat["without_cve"] / cat["advisories"]
-    assert 100 / 13 <= pct <= 100 / 11, (
-        f"'about one advisory in twelve' needs a no-CVE share of 7.7-9.1%; "
-        f"it is {pct:.1f}% ({cat['without_cve']} of {cat['advisories']})")
+    assert 100 / 16 <= pct < 10, (
+        f"'Fewer than one advisory in ten' needs a no-CVE share of "
+        f"6.25-10%; it is {pct:.1f}% ({cat['without_cve']} of "
+        f"{cat['advisories']})")
 
 
 def check_rust_quarter(d: dict) -> None:
@@ -121,24 +127,48 @@ def check_maven_almost_all(d: dict) -> None:
 
 
 def check_not_the_minor_ones(d: dict) -> None:
-    # gap_severity headline: "Without a CVE, advisories lean to both ends of
-    # the scale" — more often Critical AND more often Low than the CVE set.
-    # (The caption's malware clause rests on GitHub's advisory API, not on
-    # this file: ~400 of 2026-09-23's no-CVE Critical advisories are
-    # malicious-package notices, 367 of them npm from 2020 — see
-    # docs/backlog.md for tagging them in the pipeline.)
+    # gap_severity headline: "No-CVE advisories are rated Critical or Low
+    # more often" — more often Critical AND more often Low than the CVE set.
+    # (2026-11-04: Critical 22.2% vs 12.2%, Low 12.8% vs 6.8%.)
     crit = _sev(d, "CRITICAL")
     check_more_low_as_well(d)
     assert crit["without_cve_pct"] > crit["with_cve_pct"], (
-        f"'lean to both ends': the no-CVE set is no longer more often "
-        f"Critical ({crit['without_cve_pct']}% vs {crit['with_cve_pct']}%)")
+        f"'rated Critical … more often': the no-CVE set is no longer more "
+        f"often Critical ({crit['without_cve_pct']}% vs "
+        f"{crit['with_cve_pct']}%)")
 
 
 def check_more_low_as_well(d: dict) -> None:
     low = _sev(d, "LOW")
     assert low["without_cve_pct"] > low["with_cve_pct"], (
-        f"'More of them are rated Low as well' is no longer true "
+        f"'rated … Low more often' is no longer true "
         f"({low['without_cve_pct']}% vs {low['with_cve_pct']}%)")
+
+
+# No-CVE Critical advisories that are malicious-package notices, by GitHub's
+# advisory API on 2026-09-23 (367 of them npm from 2020). The export does not
+# flag them (docs/backlog.md: tag them in the pipeline), so this dated count
+# stands in for a measured one; the methodology quotes it with its date.
+MALWARE_CRITICAL_NOTICES = 400
+
+
+def check_criticals_net_of_malware_notices(d: dict) -> None:
+    # gap_severity headline: "hundreds of the Criticals are malware notices";
+    # caption: "Without the malicious-package notices, the no-CVE advisories
+    # are rated Critical less often than the ones with a CVE." (2026-11-04:
+    # 645 no-CVE Criticals; net of 400 notices, 245 of 2,500 = 9.8% against
+    # 12.2% with a CVE.)
+    crit = _sev(d, "CRITICAL")
+    assert crit["without_cve"] >= MALWARE_CRITICAL_NOTICES, (
+        f"the export has {crit['without_cve']} no-CVE Critical advisories, "
+        f"fewer than the {MALWARE_CRITICAL_NOTICES} malware notices quoted")
+    rest = crit["without_cve"] - MALWARE_CRITICAL_NOTICES
+    pool = d["catalog"]["without_cve"] - MALWARE_CRITICAL_NOTICES
+    pct = 100.0 * rest / pool
+    assert pct < crit["with_cve_pct"], (
+        f"'Without the malicious-package notices … rated Critical less "
+        f"often' fails: {pct:.1f}% of the rest vs {crit['with_cve_pct']}% "
+        f"with a CVE")
 
 
 def check_reviewed_only(d: dict) -> None:
@@ -201,7 +231,7 @@ def check_pypi_2023(d: dict) -> None:
     y = next(r for r in d["years"] if r["year"] == 2023)
     pypi = y["by_ecosystem"].get("PyPI", 0)
     assert pypi > y["total"] / 2, (
-        f"'in 2023 PyPI carried most of the year's reports' — PyPI holds "
+        f"'PyPI had most of 2023's' — PyPI holds "
         f"{pypi} of {y['total']}")
 
 
@@ -223,8 +253,8 @@ CLAIMS = [
     ("A quarter of Rust's do not.", "advisory_gap.json",
      check_rust_highest_of_large),
     # advisories.html
-    ("About one GitHub-reviewed advisory in twelve carries no CVE id.",
-     "advisory_gap.json", check_one_in_twelve),
+    ("Fewer than one GitHub-reviewed advisory in ten carries no CVE id.",
+     "advisory_gap.json", check_fewer_than_one_in_ten),
     ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
      check_rust_quarter),
     ("About one Rust advisory in four has no CVE id", "advisory_gap.json",
@@ -233,8 +263,11 @@ CLAIMS = [
      check_maven_almost_all),
     ("No-CVE advisories are rated Critical or Low more often",
      "advisory_gap.json", check_not_the_minor_ones),
-    ("More of them are rated Low as well", "advisory_gap.json",
-     check_more_low_as_well),
+    ("and hundreds of the Criticals are malware notices",
+     "advisory_gap.json", check_criticals_net_of_malware_notices),
+    ("Without the malicious-package notices, the no-CVE advisories are rated "
+     "Critical less often than the ones with a CVE.",
+     "advisory_gap.json", check_criticals_net_of_malware_notices),
     ("OSV mirrors only GitHub-reviewed advisories", "advisory_gap.json",
      check_reviewed_only),
     ("each of the twelve GitHub advisory ecosystems", "advisory_gap.json",
@@ -251,8 +284,8 @@ CLAIMS = [
      "registry_malware.json", check_typical_month_window),
     ("npm accounts for almost every report on file", "registry_malware.json",
      check_npm_almost_every),
-    ("in 2023 PyPI carried most of the year's reports",
-     "registry_malware.json", check_pypi_2023),
+    ("but PyPI had most of 2023's", "registry_malware.json",
+     check_pypi_2023),
     ("Almost no report in the feed has been withdrawn", "registry_malware.json",
      check_almost_none_withdrawn),
 ]
