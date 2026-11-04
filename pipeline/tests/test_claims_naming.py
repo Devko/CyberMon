@@ -65,9 +65,11 @@ def check_most_renamed_at_least_a_dozen(d: dict) -> None:
 
 
 def check_most_renamed_more_than_a_dozen(d: dict) -> None:
-    # editorial.js (home card 14): "ATT&CK's most-renamed threat groups
+    # editorial.js (home card 14): "The ATT&CK groups with the most aliases
     # carry more than a dozen other names each." — at least two groups with
-    # 13 or more. (2026-10-03: three, at 15, 15 and 14.)
+    # 13 or more. (2026-10-03: three, at 15, 15 and 14.) It said
+    # "most-renamed" until 2026-11-04; the groups are not renamed, they
+    # carry aliases.
     n = _groups_with_at_least(d, 13)
     assert n >= 2, (
         f"'more than a dozen other names each' needs at least two groups "
@@ -113,7 +115,7 @@ CLAIMS = [
         check_most_renamed_at_least_a_dozen,
     ),
     (
-        "ATT&CK's most-renamed threat groups carry more than a dozen other names each.",
+        "The ATT&CK groups with the most aliases carry more than a dozen other names each.",
         "naming.json",
         check_most_renamed_more_than_a_dozen,
     ),

@@ -74,9 +74,10 @@ def _race_board(d: dict) -> list[tuple[str, list[int]]]:
 
 
 def check_ransomware_led_then_lost(d: dict) -> None:
-    # editorial.motion.scenes["hype-race"].headline: "Ransomware ran security's
-    # news cycle. Then it didn't." — two halves, both checkable: Ransomware
-    # leads the opening board, and does not lead the closing one.
+    # editorial.motion.scenes["hype-race"].headline: "Ransomware once led news
+    # mentions of the tracked terms; it no longer does." — two halves, both
+    # checkable: Ransomware leads the opening board, and does not lead the
+    # closing one.
     board = _race_board(d)
     assert board, "no terms with gdelt series — the race has nothing to render"
 
@@ -131,11 +132,14 @@ BUCKETS = ("unscored", "low", "medium", "high", "critical")
 
 
 def check_critical_is_routine(d: dict) -> None:
-    # headline: "CVEs rated Critical went from a handful a year to thousands."
-    # — the clip's first year has a handful, its last complete year
-    # thousands. (2026-10-03: 3 in 1999; 4,111 in 2025, 8,439 in 2026 so
-    # far.) Complete years by the edition's year (GENERATION_YEAR), not the
-    # payload's stamp, so the January rehearsals judge the right rows.
+    # headline: "CVE records carrying a Critical score went from a handful a
+    # year to thousands." — the clip's first year has a handful, its last
+    # complete year thousands. (It said "CVEs rated Critical" until
+    # 2026-11-04; the score counted is the one in the record, so before the
+    # era marker a CVE NVD rated Critical shows up as unscored here.)
+    # (2026-10-03: 3 in 1999; 4,111 in 2025, 8,439 in 2026 so far.) Complete
+    # years by the edition's year (GENERATION_YEAR), not the payload's
+    # stamp, so the January rehearsals judge the right rows.
     years = d.get("years") or []
     assert len(years) >= 10, "not enough years to judge the claim"
 
@@ -153,8 +157,9 @@ def check_critical_is_routine(d: dict) -> None:
 
 
 def check_era_caveat_holds(d: dict) -> None:
-    # meta: "Left of {era}, severity lived in NVD's database, which this chart
-    # does not read — the gray band is the record format, not the era."
+    # meta: "Before {era}, severity scores were kept in NVD's database, which
+    # this chart does not read; the gray band counts records with no score in
+    # the record."
     # The caveat is only honest if the pre-era years really are dominated by
     # unscored records.
     era = (d.get("record_era") or {}).get("year")
@@ -177,12 +182,13 @@ def check_era_caveat_holds(d: dict) -> None:
 # --- cna-concentration -------------------------------------------------------
 
 def check_hundreds_about_half(d: dict) -> None:
-    # headline: "Hundreds of CNAs now assign CVEs; the five largest still
-    # issue about half." — the last complete year's active CNAs and top-5
-    # share. (2026-10-03: 367 CNAs and 56.6% in 2025; 386 and 47.0% for
-    # 2026 so far.) This used to guard the clip's older headline ("The
-    # gatekeepers multiplied. The gate did not.") with a tenfold rise over
-    # 1999's single CNA, which never pinned "hundreds".
+    # headline: "Hundreds of CNAs now assign CVEs; the five largest issue
+    # about half." — the last complete year's active CNAs and top-5 share.
+    # ("still issue" until 2026-11-04: the share fell from 100% in 1999-2004,
+    # so "still" misdescribed the clip.) (2026-10-03: 367 CNAs and 56.6% in
+    # 2025; 386 and 47.0% for 2026 so far.) This used to guard the clip's
+    # older headline ("The gatekeepers multiplied. The gate did not.") with
+    # a tenfold rise over 1999's single CNA, which never pinned "hundreds".
     years = d.get("years") or []
     assert len(years) >= 10, "not enough years to judge the claim"
 
@@ -194,7 +200,7 @@ def check_hundreds_about_half(d: dict) -> None:
         f"CNAs in {last['year']}"
     )
     assert 40.0 <= last["top5_share"] <= 62.0, (
-        f"'the five largest still issue about half' vs {last['top5_share']}% "
+        f"'the five largest issue about half' vs {last['top5_share']}% "
         f"in {last['year']}"
     )
 
@@ -206,11 +212,11 @@ CLAIMS = [
      "market_hype.json", check_race_is_comparable),
     ("All {terms} tracked terms shown",
      "market_hype.json", check_all_terms_shown),
-    ("CVEs rated Critical went from a handful a year to thousands.",
+    ("CVE records carrying a Critical score went from a handful a year to thousands.",
      "nine_eight_flood.json", check_critical_is_routine),
     ("severity scores were kept in NVD's database, which this chart does not read",
      "nine_eight_flood.json", check_era_caveat_holds),
-    ("Hundreds of CNAs now assign CVEs; the five largest still issue about half.",
+    ("Hundreds of CNAs now assign CVEs; the five largest issue about half.",
      "cna_concentration.json", check_hundreds_about_half),
 ]
 

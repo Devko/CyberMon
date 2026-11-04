@@ -62,27 +62,26 @@ const ED = {
     headline: "Each bar counts the CVE-level changes CyberMon observed that day.",
     caption:
       "Events from CyberMon's three per-CVE logs, stacked by kind on the day each was first " +
-      "observed. Most score events are a first CNA score added to an existing record; " +
-      "changes to an existing score are rarer. Drag the handles of the bar under the chart, " +
-      "or pinch or Shift-scroll on the chart, to choose a date range; the table below lists " +
-      "its events. Click a legend entry to hide that kind.",
+      "observed. Most score events are a first CNA score added to an existing record. Drag " +
+      "the handles of the bar under the chart, or pinch or Shift-scroll on the chart, to " +
+      "choose a date range; the table below lists its events. Click a legend entry to hide " +
+      "that kind.",
     note: "Start of each log: loading…",
     methodology:
       "KEV and score events are dated by the nightly run that first saw them, not by when the " +
       "change was made upstream. KEV changes from before the nightly diffs began are dated by " +
-      "the first of the weekly Internet Archive captures CyberMon read that shows them, so " +
-      "each happened on or before that date; the days between captures were not observed and " +
-      "carry no bar. EPSS events are dated by FIRST's score date for the snapshot, which is " +
-      "the day before the run that read it. A run that follows missed nights, and the first " +
-      "nightly KEV run (which compared the catalog with the last archive capture), includes " +
-      "every change since the previous observation. EPSS events from such a run are labelled " +
-      "as pooled; KEV and score events are still labelled as a nightly run. Each log is drawn " +
-      "from its first observation onward, marked on the chart. EPSS contributes one event per " +
-      "night, the largest change in probability, except on nights the EPSS Volatility module " +
-      "quarantines as a model reset or a whole-corpus anomaly. Score events follow the Silent " +
-      "Rescores definitions: rescore (same CVSS version, new score), CVSS version change, " +
-      "first CNA score on an existing record, and removed score. Rows logged before " +
-      "2026-09-20 carry only the version family (for example v3).",
+      "the first weekly Internet Archive capture that shows them, so each happened on or " +
+      "before that date. The days between captures were not observed and carry no bar. EPSS " +
+      "events are dated by FIRST's score date for the snapshot, which is the day before the " +
+      "run that read it. A run that follows missed nights, and the first nightly KEV run " +
+      "(which compared the catalog with the last archive capture), includes every change " +
+      "since the previous observation. EPSS events from such a run are labelled as pooled; " +
+      "KEV and score events are still labelled as a nightly run. EPSS contributes one event " +
+      "per night, the largest change in probability, except on nights the EPSS Volatility " +
+      "module quarantines as a model reset or a whole-corpus anomaly. Score events follow " +
+      "the CVSS Score Changes definitions: rescore (same CVSS version, new score), CVSS " +
+      "version change, first CNA score on an existing record, and removed score. Rows " +
+      "logged before 2026-09-20 carry only the version family (for example v3).",
   },
   trail: {
     num: "02",
@@ -93,9 +92,8 @@ const ED = {
       "Search a CVE id to list its events. The page address keeps the CVE (#cve=…), so a " +
       "trail can be shared as a link.",
     methodology:
-      "The trail lists the CVE's events from all three logs in the order they were first " +
-      "observed. An empty trail means that, since each log began, the CVE had no CNA score " +
-      "change, was not listed or changed in KEV, and was not the largest EPSS change on a " +
+      "An empty trail means that, since each log began, the CVE had no CNA score change, " +
+      "was not listed or changed in KEV, and was not the largest EPSS change on a " +
       "night this page keeps (nights quarantined as model resets or whole-corpus anomalies " +
       "are left out). It says nothing about changes before monitoring began.",
   },
@@ -104,9 +102,7 @@ const ED = {
     kicker: "Events in the range",
     source: "CyberMon's change logs",
     headline: "The table lists each event in the selected date range.",
-    caption:
-      "Sort by any column. The CSV download contains every event in the range, including " +
-      "rows beyond those shown.",
+    caption: "Sort by any column.",
     methodology:
       "The table shows at most {cap} rows in the current sort order. The CSV contains every " +
       "event in the range with its first-observed date, CVE, kind, source log, change and " +
@@ -304,10 +300,7 @@ function renderTrail(slots, data, events) {
     }
     out.append(head);
     if (!trail) {
-      out.append(el("p", "obs-trail-empty",
-        `No event on record for ${cve}. Since each log began it has had no CNA score change, ` +
-        "has not been listed or changed in KEV, and has not been the largest EPSS change on a " +
-        "night this page keeps (quarantined nights are left out)."));
+      out.append(el("p", "obs-trail-empty", `No event on record for ${cve} since each log began.`));
       return;
     }
     const sources = new Set(trail.map((e) => e.source));
@@ -459,7 +452,7 @@ function historiesNote(data) {
   if (s.kev.first_observed) {
     parts.push(s.kev.capture_until
       ? `KEV catalog: first observed ${s.kev.first_observed} in an Internet Archive capture, ` +
-        `archive captures through ${s.kev.capture_until} (a change dated by a capture happened on or before that date)` +
+        `archive captures through ${s.kev.capture_until}` +
         (s.kev.nightly_from ? `, nightly diffs from ${s.kev.nightly_from}` : "")
       : `KEV catalog: nightly diffs, first observed ${s.kev.first_observed}`);
   }

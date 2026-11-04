@@ -516,9 +516,6 @@ CLAIMS = [
     ("AI finders announce thousands of vulnerabilities, and CVE records "
      "credit each kind with hundreds.",
      "ai_credits.json", check_thousands_announced_hundreds_credited),
-    ("AI finders announce thousands of vulnerabilities; CVE records credit "
-     "labs and vendors with hundreds each.",
-     "ai_credits.json", check_thousands_announced_hundreds_credited),
     ("four or five in ten vendor credits name the company only through a "
      "person there or in a thank-you line",
      "ai_credits.json", check_four_or_five_in_ten_vendor_credits_name_a_person),

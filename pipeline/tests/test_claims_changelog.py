@@ -257,6 +257,13 @@ CLAIMS = [
         check_every_edit_kind_exists,
     ),
     (
+        # home card headline (KEV Changelog): due-date and ransomware-flag
+        # changes must both be in the log.
+        "CISA changes KEV entries after listing them, including due dates "
+        "and ransomware flags.",
+        check_every_edit_kind_exists,
+    ),
+    (
         "New listings are not counted; the chart counts changes to entries "
         "already published.",
         check_additions_excluded,

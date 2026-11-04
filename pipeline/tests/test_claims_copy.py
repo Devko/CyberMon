@@ -414,6 +414,44 @@ def check_rescores_mostly_first_scores(d: dict) -> None:
     assert total and counts["first_score"] > total / 2, counts
 
 
+def check_card_cisa_more_than_half(d: dict) -> None:
+    # Vulnrichment card: "has added data to more than half of all published
+    # CVEs". It said "about half" until 2026-11-04 (52.9% that night, rising
+    # 1-2 points a month, so "about half" ran out around December). The
+    # ceiling is where "more than half" stops being the natural phrase.
+    pct = d["headline"]["pct_cisa"]
+    assert 50 < pct <= 200 / 3, pct
+
+
+def check_card_scored_since_2023_below_1pct(d: dict) -> None:
+    # EPSS Before KEV card: "More than half of scored KEV additions since
+    # 2023 had an EPSS score under 1% the day before listing." Pooled over
+    # every listing year from 2023, the current one included. (2026-11-04:
+    # 380 of 645, 58.9%; by year 66.7 63.2 59.2 51.2.) It said "Roughly half
+    # or more of recent KEV additions" until 2026-11-04.
+    rows = [r for r in d["grade_by_year"] if r["year"] >= 2023]
+    below = sum(r["n_below_1pct"] for r in rows)
+    scored = sum(r["graded"] for r in rows)
+    assert rows and min(r["year"] for r in rows) == 2023, rows
+    assert scored and below > scored / 2, (below, scored)
+
+
+def check_card_largest_announcement_exceeds_credited(d: dict) -> None:
+    # AI Credits card: "The largest single AI finder announcement counts more
+    # vulnerabilities than CVE records credit to all AI labs and vendors
+    # combined." Only announcements counted in vulnerabilities or CVEs
+    # count. (2026-11-04: 10,000, Anthropic with its Glasswing partners,
+    # against 365 lab + 630 vendor credited records.) It said "CVE records
+    # credit labs and vendors with hundreds each" until 2026-11-04; the
+    # vendor count was on course to pass 1,000 around March 2027.
+    biggest = max((c["value"] for c in d["claims"]
+                   if c["unit_kind"] in ("vulnerabilities", "cves")),
+                  default=0)
+    credited = sum(d["kinds"][k]["funnel"]["credited"]
+                   for k in ("llm", "vendor"))
+    assert biggest > credited, (biggest, credited)
+
+
 def check_dozens_of_incident_filings(d: dict) -> None:
     if d["status"] != "ok":
         return
@@ -499,16 +537,32 @@ CLAIMS = [
      "naming.json", check_most_three_or_fewer),
     ("Tonight's blocklist holds a handful of C2 servers.",
      "botnet_weather.json", check_handful_of_c2s),
+    # home card (Botnet C2 Servers); until 2026-11-04 it read "Feodo
+    # Tracker's botnet C2 blocklist is counted by malware family every
+    # night." (5 listed on 2026-11-04, unchanged since July.)
+    ("Feodo Tracker's botnet C2 blocklist holds a handful of servers.",
+     "botnet_weather.json", check_handful_of_c2s),
     ("Most rescores lower the score, and most move it by less than two points.",
      "rescore_log.json", check_rescores_mostly_down_and_small),
     ("A handful of CNAs made most of the rescores logged since July 2026.",
      "rescore_log.json", check_handful_made_most),
     ("Since July 2026, more organizations have joined the CVE roster than left it.",
      "cna_roster.json", check_joined_outnumber_left),
+    # home card (CNA Roster); until 2026-11-04 it read "The CVE Program
+    # publishes no join dates, so CyberMon logs roster changes nightly."
+    # (35 joined, 1 left on 2026-11-04.)
+    ("Organizations joining the CVE roster have outnumbered those leaving since July 2026.",
+     "cna_roster.json", check_joined_outnumber_left),
     ("Since mid-2024, CISA has enriched about half of all published CVE records.",
      "adp_coverage.json", check_cisa_about_half),
-    ("CISA's Vulnrichment program has added data to about half of all published CVEs.",
-     "adp_coverage.json", check_cisa_about_half),
+    ("CISA's Vulnrichment program has added data to more than half of all published CVEs.",
+     "adp_coverage.json", check_card_cisa_more_than_half),
+    ("More than half of scored KEV additions since 2023 had an EPSS score under 1% "
+     "the day before listing.",
+     "epss_report.json", check_card_scored_since_2023_below_1pct),
+    ("The largest single AI finder announcement counts more vulnerabilities than "
+     "CVE records credit to all AI labs and vendors combined.",
+     "ai_credits.json", check_card_largest_announcement_exceeds_credited),
     ("Rejection rates differ by more than tenfold between CNAs.",
      "cna_concentration.json", check_rejection_tenfold),
     ("Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.",
@@ -526,6 +580,10 @@ CLAIMS = [
     ("CNA score changes (mostly first scores on existing records)",
      "observatory.json", check_rescores_mostly_first_scores),
     ("Public exploit code in Exploit-DB has not appeared sooner since ChatGPT.",
+     "ai_alibi.json", check_public_code_not_sooner),
+    # home card (AI and PoC Timing), which says "ChatGPT's release": the
+    # quote above (the ai_clock headline) does not anchor it.
+    ("Public exploit code in Exploit-DB has not appeared sooner since ChatGPT's release.",
      "ai_alibi.json", check_public_code_not_sooner),
     ("so recent medians rest on far fewer CVEs",
      "ai_alibi.json", check_exploitdb_thinned),

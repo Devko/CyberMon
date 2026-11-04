@@ -33,7 +33,9 @@ export const editorial = {
     {
       id: "exploitation",
       label: "Exploitation",
-      lede: "CISA's list of exploited CVEs, EPSS exploitation forecasts and public exploit code.",
+      lede:
+        "CISA's Known Exploited Vulnerabilities (KEV) catalog, Exploit Prediction Scoring " +
+        "System (EPSS) forecasts and public exploit code.",
     },
     {
       id: "industry",
@@ -108,12 +110,7 @@ export const editorial = {
   home: {
     kicker: "Overview",
     headline: "Pick a module.",
-    caption:
-      "CyberMon measures the security industry from public data: how vulnerabilities are " +
-      "numbered, scored and catalogued, which ones are exploited, and the market attention, " +
-      "breaches, incident filings and ransom payments around them. Each module below is a " +
-      "separate page with its own nightly pipeline stage, data contracts and a " +
-      "“how this is computed” note under every chart.",
+    caption: "Each module below is a separate page with its own nightly pipeline stage.",
     statusLive: "live",
     statusSoon: "coming soon",
     backlogNote:
@@ -147,10 +144,9 @@ export const editorial = {
           headline: "The Observatory puts CyberMon's CVE-level change logs on one timeline.",
           blurb:
             "CNA score changes (mostly first scores on existing records), KEV additions, " +
-            "edits and removals, and each night's largest EPSS probability change, with " +
-            "quarantined nights left out. Events are dated by the night CyberMon observed " +
-            "them; EPSS events by FIRST's score date. Select a date range, look up one CVE, " +
-            "or download the events as CSV.",
+            "edits and removals, and each night's largest EPSS probability change. Events " +
+            "are dated by the night CyberMon observed them, EPSS events by FIRST's score " +
+            "date. Select a date range, look up one CVE, or download the events as CSV.",
         },
       ],
     },
@@ -173,7 +169,7 @@ export const editorial = {
         href: "market.html",
         num: "02",
         label: "Buzzword Attention",
-        headline: "Attention to each security buzzword is tracked monthly in five public sources.",
+        headline: "Attention to security buzzwords is tracked monthly in five public sources.",
         blurb:
           "News coverage (GDELT), Hacker News discussion, arXiv papers, Wikipedia pageviews " +
           "and SEC EDGAR filings, each term indexed to its own peak in a rolling five-year " +
@@ -201,10 +197,10 @@ export const editorial = {
         label: "CNA Concentration",
         headline: "Hundreds of CNAs assign CVEs; since 2021 the five largest have issued about half.",
         blurb:
-          "The number of active CNAs each year, the share of each year's CVEs from the five " +
-          "and ten largest, new CNAs per year, and the CNAs that later reject the largest " +
-          "share of their own published records. Rebuilt nightly from the same corpus as " +
-          "CVE Ecosystem.",
+          "The number of active CNAs (CVE Numbering Authorities) each year, the share of " +
+          "each year's CVEs from the five and ten largest, new CNAs per year, and the CNAs " +
+          "that later reject the largest share of their own published records. Rebuilt " +
+          "nightly from the same corpus as CVE Ecosystem.",
         live: true,
       },
       {
@@ -224,12 +220,12 @@ export const editorial = {
         href: "extortion.html",
         num: "06",
         label: "Ransom Payments",
-        headline: "Crowdsourced, blockchain-verified ransomware payments total more than a billion dollars.",
+        headline: "Ransomware payments recorded by Ransomwhere total more than a billion dollars.",
         blurb:
-          "Payments from the Ransomwhere dataset, which counts only payments to reported " +
-          "and verified addresses: revenue per quarter in dollars at the day of transfer, " +
-          "payment counts and median sizes, and revenue by ransomware family. Every total " +
-          "is a lower bound. Rebuilt nightly.",
+          "Ransomwhere, a crowdsourced tracker, counts only payments to addresses that " +
+          "were reported to it and verified, so every total is a lower bound. Revenue per " +
+          "quarter in dollars at the day of transfer, payment counts and median sizes, and " +
+          "revenue by ransomware family. Rebuilt nightly.",
         live: true,
       },
       {
@@ -274,7 +270,7 @@ export const editorial = {
         href: "epss.html",
         num: "10",
         label: "EPSS Before KEV",
-        headline: "Roughly half or more of recent KEV additions had an EPSS score under 1% the day before listing.",
+        headline: "More than half of scored KEV additions since 2023 had an EPSS score under 1% the day before listing.",
         blurb:
           "For CVEs in CISA's KEV catalog, the EPSS score published the day before each " +
           "listing: probability bands per listing year, the distribution by EPSS model " +
@@ -325,7 +321,7 @@ export const editorial = {
         href: "naming.html",
         num: "14",
         label: "Threat Group Aliases",
-        headline: "ATT&CK's most-renamed threat groups carry more than a dozen other names each.",
+        headline: "The ATT&CK groups with the most aliases carry more than a dozen other names each.",
         blurb:
           "MITRE ATT&CK files each threat group under one name and lists other names it " +
           "is known by: the groups with the most aliases, and the distribution of alias " +
@@ -350,13 +346,13 @@ export const editorial = {
         href: "adp.html",
         num: "16",
         label: "Vulnrichment",
-        headline: "CISA's Vulnrichment program has added data to about half of all published CVEs.",
+        headline: "CISA's Vulnrichment program has added data to more than half of all published CVEs.",
         blurb:
-          "NVD's analysis backlog grew through 2024, the year CISA launched Vulnrichment. " +
-          "Its CISA-ADP container adds SSVC decision points to nearly every record it covers, " +
-          "and a CVSS score or a CWE id to about a fifth each. Monthly counts by the " +
-          "container's own update date, what it adds, and the ADP publishers ranked by " +
-          "records enriched. Read nightly from the CVE List.",
+          "CISA writes Vulnrichment data into CVE records through an Authorized Data " +
+          "Publisher (ADP) container, CISA-ADP. The container adds SSVC decision points to " +
+          "nearly every record it covers, and a CVSS score or a CWE id to about a fifth " +
+          "each. Monthly counts by the container's own update date, what it adds, and the " +
+          "ADP publishers ranked by records enriched. Read nightly from the CVE List.",
         live: true,
       },
       {
@@ -366,12 +362,11 @@ export const editorial = {
         label: "EPSS Volatility",
         headline: "On an average night, EPSS percentiles change for nearly all CVEs and probabilities for about 1%.",
         blurb:
-          "CyberMon compares each night's EPSS feed with the previous night's. The " +
-          "percentile is a rank against all scored CVEs, a set that grows every day, so it " +
-          "changes for nearly every CVE on an average night; the probability for about 1%. Also weekly " +
-          "counts of probabilities crossing 0.1%, 1% and 5%, and the largest single-night " +
-          "changes. FIRST publishes daily scores but no change log; CyberMon has kept this " +
-          "one since July 2026.",
+          "CyberMon compares each night's EPSS feed with the previous night's: the share " +
+          "of CVEs whose percentile and whose probability changed, weekly counts of " +
+          "probabilities crossing 0.1%, 1% and 5%, and the largest single-night changes. " +
+          "The percentile is a rank against all scored CVEs, a set that grows every day. " +
+          "FIRST publishes daily scores but no change log; this one starts in July 2026.",
         live: true,
       },
       {
@@ -379,12 +374,12 @@ export const editorial = {
         href: "roster.html",
         num: "18",
         label: "CNA Roster",
-        headline: "The CVE Program publishes no join dates, so CyberMon logs roster changes nightly.",
+        headline: "Organizations joining the CVE roster have outnumbered those leaving since July 2026.",
         blurb:
-          "The CVE Program publishes its current list of partner organizations, and the " +
-          "roster file's git history holds the raw edits. CyberMon snapshots the list " +
-          "every night and logs organizations joining, leaving, renamed or changing scope, " +
-          "with the current roster by type, root and country. The log starts in July 2026.",
+          "The CVE Program publishes its current list of partner organizations without " +
+          "join dates; the roster file's git history holds the raw edits. CyberMon " +
+          "snapshots the list every night and logs organizations joining, leaving, renamed " +
+          "or changing scope, with the current roster by type, root and country.",
         live: true,
       },
       {
@@ -406,7 +401,7 @@ export const editorial = {
         href: "c2.html",
         num: "20",
         label: "Botnet C2 Servers",
-        headline: "Feodo Tracker's botnet C2 blocklist is counted by malware family every night.",
+        headline: "Feodo Tracker's botnet C2 blocklist holds a handful of servers.",
         blurb:
           "abuse.ch's Feodo Tracker publishes only its current blocklist of botnet " +
           "command-and-control servers. CyberMon records the count by malware family each " +
@@ -422,14 +417,12 @@ export const editorial = {
         label: "AI and PoC Timing",
         headline: "Public exploit code in Exploit-DB has not appeared sooner since ChatGPT's release.",
         blurb:
-          "A dated timeline of AI releases, reports and incidents over CyberMon's " +
-          "public-exploit series (days from CVE publication to the first exploit code " +
-          "Exploit-DB dates), with each series tested for a change at three candidate " +
-          "start dates for an “AI era”. At the ChatGPT date none of the judged measures " +
-          "moved earlier; each later date is judged once two complete, settled years " +
-          "follow it. " +
-          "This measures public exploit code, not attacks in the wild, and the page says " +
-          "how the two differ. Also AI-security attention against the same series.",
+          "Days from CVE publication to the first exploit code Exploit-DB dates, set " +
+          "against a dated timeline of AI releases, reports and incidents. Each series is " +
+          "tested for a change at three candidate start dates for an “AI era”. At the " +
+          "ChatGPT date none of the judged measures moved earlier; each later date is " +
+          "judged once two complete, settled years follow it. This is public exploit code, " +
+          "not attacks in the wild. Also AI-security attention against the same series.",
         live: true,
       },
       {
@@ -437,7 +430,7 @@ export const editorial = {
         href: "credits.html",
         num: "22",
         label: "AI Credits",
-        headline: "AI finders announce thousands of vulnerabilities; CVE records credit labs and vendors with hundreds each.",
+        headline: "The largest single AI finder announcement counts more vulnerabilities than CVE records credit to all AI labs and vendors combined.",
         blurb:
           "CVE records that credit an AI lab's model or an AI-security vendor, matched " +
           "against a curated registry that keeps labs and vendors separate. The credited " +
@@ -481,7 +474,7 @@ export const editorial = {
         href: "advisories.html",
         num: "25",
         label: "Advisories Without a CVE",
-        headline: "Most GitHub-reviewed advisories carry a CVE id; a quarter of Rust's do not.",
+        headline: "Most GitHub-reviewed advisories carry a CVE id; Rust's lack one more often than those of any other large registry.",
         blurb:
           "GitHub-reviewed security advisories for open-source packages, split by whether " +
           "they carry a CVE id: per publication year, per ecosystem, and by GitHub's " +
@@ -4541,7 +4534,7 @@ export const editorial = {
       },
       "severity-flood": {
         kicker: "CVEs by severity",
-        headline: "CVEs rated Critical went from a handful a year to thousands.",
+        headline: "CVE records carrying a Critical score went from a handful a year to thousands.",
         source: "CVE List V5 (MITRE)",
         // The era caveat is not optional garnish: without it the growing stack
         // reads as "vulnerabilities got worse" when what changed is where the
@@ -4554,17 +4547,16 @@ export const editorial = {
         meta:
           "published CVEs per year, by the score in the CVE record. Before {era}, " +
           "severity scores were kept in NVD's database, which this chart does not read; " +
-          "the gray band counts records with no score in the record. {gen}* is still " +
-          "filling in.",
+          "the gray band counts records with no score in the record. {gen}* is partial.",
         eraMarker: "scored in NVD, not in the record",
       },
       "cna-concentration": {
         kicker: "CNA concentration",
-        headline: "Hundreds of CNAs now assign CVEs; the five largest still issue about half.",
+        headline: "Hundreds of CNAs now assign CVEs; the five largest issue about half.",
         source: "CVE List V5 (MITRE)",
         meta:
           "share of each year's CVEs issued by the five largest CNAs, and the number of " +
-          "CNAs that published or rejected a record that year. {gen}* is still filling in.",
+          "CNAs that published or rejected a record that year. {gen}* is partial.",
         shareLabel: "Top-5 share",
         countLabel: "Active CNAs",
       },
@@ -4600,9 +4592,9 @@ export const editorial = {
       adp: "CVE List V5 (MITRE)",
       epssvol: "EPSS (FIRST.org) · CyberMon nightly diffs",
       roster: "CVE.org organization roster · CyberMon nightly snapshots",
-      exploits: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei (ProjectDiscovery) · cvelistV5 (MITRE) · CISA KEV",
+      exploits: "Exploit-DB (OffSec) · Metasploit (Rapid7) · Nuclei (ProjectDiscovery) · CVE List V5 (MITRE) · CISA KEV",
       c2: "abuse.ch Feodo Tracker (CC0) · CyberMon nightly snapshots",
-      ai: "Exploit-DB (OffSec) · cvelistV5 (MITRE) · CyberMon AI timeline · GDELT · Hacker News · arXiv · Wikipedia · SEC EDGAR",
+      ai: "Exploit-DB (OffSec) · CVE List V5 (MITRE) · CyberMon AI timeline · GDELT · Hacker News · arXiv · Wikipedia · SEC EDGAR",
       credits: "CVE List V5 (MITRE) · EPSS (FIRST.org) · CISA KEV · Exploit-DB · Metasploit · Nuclei · finders' own announcements",
       incidents: "SEC EDGAR full-text search (Forms 8-K, 8-K/A)",
       advisories: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
