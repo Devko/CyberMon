@@ -1,0 +1,74 @@
+{
+ "edition": "2026-11",
+ "rule_version": 1,
+ "selected_at": "2026-11-05",
+ "source": "synthetic fixture",
+ "license": "fixture",
+ "rule": "synthetic fixture universe: three packages per registry",
+ "per_ecosystem": 3,
+ "download_floor": 5000,
+ "passed_over": {
+  "npm": 0,
+  "pypi": 0,
+  "crates": 0,
+  "rubygems": 0
+ },
+ "ecosystems": {
+  "npm": [
+   {
+    "name": "left-pad",
+    "repo": "github.com/example/left-pad"
+   },
+   {
+    "name": "big-framework",
+    "repo": "github.com/example/big-framework"
+   },
+   {
+    "name": "@scope/tool",
+    "repo": "github.com/Example/Big-Framework"
+   }
+  ],
+  "pypi": [
+   {
+    "name": "requests-lite",
+    "repo": "github.com/example/requests-lite"
+   },
+   {
+    "name": "numcalc",
+    "repo": "github.com/example/numcalc"
+   },
+   {
+    "name": "gone-pkg",
+    "repo": null
+   }
+  ],
+  "crates": [
+   {
+    "name": "serde-lite",
+    "repo": "github.com/example/serde-lite"
+   },
+   {
+    "name": "tokio-lite",
+    "repo": "github.com/example/tokio-lite"
+   },
+   {
+    "name": "rand-lite",
+    "repo": null
+   }
+  ],
+  "rubygems": [
+   {
+    "name": "rake-lite",
+    "repo": "github.com/example/rake-lite"
+   },
+   {
+    "name": "aws-lite",
+    "repo": "github.com/example/aws-lite"
+   },
+   {
+    "name": "rails-lite",
+    "repo": "github.com/example/rails-lite"
+   }
+  ]
+ }
+}

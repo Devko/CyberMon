@@ -104,6 +104,9 @@ import { render as renderCvss4 } from "./charts/cvss4.js";
 import { render as renderTagsTrend } from "./charts/tags_trend.js";
 import { render as renderTagsBoard } from "./charts/tags_board.js";
 import { render as renderTagsSeverity } from "./charts/tags_severity.js";
+import { render as renderOssAccounts } from "./charts/oss_accounts.js";
+import { render as renderOssShared } from "./charts/oss_shared.js";
+import { render as renderOssScorecard } from "./charts/oss_scorecard.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -331,6 +334,14 @@ const MODULES = {
       { id: "tags_trend", render: renderTagsTrend },
       { id: "tags_board", render: renderTagsBoard, table: true },
       { id: "tags_severity", render: renderTagsSeverity },
+    ],
+  },
+  oss: {
+    file: "data/oss_maintainers.json",
+    sections: [
+      { id: "oss_accounts", render: renderOssAccounts },
+      { id: "oss_shared", render: renderOssShared },
+      { id: "oss_scorecard", render: renderOssScorecard },
     ],
   },
 };

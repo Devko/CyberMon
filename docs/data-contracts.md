@@ -2964,3 +2964,85 @@ probabilities before u16 display rounding, preserving parity with the
 original severity/EPSS chart. Score precedence is
 `CveFacts.effective_score` (newest family anywhere in the record, CNA before
 ADP within a family). Rows are sorted by (ID year, sequence).
+
+## site/data/oss_maintainers.json  (Open-Source Maintainers module, all 3 charts)
+
+```json
+{
+  "generated_at": "2026-11-05T07:18:02Z",
+  "universe": {"edition": "2026-11", "rule_version": 1,
+               "selected_at": "2026-11-05", "per_ecosystem": 250,
+               "download_floor": 5000},
+  "observed": {"first": "2026-11-05", "last": "2026-11-05",
+               "refresh_days": 7, "max_age_days": 14},
+  "scorecard_dates": {"max_age_days": 45, "first": "2026-10-19",
+                      "last": "2026-11-05"},
+  "ecosystems": [{
+    "id": "npm", "packages": 250, "measured": 250, "missing": 0,
+    "accounts": {"buckets": [{"label": "0", "n": 0}, {"label": "1", "n": 67},
+                             {"label": "2", "n": 55}, {"label": "3", "n": 45},
+                             {"label": "4–5", "n": 50},
+                             {"label": "6–10", "n": 27},
+                             {"label": "11+", "n": 6}],
+                 "median": 3.0},
+    "single_account": {"n": 67, "pct": 26.8, "accounts": 39, "largest": 17},
+    "team_or_org": {"n": 0, "pct": 0.0},
+    "shared": {"distinct_accounts": 403,
+               "top": [{"k": 1, "n": 19, "pct": 7.6},
+                       {"k": 5, "n": 53, "pct": 21.2},
+                       {"k": 10, "n": 74, "pct": 29.6},
+                       {"k": 25, "n": 120, "pct": 48.0}]},
+    "scorecard": {"github_packages": 248, "repos": 192, "scored": 169,
+                  "old_results": 5, "median_score": 5.4,
+                  "checks": {"Maintained": [{"label": "inconclusive", "n": 0},
+                                            {"label": "0", "n": 52},
+                                            {"label": "1–4", "n": 15},
+                                            {"label": "5–7", "n": 10},
+                                            {"label": "8–10", "n": 92}],
+                             "Code-Review": ["..."],
+                             "Branch-Protection": ["..."],
+                             "Signed-Releases": ["..."]},
+                  "not_reported": {"Maintained": 0, "Code-Review": 0,
+                                   "Branch-Protection": 0,
+                                   "Signed-Releases": 0}}
+  }]
+}
+```
+
+The universe is a committed, versioned list (`pipeline/oss_universe.json`,
+rule in `pipeline/oss_universe.py`): per registry, the first
+`per_ecosystem` packages of ecosyste.ms's ranking by dependent packages
+that are also among the registry's `download_floor` most-downloaded,
+selected once on `selected_at`. `ecosystems` lists exactly npm, pypi,
+crates, rubygems in that order; registries are never pooled.
+
+Per registry: `measured` = packages the registry still has (`missing` =
+404 on the registry; out of every denominator). `accounts.buckets`
+partitions `measured` by the number of accounts that can publish the
+package (npm: collaborators with write access; PyPI: Owner/Maintainer role
+holders; crates.io: user owners; RubyGems: owners); bucket `0` holds
+packages published only through a crates.io team, a PyPI organisation or
+a RubyGems organisation. `single_account` = exactly one account and no
+team or organisation; `team_or_org` = a team or organisation holds rights
+(never counted as single); `single_account.accounts` = distinct accounts
+that are the only publisher of a single-account package, `largest` = the
+most single-account packages one such account holds. `shared.top[k]` =
+packages that the k accounts
+with rights on the most packages can publish between them (non-decreasing
+in k). `scorecard` counts each distinct GitHub repository once per
+registry: `github_packages` ≥ `repos` ≥ `scored` + `old_results`
+(`scored` = repositories whose latest OpenSSF Scorecard result is at most
+`scorecard_dates.max_age_days` old at the edition date; `old_results` =
+older results, not scored); each check's buckets partition `scored` minus
+`not_reported` (results without that check); `inconclusive` is
+Scorecard's −1. `scorecard_dates` span Scorecard's own result dates (scan
+time); `observed` spans CyberMon's lookups (observation time). A fresh
+edition needs every observation within `max_age_days`; a carried-forward
+(`"stale": true`) edition keeps its dates. No string may be a package,
+account or repository name: the validator allows only dates, the edition
+and the fixed labels. Validator: `pipeline/oss_contracts.py`.
+
+`meta.json` carries `sources.oss`: `{fetched_at, edition, packages,
+lookups, failed, oldest_observation}` (tonight's registry + Scorecard
+lookups and how many failed), marked `"stale": true` when the module was
+carried forward.

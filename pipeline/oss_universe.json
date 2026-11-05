@@ -1,0 +1,4026 @@
+{
+ "edition": "2026-11",
+ "rule_version": 1,
+ "selected_at": "2026-11-05",
+ "source": "ecosyste.ms Packages API",
+ "license": "CC BY-SA 4.0 (adapted from ecosyste.ms data)",
+ "rule": "Per registry, ecosyste.ms's ranking by dependent packages, keeping only packages also among the registry's 5000 most-downloaded; first 250 kept.",
+ "per_ecosystem": 250,
+ "download_floor": 5000,
+ "passed_over": {
+  "npm": 196,
+  "pypi": 7,
+  "crates": 3,
+  "rubygems": 598
+ },
+ "ecosystems": {
+  "npm": [
+   {
+    "name": "typescript",
+    "repo": "github.com/microsoft/TypeScript"
+   },
+   {
+    "name": "eslint",
+    "repo": "github.com/eslint/eslint"
+   },
+   {
+    "name": "react",
+    "repo": "github.com/react/react"
+   },
+   {
+    "name": "mocha",
+    "repo": "github.com/mochajs/mocha"
+   },
+   {
+    "name": "@types/node",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "jest",
+    "repo": "github.com/jestjs/jest"
+   },
+   {
+    "name": "prettier",
+    "repo": "github.com/prettier/prettier"
+   },
+   {
+    "name": "webpack",
+    "repo": "github.com/webpack/webpack"
+   },
+   {
+    "name": "react-dom",
+    "repo": "github.com/react/react"
+   },
+   {
+    "name": "@babel/core",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "babel-loader",
+    "repo": "github.com/babel/babel-loader"
+   },
+   {
+    "name": "eslint-plugin-import",
+    "repo": "github.com/import-js/eslint-plugin-import"
+   },
+   {
+    "name": "rimraf",
+    "repo": "github.com/isaacs/rimraf"
+   },
+   {
+    "name": "chai",
+    "repo": "github.com/chaijs/chai"
+   },
+   {
+    "name": "@types/jest",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "lodash",
+    "repo": "github.com/lodash/lodash"
+   },
+   {
+    "name": "@babel/preset-env",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "babel-core",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "husky",
+    "repo": "github.com/typicode/husky"
+   },
+   {
+    "name": "rollup",
+    "repo": "github.com/rollup/rollup"
+   },
+   {
+    "name": "chalk",
+    "repo": "github.com/chalk/chalk"
+   },
+   {
+    "name": "@typescript-eslint/eslint-plugin",
+    "repo": "github.com/typescript-eslint/typescript-eslint"
+   },
+   {
+    "name": "@typescript-eslint/parser",
+    "repo": "github.com/typescript-eslint/typescript-eslint"
+   },
+   {
+    "name": "tslib",
+    "repo": "github.com/Microsoft/tslib"
+   },
+   {
+    "name": "ts-node",
+    "repo": "github.com/TypeStrong/ts-node"
+   },
+   {
+    "name": "eslint-config-prettier",
+    "repo": "github.com/prettier/eslint-config-prettier"
+   },
+   {
+    "name": "webpack-cli",
+    "repo": "github.com/webpack/webpack-cli"
+   },
+   {
+    "name": "@types/react",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "ts-jest",
+    "repo": "github.com/kulshekhar/ts-jest"
+   },
+   {
+    "name": "css-loader",
+    "repo": "github.com/webpack/css-loader"
+   },
+   {
+    "name": "eslint-plugin-react",
+    "repo": "github.com/jsx-eslint/eslint-plugin-react"
+   },
+   {
+    "name": "eslint-plugin-prettier",
+    "repo": "github.com/prettier/eslint-plugin-prettier"
+   },
+   {
+    "name": "cross-env",
+    "repo": "github.com/kentcdodds/cross-env"
+   },
+   {
+    "name": "axios",
+    "repo": "github.com/axios/axios"
+   },
+   {
+    "name": "vue",
+    "repo": "github.com/vuejs/core"
+   },
+   {
+    "name": "express",
+    "repo": "github.com/expressjs/express"
+   },
+   {
+    "name": "autoprefixer",
+    "repo": "github.com/postcss/autoprefixer"
+   },
+   {
+    "name": "webpack-dev-server",
+    "repo": "github.com/webpack/webpack-dev-server"
+   },
+   {
+    "name": "style-loader",
+    "repo": "github.com/webpack-contrib/style-loader"
+   },
+   {
+    "name": "lint-staged",
+    "repo": "github.com/lint-staged/lint-staged"
+   },
+   {
+    "name": "sass-loader",
+    "repo": "github.com/webpack/sass-loader"
+   },
+   {
+    "name": "commander",
+    "repo": "github.com/tj/commander.js"
+   },
+   {
+    "name": "fs-extra",
+    "repo": "github.com/jprichardson/node-fs-extra"
+   },
+   {
+    "name": "sinon",
+    "repo": "github.com/sinonjs/sinon"
+   },
+   {
+    "name": "@types/react-dom",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "core-js",
+    "repo": "github.com/zloirock/core-js"
+   },
+   {
+    "name": "babel-jest",
+    "repo": "github.com/jestjs/jest"
+   },
+   {
+    "name": "@babel/preset-react",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "html-webpack-plugin",
+    "repo": "github.com/jantimon/html-webpack-plugin"
+   },
+   {
+    "name": "@rollup/plugin-node-resolve",
+    "repo": "github.com/rollup/plugins"
+   },
+   {
+    "name": "nyc",
+    "repo": "github.com/istanbuljs/nyc"
+   },
+   {
+    "name": "file-loader",
+    "repo": "github.com/webpack-contrib/file-loader"
+   },
+   {
+    "name": "eslint-plugin-promise",
+    "repo": "github.com/eslint-community/eslint-plugin-promise"
+   },
+   {
+    "name": "prop-types",
+    "repo": "github.com/facebook/prop-types"
+   },
+   {
+    "name": "request",
+    "repo": "github.com/request/request"
+   },
+   {
+    "name": "eslint-plugin-jsx-a11y",
+    "repo": "github.com/jsx-eslint/eslint-plugin-jsx-a11y"
+   },
+   {
+    "name": "@rollup/plugin-commonjs",
+    "repo": "github.com/rollup/plugins"
+   },
+   {
+    "name": "moment",
+    "repo": "github.com/moment/moment"
+   },
+   {
+    "name": "@types/mocha",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "postcss-loader",
+    "repo": "github.com/webpack/postcss-loader"
+   },
+   {
+    "name": "glob",
+    "repo": "github.com/isaacs/node-glob"
+   },
+   {
+    "name": "inquirer",
+    "repo": "github.com/SBoudrias/Inquirer.js"
+   },
+   {
+    "name": "@babel/plugin-proposal-class-properties",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "eslint-plugin-vue",
+    "repo": "github.com/vuejs/eslint-plugin-vue"
+   },
+   {
+    "name": "url-loader",
+    "repo": "github.com/webpack-contrib/url-loader"
+   },
+   {
+    "name": "debug",
+    "repo": "github.com/debug-js/debug"
+   },
+   {
+    "name": "@babel/runtime",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "ts-loader",
+    "repo": "github.com/TypeStrong/ts-loader"
+   },
+   {
+    "name": "sass",
+    "repo": "github.com/sass/dart-sass"
+   },
+   {
+    "name": "@testing-library/react",
+    "repo": "github.com/testing-library/react-testing-library"
+   },
+   {
+    "name": "semver",
+    "repo": "github.com/npm/node-semver"
+   },
+   {
+    "name": "yargs",
+    "repo": "github.com/yargs/yargs"
+   },
+   {
+    "name": "dotenv",
+    "repo": "github.com/motdotla/dotenv"
+   },
+   {
+    "name": "@babel/plugin-transform-runtime",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "rxjs",
+    "repo": "github.com/reactivex/rxjs"
+   },
+   {
+    "name": "uuid",
+    "repo": "github.com/uuidjs/uuid"
+   },
+   {
+    "name": "eslint-plugin-react-hooks",
+    "repo": "github.com/react/react"
+   },
+   {
+    "name": "@storybook/react",
+    "repo": "github.com/storybookjs/storybook"
+   },
+   {
+    "name": "@babel/preset-typescript",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "@types/lodash",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "less",
+    "repo": "github.com/less/less.js"
+   },
+   {
+    "name": "postcss",
+    "repo": "github.com/postcss/postcss"
+   },
+   {
+    "name": "nodemon",
+    "repo": "github.com/remy/nodemon"
+   },
+   {
+    "name": "@types/chai",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "@testing-library/jest-dom",
+    "repo": "github.com/testing-library/jest-dom"
+   },
+   {
+    "name": "@storybook/addon-links",
+    "repo": "github.com/storybookjs/storybook"
+   },
+   {
+    "name": "async",
+    "repo": "github.com/caolan/async"
+   },
+   {
+    "name": "classnames",
+    "repo": "github.com/JedWatson/classnames"
+   },
+   {
+    "name": "node-fetch",
+    "repo": "github.com/bitinn/node-fetch"
+   },
+   {
+    "name": "mkdirp",
+    "repo": "github.com/isaacs/node-mkdirp"
+   },
+   {
+    "name": "ora",
+    "repo": "github.com/sindresorhus/ora"
+   },
+   {
+    "name": "minimist",
+    "repo": "github.com/minimistjs/minimist"
+   },
+   {
+    "name": "react-test-renderer",
+    "repo": "github.com/react/react"
+   },
+   {
+    "name": "@commitlint/config-conventional",
+    "repo": "github.com/conventional-changelog/commitlint"
+   },
+   {
+    "name": "shelljs",
+    "repo": "github.com/shelljs/shelljs"
+   },
+   {
+    "name": "vue-router",
+    "repo": "github.com/vuejs/router"
+   },
+   {
+    "name": "@testing-library/user-event",
+    "repo": "github.com/testing-library/user-event"
+   },
+   {
+    "name": "webpack-merge",
+    "repo": "github.com/survivejs/webpack-merge"
+   },
+   {
+    "name": "jsdom",
+    "repo": "github.com/jsdom/jsdom"
+   },
+   {
+    "name": "vite",
+    "repo": "github.com/vitejs/vite"
+   },
+   {
+    "name": "babel-runtime",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "less-loader",
+    "repo": "github.com/webpack/less-loader"
+   },
+   {
+    "name": "@commitlint/cli",
+    "repo": "github.com/conventional-changelog/commitlint"
+   },
+   {
+    "name": "bluebird",
+    "repo": "github.com/petkaantonov/bluebird"
+   },
+   {
+    "name": "eslint-plugin-jest",
+    "repo": "github.com/jest-community/eslint-plugin-jest"
+   },
+   {
+    "name": "colors",
+    "repo": "github.com/Marak/colors.js"
+   },
+   {
+    "name": "styled-components",
+    "repo": "github.com/styled-components/styled-components"
+   },
+   {
+    "name": "@types/express",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "jquery",
+    "repo": "github.com/jquery/jquery"
+   },
+   {
+    "name": "@rollup/plugin-babel",
+    "repo": "github.com/rollup/plugins"
+   },
+   {
+    "name": "body-parser",
+    "repo": "github.com/expressjs/body-parser"
+   },
+   {
+    "name": "uglify-js",
+    "repo": "github.com/mishoo/UglifyJS"
+   },
+   {
+    "name": "@angular/core",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "del",
+    "repo": "github.com/sindresorhus/del"
+   },
+   {
+    "name": "mini-css-extract-plugin",
+    "repo": "github.com/webpack/mini-css-extract-plugin"
+   },
+   {
+    "name": "underscore",
+    "repo": "github.com/jashkenas/underscore"
+   },
+   {
+    "name": "copy-webpack-plugin",
+    "repo": "github.com/webpack/copy-webpack-plugin"
+   },
+   {
+    "name": "@angular/common",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "@angular/compiler",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "react-native",
+    "repo": "github.com/react/react-native"
+   },
+   {
+    "name": "zone.js",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "tsup",
+    "repo": "github.com/egoist/tsup"
+   },
+   {
+    "name": "react-router-dom",
+    "repo": "github.com/remix-run/react-router"
+   },
+   {
+    "name": "@angular/platform-browser",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "webpack-bundle-analyzer",
+    "repo": "github.com/webpack/webpack-bundle-analyzer"
+   },
+   {
+    "name": "@angular/compiler-cli",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "jsonwebtoken",
+    "repo": "github.com/auth0/node-jsonwebtoken"
+   },
+   {
+    "name": "reflect-metadata",
+    "repo": "github.com/rbuckton/reflect-metadata"
+   },
+   {
+    "name": "terser-webpack-plugin",
+    "repo": "github.com/webpack/minimizer-webpack-plugin"
+   },
+   {
+    "name": "redux",
+    "repo": "github.com/reduxjs/redux"
+   },
+   {
+    "name": "stylelint",
+    "repo": "github.com/stylelint/stylelint"
+   },
+   {
+    "name": "js-yaml",
+    "repo": "github.com/nodeca/js-yaml"
+   },
+   {
+    "name": "path",
+    "repo": "github.com/jinder/path"
+   },
+   {
+    "name": "concurrently",
+    "repo": "github.com/open-cli-tools/concurrently"
+   },
+   {
+    "name": "cheerio",
+    "repo": "github.com/cheeriojs/cheerio"
+   },
+   {
+    "name": "@rollup/plugin-json",
+    "repo": "github.com/rollup/plugins"
+   },
+   {
+    "name": "source-map-support",
+    "repo": "github.com/evanw/node-source-map-support"
+   },
+   {
+    "name": "ws",
+    "repo": "github.com/websockets/ws"
+   },
+   {
+    "name": "supertest",
+    "repo": "github.com/ladjs/supertest"
+   },
+   {
+    "name": "@babel/plugin-proposal-object-rest-spread",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "@angular/forms",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "@babel/register",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "react-redux",
+    "repo": "github.com/reduxjs/react-redux"
+   },
+   {
+    "name": "web-vitals",
+    "repo": "github.com/GoogleChrome/web-vitals"
+   },
+   {
+    "name": "@vitejs/plugin-vue",
+    "repo": "github.com/vitejs/vite-plugin-vue"
+   },
+   {
+    "name": "bootstrap",
+    "repo": "github.com/twbs/bootstrap"
+   },
+   {
+    "name": "through2",
+    "repo": "github.com/rvagg/through2"
+   },
+   {
+    "name": "chokidar",
+    "repo": "github.com/paulmillr/chokidar"
+   },
+   {
+    "name": "execa",
+    "repo": "github.com/sindresorhus/execa"
+   },
+   {
+    "name": "@angular/router",
+    "repo": "github.com/angular/angular"
+   },
+   {
+    "name": "@types/fs-extra",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "@babel/eslint-parser",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "puppeteer",
+    "repo": "github.com/puppeteer/puppeteer"
+   },
+   {
+    "name": "winston",
+    "repo": "github.com/winstonjs/winston"
+   },
+   {
+    "name": "case-sensitive-paths-webpack-plugin",
+    "repo": "github.com/Urthen/case-sensitive-paths-webpack-plugin"
+   },
+   {
+    "name": "graphql",
+    "repo": "github.com/graphql/graphql-js"
+   },
+   {
+    "name": "aws-sdk",
+    "repo": "github.com/aws/aws-sdk-js"
+   },
+   {
+    "name": "esbuild",
+    "repo": "github.com/evanw/esbuild"
+   },
+   {
+    "name": "qs",
+    "repo": "github.com/ljharb/qs"
+   },
+   {
+    "name": "@angular/cli",
+    "repo": "github.com/angular/angular-cli"
+   },
+   {
+    "name": "@types/uuid",
+    "repo": null
+   },
+   {
+    "name": "handlebars",
+    "repo": "github.com/handlebars-lang/handlebars.js"
+   },
+   {
+    "name": "@types/inquirer",
+    "repo": null
+   },
+   {
+    "name": "jest-cli",
+    "repo": "github.com/jestjs/jest"
+   },
+   {
+    "name": "ejs",
+    "repo": "github.com/mde/ejs"
+   },
+   {
+    "name": "dayjs",
+    "repo": "github.com/iamkun/dayjs"
+   },
+   {
+    "name": "@rollup/plugin-replace",
+    "repo": "github.com/rollup/plugins"
+   },
+   {
+    "name": "webpack-node-externals",
+    "repo": "github.com/liady/webpack-node-externals"
+   },
+   {
+    "name": "ajv",
+    "repo": "github.com/ajv-validator/ajv"
+   },
+   {
+    "name": "@vue/test-utils",
+    "repo": "github.com/vuejs/test-utils"
+   },
+   {
+    "name": "cross-spawn",
+    "repo": "github.com/moxystudio/node-cross-spawn"
+   },
+   {
+    "name": "@emotion/styled",
+    "repo": "github.com/emotion-js/emotion"
+   },
+   {
+    "name": "postcss-import",
+    "repo": "github.com/postcss/postcss-import"
+   },
+   {
+    "name": "mongoose",
+    "repo": "github.com/Automattic/mongoose"
+   },
+   {
+    "name": "@babel/plugin-syntax-dynamic-import",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "@types/jsonwebtoken",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "@babel/plugin-proposal-decorators",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "deepmerge",
+    "repo": "github.com/TehShrike/deepmerge"
+   },
+   {
+    "name": "cssnano",
+    "repo": "github.com/cssnano/cssnano"
+   },
+   {
+    "name": "date-fns",
+    "repo": "github.com/date-fns/date-fns"
+   },
+   {
+    "name": "regenerator-runtime",
+    "repo": "github.com/facebook/regenerator"
+   },
+   {
+    "name": "cors",
+    "repo": "github.com/expressjs/cors"
+   },
+   {
+    "name": "nock",
+    "repo": "github.com/nock/nock"
+   },
+   {
+    "name": "babel-plugin-istanbul",
+    "repo": "github.com/istanbuljs/babel-plugin-istanbul"
+   },
+   {
+    "name": "globby",
+    "repo": "github.com/sindresorhus/globby"
+   },
+   {
+    "name": "object-assign",
+    "repo": "github.com/sindresorhus/object-assign"
+   },
+   {
+    "name": "@emotion/react",
+    "repo": "github.com/emotion-js/emotion"
+   },
+   {
+    "name": "@types/sinon",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "identity-obj-proxy",
+    "repo": "github.com/keyanzhang/identity-obj-proxy"
+   },
+   {
+    "name": "marked",
+    "repo": "github.com/markedjs/marked"
+   },
+   {
+    "name": "open",
+    "repo": "github.com/sindresorhus/open"
+   },
+   {
+    "name": "webpack-dev-middleware",
+    "repo": "github.com/webpack/webpack-dev-middleware"
+   },
+   {
+    "name": "@vue/compiler-sfc",
+    "repo": "github.com/vuejs/core"
+   },
+   {
+    "name": "@types/node-fetch",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "q",
+    "repo": "github.com/kriskowal/q"
+   },
+   {
+    "name": "crypto-js",
+    "repo": "github.com/brix/crypto-js"
+   },
+   {
+    "name": "@vitejs/plugin-react",
+    "repo": "github.com/vitejs/vite-plugin-react"
+   },
+   {
+    "name": "tailwindcss",
+    "repo": "github.com/tailwindlabs/tailwindcss"
+   },
+   {
+    "name": "es6-promise",
+    "repo": "github.com/stefanpenner/es6-promise"
+   },
+   {
+    "name": "mongodb",
+    "repo": "github.com/mongodb/node-mongodb-native"
+   },
+   {
+    "name": "vue-tsc",
+    "repo": "github.com/vuejs/language-tools"
+   },
+   {
+    "name": "ramda",
+    "repo": "github.com/ramda/ramda"
+   },
+   {
+    "name": "highlight.js",
+    "repo": "github.com/highlightjs/highlight.js"
+   },
+   {
+    "name": "vitest",
+    "repo": "github.com/vitest-dev/vitest"
+   },
+   {
+    "name": "lodash-es",
+    "repo": "github.com/lodash/lodash"
+   },
+   {
+    "name": "resolve",
+    "repo": "github.com/browserify/resolve"
+   },
+   {
+    "name": "co",
+    "repo": "github.com/tj/co"
+   },
+   {
+    "name": "socket.io",
+    "repo": "github.com/socketio/socket.io"
+   },
+   {
+    "name": "webpack-hot-middleware",
+    "repo": "github.com/webpack-contrib/webpack-hot-middleware"
+   },
+   {
+    "name": "@babel/plugin-proposal-optional-chaining",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "react-router",
+    "repo": "github.com/remix-run/react-router"
+   },
+   {
+    "name": "source-map-loader",
+    "repo": "github.com/webpack-contrib/source-map-loader"
+   },
+   {
+    "name": "stylelint-config-standard",
+    "repo": "github.com/stylelint/stylelint-config-standard"
+   },
+   {
+    "name": "koa",
+    "repo": "github.com/koajs/koa"
+   },
+   {
+    "name": "tsconfig-paths",
+    "repo": "github.com/dividab/tsconfig-paths"
+   },
+   {
+    "name": "react-is",
+    "repo": "github.com/react/react"
+   },
+   {
+    "name": "superagent",
+    "repo": "github.com/ladjs/superagent"
+   },
+   {
+    "name": "http-server",
+    "repo": "github.com/http-party/http-server"
+   },
+   {
+    "name": "form-data",
+    "repo": "github.com/form-data/form-data"
+   },
+   {
+    "name": "esm",
+    "repo": "github.com/standard-things/esm"
+   },
+   {
+    "name": "got",
+    "repo": "github.com/sindresorhus/got"
+   },
+   {
+    "name": "minimatch",
+    "repo": "github.com/isaacs/minimatch"
+   },
+   {
+    "name": "buffer",
+    "repo": "github.com/feross/buffer"
+   },
+   {
+    "name": "@types/debug",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "npm",
+    "repo": "github.com/npm/cli"
+   },
+   {
+    "name": "assert",
+    "repo": "github.com/browserify/commonjs-assert"
+   },
+   {
+    "name": "postcss-preset-env",
+    "repo": "github.com/csstools/postcss-plugins"
+   },
+   {
+    "name": "storybook",
+    "repo": "github.com/storybookjs/storybook"
+   },
+   {
+    "name": "@types/react-router-dom",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "@types/yargs",
+    "repo": "github.com/DefinitelyTyped/DefinitelyTyped"
+   },
+   {
+    "name": "terser",
+    "repo": "github.com/terser/terser"
+   },
+   {
+    "name": "whatwg-fetch",
+    "repo": "github.com/github/fetch"
+   },
+   {
+    "name": "eslint-plugin-jsdoc",
+    "repo": "github.com/gajus/eslint-plugin-jsdoc"
+   },
+   {
+    "name": "immutable",
+    "repo": "github.com/immutable-js/immutable-js"
+   },
+   {
+    "name": "jest-environment-jsdom",
+    "repo": "github.com/jestjs/jest"
+   },
+   {
+    "name": "xml2js",
+    "repo": "github.com/Leonidas-from-XIV/node-xml2js"
+   },
+   {
+    "name": "pg",
+    "repo": "github.com/brianc/node-postgres"
+   },
+   {
+    "name": "acorn",
+    "repo": "github.com/acornjs/acorn"
+   },
+   {
+    "name": "socket.io-client",
+    "repo": "github.com/socketio/socket.io"
+   },
+   {
+    "name": "cookie-parser",
+    "repo": "github.com/expressjs/cookie-parser"
+   },
+   {
+    "name": "svelte",
+    "repo": "github.com/sveltejs/svelte"
+   },
+   {
+    "name": "redis",
+    "repo": "github.com/redis/node-redis"
+   },
+   {
+    "name": "camelcase",
+    "repo": "github.com/sindresorhus/camelcase"
+   },
+   {
+    "name": "morgan",
+    "repo": "github.com/expressjs/morgan"
+   },
+   {
+    "name": "eslint-import-resolver-typescript",
+    "repo": "github.com/import-js/eslint-import-resolver-typescript"
+   },
+   {
+    "name": "@babel/plugin-transform-modules-commonjs",
+    "repo": "github.com/babel/babel"
+   },
+   {
+    "name": "eslint-plugin-n",
+    "repo": "github.com/eslint-community/eslint-plugin-n"
+   },
+   {
+    "name": "markdown-it",
+    "repo": "github.com/markdown-it/markdown-it"
+   },
+   {
+    "name": "next",
+    "repo": "github.com/vercel/next.js"
+   },
+   {
+    "name": "mime",
+    "repo": "github.com/broofa/mime"
+   }
+  ],
+  "pypi": [
+   {
+    "name": "numpy",
+    "repo": "github.com/numpy/numpy"
+   },
+   {
+    "name": "requests",
+    "repo": "github.com/psf/requests"
+   },
+   {
+    "name": "pytest",
+    "repo": "github.com/pytest-dev/pytest"
+   },
+   {
+    "name": "pandas",
+    "repo": "github.com/pandas-dev/pandas"
+   },
+   {
+    "name": "matplotlib",
+    "repo": "github.com/matplotlib/matplotlib"
+   },
+   {
+    "name": "scipy",
+    "repo": "github.com/scipy/scipy"
+   },
+   {
+    "name": "pytest-cov",
+    "repo": "github.com/pytest-dev/pytest-cov"
+   },
+   {
+    "name": "tqdm",
+    "repo": "github.com/tqdm/tqdm"
+   },
+   {
+    "name": "click",
+    "repo": "github.com/pallets/click"
+   },
+   {
+    "name": "pydantic",
+    "repo": "github.com/pydantic/pydantic"
+   },
+   {
+    "name": "black",
+    "repo": "github.com/psf/black"
+   },
+   {
+    "name": "scikit-learn",
+    "repo": "github.com/scikit-learn/scikit-learn"
+   },
+   {
+    "name": "pyyaml",
+    "repo": "github.com/yaml/pyyaml"
+   },
+   {
+    "name": "flake8",
+    "repo": "github.com/pycqa/flake8"
+   },
+   {
+    "name": "setuptools",
+    "repo": "github.com/pypa/setuptools"
+   },
+   {
+    "name": "typing-extensions",
+    "repo": "github.com/python/typing_extensions"
+   },
+   {
+    "name": "sphinx",
+    "repo": "github.com/sphinx-doc/sphinx"
+   },
+   {
+    "name": "torch",
+    "repo": "github.com/pytorch/pytorch"
+   },
+   {
+    "name": "six",
+    "repo": "github.com/benjaminp/six"
+   },
+   {
+    "name": "mypy",
+    "repo": "github.com/python/mypy"
+   },
+   {
+    "name": "python-dateutil",
+    "repo": "github.com/dateutil/dateutil"
+   },
+   {
+    "name": "beautifulsoup4",
+    "repo": null
+   },
+   {
+    "name": "coverage",
+    "repo": "github.com/coveragepy/coveragepy"
+   },
+   {
+    "name": "twine",
+    "repo": "github.com/pypa/twine"
+   },
+   {
+    "name": "urllib3",
+    "repo": "github.com/urllib3/urllib3"
+   },
+   {
+    "name": "rich",
+    "repo": "github.com/Textualize/rich"
+   },
+   {
+    "name": "pre-commit",
+    "repo": "github.com/pre-commit/pre-commit"
+   },
+   {
+    "name": "isort",
+    "repo": "github.com/PyCQA/isort"
+   },
+   {
+    "name": "aiohttp",
+    "repo": "github.com/aio-libs/aiohttp"
+   },
+   {
+    "name": "packaging",
+    "repo": "github.com/pypa/packaging"
+   },
+   {
+    "name": "importlib-metadata",
+    "repo": "github.com/python/importlib_metadata"
+   },
+   {
+    "name": "sphinx-rtd-theme",
+    "repo": "github.com/readthedocs/sphinx_rtd_theme"
+   },
+   {
+    "name": "pillow",
+    "repo": "github.com/python-pillow/Pillow"
+   },
+   {
+    "name": "python-dotenv",
+    "repo": "github.com/theskumar/python-dotenv"
+   },
+   {
+    "name": "wheel",
+    "repo": "github.com/pypa/wheel"
+   },
+   {
+    "name": "lxml",
+    "repo": "github.com/lxml/lxml"
+   },
+   {
+    "name": "jinja2",
+    "repo": "github.com/pallets/jinja"
+   },
+   {
+    "name": "psutil",
+    "repo": "github.com/giampaolo/psutil"
+   },
+   {
+    "name": "boto3",
+    "repo": "github.com/boto/boto3"
+   },
+   {
+    "name": "certifi",
+    "repo": "github.com/certifi/python-certifi"
+   },
+   {
+    "name": "httpx",
+    "repo": "github.com/encode/httpx"
+   },
+   {
+    "name": "seaborn",
+    "repo": "github.com/mwaskom/seaborn"
+   },
+   {
+    "name": "pytz",
+    "repo": "github.com/stub42/pytz"
+   },
+   {
+    "name": "opencv-python",
+    "repo": "github.com/opencv/opencv-python"
+   },
+   {
+    "name": "colorama",
+    "repo": "github.com/tartley/colorama"
+   },
+   {
+    "name": "cryptography",
+    "repo": "github.com/pyca/cryptography"
+   },
+   {
+    "name": "tox",
+    "repo": "github.com/tox-dev/tox"
+   },
+   {
+    "name": "pylint",
+    "repo": "github.com/pylint-dev/pylint"
+   },
+   {
+    "name": "build",
+    "repo": "github.com/pypa/build"
+   },
+   {
+    "name": "networkx",
+    "repo": "github.com/networkx/networkx"
+   },
+   {
+    "name": "protobuf",
+    "repo": null
+   },
+   {
+    "name": "ipython",
+    "repo": "github.com/ipython/ipython"
+   },
+   {
+    "name": "tabulate",
+    "repo": "github.com/astanin/python-tabulate"
+   },
+   {
+    "name": "openai",
+    "repo": "github.com/openai/openai-python"
+   },
+   {
+    "name": "ruff",
+    "repo": "github.com/astral-sh/ruff"
+   },
+   {
+    "name": "fastapi",
+    "repo": "github.com/fastapi/fastapi"
+   },
+   {
+    "name": "idna",
+    "repo": "github.com/kjd/idna"
+   },
+   {
+    "name": "attrs",
+    "repo": "github.com/python-attrs/attrs"
+   },
+   {
+    "name": "toml",
+    "repo": "github.com/uiri/toml"
+   },
+   {
+    "name": "openpyxl",
+    "repo": null
+   },
+   {
+    "name": "sqlalchemy",
+    "repo": "github.com/sqlalchemy/sqlalchemy"
+   },
+   {
+    "name": "h5py",
+    "repo": "github.com/h5py/h5py"
+   },
+   {
+    "name": "loguru",
+    "repo": "github.com/Delgan/loguru"
+   },
+   {
+    "name": "transformers",
+    "repo": "github.com/huggingface/transformers"
+   },
+   {
+    "name": "pyarrow",
+    "repo": "github.com/apache/arrow"
+   },
+   {
+    "name": "charset-normalizer",
+    "repo": "github.com/jawah/charset_normalizer"
+   },
+   {
+    "name": "django",
+    "repo": "github.com/django/django"
+   },
+   {
+    "name": "flask",
+    "repo": "github.com/pallets/flask"
+   },
+   {
+    "name": "jsonschema",
+    "repo": "github.com/python-jsonschema/jsonschema"
+   },
+   {
+    "name": "typer",
+    "repo": "github.com/fastapi/typer"
+   },
+   {
+    "name": "numba",
+    "repo": null
+   },
+   {
+    "name": "validators",
+    "repo": "github.com/python-validators/validators"
+   },
+   {
+    "name": "plotly",
+    "repo": "github.com/plotly/plotly.py"
+   },
+   {
+    "name": "pytest-mock",
+    "repo": "github.com/pytest-dev/pytest-mock"
+   },
+   {
+    "name": "joblib",
+    "repo": "github.com/joblib/joblib"
+   },
+   {
+    "name": "tensorflow",
+    "repo": "github.com/tensorflow/tensorflow"
+   },
+   {
+    "name": "pytest-asyncio",
+    "repo": "github.com/pytest-dev/pytest-asyncio"
+   },
+   {
+    "name": "scikit-image",
+    "repo": "github.com/scikit-image/scikit-image"
+   },
+   {
+    "name": "tomli",
+    "repo": "github.com/hukkin/tomli"
+   },
+   {
+    "name": "docutils",
+    "repo": null
+   },
+   {
+    "name": "torchvision",
+    "repo": "github.com/pytorch/vision"
+   },
+   {
+    "name": "mock",
+    "repo": "github.com/testing-cabal/mock"
+   },
+   {
+    "name": "uvicorn",
+    "repo": "github.com/Kludex/uvicorn"
+   },
+   {
+    "name": "pygments",
+    "repo": "github.com/pygments/pygments"
+   },
+   {
+    "name": "redis",
+    "repo": "github.com/redis/redis-py"
+   },
+   {
+    "name": "pytest-xdist",
+    "repo": "github.com/pytest-dev/pytest-xdist"
+   },
+   {
+    "name": "pycryptodome",
+    "repo": "github.com/Legrandin/pycryptodome"
+   },
+   {
+    "name": "pip",
+    "repo": "github.com/pypa/pip"
+   },
+   {
+    "name": "pyparsing",
+    "repo": "github.com/pyparsing/pyparsing"
+   },
+   {
+    "name": "more-itertools",
+    "repo": "github.com/more-itertools/more-itertools"
+   },
+   {
+    "name": "requests-toolbelt",
+    "repo": "github.com/requests/toolbelt"
+   },
+   {
+    "name": "typeguard",
+    "repo": "github.com/agronholm/typeguard"
+   },
+   {
+    "name": "importlib-resources",
+    "repo": "github.com/python/importlib_resources"
+   },
+   {
+    "name": "statsmodels",
+    "repo": "github.com/statsmodels/statsmodels"
+   },
+   {
+    "name": "ipykernel",
+    "repo": "github.com/ipython/ipykernel"
+   },
+   {
+    "name": "sphinx-copybutton",
+    "repo": "github.com/executablebooks/sphinx-copybutton"
+   },
+   {
+    "name": "jupyter",
+    "repo": null
+   },
+   {
+    "name": "selenium",
+    "repo": "github.com/SeleniumHQ/selenium"
+   },
+   {
+    "name": "psycopg2-binary",
+    "repo": "github.com/psycopg/psycopg2"
+   },
+   {
+    "name": "ipywidgets",
+    "repo": "github.com/jupyter-widgets/ipywidgets"
+   },
+   {
+    "name": "mkdocs",
+    "repo": "github.com/mkdocs/mkdocs"
+   },
+   {
+    "name": "myst-parser",
+    "repo": "github.com/executablebooks/MyST-Parser"
+   },
+   {
+    "name": "bs4",
+    "repo": null
+   },
+   {
+    "name": "websockets",
+    "repo": "github.com/python-websockets/websockets"
+   },
+   {
+    "name": "nltk",
+    "repo": "github.com/nltk/nltk"
+   },
+   {
+    "name": "furo",
+    "repo": "github.com/pradyunsg/furo"
+   },
+   {
+    "name": "shapely",
+    "repo": "github.com/shapely/shapely"
+   },
+   {
+    "name": "termcolor",
+    "repo": "github.com/termcolor/termcolor"
+   },
+   {
+    "name": "keyring",
+    "repo": "github.com/jaraco/keyring"
+   },
+   {
+    "name": "appdirs",
+    "repo": "github.com/ActiveState/appdirs"
+   },
+   {
+    "name": "future",
+    "repo": "github.com/PythonCharmers/python-future"
+   },
+   {
+    "name": "grpcio",
+    "repo": "github.com/grpc/grpc"
+   },
+   {
+    "name": "xarray",
+    "repo": "github.com/pydata/xarray"
+   },
+   {
+    "name": "chardet",
+    "repo": "github.com/chardet/chardet"
+   },
+   {
+    "name": "pymongo",
+    "repo": "github.com/mongodb/mongo-python-driver"
+   },
+   {
+    "name": "astropy",
+    "repo": "github.com/astropy/astropy"
+   },
+   {
+    "name": "mkdocs-material",
+    "repo": "github.com/squidfunk/mkdocs-material"
+   },
+   {
+    "name": "nbsphinx",
+    "repo": "github.com/spatialaudio/nbsphinx"
+   },
+   {
+    "name": "regex",
+    "repo": "github.com/mrabarnett/mrab-regex"
+   },
+   {
+    "name": "ruamel.yaml",
+    "repo": null
+   },
+   {
+    "name": "sympy",
+    "repo": "github.com/sympy/sympy"
+   },
+   {
+    "name": "streamlit",
+    "repo": "github.com/streamlit/streamlit"
+   },
+   {
+    "name": "tenacity",
+    "repo": "github.com/jd/tenacity"
+   },
+   {
+    "name": "psycopg2",
+    "repo": "github.com/psycopg/psycopg2"
+   },
+   {
+    "name": "sphinx-autodoc-typehints",
+    "repo": "github.com/tox-dev/sphinx-autodoc-typehints"
+   },
+   {
+    "name": "tiktoken",
+    "repo": "github.com/openai/tiktoken"
+   },
+   {
+    "name": "orjson",
+    "repo": "github.com/ijl/orjson"
+   },
+   {
+    "name": "cffi",
+    "repo": "github.com/python-cffi/cffi"
+   },
+   {
+    "name": "gitpython",
+    "repo": "github.com/gitpython-developers/GitPython"
+   },
+   {
+    "name": "docker",
+    "repo": "github.com/docker/docker-py"
+   },
+   {
+    "name": "dill",
+    "repo": "github.com/uqfoundation/dill"
+   },
+   {
+    "name": "dataclasses",
+    "repo": "github.com/ericvsmith/dataclasses"
+   },
+   {
+    "name": "types-requests",
+    "repo": "github.com/python/typeshed"
+   },
+   {
+    "name": "sklearn",
+    "repo": null
+   },
+   {
+    "name": "platformdirs",
+    "repo": "github.com/tox-dev/platformdirs"
+   },
+   {
+    "name": "geopandas",
+    "repo": "github.com/geopandas/geopandas"
+   },
+   {
+    "name": "langchain",
+    "repo": "github.com/langchain-ai/langchain"
+   },
+   {
+    "name": "djangorestframework",
+    "repo": "github.com/encode/django-rest-framework"
+   },
+   {
+    "name": "pyserial",
+    "repo": "github.com/pyserial/pyserial"
+   },
+   {
+    "name": "jsii",
+    "repo": "github.com/aws/jsii"
+   },
+   {
+    "name": "publication",
+    "repo": "github.com/glyph/publication"
+   },
+   {
+    "name": "aiofiles",
+    "repo": "github.com/Tinche/aiofiles"
+   },
+   {
+    "name": "pip-tools",
+    "repo": "github.com/jazzband/pip-tools"
+   },
+   {
+    "name": "cachetools",
+    "repo": "github.com/tkem/cachetools"
+   },
+   {
+    "name": "cython",
+    "repo": "github.com/cython/cython"
+   },
+   {
+    "name": "pyjwt",
+    "repo": "github.com/jpadilla/pyjwt"
+   },
+   {
+    "name": "numpydoc",
+    "repo": "github.com/numpy/numpydoc"
+   },
+   {
+    "name": "constructs",
+    "repo": "github.com/aws/constructs"
+   },
+   {
+    "name": "pkginfo",
+    "repo": "github.com/tseaver/pkginfo"
+   },
+   {
+    "name": "argparse",
+    "repo": "github.com/ThomasWaldmann/argparse"
+   },
+   {
+    "name": "xmltodict",
+    "repo": "github.com/martinblech/xmltodict"
+   },
+   {
+    "name": "websocket-client",
+    "repo": "github.com/websocket-client/websocket-client"
+   },
+   {
+    "name": "botocore",
+    "repo": "github.com/boto/botocore"
+   },
+   {
+    "name": "jupyterlab",
+    "repo": "github.com/jupyterlab/jupyterlab"
+   },
+   {
+    "name": "zipp",
+    "repo": "github.com/jaraco/zipp"
+   },
+   {
+    "name": "filelock",
+    "repo": "github.com/tox-dev/filelock"
+   },
+   {
+    "name": "readme-renderer",
+    "repo": "github.com/pypa/readme_renderer"
+   },
+   {
+    "name": "google-auth",
+    "repo": "github.com/googleapis/google-cloud-python"
+   },
+   {
+    "name": "mdurl",
+    "repo": "github.com/executablebooks/mdurl"
+   },
+   {
+    "name": "typing",
+    "repo": "github.com/python/typing"
+   },
+   {
+    "name": "paramiko",
+    "repo": "github.com/paramiko/paramiko"
+   },
+   {
+    "name": "datasets",
+    "repo": "github.com/huggingface/datasets"
+   },
+   {
+    "name": "xlrd",
+    "repo": null
+   },
+   {
+    "name": "graphviz",
+    "repo": "github.com/xflr6/graphviz"
+   },
+   {
+    "name": "dask",
+    "repo": "github.com/dask/dask"
+   },
+   {
+    "name": "pywin32",
+    "repo": "github.com/mhammond/pywin32"
+   },
+   {
+    "name": "markdown",
+    "repo": "github.com/Python-Markdown/markdown"
+   },
+   {
+    "name": "spacy",
+    "repo": "github.com/explosion/spaCy"
+   },
+   {
+    "name": "einops",
+    "repo": "github.com/arogozhnikov/einops"
+   },
+   {
+    "name": "tornado",
+    "repo": "github.com/tornadoweb/tornado"
+   },
+   {
+    "name": "imageio",
+    "repo": "github.com/imageio/imageio"
+   },
+   {
+    "name": "yarl",
+    "repo": "github.com/aio-libs/yarl"
+   },
+   {
+    "name": "requests-mock",
+    "repo": "github.com/jamielennox/requests-mock"
+   },
+   {
+    "name": "fsspec",
+    "repo": "github.com/fsspec/filesystem_spec"
+   },
+   {
+    "name": "prettytable",
+    "repo": "github.com/prettytable/prettytable"
+   },
+   {
+    "name": "google-api-python-client",
+    "repo": "github.com/googleapis/google-api-python-client"
+   },
+   {
+    "name": "biopython",
+    "repo": "github.com/biopython/biopython"
+   },
+   {
+    "name": "async-timeout",
+    "repo": "github.com/aio-libs/async-timeout"
+   },
+   {
+    "name": "hypothesis",
+    "repo": "github.com/HypothesisWorks/hypothesis"
+   },
+   {
+    "name": "bump2version",
+    "repo": "github.com/c4urself/bump2version"
+   },
+   {
+    "name": "tensorboard",
+    "repo": "github.com/tensorflow/tensorboard"
+   },
+   {
+    "name": "watchdog",
+    "repo": "github.com/gorakhargosh/watchdog"
+   },
+   {
+    "name": "sentencepiece",
+    "repo": "github.com/google/sentencepiece"
+   },
+   {
+    "name": "anyio",
+    "repo": "github.com/agronholm/anyio"
+   },
+   {
+    "name": "jax",
+    "repo": "github.com/jax-ml/jax"
+   },
+   {
+    "name": "pluggy",
+    "repo": "github.com/pytest-dev/pluggy"
+   },
+   {
+    "name": "gunicorn",
+    "repo": "github.com/benoitc/gunicorn"
+   },
+   {
+    "name": "pyqt5",
+    "repo": null
+   },
+   {
+    "name": "fire",
+    "repo": "github.com/google/python-fire"
+   },
+   {
+    "name": "pygame",
+    "repo": "github.com/pygame/pygame"
+   },
+   {
+    "name": "pydantic-settings",
+    "repo": "github.com/pydantic/pydantic-settings"
+   },
+   {
+    "name": "pycparser",
+    "repo": "github.com/eliben/pycparser"
+   },
+   {
+    "name": "pyperclip",
+    "repo": "github.com/asweigart/pyperclip"
+   },
+   {
+    "name": "msgpack",
+    "repo": "github.com/msgpack/msgpack-python"
+   },
+   {
+    "name": "decorator",
+    "repo": "github.com/micheles/decorator"
+   },
+   {
+    "name": "nose",
+    "repo": "github.com/nose-devs/nose"
+   },
+   {
+    "name": "aws-cdk-lib",
+    "repo": "github.com/aws/aws-cdk"
+   },
+   {
+    "name": "markupsafe",
+    "repo": "github.com/pallets/markupsafe"
+   },
+   {
+    "name": "nbconvert",
+    "repo": "github.com/jupyter/nbconvert"
+   },
+   {
+    "name": "asyncio",
+    "repo": "github.com/python/asyncio"
+   },
+   {
+    "name": "werkzeug",
+    "repo": "github.com/pallets/werkzeug"
+   },
+   {
+    "name": "sentence-transformers",
+    "repo": "github.com/huggingface/sentence-transformers"
+   },
+   {
+    "name": "pydata-sphinx-theme",
+    "repo": "github.com/pydata/pydata-sphinx-theme"
+   },
+   {
+    "name": "starlette",
+    "repo": "github.com/Kludex/starlette"
+   },
+   {
+    "name": "ujson",
+    "repo": "github.com/ultrajson/ultrajson"
+   },
+   {
+    "name": "notebook",
+    "repo": "github.com/jupyter/notebook"
+   },
+   {
+    "name": "accelerate",
+    "repo": "github.com/huggingface/accelerate"
+   },
+   {
+    "name": "marshmallow",
+    "repo": "github.com/marshmallow-code/marshmallow"
+   },
+   {
+    "name": "simplejson",
+    "repo": "github.com/simplejson/simplejson"
+   },
+   {
+    "name": "python-multipart",
+    "repo": "github.com/Kludex/python-multipart"
+   },
+   {
+    "name": "pymysql",
+    "repo": "github.com/PyMySQL/PyMySQL"
+   },
+   {
+    "name": "wrapt",
+    "repo": "github.com/GrahamDumpleton/wrapt"
+   },
+   {
+    "name": "coveralls",
+    "repo": "github.com/TheKevJames/coveralls-python"
+   },
+   {
+    "name": "nbformat",
+    "repo": "github.com/jupyter/nbformat"
+   },
+   {
+    "name": "xgboost",
+    "repo": "github.com/dmlc/xgboost"
+   },
+   {
+    "name": "docopt",
+    "repo": "github.com/docopt/docopt"
+   },
+   {
+    "name": "pydocstyle",
+    "repo": "github.com/PyCQA/pydocstyle"
+   },
+   {
+    "name": "pyproj",
+    "repo": "github.com/pyproj4/pyproj"
+   },
+   {
+    "name": "pytest-timeout",
+    "repo": "github.com/pytest-dev/pytest-timeout"
+   },
+   {
+    "name": "nh3",
+    "repo": "github.com/messense/nh3"
+   },
+   {
+    "name": "cloudpickle",
+    "repo": "github.com/cloudpipe/cloudpickle"
+   },
+   {
+    "name": "huggingface-hub",
+    "repo": "github.com/huggingface/huggingface_hub"
+   },
+   {
+    "name": "tzdata",
+    "repo": "github.com/python/tzdata"
+   },
+   {
+    "name": "google-cloud-storage",
+    "repo": "github.com/googleapis/google-cloud-python"
+   },
+   {
+    "name": "tomlkit",
+    "repo": "github.com/python-poetry/tomlkit"
+   },
+   {
+    "name": "sphinx-autobuild",
+    "repo": "github.com/sphinx-doc/sphinx-autobuild"
+   },
+   {
+    "name": "enum34",
+    "repo": null
+   },
+   {
+    "name": "nest-asyncio",
+    "repo": "github.com/erdewit/nest_asyncio"
+   },
+   {
+    "name": "pycodestyle",
+    "repo": "github.com/PyCQA/pycodestyle"
+   },
+   {
+    "name": "cycler",
+    "repo": "github.com/matplotlib/cycler"
+   },
+   {
+    "name": "datetime",
+    "repo": "github.com/zopefoundation/DateTime"
+   },
+   {
+    "name": "mypy-extensions",
+    "repo": "github.com/python/mypy_extensions"
+   },
+   {
+    "name": "alembic",
+    "repo": "github.com/sqlalchemy/alembic"
+   },
+   {
+    "name": "wandb",
+    "repo": "github.com/wandb/wandb"
+   },
+   {
+    "name": "colorlog",
+    "repo": "github.com/borntyping/python-colorlog"
+   },
+   {
+    "name": "argcomplete",
+    "repo": "github.com/kislyuk/argcomplete"
+   },
+   {
+    "name": "types-setuptools",
+    "repo": "github.com/python/typeshed"
+   },
+   {
+    "name": "pyzmq",
+    "repo": "github.com/zeromq/pyzmq"
+   },
+   {
+    "name": "onnxruntime",
+    "repo": "github.com/microsoft/onnxruntime"
+   },
+   {
+    "name": "recommonmark",
+    "repo": "github.com/rtfd/recommonmark"
+   },
+   {
+    "name": "flake8-docstrings",
+    "repo": "github.com/pycqa/flake8-docstrings"
+   },
+   {
+    "name": "pathlib",
+    "repo": null
+   },
+   {
+    "name": "requests-oauthlib",
+    "repo": "github.com/requests/requests-oauthlib"
+   },
+   {
+    "name": "flake8-bugbear",
+    "repo": "github.com/PyCQA/flake8-bugbear"
+   },
+   {
+    "name": "alibabacloud-tea-util",
+    "repo": "github.com/aliyun/tea-util"
+   },
+   {
+    "name": "pyspark",
+    "repo": "github.com/apache/spark"
+   },
+   {
+    "name": "dataclasses-json",
+    "repo": "github.com/lidatong/dataclasses-json"
+   },
+   {
+    "name": "keras",
+    "repo": "github.com/keras-team/keras"
+   },
+   {
+    "name": "coloredlogs",
+    "repo": "github.com/xolox/python-coloredlogs"
+   },
+   {
+    "name": "arrow",
+    "repo": "github.com/arrow-py/arrow"
+   }
+  ],
+  "crates": [
+   {
+    "name": "serde",
+    "repo": "github.com/serde-rs/serde"
+   },
+   {
+    "name": "serde_json",
+    "repo": "github.com/serde-rs/json"
+   },
+   {
+    "name": "tokio",
+    "repo": "github.com/tokio-rs/tokio"
+   },
+   {
+    "name": "log",
+    "repo": "github.com/rust-lang/log"
+   },
+   {
+    "name": "clap",
+    "repo": "github.com/clap-rs/clap"
+   },
+   {
+    "name": "thiserror",
+    "repo": "github.com/dtolnay/thiserror"
+   },
+   {
+    "name": "anyhow",
+    "repo": "github.com/dtolnay/anyhow"
+   },
+   {
+    "name": "rand",
+    "repo": "github.com/rust-random/rand"
+   },
+   {
+    "name": "futures",
+    "repo": "github.com/rust-lang/futures-rs"
+   },
+   {
+    "name": "chrono",
+    "repo": "github.com/chronotope/chrono"
+   },
+   {
+    "name": "lazy_static",
+    "repo": "github.com/rust-lang-nursery/lazy-static.rs"
+   },
+   {
+    "name": "regex",
+    "repo": "github.com/rust-lang/regex"
+   },
+   {
+    "name": "reqwest",
+    "repo": "github.com/seanmonstar/reqwest"
+   },
+   {
+    "name": "syn",
+    "repo": "github.com/dtolnay/syn"
+   },
+   {
+    "name": "quote",
+    "repo": "github.com/dtolnay/quote"
+   },
+   {
+    "name": "env_logger",
+    "repo": "github.com/rust-cli/env_logger"
+   },
+   {
+    "name": "serde_derive",
+    "repo": "github.com/serde-rs/serde"
+   },
+   {
+    "name": "libc",
+    "repo": "github.com/rust-lang/libc"
+   },
+   {
+    "name": "proc-macro2",
+    "repo": "github.com/dtolnay/proc-macro2"
+   },
+   {
+    "name": "tracing",
+    "repo": "github.com/tokio-rs/tracing"
+   },
+   {
+    "name": "url",
+    "repo": "github.com/servo/rust-url"
+   },
+   {
+    "name": "async-trait",
+    "repo": "github.com/dtolnay/async-trait"
+   },
+   {
+    "name": "bytes",
+    "repo": "github.com/tokio-rs/bytes"
+   },
+   {
+    "name": "once_cell",
+    "repo": "github.com/matklad/once_cell"
+   },
+   {
+    "name": "itertools",
+    "repo": "github.com/rust-itertools/itertools"
+   },
+   {
+    "name": "criterion",
+    "repo": "github.com/criterion-rs/criterion.rs"
+   },
+   {
+    "name": "tempfile",
+    "repo": "github.com/Stebalien/tempfile"
+   },
+   {
+    "name": "base64",
+    "repo": "github.com/marshallpierce/rust-base64"
+   },
+   {
+    "name": "toml",
+    "repo": "github.com/toml-rs/toml"
+   },
+   {
+    "name": "uuid",
+    "repo": "github.com/uuid-rs/uuid"
+   },
+   {
+    "name": "hex",
+    "repo": "github.com/KokaKiwi/rust-hex"
+   },
+   {
+    "name": "num-traits",
+    "repo": "github.com/rust-num/num-traits"
+   },
+   {
+    "name": "hyper",
+    "repo": "github.com/hyperium/hyper"
+   },
+   {
+    "name": "byteorder",
+    "repo": "github.com/BurntSushi/byteorder"
+   },
+   {
+    "name": "structopt",
+    "repo": "github.com/TeXitoi/structopt"
+   },
+   {
+    "name": "tracing-subscriber",
+    "repo": "github.com/tokio-rs/tracing"
+   },
+   {
+    "name": "http",
+    "repo": "github.com/hyperium/http"
+   },
+   {
+    "name": "rayon",
+    "repo": "github.com/rayon-rs/rayon"
+   },
+   {
+    "name": "sha2",
+    "repo": "github.com/RustCrypto/hashes"
+   },
+   {
+    "name": "time",
+    "repo": "github.com/time-rs/time"
+   },
+   {
+    "name": "failure",
+    "repo": "github.com/rust-lang-nursery/failure"
+   },
+   {
+    "name": "bincode",
+    "repo": "github.com/bincode-org/bincode"
+   },
+   {
+    "name": "bitflags",
+    "repo": "github.com/bitflags/bitflags"
+   },
+   {
+    "name": "parking_lot",
+    "repo": "github.com/Amanieu/parking_lot"
+   },
+   {
+    "name": "colored",
+    "repo": "github.com/mackwic/colored"
+   },
+   {
+    "name": "serde_yaml",
+    "repo": "github.com/dtolnay/serde-yaml"
+   },
+   {
+    "name": "futures-util",
+    "repo": "github.com/rust-lang/futures-rs"
+   },
+   {
+    "name": "dirs",
+    "repo": null
+   },
+   {
+    "name": "image",
+    "repo": "github.com/image-rs/image"
+   },
+   {
+    "name": "walkdir",
+    "repo": "github.com/BurntSushi/walkdir"
+   },
+   {
+    "name": "pretty_assertions",
+    "repo": "github.com/rust-pretty-assertions/rust-pretty-assertions"
+   },
+   {
+    "name": "cc",
+    "repo": "github.com/rust-lang/cc-rs"
+   },
+   {
+    "name": "strum",
+    "repo": "github.com/Peternator7/strum"
+   },
+   {
+    "name": "indexmap",
+    "repo": "github.com/indexmap-rs/indexmap"
+   },
+   {
+    "name": "nom",
+    "repo": "github.com/rust-bakery/nom"
+   },
+   {
+    "name": "async-std",
+    "repo": "github.com/async-rs/async-std"
+   },
+   {
+    "name": "bindgen",
+    "repo": "github.com/rust-lang/rust-bindgen"
+   },
+   {
+    "name": "winapi",
+    "repo": "github.com/retep998/winapi-rs"
+   },
+   {
+    "name": "wasm-bindgen",
+    "repo": "github.com/wasm-bindgen/wasm-bindgen"
+   },
+   {
+    "name": "flate2",
+    "repo": "github.com/rust-lang/flate2-rs"
+   },
+   {
+    "name": "num",
+    "repo": "github.com/rust-num/num"
+   },
+   {
+    "name": "cfg-if",
+    "repo": "github.com/rust-lang/cfg-if"
+   },
+   {
+    "name": "paste",
+    "repo": "github.com/dtolnay/paste"
+   },
+   {
+    "name": "derive_more",
+    "repo": "github.com/JelteF/derive_more"
+   },
+   {
+    "name": "tokio-util",
+    "repo": "github.com/tokio-rs/tokio"
+   },
+   {
+    "name": "nix",
+    "repo": "github.com/nix-rust/nix"
+   },
+   {
+    "name": "tokio-stream",
+    "repo": "github.com/tokio-rs/tokio"
+   },
+   {
+    "name": "glob",
+    "repo": "github.com/rust-lang/glob"
+   },
+   {
+    "name": "num_cpus",
+    "repo": "github.com/seanmonstar/num_cpus"
+   },
+   {
+    "name": "indicatif",
+    "repo": "github.com/console-rs/indicatif"
+   },
+   {
+    "name": "smallvec",
+    "repo": "github.com/servo/rust-smallvec"
+   },
+   {
+    "name": "crossterm",
+    "repo": "github.com/crossterm-rs/crossterm"
+   },
+   {
+    "name": "mime",
+    "repo": "github.com/hyperium/mime"
+   },
+   {
+    "name": "semver",
+    "repo": "github.com/dtolnay/semver"
+   },
+   {
+    "name": "openssl",
+    "repo": "github.com/rust-openssl/rust-openssl"
+   },
+   {
+    "name": "prost",
+    "repo": "github.com/tokio-rs/prost"
+   },
+   {
+    "name": "csv",
+    "repo": "github.com/BurntSushi/rust-csv"
+   },
+   {
+    "name": "crossbeam-channel",
+    "repo": "github.com/crossbeam-rs/crossbeam"
+   },
+   {
+    "name": "proptest",
+    "repo": "github.com/proptest-rs/proptest"
+   },
+   {
+    "name": "assert_cmd",
+    "repo": "github.com/assert-rs/assert_cmd"
+   },
+   {
+    "name": "strum_macros",
+    "repo": "github.com/Peternator7/strum"
+   },
+   {
+    "name": "dotenv",
+    "repo": "github.com/dotenv-rs/dotenv"
+   },
+   {
+    "name": "quickcheck",
+    "repo": "github.com/BurntSushi/quickcheck"
+   },
+   {
+    "name": "tempdir",
+    "repo": "github.com/rust-lang/tempdir"
+   },
+   {
+    "name": "web-sys",
+    "repo": "github.com/wasm-bindgen/wasm-bindgen"
+   },
+   {
+    "name": "pretty_env_logger",
+    "repo": "github.com/seanmonstar/pretty-env-logger"
+   },
+   {
+    "name": "error-chain",
+    "repo": "github.com/rust-lang-nursery/error-chain"
+   },
+   {
+    "name": "embedded-hal",
+    "repo": "github.com/rust-embedded/embedded-hal"
+   },
+   {
+    "name": "rustc-serialize",
+    "repo": "github.com/rust-lang/rustc-serialize"
+   },
+   {
+    "name": "cortex-m",
+    "repo": "github.com/rust-embedded/cortex-m"
+   },
+   {
+    "name": "js-sys",
+    "repo": "github.com/wasm-bindgen/wasm-bindgen"
+   },
+   {
+    "name": "tower",
+    "repo": "github.com/tower-rs/tower"
+   },
+   {
+    "name": "axum",
+    "repo": "github.com/tokio-rs/axum"
+   },
+   {
+    "name": "bytemuck",
+    "repo": "github.com/Lokathor/bytemuck"
+   },
+   {
+    "name": "hashbrown",
+    "repo": "github.com/rust-lang/hashbrown"
+   },
+   {
+    "name": "num-bigint",
+    "repo": "github.com/rust-num/num-bigint"
+   },
+   {
+    "name": "getrandom",
+    "repo": "github.com/rust-random/getrandom"
+   },
+   {
+    "name": "serde_with",
+    "repo": "github.com/jonasbb/serde_with"
+   },
+   {
+    "name": "actix-web",
+    "repo": "github.com/actix/actix-web"
+   },
+   {
+    "name": "hyper-rustls",
+    "repo": "github.com/rustls/hyper-rustls"
+   },
+   {
+    "name": "trybuild",
+    "repo": "github.com/dtolnay/trybuild"
+   },
+   {
+    "name": "rand_core",
+    "repo": "github.com/rust-lang-nursery/rand"
+   },
+   {
+    "name": "atty",
+    "repo": "github.com/softprops/atty"
+   },
+   {
+    "name": "crossbeam",
+    "repo": "github.com/crossbeam-rs/crossbeam"
+   },
+   {
+    "name": "git2",
+    "repo": "github.com/rust-lang/git2-rs"
+   },
+   {
+    "name": "ndarray",
+    "repo": "github.com/rust-ndarray/ndarray"
+   },
+   {
+    "name": "ring",
+    "repo": "github.com/briansmith/ring"
+   },
+   {
+    "name": "cortex-m-rt",
+    "repo": "github.com/rust-embedded/cortex-m"
+   },
+   {
+    "name": "zip",
+    "repo": "github.com/zip-rs/zip2"
+   },
+   {
+    "name": "bevy",
+    "repo": "github.com/bevyengine/bevy"
+   },
+   {
+    "name": "percent-encoding",
+    "repo": "github.com/servo/rust-url"
+   },
+   {
+    "name": "schemars",
+    "repo": "github.com/GREsau/schemars"
+   },
+   {
+    "name": "directories",
+    "repo": "github.com/soc/directories-rs"
+   },
+   {
+    "name": "num-derive",
+    "repo": "github.com/rust-num/num-derive"
+   },
+   {
+    "name": "tar",
+    "repo": "github.com/composefs/tar-rs"
+   },
+   {
+    "name": "console",
+    "repo": "github.com/console-rs/console"
+   },
+   {
+    "name": "pin-project",
+    "repo": "github.com/taiki-e/pin-project"
+   },
+   {
+    "name": "hmac",
+    "repo": "github.com/RustCrypto/MACs"
+   },
+   {
+    "name": "rstest",
+    "repo": "github.com/la10736/rstest"
+   },
+   {
+    "name": "either",
+    "repo": "github.com/rayon-rs/either"
+   },
+   {
+    "name": "parity-scale-codec",
+    "repo": "github.com/paritytech/parity-scale-codec"
+   },
+   {
+    "name": "ureq",
+    "repo": "github.com/algesten/ureq"
+   },
+   {
+    "name": "nalgebra",
+    "repo": "github.com/dimforge/nalgebra"
+   },
+   {
+    "name": "rustls",
+    "repo": "github.com/rustls/rustls"
+   },
+   {
+    "name": "pkg-config",
+    "repo": "github.com/rust-lang/pkg-config-rs"
+   },
+   {
+    "name": "ansi_term",
+    "repo": "github.com/ogham/rust-ansi-term"
+   },
+   {
+    "name": "zeroize",
+    "repo": "github.com/RustCrypto/utils"
+   },
+   {
+    "name": "tower-service",
+    "repo": "github.com/tower-rs/tower"
+   },
+   {
+    "name": "predicates",
+    "repo": "github.com/assert-rs/predicates-rs"
+   },
+   {
+    "name": "dashmap",
+    "repo": "github.com/xacrimon/dashmap"
+   },
+   {
+    "name": "futures-core",
+    "repo": "github.com/rust-lang/futures-rs"
+   },
+   {
+    "name": "ctrlc",
+    "repo": "github.com/Detegr/rust-ctrlc"
+   },
+   {
+    "name": "tonic",
+    "repo": "github.com/grpc/grpc-rust"
+   },
+   {
+    "name": "insta",
+    "repo": "github.com/mitsuhiko/insta"
+   },
+   {
+    "name": "serde_bytes",
+    "repo": "github.com/serde-rs/bytes"
+   },
+   {
+    "name": "wasm-bindgen-test",
+    "repo": "github.com/wasm-bindgen/wasm-bindgen"
+   },
+   {
+    "name": "static_assertions",
+    "repo": "github.com/nvzqz/static-assertions-rs"
+   },
+   {
+    "name": "heck",
+    "repo": "github.com/withoutboats/heck"
+   },
+   {
+    "name": "sha3",
+    "repo": "github.com/RustCrypto/hashes"
+   },
+   {
+    "name": "vcell",
+    "repo": "github.com/japaric/vcell"
+   },
+   {
+    "name": "hex-literal",
+    "repo": "github.com/RustCrypto/utils"
+   },
+   {
+    "name": "digest",
+    "repo": "github.com/RustCrypto/traits"
+   },
+   {
+    "name": "fnv",
+    "repo": "github.com/servo/rust-fnv"
+   },
+   {
+    "name": "rusqlite",
+    "repo": "github.com/rusqlite/rusqlite"
+   },
+   {
+    "name": "maplit",
+    "repo": "github.com/bluss/maplit"
+   },
+   {
+    "name": "wasm-bindgen-futures",
+    "repo": "github.com/wasm-bindgen/wasm-bindgen"
+   },
+   {
+    "name": "approx",
+    "repo": "github.com/brendanzab/approx"
+   },
+   {
+    "name": "dialoguer",
+    "repo": "github.com/console-rs/dialoguer"
+   },
+   {
+    "name": "arrayvec",
+    "repo": "github.com/bluss/arrayvec"
+   },
+   {
+    "name": "color-eyre",
+    "repo": "github.com/eyre-rs/eyre"
+   },
+   {
+    "name": "serial_test",
+    "repo": "github.com/palfrey/serial_test"
+   },
+   {
+    "name": "tokio-test",
+    "repo": "github.com/tokio-rs/tokio"
+   },
+   {
+    "name": "pest",
+    "repo": "github.com/pest-parser/pest"
+   },
+   {
+    "name": "pin-project-lite",
+    "repo": "github.com/taiki-e/pin-project-lite"
+   },
+   {
+    "name": "derive_builder",
+    "repo": "github.com/colin-kiegel/rust-derive-builder"
+   },
+   {
+    "name": "rand_chacha",
+    "repo": "github.com/rust-random/rand"
+   },
+   {
+    "name": "sqlx",
+    "repo": "github.com/launchbadge/sqlx"
+   },
+   {
+    "name": "assert_matches",
+    "repo": "github.com/murarth/assert_matches"
+   },
+   {
+    "name": "rustc-hash",
+    "repo": "github.com/rust-lang/rustc-hash"
+   },
+   {
+    "name": "yup-oauth2",
+    "repo": "github.com/dermesser/yup-oauth2"
+   },
+   {
+    "name": "indoc",
+    "repo": "github.com/dtolnay/indoc"
+   },
+   {
+    "name": "winit",
+    "repo": "github.com/rust-windowing/winit"
+   },
+   {
+    "name": "ahash",
+    "repo": "github.com/tkaitchuck/ahash"
+   },
+   {
+    "name": "tokio-core",
+    "repo": "github.com/tokio-rs/tokio-core"
+   },
+   {
+    "name": "eyre",
+    "repo": "github.com/eyre-rs/eyre"
+   },
+   {
+    "name": "config",
+    "repo": "github.com/rust-cli/config-rs"
+   },
+   {
+    "name": "rustc_version",
+    "repo": "github.com/djc/rustc-version-rs"
+   },
+   {
+    "name": "clap_complete",
+    "repo": "github.com/clap-rs/clap"
+   },
+   {
+    "name": "pest_derive",
+    "repo": "github.com/pest-parser/pest"
+   },
+   {
+    "name": "simple_logger",
+    "repo": "github.com/borntyping/rust-simple_logger"
+   },
+   {
+    "name": "pyo3",
+    "repo": "github.com/pyo3/pyo3"
+   },
+   {
+    "name": "windows",
+    "repo": "github.com/microsoft/windows-rs"
+   },
+   {
+    "name": "termion",
+    "repo": null
+   },
+   {
+    "name": "rmp-serde",
+    "repo": "github.com/3Hren/msgpack-rust"
+   },
+   {
+    "name": "serde_urlencoded",
+    "repo": "github.com/nox/serde_urlencoded"
+   },
+   {
+    "name": "memchr",
+    "repo": "github.com/BurntSushi/memchr"
+   },
+   {
+    "name": "convert_case",
+    "repo": "github.com/rutrum/convert-case"
+   },
+   {
+    "name": "derivative",
+    "repo": "github.com/mcarton/rust-derivative"
+   },
+   {
+    "name": "aws-config",
+    "repo": "github.com/smithy-lang/smithy-rs"
+   },
+   {
+    "name": "unicode-width",
+    "repo": "github.com/unicode-rs/unicode-width"
+   },
+   {
+    "name": "which",
+    "repo": "github.com/harryfei/which-rs"
+   },
+   {
+    "name": "num_enum",
+    "repo": "github.com/illicitonion/num_enum"
+   },
+   {
+    "name": "notify",
+    "repo": "github.com/notify-rs/notify"
+   },
+   {
+    "name": "tokio-tungstenite",
+    "repo": "github.com/snapview/tokio-tungstenite"
+   },
+   {
+    "name": "petgraph",
+    "repo": "github.com/petgraph/petgraph"
+   },
+   {
+    "name": "urlencoding",
+    "repo": "github.com/kornelski/rust_urlencoding"
+   },
+   {
+    "name": "fastrand",
+    "repo": "github.com/smol-rs/fastrand"
+   },
+   {
+    "name": "proc-macro-error",
+    "repo": null
+   },
+   {
+    "name": "cosmwasm-std",
+    "repo": "github.com/CosmWasm/cosmwasm"
+   },
+   {
+    "name": "native-tls",
+    "repo": "github.com/rust-native-tls/rust-native-tls"
+   },
+   {
+    "name": "getopts",
+    "repo": "github.com/rust-lang/getopts"
+   },
+   {
+    "name": "unicode-segmentation",
+    "repo": "github.com/unicode-rs/unicode-segmentation"
+   },
+   {
+    "name": "darling",
+    "repo": "github.com/TedDriggs/darling"
+   },
+   {
+    "name": "phf",
+    "repo": "github.com/rust-phf/rust-phf"
+   },
+   {
+    "name": "cargo_metadata",
+    "repo": "github.com/oli-obk/cargo_metadata"
+   },
+   {
+    "name": "cmake",
+    "repo": "github.com/rust-lang/cmake-rs"
+   },
+   {
+    "name": "simplelog",
+    "repo": "github.com/drakulix/simplelog.rs"
+   },
+   {
+    "name": "sha1",
+    "repo": "github.com/RustCrypto/hashes"
+   },
+   {
+    "name": "home",
+    "repo": "github.com/rust-lang/cargo"
+   },
+   {
+    "name": "async-stream",
+    "repo": "github.com/tokio-rs/async-stream"
+   },
+   {
+    "name": "rust_decimal",
+    "repo": "github.com/paupino/rust-decimal"
+   },
+   {
+    "name": "serde_repr",
+    "repo": "github.com/dtolnay/serde-repr"
+   },
+   {
+    "name": "quick-xml",
+    "repo": "github.com/tafia/quick-xml"
+   },
+   {
+    "name": "ron",
+    "repo": "github.com/ron-rs/ron"
+   },
+   {
+    "name": "rust-crypto",
+    "repo": "github.com/DaGenix/rust-crypto"
+   },
+   {
+    "name": "json",
+    "repo": "github.com/maciejhirsz/json-rust"
+   },
+   {
+    "name": "ordered-float",
+    "repo": "github.com/reem/rust-ordered-float"
+   },
+   {
+    "name": "fs_extra",
+    "repo": "github.com/webdesus/fs_extra"
+   },
+   {
+    "name": "termcolor",
+    "repo": "github.com/BurntSushi/termcolor"
+   },
+   {
+    "name": "mio",
+    "repo": "github.com/tokio-rs/mio"
+   },
+   {
+    "name": "md5",
+    "repo": "github.com/stainless-steel/md5"
+   },
+   {
+    "name": "backtrace",
+    "repo": "github.com/rust-lang/backtrace-rs"
+   },
+   {
+    "name": "hyper-tls",
+    "repo": "github.com/hyperium/hyper-tls"
+   },
+   {
+    "name": "warp",
+    "repo": "github.com/seanmonstar/warp"
+   },
+   {
+    "name": "test-case",
+    "repo": "github.com/frondeus/test-case"
+   },
+   {
+    "name": "bitvec",
+    "repo": "github.com/bitvecto-rs/bitvec"
+   },
+   {
+    "name": "borsh",
+    "repo": "github.com/near/borsh-rs"
+   },
+   {
+    "name": "humantime",
+    "repo": "github.com/chronotope/humantime"
+   },
+   {
+    "name": "rustyline",
+    "repo": "github.com/kkawakam/rustyline"
+   },
+   {
+    "name": "sp-runtime",
+    "repo": "github.com/paritytech/polkadot-sdk"
+   },
+   {
+    "name": "snafu",
+    "repo": "github.com/shepmaster/snafu"
+   },
+   {
+    "name": "async-recursion",
+    "repo": "github.com/dcchut/async-recursion"
+   },
+   {
+    "name": "futures-lite",
+    "repo": "github.com/smol-rs/futures-lite"
+   },
+   {
+    "name": "sp-core",
+    "repo": "github.com/paritytech/polkadot-sdk"
+   },
+   {
+    "name": "solana-sdk",
+    "repo": "github.com/anza-xyz/solana-sdk"
+   },
+   {
+    "name": "ed25519-dalek",
+    "repo": "github.com/dalek-cryptography/curve25519-dalek"
+   },
+   {
+    "name": "strsim",
+    "repo": "github.com/rapidfuzz/strsim-rs"
+   },
+   {
+    "name": "generic-array",
+    "repo": "github.com/fizyk20/generic-array"
+   },
+   {
+    "name": "solana-program",
+    "repo": "github.com/anza-xyz/solana-sdk"
+   },
+   {
+    "name": "protobuf",
+    "repo": null
+   },
+   {
+    "name": "failure_derive",
+    "repo": "github.com/rust-lang-nursery/failure"
+   },
+   {
+    "name": "mime_guess",
+    "repo": "github.com/abonander/mime_guess"
+   },
+   {
+    "name": "blake3",
+    "repo": "github.com/BLAKE3-team/BLAKE3"
+   },
+   {
+    "name": "handlebars",
+    "repo": "github.com/sunng87/handlebars-rust"
+   },
+   {
+    "name": "tonic-build",
+    "repo": "github.com/grpc/grpc-rust"
+   },
+   {
+    "name": "libloading",
+    "repo": "github.com/nagisa/rust_libloading"
+   },
+   {
+    "name": "bs58",
+    "repo": "github.com/Nullus157/bs58-rs"
+   },
+   {
+    "name": "sysinfo",
+    "repo": "github.com/GuillaumeGomez/sysinfo"
+   },
+   {
+    "name": "prettytable-rs",
+    "repo": "github.com/phsym/prettytable-rs"
+   },
+   {
+    "name": "tokio-rustls",
+    "repo": "github.com/rustls/tokio-rustls"
+   },
+   {
+    "name": "console_error_panic_hook",
+    "repo": "github.com/rustwasm/console_error_panic_hook"
+   },
+   {
+    "name": "tui",
+    "repo": "github.com/fdehau/tui-rs"
+   },
+   {
+    "name": "aws-types",
+    "repo": "github.com/smithy-lang/smithy-rs"
+   },
+   {
+    "name": "pulldown-cmark",
+    "repo": "github.com/raphlinus/pulldown-cmark"
+   },
+   {
+    "name": "aws-smithy-types",
+    "repo": "github.com/smithy-lang/smithy-rs"
+   },
+   {
+    "name": "rand_distr",
+    "repo": "github.com/rust-random/rand_distr"
+   },
+   {
+    "name": "actix-rt",
+    "repo": "github.com/actix/actix-net"
+   },
+   {
+    "name": "blake2",
+    "repo": "github.com/RustCrypto/hashes"
+   },
+   {
+    "name": "rocket",
+    "repo": "github.com/rwf2/Rocket"
+   },
+   {
+    "name": "fxhash",
+    "repo": "github.com/cbreeden/fxhash"
+   }
+  ],
+  "rubygems": [
+   {
+    "name": "rake",
+    "repo": "github.com/ruby/rake"
+   },
+   {
+    "name": "bundler",
+    "repo": "github.com/ruby/rubygems"
+   },
+   {
+    "name": "rspec",
+    "repo": "github.com/rspec/rspec"
+   },
+   {
+    "name": "pry",
+    "repo": "github.com/pry/pry"
+   },
+   {
+    "name": "activesupport",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "rails",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "simplecov",
+    "repo": "github.com/simplecov-ruby/simplecov"
+   },
+   {
+    "name": "minitest",
+    "repo": "github.com/minitest/minitest"
+   },
+   {
+    "name": "rubocop",
+    "repo": "github.com/rubocop/rubocop"
+   },
+   {
+    "name": "sqlite3",
+    "repo": "github.com/sparklemotion/sqlite3-ruby"
+   },
+   {
+    "name": "json",
+    "repo": "github.com/ruby/json"
+   },
+   {
+    "name": "webmock",
+    "repo": "github.com/bblimke/webmock"
+   },
+   {
+    "name": "nokogiri",
+    "repo": "github.com/sparklemotion/nokogiri"
+   },
+   {
+    "name": "yard",
+    "repo": "github.com/lsegal/yard"
+   },
+   {
+    "name": "jeweler",
+    "repo": "github.com/technicalpickles/jeweler"
+   },
+   {
+    "name": "thor",
+    "repo": "github.com/rails/thor"
+   },
+   {
+    "name": "activerecord",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "faraday",
+    "repo": "github.com/lostisland/faraday"
+   },
+   {
+    "name": "rdoc",
+    "repo": "github.com/ruby/rdoc"
+   },
+   {
+    "name": "rspec-rails",
+    "repo": "github.com/rspec/rspec-rails"
+   },
+   {
+    "name": "httparty",
+    "repo": "github.com/jnunemaker/httparty"
+   },
+   {
+    "name": "guard-rspec",
+    "repo": "github.com/guard/guard-rspec"
+   },
+   {
+    "name": "mocha",
+    "repo": "github.com/freerange/mocha"
+   },
+   {
+    "name": "coveralls",
+    "repo": null
+   },
+   {
+    "name": "rest-client",
+    "repo": "github.com/rest-client/rest-client"
+   },
+   {
+    "name": "rack",
+    "repo": "github.com/rack/rack"
+   },
+   {
+    "name": "vcr",
+    "repo": "github.com/vcr/vcr"
+   },
+   {
+    "name": "hoe",
+    "repo": "github.com/seattlerb/hoe"
+   },
+   {
+    "name": "guard",
+    "repo": "github.com/guard/guard"
+   },
+   {
+    "name": "shoulda",
+    "repo": "github.com/thoughtbot/shoulda"
+   },
+   {
+    "name": "pry-byebug",
+    "repo": "github.com/deivid-rodriguez/pry-byebug"
+   },
+   {
+    "name": "byebug",
+    "repo": "github.com/deivid-rodriguez/byebug"
+   },
+   {
+    "name": "sinatra",
+    "repo": "github.com/sinatra/sinatra"
+   },
+   {
+    "name": "test-unit",
+    "repo": "github.com/test-unit/test-unit"
+   },
+   {
+    "name": "rack-test",
+    "repo": "github.com/rack/rack-test"
+   },
+   {
+    "name": "rcov",
+    "repo": "github.com/relevance/rcov"
+   },
+   {
+    "name": "railties",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "capybara",
+    "repo": "github.com/teamcapybara/capybara"
+   },
+   {
+    "name": "redcarpet",
+    "repo": "github.com/vmg/redcarpet"
+   },
+   {
+    "name": "rubocop-rspec",
+    "repo": "github.com/rubocop/rubocop-rspec"
+   },
+   {
+    "name": "cucumber",
+    "repo": "github.com/cucumber/cucumber-ruby"
+   },
+   {
+    "name": "multi_json",
+    "repo": "github.com/sferik/multi_json"
+   },
+   {
+    "name": "jekyll",
+    "repo": "github.com/jekyll/jekyll"
+   },
+   {
+    "name": "colorize",
+    "repo": "github.com/fazibear/colorize"
+   },
+   {
+    "name": "pg",
+    "repo": "github.com/ged/ruby-pg"
+   },
+   {
+    "name": "timecop",
+    "repo": "github.com/travisjeffery/timecop"
+   },
+   {
+    "name": "database_cleaner",
+    "repo": "github.com/DatabaseCleaner/database_cleaner"
+   },
+   {
+    "name": "codeclimate-test-reporter",
+    "repo": "github.com/codeclimate/ruby-test-reporter"
+   },
+   {
+    "name": "activemodel",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "redis",
+    "repo": "github.com/redis/redis-rb"
+   },
+   {
+    "name": "hashie",
+    "repo": "github.com/hashie/hashie"
+   },
+   {
+    "name": "awesome_print",
+    "repo": "github.com/awesome-print/awesome_print"
+   },
+   {
+    "name": "i18n",
+    "repo": "github.com/ruby-i18n/i18n"
+   },
+   {
+    "name": "faraday_middleware",
+    "repo": "github.com/lostisland/faraday_middleware"
+   },
+   {
+    "name": "dotenv",
+    "repo": "github.com/bkeepers/dotenv"
+   },
+   {
+    "name": "appraisal",
+    "repo": "github.com/thoughtbot/appraisal"
+   },
+   {
+    "name": "actionpack",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "rubocop-performance",
+    "repo": "github.com/rubocop/rubocop-performance"
+   },
+   {
+    "name": "addressable",
+    "repo": "github.com/sporkmonger/addressable"
+   },
+   {
+    "name": "jquery-rails",
+    "repo": "github.com/rails/jquery-rails"
+   },
+   {
+    "name": "highline",
+    "repo": "github.com/JEG2/highline"
+   },
+   {
+    "name": "haml",
+    "repo": "github.com/haml/haml"
+   },
+   {
+    "name": "rspec_junit_formatter",
+    "repo": "github.com/sj26/rspec_junit_formatter"
+   },
+   {
+    "name": "aruba",
+    "repo": "github.com/cucumber/aruba"
+   },
+   {
+    "name": "aws-sdk",
+    "repo": "github.com/aws/aws-sdk-ruby"
+   },
+   {
+    "name": "rake-compiler",
+    "repo": "github.com/rake-compiler/rake-compiler"
+   },
+   {
+    "name": "rspec-its",
+    "repo": "github.com/rspec/rspec-its"
+   },
+   {
+    "name": "typhoeus",
+    "repo": "github.com/typhoeus/typhoeus"
+   },
+   {
+    "name": "mysql2",
+    "repo": "github.com/brianmario/mysql2"
+   },
+   {
+    "name": "minitest-reporters",
+    "repo": "github.com/minitest-reporters/minitest-reporters"
+   },
+   {
+    "name": "capistrano",
+    "repo": "github.com/capistrano/capistrano"
+   },
+   {
+    "name": "fakeweb",
+    "repo": "github.com/chrisk/fakeweb"
+   },
+   {
+    "name": "builder",
+    "repo": "github.com/rails/builder"
+   },
+   {
+    "name": "eventmachine",
+    "repo": "github.com/eventmachine/eventmachine"
+   },
+   {
+    "name": "sass-rails",
+    "repo": "github.com/rails/sass-rails"
+   },
+   {
+    "name": "rubyzip",
+    "repo": "github.com/rubyzip/rubyzip"
+   },
+   {
+    "name": "mime-types",
+    "repo": "github.com/mime-types/ruby-mime-types"
+   },
+   {
+    "name": "factory_girl",
+    "repo": "github.com/thoughtbot/factory_girl"
+   },
+   {
+    "name": "fluentd",
+    "repo": "github.com/fluent/fluentd"
+   },
+   {
+    "name": "sass",
+    "repo": "github.com/sass/ruby-sass"
+   },
+   {
+    "name": "ffi",
+    "repo": "github.com/ffi/ffi"
+   },
+   {
+    "name": "faker",
+    "repo": "github.com/faker-ruby/faker"
+   },
+   {
+    "name": "factory_girl_rails",
+    "repo": "github.com/thoughtbot/factory_girl_rails"
+   },
+   {
+    "name": "selenium-webdriver",
+    "repo": "github.com/SeleniumHQ/selenium"
+   },
+   {
+    "name": "launchy",
+    "repo": "github.com/copiousfreetime/launchy"
+   },
+   {
+    "name": "mongoid",
+    "repo": "github.com/mongodb/mongoid"
+   },
+   {
+    "name": "sequel",
+    "repo": "github.com/jeremyevans/sequel"
+   },
+   {
+    "name": "omniauth-oauth2",
+    "repo": "github.com/omniauth/omniauth-oauth2"
+   },
+   {
+    "name": "rubocop-rake",
+    "repo": "github.com/rubocop/rubocop-rake"
+   },
+   {
+    "name": "oj",
+    "repo": "github.com/ohler55/oj"
+   },
+   {
+    "name": "yajl-ruby",
+    "repo": "github.com/brianmario/yajl-ruby"
+   },
+   {
+    "name": "mechanize",
+    "repo": "github.com/sparklemotion/mechanize"
+   },
+   {
+    "name": "omniauth",
+    "repo": "github.com/omniauth/omniauth"
+   },
+   {
+    "name": "thin",
+    "repo": "github.com/macournoyer/thin"
+   },
+   {
+    "name": "coffee-rails",
+    "repo": "github.com/rails/coffee-rails"
+   },
+   {
+    "name": "pry-nav",
+    "repo": "github.com/nixme/pry-nav"
+   },
+   {
+    "name": "net-ssh",
+    "repo": "github.com/net-ssh/net-ssh"
+   },
+   {
+    "name": "devise",
+    "repo": "github.com/heartcombo/devise"
+   },
+   {
+    "name": "rb-fsevent",
+    "repo": "github.com/thibaudgg/rb-fsevent"
+   },
+   {
+    "name": "guard-bundler",
+    "repo": "github.com/guard/guard-bundler"
+   },
+   {
+    "name": "rainbow",
+    "repo": "github.com/sickill/rainbow"
+   },
+   {
+    "name": "logstash-devutils",
+    "repo": null
+   },
+   {
+    "name": "git",
+    "repo": "github.com/ruby-git/ruby-git"
+   },
+   {
+    "name": "hpricot",
+    "repo": null
+   },
+   {
+    "name": "http",
+    "repo": "github.com/httprb/http"
+   },
+   {
+    "name": "trollop",
+    "repo": "github.com/ManageIQ/optimist"
+   },
+   {
+    "name": "terminal-table",
+    "repo": "github.com/tj/terminal-table"
+   },
+   {
+    "name": "httpclient",
+    "repo": "github.com/nahi/httpclient"
+   },
+   {
+    "name": "fastlane",
+    "repo": "github.com/fastlane/fastlane"
+   },
+   {
+    "name": "shoulda-matchers",
+    "repo": "github.com/thoughtbot/shoulda-matchers"
+   },
+   {
+    "name": "concurrent-ruby",
+    "repo": "github.com/ruby-concurrency/concurrent-ruby"
+   },
+   {
+    "name": "tilt",
+    "repo": "github.com/jeremyevans/tilt"
+   },
+   {
+    "name": "rr",
+    "repo": "github.com/rr/rr"
+   },
+   {
+    "name": "listen",
+    "repo": "github.com/guard/listen"
+   },
+   {
+    "name": "rspec-mocks",
+    "repo": "github.com/rspec/rspec"
+   },
+   {
+    "name": "debugger",
+    "repo": "github.com/cldwalker/debugger"
+   },
+   {
+    "name": "jwt",
+    "repo": "github.com/jwt/ruby-jwt"
+   },
+   {
+    "name": "sidekiq",
+    "repo": "github.com/sidekiq/sidekiq"
+   },
+   {
+    "name": "sqlite3-ruby",
+    "repo": "github.com/luislavena/sqlite3-ruby"
+   },
+   {
+    "name": "octokit",
+    "repo": "github.com/octokit/octokit.rb"
+   },
+   {
+    "name": "sprockets",
+    "repo": "github.com/rails/sprockets"
+   },
+   {
+    "name": "kramdown",
+    "repo": "github.com/gettalong/kramdown"
+   },
+   {
+    "name": "reek",
+    "repo": "github.com/troessner/reek"
+   },
+   {
+    "name": "puma",
+    "repo": "github.com/puma/puma"
+   },
+   {
+    "name": "rmagick",
+    "repo": "github.com/rmagick/rmagick"
+   },
+   {
+    "name": "guard-minitest",
+    "repo": "github.com/guard/guard-minitest"
+   },
+   {
+    "name": "rspec-core",
+    "repo": "github.com/rspec/rspec"
+   },
+   {
+    "name": "fakefs",
+    "repo": "github.com/fakefs/fakefs"
+   },
+   {
+    "name": "commander",
+    "repo": "github.com/commander-rb/commander"
+   },
+   {
+    "name": "mail",
+    "repo": "github.com/mikel/mail"
+   },
+   {
+    "name": "zeitwerk",
+    "repo": "github.com/fxn/zeitwerk"
+   },
+   {
+    "name": "kaminari",
+    "repo": "github.com/kaminari/kaminari"
+   },
+   {
+    "name": "oauth",
+    "repo": "github.com/ruby-oauth/oauth"
+   },
+   {
+    "name": "codecov",
+    "repo": "github.com/codecov/codecov-ruby"
+   },
+   {
+    "name": "virtus",
+    "repo": "github.com/solnic/virtus"
+   },
+   {
+    "name": "savon",
+    "repo": "github.com/savonrb/savon"
+   },
+   {
+    "name": "json_pure",
+    "repo": "github.com/ruby/json"
+   },
+   {
+    "name": "compass",
+    "repo": "github.com/chriseppstein/compass"
+   },
+   {
+    "name": "fog",
+    "repo": "github.com/fog/fog"
+   },
+   {
+    "name": "fuubar",
+    "repo": "github.com/thekompanee/fuubar"
+   },
+   {
+    "name": "lita",
+    "repo": "github.com/jimmycuadra/lita"
+   },
+   {
+    "name": "minitest-focus",
+    "repo": "github.com/seattlerb/minitest-focus"
+   },
+   {
+    "name": "rspec-expectations",
+    "repo": "github.com/rspec/rspec"
+   },
+   {
+    "name": "mini_magick",
+    "repo": "github.com/minimagick/minimagick"
+   },
+   {
+    "name": "aws-sdk-core",
+    "repo": "github.com/aws/aws-sdk-ruby"
+   },
+   {
+    "name": "curb",
+    "repo": "github.com/taf2/curb"
+   },
+   {
+    "name": "rubyforge",
+    "repo": null
+   },
+   {
+    "name": "gli",
+    "repo": "github.com/davetron5000/gli"
+   },
+   {
+    "name": "standard",
+    "repo": "github.com/standardrb/standard"
+   },
+   {
+    "name": "erubis",
+    "repo": null
+   },
+   {
+    "name": "oauth2",
+    "repo": "github.com/ruby-oauth/oauth2"
+   },
+   {
+    "name": "chef",
+    "repo": "github.com/chef/chef"
+   },
+   {
+    "name": "bson_ext",
+    "repo": null
+   },
+   {
+    "name": "poltergeist",
+    "repo": "github.com/teampoltergeist/poltergeist"
+   },
+   {
+    "name": "rubocop-rails",
+    "repo": "github.com/rubocop/rubocop-rails"
+   },
+   {
+    "name": "logging",
+    "repo": "github.com/TwP/logging"
+   },
+   {
+    "name": "ffaker",
+    "repo": "github.com/ffaker/ffaker"
+   },
+   {
+    "name": "term-ansicolor",
+    "repo": "github.com/flori/term-ansicolor"
+   },
+   {
+    "name": "excon",
+    "repo": "github.com/excon/excon"
+   },
+   {
+    "name": "factory_bot",
+    "repo": "github.com/thoughtbot/factory_bot"
+   },
+   {
+    "name": "minitest-rg",
+    "repo": "github.com/minitest/minitest-rg"
+   },
+   {
+    "name": "slop",
+    "repo": "github.com/leejarvis/slop"
+   },
+   {
+    "name": "google-apis-core",
+    "repo": "github.com/googleapis/google-api-ruby-client"
+   },
+   {
+    "name": "will_paginate",
+    "repo": "github.com/mislav/will_paginate"
+   },
+   {
+    "name": "mongo",
+    "repo": "github.com/mongodb/mongo-ruby-driver"
+   },
+   {
+    "name": "gem-release",
+    "repo": "github.com/svenfuchs/gem-release"
+   },
+   {
+    "name": "parallel",
+    "repo": "github.com/grosser/parallel"
+   },
+   {
+    "name": "pry-doc",
+    "repo": "github.com/pry/pry-doc"
+   },
+   {
+    "name": "ruby-debug",
+    "repo": null
+   },
+   {
+    "name": "resque",
+    "repo": "github.com/resque/resque"
+   },
+   {
+    "name": "github-markup",
+    "repo": "github.com/github/markup"
+   },
+   {
+    "name": "tzinfo",
+    "repo": "github.com/tzinfo/tzinfo"
+   },
+   {
+    "name": "uglifier",
+    "repo": "github.com/lautis/uglifier"
+   },
+   {
+    "name": "xml-simple",
+    "repo": "github.com/maik/xml-simple"
+   },
+   {
+    "name": "uuidtools",
+    "repo": "github.com/sporkmonger/uuidtools"
+   },
+   {
+    "name": "daemons",
+    "repo": "github.com/thuehlinger/daemons"
+   },
+   {
+    "name": "carrierwave",
+    "repo": "github.com/carrierwaveuploader/carrierwave"
+   },
+   {
+    "name": "factory_bot_rails",
+    "repo": "github.com/thoughtbot/factory_bot_rails"
+   },
+   {
+    "name": "guard-rubocop",
+    "repo": "github.com/rubocop/guard-rubocop"
+   },
+   {
+    "name": "turn",
+    "repo": "github.com/TwP/turn"
+   },
+   {
+    "name": "simple_form",
+    "repo": "github.com/heartcombo/simple_form"
+   },
+   {
+    "name": "require_all",
+    "repo": "github.com/jarmo/require_all"
+   },
+   {
+    "name": "RedCloth",
+    "repo": "github.com/jgarber/redcloth"
+   },
+   {
+    "name": "colored",
+    "repo": "github.com/defunkt/colored"
+   },
+   {
+    "name": "webrick",
+    "repo": "github.com/ruby/webrick"
+   },
+   {
+    "name": "pry-rails",
+    "repo": "github.com/rweng/pry-rails"
+   },
+   {
+    "name": "coffee-script",
+    "repo": "github.com/rails/ruby-coffee-script"
+   },
+   {
+    "name": "rdiscount",
+    "repo": "github.com/davidfstr/rdiscount"
+   },
+   {
+    "name": "jekyll-seo-tag",
+    "repo": "github.com/jekyll/jekyll-seo-tag"
+   },
+   {
+    "name": "bootstrap-sass",
+    "repo": "github.com/twbs/bootstrap-sass"
+   },
+   {
+    "name": "aws-sigv4",
+    "repo": "github.com/aws/aws-sdk-ruby"
+   },
+   {
+    "name": "google-style",
+    "repo": "github.com/googleapis/ruby-style"
+   },
+   {
+    "name": "paperclip",
+    "repo": "github.com/thoughtbot/paperclip"
+   },
+   {
+    "name": "chronic",
+    "repo": "github.com/mojombo/chronic"
+   },
+   {
+    "name": "htmlentities",
+    "repo": "github.com/threedaymonk/htmlentities"
+   },
+   {
+    "name": "uuid",
+    "repo": "github.com/assaf/uuid"
+   },
+   {
+    "name": "activeresource",
+    "repo": "github.com/rails/activeresource"
+   },
+   {
+    "name": "ruby-progressbar",
+    "repo": "github.com/jfelchner/ruby-progressbar"
+   },
+   {
+    "name": "tty-prompt",
+    "repo": "github.com/piotrmurach/tty-prompt"
+   },
+   {
+    "name": "liquid",
+    "repo": "github.com/Shopify/liquid"
+   },
+   {
+    "name": "spree_core",
+    "repo": "github.com/spree/spree"
+   },
+   {
+    "name": "pry-stack_explorer",
+    "repo": "github.com/pry/pry-stack_explorer"
+   },
+   {
+    "name": "em-http-request",
+    "repo": "github.com/igrigorik/em-http-request"
+   },
+   {
+    "name": "aws-sdk-s3",
+    "repo": "github.com/aws/aws-sdk-ruby"
+   },
+   {
+    "name": "bump",
+    "repo": "github.com/gregorym/bump"
+   },
+   {
+    "name": "dm-core",
+    "repo": "github.com/datamapper/dm-core"
+   },
+   {
+    "name": "growl",
+    "repo": "github.com/visionmedia/growl"
+   },
+   {
+    "name": "sinatra-contrib",
+    "repo": "github.com/sinatra/sinatra"
+   },
+   {
+    "name": "slim",
+    "repo": "github.com/slim-template/slim"
+   },
+   {
+    "name": "combustion",
+    "repo": "github.com/pat/combustion"
+   },
+   {
+    "name": "actionview",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "rspec-collection_matchers",
+    "repo": "github.com/rspec/rspec-collection_matchers"
+   },
+   {
+    "name": "bundler-audit",
+    "repo": "github.com/rubysec/bundler-audit"
+   },
+   {
+    "name": "simplecov-console",
+    "repo": "github.com/chetan/simplecov-console"
+   },
+   {
+    "name": "open4",
+    "repo": "github.com/ahoward/open4"
+   },
+   {
+    "name": "therubyracer",
+    "repo": "github.com/cowboyd/therubyracer"
+   },
+   {
+    "name": "bcrypt",
+    "repo": "github.com/bcrypt-ruby/bcrypt-ruby"
+   },
+   {
+    "name": "rb-inotify",
+    "repo": "github.com/guard/rb-inotify"
+   },
+   {
+    "name": "bunny",
+    "repo": "github.com/ruby-amqp/bunny"
+   },
+   {
+    "name": "libxml-ruby",
+    "repo": "github.com/xml4r/libxml-ruby"
+   },
+   {
+    "name": "log4r",
+    "repo": null
+   },
+   {
+    "name": "actionmailer",
+    "repo": "github.com/rails/rails"
+   },
+   {
+    "name": "benchmark-ips",
+    "repo": "github.com/evanphx/benchmark-ips"
+   },
+   {
+    "name": "logstash-codec-plain",
+    "repo": null
+   },
+   {
+    "name": "net-scp",
+    "repo": "github.com/net-ssh/net-scp"
+   },
+   {
+    "name": "sensu-plugin",
+    "repo": "github.com/sensu-plugins/sensu-plugin"
+   },
+   {
+    "name": "diff-lcs",
+    "repo": "github.com/halostatue/diff-lcs"
+   },
+   {
+    "name": "twitter",
+    "repo": "github.com/sferik/twitter-ruby"
+   },
+   {
+    "name": "msgpack",
+    "repo": "github.com/msgpack/msgpack-ruby"
+   },
+   {
+    "name": "simplecov-rcov",
+    "repo": "github.com/fguillen/simplecov-rcov"
+   },
+   {
+    "name": "haml-rails",
+    "repo": "github.com/haml/haml-rails"
+   },
+   {
+    "name": "jekyll-feed",
+    "repo": "github.com/jekyll/jekyll-feed"
+   },
+   {
+    "name": "execjs",
+    "repo": "github.com/rails/execjs"
+   },
+   {
+    "name": "coderay",
+    "repo": "github.com/rubychan/coderay"
+   },
+   {
+    "name": "ZenTest",
+    "repo": "github.com/seattlerb/zentest"
+   },
+   {
+    "name": "jquery-ui-rails",
+    "repo": "github.com/jquery-ui-rails/jquery-ui-rails"
+   },
+   {
+    "name": "pry-remote",
+    "repo": "github.com/Mon-Ouie/pry-remote"
+   },
+   {
+    "name": "google-api-client",
+    "repo": "github.com/google/google-api-ruby-client"
+   },
+   {
+    "name": "crack",
+    "repo": "github.com/jnunemaker/crack"
+   },
+   {
+    "name": "money",
+    "repo": "github.com/RubyMoney/money"
+   },
+   {
+    "name": "mustache",
+    "repo": "github.com/mustache/mustache"
+   },
+   {
+    "name": "net-http-persistent",
+    "repo": "github.com/drbrain/net-http-persistent"
+   },
+   {
+    "name": "parser",
+    "repo": "github.com/whitequark/parser"
+   },
+   {
+    "name": "terminal-notifier-guard",
+    "repo": "github.com/Springest/terminal-notifier-guard"
+   },
+   {
+    "name": "treetop",
+    "repo": "github.com/cjheath/treetop"
+   },
+   {
+    "name": "ruby-prof",
+    "repo": "github.com/ruby-prof/ruby-prof"
+   },
+   {
+    "name": "redis-namespace",
+    "repo": "github.com/resque/redis-namespace"
+   },
+   {
+    "name": "json-schema",
+    "repo": "github.com/voxpupuli/json-schema"
+   },
+   {
+    "name": "connection_pool",
+    "repo": "github.com/mperham/connection_pool"
+   },
+   {
+    "name": "faraday-http-cache",
+    "repo": "github.com/plataformatec/faraday-http-cache"
+   }
+  ]
+ }
+}

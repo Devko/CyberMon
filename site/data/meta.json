@@ -113,6 +113,14 @@
    "ecosystems": 13,
    "downloaded": 9,
    "not_modified": 4
+  },
+  "oss": {
+   "fetched_at": "2026-11-05T07:18:02Z",
+   "edition": "2026-11",
+   "packages": 1000,
+   "lookups": 1867,
+   "failed": 0,
+   "oldest_observation": "2026-11-05"
   }
  }
 }
