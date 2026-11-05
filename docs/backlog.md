@@ -785,7 +785,40 @@ note:
 - **Feasibility:** easy-medium — annual lists are small and stable;
   could ship as a chart in CVE Ecosystem or beside bug-class inertia.
 
-### Support-window economics (endoflife.date)
+### Support-window economics (endoflife.date) — SHIPPED as module 29
+
+Shipped 2026-11-05 as **29 · Support Windows** (`eol.html`). Source: the
+API's documented bulk dump (`api/v1/products/full`, MIT, 489 products and
+9,367 release cycles on 2026-11-05), one conditional GET a night instead of
+~490 per-product requests: the per-product documents carry the build time,
+so their ETags change on every endoflife.date deploy, and the product list
+has no per-product change stamp. What held up, and what did not:
+
+- *"Support windows keep shrinking"* holds only in part. Across every
+  tracked product the pooled median window fell 42% from 2014–2016 lines
+  to 2022–2024 lines, but the two periods hold different products (238
+  against 436): most products were added with only their recent lines. For
+  the 195 products with lines in both periods the drop is about a fifth
+  (−20%; 5% product-resampling range −28% to −10%). That panel figure is
+  the headline. Weighting matters: one vote per line lets Samsung's 441
+  phone lines hold the panel median flat at two years, so every median
+  counts each product once. Part of the panel drop is release practice,
+  not shorter long-term support: the same products shipped 1,033 lines in
+  2022–2024 against 817 in 2014–2016 (non-LTS kernels, MySQL innovation
+  releases, Visual Studio minor channels).
+- Lines with no announced end (739) are right-censored and enter
+  Kaplan–Meier medians; 551 lines marked ended without a date are counted
+  and excluded. A year with more than 20% open weight is drawn provisional.
+- Active vs security support (168 products that list both): security
+  support ends about twice as long after release (1,092 against 548 days,
+  pooled), stable at 1.75–2.3× per settled year since 2017.
+- Category: devices longest (6.0 years), server applications shortest
+  (1.5 years), robust under resampling.
+- The "current line out of support" share is small (20 of 489 products'
+  newest line; 17 with no line in support) and ships as a stat, not a
+  headline.
+
+Original candidate note:
 - **Thesis:** how much software the world is told to run goes
   unsupported, and support windows keep shrinking.
 - **Source:** endoflife.date API (tested: 460 products, one JSON).

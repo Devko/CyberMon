@@ -3040,3 +3040,93 @@ the spread of their values (`median` is the median CNA; quartiles use
 the inclusive method), all null when `n` is 0. No year-keyed series, so
 the January tiny-year rehearsal leaves the file unchanged. Validator:
 `pipeline/cna_profile_contracts.py`.
+
+## site/data/support_windows.json  (Support Windows module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "as_of": "2026-11-05",
+  "upstream": {"generated_at": "2026-11-05T00:09:15+00:00",
+               "schema_version": "1.2.1"},
+  "provisional_open_pct": 20.0, "min_products": 50,
+  "min_category_products": 5,
+  "catalog": {"products": 489, "categories": 9, "lines": 9367,
+              "ended": 6878, "scheduled": 1199, "open": 739,
+              "ended_undated": 551, "unreleased": 0, "malformed": 0,
+              "first_year": 1991, "last_year": 2026,
+              "no_supported_line": 17, "newest_line_ended": 20},
+  "panel": {"early": [2014, 2016], "late": [2022, 2024], "products": 195},
+  "periods": {
+    "all":   {"early": {"from": 2014, "to": 2016, "lines": 956,
+                        "products": 238, "median_days": 1096,
+                        "median_at_least": null},
+              "late":  {"from": 2022, "to": 2024, "...": "..."},
+              "change_pct": -42.4},
+    "panel": {"early": {"...": "..."}, "late": {"...": "..."},
+              "change_pct": -19.9}
+  },
+  "years": [{"year": 2024, "lines": 982, "products": 339,
+             "median_days": 569, "median_at_least": null,
+             "ended": 695, "scheduled": 191, "open": 89, "ended_undated": 7,
+             "open_pct": 15.7, "panel_lines": 359, "panel_products": 139,
+             "panel_median_days": 808, "panel_median_at_least": null,
+             "partial": false, "provisional": false}],
+  "phases": {"products": 168, "lines": 3206,
+             "active_median_days": 548, "active_median_at_least": null,
+             "security_median_days": 1092, "security_median_at_least": null,
+             "gap_lines": 2373, "gap_median_days": 273,
+             "zero_gap_lines": 621, "gap_unknown_lines": 833,
+             "years": [{"year": 2024, "lines": 319, "products": 110,
+                        "active_median_days": 420,
+                        "active_median_at_least": null,
+                        "security_median_days": 853,
+                        "security_median_at_least": null,
+                        "partial": false, "provisional": false}]},
+  "categories": [{"category": "device", "products": 21, "lines": 1208,
+                  "median_days": 2191, "median_at_least": null,
+                  "open_pct": 24.0, "no_supported_line": 1,
+                  "newest_line_ended": 2, "ended": 486, "scheduled": 343,
+                  "open": 164, "ended_undated": 215}]
+}
+```
+
+Source: endoflife.date's `api/v1/products/full` dump (MIT), one conditional
+GET a night (`pipeline/fetch_eol.py`). A *line* is one release cycle; its
+support window runs from `releaseDate` to `eolFrom` (the end of its last
+standard support phase; paid extended support is not read). Each line is in
+one state on `as_of`: `ended` (end date on or before `as_of`), `scheduled`
+(announced end after `as_of`; counts with that date), `open` (no announced
+end, still supported: right-censored at its age on `as_of`) or
+`ended_undated` (marked ended, no date: in every count, in no median). The
+date wins over the upstream `isEol` flag. Lines released after `as_of` are
+`unreleased`: counted, never charted. Release cycles with unusable dates
+are skipped and counted as `malformed` (more than 1% fails the fetch).
+
+Every median is a weighted Kaplan–Meier estimate in whole days, with each
+product counted once per cell (a product's k lines in a release year, or in
+a category, weigh 1/k each). A median that is not reached is null and
+`median_at_least` carries the longest time observed (a lower bound); the
+two are never both set. `periods` pool the panel's two release-year
+windows (weights stay per product-year); `panel` is the set of products
+with a usable line released in both windows. `years` run contiguously from
+the first year with `min_products` products to the `as_of` year; a year (or
+its panel cell) below `min_products` publishes no median. `open_pct` is the
+open share of a year's product weight; a year is `provisional` when it is
+the `as_of` year (`partial`), thin, or `open_pct` exceeds
+`provisional_open_pct`. `partial` marks the `as_of` year, never the
+`generated_at` year, so an edition carried forward across New Year stays
+valid. `phases` covers products whose lines carry an end of active support
+(`eoasFrom`); the gap is `eolFrom − eoasFrom` on lines with both dates, a
+product-weighted median (`gap_lines + gap_unknown_lines = lines`).
+`categories` are endoflife.date's, sorted by median descending (nulls
+last); a category below `min_category_products` publishes no median. A
+product has `no_supported_line` when none of its released lines is
+`scheduled` or `open`; `newest_line_ended` looks at the line with the latest
+release date only. Category rows sum to the catalogue. Validator:
+`pipeline/eol_contracts.py`.
+
+`meta.json` carries `sources.eol`: `{fetched_at, products, lines,
+not_modified}` (`not_modified` is true when the night's request answered
+304 and the cached parse was reused), marked `"stale": true` when an
+endoflife.date outage carried the module forward.

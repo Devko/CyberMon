@@ -18,7 +18,8 @@ is omitted for this run and ``meta.json`` omits ``sources.nvd``
 (contracts.py allows that).
 
 Single-module upstreams degrade instead of aborting (documented choice):
-HIBP, Ransomwhere, APNIC and SEC EDGAR (the Incident Clock) each feed
+HIBP, Ransomwhere, APNIC, SEC EDGAR (the Incident Clock) and
+endoflife.date (Support Windows) each feed
 exactly one module (OSV feeds the two OSV modules, which degrade
 together), so a sustained outage there carries that module's
 previous edition forward marked
@@ -43,6 +44,7 @@ from typing import Iterator
 from . import field_export
 from . import cvss_v4_metrics, tags_metrics
 from . import cna_profile_metrics
+from . import eol_metrics
 from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -827,6 +829,23 @@ def run(args: argparse.Namespace) -> int:
                                      osv_failure)
             if carried is not None:
                 outputs[name] = carried
+
+    # Support Windows: one conditional GET of endoflife.date's bulk dump
+    # (304 on a night with no new build reuses the cached parse). A
+    # single-module upstream: an outage carries the previous edition
+    # forward stale, never the run.
+    eol_source = None
+    try:
+        eol_obj, eol_source = eol_metrics.run_stage(
+            args.cache_dir, generated_at,
+            offline_fixtures=args.offline_fixtures, out_dir=args.out)
+        outputs["support_windows.json"] = eol_obj
+    except (OSError, ValueError) as exc:
+        eol_failure = f"endoflife.date fetch failed ({exc!r})"
+        carried = _carry_forward(args.out, "support_windows.json",
+                                 generated_at, eol_failure)
+        if carried is not None:
+            outputs["support_windows.json"] = carried
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -903,6 +922,12 @@ def run(args: argparse.Namespace) -> int:
         carried_osv = _carry_forward_source(args.out, "osv")
         if carried_osv is not None:
             outputs["meta.json"]["sources"]["osv"] = carried_osv
+    if eol_source is not None:
+        outputs["meta.json"]["sources"]["eol"] = eol_source
+    elif "support_windows.json" in outputs:
+        carried_eol = _carry_forward_source(args.out, "eol")
+        if carried_eol is not None:
+            outputs["meta.json"]["sources"]["eol"] = carried_eol
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

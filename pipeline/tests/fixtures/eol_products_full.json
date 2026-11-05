@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.2.1",
+  "generated_at": "2026-11-05T00:09:15+00:00",
+  "total": 8,
+  "result": [
+    {
+      "name": "demo-os",
+      "aliases": [],
+      "label": "Demo OS",
+      "category": "os",
+      "tags": ["os"],
+      "labels": {"eoas": "Active Support", "eol": "Security Support", "eoes": null, "discontinued": null},
+      "releases": [
+        {"name": "24", "codename": null, "label": "24", "releaseDate": "2024-04-01", "isLts": false, "ltsFrom": null, "isEoas": false, "eoasFrom": "2026-04-01", "isEol": false, "eolFrom": "2099-04-01", "isMaintained": true, "latest": null, "custom": null},
+        {"name": "22", "codename": null, "label": "22", "releaseDate": "2022-04-01", "isLts": false, "ltsFrom": null, "isEoas": true, "eoasFrom": "2023-04-01", "isEol": true, "eolFrom": "2024-04-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "16", "codename": null, "label": "16", "releaseDate": "2016-04-01", "isLts": false, "ltsFrom": null, "isEoas": true, "eoasFrom": "2018-04-01", "isEol": true, "eolFrom": "2021-04-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "14", "codename": null, "label": "14", "releaseDate": "2014-04-01", "isLts": false, "ltsFrom": null, "isEoas": true, "eoasFrom": "2016-04-01", "isEol": true, "eolFrom": "2019-04-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-lang",
+      "aliases": [],
+      "label": "Demo Lang",
+      "category": "lang",
+      "tags": ["lang"],
+      "labels": {"eoas": "Active Support", "eol": "Security Support", "eoes": null, "discontinued": null},
+      "releases": [
+        {"name": "4", "codename": null, "label": "4", "releaseDate": "2024-02-01", "isLts": false, "ltsFrom": null, "isEoas": false, "eoasFrom": null, "isEol": false, "eolFrom": null, "isMaintained": true, "latest": null, "custom": null},
+        {"name": "3", "codename": null, "label": "3", "releaseDate": "2023-02-01", "isLts": false, "ltsFrom": null, "isEoas": true, "eoasFrom": "2024-02-01", "isEol": true, "eolFrom": "2025-08-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "2", "codename": null, "label": "2", "releaseDate": "2015-02-01", "isLts": false, "ltsFrom": null, "isEoas": true, "eoasFrom": "2017-02-01", "isEol": true, "eolFrom": "2018-02-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "1", "codename": null, "label": "1", "releaseDate": "2014-02-01", "isLts": false, "ltsFrom": null, "isEoas": true, "eoasFrom": "2015-02-01", "isEol": true, "eolFrom": "2017-02-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-framework",
+      "aliases": [],
+      "label": "Demo Framework",
+      "category": "framework",
+      "tags": ["framework"],
+      "labels": {"eoas": null, "eol": "Support", "eoes": null, "discontinued": null},
+      "releases": [
+        {"name": "9", "codename": null, "label": "9", "releaseDate": "2023-06-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2024-06-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "8", "codename": null, "label": "8", "releaseDate": "2022-06-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2023-06-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "5", "codename": null, "label": "5", "releaseDate": "2015-06-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2017-06-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-server",
+      "aliases": [],
+      "label": "Demo Server",
+      "category": "server-app",
+      "tags": ["server-app"],
+      "labels": {"eoas": null, "eol": "Support", "eoes": null, "discontinued": null},
+      "releases": [
+        {"name": "3.2", "codename": null, "label": "3.2", "releaseDate": "2099-01-01", "isLts": false, "ltsFrom": null, "isEol": false, "eolFrom": null, "isMaintained": true, "latest": null, "custom": null},
+        {"name": "3.1", "codename": null, "label": "3.1", "releaseDate": "2024-09-01", "isLts": false, "ltsFrom": null, "isEol": false, "eolFrom": null, "isMaintained": true, "latest": null, "custom": null},
+        {"name": "3.0", "codename": null, "label": "3.0", "releaseDate": "2024-03-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2024-09-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "2.9", "codename": null, "label": "2.9", "releaseDate": "2023-09-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2024-03-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "2.8", "codename": null, "label": "2.8", "releaseDate": "2023-03-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2023-09-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-phone",
+      "aliases": [],
+      "label": "Demo Phone",
+      "category": "device",
+      "tags": ["device"],
+      "labels": {"eoas": null, "eol": "Security Updates", "eoes": null, "discontinued": "Discontinued"},
+      "releases": [
+        {"name": "x2", "codename": null, "label": "X2", "releaseDate": "2022-09-01", "isLts": false, "ltsFrom": null, "isEol": false, "eolFrom": "2099-09-01", "isDiscontinued": true, "discontinuedFrom": "2024-09-01", "isMaintained": true, "latest": null, "custom": null},
+        {"name": "x1", "codename": null, "label": "X1", "releaseDate": "2016-09-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": null, "isDiscontinued": true, "discontinuedFrom": "2018-09-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-db",
+      "aliases": [],
+      "label": "Demo DB",
+      "category": "database",
+      "tags": ["database"],
+      "labels": {"eoas": null, "eol": "Support", "eoes": "Extended Support", "discontinued": null},
+      "releases": [
+        {"name": "15", "codename": null, "label": "15", "releaseDate": "2023-10-01", "isLts": false, "ltsFrom": null, "isEol": false, "eolFrom": "2099-10-01", "isEoes": false, "eoesFrom": "2099-10-01", "isMaintained": true, "latest": null, "custom": null},
+        {"name": "10", "codename": null, "label": "10", "releaseDate": "2014-10-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2019-10-01", "isEoes": true, "eoesFrom": "2021-10-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-legacy",
+      "aliases": [],
+      "label": "Demo Legacy",
+      "category": "os",
+      "tags": ["os"],
+      "labels": {"eoas": null, "eol": "Support", "eoes": null, "discontinued": null},
+      "releases": [
+        {"name": "7", "codename": null, "label": "7", "releaseDate": "2012-07-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2020-07-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "6", "codename": null, "label": "6", "releaseDate": "2010-07-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2016-07-01", "isMaintained": false, "latest": null, "custom": null}
+      ]
+    },
+    {
+      "name": "demo-app",
+      "aliases": [],
+      "label": "Demo App",
+      "category": "app",
+      "tags": ["app"],
+      "labels": {"eoas": null, "eol": "Support", "eoes": null, "discontinued": null},
+      "releases": [
+        {"name": "2025.1", "codename": null, "label": "2025.1", "releaseDate": "2025-03-01", "isLts": false, "ltsFrom": null, "isEol": true, "eolFrom": "2025-06-01", "isMaintained": false, "latest": null, "custom": null},
+        {"name": "2020 LTS", "codename": null, "label": "2020 LTS", "releaseDate": "2020-03-01", "isLts": true, "ltsFrom": null, "isEol": false, "eolFrom": "2099-03-01", "isMaintained": true, "latest": null, "custom": null}
+      ]
+    }
+  ]
+}

@@ -113,6 +113,12 @@
    "ecosystems": 13,
    "downloaded": 9,
    "not_modified": 4
+  },
+  "eol": {
+   "fetched_at": "2026-11-05T07:09:10Z",
+   "products": 489,
+   "lines": 9367,
+   "not_modified": true
   }
  }
 }
