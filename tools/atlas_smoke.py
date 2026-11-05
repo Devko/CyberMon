@@ -229,9 +229,29 @@ def main() -> int:
                                    timeout=TIMEOUT_MS)
 
             # ---- 4. click the centre, then keyboard select ------------------
-            box = page.locator(".atlas-canvas").bounding_box()
-            page.mouse.click(box["x"] + box["width"] / 2,
-                             box["y"] + box["height"] / 2)
+            # Leaving compare mode resizes the canvas; a click aimed at a
+            # centre measured mid-resize can miss (CI run 116). Wait until
+            # the canvas box holds still, and re-aim once if the first click
+            # selected nothing.
+            def settled_box():
+                prev = None
+                for _ in range(30):
+                    cur = page.locator(".atlas-canvas").bounding_box()
+                    if cur == prev:
+                        return cur
+                    prev = cur
+                    page.wait_for_timeout(100)
+                return prev
+            for attempt in range(2):
+                box = settled_box()
+                page.mouse.click(box["x"] + box["width"] / 2,
+                                 box["y"] + box["height"] / 2)
+                try:
+                    page.wait_for_selector(".atlas-detail-kind", timeout=5000)
+                    break
+                except Exception:
+                    if attempt:
+                        raise
             kind = page.locator(".atlas-detail-kind").inner_text()
             check(problems, kind.endswith(m.ids[pick]),
                   f"centre click selected {kind!r}, not {m.ids[pick]}")
