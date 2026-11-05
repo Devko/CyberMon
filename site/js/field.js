@@ -53,7 +53,7 @@ const ARRANGE = {
   clock: {
     k: "Days to PoC and KEV",
     thesis: "Days from CVE publication to the first dated public exploit (front row) and to the KEV listing (back row). Points left of zero came before publication.",
-    method: "Only records with a dated public exploit or a KEV listing are placed. x is the signed gap in days on a log scale, capped at ±10 years; y is the base score. The exploit date is the earliest Exploit-DB entry; Exploit-DB is the only one of the three exploit sources that dates the exploit itself (Metasploit metadata dates the vulnerability's disclosure, and Nuclei templates carry no date). The KEV date is CISA's dateAdded. A record with both is placed in the KEV row, and its details show both gaps. The joins are the ones the Time to PoC and KEV Latency modules use.",
+    method: "Only records with a dated public exploit or a KEV listing are placed. x is the signed gap in days on a log scale, capped at ±10 years; y is the base score. The exploit date is the earliest Exploit-DB entry; Exploit-DB is the only one of the three exploit sources that dates the exploit itself (Metasploit metadata dates the vulnerability's disclosure, and Nuclei templates carry no date). The KEV date is CISA's dateAdded. A record with both appears in both rows, its two points joined by a faint line; hover the KEV point for its details. The joins are the ones the Time to PoC and KEV Latency modules use.",
   },
   vendor: {
     k: "By vendor",
@@ -271,6 +271,27 @@ function main({ meta, buf }) {
   const kevPoints = new THREE.Points(kevGeo, mat);
   kevPoints.frustumCulled = false; kevPoints.renderOrder = 1; scene.add(kevPoints);
 
+  // "Days to PoC and KEV": a record with both events gets a second point in
+  // the exploit row (a twin), joined to its KEV point by a faint line. Twins
+  // and lines are drawn only in that arrangement and only once the layout
+  // has settled; they are not pickable (the KEV point carries the details).
+  const TWIN = []; for (let i = 0; i < N; i++) if (KEV(i) && D.pocday[i] > 0) TWIN.push(i);
+  const TN = TWIN.length;
+  const twinGeo = new THREE.BufferGeometry();
+  const twinPos = new Float32Array(TN * 3), twinCol = new Float32Array(TN * 3), twinSize = new Float32Array(TN), twinAlpha = new Float32Array(TN);
+  twinGeo.setAttribute("position", new THREE.BufferAttribute(twinPos, 3));
+  twinGeo.setAttribute("color", new THREE.BufferAttribute(twinCol, 3));
+  twinGeo.setAttribute("size", new THREE.BufferAttribute(twinSize, 1));
+  twinGeo.setAttribute("alpha", new THREE.BufferAttribute(twinAlpha, 1));
+  const twinPoints = new THREE.Points(twinGeo, mat);
+  twinPoints.frustumCulled = false; twinPoints.visible = false; scene.add(twinPoints);
+  const linkPos = new Float32Array(TN * 6), linkCol = new Float32Array(TN * 6);
+  const linkGeo = new THREE.BufferGeometry();
+  linkGeo.setAttribute("position", new THREE.BufferAttribute(linkPos, 3));
+  linkGeo.setAttribute("color", new THREE.BufferAttribute(linkCol, 3));
+  const links = new THREE.LineSegments(linkGeo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.22, depthWrite: false }));
+  links.frustumCulled = false; links.visible = false; scene.add(links);
+
   // Picking through an ID buffer: every point carries its index encoded in
   // an RGB attribute; a hover renders the cloud once, opaque, with that
   // colour and the same point sizes, into a small render target and reads
@@ -444,6 +465,14 @@ function main({ meta, buf }) {
       target[i * 3 + 1] = yOfScore(i);
       target[i * 3 + 2] = (k ? -26 : 26) + jit[i * 3 + 2] * 12;
     }
+    for (let t = 0; t < TN; t++) {
+      const i = TWIN[t];
+      twinPos[t * 3] = xOfLag(pocLag(i)) + jit[i * 3] * 0.6;
+      twinPos[t * 3 + 1] = yOfScore(i);
+      twinPos[t * 3 + 2] = 26 + jit[i * 3 + 2] * 12;
+      linkPos.set([target[i * 3], target[i * 3 + 1], target[i * 3 + 2], twinPos[t * 3], twinPos[t * 3 + 1], twinPos[t * 3 + 2]], t * 6);
+    }
+    twinGeo.attributes.position.needsUpdate = true; linkGeo.attributes.position.needsUpdate = true;
     [[-3650, "−10 y"], [-365, "−1 y"], [-30, "−30 d"], [0, "0"], [30, "+30 d"], [365, "+1 y"], [3650, "+10 y"]]
       .forEach(([v, t]) => addLabel(xOfLag(v), -10, -48, t, "tick"));
     addLabel(0, -10, -60, "before publication ← days → after", "axis");
@@ -620,6 +649,18 @@ function main({ meta, buf }) {
     geo.attributes.color.needsUpdate = true;
     geo.attributes.size.needsUpdate = true;
     geo.attributes.alpha.needsUpdate = true;
+    for (let t = 0; t < TN; t++) {
+      const i = TWIN[t], on = alpha[i] > 0;
+      // the exploit event keeps the PoC colour in the exploitation view;
+      // in the other colourings it takes its record's colour
+      const c = state.color === "expl" && i !== focusIdx ? PAL.poc : { r: colr[i * 3], g: colr[i * 3 + 1], b: colr[i * 3 + 2] };
+      twinCol[t * 3] = c.r; twinCol[t * 3 + 1] = c.g; twinCol[t * 3 + 2] = c.b;
+      twinSize[t] = on ? Math.max(2.2, size[i] * 0.6) * (i === focusIdx ? 1.6 : 1) : 0;
+      twinAlpha[t] = on ? Math.min(alpha[i], 0.9) : 0;
+      for (let e = 0; e < 2; e++) linkCol.set(on ? [c.r * alpha[i], c.g * alpha[i], c.b * alpha[i]] : [0, 0, 0], t * 6 + e * 3);
+    }
+    twinGeo.attributes.color.needsUpdate = true; twinGeo.attributes.size.needsUpdate = true;
+    twinGeo.attributes.alpha.needsUpdate = true; linkGeo.attributes.color.needsUpdate = true;
     const leg = state.color === "cna"
       ? cnaTop.map((c, i) => [PAL.cna[i].getStyle(), CNAS[c]]).concat([["#7d776a", "other assigners"]])
       : LEGEND[state.color];
@@ -938,12 +979,13 @@ function main({ meta, buf }) {
     const px = Math.min(w - 1, Math.max(0, Math.round((e.clientX - r.left) * PICK_SCALE)));
     const py = Math.min(h - 1, Math.max(0, h - 1 - Math.round((e.clientY - r.top) * PICK_SCALE)));
     const clearAlpha = renderer.getClearAlpha();
-    points.material = pickMat; grid.visible = false; kevPoints.visible = false;
+    const twinsOn = twinPoints.visible;
+    points.material = pickMat; grid.visible = false; kevPoints.visible = false; twinPoints.visible = links.visible = false;
     renderer.setRenderTarget(pickTarget); renderer.setClearColor(0x000000, 0); renderer.clear();
     renderer.render(scene, camera);
     renderer.readRenderTargetPixels(pickTarget, px, py, 1, 1, pickPixel);
     renderer.setRenderTarget(null); renderer.setClearColor(0x000000, clearAlpha);
-    points.material = mat; grid.visible = true; kevPoints.visible = true;
+    points.material = mat; grid.visible = true; kevPoints.visible = true; twinPoints.visible = links.visible = twinsOn;
     if (pickPixel[3] === 0) return -1;
     const i = pickPixel[0] + (pickPixel[1] << 8) + (pickPixel[2] << 16) - 1;
     return i >= 0 && i < N && shown[i] && pos[i * 3 + 1] > -500 ? i : -1;
@@ -1000,6 +1042,7 @@ function main({ meta, buf }) {
       geo.attributes.position.needsUpdate = true;
       if (t >= 1) animStart = 0;
     }
+    twinPoints.visible = links.visible = state.layout === "clock" && !animStart;
     camera.position.set(
       cam.tx + cam.r * Math.sin(cam.phi) * Math.sin(cam.theta),
       cam.ty + cam.r * Math.cos(cam.phi),

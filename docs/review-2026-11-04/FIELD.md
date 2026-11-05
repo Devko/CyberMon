@@ -53,6 +53,9 @@ from that run.
   column and cached, so playback with the table open stays one pass over
   the records. On the live edition a sort takes 114–160 ms. The smoke test
   checks both directions and `aria-sort`.
+- "Days to PoC and KEV": a record with both a dated exploit and a KEV
+  listing now appears in both rows, its points joined by a faint line, so
+  the order of the two events is visible (2026-11-05).
 - `field.css`: the body grid takes the last row, so the Alias Graph draft,
   which shares the stylesheet but has no toolbar, lays out correctly.
 
