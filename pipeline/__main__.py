@@ -75,6 +75,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="output directory (normally site/data)")
     parser.add_argument("--cache-dir", type=Path, default=Path(".cache"),
                         help="download cache directory (default: .cache)")
+    parser.add_argument("--cvelist-zip", type=Path, default=None,
+                        help="use this local cvelistV5 release zip instead of "
+                             "asking GitHub's API for the latest release "
+                             "(local runs only; the release label comes from "
+                             "a cvelistV5_<tag>.zip file name)")
     parser.add_argument("--skip-nvd", action="store_true",
                         help="skip the slow NVD paging; carry the previous "
                              "nvd_decay.json forward (marked stale)")
@@ -133,6 +138,13 @@ def _gather_records(args: argparse.Namespace) -> tuple[str, Iterator[dict]]:
     """Return (release label, streaming record iterator) for the corpus."""
     if args.offline_fixtures:
         return "fixtures", iter_cve_records_from_dir(FIXTURES_DIR / "cvelist")
+    if args.cvelist_zip:
+        name = args.cvelist_zip.name
+        tag = (name[len("cvelistV5_"):-len(".zip")]
+               if name.startswith("cvelistV5_") and name.endswith(".zip")
+               else f"local:{name}")
+        print(f"  local release {tag} -> {args.cvelist_zip}")
+        return tag, iter_cve_records(args.cvelist_zip)
     print("fetching cvelistV5 latest release ...")
     tag, url = latest_release()
     zip_path = download_zip(args.cache_dir, tag, url)
