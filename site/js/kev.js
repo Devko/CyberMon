@@ -1,6 +1,6 @@
 // =============================================================================
-// kev.js — KEV Latency tab (kev.html). Builds the four KEV sections from
-// editorial.js. Like market.js, the three latency sections share ONE
+// kev.js — KEV Latency tab (kev.html). Builds the five KEV sections from
+// editorial.js. Like market.js, the four latency-join sections share ONE
 // contract file (data/kev_latency.json), fetched once and passed to each
 // renderer; the ransomware section reads its own file (no CVE join, own
 // contract). Each renderer runs inside its own try/catch so one bad chart
@@ -13,6 +13,7 @@ import { render as renderLatency } from "./charts/kev_latency.js";
 import { render as renderBuckets } from "./charts/kev_buckets.js";
 import { render as renderRemediation } from "./charts/kev_remediation.js";
 import { render as renderRansomware } from "./charts/kev_ransomware.js";
+import { render as renderVintage } from "./charts/kev_vintage.js";
 
 // RELATIVE paths only — must work under python -m http.server AND under a
 // GitHub Pages project subpath (/CyberMon/).
@@ -24,6 +25,7 @@ const SECTIONS = [
   { id: "buckets", render: renderBuckets },
   { id: "remediation", render: renderRemediation },
   { id: "ransomware", render: renderRansomware, file: "data/kev_ransomware.json" },
+  { id: "kev_vintage", render: renderVintage },
 ];
 
 // ---- boot ---------------------------------------------------------------------

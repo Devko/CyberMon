@@ -673,7 +673,16 @@ pattern — and MISP stays the optional broadening. See
   do); a rule's `date` is not its git-commit date, so treat "added" as
   approximate.
 
-### KEV vintage — fold into module 03, not a new module
+### KEV vintage — fold into module 03, not a new module — SHIPPED as kev.html section 05
+Shipped 2026-11-05 as **05 · CVE age at listing** on kev.html (section key
+`kev_vintage`, no new file: `kev_latency.json` gained `vintage_by_year` and
+`oldest_recent`, and its `3y+` bucket is now `3-5y` / `5-10y` / `10y+`).
+On the launch data the over-a-year share was 24.6% (2023), 24.2% (2024),
+22.9% (2025) and 18.0% for 2026 so far; the decade-old part rose from 1.1%
+to 5.3% (2 to 15 listings), too few to call a trend. In the 12 months to
+2026-11-05, 15 of 313 additions were CVEs published more than ten years
+earlier, the oldest CVE-2008-4128. Guards: `test_claims_kev_vintage.py`.
+Original entry:
 Probed and deliberately **not** promoted. "How old is a CVE when CISA adds
 it to KEV" is the same `dateAdded − datePublished` subtraction module 03
 already computes, buckets, and quarantines; a separate page replotting it

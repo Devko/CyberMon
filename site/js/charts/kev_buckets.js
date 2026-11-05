@@ -8,7 +8,7 @@ import { el } from "../dom.js";
 
 // Fixed contract order (top to bottom); keys double as C.latency ramp keys
 // and as keys of editorial.sections.buckets.labels.buckets.
-const ORDER = ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d", "1-3y", "3y+"];
+const ORDER = ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d", "1-3y", "3-5y", "5-10y", "10y+"];
 
 export function render(slots, data) {
   const ed = editorial.sections.buckets;

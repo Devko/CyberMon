@@ -68,6 +68,24 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
     assert (tmp_path / "history" / "nvd_throughput.csv").exists()
     assert meta["sources"]["nvd"]["throughput_events"] == 5
 
+    # Queue survival: the fixture prior-state carries an exit log started
+    # 2025-12-01 (40 logged ends: 24 Analyzed, 10 Deferred, 3 other, 3
+    # back to Received) and 32 episodes still awaiting analysis. Tonight
+    # CVE-2024-0001 (timed) leaves for Analyzed and joins the log; the
+    # untimed exits (CVE-2024-0002, -0005) do not. Run-date dependent
+    # values (waits of the open episodes, the horizon) are not pinned.
+    survival = throughput["queue_survival"]
+    assert survival["log_start"] == "2025-12-01"
+    assert survival["exits"] == {"analyzed": 25, "deferred": 10, "other": 3}
+    assert survival["censored"] == {"waiting": 32, "requeued": 3}
+    assert survival["ready"] is True
+    curve = survival["curve"]
+    assert curve and curve[0]["day"] == 1 and curve[0]["pct_waiting"] < 100
+    assert all(a["pct_waiting"] >= b["pct_waiting"]
+               for a, b in zip(curve, curve[1:]))
+    assert all(p["at_risk"] >= survival["min_at_risk"] for p in curve)
+    assert [c["day"] for c in survival["checkpoints"]][:2] == [7, 30]
+
     # KEV latency: the 3 original fixture entries join the corpus; the 4
     # guards-module entries (Fortinet/Cisco) deliberately have no fixture
     # CVE records, so they count as unmatched and stay out of every

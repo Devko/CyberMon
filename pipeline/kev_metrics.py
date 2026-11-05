@@ -22,6 +22,12 @@ year over ALL cohorts, including the 2021 launch.
 KEV ids with no ``datePublished`` join in the aggregated corpus are
 counted in ``matched.unmatched_cve`` and excluded from all stats.
 
+Vintage (the KEV vintage section) reuses the same latency as an age at
+listing: ``vintage_by_year`` splits each trend year's listings older than
+a year into the 1-3y / 3-5y / 5-10y / 10y+ buckets, and
+``oldest_recent`` names the oldest CVEs listed in the 365 days ending on
+the edition date (any cohort; the window is recent by construction).
+
 Ransomware share (kev_ransomware.json) needs no CVE join at all: it is the
 catalog's own ``knownRansomwareCampaignUse`` flag grouped by ``dateAdded``
 year. Like the remediation spans, ALL cohorts belong — the catalog snapshot
@@ -32,7 +38,7 @@ from __future__ import annotations
 
 import statistics
 from collections import Counter, defaultdict
-from datetime import date
+from datetime import date, timedelta
 from typing import Iterable
 
 from .fetch_kev import KevEntry
@@ -46,9 +52,18 @@ from .metrics import Aggregator, _pct, _quartiles, _r1
 LAUNCH_CUTOFF = "2023-01-01"
 
 # Fixed bucket order (lower edge inclusive): negative, 0-7, 8-30, 31-90,
-# 91-365, 366-1095, >=1096 days.
+# 91-365, 366-1095, 1096-1825, 1826-3650, >=3651 days (years of 365 days).
+# Until 2026-11-05 the last three were one "3y+" bucket; splitting it shows
+# how old the old tail is (the KEV vintage section).
 BUCKETS = ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d",
-           "1-3y", "3y+"]
+           "1-3y", "3-5y", "5-10y", "10y+"]
+# The buckets past a year: the vintage section's per-year split.
+OLD_BUCKETS = ["1-3y", "3-5y", "5-10y", "10y+"]
+# "Last 12 months" for the oldest-recent-listings callout, and how many of
+# the oldest listings in that window the callout names.
+RECENT_WINDOW_DAYS = 365
+OLDEST_SHOWN = 10
+DECADE_DAYS = 3650
 
 
 def latency_bucket(days: int) -> str:
@@ -65,7 +80,11 @@ def latency_bucket(days: int) -> str:
         return "91-365d"
     if days <= 1095:
         return "1-3y"
-    return "3y+"
+    if days <= 1825:
+        return "3-5y"
+    if days <= DECADE_DAYS:
+        return "5-10y"
+    return "10y+"
 
 
 def _parse_date(s: object) -> date | None:
@@ -135,10 +154,13 @@ def build_kev_latency(agg: Aggregator, entries: Iterable[KevEntry],
     """
     entries = list(entries)
     cutoff = date.fromisoformat(LAUNCH_CUTOFF)
+    edition = date.fromisoformat(generated_at[:10])
+    window_start = edition - timedelta(days=RECENT_WINDOW_DAYS - 1)
     unmatched = 0
     backfill_latencies: list[int] = []
     trend_by_year: dict[int, list[int]] = defaultdict(list)
     spans_by_year: dict[int, list[int]] = defaultdict(list)
+    recent: list[tuple[int, str, date, date]] = []
 
     for entry in entries:
         published = _parse_date(agg.kev_published_dates.get(entry.cve_id))
@@ -149,6 +171,8 @@ def build_kev_latency(agg: Aggregator, entries: Iterable[KevEntry],
         if added is None:  # matched but undated: cannot contribute stats
             continue
         latency = (added - published).days
+        if window_start <= added <= edition:
+            recent.append((latency, entry.cve_id, added, published))
         if added < cutoff:
             backfill_latencies.append(latency)
         else:
@@ -177,6 +201,38 @@ def build_kev_latency(agg: Aggregator, entries: Iterable[KevEntry],
     latency_buckets = [{"bucket": b, "n": bucket_counts.get(b, 0),
                         "pct": _pct(bucket_counts.get(b, 0), len(trend_all))}
                        for b in BUCKETS]
+
+    # Vintage: per trend year, the listings whose CVE was more than a year
+    # old, split by the old-tail buckets (the same edges as above).
+    vintage_by_year = []
+    for row in latency_by_year:
+        latencies = trend_by_year[row["year"]]
+        n = len(latencies)
+        counts = Counter(latency_bucket(v) for v in latencies)
+        over = sum(counts.get(b, 0) for b in OLD_BUCKETS)
+        vintage_by_year.append({
+            "year": row["year"], "n": n,
+            "over_1y": over, "pct_over_1y": _pct(over, n),
+            "buckets": [{"bucket": b, "n": counts.get(b, 0),
+                         "pct": _pct(counts.get(b, 0), n)}
+                        for b in OLD_BUCKETS],
+        })
+
+    # Oldest CVEs listed in the RECENT_WINDOW_DAYS ending on the edition
+    # date: oldest first, ties by id so the list is stable.
+    recent.sort(key=lambda r: (-r[0], r[1]))
+    oldest_recent = {
+        "window_days": RECENT_WINDOW_DAYS,
+        "since": window_start.isoformat(),
+        "until": edition.isoformat(),
+        "n_listed": len(recent),
+        "n_over_10y": sum(1 for r in recent if r[0] > DECADE_DAYS),
+        "entries": [{"cve_id": cve_id, "date_added": added.isoformat(),
+                     "date_published": published.isoformat(),
+                     "age_days": latency}
+                    for latency, cve_id, added, published
+                    in recent[:OLDEST_SHOWN]],
+    }
 
     remediation_span_by_year = []
     for year in sorted(spans_by_year):
@@ -218,6 +274,8 @@ def build_kev_latency(agg: Aggregator, entries: Iterable[KevEntry],
         },
         "latency_by_year": latency_by_year,
         "latency_buckets": latency_buckets,
+        "vintage_by_year": vintage_by_year,
+        "oldest_recent": oldest_recent,
         "remediation_span_by_year": remediation_span_by_year,
         "headline": {
             "latest_year": latest_year,

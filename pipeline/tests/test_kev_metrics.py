@@ -2,7 +2,9 @@
 Plus the ransomware-share builder (no CVE join involved)."""
 from __future__ import annotations
 
-from pipeline import metrics
+from datetime import date, timedelta
+
+from pipeline import contracts, metrics
 from pipeline.fetch_kev import KevEntry
 from pipeline.kev_metrics import (BUCKETS, LAUNCH_CUTOFF, build_kev_latency,
                                   build_kev_ransomware, latency_bucket)
@@ -38,7 +40,12 @@ def test_latency_bucket_edges_lower_edge_inclusive():
     assert latency_bucket(365) == "91-365d"
     assert latency_bucket(366) == "1-3y"
     assert latency_bucket(1095) == "1-3y"
-    assert latency_bucket(1096) == "3y+"
+    assert latency_bucket(1096) == "3-5y"
+    assert latency_bucket(1825) == "3-5y"
+    assert latency_bucket(1826) == "5-10y"
+    assert latency_bucket(3650) == "5-10y"
+    assert latency_bucket(3651) == "10y+"
+    assert latency_bucket(6507) == "10y+"
 
 
 # ------------------------------------------------------- the Aggregator join
@@ -100,11 +107,11 @@ def test_fixture_negative_latency_kept_not_floored(agg, kev):
     assert buckets["0-7d"]["n"] == 0  # not counted as a same-day listing
 
 
-def test_fixture_all_seven_buckets_present_in_order(agg, kev):
+def test_fixture_all_nine_buckets_present_in_order(agg, kev):
     obj = build_kev_latency(agg, kev.entries, GENERATED_AT, min_n=1)
     assert [b["bucket"] for b in obj["latency_buckets"]] == BUCKETS
     assert BUCKETS == ["before_publish", "0-7d", "8-30d", "31-90d",
-                       "91-365d", "1-3y", "3y+"]
+                       "91-365d", "1-3y", "3-5y", "5-10y", "10y+"]
 
 
 def test_fixture_remediation_span_includes_launch_cohort(agg, kev):
@@ -269,3 +276,83 @@ def test_ransomware_empty_catalog():
     obj = build_kev_ransomware([], GENERATED_AT)
     assert obj["years"] == []
     assert obj["catalog"] == {"total": 0, "known": 0, "pct_known": 0.0}
+
+
+# ------------------------------------------------------------- KEV vintage
+
+def _vintage_case():
+    """Ten 2025 listings: six fresh, four over a year old (one per old
+    bucket), plus two 2026 listings inside the 12-month window."""
+    published = {}
+    entries = []
+    ages = [0, 3, 10, 40, 100, 200, 400, 1200, 2000, 5000]
+    for i, age in enumerate(ages):
+        cve = f"CVE-2020-{1000 + i}"
+        added = date(2025, 6, 1)
+        published[cve] = (added - timedelta(days=age)).isoformat()
+        entries.append(_entry(cve, added.isoformat()))
+    for cve, added, pub in [("CVE-2009-0001", "2026-05-20", "2009-05-29"),
+                            ("CVE-2015-0002", "2026-03-01", "2015-07-29")]:
+        published[cve] = pub
+        entries.append(_entry(cve, added))
+    return _agg(published), entries
+
+
+def test_vintage_splits_the_over_a_year_listings_per_year():
+    agg, entries = _vintage_case()
+    obj = build_kev_latency(agg, entries, "2026-07-09T00:00:00Z", min_n=1)
+    contracts.validate("kev_latency.json", obj)
+    v2025 = obj["vintage_by_year"][0]
+    assert v2025["year"] == 2025 and v2025["n"] == 10
+    assert v2025["over_1y"] == 4 and v2025["pct_over_1y"] == 40.0
+    assert [(b["bucket"], b["n"]) for b in v2025["buckets"]] == [
+        ("1-3y", 1), ("3-5y", 1), ("5-10y", 1), ("10y+", 1)]
+    # the vintage share is the latency trend's own over-a-year share
+    assert obj["latency_by_year"][0]["pct_over_365d"] == 40.0
+    # pooled buckets carry the same split
+    pooled = {b["bucket"]: b["n"] for b in obj["latency_buckets"]}
+    assert (pooled["3-5y"], pooled["5-10y"], pooled["10y+"]) == (1, 1, 3)
+
+
+def test_vintage_years_follow_the_latency_trend_min_n():
+    agg, entries = _vintage_case()
+    obj = build_kev_latency(agg, entries, "2026-07-09T00:00:00Z", min_n=5)
+    assert [r["year"] for r in obj["vintage_by_year"]] == \
+        [r["year"] for r in obj["latency_by_year"]] == [2025]
+
+
+def test_oldest_recent_names_the_oldest_listings_in_the_window():
+    agg, entries = _vintage_case()
+    obj = build_kev_latency(agg, entries, "2026-07-09T00:00:00Z", min_n=1)
+    recent = obj["oldest_recent"]
+    # 365 days ending on the edition date, both ends included
+    assert (recent["since"], recent["until"]) == ("2025-07-10", "2026-07-09")
+    # the June 2025 listings fall outside; the two 2026 ones are in
+    assert recent["n_listed"] == 2 and recent["n_over_10y"] == 2
+    assert [(e["cve_id"], e["date_published"], e["age_days"])
+            for e in recent["entries"]] == [
+        ("CVE-2009-0001", "2009-05-29", 6200),
+        ("CVE-2015-0002", "2015-07-29", 3868)]
+
+
+def test_oldest_recent_caps_the_list_and_breaks_ties_by_id():
+    published, entries = {}, []
+    for i in range(15):
+        cve = f"CVE-2010-{2000 + i}"
+        published[cve] = "2010-01-01"
+        entries.append(_entry(cve, "2026-01-01" if i % 2 else "2026-02-01"))
+    obj = build_kev_latency(_agg(published), entries,
+                            "2026-07-09T00:00:00Z", min_n=1)
+    shown = obj["oldest_recent"]["entries"]
+    assert len(shown) == 10 and obj["oldest_recent"]["n_listed"] == 15
+    ages = [e["age_days"] for e in shown]
+    assert ages == sorted(ages, reverse=True)
+    same_day = [e["cve_id"] for e in shown if e["date_added"] == "2026-02-01"]
+    assert same_day == sorted(same_day)
+
+
+def test_oldest_recent_with_no_listings_in_the_window():
+    obj = build_kev_latency(_agg({}), [], "2026-07-09T00:00:00Z")
+    assert obj["oldest_recent"]["n_listed"] == 0
+    assert obj["oldest_recent"]["entries"] == []
+    assert obj["vintage_by_year"] == []

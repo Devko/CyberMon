@@ -23,7 +23,7 @@ heading is the module's headline on the landing page.
 
 *Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.*
 
-Ten charts from the cvelistV5 corpus, joined to EPSS, KEV and NVD where named:
+Eleven charts from the cvelistV5 corpus, joined to EPSS, KEV and NVD where named:
 
 1. **CVSS scores by year** — median and IQR of CNA-assigned CVSS base
    scores per year, one line per CVSS version (v2/v3/v4), because each
@@ -36,16 +36,22 @@ Ten charts from the cvelistV5 corpus, joined to EPSS, KEV and NVD where named:
 5. **NVD throughput** — daily status changes from diffing nightly per-CVE
    NVD snapshots: CVEs received, and CVEs leaving the analysis queue as
    Analyzed or Deferred, with the observed queue wait (a lower bound).
-6. **Scores by CNA** — CNAs ranked by the share of their own scores at 9.0
+6. **NVD queue waits** — a Kaplan–Meier survival curve of the analysis
+   queue: the share of CVEs still waiting N days after the first nightly
+   snapshot that showed them there, counting every exit (analyzed, deferred
+   or other) and the CVEs still waiting. Built from an exit log kept on the
+   NVD sync state since 2026-11; published once the log covers 28 days and
+   30 exits.
+7. **Scores by CNA** — CNAs ranked by the share of their own scores at 9.0
    or above, with average and median (at least 100 scored CVEs in a 3-year
    window).
-7. **CVE volume** — CVEs published and rejected per year.
-8. **Record completeness** — the share of each year's records missing a
+8. **CVE volume** — CVEs published and rejected per year.
+9. **Record completeness** — the share of each year's records missing a
    CWE, a CVSS score or usable affected-version data, checked against the
    record itself.
-9. **Weakness classes** — the eight most common weakness classes of the last
-   ten complete years, as shares of each year's CWE-tagged records.
-10. **CVSS 4.0 adoption** — each month's new records by the CVSS versions
+10. **Weakness classes** — the eight most common weakness classes of the last
+    ten complete years, as shares of each year's CWE-tagged records.
+11. **CVSS 4.0 adoption** — each month's new records by the CVSS versions
     their CNA scored (v4.0 only / v3.x and v4.0 / v3.x only / neither; ADP
     scores not counted), the largest v4.0 adopters, and the v4.0 − v3.x
     difference on records scored in both.
@@ -77,13 +83,16 @@ quadrant (arXiv against GDELT). Terms and their Wikipedia articles are in
 
 *Most KEV entries were listed a week or more after their CVE was published.*
 
-Four charts on CISA's Known Exploited Vulnerabilities (KEV) catalog: days from
+Five charts on CISA's Known Exploited Vulnerabilities (KEV) catalog: days from
 CVE publication to KEV listing (median/IQR per listing year, and in buckets),
-remediation-deadline spans, and the share of each year's listings flagged for
-known ransomware use. Listings from the 2021–22 seeding era are kept out of
-the latency trend and summarized separately; the deadline and ransomware
-charts include them. Negative latencies (listed before the CVE record was
-published) are kept. Stage `pipeline/kev_metrics.py`.
+remediation-deadline spans, the share of each year's listings flagged for
+known ransomware use, and the age of the CVEs at listing (each year's share
+listed more than a year after publication, split 1–3 / 3–5 / 5–10 / 10+
+years, with the oldest CVEs added in the last 12 months). Listings from the
+2021–22 seeding era are kept out of the latency trend and summarized
+separately; the deadline and ransomware charts include them. Negative
+latencies (listed before the CVE record was published) are kept. Stage
+`pipeline/kev_metrics.py`.
 
 ### 04 · CNA Concentration — [concentration.html](https://devko.github.io/CyberMon/concentration.html)
 
@@ -693,7 +702,7 @@ Losing a file never changes data already published; the table gives the cost.
 
 | File | Module | When lost |
 |---|---|---|
-| `nvd_status_state.json.gz` | CVE Ecosystem (NVD) | One full sweep from the yearly feeds; that night the throughput diff has no baseline and logs no row, and queue waits are timed afresh |
+| `nvd_status_state.json.gz` | CVE Ecosystem (NVD) | One full sweep from the yearly feeds; that night the throughput diff has no baseline and logs no row, and queue waits are timed afresh. The queue-wait exit log restarts too, so the survival curve returns to its empty state for at least 28 days |
 | `market_state.json` | Buzzword Attention | Rebuilt from `market_hype.json`; HN gaps refill through a queue (`--market-backfill-batch`, default 8 requests a run) |
 | `attack_state.json` | ATT&CK Releases | Rebuilt from `attack_churn.json` |
 | `epss_report_state.json` | EPSS Before KEV | Rebuilt from `epss_report.json` |

@@ -31,6 +31,7 @@ import { render as renderLatency } from "./charts/kev_latency.js";
 import { render as renderBuckets } from "./charts/kev_buckets.js";
 import { render as renderRemediation } from "./charts/kev_remediation.js";
 import { render as renderRansomware } from "./charts/kev_ransomware.js";
+import { render as renderVintage } from "./charts/kev_vintage.js";
 import { render as renderConcentration } from "./charts/concentration_trend.js";
 import { render as renderEntrants } from "./charts/concentration_entrants.js";
 import { render as renderRejection } from "./charts/concentration_rejection.js";
@@ -141,6 +142,7 @@ const MODULES = {
       { id: "buckets", render: renderBuckets },
       { id: "remediation", render: renderRemediation },
       { id: "ransomware", render: renderRansomware, file: "data/kev_ransomware.json" },
+      { id: "kev_vintage", render: renderVintage },
     ],
   },
   concentration: {
