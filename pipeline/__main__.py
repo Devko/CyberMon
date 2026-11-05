@@ -46,6 +46,7 @@ from . import cvss_v4_metrics, tags_metrics
 from . import cna_profile_metrics
 from . import eol_metrics
 from . import ai_products_metrics
+from . import attack_atlas
 from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -98,7 +99,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                              "raise for a one-off accelerated backfill)")
     parser.add_argument("--skip-attack", action="store_true",
                         help="skip the ATT&CK index fetch; carry the previous "
-                             "attack_churn.json forward (marked stale)")
+                             "attack_churn.json and attack_atlas.json forward "
+                             "(marked stale)")
     parser.add_argument("--skip-epss-report", action="store_true",
                         help="skip the EPSS day-before lookups; carry the "
                              "previous epss_report.json forward (marked "
@@ -711,6 +713,27 @@ def run(args: argparse.Namespace) -> int:
         args.out, args.cache_dir, generated_at,
         offline_fixtures=args.offline_fixtures)
     outputs["naming.json"] = naming_obj
+    # Adversary Atlas (instrument): the current release's "uses" graph,
+    # extracted once per ATT&CK release and cached (the naming pattern). It
+    # follows --skip-attack, and an ATT&CK outage carries last night's
+    # edition forward stale instead of failing the run.
+    atlas_source = atlas_failure = None
+    if args.skip_attack:
+        atlas_failure = "--skip-attack"
+    else:
+        try:
+            atlas_obj, atlas_source = attack_atlas.run_stage(
+                args.out, args.cache_dir, generated_at,
+                offline_fixtures=args.offline_fixtures)
+            outputs[attack_atlas.OUTPUT_NAME] = atlas_obj
+        except (OSError, ValueError, KeyError, TypeError,
+                RuntimeError) as exc:
+            atlas_failure = f"ATT&CK atlas export failed ({exc!r})"
+    if atlas_failure is not None:
+        carried = _carry_forward(args.out, attack_atlas.OUTPUT_NAME,
+                                 generated_at, atlas_failure)
+        if carried is not None:
+            outputs[attack_atlas.OUTPUT_NAME] = carried
     epss_report, epss_history_source = epss_report_metrics.run_stage(
         args.out, args.cache_dir, generated_at,
         kev_entries=kev.entries,
@@ -940,6 +963,12 @@ def run(args: argparse.Namespace) -> int:
         carried_eol = _carry_forward_source(args.out, "eol")
         if carried_eol is not None:
             outputs["meta.json"]["sources"]["eol"] = carried_eol
+    if atlas_source is not None:
+        outputs["meta.json"]["sources"]["atlas"] = atlas_source
+    elif attack_atlas.OUTPUT_NAME in outputs:
+        carried_atlas = _carry_forward_source(args.out, "atlas")
+        if carried_atlas is not None:
+            outputs["meta.json"]["sources"]["atlas"] = carried_atlas
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

@@ -119,6 +119,12 @@
    "products": 489,
    "lines": 9367,
    "not_modified": true
+  },
+  "atlas": {
+   "fetched_at": "2026-11-05T07:06:22Z",
+   "version": "20.0",
+   "node_count": 1726,
+   "edge_count": 17589
   }
  }
 }

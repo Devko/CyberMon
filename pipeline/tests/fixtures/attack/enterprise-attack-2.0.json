@@ -6,85 +6,413 @@
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000t1",
       "name": "Spearphishing",
-      "x_mitre_is_subtechnique": false
+      "x_mitre_is_subtechnique": false,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1566",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "initial-access"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000t2",
       "name": "Fading Technique (deprecated in 2.0)",
       "x_mitre_is_subtechnique": false,
-      "x_mitre_deprecated": true
+      "x_mitre_deprecated": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1001",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000t3",
       "name": "Doomed Technique (revoked in 2.0)",
       "x_mitre_is_subtechnique": false,
-      "revoked": true
+      "revoked": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1002",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000t0",
       "name": "Already Deprecated (must never re-count)",
       "x_mitre_is_subtechnique": false,
-      "x_mitre_deprecated": true
+      "x_mitre_deprecated": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1000",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000s1",
       "name": "Spearphishing: Attachment",
-      "x_mitre_is_subtechnique": true
+      "x_mitre_is_subtechnique": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1566.001",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "initial-access"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000s2",
       "name": "Spearphishing: Link (added in 2.0)",
-      "x_mitre_is_subtechnique": true
+      "x_mitre_is_subtechnique": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1566.002",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "initial-access"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000t4",
       "name": "Stillborn Technique (arrives already deprecated: added only)",
       "x_mitre_is_subtechnique": false,
-      "x_mitre_deprecated": true
+      "x_mitre_deprecated": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1003",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "persistence"
+        }
+      ]
     },
     {
       "type": "attack-pattern",
       "id": "attack-pattern--00000000-0000-0000-0000-0000000000t5",
-      "name": "New Technique (no x_mitre_is_subtechnique flag: a technique)"
+      "name": "New Technique (no x_mitre_is_subtechnique flag: a technique)",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1059",
+          "url": "https://attack.mitre.org/"
+        }
+      ],
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "persistence"
+        },
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "execution"
+        }
+      ]
     },
     {
       "type": "intrusion-set",
       "id": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
       "name": "FIXTURE BEAR",
-      "aliases": ["FIXTURE BEAR", "Fixture Panda", "Grizzly Fixture"]
+      "aliases": [
+        "FIXTURE BEAR",
+        "Fixture Panda",
+        "Grizzly Fixture"
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0001",
+          "url": "https://attack.mitre.org/"
+        }
+      ]
     },
     {
       "type": "intrusion-set",
       "id": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
       "name": "FIXTURE SPIDER (added in 2.0)",
-      "aliases": ["FIXTURE SPIDER (added in 2.0)", "Web Fixture"]
+      "aliases": [
+        "FIXTURE SPIDER (added in 2.0)",
+        "Web Fixture"
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0002",
+          "url": "https://attack.mitre.org/"
+        }
+      ]
     },
     {
       "type": "malware",
       "id": "malware--00000000-0000-0000-0000-0000000000m1",
-      "name": "Fixtureware"
+      "name": "Fixtureware",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "S0001",
+          "url": "https://attack.mitre.org/"
+        }
+      ]
     },
     {
       "type": "tool",
       "id": "tool--00000000-0000-0000-0000-000000000tl1",
       "name": "Revoked Tool (never active)",
-      "revoked": true
+      "revoked": true,
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "S0003",
+          "url": "https://attack.mitre.org/"
+        }
+      ]
     },
     {
       "type": "tool",
       "id": "tool--00000000-0000-0000-0000-000000000tl2",
-      "name": "Fresh Tool (added in 2.0)"
+      "name": "Fresh Tool (added in 2.0)",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "S0002",
+          "url": "https://attack.mitre.org/"
+        }
+      ]
     },
     {
       "type": "relationship",
       "id": "relationship--00000000-0000-0000-0000-0000000000r1",
       "relationship_type": "uses"
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--00000000-0000-0000-0000-000000000ta1",
+      "name": "Initial Access",
+      "x_mitre_shortname": "initial-access",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "TA0001"
+        }
+      ]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--00000000-0000-0000-0000-000000000ta2",
+      "name": "Execution",
+      "x_mitre_shortname": "execution",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "TA0002"
+        }
+      ]
+    },
+    {
+      "type": "x-mitre-tactic",
+      "id": "x-mitre-tactic--00000000-0000-0000-0000-000000000ta3",
+      "name": "Persistence",
+      "x_mitre_shortname": "persistence",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "TA0003"
+        }
+      ]
+    },
+    {
+      "type": "x-mitre-matrix",
+      "id": "x-mitre-matrix--00000000-0000-0000-0000-000000000mx1",
+      "name": "Enterprise ATT&CK",
+      "tactic_refs": [
+        "x-mitre-tactic--00000000-0000-0000-0000-000000000ta1",
+        "x-mitre-tactic--00000000-0000-0000-0000-000000000ta2",
+        "x-mitre-tactic--00000000-0000-0000-0000-000000000ta3"
+      ]
+    },
+    {
+      "type": "campaign",
+      "id": "campaign--00000000-0000-0000-0000-0000000000c1",
+      "name": "Fixture Campaign",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "C0001"
+        }
+      ]
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r2",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "target_ref": "malware--00000000-0000-0000-0000-0000000000m1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r3",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r4",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000s1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r5",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r6",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
+      "target_ref": "tool--00000000-0000-0000-0000-000000000tl2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r7",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r8",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-0000000000r9",
+      "relationship_type": "uses",
+      "source_ref": "malware--00000000-0000-0000-0000-0000000000m1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r10",
+      "relationship_type": "uses",
+      "source_ref": "malware--00000000-0000-0000-0000-0000000000m1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000s2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r11",
+      "relationship_type": "uses",
+      "source_ref": "malware--00000000-0000-0000-0000-0000000000m1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r12",
+      "relationship_type": "uses",
+      "source_ref": "tool--00000000-0000-0000-0000-000000000tl2",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r13",
+      "relationship_type": "uses",
+      "source_ref": "tool--00000000-0000-0000-0000-000000000tl1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r14",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000s2",
+      "revoked": true
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r15",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "target_ref": "malware--00000000-0000-0000-0000-0000000000m1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r16",
+      "relationship_type": "uses",
+      "source_ref": "campaign--00000000-0000-0000-0000-0000000000c1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r17",
+      "relationship_type": "mitigates",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g1",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--00000000-0000-0000-0000-000000000r18",
+      "relationship_type": "uses",
+      "source_ref": "intrusion-set--00000000-0000-0000-0000-0000000000g2",
+      "target_ref": "attack-pattern--00000000-0000-0000-0000-0000000000t1",
+      "x_mitre_deprecated": true
     }
   ]
 }

@@ -3201,3 +3201,73 @@ families had one), with all-years count, first year, KEV and exploit-code
 counts, and the CNA that published most of them. `cnas.top` = the top 5
 CNAs of the window. `headline`: the latest COMPLETE year beside the
 partial current year, and the window's largest product.
+
+## site/data/attack_atlas.json  (Adversary Atlas instrument)
+
+```json
+{
+  "generated_at": "...",
+  "version": "20.0",
+  "released": "2026-10-13",
+  "bundle": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-20.0.json",
+  "counts": {"groups": 178, "software": 842, "techniques": 706,
+             "subtechniques": 479, "edges": 17589, "group_software": 1166,
+             "group_technique": 4815, "software_technique": 11608},
+  "tactics": [{"id": "TA0043", "name": "Reconnaissance"}, "..."],
+  "ids": ["G0001", "...", "S0001", "...", "T1001", "T1001.001", "..."],
+  "names": ["Axiom", "...", "Trojan.Mebromi", "...", "Data Obfuscation",
+            "Junk Data", "..."],
+  "software_types": "mtmmtt...",
+  "aliases": [["Group 72"], "..."],
+  "technique_tactics": ["12", "12", "12", "..."],
+  "uses": ["186 189 190 198 ...", "...", "1376", "..."]
+}
+```
+
+The current enterprise ATT&CK release's "uses" graph, built by
+`pipeline/attack_atlas.py` from the latest bundle in MITRE's
+`attack-stix-data` index (the fetch primitives of
+`pipeline/fetch_attack.py`, no new upstream).
+
+**Nodes** are the release's active groups (`intrusion-set`), software
+(`malware` + `tool`) and techniques (`attack-pattern`, sub-techniques
+included); objects carrying `revoked: true` or `x_mitre_deprecated: true`
+are excluded, as in ATT&CK Releases. A node is an integer: its index in
+`ids` / `names`. Groups come first, then software, then techniques
+(`counts.groups` / `software` / `techniques` are the block sizes), each block
+sorted by ATT&CK id, so indices are stable within a release and the ATT&CK
+id (`G0007`, `S0002`, `T1059.001`) is the identity across releases. The page
+links each id to attack.mitre.org and keeps ids, not indices, in its URL
+hash. `names` are ATT&CK's `name` fields (a sub-technique's own short name;
+the page prefixes the parent's).
+
+**Edges** are active `uses` relationships in three directions only:
+group → software, group → technique, software → technique. Relationships
+that are revoked or deprecated, touch an excluded object, or start from a
+campaign are dropped; a duplicated pair counts once. `uses` has one row per
+group and per software node (in node order): that node's target indices,
+ascending and unique, as one space-separated string. A group row's targets
+are software or technique nodes; a software row's are technique nodes.
+`counts.group_software` / `group_technique` / `software_technique` count
+the edges per direction and `counts.edges` is their sum.
+
+`tactics` is the enterprise matrix's tactic list in matrix order (ATT&CK
+id and name). `technique_tactics` has one row per technique: indices into
+`tactics` from its `mitre-attack` kill-chain phases, ascending (matrix
+order), space-separated. `software_types` has one character per software
+node, `m` (malware) or `t` (tool). `aliases` has one list per group: its
+other names (`aliases` minus the canonical name). `bundle` is the URL the
+graph was read from; `released` is the index's date for `version`.
+
+Strings instead of integer arrays because the pipeline writes with
+`indent=1`, which would put every index on its own line: v20.0 is 163 KB
+raw / 42 KB gzipped this way. Snapshot, not a time series: the graph is
+extracted once per release and cached in `.cache/attack_atlas_state.json`;
+a lost cache is rebuilt from this published file (only when it still
+passes this contract), so a normal night costs one `index.json` fetch.
+`--skip-attack` and an ATT&CK outage carry the previous edition forward
+with `"stale": true`. Validator: `pipeline/attack_atlas_contracts.py`
+(every row decodes, indices are in range and of the right kind, the
+blocks and per-direction counts reconcile). `meta.sources.atlas`
+(`{fetched_at, version, node_count, edge_count}`, plus `stale: true` when
+carried) records the release.

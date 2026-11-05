@@ -31,7 +31,8 @@
 //   - developer error and console messages, and code comments;
 //   - the HTML shells (site/*.html): <title>, meta tags and <noscript> text;
 //   - the two instruments, the Field (field.js) and the Mutation Observatory
-//     (observatory.js), which keep their own copy in their own files.
+//     (observatory.js), which keep their own copy in their own files;
+//   - the Adversary Atlas instrument (atlas.js), which does the same.
 //
 // Templates use {placeholders}; values are filled from site/data/*.json at
 // render time so the copy never carries stale numbers. tpl() below fills
@@ -183,6 +184,18 @@ export const editorial = {
             "edits and removals, and each night's largest EPSS probability change. Events " +
             "are dated by the night CyberMon observed them, EPSS events by FIRST's score " +
             "date. Select a date range, look up one CVE, or download the events as CSV.",
+        },
+        {
+          id: "atlas",
+          href: "atlas.html",
+          num: "G→T",
+          label: "Adversary Atlas",
+          headline: "The Atlas links each MITRE ATT&CK group to the software and techniques ATT&CK records it using.",
+          blurb:
+            "Pick a group to see its software and its techniques by tactic, or pick two to see " +
+            "the software and techniques they share and how far their sets overlap. Click any entry " +
+            "for its ATT&CK page and counts, or list the view as a table. Built from the " +
+            "current enterprise ATT&CK release; the page address keeps the selection.",
         },
       ],
     },
@@ -600,6 +613,7 @@ export const editorial = {
     // landing page's instrument cards use home.instruments instead.
     navField: "The Field →",
     navObservatory: "Observatory →",
+    navAtlas: "Atlas →",
     navInstruments: "Instruments",
     // aria-label of the masthead wordmark, which links home on module pages.
     homeLink: "CyberMon overview",
@@ -720,6 +734,9 @@ export const editorial = {
     aisurface_cwe: "ai_products_metrics.py",
     aisurface_exploited: "ai_products_metrics.py",
     aisurface_products: "ai_products.py",
+    atlas_graph: "attack_atlas.py",
+    atlas_table: "attack_atlas.py",
+    atlas_closest: "attack_atlas.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).

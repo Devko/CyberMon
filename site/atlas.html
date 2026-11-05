@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CyberMon — Adversary Atlas: the software and techniques MITRE ATT&amp;CK links to each threat group</title>
+  <meta name="description" content="Pick a threat group from MITRE ATT&amp;CK to see the software and techniques ATT&amp;CK records it using, grouped by tactic, or compare two groups' shared software and techniques. Built from the current enterprise ATT&amp;CK release.">
+  <meta property="og:title" content="CyberMon — Adversary Atlas: the software and techniques MITRE ATT&amp;CK links to each threat group">
+  <meta property="og:description" content="Pick a threat group from MITRE ATT&amp;CK to see the software and techniques ATT&amp;CK records it using, grouped by tactic, or compare two groups' shared software and techniques. Built from the current enterprise ATT&amp;CK release.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CyberMon">
+  <meta property="og:url" content="https://devko.github.io/CyberMon/atlas.html">
+  <meta property="og:image" content="https://devko.github.io/CyberMon/og/atlas.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://devko.github.io/CyberMon/og/atlas.png">
+  <meta name="theme-color" content="#0e0f11">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/atlas.css">
+</head>
+<body>
+
+  <div id="sample-banner" class="sample-banner" hidden></div>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <p class="masthead-kicker" id="masthead-kicker"></p>
+      <h1 class="masthead-title">CYBER<span class="accent">MON</span></h1>
+      <p class="masthead-thesis" id="masthead-thesis"></p>
+      <p class="masthead-sub" id="masthead-sub"></p>
+      <nav class="site-nav" id="site-nav" aria-label="CyberMon modules"></nav>
+    </div>
+  </header>
+
+  <main id="sections" class="sections"></main>
+
+  <footer class="footer" id="footer">
+    <div class="footer-inner">
+      <div class="footer-meta" id="footer-meta"><span class="mono muted">loading edition metadata…</span></div>
+      <div class="footer-text" id="footer-text"></div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/atlas.js"></script>
+  <noscript>
+    <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
+      CyberMon is a static, client-rendered site. Enable JavaScript to use the Adversary Atlas,
+      or read the raw graph in <code>data/attack_atlas.json</code>.
+    </p>
+  </noscript>
+</body>
+</html>

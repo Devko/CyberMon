@@ -420,6 +420,11 @@ def _validate_meta(obj: Any) -> None:
         if not isinstance(_get(eo, "not_modified", "meta.sources.eol"),
                           bool):
             _fail("meta.sources.eol.not_modified", "expected boolean")
+    # Optional (older committed meta files predate the Adversary Atlas, and
+    # --skip-attack or an outage with no previous edition omits it).
+    if "atlas" in src:
+        from .attack_atlas_contracts import check_meta_source
+        check_meta_source(src["atlas"])
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -815,3 +820,6 @@ VALIDATORS.update(eol_contracts.VALIDATORS)
 from . import ai_products_contracts  # noqa: E402
 
 VALIDATORS.update(ai_products_contracts.VALIDATORS)
+from . import attack_atlas_contracts  # noqa: E402
+
+VALIDATORS.update(attack_atlas_contracts.VALIDATORS)

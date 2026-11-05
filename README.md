@@ -687,6 +687,43 @@ claims audit (its copy has no hard-coded numbers). Browser check:
 `python tools/observatory_smoke.py` (searches a real CVE from the data,
 checks its timeline, the deep link at 390 px and the CSV download).
 
+## Adversary Atlas — [atlas.html](https://devko.github.io/CyberMon/atlas.html)
+
+*The Atlas links each MITRE ATT&CK group to the software and techniques ATT&CK records it using.*
+
+The current enterprise ATT&CK release as a graph: groups, software and
+techniques (sub-techniques included) joined by ATT&CK's "uses"
+relationships (group → software, group → technique, software → technique).
+Revoked and deprecated objects, and uses recorded for campaigns, are left
+out. The page never draws the whole graph. Pick a group, by name, alias or
+ATT&CK id, to see its neighbourhood on a 2D canvas: the group in the
+centre, its software, then its techniques in sectors coloured by tactic in
+matrix order, with faint curves from each software entry to the techniques
+it uses. A checkbox adds the techniques linked only to the group's
+software. Pick a second group to compare: each group's own entries sit on
+its side and the shared ones in the middle, with the shared counts and the
+Jaccard index for software, techniques and both. Click a node, or move to
+it with the arrow keys, for its ATT&CK link and counts and the groups that
+use it. A sortable table lists the view (with a CSV download), and a second
+table ranks the ten groups whose technique sets overlap most with the
+selected one. The URL hash keeps the selection (`#g=G0007&vs=G0016&n=T1059.001`)
+and always opens on the latest release. The page states that shared
+tooling is not evidence of shared identity or coordination, and that
+ATT&CK records only what public reporting describes.
+
+Data: `site/data/attack_atlas.json`, built by `pipeline/attack_atlas.py`
+from the latest bundle once per ATT&CK release and cached in
+`.cache/attack_atlas_state.json` (rebuilt from the published file when
+lost). Nodes are integers indexing an id table and a name table; each
+group's and software entry's targets are one space-separated string. For
+v20.0 that is 1,726 nodes and 17,589 edges in about 163 KB raw / 42 KB
+gzipped. `--skip-attack` and an ATT&CK outage carry it forward, marked
+stale. Like the Field and the Observatory it keeps its own copy, in
+`site/js/atlas.js`, with no hard-coded numbers. Browser check:
+`python tools/atlas_smoke.py` (recomputes counts and Jaccard from the data
+and checks the picker, the comparison, the table and CSV, click and
+keyboard selection, and the deep link at 390 px).
+
 ## Architecture
 
 No servers. The nightly workflow (`.github/workflows/nightly.yml`) runs the
@@ -740,7 +777,7 @@ browser checks on every push and pull request, and deploys on pushes to main
 | [SEC EDGAR full-text search](https://efts.sec.gov/LATEST/search-index?q=%22example%22) | Monthly counts of filings matching each tracked term as a quoted phrase (`hits.total.value`, one request per term-month; the corpus reaches back to 2001); for SEC Incident Filings, the paged hits of two 8-K queries (Item 1.05, Item 8.01 cyber incident) since 2023-12-18: accession number, filer CIK/name, filing date, form, item list | Public U.S. Government data; accessed per the [SEC fair-access guidelines](https://www.sec.gov/os/accessing-edgar-data) (declared User-Agent with contact address, well under 10 req/s) |
 | [Have I Been Pwned](https://haveibeenpwned.com/API/v3#AllBreaches) | Public breach catalog: breach/added dates, account counts, data classes, classification flags | Free, no key; [CC BY 4.0 with attribution](https://haveibeenpwned.com/API/v3#License): breach catalog courtesy of Have I Been Pwned (credited in the site footer) |
 | [Ransomwhere](https://ransomwhe.re/) (Jack Cable) | Crowdsourced, verified ransomware payment addresses and their on-chain transactions | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
-| [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts, per-release churn, group aliases | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/): royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
+| [MITRE ATT&CK](https://github.com/mitre-attack/attack-stix-data) (attack-stix-data) | Versioned enterprise STIX bundles: technique/sub-technique/group/software counts, per-release churn, group aliases, and the current release's "uses" relationships between groups, software and techniques (Adversary Atlas) | [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/): royalty-free license requiring MITRE's copyright designation (reproduced in the site footer); ATT&CK is a registered trademark of The MITRE Corporation |
 | [APNIC Labs DNSSEC measurement](https://stats.labs.apnic.net/dnssec) | Measured DNSSEC validation rates: per-code daily time series (`cgi-bin/json-table.pl?x=<code>`) + the world-map snapshot table | © APNIC Pty Ltd; "re-use with attribution permitted" (stated in every JSON response), provided on a hold-harmless basis with attribution |
 | [Internet Archive Wayback Machine](https://web.archive.org/) | Historical captures of the CISA KEV JSON (CDX index + snapshot bodies), fetched once for the KEV Changelog backfill; paced ~1 req/s, cached in `.cache/kev_wayback/`, never touched by CI | Archived US Government (CC0-style) content, served by the Internet Archive; capture metadata via the [CDX API](https://archive.org/developers/wayback-cdx-server.html) |
 | [MITRE CWE Top 25](https://cwe.mitre.org/top25/) | The published annual CWE Top 25 rankings (static, copied by hand per year into `pipeline/cwe_top25_data.py`), set against the corpus's first-listed-CWE frequency and KEV entries | [CWE Terms of Use](https://cwe.mitre.org/about/termsofuse.html); CWE is a trademark of The MITRE Corporation |
@@ -769,6 +806,7 @@ Losing a file never changes data already published; the table gives the cost.
 | `osv_state.json.gz` | Advisories, Malicious Packages | One full download of all thirteen exports (~290 MB) |
 | `eol_state.json.gz` | Support Windows | One download of the endoflife.date dump (~0.3 MB gzipped) |
 | `naming_state.json` | Threat Group Aliases | Rebuilt from `naming.json`, which is what CI does every night |
+| `attack_atlas_state.json` | Adversary Atlas | Rebuilt from `attack_atlas.json`, which is what CI does every night |
 | `poc/` | Time to PoC | Same-day cache only |
 | `kev_wayback/` | KEV Changelog backfill | Local only; CI never uses it |
 
@@ -823,6 +861,7 @@ playwright install chromium
 python3 tools/site_smoke.py          # every page of the committed site
 python3 tools/field_smoke.py         # the Field, on an isolated synthetic fixture
 python3 tools/observatory_smoke.py   # the Mutation Observatory
+python3 tools/atlas_smoke.py         # the Adversary Atlas
 
 # Animated social clips (1080×1350 MP4 plus a half-size GIF, one per scene)
 python3 tools/make_motion.py --check          # fast pre-flight, no encode

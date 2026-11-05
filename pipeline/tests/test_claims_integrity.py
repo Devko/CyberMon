@@ -81,6 +81,7 @@ BY_SOURCE = {
     "advisory_gap.json": "osv",
     "registry_malware.json": "osv",
     "support_windows.json": "eol",
+    "attack_atlas.json": "atlas",
 }
 
 # A degraded module may be carried forward for a few nights while an

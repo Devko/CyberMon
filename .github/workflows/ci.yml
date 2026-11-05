@@ -88,6 +88,13 @@ jobs:
       - name: Check Mutation Observatory interactions
         run: python tools/observatory_smoke.py
 
+      # Recomputes counts and Jaccard from the committed attack_atlas.json
+      # and asserts the picker (by alias, keyboard only), the compare view,
+      # the table and its CSV, node selection by click and keyboard, the
+      # closest-groups ranking, and the #g=…&vs=…&n=… deep link at 390 px.
+      - name: Check Adversary Atlas interactions
+        run: python tools/atlas_smoke.py
+
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts
       # they are non-blank and actually differ. NOT a full render — capturing
