@@ -74,6 +74,9 @@ def check_one_in_five_2021_to_2025(d: dict) -> None:
     # published in 2025 ..." until 2026-10-03, which the stat would have
     # contradicted once it moved to 2026 in January.
     by_year = {y["year"]: y["pct_prior_year"] for y in d["id_age"]["years"]}
+    for y in range(2021, 2026):
+        claims_support.record(by_year.get(y), lo=17, hi=23, unit="%",
+                              note=str(y))
     off = {y: by_year.get(y) for y in range(2021, 2026)
            if by_year.get(y) is None or not 17 <= by_year[y] <= 23}
     assert not off, (
@@ -122,6 +125,10 @@ def check_tuesday_peak(d: dict) -> None:
     for year in latest_complete_years(comp["latest_year"]):
         row = rows[year]
         tue = row["pct"][1]
+        claims_support.record(tue, lo=22, hi=28, unit="%",
+                              note=f"Tuesday, {year}")
+        claims_support.record(row["pct"][5] + row["pct"][6], hi=12,
+                              unit="%", note=f"weekend, {year}")
         assert tue == max(row["pct"]), (
             f"'Tuesday carried about a quarter' — {year}'s top weekday share "
             f"is {max(row['pct'])}%, Tuesday only {tue}%"
@@ -150,6 +157,10 @@ def check_tuesday_busiest_since_2022(d: dict) -> None:
              and claims_support.judged(y["year"], y["n"],
                                        min_n=WEEKDAY_MIN_N)]
     assert any(y["year"] < GENERATION_YEAR for y in years), years
+    for y in years:
+        others = [p for i, p in enumerate(y["pct"]) if i != 1]
+        claims_support.record(y["pct"][1], lo=max(others), unit="%",
+                              note=f"Tuesday vs the next day, {y['year']}")
     off = [(y["year"], y["pct"]) for y in years
            if y["pct"].index(max(y["pct"])) != 1]
     assert not off, (
@@ -196,6 +207,10 @@ def check_patch_tuesday_multiple(d: dict) -> None:
     rows = {r["year"]: r for r in pt["years"]}
     for year in latest_complete_years(h["latest_year"]):
         ratio = rows[year]["pct"] / calendar_pct
+        # The assert reads the ratio at one decimal, so 1.95 and 3.05 are
+        # the raw ratio's real edges.
+        claims_support.record(ratio, lo=1.95, hi=3.05,
+                              unit="× calendar share", note=str(year))
         assert 2.0 <= round(ratio, 1) <= 3.0, (
             f"'two to three times their calendar share' — {year}: "
             f"{rows[year]['pct']}% against {calendar_pct}% = {ratio:.2f}x"

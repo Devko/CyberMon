@@ -90,6 +90,8 @@ def check_hundred_flips_after_listing(d: dict) -> None:
     flips = d["flips"]
     step = flips.get("step_month_flips", flips["by_month"][0]["flips"])
     after = flips.get("total_after_step", flips["total"] - step)
+    claims_support.record(after, lo=100, unit="flips",
+                          note="after the step month")
     assert after > 100, (
         f"'more than a hundred KEV entries' flipped after listing — the "
         f"record holds {after} flips after the {flips.get('step_month')} step"
@@ -166,6 +168,7 @@ def check_every_edit_kind_exists(d: dict) -> None:
         for key in totals:
             totals[key] += row[key]
     for key, n in totals.items():
+        claims_support.record(n, lo=1, unit="events", note=key)
         assert n >= 1, (
             f"the module blurb names every edit kind, but the record "
             f"holds zero '{key}' events — trim the blurb or fix the diff"
@@ -195,6 +198,8 @@ def check_entries_never_stop_changing(d: dict) -> None:
     # (2026-09-23: every one of the top 12 has 8 or more edits).
     board = d["board"]["most_edited"]
     assert board, "the most-edited claim with an empty board"
+    claims_support.record(board[0]["edits"], lo=8, unit="edits",
+                          note=board[0]["cve"])
     assert board[0]["edits"] >= 8, (
         f"'edited eight or more times' needs the most-edited entry "
         f"({board[0]['cve']}, {board[0]['edits']} edits) to have a real "
@@ -237,6 +242,11 @@ def check_flag_lag_lands_late(d: dict) -> None:
     )
     late = sum(b["capture"] + b["daily"] for b in lag["buckets"]
                if b["lo"] > 90)
+    claims_support.record(100 * late / n, lo=50, unit="%",
+                          note=f"{late} of {n} flips after 90 days")
+    claims_support.record((lag.get("overall") or {}).get("median_days"),
+                          lo=90,
+                          unit="days", note="median lag")
     assert late / n > 0.5, (
         f"'Most ransomware flags land long after the listing': only "
         f"{late} of {n} flips landed more than 90 days after listing"

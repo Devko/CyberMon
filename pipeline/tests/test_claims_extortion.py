@@ -54,6 +54,8 @@ def check_billion_dollar_floor(d: dict) -> None:
     # crowdsourcing, so the total should only grow; the ceiling guards
     # against a unit error.
     total = d["headline"]["total_usd"]
+    claims_support.record(total, lo=1_000_000_000, hi=10_000_000_000,
+                          unit="USD")
     assert 1_000_000_000 <= total <= 10_000_000_000, (
         f"'total over a billion dollars' needs total "
         f"confirmed USD in [$1B, $10B]; data says ${total:,}"
@@ -68,6 +70,8 @@ def check_unattributed_two_thirds(d: dict) -> None:
     unattributed = d["families"]["unattributed"]["usd"]
     total = d["catalog"]["total_usd"]
     share = 100.0 * unattributed / total if total else 0.0
+    claims_support.record(share, lo=55, hi=80, unit="%",
+                          note="revenue without a family label")
     assert 55 <= share <= 80, (
         f"'about two thirds ... carries no family label' claims ~67%; "
         f"data says {share:.1f}% (${unattributed:,} of ${total:,})"

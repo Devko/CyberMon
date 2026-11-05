@@ -79,6 +79,8 @@ def check_four_in_ten_validate(d: dict) -> None:
     # partial passes at ~1.5 points a month, around late November).
     latest = d["world"]["latest"]["validating_pc"]
     lo, hi = FOUR_IN_TEN
+    claims_support.record(latest, lo=lo, hi=hi, unit="%",
+                          note="full validation, world")
     assert lo <= latest <= hi, (
         f"'about four in ten' users behind fully validating resolvers "
         f"needs {lo}-{hi}%; data says {latest}%"
@@ -119,6 +121,10 @@ def check_giants_gap(d: dict) -> None:
     economies = d["economies"]
     assert economies, "no economies in dnssec_adoption.json"
     top, bottom = economies[0], economies[-1]
+    claims_support.record(top["latest_pc"], lo=85, hi=100, unit="%",
+                          note=f"highest: {top['cc']}")
+    claims_support.record(bottom["latest_pc"], hi=5, unit="%",
+                          note=f"lowest: {bottom['cc']}")
     assert 85 <= top["latest_pc"] <= 100, (
         f"'the top of this list validates for roughly nine of every ten "
         f"users' claims ~90%; data says {top['latest_pc']}% ({top['cc']})"

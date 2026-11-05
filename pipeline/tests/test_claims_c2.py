@@ -93,6 +93,9 @@ def check_fewer_than_ten_every_night(d: dict) -> None:
         f"'since July 2026' — the record now starts {w['first_observed']}")
     series = w["series"]
     assert series, "no nightly snapshots on file"
+    claims_support.record(max(s["listed_total"] for s in series), hi=9,
+                          unit="servers",
+                          note=f"largest of {len(series)} nights")
     big = [(s["date"], s["listed_total"]) for s in series
            if s["listed_total"] >= 10]
     assert not big, f"'fewer than ten servers' every night vs {big[:5]}"
@@ -108,6 +111,8 @@ def check_half_first_seen_over_six_months(d: dict) -> None:
     # blocklist breaks the sentence too.
     age = d["c2_age"]
     assert age["n"] > 0, "'tonight's listed C2 servers' — the blocklist is empty"
+    claims_support.record(age["median_age_days"], lo=183, unit="days",
+                          note=f"median age of {age['n']} servers")
     assert age["median_age_days"] > 183, (
         f"'more than six months ago' for at least half the list vs a "
         f"median age of {age['median_age_days']} days")
@@ -118,6 +123,7 @@ def check_a_handful_listed(d: dict) -> None:
     # holds a handful of C2 servers." (2026-10-03: 5, unchanged since the
     # record began on 2026-07-21.) More than ten is not a handful.
     size = d["catalog"]["snapshot_size"]
+    claims_support.record(size, hi=10, unit="servers")
     assert size <= 10, (
         f"'a handful of C2 servers' needs ten or fewer; tonight's blocklist "
         f"holds {size}"

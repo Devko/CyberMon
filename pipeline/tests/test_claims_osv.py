@@ -62,6 +62,7 @@ def _sev(d: dict, level: str) -> dict:
 
 def check_most_get_a_cve(d: dict) -> None:
     pct = d["catalog"]["without_cve_pct"]
+    claims_support.record(pct, hi=50, unit="%", note="without a CVE id")
     assert pct < 50, (f"'Most reviewed advisories get a CVE' needs a no-CVE "
                       f"share below half; it is {pct}%")
 
@@ -80,6 +81,9 @@ def check_fewer_than_one_in_ten(d: dict) -> None:
     # around August 2027.
     cat = d["catalog"]
     pct = 100.0 * cat["without_cve"] / cat["advisories"]
+    claims_support.record(pct, lo=100 / 16, hi=10, unit="%",
+                          note=f"{cat['without_cve']} of "
+                               f"{cat['advisories']} without a CVE id")
     assert 100 / 16 <= pct < 10, (
         f"'Fewer than one advisory in ten' needs a no-CVE share of "
         f"6.25-10%; it is {pct:.1f}% ({cat['without_cve']} of "
@@ -104,6 +108,13 @@ def check_rust_highest_of_large(d: dict) -> None:
     assert any(e["ecosystem"] == "crates.io" for e in large), (
         "crates.io has fewer than 1,000 advisories in this edition")
     top = max(large, key=lambda e: e["without_cve_pct"])
+    rust = next((e for e in large if e["ecosystem"] == "crates.io"), None)
+    rest = [e for e in large if e["ecosystem"] != "crates.io"]
+    if rust and rest:
+        nxt = max(rest, key=lambda e: e["without_cve_pct"])
+        claims_support.record(rust["without_cve_pct"],
+                              lo=nxt["without_cve_pct"], unit="%",
+                              note=f"crates.io vs {nxt['ecosystem']}")
     assert top["ecosystem"] == "crates.io", (
         f"the copy singles out Rust, but {top['ecosystem']} now has the "
         f"highest no-CVE share among the large ecosystems "
@@ -112,6 +123,7 @@ def check_rust_highest_of_large(d: dict) -> None:
 
 def check_maven_almost_all(d: dict) -> None:
     pct = _eco(d, "Maven")["without_cve_pct"]
+    claims_support.record(pct, hi=3, unit="%", note="Maven without a CVE id")
     assert pct is not None and pct <= 3, (
         f"'In Maven, almost all have one' needs Maven's no-CVE share at 3% "
         f"or less; it is {pct}%")
@@ -122,6 +134,8 @@ def check_not_the_minor_ones(d: dict) -> None:
     # more often" — more often Critical AND more often Low than the CVE set.
     # (2026-11-04: Critical 22.2% vs 12.2%, Low 12.8% vs 6.8%.)
     crit = _sev(d, "CRITICAL")
+    claims_support.record(crit["without_cve_pct"], lo=crit["with_cve_pct"],
+                          unit="%", note="Critical, without vs with a CVE")
     check_more_low_as_well(d)
     assert crit["without_cve_pct"] > crit["with_cve_pct"], (
         f"'rated Critical … more often': the no-CVE set is no longer more "
@@ -131,6 +145,8 @@ def check_not_the_minor_ones(d: dict) -> None:
 
 def check_more_low_as_well(d: dict) -> None:
     low = _sev(d, "LOW")
+    claims_support.record(low["without_cve_pct"], lo=low["with_cve_pct"],
+                          unit="%", note="Low, without vs with a CVE")
     assert low["without_cve_pct"] > low["with_cve_pct"], (
         f"'rated … Low more often' is no longer true "
         f"({low['without_cve_pct']}% vs {low['with_cve_pct']}%)")
@@ -156,6 +172,11 @@ def check_criticals_net_of_malware_notices(d: dict) -> None:
     rest = crit["without_cve"] - MALWARE_CRITICAL_NOTICES
     pool = d["catalog"]["without_cve"] - MALWARE_CRITICAL_NOTICES
     pct = 100.0 * rest / pool
+    claims_support.record(crit["without_cve"], lo=MALWARE_CRITICAL_NOTICES,
+                          unit="advisories",
+                          note="no-CVE Criticals vs the notices quoted")
+    claims_support.record(pct, hi=crit["with_cve_pct"], unit="%",
+                          note="Critical net of notices vs with a CVE")
     assert pct < crit["with_cve_pct"], (
         f"'Without the malicious-package notices … rated Critical less "
         f"often' fails: {pct:.1f}% of the rest vs {crit['with_cve_pct']}% "
@@ -185,6 +206,8 @@ def check_more_than_half_one_month(d: dict) -> None:
     # three years at 2026's pace of ~1,900 a month, unless a new burst.)
     cat = d["catalog"]
     pct = 100.0 * cat["peak_reports"] / cat["reports"]
+    claims_support.record(pct, lo=50, unit="%",
+                          note=cat.get("peak_month", ""))
     assert pct > 50, (f"'More than half of the feed's reports were published "
                       f"in a single month' — the peak month ({cat['peak_month']}) "
                       f"holds {pct:.1f}%")
@@ -214,6 +237,7 @@ def check_npm_almost_every(d: dict) -> None:
     # before it reaches 90%.)
     npm = _eco(d, "npm")["reports"]
     pct = 100 * npm / d["catalog"]["reports"]
+    claims_support.record(pct, lo=90, unit="%", note="npm share of reports")
     assert pct >= 90, (f"'npm carries almost every report' needs npm at 90% "
                        f"or more of all reports; it is {pct:.1f}%")
 
@@ -221,6 +245,8 @@ def check_npm_almost_every(d: dict) -> None:
 def check_pypi_2023(d: dict) -> None:
     y = next(r for r in d["years"] if r["year"] == 2023)
     pypi = y["by_ecosystem"].get("PyPI", 0)
+    claims_support.record(pypi, lo=y["total"] / 2, unit="reports",
+                          note=f"PyPI, of {y['total']} in 2023")
     assert pypi > y["total"] / 2, (
         f"'PyPI had most of 2023's' — PyPI holds "
         f"{pypi} of {y['total']}")
@@ -228,6 +254,7 @@ def check_pypi_2023(d: dict) -> None:
 
 def check_almost_none_withdrawn(d: dict) -> None:
     pct = d["catalog"]["withdrawn_pct"]
+    claims_support.record(pct, hi=1, unit="%", note="withdrawn")
     assert pct is not None and pct < 1, (
         f"'Almost no report is taken back' needs under 1% withdrawn; it is "
         f"{pct}%")

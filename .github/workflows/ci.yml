@@ -88,6 +88,12 @@ jobs:
       - name: Check Mutation Observatory interactions
         run: python tools/observatory_smoke.py
 
+      # Reads the committed claims_ledger.json and asserts the table's order,
+      # its page/result/margin filters, a section link and the #page= deep
+      # link at 390 px.
+      - name: Check Claims Ledger interactions
+        run: python tools/ledger_smoke.py
+
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts
       # they are non-blank and actually differ. NOT a full render — capturing

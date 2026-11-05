@@ -142,6 +142,8 @@ def check_one_or_two_a_month(d: dict) -> None:
     import statistics
     months = [r["originals"] for r in d["monthly"] if not r["partial"]]
     med = statistics.median(months)
+    claims_support.record(med, lo=1, hi=2, unit="filings",
+                          note=f"median of {len(months)} complete months")
     assert 1 <= med <= 2, f"median originals per complete month {med}"
 
 
@@ -157,8 +159,13 @@ def check_quarter_amended_most_within_90(d: dict) -> None:
         return
     lag = d["amendment_lag"]
     pct = 100.0 * lag["amended"] / lag["originals"]
+    claims_support.record(pct, lo=25, hi=50, unit="%",
+                          note=f"{lag['amended']} of {lag['originals']} "
+                               f"amended")
     assert 25 < pct <= 50, f"{lag['amended']} of {lag['originals']} amended"
     within = sum(b["n"] for b in lag["buckets"][:3])  # 0-7, 8-30, 31-90
+    claims_support.record(within, lo=lag["amended"] / 2, unit="amended",
+                          note="within 90 days")
     assert within > lag["amended"] / 2, (within, lag["amended"])
 
 

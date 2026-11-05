@@ -5,6 +5,8 @@
 * ``GENERATION_YEAR`` — the edition's year, or ``CYBERMON_REHEARSE_YEAR``.
 * ``read_json`` — ``json.loads`` plus the tiny-new-year rehearsal below.
 * ``judged`` — whether a year's figures are settled enough to hold copy to.
+* ``record`` — note the value a guard is about to assert and its bounds,
+  for the Claims Ledger (tools/claims_ledger.py, site/ledger.html).
 
 Two rehearsals cover the January rollover, and both must pass except for
 the guards docs/backlog.md lists as failing on purpose:
@@ -52,6 +54,29 @@ def judged(year: int, n: int | float | None = None, *,
     if year > GENERATION_YEAR or min_n is None or n is None:
         return False
     return n >= min_n
+
+
+# Set by tools/claims_ledger.py to a fresh list for the duration of one
+# guard; None (record() does nothing) everywhere else, rehearsals included.
+_LEDGER: list | None = None
+
+
+def record(value, *, lo=None, hi=None, unit: str = "", note: str = "") -> None:
+    """Note the number a guard is about to assert and the bound(s) it holds
+    that number to, for the Claims Ledger. Call it just before the assert,
+    with the same value and the same bounds; ``lo``/``hi`` are the lowest
+    and highest values at which the sentence still holds (strict or not).
+    ``note`` says what the value is when a guard records several (a year,
+    a series). A no-op outside the ledger run, and it never raises, so it
+    cannot change what a guard passes or fails."""
+    sink = _LEDGER
+    if sink is None:
+        return
+    try:
+        sink.append({"value": value, "lo": lo, "hi": hi,
+                     "unit": str(unit), "note": str(note)})
+    except Exception:  # noqa: BLE001 — bookkeeping must never fail a guard
+        pass
 
 
 def complete_years(rows: list[dict]) -> list[dict]:

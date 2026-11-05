@@ -61,6 +61,9 @@ def check_typical_gap_in_months(d: dict) -> None:
     # from days to more than a year (check_single_years_vary), and 2026,
     # which takes that slot in January, is at 23 days so far.
     median = d["headline"]["median_days"]
+    claims_support.record(median, lo=60, hi=365, unit="days",
+                          note=f"pooled over {d['headline'].get('trend_n')} "
+                               f"breaches")
     assert 60 <= median <= 365, (
         f"'months after it happened' needs the pooled trend "
         f"median between ~2 and ~12 months; data says {median} days "
@@ -124,6 +127,9 @@ def check_email_nearly_every_breach(d: dict) -> None:
     n = sum(y["n"] for y in rows)
     with_email = sum(y["n"] * y["shares"].get("Email addresses", 0.0) / 100
                      for y in rows)
+    if n:
+        claims_support.record(100 * with_email / n, lo=95, unit="%",
+                              note=f"of {n} breaches")
     assert n and with_email / n >= 0.95, (
         f"'Nearly every cataloged breach includes email addresses' vs "
         f"{100 * with_email / n:.1f}% of {n}")
@@ -148,10 +154,14 @@ def check_passwords_trend(d: dict) -> None:
     # breaches on 2026-11-04) joins it when it closes. Until 2026-11-04 the
     # copy said "every year" and the run stopped at 2025.
     by = {y["year"]: y["shares"].get("Passwords") for y in d["class_shares"]["years"]}
+    claims_support.record(by.get(2014), lo=85, hi=95, unit="%", note="2014")
+    claims_support.record(by.get(2025), lo=35, hi=45, unit="%", note="2025")
     assert by[2014] is not None and 85 <= by[2014] <= 95, by.get(2014)
     assert by[2025] is not None and 35 <= by[2025] <= 45, by.get(2025)
     years = [y for y in sorted(by) if y >= 2019 and claims_support.judged(y)]
     run = [by[y] for y in years]
+    for (ya, a), (yb, b) in zip(zip(years, run), zip(years[1:], run[1:])):
+        claims_support.record(b, hi=a, unit="%", note=f"{yb} vs {ya}")
     assert all(a > b for a, b in zip(run, run[1:])), (
         f"'a lower share in each complete year since 2019' vs "
         f"{list(zip(years, run))}")
@@ -171,6 +181,9 @@ def check_tens_of_millions_each_complete_year(d: dict) -> None:
     rows = [r for r in d["volume_by_year"]
             if r["year"] >= 2014 and claims_support.judged(r["year"])]
     assert rows and rows[0]["year"] == 2014, rows[:1]
+    for r in rows:
+        claims_support.record(r["records"], lo=TENS_OF_MILLIONS,
+                              unit="accounts", note=str(r["year"]))
     low = [(r["year"], r["records"]) for r in rows
            if r["records"] < TENS_OF_MILLIONS]
     assert not low, (

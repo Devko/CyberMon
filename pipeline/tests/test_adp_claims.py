@@ -54,6 +54,7 @@ def check_ssvc_rides_nearly_every_record(d: dict) -> None:
     # every edition in this clone's history, back to 2026-09-23.) Raised from 85% to 95% on 2026-11-04:
     # "nearly every" does not stretch to one record in seven.
     pct = d["adds"]["pct_ssvc"]
+    claims_support.record(pct, lo=95, unit="%", note="CISA-ADP with SSVC")
     assert pct >= 95.0, (
         f"'Nearly every CISA-ADP block carries SSVC decision points' needs "
         f"SSVC on at least 95% of CISA-ADP records; it is on {pct:.1f}%"
@@ -73,6 +74,8 @@ def check_cisa_is_the_sole_substantive_enricher(d: dict) -> None:
         f"it is {top['provider']!r}"
     )
     share = 100.0 * top["n"] / total
+    claims_support.record(share, lo=90, unit="%",
+                          note=f"{top['provider']}, {top['n']} of {total}")
     assert share >= 90.0, (
         f"'CISA adds almost all of the substantive ADP enrichment' needs "
         f"CISA-ADP at 90% or more of credited records; it is {share:.1f}% "

@@ -51,12 +51,21 @@ def _groups_with_at_least(d: dict, n: int) -> int:
     return sum(b["n"] for b in d["distribution"] if b["alt_count"] >= n)
 
 
+def _second_most_aliases(d: dict) -> int | None:
+    """Alias count of the second group on the board (for the ledger)."""
+    counts = sorted((b["alt_count"] for b in d["distribution"]
+                     for _ in range(b["n"])), reverse=True)
+    return counts[1] if len(counts) > 1 else None
+
+
 def check_most_renamed_at_least_a_dozen(d: dict) -> None:
     # editorial.js (naming.html hero): "The most-renamed ATT&CK groups carry
     # a dozen or more alternate names each." — plural, so at least two
     # groups. (ATT&CK v19.2, 2026-10-03: APT28 and Mustang Panda 15, APT29
     # 14, the next group, OilRig, 11.)
     n = _groups_with_at_least(d, 12)
+    claims_support.record(_second_most_aliases(d), lo=12, unit="aliases",
+                          note="second group on the board")
     assert n >= 2, (
         f"'the most-renamed groups carry a dozen or more names each' needs "
         f"at least two groups with 12 or more alternate names; the data "
@@ -71,6 +80,8 @@ def check_most_renamed_more_than_a_dozen(d: dict) -> None:
     # "most-renamed" until 2026-11-04; the groups are not renamed, they
     # carry aliases.
     n = _groups_with_at_least(d, 13)
+    claims_support.record(_second_most_aliases(d), lo=13, unit="aliases",
+                          note="second group on the board")
     assert n >= 2, (
         f"'more than a dozen other names each' needs at least two groups "
         f"with 13 or more alternate names; the data has {n}"

@@ -96,6 +96,8 @@ def check_nothing_bends_at_the_cutoff(d: dict) -> None:
     # the raw metrics stopped counting the provisional 2025 cohort, which
     # withheld their three GPT-4 cells.)
     head = d["headline"]
+    claims_support.record(head["accelerated"], hi=0, unit="cells",
+                          note=f"accelerated, of {head['judged']} judged")
     assert head["judged"] >= 1, (
         "'Nothing bends toward faster at the cutoff' needs at least one "
         "judged cell to be a statement about anything"
@@ -162,6 +164,9 @@ def check_attention_rose_clock_did_not(d: dict) -> None:
         if len(term["months"]) < 24:
             pytest.skip(f"{term['label']}: under 24 months of attention")
         first, last = _window_means(term["months"])
+        claims_support.record(last - first, lo=10, unit="index points",
+                              note=f"{term['label']}, last vs first 12 "
+                                   f"months")
         assert last - first >= 10.0, (
             f"'attention to both terms rose' fails for {term['label']}: "
             f"{first:.1f} over its first twelve months, {last:.1f} over its "
@@ -173,6 +178,8 @@ def check_attention_rose_clock_did_not(d: dict) -> None:
     if att.get("clock_metric") is None:
         pytest.skip("edition predates the like-for-like attention clock")
     band = head["clock_max"] - head["clock_min"]
+    claims_support.record(band, hi=21, unit="days",
+                          note="spread of the clock's yearly median")
     assert band <= 21.0, (
         f"'stayed within a narrow band' needs the clock's annual median "
         f"inside three weeks over the same window; it spans {band:.0f} days "

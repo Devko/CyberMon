@@ -128,10 +128,14 @@ def check_close_to_half_deferred(d: dict) -> None:
     assert hist and hist[0]["date"].startswith("2026-07"), (
         f"'Since July 2026' vs a record starting {hist[0]['date'] if hist else None}")
     share = _deferred_share(hist)
+    claims_support.record(share, lo=40, hi=55, unit="%",
+                          note="deferred, whole record")
     assert 40 <= share <= 55, (
         f"'close to half of the CVEs leaving its analysis queue' vs "
         f"{share:.1f}% deferred over the record")
     after = _deferred_share([r for r in hist if r["date"] > ANALYZED_FIX_DATE])
+    claims_support.record(after, lo=40, unit="%",
+                          note=f"deferred, after {ANALYZED_FIX_DATE}")
     assert after >= 40, (
         f"'close to half' rests on the pre-{ANALYZED_FIX_DATE} Analyzed "
         f"undercount: {after:.1f}% deferred after the fix")

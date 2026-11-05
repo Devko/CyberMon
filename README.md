@@ -620,6 +620,33 @@ claims audit (its copy has no hard-coded numbers). Browser check:
 `python tools/observatory_smoke.py` (searches a real CVE from the data,
 checks its timeline, the deep link at 390 px and the CSV download).
 
+## Claims Ledger — [ledger.html](https://devko.github.io/CyberMon/ledger.html)
+
+*Every sentence the claims tests check, with tonight's result and margin.*
+
+A guard is a `CLAIMS` row in a claims suite (`pipeline/tests/test_claims_*.py`,
+`test_adp_claims.py`, `test_top25_claims.py`): a sentence quoted from
+`site/js/editorial.js` and a check of it against `site/data`. The ledger
+lists every guard with the page and section the sentence appears on, the
+data file, a link to the guard's source line, tonight's result and, where
+the guard records it, the measured value, the bound it is held to and the
+margin left (absolute, and as a share of the value). The table sorts by
+any column, smallest margin first by default, and filters by page, result
+and margins under 10%; `#page=<module id>` links to one page's claims.
+
+Guards report their number with `claims_support.record(value, lo=, hi=,
+unit=, note=)` just before they assert; it does nothing outside the ledger
+run. Every guard behind a home card or a section headline records one. A
+new guard should too.
+
+Data: `site/data/claims_ledger.json` (about 125 KB), written by
+`python tools/claims_ledger.py` in the nightly right after the claims
+check, so it ships in the same data commit. It runs the guards in-process
+under pytest and locates each quote the way `test_claims_anchors.py` does.
+Like the Field and the Observatory it is an instrument, with no carousel
+and no claims of its own. Tests: `pipeline/tests/test_ledger_build.py`;
+browser check: `python tools/ledger_smoke.py`.
+
 ## Architecture
 
 No servers. The nightly workflow (`.github/workflows/nightly.yml`) runs the
@@ -754,6 +781,7 @@ playwright install chromium
 python3 tools/site_smoke.py          # every page of the committed site
 python3 tools/field_smoke.py         # the Field, on an isolated synthetic fixture
 python3 tools/observatory_smoke.py   # the Mutation Observatory
+python3 tools/ledger_smoke.py        # the Claims Ledger
 
 # Animated social clips (1080×1350 MP4 plus a half-size GIF, one per scene)
 python3 tools/make_motion.py --check          # fast pre-flight, no encode

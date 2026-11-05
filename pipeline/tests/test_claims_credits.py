@@ -85,6 +85,8 @@ def check_largest_announcement_exceeds_credited(d: dict) -> None:
                    if c["unit_kind"] in ("vulnerabilities", "cves")),
                   default=0)
     credited = sum(d["kinds"][k]["funnel"]["credited"] for k in ("llm", "vendor"))
+    claims_support.record(biggest, lo=credited, unit="vulnerabilities",
+                          note="largest announcement vs credited records")
     assert biggest > credited, (
         f"the largest announcement ({biggest}) no longer exceeds the "
         f"{credited} records credited to labs and vendors")
@@ -123,6 +125,8 @@ def check_lab_more_often_high_or_critical(d: dict) -> None:
     # from 7.8 in October; one medium-heavy batch would have tripped it.
     llm = d["kinds"]["llm"]["funnel"]["high_or_critical_pct"]
     base = d["baseline"]["high_or_critical_pct"]
+    claims_support.record(llm, lo=base + 5.0, unit="%",
+                          note=f"labs vs all credited ({base}%) + 5 points")
     assert llm >= base + 5.0, (
         f"'rated high or critical more often' needs the lab share 5+ points "
         f"over the baseline's; {llm}% vs {base}%"
@@ -243,6 +247,8 @@ def check_one_counted_credit_before_2025(d: dict) -> None:
     ledger = load("ai_credits_ledger.json")
     early = [r for r in ledger["rows"]
              if r["published"] < "2025-01-01" and r["counts_for"]]
+    claims_support.record(len(early), lo=1, hi=1, unit="credits",
+                          note="counted before 2025")
     assert [r["published"][:7] for r in early] == ["2024-10"], (
         f"'The registry matches one credit before 2025 … October 2024' — the "
         f"ledger's counted pre-2025 rows are now "
@@ -299,6 +305,9 @@ def check_three_finders_hold_most_credits(d: dict) -> None:
         total = d["kinds"][kind]["funnel"]["credited"] \
             if "funnel" in d["kinds"][kind] else sum(counted)
         top2 = sum(counted[:2])
+        if total:
+            claims_support.record(100.0 * top2 / total, lo=50, unit="%",
+                                  note=f"{kind}: top two, {top2} of {total}")
         assert total and 100.0 * top2 / total > 50.0, (
             f"{kind}: 'one or two finders hold most of the credits' needs "
             f"the top two over half; {counted[:4]} of {total}")
@@ -376,6 +385,12 @@ def check_memory_leads_labs_injection_leads_baseline(d: dict) -> None:
     families = d["weaknesses"]["families"]
     lab = max(families, key=lambda f: f["llm"]["n"])
     base = max(families, key=lambda f: f["baseline"]["n"])
+    for side, key in (("llm", "memory"), ("baseline", "injection")):
+        own = [f[side]["n"] for f in families if f["key"] == key]
+        rest = [f[side]["n"] for f in families if f["key"] != key]
+        if own and rest:
+            claims_support.record(own[0], lo=max(rest), unit="CVEs",
+                                  note=f"{side}: {key} vs the next family")
     assert lab["key"] == "memory" and base["key"] == "injection", (
         f"needs memory safety largest among lab-credited CVEs and injection "
         f"largest in the baseline; they are {lab['key']} and {base['key']}"
@@ -442,6 +457,9 @@ def check_lab_list_more_concentrated(d: dict) -> None:
         f"the comparison needs the same top-N for both kinds; "
         f"{lab['top_share_n']} vs {vendor['top_share_n']}"
     )
+    claims_support.record(lab["top_share_pct"], lo=vendor["top_share_pct"],
+                          unit="%", note=f"top-{lab['top_share_n']} share, "
+                                         f"labs vs vendors")
     assert lab["top_share_pct"] > vendor["top_share_pct"], (
         f"'more concentrated by affected product' needs the lab top-"
         f"{lab['top_share_n']} share above the vendor one; "
@@ -491,6 +509,8 @@ def check_fewer_than_half_carry_a_credit(d: dict) -> None:
     # in ten" — the two latest judged years. (2026-10-03: 2025 47.2%, 2026
     # 42.8% of 73,605 so far.)
     rows = {c["year"]: c for c in d["coverage"]}
+    claims_support.record(rows.get(2018, {}).get("pct"), hi=3, unit="%",
+                          note="2018")
     assert rows.get(2018, {}).get("pct", 100.0) < 3.0, (
         f"'almost none in 2018' needs the 2018 share under 3%; it is "
         f"{rows.get(2018, {}).get('pct')}"
@@ -498,6 +518,8 @@ def check_fewer_than_half_carry_a_credit(d: dict) -> None:
     judged = [y for y in sorted(rows) if claims_support.judged(
         y, rows[y]["published"], min_n=COVERAGE_MIN_PUBLISHED)]
     latest = {y: rows[y]["pct"] for y in judged[-2:]}
+    for y, p in latest.items():
+        claims_support.record(p, lo=40, hi=50, unit="%", note=str(y))
     assert len(latest) == 2 and all(
         40.0 < p < 50.0 for p in latest.values()), (
         f"'Fewer than half' / 'more than four in ten' needs the two latest "

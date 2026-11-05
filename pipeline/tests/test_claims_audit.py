@@ -89,6 +89,8 @@ def check_severity_headline(d: dict) -> None:
     # baseline; it names 2020–2025 now (check_inflation_2020_2025), which
     # keeps the partial 2026 from tripping it the day it becomes complete.
     pct = d["headline"]["pct_high_critical_latest"]  # share ≥ 7.0, latest complete year
+    claims_support.record(pct, lo=40, hi=60, unit="%",
+                          note=str(d["headline"].get("latest_year")))
     assert 40 <= pct <= 60, (
         f"'About half of scored CVEs are rated High or Critical' claims "
         f"~50%; data says {pct}% (latest complete year "
@@ -128,6 +130,7 @@ def check_epss_disconnect(d: dict) -> None:
     # editorial.js (score vs. reality): "more than six in ten
     # Critical-rated CVEs carry less than a 1% probability of exploitation"
     pct = d["headline"]["pct_critical_epss_below_1pct"]
+    claims_support.record(pct, lo=60, hi=70, unit="%")
     assert 60 < pct <= 70, (
         f"'six in ten Critical-rated CVEs carry less than a 1% probability' "
         f"claims ~60%; data says {pct}%"
@@ -245,6 +248,7 @@ def check_deferred_pile(d: dict) -> None:
     deferred = next(
         (s["n"] for s in d["current"]["statuses"] if s["status"] == "Deferred"), 0
     )
+    claims_support.record(deferred, lo=20_000, unit="CVEs")
     assert deferred >= 20_000, (
         f"'tens of thousands of CVEs were quietly stamped Deferred' needs "
         f">= 20,000; data says {deferred:,}"
@@ -261,6 +265,10 @@ def check_cna_nine_plus(d: dict) -> None:
     # audit forecast a top near 40% once 2024 drops out. The old wording,
     # "three or four in ten", sat about five critical records from its cap.
     top = sorted((c["pct_geq_9"] for c in d["cnas"]), reverse=True)
+    if len(top) >= 2:
+        claims_support.record(top[1], lo=100 / 3, unit="%",
+                              note="second-highest CNA")
+        claims_support.record(top[0], hi=50, unit="%", note="highest CNA")
     assert len(top) >= 2 and top[1] > 100 / 3, (
         f"'The highest-rating CNAs score more than a third' needs two CNAs "
         f"above 33.3%; the board's top two are {top[:2]}")
@@ -305,6 +313,7 @@ def check_kev_week_bucket(d: dict) -> None:
         f"{trend} in the 2023+ trend ({complete} in complete years) and "
         f"{seeding} in the seeding era")
     pct = _bucket_pct(d, "0-7d")
+    claims_support.record(pct, lo=30, hi=48, unit="%")
     assert 30 <= pct <= 48, (
         f"'nearly four in ten KEV listings come within a week' claims ~40%; "
         f"data says {pct}% in the 0-7d bucket"
@@ -314,6 +323,7 @@ def check_kev_week_bucket(d: dict) -> None:
 def check_kev_three_years_late(d: dict) -> None:
     # editorial.js (kev.html buckets): "One in seven lands three years late."
     pct = _bucket_pct(d, "3y+")
+    claims_support.record(pct, lo=10, hi=20, unit="%")
     assert 10 <= pct <= 20, (
         f"'One in seven lands three years late' claims ~14%; "
         f"data says {pct}% in the 3y+ bucket"
@@ -361,6 +371,11 @@ def check_more_assignors_than_ever(d: dict) -> None:
     assert rows, "no complete years in cna_concentration years"
     latest = max(rows, key=lambda r: r["year"])
     peak = max(r["cna_count"] for r in rows)
+    earlier = [r["cna_count"] for r in rows if r is not latest]
+    if earlier:
+        claims_support.record(latest["cna_count"], lo=max(earlier),
+                              unit="CNAs",
+                              note=f"{latest['year']} vs the earlier peak")
     assert latest["cna_count"] == peak, (
         f"'More assignors than ever' needs the latest complete year "
         f"({latest['year']}: {latest['cna_count']} CNAs) to be the all-time "
@@ -376,6 +391,7 @@ def check_volume_belongs_to_a_handful(d: dict) -> None:
     # 1 January. (The caption repeated the figure until 2026-11-04.)
     by_year = {y["year"]: y for y in d["years"]}
     share = by_year[2025]["top5_share"]
+    claims_support.record(share, lo=50, unit="%", note="2025")
     assert share > 50, (
         f"'five of them published most of 2025's CVEs' vs a 2025 top-5 "
         f"share of {share}%"
@@ -416,6 +432,8 @@ def check_flood_critical_volume(d: dict) -> None:
     # both ways: under 3,000 the claim inflates, past ~4,400 it understates.
     by_year = {r["year"]: r for r in d["years"]}
     for y in (2024, 2025):
+        claims_support.record(by_year[y]["critical"], lo=3000, hi=4400,
+                              unit="records", note=str(y))
         assert 3000 <= by_year[y]["critical"] <= 4400, (
             f"'close to four thousand … Critical in 2024 and 2025' vs "
             f"{by_year[y]['critical']} in {y}"
@@ -431,6 +449,9 @@ def check_entrants_top3_recruiting(d: dict) -> None:
     by_year = {y["year"]: y["newcomer_count"] for y in d["years"]}
     before = max(n for y, n in by_year.items() if y < 2023)
     since = [(y, by_year[y]) for y in (2023, 2024, 2025)]
+    for y, n in since:
+        claims_support.record(n, lo=before, unit="new CNAs",
+                              note=f"{y} vs the pre-2023 best")
     assert all(n > before for _, n in since), (
         f"'Each year from 2023 to 2025 added more new CNAs than any year "
         f"before 2023' — pre-2023 best {before}, 2023-25: {since}"

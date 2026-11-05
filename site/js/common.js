@@ -227,6 +227,7 @@ export function groupNav() {
 const INSTRUMENT_LINKS = [
   ["field", "field.html", editorial.ui.navField],
   ["observatory", "observatory.html", editorial.ui.navObservatory],
+  ["ledger", "ledger.html", editorial.ui.navLedger],
 ];
 
 // Grouped nav. Phones: one row per group (label over its tabs) inside a

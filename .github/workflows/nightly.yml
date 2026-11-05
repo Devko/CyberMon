@@ -254,6 +254,16 @@ jobs:
         id: claims
         run: python -m pytest pipeline/tests -q
 
+      # The Claims Ledger (site/ledger.html): every guard's result and, where
+      # the guard records it, the margin left to its bound, written from the
+      # data the step above just passed, so it ships in the same data commit.
+      # Bookkeeping, not a gate: the step above already decides the night,
+      # and a failure here keeps the previous ledger, which the page marks as
+      # written for an earlier edition.
+      - name: Write the claims ledger
+        continue-on-error: true
+        run: python tools/claims_ledger.py
+
       - name: Commit and push refreshed data
         run: |
           git config user.name "cybermon-bot"
