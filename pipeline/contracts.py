@@ -408,6 +408,12 @@ def _validate_meta(obj: Any) -> None:
             _fail("meta.sources.osv",
                   "downloaded + not_modified must equal ecosystems")
 
+    # Optional (older committed meta files predate the Adversary Atlas, and
+    # --skip-attack or an outage with no previous edition omits it).
+    if "atlas" in src:
+        from .attack_atlas_contracts import check_meta_source
+        check_meta_source(src["atlas"])
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -792,3 +798,7 @@ VALIDATORS.update(osv_contracts.VALIDATORS)
 from . import tags_contracts  # noqa: E402
 
 VALIDATORS.update(tags_contracts.VALIDATORS)
+
+from . import attack_atlas_contracts  # noqa: E402
+
+VALIDATORS.update(attack_atlas_contracts.VALIDATORS)
