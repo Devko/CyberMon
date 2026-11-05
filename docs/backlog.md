@@ -281,8 +281,6 @@ graded match of every credit line against a committed finder registry.
      newer one — it happened 2026-09-20 16:19 UTC and blanked this page's
      new sections until CI was re-run. Skip the nightly deploy when `main`
      has moved past the run's checkout.
-  8. *The Alias Graph draft* (`site/alias.html`) still loads a
-     `js/alias.js` that is not in the repo.
 - **Upkeep:** `pipeline/ai_credits_data.py` is hand-curated. New finders
   appear monthly — re-probe the corpus with a broad net now and then and
   promote what is real. `CLAIMS` entries marked `live` (running counters)

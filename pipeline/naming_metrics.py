@@ -33,6 +33,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Callable
 
+from . import naming_schemes as ns
 from .fetch_attack import (_is_active, fetch_bundle, fetch_index, parse_index)
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "tests" / "fixtures"
@@ -105,6 +106,67 @@ def build_naming(version: str, released: str, board: list[dict],
         "released": released,
         "groups": board,
         "distribution": distribution,
+        "headline": headline,
+    }
+
+
+def build_alias_graph(naming: dict, generated_at: str) -> dict:
+    """alias_graph.json (the Alias Graph instrument) from a naming.json object.
+
+    A pure function of the naming board and the versioned rule table in
+    ``naming_schemes``: no fetch, no state. Each board group becomes an
+    actor whose names (the ATT&CK name first, then its aliases, in ATT&CK's
+    order) are classified one by one. ``actors[].schemes`` lists the schemes
+    with at least one classified name, in table order; an actor with none is
+    still listed (the page tables it but cannot place it between hubs).
+    Only groups with at least one alias are on the board, so only they are
+    here."""
+    per_scheme_actors = dict.fromkeys(ns.SCHEME_IDS, 0)
+    per_scheme_names = dict.fromkeys(ns.SCHEME_IDS, 0)
+    coverage = dict.fromkeys(ns.STATUSES, 0)
+    actors = []
+    for g in naming["groups"]:
+        names = []
+        hit: set[str] = set()
+        for n in [g["name"], *g["aliases"]]:
+            c = ns.classify(n)
+            entry = {"name": n, "status": c.status, "scheme": c.scheme}
+            if c.candidates:
+                entry["candidates"] = list(c.candidates)
+            names.append(entry)
+            coverage[c.status] += 1
+            if c.scheme is not None:
+                per_scheme_names[c.scheme] += 1
+                hit.add(c.scheme)
+        schemes = [s for s in ns.SCHEME_IDS if s in hit]
+        for s in schemes:
+            per_scheme_actors[s] += 1
+        actors.append({"name": g["name"], "schemes": schemes, "names": names})
+
+    headline = None
+    if actors:
+        k = [len(a["schemes"]) for a in actors]
+        headline = {
+            "actors": len(actors),
+            "placed": sum(1 for n in k if n >= 1),
+            "two_plus": sum(1 for n in k if n >= 2),
+            "three_plus": sum(1 for n in k if n >= 3),
+            "max_schemes": max(k),
+        }
+    return {
+        "generated_at": generated_at,
+        "version": naming["version"],
+        "released": naming["released"],
+        "rules_version": ns.RULES_VERSION,
+        "schemes": [{"id": s.id, "label": s.label, "doc": s.doc,
+                     "forms": s.forms, "actors": per_scheme_actors[s.id],
+                     "names": per_scheme_names[s.id]}
+                    for s in ns.SCHEMES],
+        "exceptions": [{"name": name, "scheme": scheme, "source": source}
+                       for name, (scheme, source)
+                       in sorted(ns.EXCEPTIONS.items())],
+        "coverage": {"names": sum(coverage.values()), **coverage},
+        "actors": actors,
         "headline": headline,
     }
 

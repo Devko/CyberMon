@@ -4,13 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CyberMon — The Alias Graph: threat groups linked to the vendor naming schemes that name them</title>
-  <meta name="description" content="A force-directed graph of tracked threat groups, each placed between the vendor naming schemes that name it: Microsoft, CrowdStrike, Mandiant, Secureworks and Unit 42.">
+  <meta name="description" content="A force-directed graph of MITRE ATT&amp;CK threat groups, each placed between the vendor naming schemes its names follow: Microsoft, CrowdStrike, Mandiant, Secureworks, Unit 42 and others.">
   <meta property="og:title" content="CyberMon — The Alias Graph: threat groups linked to the vendor naming schemes that name them">
-  <meta property="og:description" content="A force-directed graph of tracked threat groups, each placed between the vendor naming schemes that name it.">
+  <meta property="og:description" content="A force-directed graph of MITRE ATT&amp;CK threat groups, each placed between the vendor naming schemes its names follow.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="CyberMon">
   <meta property="og:url" content="https://devko.github.io/CyberMon/alias.html">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://devko.github.io/CyberMon/og/alias.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://devko.github.io/CyberMon/og/alias.png">
   <meta name="theme-color" content="#0e0f11">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,30 +29,37 @@
       <a class="field-wordmark" href="index.html" aria-label="CyberMon overview">CYBER<span class="accent">MON</span></a>
       <span class="field-kicker">Instrument</span>
       <h1 class="field-title">The Alias Graph</h1>
-      <p class="field-thesis">Each vendor naming scheme is a hub, and each threat group sits between the schemes that name it.</p>
+      <p class="field-thesis">Vendor naming schemes are hubs, and each threat group with a classified name sits between the schemes its names follow.</p>
     </div>
     <dl class="field-counters" aria-live="polite">
-      <div><dt>actors with aliases</dt><dd id="a-actors">—</dd></div>
+      <div><dt>groups with aliases</dt><dd id="a-actors">—</dd></div>
       <div><dt>named by 3+ schemes</dt><dd id="a-multi" class="accent">—</dd></div>
-      <div><dt>alias strings</dt><dd id="a-aliases">—</dd></div>
+      <div><dt>names classified</dt><dd id="a-coverage">—</dd></div>
     </dl>
   </header>
 
+  <div class="field-toolbar">
+    <button type="button" id="a-controls-toggle" aria-expanded="false" aria-controls="a-controls">Controls</button>
+    <button type="button" id="a-table-toggle" aria-expanded="false" aria-controls="a-table">Browse groups</button>
+    <button type="button" id="a-reset">Reset view</button>
+    <span id="a-edition"></span>
+  </div>
+
   <div class="field-body-grid">
-    <aside class="field-rail" aria-label="Alias graph controls">
+    <aside id="a-controls" class="field-rail" aria-label="Alias graph controls">
       <section class="rail-group">
-        <h2 class="rail-k">Find</h2>
-        <input type="search" id="a-search" placeholder="actor or alias contains…" aria-label="Find an actor or alias">
-        <p class="rail-help">Hover an actor to see its names by scheme; click to pin it. Hover a hub to light up everyone it names. Drag to move the view, wheel to zoom.</p>
+        <label class="rail-k" for="a-search">Find a group or name</label>
+        <input type="search" id="a-search" placeholder="APT28, Fancy Bear…" autocomplete="off">
+        <p class="rail-help" id="a-search-status" role="status"></p>
       </section>
 
       <section class="rail-group">
         <h2 class="rail-k">Show</h2>
-        <label class="rail-check"><input type="checkbox" id="a-multi-only"> actors named by 2+ schemes only</label>
-        <label class="rail-check"><input type="checkbox" id="a-labels" checked> actor labels</label>
-        <label class="rail-select">size actors by
-          <select id="a-size" aria-label="Size actors by">
-            <option value="aliases">alias count</option>
+        <label class="rail-check"><input type="checkbox" id="a-multi-only"> groups named by 2+ schemes only</label>
+        <label class="rail-check"><input type="checkbox" id="a-labels" checked> group labels</label>
+        <label class="rail-select">size groups by
+          <select id="a-size">
+            <option value="names">names in the entry</option>
             <option value="schemes">scheme count</option>
             <option value="flat">nothing</option>
           </select>
@@ -59,36 +68,46 @@
 
       <section class="rail-group">
         <h2 class="rail-k">Schemes</h2>
-        <div class="rail-legend" id="a-legend"></div>
+        <div class="rail-btns alias-legend" id="a-legend" role="group" aria-label="Highlight a scheme's groups"></div>
       </section>
 
       <section class="rail-group">
-        <button type="button" class="rail-reset" id="a-reset">Reset view</button>
+        <h2 class="rail-k">Navigate</h2>
+        <p class="rail-help">Hover a group to see its names by scheme; click to pin it. Hover a hub, or press a scheme above, to highlight the groups it names. Drag to pan, scroll or pinch to zoom.</p>
+        <p class="rail-help">With the graph focused, arrow keys pan, +/− zoom, Home resets, ] and [ pin the next and previous group, and Esc clears the pin. Browse groups lists the same groups as a table.</p>
+        <p class="rail-help">The page address keeps the pinned group, the highlighted scheme, the search and the options above.</p>
       </section>
 
       <section class="rail-group rail-sources" id="a-sources"></section>
     </aside>
 
     <main class="field-stage" id="a-stage">
-      <canvas id="a-canvas" aria-label="Force-directed graph of threat actors and the vendor naming schemes that name them. The list on the left names each scheme; hover or use the search box to read an actor's names."></canvas>
-      <div class="field-tip" id="a-tip" role="status"></div>
-      <aside class="field-sel alias-panel" id="a-panel" hidden aria-label="Actor names"></aside>
+      <div class="field-viewport">
+        <canvas id="a-canvas" tabindex="0" aria-label="Graph of ATT&amp;CK threat groups placed between the vendor naming schemes their names follow. Browse groups lists the same groups and names as a table."></canvas>
+        <div class="field-tip" id="a-tip" role="status"></div>
+        <aside class="field-sel alias-panel" id="a-panel" hidden aria-label="Pinned group"></aside>
+        <section class="field-results alias-results" id="a-table" hidden aria-label="Groups and their names by scheme">
+          <div class="result-toolbar"><button type="button" id="a-table-close">Close table</button></div>
+          <p id="a-table-summary" role="status"></p>
+          <div class="table-wrap"><table><thead><tr><th data-sort="name"><button type="button">Group<span aria-hidden="true"></span></button></th><th data-sort="schemes"><button type="button">Schemes<span aria-hidden="true"></span></button></th><th data-sort="names"><button type="button">Names<span aria-hidden="true"></span></button></th><th>Names by scheme</th></tr></thead><tbody id="a-table-rows"></tbody></table></div>
+        </section>
+        <div class="field-notice" id="a-notice" hidden role="status"></div>
+      </div>
       <div class="field-hud">
-        <p class="hud-k">Actors × naming schemes</p>
-        <p class="hud-thesis">Groups near the middle are named by several schemes, so each carries several names for the same activity.</p>
+        <p class="hud-k">Threat groups × naming schemes</p>
+        <p class="hud-thesis">A group with names in one scheme sits beside that hub; a group with names in several sits between them, and the groups with the most schemes sit near the middle. ATT&amp;CK lists these names under one group, but each vendor's cluster can overlap the others without being the same group.</p>
         <details class="hud-method">
           <summary>How this is placed</summary>
           <p id="a-method"></p>
         </details>
       </div>
-      <div class="field-notice" id="a-notice" hidden></div>
     </main>
   </div>
 
   <script type="module" src="js/alias.js"></script>
   <noscript>
     <p style="max-width:60ch;margin:2rem auto;font-family:monospace;color:#e9e4d8;">
-      The Alias Graph needs JavaScript. The same data is tabulated on <a href="naming.html" style="color:#e9e4d8">naming.html</a>.
+      The Alias Graph needs JavaScript. Its data is in <a href="data/alias_graph.json" style="color:#e9e4d8">data/alias_graph.json</a>, and the aliases it classifies are listed on <a href="naming.html" style="color:#e9e4d8">naming.html</a>.
     </p>
   </noscript>
 </body>

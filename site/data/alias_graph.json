@@ -1,0 +1,3801 @@
+{
+ "generated_at": "2026-11-04T09:49:50Z",
+ "version": "20.0",
+ "released": "2026-10-13",
+ "rules_version": 1,
+ "schemes": [
+  {
+   "id": "microsoft",
+   "label": "Microsoft",
+   "doc": "https://learn.microsoft.com/en-us/defender-xdr/microsoft-threat-actor-naming",
+   "forms": "adjective + weather family (Forest Blizzard, Volt Typhoon, Octo Tempest); Storm-NNNN; retired: DEV-NNNN and chemical elements (STRONTIUM)",
+   "actors": 52,
+   "names": 98
+  },
+  {
+   "id": "crowdstrike",
+   "label": "CrowdStrike",
+   "doc": "https://www.crowdstrike.com/en-us/adversaries/",
+   "forms": "adjective + animal (Fancy Bear, Wicked Panda, Scattered Spider)",
+   "actors": 49,
+   "names": 52
+  },
+  {
+   "id": "mandiant",
+   "label": "Mandiant",
+   "doc": "https://cloud.google.com/blog/topics/threat-intelligence/how-mandiant-tracks-uncategorized-threat-actors",
+   "forms": "APTnn, FINnn, UNCnnnn, TEMP.name",
+   "actors": 45,
+   "names": 55
+  },
+  {
+   "id": "secureworks",
+   "label": "Secureworks",
+   "doc": "https://docs.taegis.secureworks.com/intelligence/threat_groups/",
+   "forms": "metal or alloy prefix + word, in capitals (IRON TWILIGHT, BRONZE UNION, GOLD BLACKBURN); retired: TG-NNNN",
+   "actors": 38,
+   "names": 48
+  },
+  {
+   "id": "unit42",
+   "label": "Unit 42",
+   "doc": "https://unit42.paloaltonetworks.com/threat-actor-groups-tracked-by-palo-alto-networks-unit-42/",
+   "forms": "adjective + constellation (Stately Taurus, Fighting Ursa, Muddled Libra); CL-STA-NNNN; TGR-STA-NNNN",
+   "actors": 7,
+   "names": 7
+  },
+  {
+   "id": "proofpoint",
+   "label": "Proofpoint",
+   "doc": "https://www.proofpoint.com/us/blog/threat-insight/one-email-closer-edge-unkmasstraction-physics-exploitation",
+   "forms": "TAnnn; UNK_name",
+   "actors": 14,
+   "names": 14
+  },
+  {
+   "id": "trendmicro",
+   "label": "Trend Micro",
+   "doc": "https://www.trendaisecurity.com/en-us/resources-insights/research/threat-attribution-framework-how-trendai-applies-structure-over-speculation",
+   "forms": "motivation element + creature (Earth Preta, Water Galura); SHADOW-EARTH-NNN",
+   "actors": 10,
+   "names": 10
+  },
+  {
+   "id": "ibm",
+   "label": "IBM X-Force",
+   "doc": "https://www-api.ibm.com/adobe/assets/urn:aaid:aem:ecf46930-e212-4eb0-a01c-27586a3e89c6/original/as/ibm-security-x-force-threat-intelligence-index-2022-full-report.pdf",
+   "forms": "ITGnn; Hivennnn",
+   "actors": 8,
+   "names": 8
+  },
+  {
+   "id": "recordedfuture",
+   "label": "Recorded Future",
+   "doc": "https://www.recordedfuture.com/research/chinese-group-tag-22-targets-nepal-philippines-taiwan",
+   "forms": "TAG-nn",
+   "actors": 4,
+   "names": 4
+  },
+  {
+   "id": "checkpoint",
+   "label": "Check Point",
+   "doc": "https://research.checkpoint.com/2023/educated-manticore-iran-aligned-threat-actor-targeting-israel-via-improved-arsenal-of-tools/",
+   "forms": "adjective + Manticore (Educated Manticore)",
+   "actors": 1,
+   "names": 1
+  }
+ ],
+ "exceptions": [
+  {
+   "name": "bleeding bear",
+   "scheme": "crowdstrike",
+   "source": "Ukraine NCSCC / Elastic, Operation Bleeding Bear (2022)"
+  },
+  {
+   "name": "fox kitten",
+   "scheme": "crowdstrike",
+   "source": "ClearSky, Fox Kitten Campaign (2020)"
+  },
+  {
+   "name": "iron tiger",
+   "scheme": "crowdstrike",
+   "source": "Trend Micro, Operation Iron Tiger (2015)"
+  }
+ ],
+ "coverage": {
+  "names": 539,
+  "classified": 297,
+  "no_rule": 238,
+  "ambiguous": 1,
+  "exception": 3
+ },
+ "actors": [
+  {
+   "name": "APT28",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "APT28",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "IRON TWILIGHT",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "SNAKEMACKEREL",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Swallowtail",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Group 74",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Sednit",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Sofacy",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Pawn Storm",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Fancy Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "STRONTIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Tsar Team",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Threat Group-4127",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "TG-4127",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Forest Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "FROZENLAKE",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "GruesomeLarch",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Mustang Panda",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "unit42",
+    "proofpoint",
+    "trendmicro",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "Mustang Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "TA416",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "RedDelta",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "BRONZE PRESIDENT",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "STATELY TAURUS",
+     "status": "classified",
+     "scheme": "unit42"
+    },
+    {
+     "name": "FIREANT",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "CAMARO DRAGON",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "EARTH PRETA",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "HIVE0154",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "TWILL TYPHOON",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "TANTALUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "LUMINOUS MOTH",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "UNC6384",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "TEMP.Hex",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Red Lich",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ClumsyToad",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "APT29",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "APT29",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "IRON RITUAL",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "IRON HEMLOCK",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "NobleBaron",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Dark Halo",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "NOBELIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "UNC2452",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "YTTRIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "The Dukes",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Cozy Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "CozyDuke",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "SolarStorm",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Blue Kitsune",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "UNC3524",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Midnight Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "OilRig",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "unit42",
+    "proofpoint",
+    "trendmicro",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "OilRig",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "COBALT GYPSY",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "IRN2",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT34",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Helix Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Evasive Serpens",
+     "status": "classified",
+     "scheme": "unit42"
+    },
+    {
+     "name": "Hazel Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "EUROPIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "ITG13",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Earth Simnavaz",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "Crambus",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TA452",
+     "status": "classified",
+     "scheme": "proofpoint"
+    }
+   ]
+  },
+  {
+   "name": "Sandworm Team",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Sandworm Team",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ELECTRUM",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Telebots",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "IRON VIKING",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "BlackEnergy (Group)",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Quedagh",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Voodoo Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "IRIDIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Seashell Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "FROZENBARENTS",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT44",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "Wizard Spider",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "Wizard Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "UNC1878",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "TEMP.MixMaster",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Grim Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "FIN12",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "GOLD BLACKBURN",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "ITG23",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Periwinkle Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "DEV-0193",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Pistachio Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "DEV-0237",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Dragonfly",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Dragonfly",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TEMP.Isotope",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "DYMALLOY",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Berserk Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "TG-4192",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Crouching Yeti",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "IRON LIBERTY",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Energetic Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Ghost Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BROMINE",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Kimsuky",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "proofpoint",
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "Kimsuky",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Black Banshee",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Velvet Chollima",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Emerald Sleet",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "THALLIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "APT43",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "TA427",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "Springtail",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Earth Kumiho",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "PatheticSlug",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Turla",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Turla",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "IRON HUNTER",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Group 88",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Waterbug",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "WhiteBear",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Snake",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Krypton",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Venomous Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Secret Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BELUGASTURGEON",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Gamaredon Group",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Gamaredon Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "IRON TILDEN",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Primitive Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "ACTINIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Armageddon",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Shuckworm",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DEV-0157",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Aqua Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "NastyShrew",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Ke3chang",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "Ke3chang",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT15",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Mirage",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Vixen Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "GREF",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Playful Dragon",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "RoyalAPT",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "NICKEL",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Nylon Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Leviathan",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Leviathan",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "MUDCARP",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Kryptonite Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Gadolinium",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BRONZE MOHAWK",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "TEMP.Jumper",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "APT40",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "TEMP.Periscope",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Gingham Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Magic Hound",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "proofpoint",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "Magic Hound",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TA453",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "COBALT ILLUSION",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Charming Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "ITG18",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Phosphorus",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Newscaster",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT35",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Mint Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "MuddyWater",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "proofpoint",
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "MuddyWater",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Earth Vetala",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "MERCURY",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Static Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Seedworm",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TEMP.Zagros",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Mango Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "TA450",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "MuddyKrill",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Threat Group-3390",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "Threat Group-3390",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Earth Smilodon",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "TG-3390",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Emissary Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "BRONZE UNION",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "APT27",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Iron Tiger",
+     "status": "exception",
+     "scheme": null,
+     "candidates": [
+      "crowdstrike"
+     ]
+    },
+    {
+     "name": "LuckyMouse",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Linen Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "menuPass",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "menuPass",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Cicada",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "POTASSIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Stone Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "APT10",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Red Apollo",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "CVNX",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "HOGFISH",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "BRONZE RIVERSIDE",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "APT-C-23",
+   "schemes": [
+    "recordedfuture"
+   ],
+   "names": [
+    {
+     "name": "APT-C-23",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Mantis",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Arid Viper",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Desert Falcon",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TAG-63",
+     "status": "classified",
+     "scheme": "recordedfuture"
+    },
+    {
+     "name": "Grey Karkadann",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Big Bang APT",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Two-tailed Scorpion",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "VOID MANTICORE",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "VOID MANTICORE",
+     "status": "ambiguous",
+     "scheme": null,
+     "candidates": [
+      "trendmicro",
+      "checkpoint"
+     ]
+    },
+    {
+     "name": "COBALT MYSTIQUE",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Handala Hack",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Homeland Justice",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Karma",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Karmabelow80",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "BANISHED KITTEN",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Red Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Volt Typhoon",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "unit42"
+   ],
+   "names": [
+    {
+     "name": "Volt Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BRONZE SILHOUETTE",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Vanguard Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "DEV-0391",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "UNC3236",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Voltzite",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Insidious Taurus",
+     "status": "classified",
+     "scheme": "unit42"
+    },
+    {
+     "name": "DazedToad",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "APT3",
+   "schemes": [
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "APT3",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Gothic Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Pirpi",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "UPS Team",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Buckeye",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Threat Group-0110",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "TG-0110",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "APT37",
+   "schemes": [
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT37",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "InkySquid",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ScarCruft",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Reaper",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Group123",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TEMP.Reaper",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Ricochet Chollima",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "APT38",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "APT38",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "NICKEL GLADSTONE",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "BeagleBoyz",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Bluenoroff",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Stardust Chollima",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Sapphire Sleet",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "COPERNICIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Contagious Interview",
+   "schemes": [
+    "recordedfuture"
+   ],
+   "names": [
+    {
+     "name": "Contagious Interview",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DeceptiveDevelopment",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Gwisin Gang",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Tenacious Pungsan",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DEV#POPPER",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "PurpleBravo",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TAG-121",
+     "status": "classified",
+     "scheme": "recordedfuture"
+    }
+   ]
+  },
+  {
+   "name": "Ember Bear",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "Ember Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "UNC2589",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Bleeding Bear",
+     "status": "exception",
+     "scheme": null,
+     "candidates": [
+      "crowdstrike"
+     ]
+    },
+    {
+     "name": "DEV-0586",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Cadet Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Frozenvista",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "UAC-0056",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Lazarus Group",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Lazarus Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Labyrinth Chollima",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "HIDDEN COBRA",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Guardians of Peace",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ZINC",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "NICKEL ACADEMY",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Diamond Sleet",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Lotus Blossom",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "Lotus Blossom",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DRAGONFISH",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Spring Dragon",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "RADIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Raspberry Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Bilbug",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Thrip",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "APT32",
+   "schemes": [
+    "microsoft",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT32",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "SeaLotus",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "OceanLotus",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT-C-00",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Canvas Cyclone",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BISMUTH",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "APT5",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "APT5",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Mulberry Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "MANGANESE",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BRONZE FLEETWOOD",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Keyhole Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "UNC2630",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "Ajax Security Team",
+   "schemes": [
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Ajax Security Team",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Operation Woolen-Goldfish",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "AjaxTM",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Rocket Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Flying Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Operation Saffron Rose",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Deep Panda",
+   "schemes": [
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Deep Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Shell Crew",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "WebMasters",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "KungFu Kittens",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "PinkPanther",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Black Vine",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "FIN6",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "FIN6",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Magecart Group 6",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ITG08",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Skeleton Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "TAAL",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Camouflage Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "FIN7",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant",
+    "secureworks",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "FIN7",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "GOLD NIAGARA",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "ITG14",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Carbon Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "ELBRUS",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Sangria Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Fox Kitten",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "Fox Kitten",
+     "status": "exception",
+     "scheme": null,
+     "candidates": [
+      "crowdstrike"
+     ]
+    },
+    {
+     "name": "UNC757",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Parisite",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Pioneer Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "RUBIDIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Lemon Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Patchwork",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Patchwork",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Hangover Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Dropping Elephant",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Chinastrats",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "MONSOON",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Operation Hangover",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "TeamPCP",
+   "schemes": [
+    "mandiant",
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "TeamPCP",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "PCPCat",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ShellForce",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DeadCatx3",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "SHADOW-WATER-058",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "UNC6780",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "APT-C-36",
+   "schemes": [
+    "recordedfuture"
+   ],
+   "names": [
+    {
+     "name": "APT-C-36",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Blind Eagle",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TAG-144",
+     "status": "classified",
+     "scheme": "recordedfuture"
+    },
+    {
+     "name": "AguilaCiega",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT-Q-98",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "APT12",
+   "schemes": [
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT12",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "IXESHE",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DynCalc",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Numbered Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "DNSCALC",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "APT19",
+   "schemes": [
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT19",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Codoso",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "C0d0so0",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Codoso Team",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Sunshop Group",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Agrius",
+   "schemes": [
+    "microsoft",
+    "unit42"
+   ],
+   "names": [
+    {
+     "name": "Agrius",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Pink Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "AMERICIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Agonizing Serpens",
+     "status": "classified",
+     "scheme": "unit42"
+    },
+    {
+     "name": "BlackShadow",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "AppleJeus",
+   "schemes": [
+    "microsoft",
+    "mandiant",
+    "unit42"
+   ],
+   "names": [
+    {
+     "name": "AppleJeus",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Gleaming Pisces",
+     "status": "classified",
+     "scheme": "unit42"
+    },
+    {
+     "name": "Citrine Sleet",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "UNC1720",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "UNC4736",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "CURIUM",
+   "schemes": [
+    "microsoft",
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "CURIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Crimson Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "TA456",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "Tortoise Shell",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Yellow Liderc",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Earth Lusca",
+   "schemes": [
+    "microsoft",
+    "trendmicro",
+    "recordedfuture"
+   ],
+   "names": [
+    {
+     "name": "Earth Lusca",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "TAG-22",
+     "status": "classified",
+     "scheme": "recordedfuture"
+    },
+    {
+     "name": "Charcoal Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "CHROMIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "ControlX",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Indrik Spider",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "Indrik Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Evil Corp",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Manatee Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "DEV-0243",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "UNC2165",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "Mustard Tempest",
+   "schemes": [
+    "microsoft",
+    "mandiant",
+    "secureworks",
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "Mustard Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "DEV-0206",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "TA569",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "GOLD PRELUDE",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "UNC1543",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "Saint Bear",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "Saint Bear",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Storm-0587",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "TA471",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "UAC-0056",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Lorec53",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Scattered Spider",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "Scattered Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Roasted 0ktapus",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Octo Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Storm-0875",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "UNC3944",
+     "status": "classified",
+     "scheme": "mandiant"
+    }
+   ]
+  },
+  {
+   "name": "Sea Turtle",
+   "schemes": [
+    "microsoft",
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Sea Turtle",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Teal Kurma",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Marbled Dust",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Cosmic Wolf",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "SILICON",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Star Blizzard",
+   "schemes": [
+    "microsoft",
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "Star Blizzard",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "SEABORGIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Callisto Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TA446",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "COLDRIVER",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Tonto Team",
+   "schemes": [
+    "crowdstrike",
+    "secureworks",
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "Tonto Team",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Earth Akhlut",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "BRONZE HUNTLEY",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "CactusPete",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Karma Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "Transparent Tribe",
+   "schemes": [
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Transparent Tribe",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "COPPER FIELDSTONE",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "APT36",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Mythic Leopard",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "ProjectM",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "APT1",
+   "schemes": [
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT1",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Comment Crew",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Comment Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Comment Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "APT18",
+   "schemes": [
+    "crowdstrike",
+    "mandiant",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "APT18",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "TG-0416",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Dynamite Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Threat Group-0416",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "APT33",
+   "schemes": [
+    "microsoft",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT33",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "HOLMIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Elfin",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Peach Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "APT39",
+   "schemes": [
+    "crowdstrike",
+    "mandiant",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "APT39",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "ITG07",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Chafer",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Remix Kitten",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "APT41",
+   "schemes": [
+    "microsoft",
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT41",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Wicked Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Brass Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "BARIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Akira",
+   "schemes": [
+    "crowdstrike",
+    "secureworks",
+    "unit42"
+   ],
+   "names": [
+    {
+     "name": "Akira",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "GOLD SAHARA",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "PUNK SPIDER",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "Howling Scorpius",
+     "status": "classified",
+     "scheme": "unit42"
+    }
+   ]
+  },
+  {
+   "name": "Andariel",
+   "schemes": [
+    "microsoft",
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Andariel",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Silent Chollima",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "PLUTONIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Onyx Sleet",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Cinnamon Tempest",
+   "schemes": [
+    "microsoft",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Cinnamon Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "DEV-0401",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Emperor Dragonfly",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "BRONZE STARLIGHT",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Cobalt Group",
+   "schemes": [
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Cobalt Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "GOLD KINGSWOOD",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Cobalt Gang",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Cobalt Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "Elderwood",
+   "schemes": [
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Elderwood",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Elderwood Gang",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Beijing Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Sneaky Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "HEXANE",
+   "schemes": [],
+   "names": [
+    {
+     "name": "HEXANE",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Lyceum",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Siamesekitten",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Spirlin",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "NIMBUS MANTICORE",
+   "schemes": [
+    "mandiant",
+    "secureworks",
+    "proofpoint",
+    "checkpoint"
+   ],
+   "names": [
+    {
+     "name": "NIMBUS MANTICORE",
+     "status": "classified",
+     "scheme": "checkpoint"
+    },
+    {
+     "name": "UNC1549",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "TA455",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "COBALT SMOKEY",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "TA505",
+   "schemes": [
+    "microsoft",
+    "proofpoint",
+    "ibm"
+   ],
+   "names": [
+    {
+     "name": "TA505",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "Hive0065",
+     "status": "classified",
+     "scheme": "ibm"
+    },
+    {
+     "name": "Spandex Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "CHIMBORAZO",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "BRONZE BUTLER",
+   "schemes": [
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "BRONZE BUTLER",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "REDBALDKNIGHT",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Tick",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Cleaver",
+   "schemes": [
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Cleaver",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Threat Group 2889",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "TG-2889",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Daggerfly",
+   "schemes": [
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Daggerfly",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Evasive Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "BRONZE HIGHLAND",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Darkhotel",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "Darkhotel",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DUBNIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Zigzag Hail",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "HAFNIUM",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "HAFNIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Operation Exchange Marauder",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Silk Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Inception",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Inception",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Inception Framework",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Cloud Atlas",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "LAPSUS$",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "LAPSUS$",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DEV-0537",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Strawberry Tempest",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Machete",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Machete",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "APT-C-43",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "El Machete",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Molerats",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Molerats",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Operation Molerats",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Gaza Cybergang",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Moses Staff",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "Moses Staff",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DEV-0500",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Marigold Sandstorm",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Putter Panda",
+   "schemes": [
+    "crowdstrike",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "Putter Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "APT2",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "MSUpdater",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "ShinyHunters",
+   "schemes": [
+    "mandiant",
+    "unit42"
+   ],
+   "names": [
+    {
+     "name": "ShinyHunters",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "UNC6240",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Bling Libra",
+     "status": "classified",
+     "scheme": "unit42"
+    }
+   ]
+  },
+  {
+   "name": "Sidewinder",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Sidewinder",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "T-APT-04",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Rattlesnake",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Silent Librarian",
+   "schemes": [
+    "secureworks",
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "Silent Librarian",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TA407",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "COBALT DICKENS",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "TA551",
+   "schemes": [
+    "secureworks",
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "TA551",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "GOLD CABIN",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Shathak",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "The Gentlemen",
+   "schemes": [
+    "microsoft",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "The Gentlemen",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Storm-2697",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "GOLD SHERWOOD",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Tropic Trooper",
+   "schemes": [
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Tropic Trooper",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Pirate Panda",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    },
+    {
+     "name": "KeyBoy",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Winter Vivern",
+   "schemes": [
+    "proofpoint"
+   ],
+   "names": [
+    {
+     "name": "Winter Vivern",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "TA473",
+     "status": "classified",
+     "scheme": "proofpoint"
+    },
+    {
+     "name": "UAC-0114",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "ZIRCONIUM",
+   "schemes": [
+    "microsoft",
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "ZIRCONIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "APT31",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Violet Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "APT17",
+   "schemes": [
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "APT17",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Deputy Dog",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Axiom",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Axiom",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Group 72",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "BITTER",
+   "schemes": [],
+   "names": [
+    {
+     "name": "BITTER",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "T-APT-17",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "BlackByte",
+   "schemes": [],
+   "names": [
+    {
+     "name": "BlackByte",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Hecamede",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "BlackTech",
+   "schemes": [],
+   "names": [
+    {
+     "name": "BlackTech",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Palmerworm",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Carbanak",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Carbanak",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Anunak",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Confucius",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Confucius",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Confucius APT",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "FIN13",
+   "schemes": [
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "FIN13",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Elephant Beetle",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "FIN8",
+   "schemes": [
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "FIN8",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "Syssphinx",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "GALLIUM",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "GALLIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Granite Typhoon",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "GOLD SOUTHFIELD",
+   "schemes": [
+    "crowdstrike",
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "GOLD SOUTHFIELD",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "Pinchy Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "INC Ransom",
+   "schemes": [
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "INC Ransom",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "GOLD IONIC",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Leafminer",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Leafminer",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Raspite",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "MirrorFace",
+   "schemes": [
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "MirrorFace",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Earth Kasha",
+     "status": "classified",
+     "scheme": "trendmicro"
+    }
+   ]
+  },
+  {
+   "name": "Moonstone Sleet",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "Moonstone Sleet",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Storm-1789",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "Nomadic Octopus",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Nomadic Octopus",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "DustSquad",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "POLONIUM",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "POLONIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "Plaid Rain",
+     "status": "classified",
+     "scheme": "microsoft"
+    }
+   ]
+  },
+  {
+   "name": "PROMETHIUM",
+   "schemes": [
+    "microsoft"
+   ],
+   "names": [
+    {
+     "name": "PROMETHIUM",
+     "status": "classified",
+     "scheme": "microsoft"
+    },
+    {
+     "name": "StrongPity",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Silence",
+   "schemes": [
+    "crowdstrike"
+   ],
+   "names": [
+    {
+     "name": "Silence",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Whisper Spider",
+     "status": "classified",
+     "scheme": "crowdstrike"
+    }
+   ]
+  },
+  {
+   "name": "Strider",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Strider",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "ProjectSauron",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "TEMP.Veles",
+   "schemes": [
+    "mandiant"
+   ],
+   "names": [
+    {
+     "name": "TEMP.Veles",
+     "status": "classified",
+     "scheme": "mandiant"
+    },
+    {
+     "name": "XENOTIME",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Threat Group-1314",
+   "schemes": [
+    "secureworks"
+   ],
+   "names": [
+    {
+     "name": "Threat Group-1314",
+     "status": "classified",
+     "scheme": "secureworks"
+    },
+    {
+     "name": "TG-1314",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Volatile Cedar",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Volatile Cedar",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Lebanese Cedar",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "WIRTE",
+   "schemes": [],
+   "names": [
+    {
+     "name": "WIRTE",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Ashen Lepus",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Water Galura",
+   "schemes": [
+    "secureworks",
+    "trendmicro"
+   ],
+   "names": [
+    {
+     "name": "Water Galura",
+     "status": "classified",
+     "scheme": "trendmicro"
+    },
+    {
+     "name": "GOLD FEATHER",
+     "status": "classified",
+     "scheme": "secureworks"
+    }
+   ]
+  },
+  {
+   "name": "Windshift",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Windshift",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Bahamut",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  },
+  {
+   "name": "Winnti Group",
+   "schemes": [],
+   "names": [
+    {
+     "name": "Winnti Group",
+     "status": "no_rule",
+     "scheme": null
+    },
+    {
+     "name": "Blackfly",
+     "status": "no_rule",
+     "scheme": null
+    }
+   ]
+  }
+ ],
+ "headline": {
+  "actors": 109,
+  "placed": 90,
+  "two_plus": 62,
+  "three_plus": 40,
+  "max_schemes": 8
+ }
+}

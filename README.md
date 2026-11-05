@@ -620,6 +620,43 @@ claims audit (its copy has no hard-coded numbers). Browser check:
 `python tools/observatory_smoke.py` (searches a real CVE from the data,
 checks its timeline, the deep link at 390 px and the CSV download).
 
+## The Alias Graph — [alias.html](https://devko.github.io/CyberMon/alias.html)
+
+*ATT&CK threat groups placed between the vendor naming schemes their names follow.*
+
+Each MITRE ATT&CK group with at least one alias (the Threat Group Aliases
+board) is drawn between hubs for the vendor naming schemes its names
+follow. Every name in the group's entry, the ATT&CK name included, is
+classified by the versioned rule table in `pipeline/naming_schemes.py`:
+Microsoft (weather families, Storm-NNNN, the retired DEV-NNNN and element
+names), CrowdStrike (animals), Mandiant (APT, FIN, UNC, TEMP.), Secureworks
+(metal prefixes, the retired TG-NNNN), Unit 42 (constellations, CL-/TGR-),
+Proofpoint (TA, UNK_), Trend Micro (Earth/Water/... and SHADOW-),
+IBM X-Force (ITG, Hive), Recorded Future (TAG-) and Check Point (Manticore).
+A rule exists only where the vendor publishes its convention, and each rule
+cites that page. A name with two schemes' forms, or with none, stays
+unclassified; three names coined by someone else in CrowdStrike's form are
+listed as cited exceptions. Free-form vendor names (ESET, Kaspersky,
+Symantec) have no rule. On the 2026-11-04 edition 297 of 539 names (55%)
+were classified. Aliases can name overlapping activity clusters rather than
+one group; the page says so and does not merge them.
+
+Hover a group for its names by scheme, click or tap to pin it, hover a hub
+or press a scheme in the legend to highlight its groups, or search a group
+or any alias. **Browse groups** lists the same groups as a sortable table,
+including the groups with no classified name, which the graph cannot place.
+Arrow keys pan, +/− zoom, Home resets, `]` / `[` step through the groups and
+Esc clears the pin. The address keeps the pinned group (`#actor=APT28`),
+the highlighted scheme, the search and the display options.
+
+Data: `site/data/alias_graph.json` (~65 KB), built by
+`naming_metrics.build_alias_graph` in the Threat Group Aliases stage from
+the same board as `naming.json`: no new fetch, no state, and the contract
+re-classifies every name. Like the other instruments it keeps its copy in
+its own files and has no hard-coded numbers. Browser check:
+`python tools/alias_smoke.py` (search, alias search, hover, legend, table,
+keyboard and the deep link at 390 px).
+
 ## Architecture
 
 No servers. The nightly workflow (`.github/workflows/nightly.yml`) runs the
@@ -754,6 +791,7 @@ playwright install chromium
 python3 tools/site_smoke.py          # every page of the committed site
 python3 tools/field_smoke.py         # the Field, on an isolated synthetic fixture
 python3 tools/observatory_smoke.py   # the Mutation Observatory
+python3 tools/alias_smoke.py         # the Alias Graph
 
 # Animated social clips (1080×1350 MP4 plus a half-size GIF, one per scene)
 python3 tools/make_motion.py --check          # fast pre-flight, no encode
