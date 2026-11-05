@@ -139,6 +139,7 @@ export const editorial = {
     { id: "advisories", href: "advisories.html", label: "Advisories Without a CVE", group: "machine" },
     { id: "malware", href: "malware.html", label: "Malicious Packages", group: "attackmap" },
     { id: "eol", href: "eol.html", label: "Support Windows", group: "industry" },
+    { id: "aisurface", href: "aisurface.html", label: "AI Product CVEs", group: "machine" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -546,6 +547,20 @@ export const editorial = {
           "announced end counts as supported for at least its age so far. Rebuilt nightly.",
         live: true,
       },
+      {
+        id: "aisurface",
+        href: "aisurface.html",
+        num: "27",
+        label: "AI Product CVEs",
+        headline: "AI products' share of published CVEs has risen in every complete year since 2023.",
+        blurb:
+          "CVEs in AI and machine-learning software, found by the vendor and product the " +
+          "CVE record names: per year and as a share of all CVEs, their weakness types " +
+          "against other CVEs from the same years, and how many are on CISA's KEV catalog " +
+          "or have public exploit code. The product list is hand-made and published, so the " +
+          "counts are a lower bound. Rebuilt nightly from the CVE corpus.",
+        live: true,
+      },
     ],
   },
 
@@ -701,6 +716,10 @@ export const editorial = {
     eol_years: "eol_metrics.py",
     eol_phases: "eol_metrics.py",
     eol_categories: "eol_metrics.py",
+    aisurface_years: "ai_products_metrics.py",
+    aisurface_cwe: "ai_products_metrics.py",
+    aisurface_exploited: "ai_products_metrics.py",
+    aisurface_products: "ai_products.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -4628,6 +4647,175 @@ export const editorial = {
         tipNone: "{n} with no line in support",
       },
     },
+
+    // --------------------------------------------- aisurface.html · 1 (hero)
+    aisurface_years: {
+      num: "01",
+      kicker: "Per year",
+      source: "CVE List V5 (MITRE)",
+      headline: "AI products' share of published CVEs has risen in every complete year since 2023.",
+      caption:
+        "CVE records whose first listed affected product is AI or machine-learning " +
+        "software, by publication year, in four groups. {latest_ai} were published in " +
+        "{latest_year}, {latest_share} of that year's CVEs, and {current_ai} so far in " +
+        "{current_year} ({current_share}). Before 2023 the count is mostly TensorFlow. " +
+        "The products come from a hand-made list, so the count is a lower bound: AI " +
+        "software the list does not name is missed. This page counts CVEs in AI " +
+        "software; AI Credits counts CVEs credited to an AI finder, and AI and PoC " +
+        "Timing measures how soon exploit code follows publication.",
+      statLabel: "CVEs in AI products",
+      statCurrent: "in {current_year} so far · {current_share} of the year's CVEs",
+      statLatest: "in {latest_year} · {latest_share}",
+      toggleCount: "Records",
+      toggleShare: "Share of year",
+      nodata: "No AI-product CVEs in the corpus yet. The nightly pipeline fills this chart.",
+      methodology:
+        "Every published record in the cvelistV5 corpus is filed under its publication " +
+        "year; rejected records are left out. The pipeline takes the first entry of the " +
+        "record's affected list that names a vendor or product, as written by the CNA " +
+        "(the CVE Numbering Authority that published the record), and looks it up in a " +
+        "hand-made list of AI products (ai_products.py, version {version}, checked " +
+        "against the corpus on {reviewed}). A product counts when its main job is to " +
+        "build, train, serve or run machine-learning models, or to give people or " +
+        "programs an interface to them. A general product with an AI feature counts " +
+        "only when the CNA lists the AI part as its own product, such as Microsoft 365 " +
+        "Copilot; Windows, Office and VS Code do not. Hardware, CMS plugins and " +
+        "products with AI only in their name are left out. Descriptions are never read. " +
+        "Later entries of the affected list are ignored because distribution CNAs list " +
+        "every product that ships a vulnerable library. The count misses records whose " +
+        "CNA named no product (the tooltip gives each year's share that do), products " +
+        "named only in the description or in CISA's enrichment, and AI software the " +
+        "list does not name. Products that appear after the last check are missed until " +
+        "the list is updated, so the newest months undercount most. Shares are " +
+        "AI-product CVEs over all CVEs published that year. The current year (marked *) " +
+        "is partial.",
+      labels: {
+        categories: {
+          frameworks: "ML frameworks",
+          serving: "Model serving",
+          platforms: "ML platforms",
+          apps: "LLM apps and agents",
+        },
+        tipTotal: "{ai} of {published} published CVEs ({share})",
+        tipNamed: "{named} of the year's records name a product",
+        tipTop: "largest: {label} ({n})",
+      },
+    },
+
+    // --------------------------------------------- aisurface.html · 2
+    aisurface_cwe: {
+      num: "02",
+      kicker: "Weakness types",
+      source: "CVE List V5 (MITRE)",
+      headline: "Fewer than one in a hundred AI-product CVEs cites a weakness type written for AI.",
+      caption:
+        "The ten weakness types (CWE, MITRE's Common Weakness Enumeration) most often " +
+        "listed first on the {n} AI-product CVEs published from {from} to {to}, as a " +
+        "share of those CVEs. Each tick is the share among all other CVEs from the same " +
+        "years, weighted to the same mix of years. Path traversal, server-side request " +
+        "forgery (SSRF), deserialization of untrusted data and code injection are each " +
+        "at least twice as common on AI-product CVEs as on the others. Cross-site " +
+        "scripting is less common. The CWE entries written for AI systems cover prompt " +
+        "injection, unchecked model output and adversarial inputs.",
+      statLabel: "CVEs citing a CWE written for AI",
+      statOf: "of {n} AI-product CVEs · {ids}",
+      noCweNote:
+        "{no_cwe} of the AI-product CVEs list no CWE, against {baseline_no_cwe} of the " +
+        "others. The ten rows hold {top_share} of the AI-product CVEs.",
+      nodata: "Not enough AI-product CVEs in these years yet.",
+      methodology:
+        "Records published from {from} to {to}, the current partial year included. Each " +
+        "record's first-listed CWE is used, the CNA's first and CISA's enrichment " +
+        "otherwise; the count of AI-specific entries looks at every CWE in the record. " +
+        "The baseline is computed year by year among the CVEs that are not AI-product " +
+        "CVEs and weighted by each year's share of the AI-product CVEs. Without the " +
+        "weighting, a weakness that became common across the whole corpus in one year " +
+        "would look like a trait of AI software, because most AI-product CVEs in these " +
+        "years come from a single year. The AI-specific entries are CWE-1039 (adversarial input " +
+        "perturbations), CWE-1426 (improper validation of generative AI output) and " +
+        "CWE-1427 (input used for LLM prompting, also called prompt injection). CWE " +
+        "ids are counted as the record gives them, without re-mapping.",
+      labels: {
+        ai: "AI-product CVEs",
+        baseline: "Other CVEs, same years",
+        xAxis: "share of CVEs (first-listed CWE)",
+      },
+    },
+
+    // --------------------------------------------- aisurface.html · 3
+    aisurface_exploited: {
+      num: "03",
+      kicker: "Exploitation",
+      source: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
+      headline: "AI-product CVEs are on CISA's KEV catalog about as often as other CVEs from the same years.",
+      caption:
+        "Three measures for the {n} AI-product CVEs published from {from} to {to}, " +
+        "against all other CVEs from the same years, weighted to the same mix of years. " +
+        "CISA's Known Exploited Vulnerabilities catalog (KEV) lists vulnerabilities CISA " +
+        "has confirmed as exploited: {kev} AI-product CVEs are on it, against {kev_exp} " +
+        "expected at the rate of the others. Public exploit code (an Exploit-DB entry or " +
+        "a Metasploit exploit module) exists for {poc} ({poc_exp} expected). Nuclei " +
+        "templates, which mostly detect a flaw rather than exploit it, cover {nuclei}, " +
+        "more than twice the {nuclei_exp} expected.",
+      kevNote: "On KEV: {cves}.",
+      kevNoteNone: "No AI-product CVE from these years is on KEV.",
+      nodata: "Not enough AI-product CVEs in these years yet.",
+      methodology:
+        "KEV membership is read from the current catalog; exploit code and templates " +
+        "from the current Exploit-DB index, Metasploit module metadata and Nuclei " +
+        "template index. A CVE that is not on KEV has not been shown to be unexploited, " +
+        "and exploit code published anywhere else is not seen. All three accumulate " +
+        "with age and most AI-product CVEs here are recent, so each baseline rate is " +
+        "computed per publication year among the other CVEs and weighted by that year's " +
+        "share of the AI-product CVEs. “Expected” is the number of AI-product CVEs times " +
+        "that weighted rate. Publication year is a rough match for age: a CVE from " +
+        "January has had more time to be exploited than one from December.",
+      labels: {
+        rates: {
+          kev: "On CISA KEV",
+          poc: "Public exploit code",
+          nuclei: "Nuclei template",
+        },
+        ai: "AI-product CVEs",
+        baseline: "Other CVEs, same years",
+        xAxis: "share of CVEs",
+        tipOf: "{hit} of {n}",
+      },
+    },
+
+    // --------------------------------------------- aisurface.html · 4
+    aisurface_products: {
+      num: "04",
+      kicker: "Products and CNAs",
+      source: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit",
+      headline: "Three CNAs assigned most of the AI-product CVEs published in recent years.",
+      caption:
+        "The products behind the counts, ranked by AI-product CVEs published from {from} " +
+        "to {to}. {lead} alone accounts for {lead_n} of them ({lead_pct}). Three CNAs, " +
+        "{cna_list}, assigned {top3}, so the yearly counts follow their work as much as " +
+        "the software. GitHub assigns CVEs for advisories on projects it hosts, VulnCheck " +
+        "for reports sent to it, and huntr runs a bug-bounty programme for AI and " +
+        "machine-learning projects.",
+      windowTemplate: "{from}–{to} · the {shown} largest of {total} products with a CVE in these years",
+      nodata: "No AI-product CVEs in these years yet.",
+      methodology:
+        "One row per product in the list, grouped across the vendor spellings CNAs use " +
+        "(“gradio-app”, “Gradio”). “All years” counts every AI-product CVE of that " +
+        "product. “Main CNA” is the CNA that published most of the product's CVEs in " +
+        "these years, with its share. The list, with a comment on each judgment call, " +
+        "is in ai_products.py; the data file records the list's version. {products} " +
+        "products are named, through {rules} vendor and product rules.",
+      labels: {
+        colProduct: "Product",
+        colCategory: "Group",
+        colN: "CVEs",
+        colAll: "All years",
+        colKev: "On KEV",
+        colPoc: "Exploit code",
+        colCna: "Main CNA",
+        cnaCell: "{cna} ({pct})",
+      },
+    },
   },
 
   footer: {
@@ -4836,6 +5024,7 @@ export const editorial = {
       malware: "OpenSSF malicious-packages via OSV.dev",
       tags: "CVE List V5 (MITRE)",
       eol: "endoflife.date (MIT)",
+      aisurface: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
     },
   },
 };

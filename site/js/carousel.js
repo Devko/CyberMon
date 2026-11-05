@@ -107,6 +107,10 @@ import { render as renderTagsSeverity } from "./charts/tags_severity.js";
 import { render as renderEolYears } from "./charts/eol_years.js";
 import { render as renderEolPhases } from "./charts/eol_phases.js";
 import { render as renderEolCategories } from "./charts/eol_categories.js";
+import { render as renderAisurfaceYears } from "./charts/aisurface_years.js";
+import { render as renderAisurfaceCwe } from "./charts/aisurface_cwe.js";
+import { render as renderAisurfaceExploited } from "./charts/aisurface_exploited.js";
+import { render as renderAisurfaceProducts } from "./charts/aisurface_products.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -342,6 +346,13 @@ const MODULES = {
       { id: "eol_years", render: renderEolYears },
       { id: "eol_phases", render: renderEolPhases },
       { id: "eol_categories", render: renderEolCategories },
+  aisurface: {
+    file: "data/ai_products.json",
+    sections: [
+      { id: "aisurface_years", render: renderAisurfaceYears },
+      { id: "aisurface_cwe", render: renderAisurfaceCwe },
+      { id: "aisurface_exploited", render: renderAisurfaceExploited },
+      { id: "aisurface_products", render: renderAisurfaceProducts, table: true },
     ],
   },
 };

@@ -66,6 +66,7 @@ PAGES = [
     "malware.html",
     "tags.html",
     "eol.html",
+    "aisurface.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

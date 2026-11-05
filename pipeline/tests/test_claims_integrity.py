@@ -55,6 +55,7 @@ ALWAYS = [
     "ai_credits.json", "ai_credits_ledger.json", "observatory.json",
     "cve_tags.json", "cvss_v4.json",
     "cna_profiles.json",
+    "cve_tags.json", "cvss_v4.json", "ai_products.json",
 ]
 
 # Single-upstream / stateful outputs: present exactly when their

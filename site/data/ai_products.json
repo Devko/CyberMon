@@ -1,0 +1,575 @@
+{
+ "generated_at": "2026-11-05T07:11:44Z",
+ "classifier": {
+  "version": 1,
+  "reviewed": "2026-11-05",
+  "rules": 276,
+  "products": 154
+ },
+ "categories": [
+  "frameworks",
+  "serving",
+  "platforms",
+  "apps"
+ ],
+ "years": [
+  {
+   "year": 2017,
+   "published": 14642,
+   "named": 6549,
+   "ai": 1,
+   "by_category": {
+    "frameworks": 1,
+    "serving": 0,
+    "platforms": 0,
+    "apps": 0
+   },
+   "top_product": {
+    "label": "Apache OpenNLP",
+    "n": 1
+   }
+  },
+  {
+   "year": 2018,
+   "published": 16510,
+   "named": 8642,
+   "ai": 2,
+   "by_category": {
+    "frameworks": 2,
+    "serving": 0,
+    "platforms": 0,
+    "apps": 0
+   },
+   "top_product": {
+    "label": "Intel AI software (OpenVINO, Neural Compressor, framework extensions)",
+    "n": 1
+   }
+  },
+  {
+   "year": 2019,
+   "published": 17308,
+   "named": 9376,
+   "ai": 1,
+   "by_category": {
+    "frameworks": 1,
+    "serving": 0,
+    "platforms": 0,
+    "apps": 0
+   },
+   "top_product": {
+    "label": "TensorFlow",
+    "n": 1
+   }
+  },
+  {
+   "year": 2020,
+   "published": 18363,
+   "named": 11131,
+   "ai": 35,
+   "by_category": {
+    "frameworks": 35,
+    "serving": 0,
+    "platforms": 0,
+    "apps": 0
+   },
+   "top_product": {
+    "label": "TensorFlow",
+    "n": 34
+   }
+  },
+  {
+   "year": 2021,
+   "published": 20177,
+   "named": 13678,
+   "ai": 207,
+   "by_category": {
+    "frameworks": 205,
+    "serving": 0,
+    "platforms": 1,
+    "apps": 1
+   },
+   "top_product": {
+    "label": "TensorFlow",
+    "n": 200
+   }
+  },
+  {
+   "year": 2022,
+   "published": 24999,
+   "named": 17194,
+   "ai": 161,
+   "by_category": {
+    "frameworks": 158,
+    "serving": 0,
+    "platforms": 2,
+    "apps": 1
+   },
+   "top_product": {
+    "label": "TensorFlow",
+    "n": 144
+   }
+  },
+  {
+   "year": 2023,
+   "published": 28847,
+   "named": 22563,
+   "ai": 88,
+   "by_category": {
+    "frameworks": 35,
+    "serving": 5,
+    "platforms": 33,
+    "apps": 15
+   },
+   "top_product": {
+    "label": "TensorFlow",
+    "n": 21
+   }
+  },
+  {
+   "year": 2024,
+   "published": 39924,
+   "named": 33942,
+   "ai": 445,
+   "by_category": {
+    "frameworks": 55,
+    "serving": 51,
+    "platforms": 109,
+    "apps": 230
+   },
+   "top_product": {
+    "label": "LoLLMs",
+    "n": 57
+   }
+  },
+  {
+   "year": 2025,
+   "published": 48150,
+   "named": 43604,
+   "ai": 692,
+   "by_category": {
+    "frameworks": 109,
+    "serving": 92,
+    "platforms": 97,
+    "apps": 394
+   },
+   "top_product": {
+    "label": "NVIDIA NeMo, Megatron and Merlin",
+    "n": 32
+   }
+  },
+  {
+   "year": 2026,
+   "published": 91568,
+   "named": 88260,
+   "ai": 3167,
+   "by_category": {
+    "frameworks": 198,
+    "serving": 371,
+    "platforms": 170,
+    "apps": 2428
+   },
+   "top_product": {
+    "label": "OpenClaw",
+    "n": 677
+   }
+  }
+ ],
+ "window": {
+  "from": 2023,
+  "to": 2026,
+  "years": 4,
+  "weights": [
+   {
+    "year": 2023,
+    "pct": 2.0
+   },
+   {
+    "year": 2024,
+    "pct": 10.1
+   },
+   {
+    "year": 2025,
+    "pct": 15.8
+   },
+   {
+    "year": 2026,
+    "pct": 72.1
+   }
+  ]
+ },
+ "cwe": {
+  "n": 4392,
+  "no_cwe": 11,
+  "no_cwe_pct": 0.3,
+  "baseline_no_cwe_pct": 10.3,
+  "top": [
+   {
+    "cwe": "CWE-22",
+    "name": "Path traversal",
+    "n": 360,
+    "pct": 8.2,
+    "baseline_pct": 2.8
+   },
+   {
+    "cwe": "CWE-918",
+    "name": "Server-side request forgery (SSRF)",
+    "n": 350,
+    "pct": 8.0,
+    "baseline_pct": 1.6
+   },
+   {
+    "cwe": "CWE-502",
+    "name": "Deserialization of untrusted data",
+    "n": 227,
+    "pct": 5.2,
+    "baseline_pct": 1.2
+   },
+   {
+    "cwe": "CWE-94",
+    "name": "Code injection",
+    "n": 220,
+    "pct": 5.0,
+    "baseline_pct": 1.3
+   },
+   {
+    "cwe": "CWE-863",
+    "name": "Incorrect authorization",
+    "n": 203,
+    "pct": 4.6,
+    "baseline_pct": 1.7
+   },
+   {
+    "cwe": "CWE-862",
+    "name": "Missing authorization",
+    "n": 201,
+    "pct": 4.6,
+    "baseline_pct": 4.9
+   },
+   {
+    "cwe": "CWE-79",
+    "name": "Cross-site scripting",
+    "n": 149,
+    "pct": 3.4,
+    "baseline_pct": 11.0
+   },
+   {
+    "cwe": "CWE-639",
+    "name": "Authz bypass via user-controlled key",
+    "n": 144,
+    "pct": 3.3,
+    "baseline_pct": 1.7
+   },
+   {
+    "cwe": "CWE-78",
+    "name": "OS command injection",
+    "n": 144,
+    "pct": 3.3,
+    "baseline_pct": 2.1
+   },
+   {
+    "cwe": "CWE-306",
+    "name": "Missing authentication",
+    "n": 124,
+    "pct": 2.8,
+    "baseline_pct": 1.5
+   }
+  ],
+  "top_share_pct": 48.3,
+  "ai_specific": {
+   "ids": [
+    "CWE-1039",
+    "CWE-1426",
+    "CWE-1427"
+   ],
+   "n": 3
+  }
+ },
+ "exploited": {
+  "n": 4392,
+  "baseline_n": 204097,
+  "kev": 11,
+  "kev_pct": 0.3,
+  "kev_baseline_pct": 0.3,
+  "kev_expected": 12.2,
+  "poc": 32,
+  "poc_pct": 0.7,
+  "poc_baseline_pct": 0.4,
+  "poc_expected": 17.0,
+  "nuclei": 116,
+  "nuclei_pct": 2.6,
+  "nuclei_baseline_pct": 0.8,
+  "nuclei_expected": 33.9,
+  "kev_cves": [
+   {
+    "cve": "CVE-2025-3248",
+    "product": "Langflow"
+   },
+   {
+    "cve": "CVE-2025-34291",
+    "product": "Langflow"
+   },
+   {
+    "cve": "CVE-2025-62593",
+    "product": "Ray"
+   },
+   {
+    "cve": "CVE-2026-0770",
+    "product": "Langflow"
+   },
+   {
+    "cve": "CVE-2026-33017",
+    "product": "Langflow"
+   },
+   {
+    "cve": "CVE-2026-42208",
+    "product": "LiteLLM"
+   },
+   {
+    "cve": "CVE-2026-42271",
+    "product": "LiteLLM"
+   },
+   {
+    "cve": "CVE-2026-55255",
+    "product": "Langflow"
+   },
+   {
+    "cve": "CVE-2026-59822",
+    "product": "LiteLLM"
+   },
+   {
+    "cve": "CVE-2026-64849",
+    "product": "MLflow"
+   },
+   {
+    "cve": "CVE-2026-9198",
+    "product": "Langflow"
+   }
+  ]
+ },
+ "products": [
+  {
+   "key": "openclaw",
+   "label": "OpenClaw",
+   "category": "apps",
+   "n": 677,
+   "all_years": 677,
+   "first_year": 2026,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "VulnCheck",
+   "top_cna_pct": 93.4
+  },
+  {
+   "key": "langflow",
+   "label": "Langflow",
+   "category": "apps",
+   "n": 233,
+   "all_years": 233,
+   "first_year": 2024,
+   "kev": 6,
+   "poc": 13,
+   "top_cna": "ibm",
+   "top_cna_pct": 79.0
+  },
+  {
+   "key": "praison",
+   "label": "PraisonAI",
+   "category": "apps",
+   "n": 177,
+   "all_years": 177,
+   "first_year": 2026,
+   "kev": 0,
+   "poc": 1,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 83.6
+  },
+  {
+   "key": "open_webui",
+   "label": "Open WebUI",
+   "category": "apps",
+   "n": 175,
+   "all_years": 175,
+   "first_year": 2024,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 81.7
+  },
+  {
+   "key": "mcp_servers",
+   "label": "Named MCP servers",
+   "category": "apps",
+   "n": 151,
+   "all_years": 151,
+   "first_year": 2025,
+   "kev": 0,
+   "poc": 1,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 56.3
+  },
+  {
+   "key": "flowise",
+   "label": "Flowise",
+   "category": "apps",
+   "n": 145,
+   "all_years": 145,
+   "first_year": 2024,
+   "kev": 0,
+   "poc": 5,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 51.0
+  },
+  {
+   "key": "vllm",
+   "label": "vLLM",
+   "category": "serving",
+   "n": 129,
+   "all_years": 129,
+   "first_year": 2025,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 55.0
+  },
+  {
+   "key": "nvidia_nemo",
+   "label": "NVIDIA NeMo, Megatron and Merlin",
+   "category": "frameworks",
+   "n": 116,
+   "all_years": 117,
+   "first_year": 2021,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "nvidia",
+   "top_cna_pct": 100.0
+  },
+  {
+   "key": "mlflow",
+   "label": "MLflow",
+   "category": "platforms",
+   "n": 91,
+   "all_years": 92,
+   "first_year": 2022,
+   "kev": 1,
+   "poc": 0,
+   "top_cna": "@huntr_ai",
+   "top_cna_pct": 52.7
+  },
+  {
+   "key": "lollms",
+   "label": "LoLLMs",
+   "category": "apps",
+   "n": 84,
+   "all_years": 84,
+   "first_year": 2024,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "@huntr_ai",
+   "top_cna_pct": 98.8
+  },
+  {
+   "key": "claw_family",
+   "label": "Other OpenClaw-style agents (NemoClaw, PicoClaw, GoClaw, NanoClaw)",
+   "category": "apps",
+   "n": 84,
+   "all_years": 84,
+   "first_year": 2026,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "VulDB",
+   "top_cna_pct": 72.6
+  },
+  {
+   "key": "mcp_sdk",
+   "label": "Model Context Protocol SDKs and tools",
+   "category": "apps",
+   "n": 81,
+   "all_years": 81,
+   "first_year": 2025,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 85.2
+  },
+  {
+   "key": "anythingllm",
+   "label": "AnythingLLM",
+   "category": "apps",
+   "n": 77,
+   "all_years": 77,
+   "first_year": 2023,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "@huntr_ai",
+   "top_cna_pct": 67.5
+  },
+  {
+   "key": "lunary",
+   "label": "Lunary",
+   "category": "platforms",
+   "n": 71,
+   "all_years": 71,
+   "first_year": 2024,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "@huntr_ai",
+   "top_cna_pct": 100.0
+  },
+  {
+   "key": "triton",
+   "label": "NVIDIA Triton Inference Server",
+   "category": "serving",
+   "n": 66,
+   "all_years": 66,
+   "first_year": 2024,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "nvidia",
+   "top_cna_pct": 100.0
+  }
+ ],
+ "product_count": 151,
+ "cnas": {
+  "n": 4392,
+  "cna_count": 40,
+  "top": [
+   {
+    "cna": "GitHub_M",
+    "n": 1230,
+    "pct": 28.0
+   },
+   {
+    "cna": "VulnCheck",
+    "n": 1099,
+    "pct": 25.0
+   },
+   {
+    "cna": "@huntr_ai",
+    "n": 703,
+    "pct": 16.0
+   },
+   {
+    "cna": "VulDB",
+    "n": 438,
+    "pct": 10.0
+   },
+   {
+    "cna": "nvidia",
+    "n": 227,
+    "pct": 5.2
+   }
+  ],
+  "top3_pct": 69.0
+ },
+ "headline": {
+  "latest_year": 2025,
+  "latest_ai": 692,
+  "latest_share_pct": 1.4,
+  "current_year": 2026,
+  "current_ai": 3167,
+  "current_share_pct": 3.5,
+  "lead_label": "OpenClaw",
+  "lead_n": 677,
+  "lead_pct": 15.4
+ }
+}

@@ -3130,3 +3130,74 @@ release date only. Category rows sum to the catalogue. Validator:
 not_modified}` (`not_modified` is true when the night's request answered
 304 and the cached parse was reused), marked `"stale": true` when an
 endoflife.date outage carried the module forward.
+
+## site/data/ai_products.json  (AI Product CVEs module, all 4 charts)
+
+```json
+{
+  "generated_at": "...",
+  "classifier": {"version": 1, "reviewed": "2026-11-05", "rules": 276,
+                 "products": 154},
+  "categories": ["frameworks", "serving", "platforms", "apps"],
+  "years": [{"year": 2025, "published": 48150, "named": 43604, "ai": 692,
+             "by_category": {"frameworks": 109, "serving": 92,
+                             "platforms": 97, "apps": 394},
+             "top_product": {"label": "NVIDIA NeMo, Megatron and Merlin",
+                             "n": 32}}],
+  "window": {"from": 2023, "to": 2026, "years": 4,
+             "weights": [{"year": 2023, "pct": 2.0}, {"year": 2026, "pct": 72.1}]},
+  "cwe": {"n": 4392, "no_cwe": 11, "no_cwe_pct": 0.3,
+          "baseline_no_cwe_pct": 10.3, "top_share_pct": 48.3,
+          "top": [{"cwe": "CWE-22", "name": "Path traversal", "n": 360,
+                   "pct": 8.2, "baseline_pct": 2.8}],
+          "ai_specific": {"ids": ["CWE-1039", "CWE-1426", "CWE-1427"], "n": 3}},
+  "exploited": {"n": 4392, "baseline_n": 204097,
+                "kev": 11, "kev_pct": 0.3, "kev_baseline_pct": 0.3,
+                "kev_expected": 12.2,
+                "poc": 32, "poc_pct": 0.7, "poc_baseline_pct": 0.4,
+                "poc_expected": 17.0,
+                "nuclei": 116, "nuclei_pct": 2.6, "nuclei_baseline_pct": 0.8,
+                "nuclei_expected": 33.9,
+                "kev_cves": [{"cve": "CVE-2025-3248", "product": "Langflow"}]},
+  "products": [{"key": "openclaw", "label": "OpenClaw", "category": "apps",
+                "n": 677, "all_years": 677, "first_year": 2026, "kev": 0,
+                "poc": 0, "top_cna": "VulnCheck", "top_cna_pct": 93.4}],
+  "product_count": 151,
+  "cnas": {"n": 4392, "cna_count": 40, "top3_pct": 69.0,
+           "top": [{"cna": "GitHub_M", "n": 1230, "pct": 28.0}]},
+  "headline": {"latest_year": 2025, "latest_ai": 692, "latest_share_pct": 1.4,
+               "current_year": 2026, "current_ai": 3167,
+               "current_share_pct": 3.5, "lead_label": "OpenClaw",
+               "lead_n": 677, "lead_pct": 15.4}
+}
+```
+
+Published records with a `datePublished`, by publication year. A record is
+an AI-product CVE when the FIRST entry of `containers.cna.affected` with a
+non-placeholder vendor or product classifies under
+`pipeline/ai_products.py` (`classifier.version` / `reviewed` say which
+table revision produced the file; bump the version on any table change).
+Descriptions, CPEs and ADP containers are never read. `years` runs
+gap-filled from the first year with an AI-product CVE to the edition's
+year (empty when there is none — the page shows its no-data card); `named`
+counts the records whose CNA container names any product (the ceiling for
+any vendor/product classifier); `by_category` partitions `ai`;
+`top_product` is the year's largest product family (null when `ai` is 0).
+The site computes shares from the counts. `window` = the last `years`
+publication years ending at the edition's year, partial year included;
+`weights` are each year's share of the window's AI-product CVEs. Every
+`baseline` figure is **year-matched**: the rate among the records that are
+NOT AI-product CVEs, computed per year and weighted by `weights`.
+`*_expected` = `n` × that unrounded rate (KEV shares round to the same
+0.3% on both sides; the counts do not). `cwe.top` = the ten commonest
+first-listed CWEs (CNA first, then ADP) among the window's AI-product CVEs;
+`ai_specific.n` counts records citing an `ids` entry anywhere in their CNA
+or ADP problem types. `exploited`: `kev` = in tonight's KEV catalog, `poc`
+= public exploit code (`PocData.exploit_ids`: Exploit-DB or a Metasploit
+exploit module), `nuclei` = a Nuclei template (detection, mostly not an
+exploit); `kev_cves` lists every KEV-listed AI-product CVE in the window.
+`products` = up to 15 product families by window count (`product_count`
+families had one), with all-years count, first year, KEV and exploit-code
+counts, and the CNA that published most of them. `cnas.top` = the top 5
+CNAs of the window. `headline`: the latest COMPLETE year beside the
+partial current year, and the window's largest product.

@@ -913,7 +913,18 @@ rate-limited, paid, or legally delicate.
 
 ## Tier 1 — near-term (mostly reuses data we already ingest)
 
-### AI as attack surface (scoped out of module 21)
+### AI as attack surface — SHIPPED as module 27 (AI Product CVEs, 2026-11-05)
+- **As built:** no `CveFacts` change — an observer on the corpus pass
+  reads the first affected entry's vendor/product and looks it up in
+  `pipeline/ai_products.py` (154 products, every judgment call
+  commented). Launch edition: 1.4% of 2025's CVEs, 3.5% of 2026's so far
+  (OpenClaw alone is 677 of 2026's 3,167); three of 4,392 AI-product CVEs
+  since 2023 cite an AI-specific CWE; path traversal, SSRF,
+  deserialization and code injection each run at two to five times the
+  year-matched baseline; 11 are on KEV against 12.2 expected at the
+  baseline rate.
+  Follow-ups: re-review the table as new products appear (the newest
+  months undercount); WordPress/Drupal AI plugins are out as a class.
 - **Thesis:** AI is becoming attack surface far faster than it is becoming
   attack capability — the inverse of the story the industry tells. Module
   21 shows exploitation speed didn't move; this would show what did.

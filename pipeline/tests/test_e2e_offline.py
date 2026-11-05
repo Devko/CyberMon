@@ -704,3 +704,27 @@ def test_eol_outage_without_prior_edition_omits_it(tmp_path, capsys,
     assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
     assert not (tmp_path / "support_windows.json").exists()
     assert "eol" not in _load(tmp_path, "meta.json")["sources"]
+def test_offline_run_emits_ai_products(tmp_path, capsys):
+    """Module 27 (ai_products.json) from the fixture corpus: one AI-product
+    record (CVE-2023-0002, first affected entry gradio-app / gradio, CWE-79,
+    in Exploit-DB), classified on vendor/product alone; the fixture window
+    is widened to reach it."""
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    obj = _load(tmp_path, "ai_products.json")
+    contracts.validate("ai_products.json", obj)
+
+    years = {r["year"]: r for r in obj["years"]}
+    assert min(years) == 2023  # the first year with an AI-product CVE
+    assert years[2023]["ai"] == 1
+    assert years[2023]["by_category"]["apps"] == 1
+    assert years[2023]["published"] == 3
+    # CVE-2023-0003 lists no affected product at all
+    assert years[2023]["named"] == 2
+    assert obj["products"] == [{
+        "key": "gradio", "label": "Gradio", "category": "apps", "n": 1,
+        "all_years": 1, "first_year": 2023, "kev": 0, "poc": 1,
+        "top_cna": "VendorX", "top_cna_pct": 100.0}]
+    assert obj["cwe"]["top"][0]["cwe"] == "CWE-79"
+    ex = obj["exploited"]
+    assert (ex["n"], ex["kev"], ex["poc"]) == (1, 0, 1)
+    assert obj["classifier"]["version"] >= 1
