@@ -2964,3 +2964,61 @@ probabilities before u16 display rounding, preserving parity with the
 original severity/EPSS chart. Score precedence is
 `CveFacts.effective_score` (newest family anywhere in the record, CNA before
 ADP within a family). Rows are sorted by (ID year, sequence).
+
+## site/data/cna_profiles.json  (CNA Concentration module, section 04 — CNA profile)
+
+```json
+{
+  "generated_at": "...",
+  "window": {"from": 2021, "to": 2025, "years": 5},
+  "min_published": 100, "min_scored": 30,
+  "metrics": ["score_median", "cwe_pct", "scored_pct", "affected_pct",
+              "rejected_pct", "rescores", "kev_pct", "exploit_pct"],
+  "score_bins": ["0.0-0.9", "1.0-1.9", "...", "9.0-10.0"],
+  "all": {"cna_count": 428, "published": 162097, "scored": 100600,
+          "score_bins": [34, 178, "..."], "score_median": 6.6},
+  "rescore_log": {"first_observed": "2026-07-15",
+                  "last_observed": "2026-11-05", "rescores": 158},
+  "summary": {"cwe_pct": {"n": 107, "median": 91.6, "p25": 44.9,
+                          "p75": 99.3, "min": 0.0, "max": 100.0}},
+  "cnas": [
+    {"cna": "mitre", "published": 31433, "rejected": 315,
+     "counts": {"scored": 1758, "cwe": 787, "affected": 778, "kev": 144,
+                "exploit": 652},
+     "score_bins": [2, 3, "..."],
+     "values": {"score_median": 6.8, "cwe_pct": 2.5, "rescores": 0},
+     "ranks": {"score_median": 50, "cwe_pct": 98, "rescores": 20}}
+  ]
+}
+```
+
+Notes: built from the shared corpus pass (`Aggregator.cna_year_profile`
+plus the per-CNA published, rejected and score tallies) and tonight's
+merged rescore log; no fetch of its own, so no `meta.sources` block.
+`window` = the last `years` COMPLETE calendar years before the edition
+(`to` = edition year − 1; the partial current year never counts), by
+original publication year. `cnas` = every assigner with at least
+`min_published` published records in the window, sorted by `published`
+descending (the first row is the page's default). `rejected` = records
+in the window later marked REJECTED. `counts` are of the CNA's published
+in-window records: `scored` (a CVSS base score in the CNA container),
+`cwe` (a `cweId` in the CNA container), `affected` (usable affected-version
+data in the CNA container — `metrics._has_usable_affected`), `kev`
+(listed in CISA KEV), `exploit` (tracked public exploit code:
+`PocData.exploit_ids`, Exploit-DB or a Metasploit exploit module). ADP
+enrichment never counts. `score_bins` = the CNA-assigned newest-version
+base scores in whole-point bands (10.0 in the last), summing to
+`counts.scored`; `all.score_bins` pools every CNA's in-window scored
+records. `values`: the five `*_pct` shares are `100 * count / published`;
+`rejected_pct` = `100 * rejected / (published + rejected)`;
+`score_median` = median of the CNA's scores, null below `min_scored`
+scored records; `rescores` = `rescore` events (same-version CNA score
+changes) on `history/rescore_log.csv` for that CNA, any record, since
+`rescore_log.first_observed` — observation time, not publication time,
+and not scaled by size. `ranks`: competition ranks over the listed CNAs
+with a value, 1 = highest, ties share the best rank (1, 2, 2, 4); null
+exactly when the value is null. `summary[metric]`: `n` ranked CNAs and
+the spread of their values (`median` is the median CNA; quartiles use
+the inclusive method), all null when `n` is 0. No year-keyed series, so
+the January tiny-year rehearsal leaves the file unchanged. Validator:
+`pipeline/cna_profile_contracts.py`.

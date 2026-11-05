@@ -670,6 +670,7 @@ export const editorial = {
     tags_trend: "tags_metrics.py",
     tags_board: "tags_metrics.py",
     tags_severity: "tags_metrics.py",
+    cna_profile: "cna_profile_metrics.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -1511,6 +1512,86 @@ export const editorial = {
         "were rejected without ever being published have no publication date and are " +
         "not counted. Default sort: rejection rate, descending. Click any column " +
         "header to re-sort.",
+    },
+
+    // --------------------------------- concentration.html · 4
+    cna_profile: {
+      num: "04",
+      kicker: "CNA profile",
+      source: "cvelistV5 (MITRE) · CISA KEV · Exploit-DB (OffSec) · Metasploit (Rapid7) · CyberMon nightly diffs",
+      headline:
+        "Among CNAs with at least 100 records in five years, some name a weakness " +
+        "type (CWE) on fewer than one record in twenty and others on every record.",
+      caption:
+        "Pick a CNA to set its records published {from}–{to} against every CNA that " +
+        "published at least {min_published} records in those years. The top panel " +
+        "compares the CNA's CVSS (Common Vulnerability Scoring System) base scores " +
+        "with all CNAs' records. In each strip below, every listed CNA is a tick and " +
+        "the dashed line is the median CNA; rank 1 is the highest value. CWE is the " +
+        "Common Weakness Enumeration. KEV is CISA's Known Exploited Vulnerabilities " +
+        "catalog.",
+      windowTemplate:
+        "Published {from}–{to} · {n} of the {all} CNAs that published in those years had at least {min_published} records",
+      nodata: "No CNA published enough records in the window yet.",
+      methodology:
+        "Records count by original publication year over the last {years} complete " +
+        "calendar years, {from}–{to}. A CNA is listed when it published at least " +
+        "{min_published} records in that window. CWE, CVSS score and affected-version " +
+        "data count only when the CNA's own container carries them; data that CISA or " +
+        "another Authorized Data Publisher (ADP) added later is left out. " +
+        "Affected-version data counts when an affected entry names a concrete version " +
+        "or a definite default status. The score panel uses the CNA-assigned base " +
+        "score of each record's newest CVSS version, in whole-point bands. A median " +
+        "score is ranked only for CNAs with at least {min_scored} scored records. " +
+        "Rejection rate is records later marked REJECTED over published plus " +
+        "rejected. Score changes count same-version changes to a CNA-assigned score " +
+        "on the nightly rescore log, which began on {log_from}. They cover any of the " +
+        "CNA's records, and the count is not scaled by its size. The KEV share counts " +
+        "records in CISA's catalog. The exploit share counts records with an " +
+        "Exploit-DB entry or a Metasploit exploit module. Tied CNAs share the best " +
+        "rank. Recent records have had less time to be exploited, listed or " +
+        "rejected. Differences between CNAs mostly follow the products they cover " +
+        "and how they run their programs; they are not a measure of intent.",
+      labels: {
+        searchLabel: "Find a CNA",
+        searchPlaceholder: "part of a name",
+        selectLabel: "CNA",
+        option: "{cna} ({n} records)",
+        matches: "{n} of {total} CNAs match",
+        noMatch: "No CNA matches; the current one stays selected",
+        head: "{cna}: {published} records published {from}–{to}, plus {rejected} published and later rejected.",
+        legendMedian: "median CNA",
+        legendPeers: "other listed CNAs",
+        legendAll: "all CNAs' records (score panel)",
+        metrics: {
+          score_median: "CVSS base scores the CNA assigned: share of its scored records in each band",
+          cwe_pct: "Records with a CWE",
+          scored_pct: "Records with a CVSS score",
+          affected_pct: "Records with usable affected-version data",
+          rejected_pct: "Rejection rate",
+          rescores: "Score changes logged since {log_from}",
+          kev_pct: "Records in KEV",
+          exploit_pct: "Records with public exploit code",
+        },
+        readout: "{value} · median CNA {median} · {rank}",
+        readoutScore: "median score {value} · median CNA {median} · {rank}",
+        rank: "rank {rank} of {n}",
+        rankTied: "rank {rank} of {n}, tied",
+        rankLong: "rank {rank} of {n} CNAs, where 1 is the highest",
+        rankLongTied: "rank {rank} of {n} CNAs, where 1 is the highest, tied with {others} other CNAs",
+        rankLongTiedOne: "rank {rank} of {n} CNAs, where 1 is the highest, tied with one other CNA",
+        unranked: "not ranked",
+        alt: "{title}. {cna}: {value}. Median CNA: {median}. {cna} is {rank}.",
+        altHist: "{title}. {cna}'s median score: {value}. Median CNA: {median}. {cna} is {rank}. The median of all CNAs' scored records is {all}.",
+        altAll: "The median of all CNAs' scored records is {median}.",
+        scoreNone: "{cna} put a CVSS score on none of its records.",
+        scoreFew: "{cna} scored {scored} records, fewer than the {min_scored} a median needs.",
+        hover: "{cna}: {value}",
+        histHover: "{band}: {cna} {own} · all CNAs {all}",
+        tableSummary: "Score bands as a table",
+        colBand: "band",
+        colAll: "all CNAs",
+      },
     },
     // ------------------------------------------------ breaches.html · 1 · hero
     disclosure: {

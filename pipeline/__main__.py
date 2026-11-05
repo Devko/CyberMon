@@ -42,6 +42,7 @@ from typing import Iterator
 
 from . import field_export
 from . import cvss_v4_metrics, tags_metrics
+from . import cna_profile_metrics
 from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -734,6 +735,14 @@ def run(args: argparse.Namespace) -> int:
             **({"min_n": 1, "min_cna_events": 1}
                if args.offline_fixtures else {}))
     outputs["rescore_log.json"] = rescore_log
+    # CNA profiles (concentration.html, last section): per-CNA tallies the
+    # same corpus pass kept, plus each CNA's rescore count from tonight's
+    # merged rescore log (the rows persisted below). Fixture corpora are
+    # tiny, so the volume floors drop to 1.
+    outputs["cna_profiles.json"] = cna_profile_metrics.build_cna_profiles(
+        agg, generated_at, rescore_rows=rescore_rows,
+        **({"min_published": 1, "min_scored": 1}
+           if args.offline_fixtures else {}))
     # EPSS Volatility: diff tonight's EPSS feed (probability AND percentile,
     # both from the epss object already fetched above) against the committed
     # fingerprint of last night's feed, appending one aggregate row per EPSS
