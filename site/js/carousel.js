@@ -104,6 +104,9 @@ import { render as renderCvss4 } from "./charts/cvss4.js";
 import { render as renderTagsTrend } from "./charts/tags_trend.js";
 import { render as renderTagsBoard } from "./charts/tags_board.js";
 import { render as renderTagsSeverity } from "./charts/tags_severity.js";
+import { render as renderEolYears } from "./charts/eol_years.js";
+import { render as renderEolPhases } from "./charts/eol_phases.js";
+import { render as renderEolCategories } from "./charts/eol_categories.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -331,6 +334,14 @@ const MODULES = {
       { id: "tags_trend", render: renderTagsTrend },
       { id: "tags_board", render: renderTagsBoard, table: true },
       { id: "tags_severity", render: renderTagsSeverity },
+    ],
+  },
+  eol: {
+    file: "data/support_windows.json",
+    sections: [
+      { id: "eol_years", render: renderEolYears },
+      { id: "eol_phases", render: renderEolPhases },
+      { id: "eol_categories", render: renderEolCategories },
     ],
   },
 };

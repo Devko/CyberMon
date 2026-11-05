@@ -548,6 +548,37 @@ both modules. The nightly sends conditional GETs (ETag / Last-Modified),
 downloads only the changed zips and keeps a compact summary. An OSV outage
 carries both modules forward, marked stale. Stage `pipeline/osv_metrics.py`.
 
+### 29 · Support Windows — [eol.html](https://devko.github.io/CyberMon/eol.html)
+
+*For the same products, release lines from 2022–2024 have a median support window about a fifth shorter than lines from 2014–2016.*
+
+How long release lines are supported, from the endoflife.date catalogue: a
+release line is one version track (Ubuntu 24.04, Python 3.12, iPhone 15)
+and its support window runs from its release date to the end of its last
+standard support phase. The product universe is whatever endoflife.date
+tracks (489 products in November 2026), not a sample of software in use.
+Three charts:
+
+- the median window by release year, for every tracked product and for the
+  products with lines in both 2014–2016 and 2022–2024. The catalogue's
+  product mix changes over time, so the second line is the comparison that
+  holds the products fixed;
+- for products that separate active support from security support, the
+  median time from release to the end of each;
+- the median window by endoflife.date category, and how many products have
+  their newest line, or every line, out of support.
+
+A line still supported with no announced end is right-censored, not
+"forever": the medians are Kaplan–Meier estimates that count it as
+supported for at least its age so far. Lines marked ended without a date
+are counted and left out of the medians. Each product counts once per cell,
+so a product that ships monthly does not outvote one that ships every two
+years. The page points to Record Tags for CVEs filed against unsupported
+products; the two are not joined. The nightly sends one conditional GET for
+the API's bulk dump; an endoflife.date outage carries the last edition
+forward, marked stale. Fetcher `pipeline/fetch_eol.py`, stage
+`pipeline/eol_metrics.py`.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
 
 *Every published CVE as one point in a 3D view.*
@@ -683,11 +714,12 @@ browser checks on every push and pull request, and deploys on pushes to main
 | [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template; the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
 | [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS, snapshotted nightly for Botnet C2 Servers; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 | [OSV.dev ecosystem exports](https://google.github.io/osv.dev/data/#data-dumps) (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`) | GitHub-reviewed advisories (GHSA ids: publication date, aliases, GitHub severity, withdrawn flag) and OpenSSF malicious-packages reports (MAL ids: publication date, withdrawn flag, contributing sources); aggregates only, no package names republished | GitHub Advisory Database: [CC-BY 4.0](https://github.com/github/advisory-database/blob/main/LICENSE.md); OpenSSF malicious-packages: [Apache-2.0](https://github.com/ossf/malicious-packages/blob/main/LICENSE); both credited in the site footer. No key |
+| [endoflife.date API](https://endoflife.date/docs/api/v1/) (`api/v1/products/full`) | Every tracked product's category and release cycles: release date, end of support (`eolFrom`) and, where a product separates them, end of active support (`eoasFrom`); one conditional GET of the bulk dump a night (the per-product documents change ETag on every site build, and the API documents no per-product change stamp) | [MIT](https://github.com/endoflife-date/endoflife.date/blob/master/LICENSE) (© 2020 endoflife.date contributors), credited in the site footer. No key; the API documents 429 with `Retry-After`, which the fetcher honours |
 
 ## State and history
 
 **Caches.** Uncommitted sync state lives in `.cache/` (`--cache-dir`). In CI,
-`actions/cache` keeps the first six files below between nights and saves them
+`actions/cache` keeps the first seven files below between nights and saves them
 only after a green run; the market state is saved even after a failed night.
 Losing a file never changes data already published; the table gives the cost.
 
@@ -699,6 +731,7 @@ Losing a file never changes data already published; the table gives the cost.
 | `epss_report_state.json` | EPSS Before KEV | Rebuilt from `epss_report.json` |
 | `epss_volatility_state.json.gz` | EPSS Volatility | One baseline night with no log row. Committed until 2026-09-07, when the 2.6 MB file rewritten nightly had grown to about 90% of the repository |
 | `osv_state.json.gz` | Advisories, Malicious Packages | One full download of all thirteen exports (~290 MB) |
+| `eol_state.json.gz` | Support Windows | One download of the endoflife.date dump (~0.3 MB gzipped) |
 | `naming_state.json` | Threat Group Aliases | Rebuilt from `naming.json`, which is what CI does every night |
 | `poc/` | Time to PoC | Same-day cache only |
 | `kev_wayback/` | KEV Changelog backfill | Local only; CI never uses it |

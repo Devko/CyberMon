@@ -71,7 +71,9 @@ export const editorial = {
     {
       id: "industry",
       label: "Industry",
-      lede: "Buzzword attention, breach disclosure, SEC incident filings, ransom payments and DNSSEC validation.",
+      lede:
+        "Buzzword attention, breach disclosure, SEC incident filings, ransom payments, DNSSEC " +
+        "validation and software support windows.",
     },
     {
       id: "attackmap",
@@ -135,6 +137,7 @@ export const editorial = {
     { id: "incidents", href: "incidents.html", label: "SEC Incident Filings", group: "industry" },
     { id: "advisories", href: "advisories.html", label: "Advisories Without a CVE", group: "machine" },
     { id: "malware", href: "malware.html", label: "Malicious Packages", group: "attackmap" },
+    { id: "eol", href: "eol.html", label: "Support Windows", group: "industry" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -526,6 +529,22 @@ export const editorial = {
           "Rebuilt nightly from OSV's ecosystem exports.",
         live: true,
       },
+      {
+        id: "eol",
+        href: "eol.html",
+        num: "29",
+        label: "Support Windows",
+        headline:
+          "For the same products, release lines from 2022–2024 have a median support window " +
+          "about a fifth shorter than lines from 2014–2016.",
+        blurb:
+          "How long software, operating system and device release lines are supported, from " +
+          "the endoflife.date catalogue: the median window by release year, for every tracked " +
+          "product and for the products with lines in both periods; active against security " +
+          "support where a product lists both; and the window by category. A line with no " +
+          "announced end counts as supported for at least its age so far. Rebuilt nightly.",
+        live: true,
+      },
     ],
   },
 
@@ -670,6 +689,9 @@ export const editorial = {
     tags_trend: "tags_metrics.py",
     tags_board: "tags_metrics.py",
     tags_severity: "tags_metrics.py",
+    eol_years: "eol_metrics.py",
+    eol_phases: "eol_metrics.py",
+    eol_categories: "eol_metrics.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -4353,6 +4375,162 @@ export const editorial = {
         tipOf: "{row} of {total}",
       },
     },
+
+    // --------------------------------------------- eol.html · 1 · hero
+    eol_years: {
+      num: "01",
+      kicker: "Support window by release year",
+      source: "endoflife.date (MIT)",
+      headline:
+        "For the same products, release lines from 2022–2024 have a median support window " +
+        "about a fifth shorter than lines from 2014–2016.",
+      seeAlso: {
+        text: "CVE records that their CNA tagged as issued for a product its vendor no longer supports:",
+        href: "tags.html",
+        label: "Record Tags →",
+      },
+      caption:
+        "A release line is one version track of a product, such as Ubuntu 24.04 or Python " +
+        "3.12. Its support window runs from its release date to the end of support that " +
+        "endoflife.date records for it. Each point is the median window of the lines released " +
+        "that year. “Same products” follows the {panel} products with lines released in both " +
+        "2014–2016 and 2022–2024: their median fell from {panel_early} to {panel_late}. “All " +
+        "tracked products” fell from {all_early} to {all_late}, but its two periods hold " +
+        "different products: {all_early_products} have lines from 2014–2016, " +
+        "{all_late_products} from 2022–2024.",
+      statLabel: "Median support window, the same {panel} products",
+      statLate: "lines from {from}–{to}",
+      statEarly: "{from}–{to}",
+      legendAll: "All tracked products",
+      legendPanel: "Same products",
+      yAxis: "median years",
+      note:
+        "* {year} is partial. Hollow points are provisional: the year is still running, or " +
+        "more than {threshold}% of its lines have no announced end of support yet (each " +
+        "product counted once). Shaded: the two periods compared.",
+      nodata: "No edition yet. The nightly pipeline fills this page from endoflife.date.",
+      methodology:
+        "Source: endoflife.date's API (the products/full dump), read nightly. The catalogue " +
+        "is endoflife.date's: {products} products and {lines} release lines chosen by its " +
+        "contributors, not a sample of the software in use. The end of support is the line's " +
+        "eolFrom date, the end of its last standard support phase; paid extended support is " +
+        "not counted. A line whose end date is announced but still ahead counts with that " +
+        "date. {open} lines are still supported and have no announced end. The medians are " +
+        "Kaplan–Meier estimates, a standard method for durations that have not all ended: " +
+        "each such line counts as supported for at least its age on {as_of}, and is neither " +
+        "dropped nor treated as ended. Where fewer than half of a year's lines have ended by " +
+        "the longest age observed, the median is not reached and the tooltip gives a lower " +
+        "bound. {undated} lines are marked as ended without a date and are left out of the " +
+        "medians. Each product counts once per release year: its lines that year share one " +
+        "vote. The two periods pool three release years each. The same products released " +
+        "{panel_early_lines} lines in 2014–2016 and {panel_late_lines} in 2022–2024; a " +
+        "product that adds short-lived releases next to its long-term ones lowers its own " +
+        "median. Years are charted from the first with {min_products} products.",
+      labels: {
+        years: "{n} years",
+        atLeast: "at least {n} years",
+        tipMedian: "{years} ({days} days)",
+        tipLines: "{lines} lines from {products} products",
+        tipOpen: "{n} still supported, no announced end",
+        tipUndated: "{n} ended without a recorded date",
+        provisional: "provisional",
+        periodEarly: "2014–2016",
+        periodLate: "2022–2024",
+      },
+    },
+
+    // --------------------------------------------- eol.html · 2
+    eol_phases: {
+      num: "02",
+      kicker: "Active and security support",
+      source: "endoflife.date (MIT)",
+      headline:
+        "Where a product lists both phases, security support ends about twice as long after " +
+        "a line's release as active support does.",
+      caption:
+        "Some products split support into two phases. Active support usually brings bug " +
+        "fixes and security fixes; security support, which follows, brings security fixes " +
+        "only. For the {products} products that list both, the lines show the median time " +
+        "from release to the end of each phase, by release year. Over all years, active " +
+        "support ends after {active} and security support after {security}. On the " +
+        "{gap_lines} lines with both dates, security support continues a median of {gap} " +
+        "days after active support ends; on {zero_gap} of them the two end on the same day.",
+      statLabel: "Median time from release to the end of each phase, all release years",
+      statSecurity: "security support",
+      statActive: "active support",
+      legendActive: "End of active support",
+      legendSecurity: "End of security support",
+      yAxis: "median years after release",
+      note: "* {year} is partial. Hollow points are provisional, as in the first chart.",
+      nodata: "No product in the catalogue lists both phases.",
+      methodology:
+        "A product counts here when endoflife.date gives its lines an end of active support " +
+        "(the eoasFrom field). Products name the phases differently (“Active Support”, " +
+        "“Maintenance Support”, “Full Support”); endoflife.date maps them to these two " +
+        "fields. Both medians are Kaplan–Meier estimates with each product counted once per " +
+        "release year, as in the first chart; a line with no announced end of active support " +
+        "counts as in active support for at least its age. The gap is the days from the end " +
+        "of active support to the end of security support on lines where both dates are " +
+        "known, announced dates included, with each product's lines sharing one vote. " +
+        "{gap_unknown} lines lack one of the two dates and are not in the gap. Paid extended " +
+        "support is not counted.",
+      labels: {
+        years: "{n} years",
+        tipMedian: "{years} ({days} days)",
+        tipLines: "{lines} lines from {products} products",
+        provisional: "provisional",
+      },
+    },
+
+    // --------------------------------------------- eol.html · 3
+    eol_categories: {
+      num: "03",
+      kicker: "By category",
+      source: "endoflife.date (MIT)",
+      headline:
+        "Devices have the longest median support window of any category, server " +
+        "applications the shortest.",
+      caption:
+        "The median support window of all release lines in each endoflife.date category, " +
+        "each product counted once. Devices are hardware such as phones, tablets and watches; " +
+        "server applications are software run on servers, such as Apache Kafka, Confluence " +
+        "or GitLab. {newest_ended} of the {products} tracked products have a newest release " +
+        "line that is out of support, and {no_supported} have no line in support at all.",
+      statLabel: "Tracked products whose newest release line is out of support",
+      statWhen: "of {products} products · {no_supported} with no line in support",
+      xAxis: "median years, release to end of support",
+      categoryLabels: {
+        device: "Devices",
+        service: "Cloud services",
+        lang: "Languages and runtimes",
+        os: "Operating systems",
+        database: "Databases",
+        framework: "Frameworks and libraries",
+        app: "Applications and tools",
+        "server-app": "Server applications",
+        standard: "Standards",
+      },
+      notCharted: "Not charted, fewer than {min} products: {list}.",
+      notChartedItem: "{label} ({n})",
+      nodata: "No edition yet. The nightly pipeline fills this page from endoflife.date.",
+      methodology:
+        "Categories are endoflife.date's own, one per product. All release years are pooled, " +
+        "each product's lines share one vote, and the medians are Kaplan–Meier estimates as " +
+        "in the first chart. A category with fewer than {min_cat} products shows no median. " +
+        "A line is out of support when its end-of-support date has passed, or when " +
+        "endoflife.date marks it as ended without a date; a line in paid extended support " +
+        "counts as out of support. The newest line is the one with the latest release date. " +
+        "A product can retire a short feature release before an older long-term line, so a " +
+        "newest line out of support does not always mean the product has none in support.",
+      labels: {
+        years: "{n} years",
+        tipMedian: "{years} ({days} days)",
+        tipProducts: "{products} products · {lines} lines",
+        tipOpen: "{n} lines still supported, no announced end",
+        tipNewest: "{n} products with the newest line out of support",
+        tipNone: "{n} with no line in support",
+      },
+    },
   },
 
   footer: {
@@ -4376,7 +4554,8 @@ export const editorial = {
       "fetched {feodo_fetched} · " +
       "SEC EDGAR 8-K incident filings: {sec_incidents} · " +
       "OSV exports: {osv_ghsa} reviewed advisories, {osv_mal} malicious-package " +
-      "reports fetched {osv_fetched}",
+      "reports fetched {osv_fetched} · " +
+      "endoflife.date: {eol_products} products, {eol_lines} release lines fetched {eol_fetched}",
     // {sec_incidents} fill: counts once fetched; the pending line before the
     // first nightly EDGAR read (meta.sources.sec_incidents.status "empty").
     secFetched: "{filings_105} Item 1.05 / {filings_801} Item 8.01 fetched {fetched}",
@@ -4391,7 +4570,7 @@ export const editorial = {
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, GitHub, the OpenSSF, " +
-      "Google (OSV.dev) or the Internet Archive. Charts aggregate public data. The site " +
+      "Google (OSV.dev), endoflife.date or the Internet Archive. Charts aggregate public data. The site " +
       "does not report individual CVEs as news and does not identify victims, with one " +
       "exception: the SEC Incident Filings page lists public companies' own SEC filings under the " +
       "filer's name as EDGAR records it. No attacker infrastructure is republished; C2 " +
@@ -4432,6 +4611,8 @@ export const editorial = {
       "attribution appreciated), " +
       "the GitHub Advisory Database (GitHub, CC-BY 4.0) and the OpenSSF malicious-packages " +
       "feed (Apache-2.0), both read from the OSV.dev ecosystem exports, " +
+      "release and support dates from endoflife.date (Copyright © 2020 endoflife.date " +
+      "contributors, MIT License), " +
       "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
@@ -4550,6 +4731,7 @@ export const editorial = {
       advisories: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
       malware: "OpenSSF malicious-packages via OSV.dev",
       tags: "CVE List V5 (MITRE)",
+      eol: "endoflife.date (MIT)",
     },
   },
 };

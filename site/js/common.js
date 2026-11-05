@@ -468,6 +468,9 @@ function renderMeta(meta) {
       osv_ghsa: (s.osv?.ghsa_advisories ?? 0).toLocaleString("en-US"),
       osv_mal: (s.osv?.mal_reports ?? 0).toLocaleString("en-US"),
       osv_fetched: (s.osv?.fetched_at ?? "?") + (s.osv?.stale ? carried : ""),
+      eol_products: (s.eol?.products ?? 0).toLocaleString("en-US"),
+      eol_lines: (s.eol?.lines ?? 0).toLocaleString("en-US"),
+      eol_fetched: (s.eol?.fetched_at ?? "?") + (s.eol?.stale ? carried : ""),
     }))
   );
 }

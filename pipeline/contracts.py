@@ -408,6 +408,19 @@ def _validate_meta(obj: Any) -> None:
             _fail("meta.sources.osv",
                   "downloaded + not_modified must equal ecosystems")
 
+    # Optional (older committed meta files predate Support Windows, and an
+    # endoflife.date outage with no previous edition omits it).
+    if "eol" in src:
+        eo = src["eol"]
+        _check_str(_get(eo, "fetched_at", "meta.sources.eol"),
+                   "meta.sources.eol.fetched_at", ISO_UTC_RE)
+        for k in ("products", "lines"):
+            _check_int(_get(eo, k, "meta.sources.eol"),
+                       f"meta.sources.eol.{k}", minimum=1)
+        if not isinstance(_get(eo, "not_modified", "meta.sources.eol"),
+                          bool):
+            _fail("meta.sources.eol.not_modified", "expected boolean")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -792,3 +805,7 @@ VALIDATORS.update(osv_contracts.VALIDATORS)
 from . import tags_contracts  # noqa: E402
 
 VALIDATORS.update(tags_contracts.VALIDATORS)
+
+from . import eol_contracts  # noqa: E402
+
+VALIDATORS.update(eol_contracts.VALIDATORS)

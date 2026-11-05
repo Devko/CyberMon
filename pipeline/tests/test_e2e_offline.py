@@ -22,7 +22,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "cna_roster.json", "time_to_poc.json", "botnet_weather.json",
              "sec_incidents.json",
              "observatory.json",
-             "advisory_gap.json", "registry_malware.json"]
+             "advisory_gap.json", "registry_malware.json",
+             "support_windows.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -406,6 +407,21 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
         "mal_reports": 8, "ecosystems": 4, "downloaded": 4,
         "not_modified": 0}
 
+    # Support Windows: the synthetic endoflife.date dump (8 products, one
+    # line announced for 2099 and so not yet released). Only date-
+    # independent facts: the fixture's announced ends lie in 2099 or in the
+    # past, so no line changes state with the run date.
+    sw = _load(tmp_path, "support_windows.json")
+    assert sw["catalog"]["products"] == 8
+    assert sw["catalog"]["lines"] == 23 and sw["catalog"]["unreleased"] == 1
+    assert sw["catalog"]["open"] == 2 and sw["catalog"]["ended_undated"] == 1
+    assert sw["panel"]["products"] == 4
+    assert sw["phases"]["products"] == 2
+    assert sw["years"][-1]["year"] == int(meta["generated_at"][:4])
+    assert meta["sources"]["eol"] == {
+        "fetched_at": meta["generated_at"], "products": 8, "lines": 23,
+        "not_modified": False}
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -627,3 +643,44 @@ def test_osv_outage_carries_both_modules_forward(tmp_path, capsys,
     meta = _load(tmp_path, "meta.json")
     assert meta["sources"]["osv"]["stale"] is True
     assert meta["sources"]["osv"]["fetched_at"] == before["generated_at"]
+
+
+def test_eol_outage_carries_support_windows_forward(tmp_path, capsys,
+                                                    monkeypatch):
+    """endoflife.date feeds one module: an outage carries
+    support_windows.json forward stale (and its meta source), while every
+    other module still refreshes."""
+    from pipeline import eol_metrics
+
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    before = _load(tmp_path, "support_windows.json")
+
+    def down(*args, **kwargs):
+        raise OSError("HTTP 503")
+
+    monkeypatch.setattr(eol_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    carried = _load(tmp_path, "support_windows.json")
+    assert carried["stale"] is True
+    contracts.validate("support_windows.json", carried)
+    assert carried["catalog"] == before["catalog"]
+    assert carried["as_of"] == before["as_of"]
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["eol"]["stale"] is True
+    assert meta["sources"]["eol"]["fetched_at"] == before["generated_at"]
+    assert "endoflife.date fetch failed" in capsys.readouterr().err
+
+
+def test_eol_outage_without_prior_edition_omits_it(tmp_path, capsys,
+                                                   monkeypatch):
+    """No previous edition to carry: the file and its meta block are
+    omitted together, and the run still succeeds."""
+    from pipeline import eol_metrics
+
+    def down(*args, **kwargs):
+        raise ValueError("endoflife.date: truncated catalogue")
+
+    monkeypatch.setattr(eol_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    assert not (tmp_path / "support_windows.json").exists()
+    assert "eol" not in _load(tmp_path, "meta.json")["sources"]
