@@ -97,6 +97,13 @@ jobs:
       - name: Check motion scenes render
         run: python tools/make_motion.py --check
 
+      # Renders every social preview card into a temporary directory (~5s)
+      # and checks that each reader page's og:image / twitter:image names
+      # its own card and that every named card renders. A HARD gate, like
+      # the motion check: the deploy-time build below is non-blocking.
+      - name: Check social preview images render
+        run: python tools/make_og_images.py --check
+
   deploy:
     name: Deploy to GitHub Pages
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -166,6 +173,13 @@ jobs:
       - name: Build carousel PDFs
         continue-on-error: true
         run: python3 tools/make_carousels.py --out site/carousels
+
+      # Social preview cards (og:image / twitter:image, one 1200x630 PNG per
+      # page): deploy-time build products like the PDFs, gitignored and
+      # non-blocking. The site-smoke job already ran --check on this commit.
+      - name: Build social preview images
+        continue-on-error: true
+        run: python3 tools/make_og_images.py --out site/og
 
       # Animated social clips, same deal as the PDFs: deploy-time build
       # products, gitignored, and non-blocking. ci.yml's site-smoke job already

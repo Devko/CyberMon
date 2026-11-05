@@ -1,11 +1,14 @@
 // Chart 5 — NVD throughput. Contract: site/data/nvd_throughput.json
-import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, baseLegend, tooltipRows, fmtInt, MONO } from "../theme.js";
+import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, baseLegend, tooltipRows, fmtInt, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
+import { calendar, gapData, gapTooltip, previousReading } from "../gaps.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.throughput;
   const hist = data.history;
+  // A night with no run is an empty slot: the lines break there.
+  const cal = calendar(hist);
 
   // The static note carries a {first_date} placeholder — the record's
   // actual start date, once the rows are here (thin-launch honesty: an
@@ -48,20 +51,27 @@ export function render(slots, data) {
     tooltip: {
       ...baseTooltip, trigger: "axis",
       formatter: (params) => {
-        let html = tooltipRows(params, fmtInt);
         const i = params[0]?.dataIndex;
+        if (i == null) return "";
+        const row = cal.rows[i];
+        if (!row) return gapTooltip(cal.slots[i]);
+        let html = tooltipRows(params, fmtInt);
+        const note = (text) => `<div style="margin-top:4px;color:${C.muted};">${escapeHtml(text)}</div>`;
         // The lump lands the night AFTER a full resweep (the sweep itself
         // diffs a frozen snapshot), so the two rows carry different flags.
-        const flag = i == null ? null
-          : hist[i]?.after_resweep ? ed.afterResweepFlag
-          : hist[i]?.resweep ? ed.resweepFlag : null;
-        if (flag) {
-          html += `<div style="margin-top:4px;color:${C.muted};">${flag}</div>`;
+        const flag = row.after_resweep ? ed.afterResweepFlag
+          : row.resweep ? ed.resweepFlag : null;
+        if (flag) html += note(flag);
+        // After missed nights the comparison spans every day since the
+        // previous run's snapshot.
+        const prev = previousReading(cal, i);
+        if (prev >= 0 && prev < i - 1) {
+          html += note(tpl(ed.labels.tipSince, { date: cal.slots[prev] }));
         }
         return html;
       },
     },
-    xAxis: catAxis(hist.map((d) => d.date), {
+    xAxis: catAxis(cal.slots, {
       boundaryGap: false,
       axisLabel: { color: C.muted, fontFamily: MONO, fontSize: 10, formatter: (v) => v.slice(2) },
     }),
@@ -75,20 +85,20 @@ export function render(slots, data) {
     series: [
       {
         name: ed.seriesAnalyzed, type: "line",
-        data: hist.map((d) => d.analyzed_from_awaiting),
+        data: gapData(cal, (d) => d.analyzed_from_awaiting),
         color: C.accent, symbol: "circle", symbolSize: 5,
         lineStyle: { width: 2 },
         areaStyle: { color: C.accent, opacity: 0.07 },
       },
       {
         name: ed.seriesDeferred, type: "line",
-        data: hist.map((d) => d.deferred_from_awaiting),
+        data: gapData(cal, (d) => d.deferred_from_awaiting),
         color: C.faint, symbol: "circle", symbolSize: 4,
         lineStyle: { width: 1, type: [4, 4] },
       },
       {
         name: ed.seriesReceived, type: "line",
-        data: hist.map((d) => d.received_new),
+        data: gapData(cal, (d) => d.received_new),
         color: C.muted, symbol: "circle", symbolSize: 4,
         lineStyle: { width: 1 },
       },
@@ -96,7 +106,7 @@ export function render(slots, data) {
         // helper series (kept out of the legend's explicit data): rings on
         // catch-up days (the row after a resweep).
         name: "_resweep", type: "scatter",
-        data: hist.map((d, i) => (d.after_resweep ? [i, d.analyzed_from_awaiting] : null)).filter(Boolean),
+        data: cal.rows.map((d, i) => (d?.after_resweep ? [i, d.analyzed_from_awaiting] : null)).filter(Boolean),
         color: C.ink, symbol: "circle", symbolSize: 9,
         itemStyle: { color: "transparent", borderColor: C.muted, borderWidth: 1 },
         tooltip: { show: false },

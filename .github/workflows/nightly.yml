@@ -333,6 +333,13 @@ jobs:
         continue-on-error: true
         run: python3 tools/make_carousels.py --out site/carousels
 
+      # Social preview cards (one 1200x630 PNG per page, named by each
+      # page's og:image), under the same non-blocking rule.
+      - name: Build social preview images
+        id: og
+        continue-on-error: true
+        run: python3 tools/make_og_images.py --out site/og
+
       # Animated social clips from the same freshly committed data, under the
       # same non-blocking rule as the PDFs above: a broken clip must never keep
       # the site on stale data.
@@ -343,7 +350,7 @@ jobs:
 
       - name: Report social build-product failure (non-blocking)
         continue-on-error: true
-        if: steps.carousels.outcome == 'failure' || steps.carousel-deps.outcome == 'failure' || steps.carousel-browser.outcome == 'failure' || steps.motion.outcome == 'failure'
+        if: steps.carousels.outcome == 'failure' || steps.carousel-deps.outcome == 'failure' || steps.carousel-browser.outcome == 'failure' || steps.motion.outcome == 'failure' || steps.og.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -354,7 +361,7 @@ jobs:
             --color D93F0B --force || true
           issue="$(gh issue list --label nightly-failure --state open \
             --json number --jq '.[0].number // empty')"
-          body="Social build product failed — carousels=${{ steps.carousels.outcome }}, motion=${{ steps.motion.outcome }} (deploy proceeded without them): $RUN_URL"
+          body="Social build product failed — carousels=${{ steps.carousels.outcome }}, motion=${{ steps.motion.outcome }}, og=${{ steps.og.outcome }} (deploy proceeded without them): $RUN_URL"
           if [ -n "$issue" ]; then
             gh issue comment "$issue" --body "$body"
           else

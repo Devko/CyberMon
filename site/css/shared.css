@@ -501,6 +501,20 @@ code {
 
 .method-src { font-family: var(--mono); font-size: 12px; }
 
+/* The section's public JSON file(s), under the methodology; continues its
+   left rule so the two read as one footnote. */
+.method-data {
+  margin: 0;
+  padding: 6px 0 0 16px;
+  border-left: 2px solid var(--rule-strong);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.method-data a { color: var(--muted); text-decoration: underline dotted; }
+.method-data a:hover { color: var(--ink); }
+
 /* ---- error card ---- */
 
 .error-card {

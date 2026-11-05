@@ -2,6 +2,7 @@
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseGrid, tooltipRows, fmtInt, escapeHtml, MONO } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
+import { calendar, gapData, gapTooltip } from "../gaps.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.decay;
@@ -59,16 +60,21 @@ export function render(slots, data) {
   });
 
   // ---- backlog history (CyberMon's own nightly record) ----------------------
-  const hist = data.history;
+  // A night without a snapshot is an empty slot: the lines break there.
+  const hist = calendar(data.history);
   const line = mkChart(lineEl);
   line.setOption({
     // right padding keeps the newest date label from clipping at the edge
     grid: { ...baseGrid, left: 56, right: 36, top: 16, bottom: 24 },
     tooltip: {
       ...baseTooltip, trigger: "axis",
-      formatter: (params) => tooltipRows(params, fmtInt),
+      formatter: (params) => {
+        const i = params[0]?.dataIndex;
+        if (i != null && !hist.rows[i]) return gapTooltip(hist.slots[i]);
+        return tooltipRows(params, fmtInt);
+      },
     },
-    xAxis: catAxis(hist.map((d) => d.date), {
+    xAxis: catAxis(hist.slots, {
       boundaryGap: false,
       axisLabel: { color: C.muted, fontFamily: MONO, fontSize: 10, formatter: (v) => v.slice(2) },
     }),
@@ -79,14 +85,14 @@ export function render(slots, data) {
     series: [
       {
         name: ed.labels.backlog, type: "line",
-        data: hist.map((d) => d.backlog_total),
+        data: gapData(hist, (d) => d.backlog_total),
         color: C.accent, symbol: "circle", symbolSize: 5,
         lineStyle: { width: 2 },
         areaStyle: { color: C.accent, opacity: 0.07 },
       },
       {
         name: ed.labels.awaiting, type: "line",
-        data: hist.map((d) => d.awaiting_analysis),
+        data: gapData(hist, (d) => d.awaiting_analysis),
         // visible symbol so a young history (one snapshot = no line
         // segment yet) still renders a point instead of nothing
         color: C.muted, symbol: "circle", symbolSize: 4,

@@ -32,7 +32,10 @@ async function boot() {
 
   const built = [];
   for (const cfg of SECTIONS) {
-    const { section, slots } = buildSection(cfg, null, { noteKeys: ["importNote", "catalogNote"] });
+    const { section, slots } = buildSection(cfg, null, {
+      noteKeys: ["importNote", "catalogNote"],
+      dataFiles: [DATA_FILE],
+    });
     main.append(section);
     built.push({ cfg, slots });
   }

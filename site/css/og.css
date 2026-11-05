@@ -1,0 +1,79 @@
+/* ============================================================================
+   CyberMon — og.html-only styles (social preview card, 1200×630 CSS px).
+   tools/make_og_images.py screenshots .og-card once per page. The card
+   follows the carousel cover (css/carousel.css): wordmark, module line,
+   headline, footer rule. No new colors — every value comes from the
+   shared.css custom properties.
+   ========================================================================== */
+
+body.og {
+  margin: 0;
+  background: var(--bg);
+}
+
+.og-card {
+  position: relative;
+  box-sizing: border-box;
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 52px 72px 44px;
+  background: var(--bg);
+  border-top: 8px solid var(--accent);
+}
+
+.og-wordmark {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+}
+
+.og-line {
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 28px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+
+/* The headline's budget: everything between the module line and the
+   footer. js/og.js steps the font size down until the headline fits it. */
+.og-headline-box {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  padding: 22px 0;
+}
+
+.og-headline {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 66px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 30ch;
+  color: var(--ink);
+}
+
+.og-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  font-family: var(--mono);
+  font-size: 19px;
+  color: var(--muted);
+  margin: 0;
+  padding-top: 20px;
+  border-top: 3px double var(--rule-strong);
+}

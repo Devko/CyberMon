@@ -133,3 +133,58 @@ def test_contract_rejects_capture_granularity_outside_kev():
     obj["events"][i] = "|".join(parts)
     with pytest.raises(ContractViolation, match="capture"):
         validate("observatory.json", obj)
+
+
+# ---- missed nights: gaps, never zero ---------------------------------------
+
+def test_missed_nights_come_from_the_run_record():
+    # Runs on record 07-10 .. 07-22 except 07-12, 07-13, 07-14 and 07-20;
+    # the nightly lanes begin 07-11 (first nightly KEV diff), and the KEV
+    # event dated 07-12 proves that night's run.
+    runs = [f"2026-07-{d:02d}" for d in range(10, 23)
+            if d not in (12, 13, 14, 20)]
+    obj = _build(run_dates=runs)
+    validate("observatory.json", obj)
+    assert obj["missed_nights"] == ["2026-07-13", "2026-07-14", "2026-07-20"]
+
+
+def test_no_run_record_means_no_missed_nights():
+    assert _build()["missed_nights"] == []
+    assert ob.missed_nights([], "2026-07-11", "2026-07-22") == []
+    # judged only from the run record's own first date
+    assert ob.missed_nights(["2026-07-20", "2026-07-22"], "2026-07-11",
+                            "2026-07-22") == ["2026-07-21"]
+
+
+def test_epss_gap_lists_name_missed_and_excluded_score_dates():
+    epss = _build()["sources"]["epss"]
+    assert epss["excluded"] == ["2026-07-19"]          # the reset night
+    assert epss["missed"] == ["2026-07-20", "2026-07-21"]
+
+
+def test_contract_rejects_an_event_on_a_gap_date():
+    obj = _build()
+    obj["missed_nights"] = ["2026-07-15"]  # the rescore events' night
+    with pytest.raises(ContractViolation, match="missed_nights"):
+        validate("observatory.json", obj)
+    obj = _build()
+    obj["sources"]["epss"]["missed"] = ["2026-07-18"]  # an EPSS event's date
+    with pytest.raises(ContractViolation, match="epss.missed"):
+        validate("observatory.json", obj)
+    obj = _build()
+    obj["missed_nights"] = ["2026-07-14", "2026-07-13"]
+    with pytest.raises(ContractViolation, match="sorted"):
+        validate("observatory.json", obj)
+
+
+def test_read_run_dates_unions_the_per_night_logs(tmp_path):
+    (tmp_path / "nvd_backlog.csv").write_text(
+        "date,backlog_total,awaiting_analysis,undergoing_analysis,received\n"
+        "2026-07-09,1,1,0,0\n2026-07-10,1,1,0,0\n")
+    (tmp_path / "botnet_c2.csv").write_text(
+        "date,family,online,listed\n2026-07-12,Emotet,0,1\n")
+    (tmp_path / "cna_roster_state.json").write_text(
+        '{"size_history": [["2026-07-10", 500], ["2026-07-11", 501]]}')
+    assert ob.read_run_dates(tmp_path) == {
+        "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12"}
+    assert ob.read_run_dates(tmp_path / "absent") == set()

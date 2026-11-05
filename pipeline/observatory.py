@@ -36,14 +36,28 @@ event is one ``"|"``-joined string —
 :data:`GRANULARITIES`. A ``|`` inside a detail (KEV vendor text) is
 written as ``/``.
 
+Missed nights (the page draws them as gaps, never as zero): the three
+logs only hold rows for nights with events, so a quiet night and a night
+the pipeline never ran look the same in them. ``missed_nights`` lists the
+nights with no nightly run, judged from the per-night logs that write a
+row on every successful run (``run_dates``: the NVD backlog, the CNA
+roster size history and the Feodo C2 counts — any one of them is proof
+the run happened), from the first such row to ``last_observed``. EPSS is
+dated by score date, so its lane has its own lists: ``sources.epss.missed``
+(score dates with no snapshot in the log) and ``sources.epss.excluded``
+(the quarantined reset/anomaly nights).
+
 Pure function of the three logs (and the KEV state's backfill block, for
-the capture-era bounds): the same committed files always yield the same
-file. No state, no network, no writes of its own.
+the capture-era bounds, and the run dates): the same committed files
+always yield the same file. No state, no network, no writes of its own.
 """
 from __future__ import annotations
 
+import csv
+import json
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
+from pathlib import Path
 from typing import Iterable
 
 from .epss_volatility import classify
@@ -113,6 +127,50 @@ def rescore_events(rows: Iterable[dict]) -> list[tuple]:
     return out
 
 
+def _days(first: str, last: str) -> list[str]:
+    a, b = date.fromisoformat(first), date.fromisoformat(last)
+    return [(a + timedelta(days=i)).isoformat() for i in range((b - a).days + 1)]
+
+
+def read_run_dates(history_dir: Path) -> set[str]:
+    """Dates on which a nightly run left a row in a per-night log.
+
+    Each of these logs gets a row on every successful run unless its own
+    upstream failed that night (NVD stale or skipped, a broken roster
+    fetch, a Feodo outage), so their union is the run record. A missing
+    or unreadable file contributes nothing."""
+    dates: set[str] = set()
+    for name in ("nvd_backlog.csv", "botnet_c2.csv"):
+        try:
+            with open(history_dir / name, newline="", encoding="utf-8") as fh:
+                dates.update(r["date"] for r in csv.DictReader(fh) if r.get("date"))
+        except (OSError, KeyError, csv.Error):
+            pass
+    try:
+        state = json.loads((history_dir / "cna_roster_state.json")
+                           .read_text(encoding="utf-8"))
+        dates.update(str(d) for d, _n in state.get("size_history") or [])
+    except (OSError, ValueError, TypeError, AttributeError):
+        pass
+    return dates
+
+
+def missed_nights(run_dates: Iterable[str], start: str | None,
+                  last: str | None, also_ran: Iterable[str] = ()) -> list[str]:
+    """Nights from ``start`` to ``last`` with no run on record. Judged only
+    from the run record's own first date: before it, nothing is known.
+    ``also_ran``: further proof of a run (a night with a nightly event),
+    which never moves that first date."""
+    runs = set(run_dates)
+    if not runs or not start or not last:
+        return []
+    start = max(start, min(runs))
+    if start > last:
+        return []
+    runs |= set(also_ran)
+    return [d for d in _days(start, last) if d not in runs]
+
+
 def epss_events(rows: list[dict]) -> tuple[list[tuple], Counter]:
     """Top-mover events plus the count of excluded nights by reason."""
     rows = sorted(rows, key=lambda r: r["observed_date"])
@@ -132,11 +190,22 @@ def epss_events(rows: list[dict]) -> tuple[list[tuple], Counter]:
 
 def build_observatory(*, kev_rows: list[dict], kev_state: dict | None,
                       rescore_rows: list[dict], epss_rows: list[dict],
-                      generated_at: str) -> dict:
-    """Assemble observatory.json from the three merged logs."""
+                      generated_at: str,
+                      run_dates: Iterable[str] = ()) -> dict:
+    """Assemble observatory.json from the three merged logs.
+
+    ``run_dates``: nights a nightly run is on record for (see
+    :func:`read_run_dates`); tonight's run, which builds this file, is
+    added here."""
     kev = kev_events(kev_rows)
     rescore = rescore_events(rescore_rows)
     epss, excluded = epss_events(epss_rows)
+    epss_sorted = sorted(epss_rows, key=lambda r: r["observed_date"])
+    epss_dates = [r["observed_date"] for r in epss_sorted]
+    epss_excluded = [d for d, reason in zip(epss_dates, classify(epss_sorted))
+                     if reason in ("reset", "anomaly")]
+    epss_missed = (sorted(set(_days(epss_dates[0], epss_dates[-1]))
+                          - set(epss_dates)) if epss_dates else [])
 
     # ---- when each history begins (first observation, never earlier) -------
     backfill = (kev_state or {}).get("backfill") or {}
@@ -168,6 +237,8 @@ def build_observatory(*, kev_rows: list[dict], kev_state: dict | None,
             "nights": len(epss_rows),
             "excluded_reset": excluded["reset"],
             "excluded_anomaly": excluded["anomaly"],
+            "excluded": epss_excluded,
+            "missed": epss_missed,
         },
     }
 
@@ -186,10 +257,21 @@ def build_observatory(*, kev_rows: list[dict], kev_state: dict | None,
         encoded.append(SEP.join((str(offset), cve, str(order[kind]), detail,
                                  str(GRANULARITIES.index(grain)))))
     counts = Counter(e[2] for e in events)
+    last = events[-1][0] if events else None
+    # The KEV and score lanes run nightly from the first nightly KEV diff or
+    # the first score event, whichever is earlier.
+    nightly = [d for d in (sources["kev"]["nightly_from"],
+                           sources["rescore"]["first_observed"]) if d]
+    # Tonight's run builds this file; a nightly KEV or score event is proof
+    # of a run too.
+    missed = missed_nights(set(run_dates) | {generated_at[:10]},
+                           min(nightly, default=None), last,
+                           also_ran=set(daily_kev) | {e[0] for e in rescore})
     return {
         "generated_at": generated_at,
         "base_date": base,
-        "last_observed": events[-1][0] if events else None,
+        "last_observed": last,
+        "missed_nights": missed,
         "kinds": list(KINDS),
         "kind_source": [SOURCE_OF[k] for k in KINDS],
         "granularities": list(GRANULARITIES),

@@ -15,7 +15,8 @@
 //     against the same value;
 //   - `sections.<id>.nodata`: a section's own empty-state line; a chart
 //     whose section has none shows `ui.nodata`;
-//   - the carousel and motion-clip copy (`carousel`, `motion`).
+//   - the carousel, motion-clip and social-preview copy (`carousel`,
+//     `motion`, `og`).
 //
 // What stays in code, by design:
 //   - internal series ids (names starting with "_", never shown);
@@ -568,6 +569,13 @@ export const editorial = {
     navInstruments: "Instruments",
     // aria-label of the masthead wordmark, which links home on module pages.
     homeLink: "CyberMon overview",
+    // Tooltip on the empty slot a chart leaves for a date its nightly
+    // record has no row for (gaps.js).
+    noReading: "no reading: no snapshot was recorded on this date",
+    // Beside each section's "How this is computed": the public JSON file(s)
+    // the section's chart reads (common.js buildSection, opts.dataFiles).
+    dataFile: "Data file: ",
+    dataFiles: "Data files: ",
   },
 
   methodologyLabel: "How this is computed",
@@ -1000,8 +1008,8 @@ export const editorial = {
         "Analysis. The bar axis is logarithmic so that the smaller queue statuses stay " +
         "visible beside the Modified count. Each nightly run appends one row to a " +
         "committed CSV (data/history/nvd_backlog.csv); a second run on the same date " +
-        "replaces that date's row. A night without a successful run has no row, and " +
-        "the chart's date axis skips it.",
+        "replaces that date's row. A night without a successful run has no row and " +
+        "is a gap in the lines.",
       labels: {
         backlog: "Backlog total",
         awaiting: "Awaiting analysis",
@@ -1064,12 +1072,15 @@ export const editorial = {
         "unreliable. A full re-read can catch transitions that incremental syncs " +
         "missed. The feed files lag by about a day, so that catch-up lands in the row " +
         "for the night after the re-read, which is ringed on the chart and flagged in " +
-        "the tooltip. After a night with no run, the next comparison covers more than " +
-        "one day. Each run date gets one row in a committed CSV " +
+        "the tooltip. A night with no run is a gap in the lines, and the next " +
+        "comparison covers every day since the previous run. Each run date gets one " +
+        "row in a committed CSV " +
         "(data/history/nvd_throughput.csv); a second run on the same date adds its " +
         "counts to that date's row.",
       labels: {
         firstDateFallback: "today",
+        // Tooltip on the first comparison after missed nights.
+        tipSince: "compared with the snapshot of {date}; no snapshot was recorded in between",
       },
     },
 
@@ -2844,15 +2855,19 @@ export const editorial = {
         "of probabilities that moved is more than five times the clean-night median " +
         "(and above five percent) with no model change. This rule covers " +
         "corpus-wide jumps like those first seen in August 2026, when about one CVE " +
-        "in eight moved and then moved back. Excluded and missed nights are left " +
-        "off the date axis, not drawn as gaps. This measures how often EPSS values " +
-        "change, not whether the model is right.",
+        "in eight moved and then moved back. Excluded and missed nights are gaps " +
+        "in the lines. This measures how often EPSS values change, not whether " +
+        "the model is right.",
       labels: {
         quarantineReasons: {
           reset: "model reset",
           gap: "pooled",
           anomaly: "anomalous",
         },
+        // Tooltips on the empty slots: an excluded night, and a score date
+        // the log has no snapshot for.
+        tipExcluded: "left out: {reason}",
+        tipMissed: "no reading: no EPSS snapshot for this date was read",
       },
     },
 
@@ -2881,11 +2896,12 @@ export const editorial = {
         "below it on the other. The three counts are independent, so a jump from " +
         "near zero to above 5% counts under all three. Bars sum the nightly counts " +
         "by ISO week of the observation date (UTC). The week in progress is starred, " +
-        "and a week with no observed night would chart at zero. The thresholds are " +
+        "and a week with no clean night is left empty. The thresholds are " +
         "CyberMon's choice, not FIRST's.",
       labels: {
         tipNight: "{n} night",
         tipNights: "{n} nights",
+        tipEmpty: "no clean night this week",
       },
     },
 
@@ -2954,7 +2970,7 @@ export const editorial = {
         "the organization uses on CVE records. The count of organizations is " +
         "appended to a size history stored in the repository " +
         "(data/history/cna_roster_state.json), and the line is drawn from it. A " +
-        "night without a snapshot has no point, and the axis closes up around it. " +
+        "night without a snapshot is a gap in the line. " +
         "The roster file's git history (CVEProject/cve-website) holds earlier " +
         "edits, but this log has not imported it, so the series begins with " +
         "CyberMon's first snapshot. A fetch that returns less than half of the " +
@@ -4509,6 +4525,13 @@ export const editorial = {
         countLabel: "Active CNAs",
       },
     },
+  },
+
+  // Social preview cards (og.html, tools/make_og_images.py). A module's
+  // card reuses carousel.coverModule and its home-card headline; the
+  // footer reuses carousel.siteUrl and masthead.kicker.
+  og: {
+    instrumentLine: "Instrument — {label}",
   },
 
   carousel: {
