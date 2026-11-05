@@ -6,6 +6,8 @@
 //   2. Link css/shared.css.
 //   3. In its page script: import { initChrome, fetchJSON, buildSection,
 //      showError } and call initChrome("<nav id from editorial.nav>").
+//      Pass each section's JSON to buildSection as opts.dataFiles
+//      (["data/<file>.json"]) so the page links it under the methodology.
 //
 // initChrome renders masthead + tabs + footer, loads data/meta.json, and shows
 // the synthetic-sample banner when meta.sample === true. buildSection builds
@@ -110,13 +112,18 @@ export function errorCard(file, kind = "data") {
 //       (default ["note"]; kev uses ["backfillNote"], breaches
 //       ["importNote", "catalogNote"]). The note is rendered as a template
 //       now and filled by the renderer once the payload is here.
+// opts.dataFiles: the public JSON file(s) the section reads, as relative
+//       paths ("data/kev_latency.json"). Each module page declares its own;
+//       they are linked beside "How this is computed". A section that
+//       declares none (the Observatory's) shows no link, and the carousel
+//       and motion templates do not use this skeleton at all.
 // Returns { section, slots: { stat, panel, controls, chart, extra }, caption,
 // methodText } — caption/methodText so renderers can fill {placeholders}
 // from the contract (cve.js, concentration.js).
 export function buildSection(cfg, ed = null, opts = {}) {
   ed = ed ?? editorial.sections[cfg.id];
   if (!ed) throw new Error(`no editorial.sections entry for section "${cfg.id}"`);
-  const { noteKeys = ["note"] } = opts;
+  const { noteKeys = ["note"], dataFiles = [] } = opts;
 
   const section = el("section", "chart-section" + (cfg.hero ? " hero" : ""));
   section.id = `s-${cfg.id}`;
@@ -168,8 +175,21 @@ export function buildSection(cfg, ed = null, opts = {}) {
   details.append(summary, methodBody);
 
   section.append(head, stat, panel, details);
+  if (dataFiles.length) section.append(dataFileLinks(dataFiles));
 
   return { section, slots: { stat, panel, controls, chart, extra }, caption, methodText };
+}
+
+// "Data file: data/x.json" — links to the JSON a section's chart reads,
+// under its methodology. Relative hrefs, so they work under a Pages subpath.
+function dataFileLinks(files) {
+  const p = el("p", "method-data");
+  p.append(files.length > 1 ? editorial.ui.dataFiles : editorial.ui.dataFile);
+  files.forEach((file, i) => {
+    if (i) p.append(", ");
+    p.append(link(file, file, "mono"));
+  });
+  return p;
 }
 
 // Collapse a built section into one inline error card. `err` (optional) is

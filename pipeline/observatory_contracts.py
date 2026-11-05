@@ -14,7 +14,11 @@ What it holds the file to:
   after its source's ``first_observed``, and ``capture`` granularity
   appears only on KEV events on or before ``sources.kev.capture_until``;
 * ``counts`` per kind and ``sources.*.events`` reconcile with the events
-  actually shipped; ``last_observed`` is the newest event's date.
+  actually shipped; ``last_observed`` is the newest event's date;
+* the gap lists (``missed_nights``, ``sources.epss.excluded`` and
+  ``.missed``) are sorted dates, and no event the page would hide sits on
+  one: a nightly KEV or score event on a missed night, or an EPSS event on
+  an excluded or missed score date.
 """
 from __future__ import annotations
 
@@ -58,6 +62,24 @@ def _validate_observatory(obj: Any) -> None:
     for key in ("nights", "excluded_reset", "excluded_anomaly"):
         _check_int(_get(sources["epss"], key, f"{root}.sources.epss"),
                    f"{root}.sources.epss.{key}")
+    # Gap lists (the page draws these dates as empty slots, never zero).
+    no_events: dict[str, set[str]] = {}
+    for path, lst in (
+            (f"{root}.missed_nights", _get(obj, "missed_nights", root)),
+            (f"{root}.sources.epss.excluded",
+             _get(sources["epss"], "excluded", f"{root}.sources.epss")),
+            (f"{root}.sources.epss.missed",
+             _get(sources["epss"], "missed", f"{root}.sources.epss"))):
+        _check_list(lst, path)
+        for j, d in enumerate(lst):
+            _check_str(d, f"{path}[{j}]", DATE_RE)
+        if lst != sorted(set(lst)):
+            _fail(path, "must be sorted ISO dates without repeats")
+        no_events[path] = set(lst)
+    if len(sources["epss"]["excluded"]) != (sources["epss"]["excluded_reset"]
+                                            + sources["epss"]["excluded_anomaly"]):
+        _fail(f"{root}.sources.epss.excluded",
+              "must list every reset and anomaly night")
 
     base = _get(obj, "base_date", root)
     last = _get(obj, "last_observed", root)
@@ -109,6 +131,13 @@ def _validate_observatory(obj: Any) -> None:
                 source != "kev" or capture_until is None
                 or iso > capture_until):
             _fail(p, f"capture granularity on a {source} event dated {iso}")
+        gaps = ((f"{root}.sources.epss.excluded", f"{root}.sources.epss.missed")
+                if source == "epss" else
+                (f"{root}.missed_nights",) if GRANULARITIES[grain_n] != "capture"
+                else ())
+        for gap in gaps:
+            if iso in no_events[gap]:
+                _fail(p, f"{source} event dated {iso}, a date {gap} lists")
         counts[kind_n] += 1
         per_source[source] += 1
         cves.add(cve)

@@ -1951,6 +1951,7 @@ a later Known→Unknown change of the same entry. The validator requires
 {
   "generated_at": "...",
   "base_date": "2021-12-23", "last_observed": "2026-09-22",
+  "missed_nights": ["2026-08-02", "2026-08-28", "2026-08-29"],
   "kinds": ["kev_added", "kev_removed", "kev_flag", "kev_due",
             "kev_field", "kev_text", "rescore", "version_shift",
             "first_score", "score_removed", "epss_move"],
@@ -1962,7 +1963,9 @@ a later Known→Unknown change of the same entry. The validator requires
             "nightly_from": "2026-07-11", "events": 4360},
     "rescore": {"first_observed": "2026-07-15", "events": 5412},
     "epss": {"first_observed": "2026-07-18", "events": 55, "nights": 62,
-             "excluded_reset": 0, "excluded_anomaly": 7}
+             "excluded_reset": 0, "excluded_anomaly": 7,
+             "excluded": ["2026-08-23", "..."],
+             "missed": ["2026-08-01", "2026-08-27", "..."]}
   },
   "counts": {"kev_added": 1415, "first_score": 5304, "...": 0},
   "cves": 7157,
@@ -1996,6 +1999,21 @@ logged event; EPSS: the first logged night); the validator rejects any
 event dated before its history began, checks the encoding and the
 day-sorted order, and reconciles `counts`, `sources.*.events` and `cves`
 with the events shipped. Validator: `pipeline/observatory_contracts.py`.
+
+**Missed nights** (the page draws them as empty slots, never as zero).
+The three logs hold rows only for nights with events, so `missed_nights`
+names the nights with no nightly run, from the first nightly KEV diff or
+score event (whichever is earlier) to `last_observed`. The run record is
+the union of the per-night logs that get a row on every successful run
+(`nvd_backlog.csv`, `botnet_c2.csv`, the roster state's `size_history`),
+plus tonight and any night with a nightly KEV or score event; nights
+before the run record's first date are never listed. EPSS is dated by
+score date, so its lane has its own lists: `sources.epss.missed` (score
+dates between the log's first and last night with no row) and
+`sources.epss.excluded` (the `reset` and `anomaly` nights). The validator
+checks that each list is sorted without repeats, that `excluded` holds
+every reset and anomaly night, and that no event the page would hide sits
+on a listed date.
 
 
 ## site/data/cna_roster.json  (CNA Roster History module, all 3 charts)

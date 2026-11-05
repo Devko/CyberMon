@@ -38,7 +38,7 @@ async function boot() {
   const byFile = new Map();
   for (const cfg of SECTIONS) {
     const { section, slots, caption, methodText } =
-      buildSection(cfg, null, { noteKeys: ["backfillNote"] });
+      buildSection(cfg, null, { noteKeys: ["backfillNote"], dataFiles: [cfg.file ?? DATA_FILE] });
     main.append(section);
     const file = cfg.file ?? DATA_FILE;
     if (!byFile.has(file)) byFile.set(file, []);

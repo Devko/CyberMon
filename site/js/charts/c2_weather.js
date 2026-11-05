@@ -11,6 +11,7 @@ import {
 } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el, frag } from "../dom.js";
+import { calendar, gapData, gapTooltip } from "../gaps.js";
 
 // Family palette: a small newsprint ramp, accent first — the stack is the
 // star of this page. Cycles if the record ever holds more families.
@@ -71,17 +72,11 @@ export function render(slots, data) {
     slots.stat.append(stat);
   }
 
-  // Gap-fill the calendar: a night the pipeline missed is an empty slot
-  // (no bar, a break in the line), never silently closed up.
-  const byDate = new Map(series.map((pt) => [pt.date, pt]));
-  const dates = [];
-  if (series.length) {
-    const end = Date.parse(`${series[series.length - 1].date}T00:00:00Z`);
-    for (let t = Date.parse(`${series[0].date}T00:00:00Z`); t <= end; t += 86400000) {
-      dates.push(new Date(t).toISOString().slice(0, 10));
-    }
-  }
-  const days = dates.map((d) => byDate.get(d) || null);
+  // A night the pipeline missed is an empty slot (no bar, a break in the
+  // line), never closed up (gaps.js).
+  const cal = calendar(series);
+  const dates = cal.slots;
+  const days = cal.rows;
   const famSeries = families.map((fam, i) => ({
     name: fam,
     type: "bar",
@@ -89,7 +84,7 @@ export function render(slots, data) {
     barMaxWidth: 26,
     color: FAMILY_COLORS[i % FAMILY_COLORS.length],
     emphasis: { focus: "series" },
-    data: days.map((pt) => (pt ? pt.online[fam] ?? 0 : null)),
+    data: gapData(cal, (pt) => pt.online[fam] ?? 0),
   }));
 
   const chart = mkChart(slots.chart);
@@ -107,11 +102,7 @@ export function render(slots, data) {
       formatter: (params) => {
         const i = params.length ? params[0].dataIndex : -1;
         const pt = days[i];
-        if (!pt) {
-          return dates[i]
-            ? `<div style="color:${C.muted};">${escapeHtml(dates[i])} · ${escapeHtml(ed.noReading)}</div>`
-            : "";
-        }
+        if (!pt) return dates[i] ? gapTooltip(dates[i], ed.noReading) : "";
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(pt.date)}</div>`;
@@ -157,7 +148,7 @@ export function render(slots, data) {
         symbolSize: dates.length > 40 ? 3 : 5,
         lineStyle: { color: C.muted, width: 1.5, type: "dashed" },
         itemStyle: { color: C.muted },
-        data: days.map((pt) => (pt ? pt.listed_total : null)),
+        data: gapData(cal, (pt) => pt.listed_total),
       },
     ],
   });

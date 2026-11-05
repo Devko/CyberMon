@@ -69,7 +69,7 @@ async function boot() {
   const jobs = [initChrome("cve")];
 
   for (const cfg of SECTIONS) {
-    const { section, slots, caption, methodText } = buildSection(cfg);
+    const { section, slots, caption, methodText } = buildSection(cfg, null, { dataFiles: [cfg.file] });
     main.append(section);
     jobs.push(
       fetchJSON(cfg.file)

@@ -775,11 +775,14 @@ def run(args: argparse.Namespace) -> int:
     # Mutation Observatory (instrument, not a module): tonight's merged
     # rescore / KEV-changelog / EPSS-volatility logs — the same rows the
     # persists below write — laid on one per-CVE event stream. No fetch,
-    # no state: a pure function of the three records.
+    # no state: a pure function of the three records. The committed
+    # per-night logs (NVD backlog, roster size, Feodo counts) say which
+    # nights had a run, so the page can draw missed nights as gaps.
     outputs["observatory.json"] = observatory.build_observatory(
         kev_rows=changelog_pending.events, kev_state=changelog_pending.state,
         rescore_rows=rescore_rows, epss_rows=epssvol_rows,
-        generated_at=generated_at)
+        generated_at=generated_at,
+        run_dates=observatory.read_run_dates(args.out / "history"))
     # CNA Roster History: diff tonight's CVE.org org roster against the
     # committed state; onboardings/departures/scope changes append to a
     # committed CSV (an original dataset — the federation keeps no history).

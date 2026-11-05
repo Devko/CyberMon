@@ -8,12 +8,13 @@
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, escapeHtml } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el } from "../dom.js";
+import { calendar, gapData, gapTooltip } from "../gaps.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.epssvol_churn;
   const weeks = data.churn.weeks || [];
 
-  if (!weeks.length) {
+  if (!weeks.some((w) => w.days > 0)) {
     slots.chart.classList.remove("chart", "chart-tall");
     slots.chart.append(el("div", "nodata-card", ed.emptyChart));
     return;
@@ -35,6 +36,10 @@ export function render(slots, data) {
     { name: ed.legendHi, color: C.accent, value: (w) => w.crossed_hi },
   ];
 
+  // A week with no clean night has no bars (an empty slot, not a zero):
+  // the pipeline lists it with days 0, and calendar() leaves it null.
+  const cal = calendar(weeks.filter((w) => w.days > 0), { key: (w) => w.week, unit: "week" });
+
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 52, top: 40 },
@@ -43,8 +48,9 @@ export function render(slots, data) {
       ...baseTooltip,
       trigger: "axis",
       formatter: (params) => {
-        const w = params.length && weeks[params[0].dataIndex];
-        if (!w) return "";
+        const i = params.length ? params[0].dataIndex : -1;
+        const w = cal.rows[i];
+        if (!w) return cal.slots[i] ? gapTooltip(cal.slots[i], ed.labels.tipEmpty) : "";
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(w.week)} · ` +
@@ -58,8 +64,8 @@ export function render(slots, data) {
         return head + body;
       },
     },
-    xAxis: catAxis(weeks.map((w) => (w.week === genWeek ? `${w.week}*` : w.week)), {
-      axisLabel: { ...catAxis([]).axisLabel, rotate: weeks.length > 16 ? 45 : 0 },
+    xAxis: catAxis(cal.slots.map((wk) => (wk === genWeek ? `${wk}*` : wk)), {
+      axisLabel: { ...catAxis([]).axisLabel, rotate: cal.slots.length > 16 ? 45 : 0 },
     }),
     yAxis: valAxis({
       name: ed.yAxisLabel,
@@ -71,7 +77,7 @@ export function render(slots, data) {
       color,
       barMaxWidth: 22,
       emphasis: { focus: "series" },
-      data: weeks.map(value),
+      data: gapData(cal, value),
     })),
   });
 }

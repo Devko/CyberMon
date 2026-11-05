@@ -23,7 +23,8 @@ const DATA_FILE = "data/adp_coverage.json";
 const NVD_FILE = "data/nvd_decay.json"; // best-effort context, never required
 
 const SECTIONS = [
-  { id: "adp_handoff", render: renderHandoff, hero: true },
+  // The hero also reads the NVD backlog (best-effort context, see above).
+  { id: "adp_handoff", render: renderHandoff, hero: true, dataFiles: [DATA_FILE, NVD_FILE] },
   { id: "adp_adds", render: renderAdds },
   { id: "adp_providers", render: renderProviders },
 ];
@@ -38,7 +39,7 @@ async function boot() {
 
   const built = [];
   for (const cfg of SECTIONS) {
-    const { section, slots } = buildSection(cfg);
+    const { section, slots } = buildSection(cfg, null, { dataFiles: cfg.dataFiles ?? [DATA_FILE] });
     main.append(section);
     built.push({ cfg, slots });
   }

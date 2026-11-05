@@ -39,7 +39,7 @@ async function boot() {
 
   const built = [];
   for (const cfg of SECTIONS) {
-    const { section, slots } = buildSection(cfg);
+    const { section, slots } = buildSection(cfg, null, { dataFiles: [DATA_FILE] });
     main.append(section);
     built.push({ cfg, slots });
   }

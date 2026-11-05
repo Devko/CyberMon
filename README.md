@@ -764,6 +764,10 @@ python3 tools/observatory_smoke.py   # the Mutation Observatory
 python3 tools/make_motion.py --check          # fast pre-flight, no encode
 python3 tools/make_motion.py --out site/motion # full render (~1 min/scene)
 python3 tools/make_motion.py --scene hype-race --keep-frames  # one scene, keep PNGs
+
+# Social preview cards (og:image, one 1200×630 PNG per page)
+python3 tools/make_og_images.py --check       # render to a temp dir, check page meta
+python3 tools/make_og_images.py --out site/og  # full render (a few seconds)
 ```
 
 A real (networked) run is `python3 -m pipeline --out site/data`. Set
@@ -777,9 +781,12 @@ data (marked `"sample": true`, which the claims audit skips) for UI work
 without a pipeline run. It refuses to write into the committed
 `site/data`.
 
-`site/carousels/` (LinkedIn PDFs) and `site/motion/` (animated clips) are
-deploy-time build products: gitignored, rebuilt into the Pages artifact on
-every deploy, never committed. Their build steps are `continue-on-error` in
+`site/carousels/` (LinkedIn PDFs), `site/motion/` (animated clips) and
+`site/og/` (social preview cards) are deploy-time build products:
+gitignored, rebuilt into the Pages artifact on every deploy, never
+committed. Every reader page's `og:image` and `twitter:image` point at
+`og/<page id>.png`; `make_og_images.py --check` fails CI when a page
+does not, or when a named card cannot render. Their build steps are `continue-on-error` in
 both workflows, so a broken social asset never holds the site on stale data.
 
 ## Methodology

@@ -10,6 +10,7 @@
 import { C, mkChart, catAxis, valAxis, baseTooltip, baseLegend, baseGrid, fmtInt, fmtPct, escapeHtml } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el, frag } from "../dom.js";
+import { calendar, gapData, gapTooltip, loneSymbol } from "../gaps.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.epssvol_gap;
@@ -67,7 +68,12 @@ export function render(slots, data) {
   stat.append(el("div", "hero-stat-label", ed.statLabel), frag(row));
   slots.stat.append(stat);
 
-  const days = gap.days;
+  // Excluded and missed nights are empty slots: the lines break there
+  // (gaps.js). The tooltip says which of the two a slot is.
+  const cal = calendar(gap.days);
+  const days = cal.rows;
+  const n = cal.slots.length;
+  const excluded = new Map((data.catalog.quarantined ?? []).map((q) => [q.date, q.reason]));
   const SERIES = [
     { name: ed.legendPct, color: C.accent, value: (d) => d.pct_moved },
     { name: ed.legendProb, color: C.versions.v3, value: (d) => d.prob_moved },
@@ -75,14 +81,22 @@ export function render(slots, data) {
 
   const chart = mkChart(slots.chart);
   chart.setOption({
-    grid: { ...baseGrid, left: 50, top: 40, bottom: days.length > 16 ? 52 : 34 },
+    grid: { ...baseGrid, left: 50, top: 40, bottom: n > 16 ? 52 : 34 },
     legend: { ...baseLegend, data: SERIES.map((s) => s.name) },
     tooltip: {
       ...baseTooltip,
       trigger: "axis",
       formatter: (params) => {
-        const d = params.length && days[params[0].dataIndex];
-        if (!d) return "";
+        const i = params.length ? params[0].dataIndex : -1;
+        const d = days[i];
+        if (!d) {
+          const date = cal.slots[i];
+          if (!date) return "";
+          const reason = excluded.get(date);
+          return gapTooltip(date, reason
+            ? tpl(ed.labels.tipExcluded, { reason: ed.labels.quarantineReasons[reason] ?? reason })
+            : ed.labels.tipMissed);
+        }
         const head =
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(d.date)}</div>`;
@@ -95,13 +109,14 @@ export function render(slots, data) {
         return head + body;
       },
     },
-    xAxis: catAxis(days.map((d) => d.date), {
-      axisLabel: { ...catAxis([]).axisLabel, rotate: days.length > 16 ? 45 : 0 },
+    xAxis: catAxis(cal.slots, {
+      axisLabel: { ...catAxis([]).axisLabel, rotate: n > 16 ? 45 : 0 },
     }),
     yAxis: valAxis({
       max: 100,
       name: ed.yAxisLabel,
-      nameTextStyle: { color: C.faint, fontSize: 10 },
+      // anchored over the plot: centred on the axis it clipped at the left edge
+      nameTextStyle: { color: C.faint, fontSize: 10, align: "left" },
       axisLabel: { ...valAxis().axisLabel, formatter: (v) => `${v}%` },
     }),
     series: SERIES.map(({ name, color, value }) => ({
@@ -109,11 +124,14 @@ export function render(slots, data) {
       type: "line",
       color,
       symbol: "circle",
-      symbolSize: days.length > 40 ? 0 : 5,
+      // Dense record: no dots, except a night with a gap on both sides,
+      // which has no line segment and would otherwise not show at all.
+      symbolSize: n > 40 ? loneSymbol(cal, 5) : 5,
+      showAllSymbol: true,
       lineStyle: { width: 2 },
       areaStyle: name === ed.legendPct ? { opacity: 0.1 } : undefined,
       emphasis: { focus: "series" },
-      data: days.map(value),
+      data: gapData(cal, value),
     })),
   });
 }

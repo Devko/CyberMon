@@ -9,6 +9,7 @@ import {
 } from "../theme.js";
 import { editorial, tpl } from "../editorial.js";
 import { el, frag } from "../dom.js";
+import { calendar, gapData, gapTooltip } from "../gaps.js";
 
 export function render(slots, data) {
   const ed = editorial.sections.roster_size;
@@ -51,6 +52,9 @@ export function render(slots, data) {
     return;
   }
 
+  // A night without a snapshot is an empty slot: the line breaks there.
+  const cal = calendar(series);
+  const n = cal.slots.length;
   const chart = mkChart(slots.chart);
   chart.setOption({
     grid: { ...baseGrid, left: 52, top: 24, bottom: 40 },
@@ -60,6 +64,7 @@ export function render(slots, data) {
       formatter: (params) => {
         const p = params[0];
         if (!p) return "";
+        if (!cal.rows[p.dataIndex]) return gapTooltip(p.axisValue);
         return (
           `<div style="color:${C.muted};margin-bottom:4px;">` +
           `${escapeHtml(p.axisValue)}</div>` +
@@ -67,8 +72,8 @@ export function render(slots, data) {
         );
       },
     },
-    xAxis: catAxis(series.map((pt) => pt.date), {
-      axisLabel: { ...catAxis([]).axisLabel, rotate: series.length > 10 ? 45 : 0 },
+    xAxis: catAxis(cal.slots, {
+      axisLabel: { ...catAxis([]).axisLabel, rotate: n > 10 ? 45 : 0 },
     }),
     yAxis: valAxis({ name: ed.yAxis, minInterval: 1,
       nameTextStyle: { color: C.muted, fontSize: 11 } }),
@@ -78,12 +83,12 @@ export function render(slots, data) {
         type: "line",
         smooth: false,
         symbol: "circle",
-        symbolSize: series.length > 40 ? 3 : 6,
+        symbolSize: n > 40 ? 3 : 6,
         showSymbol: true,
         lineStyle: { color: C.accent, width: 2 },
         itemStyle: { color: C.accent },
         areaStyle: { color: C.accentSoft },
-        data: series.map((pt) => pt.size),
+        data: gapData(cal, (pt) => pt.size),
       },
     ],
   });

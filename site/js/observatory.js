@@ -18,6 +18,7 @@ import { initChrome, fetchJSON, buildSection, showError } from "./common.js";
 import { el, clear, link } from "./dom.js";
 import { sortHeader } from "./ui.js";
 import { tpl } from "./editorial.js";
+import { daysBetween, gapTooltip } from "./gaps.js";
 
 const DATA_FILE = "data/observatory.json";
 const TABLE_CAP = 100;
@@ -71,14 +72,17 @@ const ED = {
       "KEV and score events are dated by the nightly run that first saw them, not by when the " +
       "change was made upstream. KEV changes from before the nightly diffs began are dated by " +
       "the first weekly Internet Archive capture that shows them, so each happened on or " +
-      "before that date. The days between captures were not observed and carry no bar. EPSS " +
+      "before that date. The days between captures were not observed and carry no bar. A " +
+      "night the pipeline did not run carries no KEV or score bar; CyberMon's per-night logs " +
+      "(NVD backlog, CNA roster size, Feodo Tracker counts) show which nights ran. EPSS " +
       "events are dated by FIRST's score date for the snapshot, which is the day before the " +
       "run that read it. A run that follows missed nights, and the first nightly KEV run " +
       "(which compared the catalog with the last archive capture), includes every change " +
       "since the previous observation. EPSS events from such a run are labelled as pooled; " +
       "KEV and score events are still labelled as a nightly run. EPSS contributes one event " +
       "per night, the largest change in probability, except on nights the EPSS Volatility " +
-      "module quarantines as a model reset or a whole-corpus anomaly. Score events follow " +
+      "module quarantines as a model reset or a whole-corpus anomaly. Those nights, and " +
+      "score dates with no snapshot, carry no EPSS bar. Score events follow " +
       "the CVSS Score Changes definitions: rescore (same CVSS version, new score), CVSS " +
       "version change, first CNA score on an existing record, and removed score. Rows " +
       "logged before 2026-09-20 carry only the version family (for example v3).",
@@ -139,11 +143,19 @@ function detailText(e) {
 function renderStream(slots, data, events, onWindow) {
   const src = data.sources;
   const baseMs = Date.parse(`${data.base_date}T00:00:00Z`);
-  const lastDay = Math.round((Date.parse(`${data.last_observed}T00:00:00Z`) - baseMs) / dayMs);
-  const days = Array.from({ length: lastDay + 1 }, (_, d) => isoOf(baseMs, d));
+  const days = daysBetween(data.base_date, data.last_observed);
+  const lastDay = days.length - 1;
 
-  // Per lane, per day: null before the lane's history began (and, for KEV,
-  // on the unobserved days between archive captures), a count otherwise.
+  // Per lane, per day: null before the lane's history began, on a night the
+  // pipeline did not run (KEV and score lanes), on an EPSS score date with
+  // no snapshot or one left out (EPSS lane) and, for KEV, on the unobserved
+  // days between archive captures; a count otherwise. A null draws no bar
+  // (gaps.js): a missed night is never a zero.
+  const missedRun = new Set(data.missed_nights ?? []);
+  const epssGap = new Map([
+    ...(src.epss.missed ?? []).map((iso) => [iso, "EPSS: no snapshot for this score date"]),
+    ...(src.epss.excluded ?? []).map((iso) => [iso, "EPSS: night left out (model reset or anomaly)"]),
+  ]);
   const laneOf = {};
   LANES.forEach((l, li) => l.kinds.forEach((k) => (laneOf[k] = li)));
   const counts = LANES.map(() => new Array(days.length).fill(0));
@@ -161,9 +173,15 @@ function renderStream(slots, data, events, onWindow) {
     return counts[li].map((n, d) => {
       if (d < starts[s]) return null;
       if (s === "kev" && d < kevNightly && !captureDay.has(d)) return null;
+      if (s === "epss" ? epssGap.has(days[d]) : missedRun.has(days[d])) return null;
       return n;
     });
   });
+  // Why a day has no bar, for the tooltip.
+  const gapNotes = (d) => [
+    missedRun.has(days[d]) && "no nightly run on record for this date",
+    d >= starts.epss && epssGap.get(days[d]),
+  ].filter(Boolean);
 
   // Window: stat line above the chart, kept in sync with the zoom.
   const statLine = el("div", "table-context obs-window-line");
@@ -197,8 +215,12 @@ function renderStream(slots, data, events, onWindow) {
         if (d === undefined) return "";
         const rows = ps.filter((p) => p.value !== null && p.value !== undefined && p.value > 0)
           .map((p) => `${p.marker} ${escapeHtml(p.seriesName)} <strong>${fmtInt(p.value)}</strong>`);
+        const notes = gapNotes(d);
+        const observed = ps.some((p) => p.value !== null && p.value !== undefined && !Number.isNaN(p.value));
+        if (!observed && notes.length) return gapTooltip(`first observed ${days[d]}`, notes.join(" · "));
         const head = `<div style="color:${C.muted};margin-bottom:4px;">first observed ${escapeHtml(days[d])}</div>`;
-        return head + (rows.length ? rows.join("<br>") : `<span style="color:${C.muted}">no events</span>`);
+        const foot = notes.map((n) => `<div style="color:${C.muted};margin-top:4px;">${escapeHtml(n)}</div>`).join("");
+        return head + (rows.length ? rows.join("<br>") : `<span style="color:${C.muted}">no events</span>`) + foot;
       },
     },
     xAxis: catAxis(days, {

@@ -15,10 +15,15 @@ all live; plus the instruments The Field and the Mutation Observatory).
 The review record is `docs/review-2026-09-23/REVIEW.md`; everything below was
 verified and either disclosed in the page copy or left as the owner's call.
 
-- **Charts that close up missed nights** on a category axis (the C2 fix of
-  09-22, not yet applied): CNA roster size, EPSS Volatility gap (quarantined
-  and missed nights), NVD backlog and throughput history (the 08-30 point is
-  a three-night diff), the Observatory stream (missed nights draw as 0).
+- **Charts that close up missed nights** — RESOLVED 2026-11-05. One helper,
+  `site/js/gaps.js`, lays every nightly record on its full calendar; a
+  missed night is an empty slot (no bar, a broken line) with a "no reading"
+  tooltip. Applied to Botnet C2, CNA roster size, EPSS Volatility (gap
+  chart: quarantined and missed nights; churn: weeks with no clean night),
+  NVD backlog and throughput (the tooltip names the snapshot a comparison
+  after missed nights was made against), and the Observatory stream, whose
+  file now lists `missed_nights` (from the per-night logs) and the EPSS
+  lane's missed and excluded score dates. The methodology copy says so.
 - **Advisory Gap malware share.** About 400 of the no-CVE Critical
   advisories are malicious-package notices (GitHub advisory API, 2026-09-23;
   367 npm from 2020). The caption says so in words; tag them in
