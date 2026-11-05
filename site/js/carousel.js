@@ -119,6 +119,9 @@ import { render as renderSigmaTactics } from "./charts/sigma_tactics.js";
 import { render as renderOssAccounts } from "./charts/oss_accounts.js";
 import { render as renderOssShared } from "./charts/oss_shared.js";
 import { render as renderOssScorecard } from "./charts/oss_scorecard.js";
+import { render as renderCsafSources } from "./charts/csaf_sources.js";
+import { render as renderCsafYears } from "./charts/csaf_years.js";
+import { render as renderCsafFields } from "./charts/csaf_fields.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -375,6 +378,12 @@ const MODULES = {
       { id: "oss_accounts", render: renderOssAccounts },
       { id: "oss_shared", render: renderOssShared },
       { id: "oss_scorecard", render: renderOssScorecard },
+  csaf: {
+    file: "data/csaf_adoption.json",
+    sections: [
+      { id: "csaf_sources", render: renderCsafSources },
+      { id: "csaf_years", render: renderCsafYears, table: true },
+      { id: "csaf_fields", render: renderCsafFields, table: true },
     ],
   },
 };

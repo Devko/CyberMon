@@ -511,6 +511,9 @@ function renderMeta(meta) {
       oss_packages: (s.oss?.packages ?? 0).toLocaleString("en-US"),
       oss_lookups: (s.oss?.lookups ?? 0).toLocaleString("en-US"),
       oss_fetched: (s.oss?.fetched_at ?? "?") + (s.oss?.stale ? carried : ""),
+      csaf_listed: (s.csaf?.listed ?? 0).toLocaleString("en-US"),
+      csaf_documents: (s.csaf?.documents ?? 0).toLocaleString("en-US"),
+      csaf_fetched: (s.csaf?.fetched_at ?? "?") + (s.csaf?.stale ? carried : ""),
     }))
   );
 }

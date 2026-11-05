@@ -27,7 +27,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "support_windows.json",
              "attack_atlas.json",
              "sigma_coverage.json",
-             "oss_maintainers.json"]
+             "oss_maintainers.json",
+             "csaf_adoption.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -457,6 +458,20 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
         "packages": 12, "lookups": 21, "failed": 0,
         "oldest_observation": meta["generated_at"][:10]}
     assert (tmp_path / "history" / "oss_state.json.gz").exists()
+
+
+    # Machine-Readable Advisories: the fixture lister names five sources;
+    # two serve documents (a directory and a ROLIE feed), the others are
+    # blocked by robots.txt, refused (403) or empty. The directory lists one
+    # path twice and its white feed repeats a listed document.
+    csaf = _load(tmp_path, "csaf_adoption.json")
+    assert csaf["totals"]["listed"] == 5
+    assert csaf["totals"]["measured"] == 2
+    assert csaf["totals"]["documents"] == 7
+    assert sorted(r["status"] for r in csaf["sources"]) == [
+        "denied", "empty", "measured", "measured", "robots"]
+    assert meta["sources"]["csaf"]["fetched_at"] == meta["generated_at"]
+    assert meta["sources"]["csaf"]["documents"] == 7
 
 
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
@@ -897,3 +912,26 @@ def test_oss_partial_coverage_withholds_a_first_edition(tmp_path, capsys):
                      "--oss-batch", "5"]) == 0
     assert (tmp_path / "oss_maintainers.json").exists()
     assert "stale" not in _load(tmp_path, "oss_maintainers.json")
+
+
+def test_csaf_lister_outage_carries_the_module_forward(tmp_path, capsys,
+                                                      monkeypatch):
+    """A BSI CSAF Lister outage carries csaf_adoption.json forward stale
+    (and its meta source) while every other module still refreshes."""
+    from pipeline import csaf_metrics
+
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    before = _load(tmp_path, "csaf_adoption.json")
+
+    def down(*args, **kwargs):
+        raise OSError("HTTP 503")
+
+    monkeypatch.setattr(csaf_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    carried = _load(tmp_path, "csaf_adoption.json")
+    assert carried["stale"] is True
+    contracts.validate("csaf_adoption.json", carried)
+    assert carried["totals"] == before["totals"]
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["csaf"]["stale"] is True
+    assert meta["sources"]["csaf"]["fetched_at"] == before["generated_at"]

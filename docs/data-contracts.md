@@ -3640,3 +3640,91 @@ and the fixed labels. Validator: `pipeline/oss_contracts.py`.
 lookups, failed, oldest_observation}` (tonight's registry + Scorecard
 lookups and how many failed), marked `"stale": true` when the module was
 carried forward.
+
+## site/data/csaf_adoption.json  (Machine-Readable Advisories module, all 3 charts)
+
+```json
+{
+  "generated_at": "...",
+  "current_year": 2026,
+  "lister": {"name": "CSAF Lister des Bundesamts für ...",
+             "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
+             "last_updated": "2026-11-05T06:30:43.673+00:00",
+             "listed": 15, "providers": 14, "publishers": 1},
+  "sampling": {"k": 30, "new_cap": 450, "refresh_cap": 40,
+               "nearly_all_pct": 90.0},
+  "sources": [{"name": "Red Hat Product Security", "category": "vendor",
+               "role": "csaf_trusted_provider", "kind": "provider",
+               "status": "measured", "detail": "",
+               "measured_on": "2026-11-05", "documents": 106765,
+               "undated": 0, "by_year": [{"year": 1999, "n": 5}],
+               "first_year": 1999, "last_year": 2026,
+               "mix": {"vex": 75483, "advisory": 31282, "other": 0,
+                       "unsampled": 0},
+               "sample_n": 60,
+               "fields": {"cvss": 96.7, "cwe": 76.3, "product_tree": 100.0,
+                          "remediation": 76.4},
+               "sample_groups": {"vex": {"n": 30, "cvss": 29, "cwe": 22,
+                                         "product_tree": 30,
+                                         "remediation": 20}}}],
+  "years": [{"year": 2026, "n": 36321, "providers": 12}],
+  "totals": {"listed": 15, "measured": 12, "carried": 0, "unmeasured": 3,
+             "documents": 122714, "undated": 0,
+             "mix": {"vex": 75584, "advisory": 32399, "other": 14731,
+                     "unsampled": 0},
+             "vex_pct": 61.6, "top_name": "Red Hat Product Security",
+             "top_share_pct": 87.0, "vex_top_name": "Red Hat Product Security",
+             "vex_top_share_pct": 99.9, "providers_with_vex": 5,
+             "sampled_providers": 12, "sample_n": 308,
+             "fields": {"cvss": {"nearly_all": 9, "none": 2}},
+             "by_group": {"advisory": {"n": 176, "cvss": 97.7, "cwe": 93.8,
+                                       "product_tree": 100.0,
+                                       "remediation": 96.6}},
+             "all_three_nearly_all": 6}
+}
+```
+
+Source: the BSI CSAF Lister (`aggregator.json`, the lister csaf.io links
+to) — its `csaf_providers` and `csaf_publishers` are the whole universe;
+vendors that publish CSAF without being listed are not counted. Per
+listed source the crawl (`pipeline/fetch_csaf.py`) reads the
+provider-metadata.json and one document list per public distribution:
+`changes.csv` for a `directory_url`; for a ROLIE feed labelled TLP:WHITE
+or TLP:CLEAR, the `changes.csv` in the feed's folder when there is one,
+else the feed. A directory that is the folder of a non-public feed is
+skipped; a feed over a directory already read adds nothing. Documents
+are deduplicated by URL (first listing wins). `by_year` counts documents
+by initial-release year — the CSAF year folder, or the ROLIE `published`
+date; a path without a year folder counts in `undated`. robots.txt is
+obeyed (RFC 9309: 4xx = allow, 5xx/unreachable = disallow; `*`/`$`
+wildcards; `Crawl-delay` kept per host).
+
+`status`: `measured` (counted tonight), `carried` (failed tonight; the
+row from `measured_on`, at most 14 days old), `robots`, `denied`
+(401/403), `empty` (reachable, no documents) or `error`. Rows that are
+not measured or carried carry zero documents, no `measured_on` and null
+`fields`. Rows sort measured/carried first, then by documents
+descending, then name.
+
+Sample: per distribution, the `sampling.k` documents whose lower-cased
+file name has the lowest SHA-256. Each sampled document's summary
+(category; whether EVERY vulnerability has a CVSS vector / a CWE / a
+remediation — none of the three when it has no vulnerability entries;
+whether the product tree names a product) is cached by URL and change
+time in `.cache/csaf_state.json.gz`; changed documents are refetched up to
+`refresh_cap` a night, new sample members up to `new_cap`. `mix` is
+estimated per distribution (count × sample share, largest-remainder
+rounding, so it sums to `documents`; `unsampled` holds distributions whose
+sample could not be read). `fields` is the document-weighted mean of the
+distributions' sample shares (null without a sample). `sample_groups`
+are the raw sampled counts per category group; `totals.by_group` pools
+them over all measured rows (each sampled document weighs one).
+Partitions must add up: `by_year` + `undated` = `documents`; `mix` sums to
+`documents`; `years` equals the sum over measured/carried rows; totals
+equal row sums. `current_year` equals the edition's year, except on a
+stale (carried-forward) edition, where it may be earlier.
+Validator: `pipeline/csaf_contracts.py`.
+
+`meta.json` carries `sources.csaf`: `{fetched_at, listed, measured,
+documents, requests, docs_fetched}`, marked `"stale": true` when a lister
+outage carried the module forward.

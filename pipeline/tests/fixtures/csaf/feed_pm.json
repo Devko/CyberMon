@@ -1,0 +1,15 @@
+{
+ "distributions": [
+  {
+   "rolie": {
+    "feeds": [
+     {
+      "tlp_label": "WHITE",
+      "url": "https://feed.example.test/csaf/feed-white.json"
+     }
+    ]
+   }
+  }
+ ],
+ "role": "csaf_trusted_provider"
+}

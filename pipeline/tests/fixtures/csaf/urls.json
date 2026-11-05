@@ -1,0 +1,21 @@
+{
+ "https://denied.example.test/csaf/provider-metadata.json": 403,
+ "https://dir.example.test/.well-known/csaf/provider-metadata.json": "dir_pm.json",
+ "https://dir.example.test/.well-known/csaf/white/2024/dv-2024-0001.json": "docs/dv-2024-0001.json",
+ "https://dir.example.test/.well-known/csaf/white/2025/dv-2025-0001.json": "docs/dv-2025-0001.json",
+ "https://dir.example.test/.well-known/csaf/white/2026/dv-2026-0001.json": "docs/dv-2026-0001.json",
+ "https://dir.example.test/.well-known/csaf/white/2026/dv-2026-0002.json": "docs/dv-2026-0002.json",
+ "https://dir.example.test/.well-known/csaf/white/changes.csv": "dir_changes.csv",
+ "https://dir.example.test/.well-known/csaf/white/feed-tlp-white.json": "dir_feed.json",
+ "https://dir.example.test/robots.txt": "dir_robots.txt",
+ "https://empty.example.test/csaf/provider-metadata.json": "empty_pm.json",
+ "https://empty.example.test/csaf/white/empty.json": "empty_feed.json",
+ "https://feed.example.test/.well-known/csaf/provider-metadata.json": "feed_pm.json",
+ "https://feed.example.test/csaf/feed-white.json": "feed_white.json",
+ "https://feed.example.test/csaf/fv-1.json": "docs/fv-1.json",
+ "https://feed.example.test/csaf/fv-2.json": "docs/fv-2.json",
+ "https://feed.example.test/csaf/fv-3.json": "docs/fv-3.json",
+ "https://feed.example.test/robots.txt": "feed_robots.txt",
+ "https://robots.example.test/robots.txt": "robots_all.txt",
+ "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json": "lister.json"
+}

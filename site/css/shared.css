@@ -887,3 +887,21 @@ code {
 }
 .chart-source a { color: var(--muted); text-decoration: underline dotted; }
 .chart-source a:hover { color: var(--ink); }
+
+/* Machine-Readable Advisories (csaf.html): provider rows in the year grid
+   and the field table read as names, not column headers; the pooled and
+   total rows sit under a stronger rule. */
+.cna-table th.csaf-name {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: default;
+  border-bottom: 1px solid var(--rule);
+  padding: 8px 14px 8px 0;
+}
+.cna-table td.num { padding-left: 6px; white-space: nowrap; }
+.csaf-grid td.num, .csaf-grid th.num { padding-right: 8px; }
+.cna-table tfoot tr.csaf-sum:first-child th,
+.cna-table tfoot tr.csaf-sum:first-child td { border-top: 1px solid var(--rule-strong); }
+.cna-table tfoot th.csaf-name { color: var(--muted); }

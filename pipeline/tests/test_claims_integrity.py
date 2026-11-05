@@ -85,6 +85,7 @@ BY_SOURCE = {
     "alias_graph.json": "naming",
     "sigma_coverage.json": "sigma",
     "oss_maintainers.json": "oss",
+    "csaf_adoption.json": "csaf",
 }
 
 # A degraded module may be carried forward for a few nights while an

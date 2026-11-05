@@ -562,36 +562,6 @@ both modules. The nightly sends conditional GETs (ETag / Last-Modified),
 downloads only the changed zips and keeps a compact summary. An OSV outage
 carries both modules forward, marked stale. Stage `pipeline/osv_metrics.py`.
 
-### 29 · Support Windows — [eol.html](https://devko.github.io/CyberMon/eol.html)
-
-*For the same products, release lines from 2022–2024 have a median support window about a fifth shorter than lines from 2014–2016.*
-
-How long release lines are supported, from the endoflife.date catalogue: a
-release line is one version track (Ubuntu 24.04, Python 3.12, iPhone 15)
-and its support window runs from its release date to the end of its last
-standard support phase. The product universe is whatever endoflife.date
-tracks (489 products in November 2026), not a sample of software in use.
-Three charts:
-
-- the median window by release year, for every tracked product and for the
-  products with lines in both 2014–2016 and 2022–2024. The catalogue's
-  product mix changes over time, so the second line is the comparison that
-  holds the products fixed;
-- for products that separate active support from security support, the
-  median time from release to the end of each;
-- the median window by endoflife.date category, and how many products have
-  their newest line, or every line, out of support.
-
-A line still supported with no announced end is right-censored, not
-"forever": the medians are Kaplan–Meier estimates that count it as
-supported for at least its age so far. Lines marked ended without a date
-are counted and left out of the medians. Each product counts once per cell,
-so a product that ships monthly does not outvote one that ships every two
-years. The page points to Record Tags for CVEs filed against unsupported
-products; the two are not joined. The nightly sends one conditional GET for
-the API's bulk dump; an endoflife.date outage carries the last edition
-forward, marked stale. Fetcher `pipeline/fetch_eol.py`, stage
-`pipeline/eol_metrics.py`.
 ### 27 · AI Product CVEs — [aisurface.html](https://devko.github.io/CyberMon/aisurface.html)
 
 *AI products' share of published CVEs has risen in every complete year since 2023.*
@@ -643,6 +613,36 @@ bundle is read once. A SigmaHQ or ATT&CK outage carries the module forward,
 marked stale. Only counts and ATT&CK ids are published, never rules.
 Fetcher `pipeline/fetch_sigma.py`, technique timeline
 `pipeline/attack_techniques.py`, stage `pipeline/sigma_metrics.py`.
+### 29 · Support Windows — [eol.html](https://devko.github.io/CyberMon/eol.html)
+
+*For the same products, release lines from 2022–2024 have a median support window about a fifth shorter than lines from 2014–2016.*
+
+How long release lines are supported, from the endoflife.date catalogue: a
+release line is one version track (Ubuntu 24.04, Python 3.12, iPhone 15)
+and its support window runs from its release date to the end of its last
+standard support phase. The product universe is whatever endoflife.date
+tracks (489 products in November 2026), not a sample of software in use.
+Three charts:
+
+- the median window by release year, for every tracked product and for the
+  products with lines in both 2014–2016 and 2022–2024. The catalogue's
+  product mix changes over time, so the second line is the comparison that
+  holds the products fixed;
+- for products that separate active support from security support, the
+  median time from release to the end of each;
+- the median window by endoflife.date category, and how many products have
+  their newest line, or every line, out of support.
+
+A line still supported with no announced end is right-censored, not
+"forever": the medians are Kaplan–Meier estimates that count it as
+supported for at least its age so far. Lines marked ended without a date
+are counted and left out of the medians. Each product counts once per cell,
+so a product that ships monthly does not outvote one that ships every two
+years. The page points to Record Tags for CVEs filed against unsupported
+products; the two are not joined. The nightly sends one conditional GET for
+the API's bulk dump; an endoflife.date outage carries the last edition
+forward, marked stale. Fetcher `pipeline/fetch_eol.py`, stage
+`pipeline/eol_metrics.py`.
 ### 30 · Open-Source Maintainers — [oss.html](https://devko.github.io/CyberMon/oss.html)
 
 *In each of four registries, more than one in five of the 250 most-depended-on packages have only one account that can publish them.*
@@ -677,6 +677,39 @@ repository name is published. The package list and the module's figures
 derive from ecosyste.ms data and are shared under CC BY-SA 4.0. Universe
 `pipeline/oss_universe.py`, fetcher `pipeline/fetch_oss.py`, stage
 `pipeline/oss_metrics.py`.
+### 31 · Machine-Readable Advisories — [csaf.html](https://devko.github.io/CyberMon/csaf.html)
+
+*Most documents in the listed CSAF feeds are VEX documents, and Red Hat publishes nearly all of them.*
+
+Security advisories published as CSAF (Common Security Advisory Framework,
+the OASIS JSON format) by the providers and publishers on the
+[BSI CSAF Lister](https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json),
+the lister csaf.io links to. That list is the universe: vendors that publish
+CSAF without being listed (Microsoft, Cisco and SUSE serve provider-metadata
+too) are not counted. Three sections:
+
+- each provider's documents split by type (VEX, security advisory, other),
+  with the listed sources that could not be counted and why (robots.txt,
+  HTTP 403, an empty feed);
+- documents per provider per year of first release (the CSAF year folder or
+  the ROLIE publication date), which for converted older advisories predates
+  the CSAF file;
+- the share of sampled documents that give every vulnerability a CVSS
+  vector, a CWE and a remediation, and that name a product in the product
+  tree, per provider and pooled by document type.
+
+Each night reads the lister, each provider-metadata.json and one document
+list per public distribution (`changes.csv`, or the ROLIE feed where no
+`changes.csv` sits beside it; TLP:WHITE/CLEAR only): about 60 requests and
+10–15 MB, mostly Red Hat's two `changes.csv` files and Siemens' feed. Document types and field completeness come from a fixed sample: in
+each distribution, the 30 documents whose file names have the lowest
+SHA-256. A sampled document is fetched once and its field summary cached in
+`.cache/csaf_state.json.gz`; it is fetched again only when its change time
+in `changes.csv` moves (at most 40 a night). robots.txt and crawl delays are
+obeyed. A lister outage carries the module forward stale; a single provider
+that fails keeps its last counts for up to 14 days. Only counts and
+field-presence shares are published, never document text. Fetcher
+`pipeline/fetch_csaf.py`, stage `pipeline/csaf_metrics.py`.
 
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
 
@@ -918,6 +951,7 @@ browser checks on every push and pull request, and deploys on pushes to main
 | [ecosyste.ms Packages API](https://packages.ecosyste.ms/docs) | Once per universe edition, not nightly: each registry's package ranking by dependent packages and by downloads (`/registries/<registry>/package_names`) and each selected package's `repository_url` (`/packages/bulk_lookup`), frozen in `pipeline/oss_universe.json` for Open-Source Maintainers | Data [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) with attribution to ecosyste.ms ([terms](https://ecosyste.ms/terms), [API](https://ecosyste.ms/api)); the package list and the module's derived data are shared under the same licence (credited in the site footer). Public API, no key |
 | npm registry, PyPI JSON API, crates.io API, RubyGems.org API | Who can publish each of the 1,000 universe packages: npm collaborators with write access (`registry.npmjs.org/-/package/<name>/collaborators`), PyPI `ownership.roles` and `ownership.organization` (`pypi.org/pypi/<name>/json`), crates.io owners (`/api/v1/crates/<name>/owners`), RubyGems owners (`/api/v1/gems/<name>/owners.json`); counts only, no package or account names republished | Public registry metadata, read under each registry's access rules: npm's [crawler policy](https://docs.npmjs.com/policies/crawlers) and crates.io's data-access policy (both at most one request per second, identifying User-Agent; paced accordingly), PyPI's documented [JSON API](https://docs.pypi.org/api/json/), RubyGems' [API](https://guides.rubygems.org/rubygems-org-api/) (10 req/s limit; paced far below). Rolling refresh, about 270 lookups a night. No key |
 | [OpenSSF Scorecard API](https://api.scorecard.dev) | The latest Scorecard result for each universe package's GitHub repository: result date, overall score, Maintained, Code-Review, Branch-Protection and Signed-Releases | REST API data under [CDLA-Permissive-2.0](https://cdla.dev/permissive-2-0) (stated in the [Scorecard README](https://github.com/ossf/scorecard#public-data)); credited in the site footer. No key |
+| [BSI CSAF Lister](https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json) and the CSAF feeds of the providers it lists | The lister's provider and publisher list; each provider-metadata.json; one document list per public distribution (`changes.csv` or ROLIE feed, TLP:WHITE/CLEAR only); a fixed hash-ranked sample of documents, read for document category and the presence of CVSS vectors, CWEs, remediations and a product tree | The lister is published by the BSI "as is" for automated retrieval (CSAF 2.0, section 7); each provider's documents carry that provider's own terms (for example CC BY 4.0 at Red Hat, Siemens' advisory terms of use). Only counts and field-presence shares are republished, never document text; robots.txt and crawl delays are obeyed (credited in the site footer) |
 
 ## State and history
 
@@ -941,6 +975,7 @@ Losing a file never changes data already published; the table gives the cost.
 | `poc/` | Time to PoC | Same-day cache only |
 | `kev_wayback/` | KEV Changelog backfill | Local only; CI never uses it |
 | `sigma_state.json` | Detection Rules | Kept by `actions/cache` in CI. The rules cost one shallow clone of SigmaHQ/sigma (~10 MB); the ATT&CK technique timeline is rebuilt from `sigma_coverage.json`, so the ~40 bundles are never re-read |
+| `csaf_state.json.gz` | Machine-Readable Advisories | Cached in CI like the first six. One cold sample: up to 450 CSAF document fetches that night; a provider down that night has no earlier counts to carry |
 
 **NVD sync.** The NVD stage keeps a per-CVE status map. Nightly runs fetch
 only records modified since the last sync, which takes seconds. A full

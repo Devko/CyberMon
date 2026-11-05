@@ -1,0 +1,47 @@
+{
+ "document": {
+  "category": "csaf_vex",
+  "csaf_version": "2.0",
+  "title": "Fixture",
+  "publisher": {
+   "category": "vendor",
+   "name": "Fixture",
+   "namespace": "https://example.test"
+  },
+  "tracking": {
+   "id": "FX",
+   "status": "final",
+   "version": "1",
+   "initial_release_date": "2026-01-01T00:00:00Z",
+   "current_release_date": "2026-01-01T00:00:00Z",
+   "revision_history": []
+  }
+ },
+ "product_tree": {
+  "branches": [
+   {
+    "category": "vendor",
+    "name": "Example",
+    "branches": [
+     {
+      "category": "product_version",
+      "name": "1.0",
+      "product": {
+       "name": "Example 1.0",
+       "product_id": "P1"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "vulnerabilities": [
+  {
+   "cve": "CVE-2026-0001",
+   "cwe": {
+    "id": "CWE-79",
+    "name": "Cross-site Scripting"
+   }
+  }
+ ]
+}

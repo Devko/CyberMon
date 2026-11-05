@@ -1,0 +1,33 @@
+{
+ "canonical_url": "https://dir.example.test/.well-known/csaf/provider-metadata.json",
+ "distributions": [
+  {
+   "directory_url": "https://dir.example.test/.well-known/csaf/white/"
+  },
+  {
+   "rolie": {
+    "feeds": [
+     {
+      "tlp_label": "WHITE",
+      "url": "https://dir.example.test/.well-known/csaf/white/feed-tlp-white.json"
+     },
+     {
+      "tlp_label": "AMBER",
+      "url": "https://dir.example.test/.well-known/csaf/amber/feed-tlp-amber.json"
+     }
+    ]
+   }
+  },
+  {
+   "directory_url": "https://dir.example.test/.well-known/csaf/amber/"
+  }
+ ],
+ "list_on_CSAF_aggregators": true,
+ "metadata_version": "2.0",
+ "publisher": {
+  "category": "vendor",
+  "name": "Directory Vendor PSIRT",
+  "namespace": "https://dir.example.test"
+ },
+ "role": "csaf_trusted_provider"
+}

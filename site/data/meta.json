@@ -140,6 +140,14 @@
    "lookups": 1867,
    "failed": 0,
    "oldest_observation": "2026-11-05"
+  },
+  "csaf": {
+   "fetched_at": "2026-11-05T07:47:31Z",
+   "listed": 15,
+   "measured": 12,
+   "documents": 122714,
+   "requests": 57,
+   "docs_fetched": 1
   }
  }
 }

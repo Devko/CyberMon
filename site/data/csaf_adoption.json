@@ -1,0 +1,1167 @@
+{
+ "generated_at": "2026-11-05T07:47:31Z",
+ "current_year": 2026,
+ "lister": {
+  "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
+  "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
+  "last_updated": "2026-11-05T07:00:34.179+00:00",
+  "listed": 15,
+  "providers": 14,
+  "publishers": 1
+ },
+ "sampling": {
+  "k": 30,
+  "new_cap": 450,
+  "refresh_cap": 40,
+  "nearly_all_pct": 90.0
+ },
+ "sources": [
+  {
+   "name": "Red Hat Product Security",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 106765,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 1999,
+     "n": 9
+    },
+    {
+     "year": 2000,
+     "n": 97
+    },
+    {
+     "year": 2001,
+     "n": 173
+    },
+    {
+     "year": 2002,
+     "n": 320
+    },
+    {
+     "year": 2003,
+     "n": 429
+    },
+    {
+     "year": 2004,
+     "n": 506
+    },
+    {
+     "year": 2005,
+     "n": 728
+    },
+    {
+     "year": 2006,
+     "n": 556
+    },
+    {
+     "year": 2007,
+     "n": 947
+    },
+    {
+     "year": 2008,
+     "n": 1113
+    },
+    {
+     "year": 2009,
+     "n": 1237
+    },
+    {
+     "year": 2010,
+     "n": 1550
+    },
+    {
+     "year": 2011,
+     "n": 1600
+    },
+    {
+     "year": 2012,
+     "n": 1934
+    },
+    {
+     "year": 2013,
+     "n": 2483
+    },
+    {
+     "year": 2014,
+     "n": 2572
+    },
+    {
+     "year": 2015,
+     "n": 2910
+    },
+    {
+     "year": 2016,
+     "n": 3474
+    },
+    {
+     "year": 2017,
+     "n": 3959
+    },
+    {
+     "year": 2018,
+     "n": 3595
+    },
+    {
+     "year": 2019,
+     "n": 3768
+    },
+    {
+     "year": 2020,
+     "n": 4437
+    },
+    {
+     "year": 2021,
+     "n": 4978
+    },
+    {
+     "year": 2022,
+     "n": 6744
+    },
+    {
+     "year": 2023,
+     "n": 6758
+    },
+    {
+     "year": 2024,
+     "n": 8729
+    },
+    {
+     "year": 2025,
+     "n": 9339
+    },
+    {
+     "year": 2026,
+     "n": 31820
+    }
+   ],
+   "first_year": 1999,
+   "last_year": 2026,
+   "mix": {
+    "vex": 75483,
+    "advisory": 31282,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 60,
+   "fields": {
+    "cvss": 96.7,
+    "cwe": 76.3,
+    "product_tree": 100.0,
+    "remediation": 76.4
+   },
+   "sample_groups": {
+    "vex": {
+     "n": 30,
+     "cvss": 29,
+     "cwe": 22,
+     "product_tree": 30,
+     "remediation": 20
+    },
+    "advisory": {
+     "n": 30,
+     "cvss": 29,
+     "cwe": 25,
+     "product_tree": 30,
+     "remediation": 30
+    }
+   }
+  },
+  {
+   "name": "Bundesamt f\u00fcr Sicherheit in der Informationstechnik",
+   "category": "coordinator",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 14500,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2013,
+     "n": 25
+    },
+    {
+     "year": 2014,
+     "n": 37
+    },
+    {
+     "year": 2015,
+     "n": 47
+    },
+    {
+     "year": 2016,
+     "n": 80
+    },
+    {
+     "year": 2017,
+     "n": 120
+    },
+    {
+     "year": 2018,
+     "n": 135
+    },
+    {
+     "year": 2019,
+     "n": 210
+    },
+    {
+     "year": 2020,
+     "n": 262
+    },
+    {
+     "year": 2021,
+     "n": 391
+    },
+    {
+     "year": 2022,
+     "n": 930
+    },
+    {
+     "year": 2023,
+     "n": 2606
+    },
+    {
+     "year": 2024,
+     "n": 2668
+    },
+    {
+     "year": 2025,
+     "n": 2738
+    },
+    {
+     "year": 2026,
+     "n": 4251
+    }
+   ],
+   "first_year": 2013,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 0,
+    "other": 14500,
+    "unsampled": 0
+   },
+   "sample_n": 30,
+   "fields": {
+    "cvss": 0.0,
+    "cwe": 0.0,
+    "product_tree": 100.0,
+    "remediation": 0.0
+   },
+   "sample_groups": {
+    "other": {
+     "n": 30,
+     "cvss": 0,
+     "cwe": 0,
+     "product_tree": 30,
+     "remediation": 0
+    }
+   }
+  },
+  {
+   "name": "Siemens ProductCERT",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 865,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2011,
+     "n": 1
+    },
+    {
+     "year": 2012,
+     "n": 4
+    },
+    {
+     "year": 2015,
+     "n": 1
+    },
+    {
+     "year": 2016,
+     "n": 2
+    },
+    {
+     "year": 2017,
+     "n": 5
+    },
+    {
+     "year": 2018,
+     "n": 7
+    },
+    {
+     "year": 2019,
+     "n": 12
+    },
+    {
+     "year": 2020,
+     "n": 21
+    },
+    {
+     "year": 2021,
+     "n": 144
+    },
+    {
+     "year": 2022,
+     "n": 143
+    },
+    {
+     "year": 2023,
+     "n": 123
+    },
+    {
+     "year": 2024,
+     "n": 156
+    },
+    {
+     "year": 2025,
+     "n": 141
+    },
+    {
+     "year": 2026,
+     "n": 105
+    }
+   ],
+   "first_year": 2011,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 634,
+    "other": 231,
+    "unsampled": 0
+   },
+   "sample_n": 30,
+   "fields": {
+    "cvss": 100.0,
+    "cwe": 100.0,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "advisory": {
+     "n": 22,
+     "cvss": 22,
+     "cwe": 22,
+     "product_tree": 22,
+     "remediation": 22
+    },
+    "other": {
+     "n": 8,
+     "cvss": 8,
+     "cwe": 8,
+     "product_tree": 8,
+     "remediation": 8
+    }
+   }
+  },
+  {
+   "name": "Schneider Electric CPCERT",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 293,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2015,
+     "n": 1
+    },
+    {
+     "year": 2018,
+     "n": 2
+    },
+    {
+     "year": 2019,
+     "n": 4
+    },
+    {
+     "year": 2020,
+     "n": 49
+    },
+    {
+     "year": 2021,
+     "n": 41
+    },
+    {
+     "year": 2022,
+     "n": 47
+    },
+    {
+     "year": 2023,
+     "n": 40
+    },
+    {
+     "year": 2024,
+     "n": 35
+    },
+    {
+     "year": 2025,
+     "n": 42
+    },
+    {
+     "year": 2026,
+     "n": 32
+    }
+   ],
+   "first_year": 2015,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 293,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 30,
+   "fields": {
+    "cvss": 93.3,
+    "cwe": 90.0,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "advisory": {
+     "n": 30,
+     "cvss": 28,
+     "cwe": 27,
+     "product_tree": 30,
+     "remediation": 30
+    }
+   }
+  },
+  {
+   "name": "ABB Product Security Incident Response Team (PSIRT)",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 82,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2024,
+     "n": 1
+    },
+    {
+     "year": 2025,
+     "n": 37
+    },
+    {
+     "year": 2026,
+     "n": 44
+    }
+   ],
+   "first_year": 2024,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 82,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 30,
+   "fields": {
+    "cvss": 100.0,
+    "cwe": 100.0,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "advisory": {
+     "n": 30,
+     "cvss": 30,
+     "cwe": 30,
+     "product_tree": 30,
+     "remediation": 30
+    }
+   }
+  },
+  {
+   "name": "SICK PSIRT",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 74,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2019,
+     "n": 2
+    },
+    {
+     "year": 2020,
+     "n": 5
+    },
+    {
+     "year": 2021,
+     "n": 4
+    },
+    {
+     "year": 2022,
+     "n": 15
+    },
+    {
+     "year": 2023,
+     "n": 11
+    },
+    {
+     "year": 2024,
+     "n": 7
+    },
+    {
+     "year": 2025,
+     "n": 14
+    },
+    {
+     "year": 2026,
+     "n": 16
+    }
+   ],
+   "first_year": 2019,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 74,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 30,
+   "fields": {
+    "cvss": 96.7,
+    "cwe": 93.3,
+    "product_tree": 100.0,
+    "remediation": 83.3
+   },
+   "sample_groups": {
+    "advisory": {
+     "n": 30,
+     "cvss": 29,
+     "cwe": 28,
+     "product_tree": 30,
+     "remediation": 25
+    }
+   }
+  },
+  {
+   "name": "Nozomi Networks",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 67,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2019,
+     "n": 2
+    },
+    {
+     "year": 2020,
+     "n": 2
+    },
+    {
+     "year": 2021,
+     "n": 2
+    },
+    {
+     "year": 2022,
+     "n": 2
+    },
+    {
+     "year": 2023,
+     "n": 11
+    },
+    {
+     "year": 2024,
+     "n": 8
+    },
+    {
+     "year": 2025,
+     "n": 15
+    },
+    {
+     "year": 2026,
+     "n": 25
+    }
+   ],
+   "first_year": 2019,
+   "last_year": 2026,
+   "mix": {
+    "vex": 67,
+    "advisory": 0,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 30,
+   "fields": {
+    "cvss": 100.0,
+    "cwe": 100.0,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "vex": {
+     "n": 30,
+     "cvss": 30,
+     "cwe": 30,
+     "product_tree": 30,
+     "remediation": 30
+    }
+   }
+  },
+  {
+   "name": "Stackable Product Security Team",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 26,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2024,
+     "n": 8
+    },
+    {
+     "year": 2026,
+     "n": 18
+    }
+   ],
+   "first_year": 2024,
+   "last_year": 2026,
+   "mix": {
+    "vex": 26,
+    "advisory": 0,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 26,
+   "fields": {
+    "cvss": 0.0,
+    "cwe": 0.0,
+    "product_tree": 100.0,
+    "remediation": 3.8
+   },
+   "sample_groups": {
+    "vex": {
+     "n": 26,
+     "cvss": 0,
+     "cwe": 0,
+     "product_tree": 26,
+     "remediation": 1
+    }
+   }
+  },
+  {
+   "name": "Open-Xchange GmbH",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 24,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2022,
+     "n": 2
+    },
+    {
+     "year": 2023,
+     "n": 7
+    },
+    {
+     "year": 2024,
+     "n": 8
+    },
+    {
+     "year": 2025,
+     "n": 4
+    },
+    {
+     "year": 2026,
+     "n": 3
+    }
+   ],
+   "first_year": 2022,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 24,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 24,
+   "fields": {
+    "cvss": 100.0,
+    "cwe": 100.0,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "advisory": {
+     "n": 24,
+     "cvss": 24,
+     "cwe": 24,
+     "product_tree": 24,
+     "remediation": 24
+    }
+   }
+  },
+  {
+   "name": "KUNBUS PSIRT",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 11,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2022,
+     "n": 1
+    },
+    {
+     "year": 2024,
+     "n": 1
+    },
+    {
+     "year": 2025,
+     "n": 4
+    },
+    {
+     "year": 2026,
+     "n": 5
+    }
+   ],
+   "first_year": 2022,
+   "last_year": 2026,
+   "mix": {
+    "vex": 3,
+    "advisory": 8,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 11,
+   "fields": {
+    "cvss": 90.9,
+    "cwe": 90.9,
+    "product_tree": 100.0,
+    "remediation": 81.8
+   },
+   "sample_groups": {
+    "vex": {
+     "n": 3,
+     "cvss": 2,
+     "cwe": 2,
+     "product_tree": 3,
+     "remediation": 2
+    },
+    "advisory": {
+     "n": 8,
+     "cvss": 8,
+     "cwe": 8,
+     "product_tree": 8,
+     "remediation": 7
+    }
+   }
+  },
+  {
+   "name": "Intevation GmbH",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 6,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2024,
+     "n": 1
+    },
+    {
+     "year": 2025,
+     "n": 4
+    },
+    {
+     "year": 2026,
+     "n": 1
+    }
+   ],
+   "first_year": 2024,
+   "last_year": 2026,
+   "mix": {
+    "vex": 5,
+    "advisory": 1,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 6,
+   "fields": {
+    "cvss": 16.7,
+    "cwe": 0.0,
+    "product_tree": 100.0,
+    "remediation": 83.3
+   },
+   "sample_groups": {
+    "vex": {
+     "n": 5,
+     "cvss": 0,
+     "cwe": 0,
+     "product_tree": 5,
+     "remediation": 4
+    },
+    "advisory": {
+     "n": 1,
+     "cvss": 1,
+     "cwe": 0,
+     "product_tree": 1,
+     "remediation": 1
+    }
+   }
+  },
+  {
+   "name": "IDS Innomic Schwingungsmesstechnik GmbH",
+   "category": "vendor",
+   "role": "csaf_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-05",
+   "documents": 1,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2026,
+     "n": 1
+    }
+   ],
+   "first_year": 2026,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 1,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 1,
+   "fields": {
+    "cvss": 100.0,
+    "cwe": 100.0,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "advisory": {
+     "n": 1,
+     "cvss": 1,
+     "cwe": 1,
+     "product_tree": 1,
+     "remediation": 1
+    }
+   }
+  },
+  {
+   "name": "CISA",
+   "category": "coordinator",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "denied",
+   "detail": "HTTP 403",
+   "measured_on": null,
+   "documents": 0,
+   "undated": 0,
+   "by_year": [],
+   "first_year": null,
+   "last_year": null,
+   "mix": {
+    "vex": 0,
+    "advisory": 0,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 0,
+   "fields": null,
+   "sample_groups": {}
+  },
+  {
+   "name": "Hitachi Energy PSIRT",
+   "category": "vendor",
+   "role": "csaf_publisher",
+   "kind": "publisher",
+   "status": "empty",
+   "detail": "no documents listed",
+   "measured_on": null,
+   "documents": 0,
+   "undated": 0,
+   "by_year": [],
+   "first_year": null,
+   "last_year": null,
+   "mix": {
+    "vex": 0,
+    "advisory": 0,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 0,
+   "fields": null,
+   "sample_groups": {}
+  },
+  {
+   "name": "Huawei PSIRT",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "robots",
+   "detail": "robots.txt",
+   "measured_on": null,
+   "documents": 0,
+   "undated": 0,
+   "by_year": [],
+   "first_year": null,
+   "last_year": null,
+   "mix": {
+    "vex": 0,
+    "advisory": 0,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 0,
+   "fields": null,
+   "sample_groups": {}
+  }
+ ],
+ "years": [
+  {
+   "year": 1999,
+   "n": 9,
+   "providers": 1
+  },
+  {
+   "year": 2000,
+   "n": 97,
+   "providers": 1
+  },
+  {
+   "year": 2001,
+   "n": 173,
+   "providers": 1
+  },
+  {
+   "year": 2002,
+   "n": 320,
+   "providers": 1
+  },
+  {
+   "year": 2003,
+   "n": 429,
+   "providers": 1
+  },
+  {
+   "year": 2004,
+   "n": 506,
+   "providers": 1
+  },
+  {
+   "year": 2005,
+   "n": 728,
+   "providers": 1
+  },
+  {
+   "year": 2006,
+   "n": 556,
+   "providers": 1
+  },
+  {
+   "year": 2007,
+   "n": 947,
+   "providers": 1
+  },
+  {
+   "year": 2008,
+   "n": 1113,
+   "providers": 1
+  },
+  {
+   "year": 2009,
+   "n": 1237,
+   "providers": 1
+  },
+  {
+   "year": 2010,
+   "n": 1550,
+   "providers": 1
+  },
+  {
+   "year": 2011,
+   "n": 1601,
+   "providers": 2
+  },
+  {
+   "year": 2012,
+   "n": 1938,
+   "providers": 2
+  },
+  {
+   "year": 2013,
+   "n": 2508,
+   "providers": 2
+  },
+  {
+   "year": 2014,
+   "n": 2609,
+   "providers": 2
+  },
+  {
+   "year": 2015,
+   "n": 2959,
+   "providers": 4
+  },
+  {
+   "year": 2016,
+   "n": 3556,
+   "providers": 3
+  },
+  {
+   "year": 2017,
+   "n": 4084,
+   "providers": 3
+  },
+  {
+   "year": 2018,
+   "n": 3739,
+   "providers": 4
+  },
+  {
+   "year": 2019,
+   "n": 3998,
+   "providers": 6
+  },
+  {
+   "year": 2020,
+   "n": 4776,
+   "providers": 6
+  },
+  {
+   "year": 2021,
+   "n": 5560,
+   "providers": 6
+  },
+  {
+   "year": 2022,
+   "n": 7884,
+   "providers": 8
+  },
+  {
+   "year": 2023,
+   "n": 9556,
+   "providers": 7
+  },
+  {
+   "year": 2024,
+   "n": 11622,
+   "providers": 11
+  },
+  {
+   "year": 2025,
+   "n": 12338,
+   "providers": 10
+  },
+  {
+   "year": 2026,
+   "n": 36321,
+   "providers": 12
+  }
+ ],
+ "totals": {
+  "listed": 15,
+  "measured": 12,
+  "carried": 0,
+  "unmeasured": 3,
+  "documents": 122714,
+  "undated": 0,
+  "mix": {
+   "vex": 75584,
+   "advisory": 32399,
+   "other": 14731,
+   "unsampled": 0
+  },
+  "vex_pct": 61.6,
+  "top_name": "Red Hat Product Security",
+  "top_share_pct": 87.0,
+  "vex_top_name": "Red Hat Product Security",
+  "vex_top_share_pct": 99.9,
+  "providers_with_vex": 5,
+  "sampled_providers": 12,
+  "sample_n": 308,
+  "fields": {
+   "cvss": {
+    "nearly_all": 9,
+    "none": 2
+   },
+   "cwe": {
+    "nearly_all": 8,
+    "none": 3
+   },
+   "product_tree": {
+    "nearly_all": 12,
+    "none": 0
+   },
+   "remediation": {
+    "nearly_all": 6,
+    "none": 1
+   }
+  },
+  "by_group": {
+   "vex": {
+    "n": 94,
+    "cvss": 64.9,
+    "cwe": 57.4,
+    "product_tree": 100.0,
+    "remediation": 60.6
+   },
+   "advisory": {
+    "n": 176,
+    "cvss": 97.7,
+    "cwe": 93.8,
+    "product_tree": 100.0,
+    "remediation": 96.6
+   },
+   "other": {
+    "n": 38,
+    "cvss": 21.1,
+    "cwe": 21.1,
+    "product_tree": 100.0,
+    "remediation": 21.1
+   }
+  },
+  "all_three_nearly_all": 6
+ }
+}

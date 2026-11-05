@@ -71,6 +71,7 @@ PAGES = [
     "ledger.html",
     "sigma.html",
     "oss.html",
+    "csaf.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch
