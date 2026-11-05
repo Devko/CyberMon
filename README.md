@@ -93,7 +93,12 @@ Active CNAs per year against the top-5 and top-10 share of published records,
 new CNAs per year, and a rejection-rate board. The Herfindahl–Hirschman Index
 (HHI) is in the data file and quoted, not drawn. The trend chart has the
 Linux-kernel toggle (shares and HHI recomputed without the kernel CNA). Stage
-`pipeline/concentration_metrics.py`.
+`pipeline/concentration_metrics.py`. A fourth section profiles one CNA at a
+time (picked by name, kept in the URL as `#cna=<shortName>`) against every
+CNA with at least 100 records in the last five complete years: its CVSS
+scores, CWE, score and affected-version coverage, rejection rate, logged
+rescores, KEV share and public-exploit share, each with the median CNA and
+its rank. Stage `pipeline/cna_profile_metrics.py`.
 
 ### 05 · Breach Catalog — [breaches.html](https://devko.github.io/CyberMon/breaches.html)
 

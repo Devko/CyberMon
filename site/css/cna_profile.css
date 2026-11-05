@@ -1,0 +1,177 @@
+/* ============================================================================
+   CNA profile (concentration.html, section 04): the picker, the summary
+   line, the legend and the grid of linked small multiples drawn by
+   js/charts/cna_profile.js. Colours are the shared.css tokens; the accent
+   marks the chosen CNA only.
+   ========================================================================== */
+
+.profile { width: 100%; }
+
+/* ---- picker: search box + native select ---- */
+
+.profile-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.profile-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+.profile-label {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.profile-search,
+.profile-select {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--panel-up);
+  border: 1px solid var(--rule-strong);
+  border-radius: 0;
+  padding: 7px 9px;
+  min-height: 36px;
+  max-width: 100%;
+}
+
+.profile-search { width: 15rem; }
+.profile-select { width: 17rem; cursor: pointer; }
+.profile-search:hover,
+.profile-select:hover { border-color: var(--muted); }
+.profile-search:focus-visible,
+.profile-select:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+
+.profile-matches {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 0;
+  flex-basis: 100%;
+}
+.profile-matches:empty { display: none; }
+
+.profile-head {
+  font-size: 1.02rem;
+  margin: 4px 0 10px;
+  max-width: var(--measure);
+}
+
+/* ---- legend ---- */
+
+.profile-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.profile-legend-item { display: inline-flex; align-items: center; gap: 7px; }
+
+.profile-key { display: inline-block; flex: none; }
+.profile-key.key-cna { width: 3px; height: 14px; background: var(--accent); }
+.profile-key.key-median { width: 0; height: 14px; border-left: 1px dashed var(--ink); }
+.profile-key.key-peer { width: 1px; height: 10px; background: var(--muted); opacity: 0.7; }
+.profile-key.key-all { width: 14px; height: 9px; border: 1px solid var(--ink); border-bottom: none; }
+
+/* ---- grid of small multiples ---- */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.profile-cell {
+  margin: 0;
+  min-width: 0;
+  background: var(--bg-deep);
+  border: 1px solid var(--rule);
+  padding: 12px 14px 10px;
+}
+
+.profile-cell-wide { grid-column: span 2; }
+
+.profile-title {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  min-height: 2.6em;
+}
+
+.profile-figure { position: relative; }
+.profile-strip,
+.profile-cell-wide .profile-figure { cursor: crosshair; touch-action: pan-y; }
+
+.profile-svg { display: block; width: 100%; height: 44px; overflow: visible; }
+.profile-cell-wide .profile-svg { height: 120px; }
+
+.strip-base { stroke: var(--rule-strong); stroke-width: 1; }
+.strip-peer { stroke: var(--muted); stroke-width: 1; opacity: 0.45; }
+.strip-median { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 3 3; }
+.strip-hover { stroke: var(--ink); stroke-width: 2; }
+.strip-cna { stroke: var(--accent); stroke-width: 3; }
+
+.hist-cna { fill: var(--accent); opacity: 0.55; }
+.hist-all { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+
+.profile-axis {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--faint);
+  margin-top: 3px;
+}
+
+.profile-readout {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.profile-hover {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink);
+  margin: 4px 0 0;
+  min-height: 1.4em;
+  overflow-wrap: anywhere;
+}
+
+/* the score bands as a table (the histogram's table view) */
+.profile-table { margin-top: 6px; }
+.profile-table summary {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.profile-table summary::marker { color: var(--accent); }
+.profile-band-table { min-width: 0; width: auto; margin-top: 6px; font-size: 12px; }
+.profile-band-table td,
+.profile-band-table th { padding: 3px 14px 3px 0; }
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .profile-grid { grid-template-columns: minmax(0, 1fr); }
+  .profile-cell-wide { grid-column: auto; }
+  .profile-search,
+  .profile-select { width: 100%; }
+  .profile-field { flex: 1 1 100%; }
+  .profile-title { min-height: 0; }
+}

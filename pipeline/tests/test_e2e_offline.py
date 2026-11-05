@@ -22,7 +22,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "cna_roster.json", "time_to_poc.json", "botnet_weather.json",
              "sec_incidents.json",
              "observatory.json",
-             "advisory_gap.json", "registry_malware.json"]
+             "advisory_gap.json", "registry_malware.json",
+             "cna_profiles.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -627,3 +628,24 @@ def test_osv_outage_carries_both_modules_forward(tmp_path, capsys,
     meta = _load(tmp_path, "meta.json")
     assert meta["sources"]["osv"]["stale"] is True
     assert meta["sources"]["osv"]["fetched_at"] == before["generated_at"]
+
+
+def test_offline_run_emits_cna_profiles(tmp_path, capsys):
+    """CNA profiles (cna_profiles.json) from the fixture corpus: the window
+    is the last five complete years before the edition, the fixture floors
+    drop to 1, and the CNA-container counts ignore ADP enrichment."""
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    prof = _load(tmp_path, "cna_profiles.json")
+    contracts.validate("cna_profiles.json", prof)
+    year = int(prof["generated_at"][:4])
+    assert prof["window"] == {"from": year - 5, "to": year - 1, "years": 5}
+    assert prof["min_published"] == 1 and prof["min_scored"] == 1
+    assert prof["rescore_log"]["rescores"] == 0  # stateless fixture night
+    if year == 2026:  # the fixture corpus spans 2014-2025
+        rows = {r["cna"]: r for r in prof["cnas"]}
+        assert prof["cnas"][0]["cna"] == "VendorX"  # largest first
+        assert rows["VendorX"]["counts"] == {"scored": 4, "cwe": 2,
+                                             "affected": 3, "kev": 1,
+                                             "exploit": 4}
+        assert rows["mitre"]["values"]["rejected_pct"] == 50.0
+        assert rows["Linux"]["values"]["score_median"] is None

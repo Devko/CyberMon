@@ -193,6 +193,11 @@ class CveFacts:
     date_published: str | None = None  # day precision "YYYY-MM-DD"
     cwe: str | None = None  # first cweId in the record (CNA preferred)
     has_affected: bool = False  # any usable affected[] entry in the record
+    # The same two tests on the CNA container alone (CNA profiles,
+    # cna_profile_metrics.py): what the assigning CNA itself supplied,
+    # before any ADP enrichment.
+    cna_has_cwe: bool = False
+    cna_has_affected: bool = False
     # Vulnrichment / CISA-ADP handoff (adp_metrics.py). All default to the
     # "no CISA-ADP" state, so records without one fold in harmlessly.
     adp_cisa: bool = False              # a CISA-ADP container is present
@@ -465,12 +470,14 @@ def extract_facts(record: dict) -> CveFacts | None:
             adp_scores.setdefault(family, score)
 
     cwe = _first_cwe(cna)
+    cna_has_cwe = cwe is not None
     if cwe is None:
         for adp in adps:
             cwe = _first_cwe(adp)
             if cwe is not None:
                 break
-    has_affected = _has_usable_affected(cna) or \
+    cna_has_affected = _has_usable_affected(cna)
+    has_affected = cna_has_affected or \
         any(_has_usable_affected(adp) for adp in adps)
 
     # Vulnrichment / CISA-ADP handoff (adp_metrics.py) — additive, reusing
@@ -521,6 +528,8 @@ def extract_facts(record: dict) -> CveFacts | None:
                         and len(date_published) >= 10 else None),
         cwe=cwe,
         has_affected=has_affected,
+        cna_has_cwe=cna_has_cwe,
+        cna_has_affected=cna_has_affected,
         adp_cisa=adp_cisa,
         adp_cisa_month=adp_cisa_month,
         adp_cisa_legacy=adp_cisa_legacy,
@@ -661,6 +670,15 @@ class Aggregator:
         self.v4_delta_cna: dict[str, Counter[int]] = defaultdict(Counter)
         self.v4_band: Counter[str] = Counter()
         self.v4_band_cna: dict[str, Counter[str]] = defaultdict(Counter)
+        # CNA profiles (cna_profile_metrics.py), published records only:
+        # cna -> publication year -> how many of that CNA's records carry
+        # a CWE in the CNA container ("cwe"), usable affected-version data
+        # in the CNA container ("affected"), a KEV listing ("kev") and
+        # tracked public exploit code ("exploit", the ``poc_ids`` set).
+        # Record counts, rejections and CNA scores come from
+        # cna_year_published / cna_year_rejected / cna_year_scores.
+        self.cna_year_profile: dict[str, dict[int, Counter[str]]] = \
+            defaultdict(lambda: defaultdict(Counter))
 
     def add(self, facts: CveFacts) -> None:
         self.cve_count += 1
@@ -749,6 +767,7 @@ class Aggregator:
                 self.kev_cwe_counts[facts.cwe] += 1
         if not facts.has_affected:
             self.quality_missing[facts.year]["affected"] += 1
+        self._add_cna_profile(facts)
 
         # Vulnrichment / CISA-ADP handoff (published records only; REJECTED
         # already returned above). Every ADP provider on the record scores
@@ -781,6 +800,18 @@ class Aggregator:
                 self.tag_year_flood[tag][facts.year][bucket] += 1
         for tag in facts.adp_tags:
             self.adp_tag_counts[tag] += 1
+
+    def _add_cna_profile(self, facts: CveFacts) -> None:
+        """CNA-profile tallies for one PUBLISHED record."""
+        tally = self.cna_year_profile[facts.cna][facts.year]
+        if facts.cna_has_cwe:
+            tally["cwe"] += 1
+        if facts.cna_has_affected:
+            tally["affected"] += 1
+        if facts.cve_id in self.kev_ids:
+            tally["kev"] += 1
+        if facts.cve_id in self.poc_ids:
+            tally["exploit"] += 1
 
     def _add_v4(self, facts: CveFacts) -> None:
         """CVSS 4.0 adoption tallies for one PUBLISHED record (CNA

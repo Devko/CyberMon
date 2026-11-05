@@ -792,3 +792,7 @@ VALIDATORS.update(osv_contracts.VALIDATORS)
 from . import tags_contracts  # noqa: E402
 
 VALIDATORS.update(tags_contracts.VALIDATORS)
+
+from . import cna_profile_contracts  # noqa: E402
+
+VALIDATORS.update(cna_profile_contracts.VALIDATORS)
