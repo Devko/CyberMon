@@ -132,6 +132,14 @@
    "commit_date": "2026-11-05",
    "rules": 3980,
    "attack_version": "20.0"
+  },
+  "oss": {
+   "fetched_at": "2026-11-05T07:18:02Z",
+   "edition": "2026-11",
+   "packages": 1000,
+   "lookups": 1867,
+   "failed": 0,
+   "oldest_observation": "2026-11-05"
   }
  }
 }

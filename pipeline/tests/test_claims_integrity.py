@@ -84,6 +84,7 @@ BY_SOURCE = {
     "attack_atlas.json": "atlas",
     "alias_graph.json": "naming",
     "sigma_coverage.json": "sigma",
+    "oss_maintainers.json": "oss",
 }
 
 # A degraded module may be carried forward for a few nights while an

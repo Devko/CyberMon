@@ -1,0 +1,425 @@
+{
+ "https://api.scorecard.dev/projects/github.com/example/aws-lite": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 10
+    },
+    {
+     "name": "Code-Review",
+     "score": 8
+    },
+    {
+     "name": "Branch-Protection",
+     "score": 8
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": 10
+    }
+   ],
+   "date": "2026-10-19",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 7.0,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/big-framework": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 10
+    },
+    {
+     "name": "Code-Review",
+     "score": 7
+    },
+    {
+     "name": "Branch-Protection",
+     "score": -1
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": -1
+    }
+   ],
+   "date": "2026-11-02T07:21:52Z",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 6.5,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/left-pad": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 0
+    },
+    {
+     "name": "Code-Review",
+     "score": 2
+    },
+    {
+     "name": "Branch-Protection",
+     "score": 0
+    },
+    {
+     "name": "License",
+     "score": 10
+    }
+   ],
+   "date": "2026-11-02",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 3.6,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/numcalc": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 10
+    },
+    {
+     "name": "Code-Review",
+     "score": 10
+    },
+    {
+     "name": "Branch-Protection",
+     "score": -1
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": 0
+    }
+   ],
+   "date": "2026-10-26",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 8.4,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/rails-lite": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 10
+    },
+    {
+     "name": "Code-Review",
+     "score": 5
+    },
+    {
+     "name": "Branch-Protection",
+     "score": 3
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": -1
+    }
+   ],
+   "date": "2026-10-19",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 6.2,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/rake-lite": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 0
+    },
+    {
+     "name": "Code-Review",
+     "score": 3
+    },
+    {
+     "name": "Branch-Protection",
+     "score": 0
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": -1
+    }
+   ],
+   "date": "2022-08-15",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 4.4,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/serde-lite": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 5
+    },
+    {
+     "name": "Code-Review",
+     "score": 2
+    },
+    {
+     "name": "Branch-Protection",
+     "score": -1
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": -1
+    }
+   ],
+   "date": "2026-11-02",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 5.0,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://api.scorecard.dev/projects/github.com/example/tokio-lite": {
+  "body": {
+   "checks": [
+    {
+     "name": "Maintained",
+     "score": 10
+    },
+    {
+     "name": "Code-Review",
+     "score": 9
+    },
+    {
+     "name": "Branch-Protection",
+     "score": 3
+    },
+    {
+     "name": "License",
+     "score": 10
+    },
+    {
+     "name": "Signed-Releases",
+     "score": -1
+    }
+   ],
+   "date": "2026-11-02",
+   "repo": {
+    "name": "fixture"
+   },
+   "score": 6.1,
+   "scorecard": {
+    "version": "v5.6.0"
+   }
+  },
+  "status": 200
+ },
+ "https://crates.io/api/v1/crates/rand-lite/owners": {
+  "body": {
+   "users": [
+    {
+     "id": 3,
+     "kind": "user",
+     "login": "ivan"
+    },
+    {
+     "id": 4,
+     "kind": "user",
+     "login": "judy"
+    }
+   ]
+  },
+  "status": 200
+ },
+ "https://crates.io/api/v1/crates/serde-lite/owners": {
+  "body": {
+   "users": [
+    {
+     "id": 1,
+     "kind": "user",
+     "login": "henry"
+    },
+    {
+     "id": 2,
+     "kind": "team",
+     "login": "github:example:publish"
+    }
+   ]
+  },
+  "status": 200
+ },
+ "https://crates.io/api/v1/crates/tokio-lite/owners": {
+  "body": {
+   "users": [
+    {
+     "id": 1,
+     "kind": "user",
+     "login": "henry"
+    }
+   ]
+  },
+  "status": 200
+ },
+ "https://pypi.org/pypi/numcalc/json": {
+  "body": {
+   "info": {
+    "name": "numcalc"
+   },
+   "ownership": {
+    "organization": "numcalc-org",
+    "roles": [
+     {
+      "role": "Owner",
+      "user": "frank"
+     },
+     {
+      "role": "Maintainer",
+      "user": "grace"
+     }
+    ]
+   }
+  },
+  "status": 200
+ },
+ "https://pypi.org/pypi/requests-lite/json": {
+  "body": {
+   "info": {
+    "name": "requests-lite"
+   },
+   "ownership": {
+    "organization": null,
+    "roles": [
+     {
+      "role": "Owner",
+      "user": "erin"
+     }
+    ]
+   }
+  },
+  "status": 200
+ },
+ "https://registry.npmjs.org/-/package/%40scope%2Ftool/collaborators": {
+  "body": {
+   "alice": "write"
+  },
+  "status": 200
+ },
+ "https://registry.npmjs.org/-/package/big-framework/collaborators": {
+  "body": {
+   "alice": "write",
+   "bob": "write",
+   "carol": "write",
+   "dave": "read"
+  },
+  "status": 200
+ },
+ "https://registry.npmjs.org/-/package/left-pad/collaborators": {
+  "body": {
+   "alice": "write"
+  },
+  "status": 200
+ },
+ "https://rubygems.org/api/v1/gems/aws-lite/owners.json": {
+  "body": [],
+  "status": 200
+ },
+ "https://rubygems.org/api/v1/gems/rails-lite/owners.json": {
+  "body": [
+   {
+    "handle": "lee",
+    "id": 20
+   },
+   {
+    "handle": "max",
+    "id": 21
+   },
+   {
+    "handle": "nia",
+    "id": 22
+   },
+   {
+    "handle": "oli",
+    "id": 23
+   },
+   {
+    "handle": "pat",
+    "id": 24
+   },
+   {
+    "handle": "kim",
+    "id": 25
+   }
+  ],
+  "status": 200
+ },
+ "https://rubygems.org/api/v1/gems/rake-lite/owners.json": {
+  "body": [
+   {
+    "handle": "kim",
+    "id": 10
+   }
+  ],
+  "status": 200
+ }
+}

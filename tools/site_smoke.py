@@ -70,6 +70,7 @@ PAGES = [
     "atlas.html",
     "ledger.html",
     "sigma.html",
+    "oss.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

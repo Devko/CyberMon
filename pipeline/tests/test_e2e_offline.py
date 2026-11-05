@@ -26,7 +26,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "cna_profiles.json",
              "support_windows.json",
              "attack_atlas.json",
-             "sigma_coverage.json"]
+             "sigma_coverage.json",
+             "oss_maintainers.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -443,6 +444,21 @@ def test_offline_fixtures_run_emits_all_valid_outputs(tmp_path, capsys):
         "fetched_at": meta["generated_at"], "products": 8, "lines": 23,
         "not_modified": False}
 
+    # Open-Source Maintainers: the synthetic fixture universe (three
+    # packages per registry, nine repositories) is observed in one night
+    # from the recorded responses; the observation cache lands beside the
+    # output, never in the live .cache.
+    oss = _load(tmp_path, "oss_maintainers.json")
+    assert [e["id"] for e in oss["ecosystems"]] == \
+        ["npm", "pypi", "crates", "rubygems"]
+    assert oss["ecosystems"][0]["single_account"]["n"] == 2
+    assert meta["sources"]["oss"] == {
+        "fetched_at": meta["generated_at"], "edition": "2026-11",
+        "packages": 12, "lookups": 21, "failed": 0,
+        "oldest_observation": meta["generated_at"][:10]}
+    assert (tmp_path / "history" / "oss_state.json.gz").exists()
+
+
     # Extortion ledger: 8 fixture ledger entries collapse to 7 payments (one
     # transaction pays two DemoLocker addresses); the Unlabeled address is
     # never ranked as a family; quarters are contiguous 2022Q1..2026Q1.
@@ -840,3 +856,44 @@ def test_sigma_outage_without_prior_edition_omits_it(tmp_path, capsys,
     assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
     assert not (tmp_path / "sigma_coverage.json").exists()
     assert "sigma" not in _load(tmp_path, "meta.json")["sources"]
+
+
+def test_oss_outage_carries_the_module_forward(tmp_path, capsys,
+                                               monkeypatch):
+    """Four registries and Scorecard feed only Open-Source Maintainers: a
+    failure there carries its previous edition (and meta source) forward
+    stale while every other module refreshes."""
+    from pipeline import oss_metrics
+
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    before = _load(tmp_path, "oss_maintainers.json")
+
+    def down(*args, **kwargs):
+        raise OSError("HTTP 503")
+
+    monkeypatch.setattr(oss_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    carried = _load(tmp_path, "oss_maintainers.json")
+    assert carried["stale"] is True
+    contracts.validate("oss_maintainers.json", carried)
+    assert carried["ecosystems"] == before["ecosystems"]
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["oss"]["stale"] is True
+    assert meta["sources"]["oss"]["fetched_at"] == before["generated_at"]
+
+
+def test_oss_partial_coverage_withholds_a_first_edition(tmp_path, capsys):
+    """A lost cache with too small a batch cannot cover the universe: with
+    no previous edition nothing is invented — no file, no meta source —
+    but the lookups made are cached for the next night."""
+    assert main(["--offline-fixtures", "--out", str(tmp_path),
+                 "--oss-batch", "5"]) == 0
+    assert not (tmp_path / "oss_maintainers.json").exists()
+    assert "oss" not in _load(tmp_path, "meta.json")["sources"]
+    assert (tmp_path / "history" / "oss_state.json.gz").exists()
+    # The next nights finish the sweep and publish.
+    for _ in range(4):
+        assert main(["--offline-fixtures", "--out", str(tmp_path),
+                     "--oss-batch", "5"]) == 0
+    assert (tmp_path / "oss_maintainers.json").exists()
+    assert "stale" not in _load(tmp_path, "oss_maintainers.json")

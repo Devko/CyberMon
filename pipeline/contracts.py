@@ -440,6 +440,24 @@ def _validate_meta(obj: Any) -> None:
                    "meta.sources.sigma.rules", minimum=1)
         _check_str(_get(sg, "attack_version", "meta.sources.sigma"),
                    "meta.sources.sigma.attack_version")
+    # Optional (older committed meta files predate the module, and a run
+    # with no observable edition and nothing to carry omits it): the
+    # Open-Source Maintainers stage. ``lookups``/``failed`` count tonight's
+    # registry and Scorecard reads; ``oldest_observation`` dates the oldest
+    # observation the edition rests on.
+    if "oss" in src:
+        oss = src["oss"]
+        _check_str(_get(oss, "fetched_at", "meta.sources.oss"),
+                   "meta.sources.oss.fetched_at", ISO_UTC_RE)
+        _check_str(_get(oss, "edition", "meta.sources.oss"),
+                   "meta.sources.oss.edition")
+        for k in ("packages", "lookups", "failed"):
+            _check_int(_get(oss, k, "meta.sources.oss"),
+                       f"meta.sources.oss.{k}")
+        if oss["failed"] > oss["lookups"]:
+            _fail("meta.sources.oss.failed", "exceeds lookups")
+        _check_str(_get(oss, "oldest_observation", "meta.sources.oss"),
+                   "meta.sources.oss.oldest_observation", DATE_RE)
 
 
 # -------------------------------------------------- severity_inflation.json
@@ -953,3 +971,6 @@ VALIDATORS.update(attack_atlas_contracts.VALIDATORS)
 from . import sigma_contracts  # noqa: E402
 
 VALIDATORS.update(sigma_contracts.VALIDATORS)
+from . import oss_contracts  # noqa: E402
+
+VALIDATORS.update(oss_contracts.VALIDATORS)

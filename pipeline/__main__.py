@@ -20,6 +20,8 @@ is omitted for this run and ``meta.json`` omits ``sources.nvd``
 Single-module upstreams degrade instead of aborting (documented choice):
 HIBP, Ransomwhere, APNIC, SEC EDGAR (the Incident Clock) and
 endoflife.date (Support Windows) each feed
+HIBP, Ransomwhere, APNIC, SEC EDGAR (the Incident Clock) and the registry +
+Scorecard lookups of Open-Source Maintainers each feed
 exactly one module (OSV feeds the two OSV modules, which degrade
 together), so a sustained outage there carries that module's
 previous edition forward marked
@@ -57,7 +59,8 @@ from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                epss_report_metrics, epss_volatility, extortion_metrics,
                guards_metrics, history, hygiene_metrics, kev_changelog,
                kev_metrics, market_metrics, metrics, naming_metrics,
-               nvd_throughput, observatory, osv_metrics, poc_metrics,
+               nvd_throughput, observatory, oss_metrics, osv_metrics,
+               poc_metrics,
                quality_metrics, rescore_tracker, sec_incidents_metrics,
                top25_metrics)
 from . import sigma_metrics
@@ -121,6 +124,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                              "30 — a nightly needs a handful; the one-time "
                              "historical backfill is run manually with a "
                              "large value, e.g. 2000)")
+    parser.add_argument("--oss-batch", type=int,
+                        default=oss_metrics.DEFAULT_BATCH,
+                        help="max registry + Scorecard lookups per run for "
+                             "Open-Source Maintainers (default: "
+                             f"{oss_metrics.DEFAULT_BATCH}; a steady night "
+                             "needs about 270, a lost cache about 1,870)")
     parser.add_argument("--field-out", type=Path, default=None,
                         help="also build the Field (site/field.html's "
                              "per-CVE binary + field.json) into this "
@@ -932,6 +941,35 @@ def run(args: argparse.Namespace) -> int:
                                  generated_at, sigma_failure)
         if carried is not None:
             outputs["sigma_coverage.json"] = carried
+    # Open-Source Maintainers: a rolling refresh of who can publish each
+    # package of a frozen universe and how its repository scores on OpenSSF
+    # Scorecard (oss_metrics). Four registries plus Scorecard feed only this
+    # module, so any failure — a dead host, or too few fresh observations
+    # after a lost cache — carries the previous edition forward stale. The
+    # observation cache comes back unwritten and is saved below, after
+    # validation, whether or not tonight's edition could be built.
+    oss_source = oss_state = oss_state_dir = None
+    try:
+        oss_obj, oss_source, oss_state, oss_state_dir, oss_failure = \
+            oss_metrics.run_stage(args.out, args.cache_dir, generated_at,
+                                  offline_fixtures=args.offline_fixtures,
+                                  batch=args.oss_batch)
+    except (OSError, ValueError) as exc:
+        oss_obj = None
+        oss_failure = f"Open-Source Maintainers stage failed ({exc!r})"
+    if oss_obj is not None:
+        outputs["oss_maintainers.json"] = oss_obj
+        if oss_source["failed"]:
+            _warn(f"Open-Source Maintainers: {oss_source['failed']} of "
+                  f"{oss_source['lookups']} lookups failed tonight; their "
+                  f"previous observations were kept")
+    else:
+        carried = _carry_forward(args.out, "oss_maintainers.json",
+                                 generated_at, oss_failure)
+        carried_oss = _carry_forward_source(args.out, "oss")
+        if carried is not None and carried_oss is not None:
+            outputs["oss_maintainers.json"] = carried
+            oss_source = carried_oss
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -1026,6 +1064,8 @@ def run(args: argparse.Namespace) -> int:
         carried_sigma = _carry_forward_source(args.out, "sigma")
         if carried_sigma is not None:
             outputs["meta.json"]["sources"]["sigma"] = carried_sigma
+    if oss_source is not None:
+        outputs["meta.json"]["sources"]["oss"] = oss_source
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():
@@ -1055,6 +1095,8 @@ def run(args: argparse.Namespace) -> int:
                             state_dir=epssvol_state_dir)
     cna_roster.persist(args.out, roster_pending)
     botnet_metrics.persist(args.out, botnet_rows)
+    if oss_state is not None:
+        oss_metrics.persist(oss_state_dir, oss_state)
     for name, obj in outputs.items():
         path = args.out / name
         path.write_text(json.dumps(obj, indent=1) + "\n", encoding="utf-8")

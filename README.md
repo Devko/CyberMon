@@ -643,6 +643,40 @@ bundle is read once. A SigmaHQ or ATT&CK outage carries the module forward,
 marked stale. Only counts and ATT&CK ids are published, never rules.
 Fetcher `pipeline/fetch_sigma.py`, technique timeline
 `pipeline/attack_techniques.py`, stage `pipeline/sigma_metrics.py`.
+### 30 · Open-Source Maintainers — [oss.html](https://devko.github.io/CyberMon/oss.html)
+
+*In each of four registries, more than one in five of the 250 most-depended-on packages have only one account that can publish them.*
+
+Who can publish the packages that the most other packages depend on, in
+npm, PyPI, crates.io and RubyGems. The package list is a written, versioned
+rule applied once per edition and frozen in `pipeline/oss_universe.json`
+(rule v1, edition 2026-11): per registry, ecosyste.ms's ranking by
+dependent packages, keeping the first 250 that are also among the
+registry's 5,000 most-downloaded. The download filter removes spam rings
+that list each other as dependencies (598 of the first 848 RubyGems names
+on 2026-11-05). Three charts, every number per registry, never pooled:
+
+- how many accounts can publish each package, from each registry's own
+  records (npm collaborators with write access, PyPI Owner/Maintainer roles,
+  crates.io user owners, RubyGems owners). A crates.io team, PyPI
+  organisation or RubyGems organisation is flagged and never counted as
+  single-account;
+- how many of the 250 the 1, 5, 10 and 25 accounts with the most rights can
+  publish between them (a lower bound where teams hold rights);
+- OpenSSF Scorecard's Maintained, Code-Review, Branch-Protection and
+  Signed-Releases scores for the distinct GitHub repositories behind the
+  packages, counting only results Scorecard produced in the last 45 days.
+
+The nightly re-reads each package and repository every seven days (about
+270 lookups a night, paced to each registry's crawler rules) and keeps the
+observations in `.cache/oss_state.json.gz`. An edition is published only
+when every observation is at most 14 days old; otherwise, or when the
+upstreams fail, the previous edition is carried forward, marked stale. The
+output contract allows only dates and fixed labels: no package, account or
+repository name is published. The package list and the module's figures
+derive from ecosyste.ms data and are shared under CC BY-SA 4.0. Universe
+`pipeline/oss_universe.py`, fetcher `pipeline/fetch_oss.py`, stage
+`pipeline/oss_metrics.py`.
 
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
 
@@ -839,7 +873,8 @@ pre-aggregated JSON; there are no runtime queries.
                      ├─ Exploit-DB · Metasploit · Nuclei
                      ├─ CVE.org roster     site/ ──▶ GitHub Pages
                      ├─ Feodo Tracker      https://devko.github.io/CyberMon/
-                     └─ OSV.dev exports
+                     ├─ OSV.dev exports
+                     └─ npm · PyPI · crates.io · RubyGems · OpenSSF Scorecard
 ```
 
 After the commit the job tags a weekly `data-backup-<ISO week>` snapshot,
@@ -880,6 +915,9 @@ browser checks on every push and pull request, and deploys on pushes to main
 | [OSV.dev ecosystem exports](https://google.github.io/osv.dev/data/#data-dumps) (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`) | GitHub-reviewed advisories (GHSA ids: publication date, aliases, GitHub severity, withdrawn flag) and OpenSSF malicious-packages reports (MAL ids: publication date, withdrawn flag, contributing sources); aggregates only, no package names republished | GitHub Advisory Database: [CC-BY 4.0](https://github.com/github/advisory-database/blob/main/LICENSE.md); OpenSSF malicious-packages: [Apache-2.0](https://github.com/ossf/malicious-packages/blob/main/LICENSE); both credited in the site footer. No key |
 | [endoflife.date API](https://endoflife.date/docs/api/v1/) (`api/v1/products/full`) | Every tracked product's category and release cycles: release date, end of support (`eolFrom`) and, where a product separates them, end of active support (`eoasFrom`); one conditional GET of the bulk dump a night (the per-product documents change ETag on every site build, and the API documents no per-product change stamp) | [MIT](https://github.com/endoflife-date/endoflife.date/blob/master/LICENSE) (© 2020 endoflife.date contributors), credited in the site footer. No key; the API documents 429 with `Retry-After`, which the fetcher honours |
 | [SigmaHQ/sigma](https://github.com/SigmaHQ/sigma) (SigmaHQ) | Sigma detection rules, read over the git protocol (`git ls-remote`, then a depth-1 clone only when the head moved): each rule's `date`, `modified`, `status` and `attack.tNNNN` tags under `rules*/` and `deprecated/`; only counts and ATT&CK ids are republished, never rules, titles or authors | [Detection Rule License (DRL) 1.1](https://github.com/SigmaHQ/Detection-Rule-License) (use, copy, publish and distribute permitted); SigmaHQ and the DRL credited on the page and in the site footer. No key |
+| [ecosyste.ms Packages API](https://packages.ecosyste.ms/docs) | Once per universe edition, not nightly: each registry's package ranking by dependent packages and by downloads (`/registries/<registry>/package_names`) and each selected package's `repository_url` (`/packages/bulk_lookup`), frozen in `pipeline/oss_universe.json` for Open-Source Maintainers | Data [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) with attribution to ecosyste.ms ([terms](https://ecosyste.ms/terms), [API](https://ecosyste.ms/api)); the package list and the module's derived data are shared under the same licence (credited in the site footer). Public API, no key |
+| npm registry, PyPI JSON API, crates.io API, RubyGems.org API | Who can publish each of the 1,000 universe packages: npm collaborators with write access (`registry.npmjs.org/-/package/<name>/collaborators`), PyPI `ownership.roles` and `ownership.organization` (`pypi.org/pypi/<name>/json`), crates.io owners (`/api/v1/crates/<name>/owners`), RubyGems owners (`/api/v1/gems/<name>/owners.json`); counts only, no package or account names republished | Public registry metadata, read under each registry's access rules: npm's [crawler policy](https://docs.npmjs.com/policies/crawlers) and crates.io's data-access policy (both at most one request per second, identifying User-Agent; paced accordingly), PyPI's documented [JSON API](https://docs.pypi.org/api/json/), RubyGems' [API](https://guides.rubygems.org/rubygems-org-api/) (10 req/s limit; paced far below). Rolling refresh, about 270 lookups a night. No key |
+| [OpenSSF Scorecard API](https://api.scorecard.dev) | The latest Scorecard result for each universe package's GitHub repository: result date, overall score, Maintained, Code-Review, Branch-Protection and Signed-Releases | REST API data under [CDLA-Permissive-2.0](https://cdla.dev/permissive-2-0) (stated in the [Scorecard README](https://github.com/ossf/scorecard#public-data)); credited in the site footer. No key |
 
 ## State and history
 
@@ -897,6 +935,7 @@ Losing a file never changes data already published; the table gives the cost.
 | `epss_volatility_state.json.gz` | EPSS Volatility | One baseline night with no log row. Committed until 2026-09-07, when the 2.6 MB file rewritten nightly had grown to about 90% of the repository |
 | `osv_state.json.gz` | Advisories, Malicious Packages | One full download of all thirteen exports (~290 MB) |
 | `eol_state.json.gz` | Support Windows | One download of the endoflife.date dump (~0.3 MB gzipped) |
+| `oss_state.json.gz` | Open-Source Maintainers | One full sweep of about 1,870 registry and Scorecard lookups (seven minutes), which the default `--oss-batch` (2,000) covers in one night; a smaller batch spreads it over several nights, with the previous edition carried forward, marked stale, until every observation is fresh again. Holds per-package publish rights (accounts as hashes), which the site does not publish, so it is never committed |
 | `naming_state.json` | Threat Group Aliases | Rebuilt from `naming.json`, which is what CI does every night |
 | `attack_atlas_state.json` | Adversary Atlas | Rebuilt from `attack_atlas.json`, which is what CI does every night |
 | `poc/` | Time to PoC | Same-day cache only |
@@ -1022,12 +1061,15 @@ CyberMon is **not affiliated with, endorsed by, or sponsored by MITRE, the
 CVE Program, NIST/NVD, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the
 Wikimedia Foundation, the U.S. Securities and Exchange Commission, Have I
 Been Pwned, Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch,
-GitHub, the OpenSSF, Google (OSV.dev), or the Internet Archive**. All
+GitHub, the OpenSSF, Google (OSV.dev), the Internet Archive, ecosyste.ms,
+npm, the Python Software Foundation, crates.io, or RubyGems.org**. All
 upstream data is © its respective sources under their own terms (see the
 table above). Code in this repository is [MIT licensed](LICENSE).
 
 Charts and aggregate numbers may be reused freely; **link back to CyberMon**
-(the live site or this repo) as the source. CyberMon is a spare-time project
+(the live site or this repo) as the source. The Open-Source Maintainers package
+list and figures derive from ecosyste.ms data and are shared under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). CyberMon is a spare-time project
 maintained on a best-effort basis. Everything is provided **as-is, without
 warranty of any kind**: there is **no guarantee the data is correct,
 complete, or current**, and an unattended nightly pipeline can and

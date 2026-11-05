@@ -1050,7 +1050,7 @@ rate-limited, paid, or legally delicate.
 - **Feasibility:** medium; the cvelistV5-only version is **easy** and could
   ship as a chart inside CVE Ecosystem first.
 
-### OSS supply-chain concentration
+### OSS supply-chain concentration — SHIPPED as module 30 (Open-Source Maintainers)
 - **Thesis:** "The software everyone depends on is maintained by almost
   nobody, and the industry keeps re-discovering this annually."
 - **Signals:** maintainer counts for top-N most-depended-on packages;
@@ -1060,6 +1060,45 @@ rate-limited, paid, or legally delicate.
   public results, ecosyste.ms APIs.
 - **Feasibility:** medium — APIs are good; picking a stable "top-N
   packages" universe is the methodological landmine to defuse in writing.
+- **Shipped 2026-11-05.** Feasibility notes, kept for the next edition:
+  - *Universe.* Raw "top N by dependents" is not defensible on its own:
+    ecosyste.ms's `dependent_packages_count` counts any package that ever
+    declared the dependency (any version, any kind), so spam rings inflate
+    it. On 2026-11-05, 598 of the first 848 RubyGems names were generated
+    `jagger_*_test`-style gems depending on each other; PyPI's top 260 held
+    two rings and the `odoo` placeholder; NuGet's held `sampledependency`.
+    Rule v1 keeps the first 250 by dependents that are also in the
+    registry's 5,000 most-downloaded (passed over: npm 196, PyPI 7,
+    crates.io 3, RubyGems 598), frozen per edition in
+    `pipeline/oss_universe.json`. Go and Maven were left out: neither
+    registry publishes who can publish a module. NuGet's search API lists
+    owners, but its dependents ranking needs the same spam work first.
+  - *Maintainer, per registry.* npm: `/-/package/<name>/collaborators`
+    (write access; matched the packument's `maintainers` on 24 of 24
+    packages, at 1/1000th the size: typescript's packument is 16 MB). PyPI:
+    JSON API `ownership.roles` + `ownership.organization` (organisation
+    teams are not listed per project; XML-RPC `package_roles` also works but
+    is deprecated). crates.io: owners, users and GitHub teams. RubyGems:
+    `owners.json`, which returns `[]` for organisation-managed gems
+    (aws-sdk, "Managed By AWS").
+  - *Not measurable from public data:* 2FA status of accounts (no registry
+    publishes it); release signing is only visible as Scorecard's
+    Signed-Releases, which is inconclusive for most repositories (no
+    release files on GitHub). Scorecard's weekly scan omits Branch-
+    Protection settings that need admin access, so that check is often
+    inconclusive too. A handful of Scorecard results date from 2022; results
+    older than 45 days are counted apart.
+  - *Terms.* ecosyste.ms data is CC BY-SA 4.0 (attribution; adaptations
+    share alike) and its API page documents public use; its ToS template
+    also forbids "scripts designed to scrape", read here as aimed at the
+    website, since the API is the documented interface. Selection is a
+    one-off ~70 requests, never nightly. npm crawler policy: ≤ 1 req/s.
+    crates.io: ≤ 1 req/s, identifying User-Agent. Scorecard API data:
+    CDLA-Permissive-2.0. deps.dev (CC BY 4.0) was not needed: it offers no
+    dependents ranking, and its Scorecard data mirrors the Scorecard API.
+  - *Follow-ups:* a committed weekly history of the per-registry
+    aggregates (the page has no time series yet); re-run the selection
+    yearly as edition 2027-11 under the same rule.
 
 ---
 

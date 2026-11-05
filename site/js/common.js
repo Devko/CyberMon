@@ -508,6 +508,9 @@ function renderMeta(meta) {
       sigma_rules: (s.sigma?.rules ?? 0).toLocaleString("en-US"),
       sigma_commit: (s.sigma?.commit ?? "?").slice(0, 12),
       sigma_fetched: (s.sigma?.fetched_at ?? "?") + (s.sigma?.stale ? carried : ""),
+      oss_packages: (s.oss?.packages ?? 0).toLocaleString("en-US"),
+      oss_lookups: (s.oss?.lookups ?? 0).toLocaleString("en-US"),
+      oss_fetched: (s.oss?.fetched_at ?? "?") + (s.oss?.stale ? carried : ""),
     }))
   );
 }

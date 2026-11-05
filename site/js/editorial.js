@@ -76,7 +76,7 @@ export const editorial = {
       label: "Industry",
       lede:
         "Buzzword attention, breach disclosure, SEC incident filings, ransom payments, DNSSEC " +
-        "validation and software support windows.",
+        "validation, software support windows and who can publish the most-used open-source packages.",
     },
     {
       id: "attackmap",
@@ -143,6 +143,7 @@ export const editorial = {
     { id: "eol", href: "eol.html", label: "Support Windows", group: "industry" },
     { id: "aisurface", href: "aisurface.html", label: "AI Product CVEs", group: "machine" },
     { id: "sigma", href: "sigma.html", label: "Detection Rules", group: "attackmap" },
+    { id: "oss", href: "oss.html", label: "Open-Source Maintainers", group: "industry" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -619,6 +620,23 @@ export const editorial = {
           "so they are approximate. Rebuilt nightly from the repository.",
         live: true,
       },
+      {
+        id: "oss",
+        href: "oss.html",
+        num: "30",
+        label: "Open-Source Maintainers",
+        headline:
+          "In each of four registries, more than one in five of the 250 most-depended-on " +
+          "packages have only one account that can publish them.",
+        blurb:
+          "For the 250 most-depended-on packages in each of npm, PyPI, crates.io and " +
+          "RubyGems: how many registry accounts can publish a new version, how many of the " +
+          "packages the accounts with the most rights can publish between them, and how " +
+          "the source repositories score on OpenSSF Scorecard. The package list is fixed " +
+          "per edition and each package is re-read weekly. Only counts are published, " +
+          "never a package or account name.",
+        live: true,
+      },
     ],
   },
 
@@ -790,6 +808,9 @@ export const editorial = {
     sigma_coverage: "sigma_metrics.py",
     sigma_lag: "sigma_metrics.py",
     sigma_tactics: "sigma_metrics.py",
+    oss_accounts: "oss_metrics.py",
+    oss_shared: "oss_metrics.py",
+    oss_scorecard: "oss_metrics.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -810,6 +831,15 @@ export const editorial = {
     Pub: "Pub (Dart)",
     VSCode: "VS Code extensions",
     other: "Other",
+  },
+
+  // Display names for the Open-Source Maintainers registries (oss.html). The
+  // key is the data id in oss_maintainers.json.
+  ossRegistries: {
+    npm: "npm",
+    pypi: "PyPI",
+    crates: "crates.io",
+    rubygems: "RubyGems",
   },
 
   // Shared by every chart that draws a full-year pace projection for the
@@ -5139,6 +5169,166 @@ export const editorial = {
         tipCovered: "{covered} of {techniques} techniques",
       },
     },
+
+    // --------------------------------------------- oss.html · 1 · hero
+    oss_accounts: {
+      num: "01",
+      kicker: "Accounts that can publish",
+      source: "npm, PyPI, crates.io and RubyGems registry records · package list from ecosyste.ms (CC BY-SA 4.0)",
+      headline:
+        "In each of four registries, more than one in five of the 250 most-depended-on " +
+        "packages have only one account that can publish them.",
+      caption:
+        "Each bar is one registry: the 250 packages that the most other packages in that " +
+        "registry list as a dependency, split by how many registry accounts can publish a " +
+        "new version of each. The highlighted segment holds packages with exactly one such " +
+        "account and no team or organisation that also holds the right. The chart counts " +
+        "accounts, not people: an account can belong to a person, a project or an " +
+        "automated publisher.",
+      statLabel: "Packages with only one account that can publish them",
+      note:
+        "This edition rests on registry and Scorecard lookups made from {first} to {last}. " +
+        "The package list was frozen on {selected_at}.",
+      soleLabel: "Largest group of single-account packages under one account",
+      soleTemplate: "{name} {largest} of {n}",
+      teamLabel: "A team or organisation also holds rights",
+      teamTemplate: "{name} {n}",
+      xAxis: "share of packages",
+      nodata: "No edition yet. The nightly pipeline fills this page once every package has been looked up.",
+      methodology:
+        "The package list is fixed per edition (edition {edition}, rule version " +
+        "{rule_version}, selected {selected_at}). For each registry it starts from " +
+        "ecosyste.ms's ranking of packages by dependents: other packages in the same " +
+        "registry that declare the package as a dependency of any kind in any version. " +
+        "It keeps the first {per} that are also among the registry's {floor} " +
+        "most-downloaded packages, which removes rings of spam packages that list each " +
+        "other as dependencies. Publish rights come from each registry's own records: " +
+        "npm accounts with write access, PyPI Owner and Maintainer roles, crates.io " +
+        "user owners and RubyGems owners. A crates.io team, a PyPI organisation or a " +
+        "RubyGems organisation grants rights to members the registry does not list per " +
+        "package. Packages with one of those never count as single-account, and the 0 " +
+        "bucket holds those with no individual account listed. Each package is looked up " +
+        "again every {refresh} days, and an edition is published only when every lookup " +
+        "is at most {max_age} days old. Packages a registry no longer serves are left out " +
+        "of the shares.",
+      labels: {
+        buckets: {
+          "0": "team or organisation only",
+          "1": "1 account",
+          "1t": "1 account + team or organisation",
+          "2": "2 accounts",
+          "3": "3 accounts",
+          "4–5": "4–5 accounts",
+          "6–10": "6–10 accounts",
+          "11+": "11 or more",
+        },
+        // Short legend names (the tooltip uses the full bucket names above).
+        legend: {
+          "0": "team or org only",
+          "1": "1 account",
+          "1t": "1 + team or org",
+          "2": "2",
+          "3": "3",
+          "4–5": "4–5",
+          "6–10": "6–10",
+          "11+": "11+",
+        },
+        tip: "{registry} · {bucket}: {n} of {measured} packages ({pct})",
+        statOf: "{n} of {measured}",
+      },
+    },
+
+    // --------------------------------------------- oss.html · 2
+    oss_shared: {
+      num: "02",
+      kicker: "Accounts across packages",
+      source: "npm, PyPI, crates.io and RubyGems registry records · package list from ecosyste.ms (CC BY-SA 4.0)",
+      headline:
+        "On crates.io, ten accounts can publish more than a third of the 250 " +
+        "most-depended-on crates.",
+      caption:
+        "For each registry, the share of its 250 packages that the 1, 5, 10 and 25 " +
+        "accounts with rights on the most packages can publish between them. The " +
+        "accounts are ranked within each registry; a package that several of them can " +
+        "publish counts once.",
+      distinctLabel: "Accounts with publish rights on at least one package",
+      distinctTemplate: "{name} {n}",
+      xAxis: "share of packages",
+      nodata: "No edition yet. The nightly pipeline fills this page once every package has been looked up.",
+      methodology:
+        "Accounts are ranked by how many of the registry's packages they can publish, " +
+        "with ties in a fixed arbitrary order. The pipeline reduces account names to " +
+        "hashes and never publishes them. An account can be a shared project or release " +
+        "account. Accounts are " +
+        "compared within one registry only: CyberMon does not link one person's accounts " +
+        "across registries. Teams and organisations are not ranked, because their members " +
+        "are not listed per package. Where they hold rights the shares shown are a lower " +
+        "bound.",
+      labels: {
+        series: {
+          1: "1 account",
+          5: "5 accounts",
+          10: "10 accounts",
+          25: "25 accounts",
+        },
+        tip: "{registry} · the {k} accounts with the most rights: {n} of {measured} packages ({pct})",
+      },
+    },
+
+    // --------------------------------------------- oss.html · 3
+    oss_scorecard: {
+      num: "03",
+      kicker: "OpenSSF Scorecard checks",
+      source: "OpenSSF Scorecard API (CDLA-Permissive-2.0) · repositories from ecosyste.ms (CC BY-SA 4.0)",
+      headline:
+        "More than a third of the repositories behind the crates.io and RubyGems packages " +
+        "score 0 on Scorecard's Maintained check.",
+      caption:
+        "OpenSSF Scorecard is the Open Source Security Foundation's automated review of a " +
+        "repository's security practices, rerun weekly on the repositories it tracks. Each " +
+        "bar is one registry's GitHub repositories with a recent Scorecard result, split by " +
+        "the score (0 to 10) of the check picked above. Maintained scores 0 when the " +
+        "repository is archived, is under 90 days old, or had at most one commit or " +
+        "maintainer issue update in the 90 days before the scan. Inconclusive means " +
+        "Scorecard could not score the check.",
+      note:
+        "The scored results come from Scorecard scans run from {first} to {last}. For most " +
+        "repositories in every registry, Scorecard returned Signed-Releases as " +
+        "inconclusive: it found no release files to check.",
+      coverageLabel: "Repositories with a recent Scorecard result",
+      coverageTemplate: "{name} {scored} of {repos}",
+      medianLabel: "Median overall Scorecard score",
+      medianTemplate: "{name} {median}",
+      xAxis: "share of scored repositories",
+      nodata: "No edition yet. The nightly pipeline fills this page once every repository has been looked up.",
+      methodology:
+        "Each package's repository is the GitHub repository ecosyste.ms recorded for it " +
+        "when the list was selected; packages without one are left out. A repository " +
+        "behind several packages of one registry counts once. The pipeline reads the latest " +
+        "result from Scorecard's public API and scores it only if Scorecard ran it within " +
+        "{sc_age} days of this edition; older results and repositories Scorecard has not " +
+        "scanned are counted apart. Maintained counts commits and maintainer issue activity " +
+        "over 90 days. Code-Review checks the last 30 or so changes for an approval. " +
+        "Branch-Protection reads branch rules, which Scorecard often cannot see without " +
+        "admin access. Signed-Releases looks for signature files among recent release " +
+        "assets. The checks are automated heuristics, not audits.",
+      labels: {
+        checks: {
+          Maintained: "Maintained",
+          "Code-Review": "Code-Review",
+          "Branch-Protection": "Branch-Protection",
+          "Signed-Releases": "Signed-Releases",
+        },
+        buckets: {
+          inconclusive: "inconclusive",
+          "0": "0",
+          "1–4": "1–4",
+          "5–7": "5–7",
+          "8–10": "8–10",
+        },
+        tip: "{registry} · {check} {bucket}: {n} of {scored} repositories ({pct})",
+      },
+    },
   },
 
   footer: {
@@ -5164,7 +5354,9 @@ export const editorial = {
       "OSV exports: {osv_ghsa} reviewed advisories, {osv_mal} malicious-package " +
       "reports fetched {osv_fetched} · " +
       "endoflife.date: {eol_products} products, {eol_lines} release lines fetched {eol_fetched} · " +
-      "SigmaHQ rules: {sigma_rules} at commit {sigma_commit} fetched {sigma_fetched}",
+      "SigmaHQ rules: {sigma_rules} at commit {sigma_commit} fetched {sigma_fetched} · " +
+      "Open-Source Maintainers: {oss_packages} packages, {oss_lookups} registry and " +
+      "Scorecard lookups fetched {oss_fetched}",
     // {sec_incidents} fill: counts once fetched; the pending line before the
     // first nightly EDGAR read (meta.sources.sec_incidents.status "empty").
     secFetched: "{filings_105} Item 1.05 / {filings_801} Item 8.01 fetched {fetched}",
@@ -5179,7 +5371,8 @@ export const editorial = {
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, GitHub, the OpenSSF, " +
-      "Google (OSV.dev), endoflife.date, the Internet Archive or SigmaHQ. Charts aggregate public data. The site " +
+      "Google (OSV.dev), endoflife.date, the Internet Archive, SigmaHQ, ecosyste.ms, npm, the " +
+      "Python Software Foundation, crates.io or RubyGems.org. Charts aggregate public data. The site " +
       "does not report individual CVEs as news and does not identify victims, with one " +
       "exception: the SEC Incident Filings page lists public companies' own SEC filings under the " +
       "filer's name as EDGAR records it. No attacker infrastructure is republished; C2 " +
@@ -5223,9 +5416,13 @@ export const editorial = {
       "release and support dates from endoflife.date (Copyright © 2020 endoflife.date " +
       "contributors, MIT License), " +
       "KEV catalog history reconstructed from Internet Archive Wayback Machine captures, " +
-      "and Sigma detection rules from the SigmaHQ repository (github.com/SigmaHQ/sigma, " +
+      "Sigma detection rules from the SigmaHQ repository (github.com/SigmaHQ/sigma, " +
       "Detection Rule License 1.1; only counts derived from the rules' dates and ATT&CK " +
-      "tags are republished).",
+      "tags are republished), " +
+      "package rankings and repository links from ecosyste.ms (CC BY-SA 4.0; the " +
+      "Open-Source Maintainers package list and figures are shared under the same " +
+      "licence), publish rights from the npm, PyPI, crates.io and RubyGems.org " +
+      "registries, and OpenSSF Scorecard results (CDLA-Permissive-2.0).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
     // deploy time by tools/make_carousels.py and ships only inside the Pages
@@ -5353,6 +5550,7 @@ export const editorial = {
       eol: "endoflife.date (MIT)",
       aisurface: "CVE List V5 (MITRE) · CISA KEV · Exploit-DB · Metasploit · Nuclei",
       sigma: "SigmaHQ/sigma (Detection Rule License 1.1) · MITRE ATT&CK®",
+      oss: "npm · PyPI · crates.io · RubyGems · ecosyste.ms (CC BY-SA 4.0) · OpenSSF Scorecard",
     },
   },
 };

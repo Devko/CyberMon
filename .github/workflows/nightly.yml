@@ -223,6 +223,22 @@ jobs:
           key: sigma-state-${{ github.run_id }}
           restore-keys: |
             sigma-state-
+      # Open-Source Maintainers observation cache: who can publish each
+      # package of the frozen universe and its repository's Scorecard
+      # result, refreshed on a rolling seven-day cycle (about 270 lookups a
+      # night). It holds per-package publish rights the site deliberately
+      # does not publish, so it is a cache, never committed. A miss costs
+      # one full sweep of about 1,870 lookups (seven minutes), which the
+      # default --oss-batch covers in one night. The observations are
+      # absolute, not diffs, so an older copy restored after a failed night
+      # only means a few repeated lookups.
+      - name: Restore Open-Source Maintainers observation cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/oss_state.json.gz
+          key: oss-state-${{ github.run_id }}
+          restore-keys: |
+            oss-state-
 
       # NOTE: the silent-rescores diff state deliberately has NO cache
       # entry here — it is committed at site/data/history/rescore_state.json
