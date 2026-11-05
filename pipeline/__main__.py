@@ -189,12 +189,27 @@ def _save_nvd_state(cache_dir: Path, state: dict) -> None:
     tmp.replace(path)
 
 
+def _queue_survival(state: dict, today: str) -> dict | None:
+    """The queue_survival block for nvd_throughput.json, validated here so
+    a fault in it can only drop the block (the key is optional), never
+    fail the night: the throughput CSV row and every other output still
+    publish."""
+    try:
+        block = nvd_throughput.build_queue_survival(state, today)
+        contracts._validate_queue_survival(block)
+        return block
+    except Exception as exc:  # noqa: BLE001 — degrade, never abort
+        _warn(f"NVD queue survival skipped this run ({exc!r})")
+        return None
+
+
 def _gather_nvd(args: argparse.Namespace, today: str
                 ) -> tuple[dict[str, int] | None, dict | None,
-                           list[int]]:
+                           list[int], dict | None]:
     """(fresh NVD status counts or None when skipped, today's throughput
     transitions or None when there was no previous state to diff against,
-    accumulated known queue durations).
+    accumulated known queue durations, the queue survival block built from
+    the tracked state or None when skipped).
 
     ``today`` is the run's edition date (``generated_at[:10]``), threaded
     in rather than re-sampled so a run that straddles UTC midnight keys
@@ -206,7 +221,7 @@ def _gather_nvd(args: argparse.Namespace, today: str
     ``sync_status_state`` returns a bare {statuses,...} dict.
     """
     if args.skip_nvd:
-        return None, None, []
+        return None, None, [], None
     if args.offline_fixtures:
         counts = json.loads((FIXTURES_DIR / "nvd_statuses.json")
                             .read_text(encoding="utf-8"))
@@ -218,7 +233,8 @@ def _gather_nvd(args: argparse.Namespace, today: str
                                                       today)
         durations = nvd_throughput.attach_tracking(new_state, prev_state,
                                                    transitions)
-        return counts, transitions, durations
+        return counts, transitions, durations, \
+            _queue_survival(new_state, today)
     from .fetch_nvd import status_counts, sync_status_state
 
     api_key = os.environ.get("NVD_API_KEY") or None
@@ -231,7 +247,8 @@ def _gather_nvd(args: argparse.Namespace, today: str
         print("  NVD throughput: no previous state to diff against; "
               "transition tracking starts next run")
     _save_nvd_state(args.cache_dir, state)
-    return status_counts(state), transitions, durations
+    return status_counts(state), transitions, durations, \
+        _queue_survival(state, today)
 
 
 def _nvd_outputs(args: argparse.Namespace, statuses: dict[str, int] | None,
@@ -270,7 +287,7 @@ def _nvd_throughput_outputs(args: argparse.Namespace,
                             statuses: dict[str, int] | None,
                             transitions: dict | None,
                             durations: list[int], generated_at: str,
-                            today: str
+                            today: str, survival: dict | None = None
                             ) -> tuple[dict | None, list[dict] | None]:
     """(nvd_throughput.json object or None, merged throughput history rows
     to persist or None). Same policy as _nvd_outputs:
@@ -287,13 +304,14 @@ def _nvd_throughput_outputs(args: argparse.Namespace,
         csv_path = args.out / "history" / "nvd_throughput.csv"
         rows = nvd_throughput.read_rows(csv_path)
         if transitions is None:
-            return nvd_throughput.build_nvd_throughput(rows, generated_at), \
-                None
+            return nvd_throughput.build_nvd_throughput(
+                rows, generated_at, survival), None
         row = nvd_throughput.throughput_row(
             transitions["counts"], durations, today,
             transitions["resweep"])
         rows = nvd_throughput.merge_row(rows, row)
-        return nvd_throughput.build_nvd_throughput(rows, generated_at), rows
+        return nvd_throughput.build_nvd_throughput(
+            rows, generated_at, survival), rows
 
     prior_path = args.out / "nvd_throughput.json"
     if not prior_path.exists():
@@ -515,7 +533,8 @@ def run(args: argparse.Namespace) -> int:
         except (OSError, ValueError) as exc:
             sec = None
             sec_failure = f"SEC EDGAR fetch failed ({exc!r})"
-    nvd_statuses, nvd_transitions, nvd_durations = _gather_nvd(args, today)
+    nvd_statuses, nvd_transitions, nvd_durations, nvd_survival = \
+        _gather_nvd(args, today)
 
     # ---- aggregate (single streaming pass over the corpus) ---------------
     print("aggregating CVE corpus ...")
@@ -678,7 +697,7 @@ def run(args: argparse.Namespace) -> int:
         outputs["nvd_decay.json"] = nvd_decay
     nvd_throughput_obj, throughput_rows = _nvd_throughput_outputs(
         args, nvd_statuses, nvd_transitions, nvd_durations, generated_at,
-        today)
+        today, nvd_survival)
     if nvd_throughput_obj is not None:
         outputs["nvd_throughput.json"] = nvd_throughput_obj
     if nvd_source is not None and nvd_transitions is not None:

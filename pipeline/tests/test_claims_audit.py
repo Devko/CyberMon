@@ -312,11 +312,13 @@ def check_kev_week_bucket(d: dict) -> None:
 
 
 def check_kev_three_years_late(d: dict) -> None:
-    # editorial.js (kev.html buckets): "One in seven lands three years late."
-    pct = _bucket_pct(d, "3y+")
+    # editorial.js (kev.html buckets): "one in seven after three years".
+    # Since 2026-11-05 the old "3y+" bucket is split into 3-5y, 5-10y and
+    # 10y+ (the KEV vintage section); their sum is the same share.
+    pct = sum(_bucket_pct(d, b) for b in ("3-5y", "5-10y", "10y+"))
     assert 10 <= pct <= 20, (
         f"'One in seven lands three years late' claims ~14%; "
-        f"data says {pct}% in the 3y+ bucket"
+        f"data says {pct:.1f}% in the buckets past three years"
     )
 
 

@@ -642,6 +642,118 @@ def _validate_nvd_throughput(obj: Any) -> None:
         _fail("nvd_throughput.history",
               "duplicate dates (one row per run date)")
 
+    # Optional: editions built before the survival curve shipped (and
+    # their --skip-nvd carry-forwards) lack the block.
+    if "queue_survival" in obj:
+        _validate_queue_survival(obj["queue_survival"])
+
+
+def _validate_queue_survival(block: Any) -> None:
+    base = "nvd_throughput.queue_survival"
+    log_start = _get(block, "log_start", base)
+    if log_start is not None:
+        _check_str(log_start, f"{base}.log_start", DATE_RE)
+    log_days = _get(block, "log_days", base)
+    _check_int(log_days, f"{base}.log_days")
+    if log_start is None and log_days != 0:
+        _fail(f"{base}.log_days", "must be 0 while the exit log has no start")
+    min_exits = _get(block, "min_exits", base)
+    _check_int(min_exits, f"{base}.min_exits", minimum=1)
+    min_log_days = _get(block, "min_log_days", base)
+    _check_int(min_log_days, f"{base}.min_log_days")
+    min_at_risk = _get(block, "min_at_risk", base)
+    _check_int(min_at_risk, f"{base}.min_at_risk", minimum=1)
+    ready = _get(block, "ready", base)
+    _check_bool(ready, f"{base}.ready")
+
+    exits = _get(block, "exits", base)
+    for key in ("analyzed", "deferred", "other"):
+        _check_int(_get(exits, key, f"{base}.exits"), f"{base}.exits.{key}")
+    censored = _get(block, "censored", base)
+    for key in ("waiting", "requeued"):
+        _check_int(_get(censored, key, f"{base}.censored"),
+                   f"{base}.censored.{key}")
+    n_exits = exits["analyzed"] + exits["deferred"] + exits["other"]
+
+    horizon = _get(block, "horizon_days", base)
+    _check_int(horizon, f"{base}.horizon_days")
+    curve = _check_list(_get(block, "curve", base), f"{base}.curve")
+    previous_day, previous_pct, curve_exits = 0, 100.0, 0
+    for i, point in enumerate(curve):
+        path = f"{base}.curve[{i}]"
+        day = _get(point, "day", path)
+        _check_int(day, f"{path}.day", minimum=1)
+        if day <= previous_day:
+            _fail(f"{path}.day", "curve days must be strictly ascending")
+        pct = _get(point, "pct_waiting", path)
+        _check_num(pct, f"{path}.pct_waiting", 0.0, 100.0)
+        # A survival curve never rises.
+        if pct > previous_pct:
+            _fail(f"{path}.pct_waiting",
+                  f"{pct} rises above the previous step ({previous_pct})")
+        _check_int(_get(point, "at_risk", path), f"{path}.at_risk",
+                   minimum=min_at_risk)
+        _check_int(_get(point, "exits", path), f"{path}.exits")
+        curve_exits += point["exits"]
+        previous_day, previous_pct = day, pct
+    if curve_exits > n_exits:
+        _fail(f"{base}.curve", f"{curve_exits} exits on the curve but only "
+              f"{n_exits} in the log")
+    if curve and curve[-1]["day"] != horizon:
+        _fail(f"{base}.horizon_days",
+              f"{horizon} must be the curve's last day ({curve[-1]['day']})")
+    if not curve and horizon != 0:
+        _fail(f"{base}.horizon_days", "must be 0 while the curve is empty")
+
+    def pct_at(day: int) -> float:
+        value = 100.0
+        for point in curve:
+            if point["day"] > day:
+                break
+            value = point["pct_waiting"]
+        return value
+
+    checkpoints = _check_list(_get(block, "checkpoints", base),
+                              f"{base}.checkpoints")
+    days = []
+    for i, cp in enumerate(checkpoints):
+        path = f"{base}.checkpoints[{i}]"
+        day = _get(cp, "day", path)
+        _check_int(day, f"{path}.day", minimum=1)
+        if day > horizon:
+            _fail(f"{path}.day", f"{day} lies past the horizon ({horizon})")
+        pct = _get(cp, "pct_waiting", path)
+        _check_num(pct, f"{path}.pct_waiting", 0.0, 100.0)
+        if pct != pct_at(day):
+            _fail(f"{path}.pct_waiting",
+                  f"{pct} disagrees with the curve at day {day} "
+                  f"({pct_at(day)})")
+        _check_int(_get(cp, "at_risk", path), f"{path}.at_risk",
+                   minimum=min_at_risk)
+        days.append(day)
+    if days != sorted(set(days)):
+        _fail(f"{base}.checkpoints", "days must be unique and ascending")
+
+    median = _get(block, "median_days", base)
+    if median is not None:
+        _check_int(median, f"{base}.median_days", minimum=1)
+        if median not in {p["day"] for p in curve} or pct_at(median) > 50.0 \
+                or any(p["pct_waiting"] < 50.0 for p in curve
+                       if p["day"] < median):
+            _fail(f"{base}.median_days",
+                  f"{median} is not the first curve day at or below 50%")
+    elif any(p["pct_waiting"] < 50.0 for p in curve):
+        _fail(f"{base}.median_days",
+              "null although the curve falls below 50%")
+
+    # The thresholds are a promise: no curve is called ready early.
+    if ready and not (curve and n_exits >= min_exits
+                      and log_days >= min_log_days):
+        _fail(f"{base}.ready",
+              f"ready with {n_exits} exits over {log_days} days "
+              f"(thresholds {min_exits} exits, {min_log_days} days) and "
+              f"{len(curve)} curve points")
+
 
 # ----------------------------------------------------- cna_leaderboard.json
 

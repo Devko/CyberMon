@@ -207,10 +207,10 @@ export const editorial = {
         label: "CVE Ecosystem",
         headline: "Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.",
         blurb:
-          "Ten charts on CVE scores and records: severity by CVSS version over time, CVEs " +
-          "per year by severity, CVSS against EPSS and KEV, NVD's backlog and daily " +
-          "throughput, scores by CNA, publication volume, missing fields, the most common " +
-          "weakness classes, and CVSS 4.0 adoption. Rebuilt every night.",
+          "Eleven charts on CVE scores and records: severity by CVSS version over time, CVEs " +
+          "per year by severity, CVSS against EPSS and KEV, NVD's backlog, daily " +
+          "throughput and queue waits, scores by CNA, publication volume, missing fields, " +
+          "the most common weakness classes, and CVSS 4.0 adoption. Rebuilt every night.",
         live: true,
       },
       {
@@ -234,9 +234,10 @@ export const editorial = {
         headline: "Most KEV entries were listed a week or more after their CVE was published.",
         blurb:
           "Days from CVE publication to listing in CISA's Known Exploited Vulnerabilities " +
-          "catalog, the same gap in buckets, the remediation deadlines CISA sets, and the " +
-          "share of listings flagged for known ransomware use. Entries from the catalog's " +
-          "2021–22 seeding period are shown apart from later years.",
+          "catalog, the same gap in buckets, the remediation deadlines CISA sets, the " +
+          "share of listings flagged for known ransomware use, and how old the CVEs were " +
+          "when they were added. Entries from the catalog's 2021–22 seeding period are " +
+          "shown apart from later years.",
         live: true,
       },
       {
@@ -737,6 +738,8 @@ export const editorial = {
     atlas_graph: "attack_atlas.py",
     atlas_table: "attack_atlas.py",
     atlas_closest: "attack_atlas.py",
+    kev_vintage: "kev_metrics.py",
+    queue_survival: "nvd_throughput.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -1128,8 +1131,9 @@ export const editorial = {
         "CVEs already in a status when the tracker started have no entry date; their " +
         "transitions count in the flow but are not timed. The median is not published " +
         "until {min_known} exits have been timed, because a median of fewer is " +
-        "unreliable. A full re-read can catch transitions that incremental syncs " +
-        "missed. The feed files lag by about a day, so that catch-up lands in the row " +
+        "unreliable. It leaves out the CVEs still waiting. Section 06 includes them, and " +
+        "the deferred ones, in a survival curve. A full re-read can catch transitions " +
+        "that incremental syncs missed. The feed files lag by about a day, so that catch-up lands in the row " +
         "for the night after the re-read, which is ringed on the chart and flagged in " +
         "the tooltip. A night with no run is a gap in the lines, and the next " +
         "comparison covers every day since the previous run. Each run date gets one " +
@@ -1144,8 +1148,59 @@ export const editorial = {
     },
 
     // ------------------------------------------------------------------- 6
-    cna: {
+    queue_survival: {
       num: "06",
+      kicker: "NVD queue waits",
+      source: "NVD API 2.0 (NIST) · CyberMon nightly snapshots",
+      // Static fallback (screen readers, the TOC, an edition whose curve is
+      // not ready); cve.js replaces it with headlineTemplate once the curve
+      // is published and reaches day 30.
+      headline: "NVD does not publish how long CVEs wait in its analysis queue.",
+      headlineTemplate: "{pct} of the CVEs that enter NVD's analysis queue are still in it 30 days later.",
+      caption:
+        "The share of CVEs still in NVD's analysis queue (Awaiting Analysis or " +
+        "Undergoing Analysis), by days since the first nightly snapshot that showed " +
+        "them there. A CVE leaves the queue when NVD analyzes it, defers it or gives it " +
+        "any other status outside the queue. CVEs still waiting count up to their " +
+        "current wait.",
+      statMedianLabel: "median wait in the analysis queue, CVEs still waiting included",
+      statMedianBig: "{days} days",
+      statAboveBig: "over {days} days",
+      statMedianNote:
+        "from {exits} exits ({deferred} of them deferred) and {waiting} CVEs still " +
+        "waiting, followed since {log_start}",
+      statCountLabel: "queue exits logged so far",
+      statCountNote: "since {log_start}, with {waiting} CVEs still waiting",
+      statNoLogNote: "The exit log starts with the next nightly NVD sync.",
+      // The chart's empty state until the curve is published.
+      nodata: "The curve is published once the exit log covers 28 days and 30 exits.",
+      methodology:
+        "Each night the NVD status of every CVE is compared with the previous night's " +
+        "(section 05). A stay in the queue starts on the first night a CVE is seen as " +
+        "Awaiting Analysis or Undergoing Analysis. It ends on the first night the CVE is " +
+        "seen with a status outside the live queue (Analyzed, Deferred, Rejected or " +
+        "another), which counts as an exit. A stay that goes back to Received ends " +
+        "there without an exit, and time spent as Received is not counted. Stays whose " +
+        "start was not seen are left out. A CVE that was already waiting on the night " +
+        "the exit log started joins the count at the wait it had reached. The curve is " +
+        "a Kaplan–Meier estimate: for each day of waiting, it takes the CVEs still " +
+        "under watch at that wait, counts how many left the queue that day, and " +
+        "multiplies the running share by the fraction that stayed. The curve stops at " +
+        "the first day with fewer than 30 CVEs under watch, and it is published only " +
+        "once the log covers 28 days and 30 exits. Waits are counted between nightly " +
+        "snapshots, so a stay can be up to a day longer than measured at its start, and " +
+        "an exit after a night with no run is dated to the next run.",
+      labels: {
+        waiting: "Still in the queue",
+        tipDay: "day {day}",
+        tipWaiting: "{pct} still waiting",
+        tipWatch: "{n} under watch · {exits} left that day",
+      },
+    },
+
+    // ------------------------------------------------------------------- 7
+    cna: {
+      num: "07",
       kicker: "Scores by CNA",
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
       headline: "The highest-rating CNAs score more than a third of their CVEs 9.0 or higher.",
@@ -1173,9 +1228,9 @@ export const editorial = {
         "Click any column header to re-sort.",
     },
 
-    // ------------------------------------------------------------------- 7
+    // ------------------------------------------------------------------- 8
     volume: {
-      num: "07",
+      num: "08",
       kicker: "CVE volume",
       source: "cvelistV5 (MITRE)",
       headline: "More CVEs were published in each year since 2017 than in the year before.",
@@ -1208,9 +1263,9 @@ export const editorial = {
       },
     },
 
-    // ------------------------------------------------------------------- 8
+    // ------------------------------------------------------------------- 9
     quality: {
-      num: "08",
+      num: "09",
       kicker: "Record completeness",
       source: "cvelistV5 (MITRE)",
       headline: "About one in ten new CVE records still lacks a weakness class (CWE).",
@@ -1242,9 +1297,9 @@ export const editorial = {
       },
     },
 
-    // ------------------------------------------------------------------- 9
+    // ------------------------------------------------------------------ 10
     cwe: {
-      num: "09",
+      num: "10",
       kicker: "Weakness classes",
       source: "cvelistV5 (MITRE)",
       headline: "Cross-site scripting is the most common weakness class of the last ten complete years.",
@@ -1277,9 +1332,9 @@ export const editorial = {
       },
     },
 
-    // ------------------------------------------------------------------ 10
+    // ------------------------------------------------------------------ 11
     cvss4: {
-      num: "10",
+      num: "11",
       kicker: "CVSS 4.0 adoption",
       source: "cvelistV5 (MITRE) — CNA-assigned scores",
       // Static fallback (screen readers, the TOC, a failed fetch); the
@@ -1412,7 +1467,8 @@ export const editorial = {
         "listing. The red bar counts listings made before the CVE record was published.",
       methodology:
         "Every matched entry added in 2023 or later falls in one bucket by its latency: " +
-        "before publish (latency below zero), 0–7d, 8–30d, 31–90d, 91–365d, 1–3y, 3y+. " +
+        "before publish (latency below zero), 0–7d, 8–30d, 31–90d, 91–365d, 1–3y, 3–5y, " +
+        "5–10y, 10y+ (years of 365 days). " +
         "Lower edges are inclusive: a listing on day 8 is in 8–30d. Percentages are shares " +
         "of these entries, not of the full catalog.",
       labels: {
@@ -1423,7 +1479,9 @@ export const editorial = {
           "31-90d": "31–90d",
           "91-365d": "91–365d",
           "1-3y": "1–3y",
-          "3y+": "3y+",
+          "3-5y": "3–5y",
+          "5-10y": "5–10y",
+          "10y+": "10y+",
         },
         tipCount: "{n} entries",
       },
@@ -1487,6 +1545,55 @@ export const editorial = {
       labels: {
         tipShare: "flagged for ransomware use",
         tipCount: "{n} of {total} entries added",
+      },
+    },
+
+    // --------------------------------------------- kev.html · 5
+    kev_vintage: {
+      num: "05",
+      kicker: "CVE age at listing",
+      source: "CISA KEV · cvelistV5 (MITRE)",
+      headline:
+        "In each year from 2023 to 2025, about a quarter of the CVEs CISA added to KEV " +
+        "had been published more than a year earlier.",
+      caption:
+        "Each bar is one year of KEV additions since 2023. Its height is the share of " +
+        "that year's additions whose CVE record had been published more than a year " +
+        "before, split by how long before: 1–3, 3–5, 5–10 or more than 10 years. " +
+        "Additions of CVEs a year old or less are not drawn. The current year (marked *) " +
+        "is partial.",
+      // Filled by kev_vintage.js from oldest_recent; the table under it
+      // lists the entries.
+      oldestTitle: "The {shown} oldest CVEs added to KEV in the last 12 months",
+      oldestContext:
+        "{n_over_10y} of the {n_listed} CVEs added from {since} to {until} had been " +
+        "published more than ten years earlier.",
+      colCve: "CVE",
+      colPublished: "Published",
+      colAdded: "Added",
+      colAge: "Age",
+      nodata: "Not enough data yet.",
+      methodology:
+        "Age at addition is the KEV dateAdded minus the CVE record's datePublished, in " +
+        "days: the latency of section 01. The bars cover matched entries added from 2023 " +
+        "on, the same entries as sections 01 and 02, and a year plots only with at least " +
+        "10 of them. Years are 365 days long: 1–3 years is 366 to 1,095 days, 3–5 years " +
+        "1,096 to 1,825, 5–10 years 1,826 to 3,650, and more than 10 years 3,651 or more. " +
+        "The table takes every matched entry added in the 365 days ending on the edition " +
+        "date and lists the oldest by age at addition, ties in CVE id order. Its " +
+        "publication year is the year of datePublished, which can differ from the year " +
+        "in the CVE id.",
+      labels: {
+        buckets: {
+          "1-3y": "1–3 years",
+          "3-5y": "3–5 years",
+          "5-10y": "5–10 years",
+          "10y+": "over 10 years",
+        },
+        tipTotal: "{pct} published more than a year earlier",
+        tipBucket: "{label}: {pct} ({n})",
+        tipCount: "{n} matched additions in the year",
+        ageYears: "{years} y",
       },
     },
 

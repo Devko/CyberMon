@@ -302,6 +302,43 @@ change). Only exits that were seen Awaiting/Undergoing are timed into the
 median. Rows before that date counted Analyzed exits from Awaiting /
 Undergoing only and are not rewritten.
 
+Since 2026-11-05 the file may carry a `queue_survival` block (the NVD
+queue waits section, chart 6); editions built before it, and their
+`--skip-nvd` carry-forwards, lack it:
+
+```json
+"queue_survival": {
+  "log_start": "2026-11-05", "log_days": 40,
+  "min_exits": 30, "min_log_days": 28, "min_at_risk": 30,
+  "ready": true,
+  "exits": {"analyzed": 9100, "deferred": 4200, "other": 120},
+  "censored": {"waiting": 6800, "requeued": 40},
+  "horizon_days": 150, "median_days": 6,
+  "checkpoints": [{"day": 7, "pct_waiting": 46.2, "at_risk": 5210}],
+  "curve": [{"day": 1, "pct_waiting": 88.1, "at_risk": 9900, "exits": 1180}]
+}
+```
+
+A Kaplan–Meier estimate with delayed entry, built from an exit log the
+throughput tracker keeps on the NVD sync state (`queue_log_start`,
+`queue_exits`; see `pipeline/nvd_throughput.py`). Subjects are queue stays
+(Awaiting/Undergoing Analysis, since-date observed). An exit is the first
+snapshot showing any status outside the live queue (`exits.analyzed` /
+`deferred` / `other`); a return to Received ends the stay as censored
+(`censored.requeued`); stays still open tonight are censored at their
+current wait (`censored.waiting`). A stay already open when the log
+started enters at its age on `log_start`. `curve` lists the days with at
+least one exit up to `horizon_days`, plus one point at the horizon when
+no exit fell on it; days strictly ascend, `pct_waiting` (0–100) never
+rises, and every point has `at_risk` ≥ `min_at_risk` (the curve stops at
+the first day below it). `checkpoints` are the curve's values at 7, 30
+and 90 days, when the horizon reaches them; `median_days` is the first
+curve day at or below 50%, null when the curve stays above. `ready` is
+true only with a non-empty curve, `min_exits` logged exits and a log at
+least `min_log_days` old; the validator rejects an early `ready`. An empty
+or young record is legal (`log_start` null with `log_days` 0, or an empty
+curve with `horizon_days` 0). If the NVD state is lost, the log restarts.
+
 `meta.sources.nvd` may additively carry `throughput_events` (int ≥ 0):
 the transitions counted by that run's diff; absent on carry-forward runs
 and on runs with no previous state to diff against. `--skip-nvd` carries
@@ -740,8 +777,38 @@ ids with no `datePublished` join in the corpus are counted in
 ≥ 10 matched entries (fixture mode: 1). `remediation_span_by_year` =
 `dueDate − dateAdded` by dateAdded year, INCLUDING the launch cohort (a
 deadline is policy, real regardless of CVE age). Buckets are fixed, in
-order: before_publish, 0-7d, 8-30d, 31-90d, 91-365d, 1-3y, 3y+ (lower
-edge inclusive). `headline.latest_year` is the last complete year that
+order: before_publish, 0-7d, 8-30d, 31-90d, 91-365d, 1-3y, 3-5y, 5-10y,
+10y+ (lower edge inclusive, years of 365 days: 1-3y = 366–1095 days, 3-5y =
+1096–1825, 5-10y = 1826–3650, 10y+ ≥ 3651). Until 2026-11-05 the last three
+were one `3y+` bucket.
+
+Since 2026-11-05 (the KEV vintage section) two more keys:
+
+```json
+"vintage_by_year": [
+  {"year": 2025, "n": 245, "over_1y": 56, "pct_over_1y": 22.9,
+   "buckets": [{"bucket": "1-3y", "n": 17, "pct": 6.9},
+               {"bucket": "3-5y", "n": 15, "pct": 6.1},
+               {"bucket": "5-10y", "n": 17, "pct": 6.9},
+               {"bucket": "10y+", "n": 7, "pct": 2.9}]}
+],
+"oldest_recent": {
+  "window_days": 365, "since": "2025-11-06", "until": "2026-11-05",
+  "n_listed": 313, "n_over_10y": 15,
+  "entries": [{"cve_id": "CVE-2008-4128", "date_added": "2026-07-13",
+               "date_published": "2008-09-18", "age_days": 6507}]
+}
+```
+
+`vintage_by_year` has exactly the `latency_by_year` years (same entries,
+same min_n); `n` and `pct_over_1y` equal that row's `n` and
+`pct_over_365d` (the validator checks both), and the four bucket counts
+(always these four, in this order) sum to `over_1y`. `oldest_recent`
+covers matched entries whose `dateAdded` lies in the `window_days` days
+ending on the edition date, both ends included, any cohort; `entries`
+lists at most ten, oldest first (ties by CVE id), with `age_days` =
+`dateAdded − datePublished` (re-derived by the validator). `n_over_10y`
+counts window entries older than 3,650 days. `headline.latest_year` is the last complete year that
 survived filters; `baseline_year` = latest − 3 when present, else the
 earliest surviving year — payload-authoritative, never derived.
 

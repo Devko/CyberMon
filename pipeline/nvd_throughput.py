@@ -23,6 +23,21 @@ State extension (additive, owned here — ``fetch_nvd`` never reads it):
   queue→Analyzed transitions whose since-date was known. Lives in the
   state (a cache): if the state is ever lost, accumulation restarts, but
   the CSV keeps every row already measured.
+* ``queue_log_start`` / ``queue_exits``: the exit log behind the queue
+  survival curve (:func:`build_queue_survival`). ``queue_log_start`` is
+  the run date of the first snapshot the log watched from; it is set on
+  the first run that finds tracking keys but no log, and that run logs
+  nothing. From the next run on, EVERY end of a timed queue episode
+  (Awaiting/Undergoing with a known since-date) is logged as
+  ``[wait_days, entry_days, code]``: ``wait_days`` from the since-date to
+  tonight's run date, ``entry_days`` = the episode's age when the log
+  started watching it (0 for episodes first seen after the start), and
+  ``code`` A (Analyzed), D (Deferred), O (any other status outside the
+  live queue: Rejected, Modified, ...) or R (back to Received; the
+  episode ends without leaving the queue, so it is censored, not an
+  exit). The median above times Analyzed exits only, and only waits that
+  have ended; the log also keeps the Deferred and other exits, so the
+  curve can count every way out of the queue and every CVE still in it.
 
 ``fetch_nvd.sync_status_state`` returns a fresh dict without these keys;
 the pipeline re-attaches them via :func:`attach_tracking` after every
@@ -83,6 +98,21 @@ from pathlib import Path
 # docs/data-contracts.md and surfaced in the JSON as min_known_duration.
 MIN_KNOWN_DURATIONS = 30
 
+# Queue survival curve (build_queue_survival). The curve publishes only
+# once the exit log is MIN_LOG_DAYS old (four weekly resweep cycles, so one
+# lumpy night cannot shape it) and holds MIN_KNOWN_DURATIONS exits; it is
+# cut at the first day where fewer than MIN_AT_RISK episodes are under
+# watch, because past that point each step rests on a handful of CVEs.
+MIN_LOG_DAYS = 28
+MIN_AT_RISK = 30
+# Days the survival block reports the share still waiting at, when the
+# curve reaches them. 30 feeds the section headline.
+CHECKPOINT_DAYS = (7, 30, 90)
+# Exit-log codes -> the survival block's exit kinds. R (back to Received)
+# is censoring, not an exit; see the module docstring.
+EXIT_CODES = {"A": "analyzed", "D": "deferred", "O": "other"}
+CENSOR_CODES = {"R": "requeued"}
+
 QUEUE_STATUSES = ("Received", "Awaiting Analysis", "Undergoing Analysis")
 _PRE_ANALYZED = ("Awaiting Analysis", "Undergoing Analysis")
 
@@ -112,7 +142,12 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
     there is no usable previous state to diff against.
 
     Returns ``{"counts": {...}, "durations": [int...], "status_since":
-    {...}, "resweep": bool}``. ``status_since`` is the map to persist on
+    {...}, "queue_exits": [(since, wait_days, code)...], "resweep": bool,
+    "date": today}``. ``queue_exits`` lists every timed queue episode
+    (Awaiting/Undergoing, since-date known) that ended between the two
+    snapshots, with the exit-log code of where it went (module
+    docstring); :func:`attach_tracking` decides whether the log is
+    running. ``status_since`` is the map to persist on
     the new state: carried forward for unchanged statuses and for hops
     between the two ``_PRE_ANALYZED`` statuses (one queue episode, one
     clock), set to ``today`` for every other observed change, absent
@@ -141,6 +176,7 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
               "modified_re": 0}
     durations: list[int] = []
     status_since: dict[str, str] = {}
+    queue_exits: list[tuple[str, int, str]] = []
 
     for cve_id, status in new_statuses.items():
         prev = prev_statuses.get(cve_id)
@@ -161,6 +197,17 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
             status_since[cve_id] = carried
         else:
             status_since[cve_id] = today
+        if prev in _PRE_ANALYZED and status not in _PRE_ANALYZED:
+            # A timed queue episode ended: log where it went, for the
+            # survival curve. Untimed episodes (since-date unknown) cannot
+            # be placed on the curve's day axis and are left out.
+            since = _parse_date(carried) if isinstance(carried, str) else None
+            if since is not None and today_date is not None \
+                    and since <= today_date:
+                code = ("A" if status == "Analyzed"
+                        else "D" if status == "Deferred"
+                        else "R" if status == "Received" else "O")
+                queue_exits.append((carried, (today_date - since).days, code))
         if status == "Received":
             counts["received_new"] += 1
         elif status == "Awaiting Analysis":
@@ -186,7 +233,8 @@ def diff_transitions(prev_state: dict | None, new_state: dict,
     resweep = (new_state.get("last_full_sync")
                != prev_state.get("last_full_sync"))
     return {"counts": counts, "durations": durations,
-            "status_since": status_since, "resweep": bool(resweep)}
+            "status_since": status_since, "queue_exits": queue_exits,
+            "resweep": bool(resweep), "date": today}
 
 
 def attach_tracking(new_state: dict, prev_state: dict | None,
@@ -197,6 +245,12 @@ def attach_tracking(new_state: dict, prev_state: dict | None,
     With no transitions (no previous state) the new state carries no
     tracking keys — since-dates are never bulk-initialized — and the
     accumulated durations are whatever the previous state had (nothing).
+
+    The exit log (module docstring) is carried and extended here: a
+    previous state without a readable ``queue_log_start`` starts the log
+    at this run's date and logs nothing tonight (the episodes open in
+    tonight's snapshot are where the log starts watching); otherwise
+    tonight's ended episodes are appended with their entry age.
     """
     prev_durations = (prev_state or {}).get("queue_durations")
     if not isinstance(prev_durations, list):
@@ -209,7 +263,199 @@ def attach_tracking(new_state: dict, prev_state: dict | None,
     accumulated = prev_durations + list(transitions["durations"])
     new_state["status_since"] = transitions["status_since"]
     new_state["queue_durations"] = accumulated
+
+    today = transitions.get("date")
+    log_start = _parse_date((prev_state or {}).get("queue_log_start"))
+    if log_start is None:
+        if _parse_date(today) is not None:
+            new_state["queue_log_start"] = today
+            new_state["queue_exits"] = []
+        return accumulated
+    log = _clean_exit_log((prev_state or {}).get("queue_exits"))
+    for since, wait, code in transitions.get("queue_exits", ()):
+        since_date = _parse_date(since)
+        if since_date is None:
+            continue
+        entry = max(0, (log_start - since_date).days)
+        # wait <= entry: the episode ended no later than the log's first
+        # snapshot (a same-date re-run), so the log never watched it.
+        if wait > entry:
+            log.append([wait, entry, code])
+    new_state["queue_log_start"] = log_start.isoformat()
+    new_state["queue_exits"] = log
     return accumulated
+
+
+def _clean_exit_log(raw) -> list[list]:
+    """The persisted exit log, with any malformed entry dropped (the state
+    is a cache; a corrupt row must not take the curve down with it)."""
+    if not isinstance(raw, list):
+        return []
+    clean = []
+    for item in raw:
+        if not (isinstance(item, list) and len(item) == 3):
+            continue
+        wait, entry, code = item
+        if not all(isinstance(v, int) and not isinstance(v, bool)
+                   for v in (wait, entry)):
+            continue
+        if entry < 0 or wait <= entry:
+            continue
+        if code not in EXIT_CODES and code not in CENSOR_CODES:
+            continue
+        clean.append([wait, entry, code])
+    return clean
+
+
+# ------------------------------------------------------- queue survival --
+
+def kaplan_meier(observations, *, min_at_risk: int = 1) -> dict:
+    """Kaplan–Meier survival with delayed entry, on whole days.
+
+    ``observations`` yields ``(entry, time, event)``: the subject is known
+    to be in the queue at age ``entry`` (when observation began), and at
+    age ``time`` it either left (``event`` true) or was last seen still in
+    (censored). Ages are whole days with ``0 <= entry < time``; anything
+    else is skipped. A subject is at risk at day ``u`` when ``entry < u
+    <= time``, so a censored subject counts at its own last day, and a
+    subject picked up late (delayed entry) counts only from its entry age
+    on.
+
+    Returns ``{"steps": [(day, at_risk, events, survival)...],
+    "horizon": int, "at_risk": [n(0)..n(horizon)]}``. ``steps`` holds the
+    days with at least one event, up to the horizon; ``horizon`` is the
+    last day before the first day whose risk set falls below
+    ``min_at_risk`` (0 when day 1 already does; the curve is then empty).
+    """
+    entered: dict[int, int] = {}
+    left: dict[int, int] = {}
+    events: dict[int, int] = {}
+    last = 0
+    for entry, time, event in observations:
+        if not (isinstance(entry, int) and isinstance(time, int)) \
+                or entry < 0 or time <= entry:
+            continue
+        entered[entry] = entered.get(entry, 0) + 1
+        left[time] = left.get(time, 0) + 1
+        if event:
+            events[time] = events.get(time, 0) + 1
+        last = max(last, time)
+
+    at_risk = [0]
+    steps = []
+    survival = 1.0
+    in_count = out_count = 0
+    horizon = 0
+    for day in range(1, last + 1):
+        in_count += entered.get(day - 1, 0)   # entry <= day - 1
+        out_count += left.get(day - 1, 0)     # time  <= day - 1
+        n = in_count - out_count
+        if n < max(1, min_at_risk):
+            break
+        at_risk.append(n)
+        d = events.get(day, 0)
+        if d:
+            survival *= 1.0 - d / n
+            steps.append((day, n, d, survival))
+        horizon = day
+    return {"steps": steps, "horizon": horizon, "at_risk": at_risk}
+
+
+def build_queue_survival(state: dict | None, today: str, *,
+                         min_exits: int = MIN_KNOWN_DURATIONS,
+                         min_log_days: int = MIN_LOG_DAYS,
+                         min_at_risk: int = MIN_AT_RISK) -> dict:
+    """The ``queue_survival`` block of nvd_throughput.json, from a synced
+    state carrying the tracking keys (docs/data-contracts.md).
+
+    Subjects are timed queue episodes the exit log has watched: the
+    logged ends (exits as events, returns to Received as censored) plus
+    every episode still open tonight, censored at its current wait. An
+    episode first seen before the log started enters at its age on the
+    start date (delayed entry), so the curve never counts days the log did
+    not watch. An empty or young record is legal: ``ready`` stays false
+    until the log is ``min_log_days`` old with ``min_exits`` exits, and
+    the curve is empty until something has left the queue.
+    """
+    state = state if isinstance(state, dict) else {}
+    today_date = _parse_date(today)
+    log_start = _parse_date(state.get("queue_log_start"))
+    block = {
+        "log_start": log_start.isoformat() if log_start else None,
+        "log_days": 0,
+        "min_exits": min_exits,
+        "min_log_days": min_log_days,
+        "min_at_risk": min_at_risk,
+        "ready": False,
+        "exits": {kind: 0 for kind in EXIT_CODES.values()},
+        "censored": {"waiting": 0, "requeued": 0},
+        "horizon_days": 0,
+        "median_days": None,
+        "checkpoints": [],
+        "curve": [],
+    }
+    if log_start is None or today_date is None or today_date < log_start:
+        return block
+    block["log_days"] = (today_date - log_start).days
+
+    observations: list[tuple[int, int, bool]] = []
+    for wait, entry, code in _clean_exit_log(state.get("queue_exits")):
+        if code in EXIT_CODES:
+            block["exits"][EXIT_CODES[code]] += 1
+            observations.append((entry, wait, True))
+        else:
+            block["censored"][CENSOR_CODES[code]] += 1
+            observations.append((entry, wait, False))
+
+    statuses = state.get("statuses")
+    since_map = state.get("status_since")
+    if isinstance(statuses, dict) and isinstance(since_map, dict):
+        for cve_id, status in statuses.items():
+            if status not in _PRE_ANALYZED:
+                continue
+            since = _parse_date(since_map.get(cve_id))
+            if since is None or since > today_date:
+                continue
+            wait = (today_date - since).days
+            entry = max(0, (log_start - since).days)
+            if wait > entry:  # watched for at least one night
+                block["censored"]["waiting"] += 1
+                observations.append((entry, wait, False))
+
+    km = kaplan_meier(observations, min_at_risk=min_at_risk)
+    horizon = km["horizon"]
+    at_risk = km["at_risk"]
+    curve = [{"day": day, "pct_waiting": round(100.0 * s, 1),
+              "at_risk": n, "exits": d}
+             for day, n, d, s in km["steps"]]
+    if curve and curve[-1]["day"] < horizon:
+        # Carry the last step to the horizon so the chart shows how far
+        # the record reaches, not just where the last exit fell.
+        curve.append({"day": horizon,
+                      "pct_waiting": curve[-1]["pct_waiting"],
+                      "at_risk": at_risk[horizon], "exits": 0})
+
+    def survival_at(day: int) -> float:
+        s = 1.0
+        for step_day, _n, _d, step_s in km["steps"]:
+            if step_day > day:
+                break
+            s = step_s
+        return s
+
+    n_exits = sum(block["exits"].values())
+    block["horizon_days"] = horizon if curve else 0
+    block["curve"] = curve
+    if curve:
+        block["checkpoints"] = [
+            {"day": day, "pct_waiting": round(100.0 * survival_at(day), 1),
+             "at_risk": at_risk[day]}
+            for day in CHECKPOINT_DAYS if day <= horizon]
+        block["median_days"] = next(
+            (day for day, _n, _d, s in km["steps"] if s <= 0.5), None)
+    block["ready"] = bool(curve) and n_exits >= min_exits \
+        and block["log_days"] >= min_log_days
+    return block
 
 
 # ---------------------------------------------------------------- CSV I/O --
@@ -305,10 +551,13 @@ def throughput_row(counts: dict, accumulated_durations: list[int],
             "resweep": 1 if resweep else 0}
 
 
-def build_nvd_throughput(history_rows: list[dict], generated_at: str) -> dict:
+def build_nvd_throughput(history_rows: list[dict], generated_at: str,
+                         survival: dict | None = None) -> dict:
     """nvd_throughput.json: the daily flow series plus the cumulative
     queue-days stat (docs/data-contracts.md). An empty history is legal —
     the record starts at first deploy and this object says so honestly.
+    ``survival`` (:func:`build_queue_survival`) is published as
+    ``queue_survival`` when given; editions built before it lack the key.
 
     ``after_resweep`` is derived here, not stored: it marks the row that
     follows a ``resweep`` row, which is where the catch-up lump lands
@@ -328,7 +577,7 @@ def build_nvd_throughput(history_rows: list[dict], generated_at: str) -> dict:
                         "resweep": resweep,
                         "after_resweep": previous_resweep})
         previous_resweep = resweep
-    return {
+    obj = {
         "generated_at": generated_at,
         "min_known_duration": MIN_KNOWN_DURATIONS,
         "queue": {
@@ -337,3 +586,6 @@ def build_nvd_throughput(history_rows: list[dict], generated_at: str) -> dict:
         },
         "history": history,
     }
+    if survival is not None:
+        obj["queue_survival"] = survival
+    return obj

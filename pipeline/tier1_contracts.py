@@ -12,6 +12,8 @@ The core module's private checking helpers are reused read-only.
 """
 from __future__ import annotations
 
+import re
+from datetime import date
 from typing import Any, Callable
 
 from .contracts import (DATE_RE, _check_generated_at, _check_int,
@@ -23,7 +25,10 @@ from .contracts import (DATE_RE, _check_generated_at, _check_int,
 # what the site may rely on, independently of the builder's constants.
 LAUNCH_CUTOFF = "2023-01-01"
 LATENCY_BUCKETS = ["before_publish", "0-7d", "8-30d", "31-90d", "91-365d",
-                   "1-3y", "3y+"]
+                   "1-3y", "3-5y", "5-10y", "10y+"]
+# kev_metrics.OLD_BUCKETS: the vintage split of the over-a-year listings.
+VINTAGE_BUCKETS = ["1-3y", "3-5y", "5-10y", "10y+"]
+_CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,}$")
 # Day-count stats are bounded generously (~135 years); latency may be
 # legitimately negative (CISA can list before the record publishes).
 _DAYS_LO, _DAYS_HI = -50000.0, 50000.0
@@ -97,9 +102,11 @@ def _validate_kev_latency(obj: Any) -> None:
         labels.append(_get(b, "bucket", path))
         _check_int(_get(b, "n", path), f"{path}.n")
         _check_num(_get(b, "pct", path), f"{path}.pct", 0.0, 100.0)
-    if labels != LATENCY_BUCKETS:  # all 7, fixed order, always present
+    if labels != LATENCY_BUCKETS:  # all 9, fixed order, always present
         _fail("kev_latency.latency_buckets",
               f"bucket labels must equal {LATENCY_BUCKETS}, got {labels}")
+
+    _validate_kev_vintage(obj, entries)
 
     spans = _check_list(_get(obj, "remediation_span_by_year", "kev_latency"),
                         "kev_latency.remediation_span_by_year")
@@ -123,6 +130,88 @@ def _validate_kev_latency(obj: Any) -> None:
                    f"kev_latency.headline.{key}", _DAYS_LO, _DAYS_HI)
     _check_num(_get(headline, "pct_over_365d_latest", "kev_latency.headline"),
                "kev_latency.headline.pct_over_365d_latest", 0.0, 100.0)
+
+
+def _validate_kev_vintage(obj: Any, latency_rows: list) -> None:
+    """vintage_by_year + oldest_recent (the KEV vintage section)."""
+    rows = _check_list(_get(obj, "vintage_by_year", "kev_latency"),
+                       "kev_latency.vintage_by_year")
+    by_year = {r["year"]: r for r in latency_rows}
+    years = []
+    for i, row in enumerate(rows):
+        path = f"kev_latency.vintage_by_year[{i}]"
+        year = _get(row, "year", path)
+        _check_int(year, f"{path}.year", minimum=1990)
+        n = _get(row, "n", path)
+        _check_int(n, f"{path}.n", minimum=1)
+        over = _get(row, "over_1y", path)
+        _check_int(over, f"{path}.over_1y")
+        pct = _get(row, "pct_over_1y", path)
+        _check_num(pct, f"{path}.pct_over_1y", 0.0, 100.0)
+        if over > n:
+            _fail(f"{path}.over_1y", f"{over} exceeds the year's {n}")
+        # Same entries, same definition (latency over 365 days) as the
+        # latency trend: the two sections must agree.
+        twin = by_year.get(year)
+        if twin is None or twin["n"] != n \
+                or twin["pct_over_365d"] != pct:
+            _fail(path, f"disagrees with latency_by_year for {year}")
+        buckets = _check_list(_get(row, "buckets", path), f"{path}.buckets")
+        labels, total = [], 0
+        for j, b in enumerate(buckets):
+            bpath = f"{path}.buckets[{j}]"
+            labels.append(_get(b, "bucket", bpath))
+            _check_int(_get(b, "n", bpath), f"{bpath}.n")
+            _check_num(_get(b, "pct", bpath), f"{bpath}.pct", 0.0, 100.0)
+            total += b["n"]
+        if labels != VINTAGE_BUCKETS:
+            _fail(f"{path}.buckets",
+                  f"bucket labels must equal {VINTAGE_BUCKETS}, got {labels}")
+        if total != over:
+            _fail(f"{path}.buckets", f"counts sum to {total}, not {over}")
+        years.append(year)
+    if years != [r["year"] for r in latency_rows]:
+        _fail("kev_latency.vintage_by_year",
+              f"years {years} must equal the latency_by_year years")
+
+    base = "kev_latency.oldest_recent"
+    recent = _get(obj, "oldest_recent", "kev_latency")
+    _check_int(_get(recent, "window_days", base), f"{base}.window_days",
+               minimum=1)
+    for key in ("since", "until"):
+        _check_str(_get(recent, key, base), f"{base}.{key}", DATE_RE)
+    if recent["since"] > recent["until"]:
+        _fail(f"{base}.since", "window starts after it ends")
+    n_listed = _get(recent, "n_listed", base)
+    _check_int(n_listed, f"{base}.n_listed")
+    n_old = _get(recent, "n_over_10y", base)
+    _check_int(n_old, f"{base}.n_over_10y")
+    if n_old > n_listed:
+        _fail(f"{base}.n_over_10y", f"{n_old} exceeds n_listed {n_listed}")
+    shown = _check_list(_get(recent, "entries", base), f"{base}.entries")
+    if len(shown) > n_listed:
+        _fail(f"{base}.entries", "more entries than listings in the window")
+    previous_age = None
+    for i, e in enumerate(shown):
+        path = f"{base}.entries[{i}]"
+        _check_str(_get(e, "cve_id", path), f"{path}.cve_id", _CVE_RE)
+        for key in ("date_added", "date_published"):
+            _check_str(_get(e, key, path), f"{path}.{key}", DATE_RE)
+        if not recent["since"] <= e["date_added"] <= recent["until"]:
+            _fail(f"{path}.date_added",
+                  f"{e['date_added']} lies outside the window")
+        age = _get(e, "age_days", path)
+        _check_int(age, f"{path}.age_days", minimum=-50000)
+        expected = (date.fromisoformat(e["date_added"])
+                    - date.fromisoformat(e["date_published"])).days
+        if age != expected:
+            _fail(f"{path}.age_days", f"{age} != dateAdded - datePublished "
+                  f"({expected})")
+        if previous_age is not None and age > previous_age:
+            _fail(f"{path}.age_days", "entries must run oldest first")
+        previous_age = age
+    if sum(1 for e in shown if e["age_days"] > 3650) > n_old:
+        _fail(f"{base}.n_over_10y", "fewer than the entries listed over 10y")
 
 
 # -------------------------------------------------------- cna_concentration

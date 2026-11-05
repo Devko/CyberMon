@@ -36,6 +36,11 @@ export const C = {
     "31-90d": "#a89f8a",
     "91-365d": "#77715f",
     "1-3y": "#6f6958",
+    // The three buckets past three years share the ramp's floor; "3y+"
+    // (their union, the bucket before the 2026-11 split) stays for the Field.
+    "3-5y": "#696454",
+    "5-10y": "#696454",
+    "10y+": "#696454",
     "3y+": "#696454",
   },
 };
