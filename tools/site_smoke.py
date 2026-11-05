@@ -69,6 +69,7 @@ PAGES = [
     "aisurface.html",
     "atlas.html",
     "ledger.html",
+    "sigma.html",
 ]
 
 # Generous ceiling for a local static server; hitting it means a fetch

@@ -1,0 +1,16 @@
+title: Fixture DNS Tunnel
+id: 00000000-0000-4000-8000-000000000003
+status: experimental
+description: Fixture. Upper-case technique tag.
+author: CyberMon fixtures
+date: 2019-05-05
+tags:
+    - attack.command-and-control
+    - attack.T1001
+logsource:
+    category: dns
+detection:
+    selection:
+        query|contains: '.fixture.invalid'
+    condition: selection
+level: medium

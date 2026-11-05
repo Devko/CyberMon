@@ -112,6 +112,10 @@ import { render as renderAisurfaceYears } from "./charts/aisurface_years.js";
 import { render as renderAisurfaceCwe } from "./charts/aisurface_cwe.js";
 import { render as renderAisurfaceExploited } from "./charts/aisurface_exploited.js";
 import { render as renderAisurfaceProducts } from "./charts/aisurface_products.js";
+import { render as renderSigmaChurn } from "./charts/sigma_churn.js";
+import { render as renderSigmaCoverage } from "./charts/sigma_coverage.js";
+import { render as renderSigmaLag } from "./charts/sigma_lag.js";
+import { render as renderSigmaTactics } from "./charts/sigma_tactics.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -355,6 +359,13 @@ const MODULES = {
       { id: "aisurface_cwe", render: renderAisurfaceCwe },
       { id: "aisurface_exploited", render: renderAisurfaceExploited },
       { id: "aisurface_products", render: renderAisurfaceProducts, table: true },
+  sigma: {
+    file: "data/sigma_coverage.json",
+    sections: [
+      { id: "sigma_churn", render: renderSigmaChurn },
+      { id: "sigma_coverage", render: renderSigmaCoverage },
+      { id: "sigma_lag", render: renderSigmaLag },
+      { id: "sigma_tactics", render: renderSigmaTactics },
     ],
   },
 };

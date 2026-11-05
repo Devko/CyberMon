@@ -83,6 +83,7 @@ BY_SOURCE = {
     "support_windows.json": "eol",
     "attack_atlas.json": "atlas",
     "alias_graph.json": "naming",
+    "sigma_coverage.json": "sigma",
 }
 
 # A degraded module may be carried forward for a few nights while an

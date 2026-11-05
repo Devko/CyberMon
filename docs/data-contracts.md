@@ -3442,3 +3442,119 @@ the scheme list (ids, labels, documentation links, forms) and
 `exceptions` to equal the table, and reconciles the per-scheme counts,
 `coverage` and `headline` with the names shipped. `headline` is null only
 when the board is empty. About 65 KB at `indent=1`.
+
+## site/data/sigma_coverage.json  (Detection Rules module, all 4 charts)
+
+```json
+{
+  "generated_at": "...",
+  "as_of": "2026-11-05",
+  "source": {"commit": "77145ed8fae37f06acefe3822317bd2a93e8a8c5",
+             "commit_date": "2026-11-05"},
+  "catalog": {"rules": 3980, "active": 3807, "deprecated": 173,
+              "technique_tagged": 3499, "mapped": 3499, "active_mapped": 3337,
+              "files": 3980, "skipped": 0, "future_dated": 0,
+              "first_rule_date": "2017-01-01", "first_quarter": "2017Q1"},
+  "quarters": [{"quarter": "2026Q4", "start": "2026-10-01",
+                "end": "2026-12-31", "partial": true, "added": 17,
+                "deprecated": 1, "techniques": 227, "covered": 171,
+                "pct": 75.3}],
+  "years": [{"year": 2026, "partial": true, "added": 124, "deprecated": 7}],
+  "coverage": {"techniques": 227, "covered": 171, "pct": 75.3,
+               "peak": {"quarter": "2023Q1", "pct": 82.8, "covered": 159,
+                        "techniques": 192}},
+  "lag": {"follow_up_days": 730, "debut_after": "1.0",
+          "debut_through": "2024-11-05", "n": 124, "before_debut": 50,
+          "within_year": 16, "later": 32, "none": 26, "median_days": 275,
+          "median_at_least_days": null, "median_exact": true},
+  "cohorts": [{"year": 2026, "techniques": 14, "before_debut": 4,
+               "within_year": 0, "later": 0, "none": 10,
+               "min_follow_up_days": 23, "full_year": false}],
+  "tactics": [{"id": "reconnaissance", "name": "Reconnaissance",
+               "techniques": 12, "covered": 7, "pct": 58.3}],
+  "attack": {"version": "20.0", "released": "2026-10-13",
+             "first_version": "1.0", "first_released": "2018-01-17",
+             "synced": ["1.0", "2.0", "..."],
+             "tactics": [{"id": "reconnaissance", "name": "Reconnaissance"}],
+             "revoked_to": {"T1086": "T1059.001"}},
+  "techniques": [{"id": "T1001", "name": "Data Obfuscation",
+                  "tactics": ["command-and-control"], "debut": "1.0",
+                  "debut_date": "2018-01-17", "first_rule": "2019-03-24",
+                  "rules": 2}],
+  "retired_techniques": [{"id": "T1002", "debut": "1.0", "retired": "7.0"}]
+}
+```
+
+Source: the `SigmaHQ/sigma` git repository (Detection Rule License 1.1),
+read over the git protocol — `git ls-remote` nightly, a bare depth-1 clone
+only when the head commit moved (`pipeline/fetch_sigma.py`). A **rule** is
+a `.yml` file under a top-level `rules` / `rules-*` folder (`active`) or
+under `deprecated/` (`deprecated`); `unsupported/`, `regression_data/`,
+`tests/` and the rest are not counted. Four top-level fields are read with
+a strict stdlib line reader (no YAML dependency; it matches PyYAML on all
+3,980 files of the first edition): `date`, `modified`, `status` and the
+`attack.tNNNN[.NNN]` entries of `tags`. A file with no usable `date` is
+`skipped`; more than 2% skipped, or fewer than 1,000 rules, refuses the
+snapshot. Rules dated after the edition are dropped (`future_dated`), so
+`files = rules + skipped + future_dated`.
+
+`as_of` is the date the edition was computed to; every `partial` flag,
+follow-up and the lag cut-off are measured to it, and a carried-forward
+edition keeps it while `generated_at` is restamped. `quarters` run
+consecutively from the quarter of the earliest rule `date` to the `as_of`
+quarter (`partial` marks it, and only it). `added` counts
+every rule (active or deprecated) in the quarter of its own `date` — the
+author's date, **not** the commit date, so every count is approximate, and
+rules deleted outright (never moved to `deprecated/`) are invisible.
+`deprecated` counts rules in `deprecated/` in the quarter of `modified`.
+`years` is the same tally per calendar year (`partial` on the edition
+year); both partitions sum to `catalog`.
+
+The ATT&CK join (`pipeline/attack_techniques.py`): the technique list is
+every **active** enterprise technique (`attack-pattern`, not a
+sub-technique, neither revoked nor deprecated) in the latest release,
+keyed by its ATT&CK id. `debut` is the first release in `attack.synced`
+(the enterprise releases of `attack_churn.json`, whose `released` dates
+give `debut_date`) whose bundle lists the id as active; `retired` is the
+first later release that no longer does. A rule's tags are resolved by
+following `attack.revoked_to` (MITRE's `revoked-by` relationships in the
+latest bundle) and rolling sub-techniques up to the parent; tags that
+resolve to no active technique cover nothing (`technique_tagged −
+mapped`). `quarters[].techniques` counts today's techniques whose
+`debut_date` is on or before the quarter end (or the edition date);
+`covered` those with at least one rule alive then — dated on or before it
+and, for a deprecated rule, `modified` after it. `pct` = 100 × covered /
+techniques (1 decimal; null when no technique had debuted). `coverage` is
+today's state over active rules only and equals the last quarter;
+`peak` is the earliest quarter with the highest `pct`. `tactics` follow
+the latest bundle's matrix order; a technique in two tactics counts in
+both. `techniques[].rules` counts active rules; `first_rule` is the
+earliest `date` of any rule (active or deprecated) tagging it.
+
+`lag` and `cohorts` cover techniques whose `debut` is not the first synced
+release (v1.0's techniques predate it). Wait = days from `debut_date` to
+`first_rule`; a first rule dated on or before the debut is
+`before_debut` (wait 0), otherwise `within_year` (≤ 365 days) or `later`;
+`none` = no rule ever. `cohorts` group them by debut year
+(`full_year` = every technique has ≥ 365 days of follow-up). The `lag`
+median covers the techniques that debuted at least `follow_up_days`
+before the edition (through `debut_through`), with `none` counted as
+longer than any wait: `median_days` when exact (every open technique has
+already waited longer than the median), else `median_at_least_days`, the
+median with each open technique at the wait served so far.
+
+**Reconstruct guarantee:** `attack.synced`, `attack.tactics`,
+`attack.revoked_to`, `techniques[]` (id, name, tactics, debut) and
+`retired_techniques[]` are exactly the technique-timeline state, so
+`attack_techniques.reconstruct` rebuilds it from this file and a lost
+cache never re-reads the ~40 ATT&CK bundles (a round-trip test pins it).
+The parsed rules are cached under their head commit in
+`.cache/sigma_state.json` (with the timeline); a lost cache costs one
+shallow clone. **Red line:** the file carries counts and ATT&CK ids only —
+no rule id (UUID), title, author or detection logic; the contract rejects
+them. `"stale": true` appears when a SigmaHQ or ATT&CK-bundle failure
+carried the previous edition forward. Validator:
+`pipeline/sigma_contracts.py`.
+
+`meta.json` carries `sources.sigma`: `{fetched_at, commit, commit_date,
+rules, attack_version}`, marked `"stale": true` on a carry-forward.

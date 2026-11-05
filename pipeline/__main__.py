@@ -23,6 +23,10 @@ endoflife.date (Support Windows) each feed
 exactly one module (OSV feeds the two OSV modules, which degrade
 together), so a sustained outage there carries that module's
 previous edition forward marked
+HIBP, Ransomwhere, APNIC, SEC EDGAR (the Incident Clock) and SigmaHQ
+(Detection Rules) each feed exactly one module (OSV feeds the two OSV
+modules, which degrade together), so a sustained outage there carries
+that module's previous edition forward marked
 ``"stale": true`` — the site renders "(carried forward)" — while the run
 continues. Core sources (the cvelistV5 corpus, EPSS, KEV) still fail the
 run: they feed almost every module, and half a dashboard is worse than a
@@ -56,6 +60,7 @@ from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                nvd_throughput, observatory, osv_metrics, poc_metrics,
                quality_metrics, rescore_tracker, sec_incidents_metrics,
                top25_metrics)
+from . import sigma_metrics
 from .fetch_cna_roster import fetch_roster, load_roster_file
 from .fetch_feodo import fetch_blocklist, load_blocklist_file
 from .fetch_cvelist import (download_zip, iter_cve_records,
@@ -904,6 +909,29 @@ def run(args: argparse.Namespace) -> int:
                                  generated_at, eol_failure)
         if carried is not None:
             outputs["support_windows.json"] = carried
+    # Detection Rules: SigmaHQ rule metadata (an ls-remote each night, a
+    # shallow clone only when the head moved) joined to the ATT&CK release
+    # list and dates the ATT&CK stage just emitted (fresh or carried). One
+    # more single-module upstream: a SigmaHQ or ATT&CK-bundle failure
+    # carries last night's edition forward stale, never fails the run.
+    sigma_source = sigma_failure = None
+    try:
+        sigma_obj, sigma_source = sigma_metrics.run_stage(
+            args.out, args.cache_dir, generated_at,
+            attack_churn=outputs.get("attack_churn.json"),
+            offline_fixtures=args.offline_fixtures)
+        # Validated here as well as below: an upstream shape the builder
+        # did not foresee (ContractViolation is a ValueError) degrades this
+        # module to last night's edition instead of failing every module.
+        contracts.validate("sigma_coverage.json", sigma_obj)
+        outputs["sigma_coverage.json"] = sigma_obj
+    except (OSError, ValueError) as exc:
+        sigma_source = None
+        sigma_failure = f"SigmaHQ rules / ATT&CK join failed ({exc!r})"
+        carried = _carry_forward(args.out, "sigma_coverage.json",
+                                 generated_at, sigma_failure)
+        if carried is not None:
+            outputs["sigma_coverage.json"] = carried
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -992,6 +1020,12 @@ def run(args: argparse.Namespace) -> int:
         carried_atlas = _carry_forward_source(args.out, "atlas")
         if carried_atlas is not None:
             outputs["meta.json"]["sources"]["atlas"] = carried_atlas
+    if sigma_source is not None:
+        outputs["meta.json"]["sources"]["sigma"] = sigma_source
+    elif "sigma_coverage.json" in outputs:
+        carried_sigma = _carry_forward_source(args.out, "sigma")
+        if carried_sigma is not None:
+            outputs["meta.json"]["sources"]["sigma"] = carried_sigma
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

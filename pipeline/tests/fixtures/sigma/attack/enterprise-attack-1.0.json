@@ -1,0 +1,54 @@
+{
+  "type": "bundle",
+  "id": "bundle--fixture-sigma-enterprise-1-0",
+  "objects": [
+    {
+      "type": "x-mitre-matrix",
+      "id": "x-mitre-matrix--fixture",
+      "name": "Enterprise ATT&CK",
+      "tactic_refs": [
+        "x-mitre-tactic--fixture-initial-access",
+        "x-mitre-tactic--fixture-execution",
+        "x-mitre-tactic--fixture-credential-access",
+        "x-mitre-tactic--fixture-collection",
+        "x-mitre-tactic--fixture-command-and-control"
+      ]
+    },
+    {"type": "x-mitre-tactic", "id": "x-mitre-tactic--fixture-initial-access", "name": "Initial Access", "x_mitre_shortname": "initial-access"},
+    {"type": "x-mitre-tactic", "id": "x-mitre-tactic--fixture-execution", "name": "Execution", "x_mitre_shortname": "execution"},
+    {"type": "x-mitre-tactic", "id": "x-mitre-tactic--fixture-credential-access", "name": "Credential Access", "x_mitre_shortname": "credential-access"},
+    {"type": "x-mitre-tactic", "id": "x-mitre-tactic--fixture-collection", "name": "Collection", "x_mitre_shortname": "collection"},
+    {"type": "x-mitre-tactic", "id": "x-mitre-tactic--fixture-command-and-control", "name": "Command and Control", "x_mitre_shortname": "command-and-control"},
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--fixture-t1001",
+      "name": "Data Obfuscation",
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1001"}],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "command-and-control"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--fixture-t1003",
+      "name": "OS Credential Dumping",
+      "x_mitre_is_subtechnique": false,
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1003"}],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "credential-access"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--fixture-t1086",
+      "name": "PowerShell",
+      "x_mitre_is_subtechnique": false,
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1086"}],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "execution"}]
+    },
+    {
+      "type": "attack-pattern",
+      "id": "attack-pattern--fixture-t1005",
+      "name": "Data from Local System",
+      "x_mitre_is_subtechnique": false,
+      "external_references": [{"source_name": "mitre-attack", "external_id": "T1005"}],
+      "kill_chain_phases": [{"kill_chain_name": "mitre-attack", "phase_name": "collection"}]
+    }
+  ]
+}

@@ -505,6 +505,9 @@ function renderMeta(meta) {
       eol_products: (s.eol?.products ?? 0).toLocaleString("en-US"),
       eol_lines: (s.eol?.lines ?? 0).toLocaleString("en-US"),
       eol_fetched: (s.eol?.fetched_at ?? "?") + (s.eol?.stale ? carried : ""),
+      sigma_rules: (s.sigma?.rules ?? 0).toLocaleString("en-US"),
+      sigma_commit: (s.sigma?.commit ?? "?").slice(0, 12),
+      sigma_fetched: (s.sigma?.fetched_at ?? "?") + (s.sigma?.stale ? carried : ""),
     }))
   );
 }
