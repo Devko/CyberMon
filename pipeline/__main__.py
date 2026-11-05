@@ -42,6 +42,7 @@ from typing import Iterator
 
 from . import field_export
 from . import cvss_v4_metrics, tags_metrics
+from . import ai_products_metrics
 from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -521,7 +522,12 @@ def run(args: argparse.Namespace) -> int:
     credits = ai_credits_metrics.CreditCollector(
         kev_ids=kev.cve_ids, poc_ids=poc.all_ids,
         epss_percentiles=epss.percentiles)
-    observers = [o for o in (field, credits) if o is not None]
+    # AI Product CVEs (module 27) classifies each record's first affected
+    # vendor/product: a third observer on the same pass.
+    ai_products = ai_products_metrics.AiProductCollector(
+        kev_ids=kev.cve_ids, poc_ids=poc.exploit_ids,
+        nuclei_ids=poc.nuclei_ids)
+    observers = [o for o in (field, credits, ai_products) if o is not None]
 
     def _observe(facts, record):
         for observer in observers:
@@ -634,6 +640,12 @@ def run(args: argparse.Namespace) -> int:
         agg, generated_at,
         **({"adopters_min_v4": 1, "dual_min_n": 1}
            if args.offline_fixtures else {}))
+    # AI Product CVEs: the observer above, already joined to tonight's KEV
+    # ids and exploit corpora. The fixture corpus ends in 2025, so its
+    # window is widened to reach the fixture's AI-product record.
+    outputs["ai_products.json"] = ai_products_metrics.build_ai_products(
+        ai_products, generated_at,
+        **({"window_years": 50} if args.offline_fixtures else {}))
     # Single-upstream modules: build from tonight's fetch, or carry the
     # previous edition forward marked stale when that upstream is down.
     if hibp is not None:

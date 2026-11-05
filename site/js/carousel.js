@@ -104,6 +104,10 @@ import { render as renderCvss4 } from "./charts/cvss4.js";
 import { render as renderTagsTrend } from "./charts/tags_trend.js";
 import { render as renderTagsBoard } from "./charts/tags_board.js";
 import { render as renderTagsSeverity } from "./charts/tags_severity.js";
+import { render as renderAisurfaceYears } from "./charts/aisurface_years.js";
+import { render as renderAisurfaceCwe } from "./charts/aisurface_cwe.js";
+import { render as renderAisurfaceExploited } from "./charts/aisurface_exploited.js";
+import { render as renderAisurfaceProducts } from "./charts/aisurface_products.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -331,6 +335,15 @@ const MODULES = {
       { id: "tags_trend", render: renderTagsTrend },
       { id: "tags_board", render: renderTagsBoard, table: true },
       { id: "tags_severity", render: renderTagsSeverity },
+    ],
+  },
+  aisurface: {
+    file: "data/ai_products.json",
+    sections: [
+      { id: "aisurface_years", render: renderAisurfaceYears },
+      { id: "aisurface_cwe", render: renderAisurfaceCwe },
+      { id: "aisurface_exploited", render: renderAisurfaceExploited },
+      { id: "aisurface_products", render: renderAisurfaceProducts, table: true },
     ],
   },
 };

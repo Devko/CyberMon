@@ -548,6 +548,38 @@ both modules. The nightly sends conditional GETs (ETag / Last-Modified),
 downloads only the changed zips and keeps a compact summary. An OSV outage
 carries both modules forward, marked stale. Stage `pipeline/osv_metrics.py`.
 
+### 27 · AI Product CVEs — [aisurface.html](https://devko.github.io/CyberMon/aisurface.html)
+
+*AI products' share of published CVEs has risen in every complete year since 2023.*
+
+CVEs in AI and machine-learning software. Each published record is
+classified by the first vendor and product its CNA lists in the affected
+list, looked up in a hand-made, commented table (`pipeline/ai_products.py`,
+modelled on `security_products.py`): ML frameworks (TensorFlow, PyTorch,
+ONNX, Transformers), model serving (vLLM, Ollama, Triton, llama.cpp), ML
+platforms (MLflow, Kubeflow, OpenShift AI) and LLM apps and agents
+(LangChain, Langflow, Open WebUI, OpenClaw, MCP SDKs). Descriptions are
+never read; general products with an AI feature count only when the CNA
+lists the AI part as its own product. Four sections:
+
+- AI-product CVEs per publication year by group, as counts and as a share
+  of all published CVEs;
+- their first-listed CWEs against all other CVEs from the same years,
+  weighted to the same year mix, and how many cite a CWE written for AI
+  (CWE-1039, -1426, -1427);
+- the share on CISA KEV, with public exploit code and with a Nuclei
+  template, each against the count expected at that year-matched rate;
+- the products and CNAs behind the counts.
+
+The counts are a lower bound: records whose CNA named no product, products
+named only in a description or in CISA's enrichment, and AI software the
+table does not name are all missed, and the newest months undercount most
+until the table is reviewed again. The data file carries the classifier's
+version and review date. This module counts CVEs *in* AI software; module 22
+counts CVEs credited to AI finders and module 21 measures exploit timing. No
+fetch of its own: `AiProductCollector` is a third observer on the shared
+corpus pass. Stage `pipeline/ai_products_metrics.py`.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
 
 *Every published CVE as one point in a 3D view.*
