@@ -173,7 +173,6 @@ Two cross-builder fixes:
 - **Machine-Readable Advisories:** no affected-version-range column. Red
   Hat lists fixed versions, so it would measure style. There are no
   listing dates, because the lister keeps none.
-- **CNA profile:** no carousel slide; it overflowed the slide by 286 px.
 - **Alias Graph:** the IBM X-Force, Proofpoint and Recorded Future rules
   cite statements in reports or blog posts rather than naming pages.
 - **Claims Ledger:**
@@ -186,3 +185,20 @@ Two cross-builder fixes:
 - **Atlas:** 15 tactics exceed one colour scale. The palette uses five
   hues with three shades each, with position and the legend carrying the
   tactic too.
+
+## Follow-up (same day)
+
+- **CNA profile carousel slide.** The picker cannot fit a 1080×1350
+  slide, so the slide draws the headline's finding instead: three strips
+  (records with a CWE, with a CVSS score, with usable affected-version
+  data), one tick per listed CNA, the median CNA dashed, and the counts
+  under 5% and on every record. `cna_profile.renderSlide`.
+- **Broken carousel, found while adding it.** Since the AI Product CVEs
+  merge, `carousel.js` had not parsed. Each keep-both merge had dropped
+  the closing `],` / `},` of the module entry before it (aisurface,
+  sigma, oss, csaf). `node --check` did not catch it because it does not
+  parse these files as ES modules. The deploy job's PDF step is
+  `continue-on-error`, so the carousels quietly stopped building. Fixed,
+  and `tools/make_carousels.py --check` now renders every module's
+  carousel in CI: a hard gate on template errors, console errors and
+  overflowing slides. All 31 render with none.

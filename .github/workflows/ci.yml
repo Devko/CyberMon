@@ -105,6 +105,14 @@ jobs:
       - name: Check Alias Graph interactions
         run: python tools/alias_smoke.py
 
+      # Renders every module's carousel without printing: fails on a template
+      # error, a console error or a slide overflowing its sheet. The deploy
+      # job's PDF build is continue-on-error, so without this gate a broken
+      # carousel.js (2026-11-05: a merge dropped four entries' closing
+      # brackets) ships silently.
+      - name: Check carousel slides render
+        run: python tools/make_carousels.py --check
+
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts
       # they are non-blank and actually differ. NOT a full render — capturing

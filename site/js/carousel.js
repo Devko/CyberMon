@@ -35,6 +35,7 @@ import { render as renderVintage } from "./charts/kev_vintage.js";
 import { render as renderConcentration } from "./charts/concentration_trend.js";
 import { render as renderEntrants } from "./charts/concentration_entrants.js";
 import { render as renderRejection } from "./charts/concentration_rejection.js";
+import { renderSlide as renderCnaProfileSlide } from "./charts/cna_profile.js";
 import { render as renderLag } from "./charts/breach_lag.js";
 import { render as renderBreachVolume } from "./charts/breach_volume.js";
 import { render as renderClasses } from "./charts/breach_classes.js";
@@ -168,6 +169,7 @@ const MODULES = {
       { id: "concentration", render: renderConcentration },
       { id: "entrants", render: renderEntrants },
       { id: "rejection", render: renderRejection, table: true },
+      { id: "cna_profile", render: renderCnaProfileSlide, file: "data/cna_profiles.json" },
     ],
   },
   breaches: {
@@ -358,6 +360,8 @@ const MODULES = {
       { id: "eol_years", render: renderEolYears },
       { id: "eol_phases", render: renderEolPhases },
       { id: "eol_categories", render: renderEolCategories },
+    ],
+  },
   aisurface: {
     file: "data/ai_products.json",
     sections: [
@@ -365,6 +369,8 @@ const MODULES = {
       { id: "aisurface_cwe", render: renderAisurfaceCwe },
       { id: "aisurface_exploited", render: renderAisurfaceExploited },
       { id: "aisurface_products", render: renderAisurfaceProducts, table: true },
+    ],
+  },
   sigma: {
     file: "data/sigma_coverage.json",
     sections: [
@@ -372,12 +378,16 @@ const MODULES = {
       { id: "sigma_coverage", render: renderSigmaCoverage },
       { id: "sigma_lag", render: renderSigmaLag },
       { id: "sigma_tactics", render: renderSigmaTactics },
+    ],
+  },
   oss: {
     file: "data/oss_maintainers.json",
     sections: [
       { id: "oss_accounts", render: renderOssAccounts },
       { id: "oss_shared", render: renderOssShared },
       { id: "oss_scorecard", render: renderOssScorecard },
+    ],
+  },
   csaf: {
     file: "data/csaf_adoption.json",
     sections: [

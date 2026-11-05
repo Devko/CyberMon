@@ -1827,6 +1827,10 @@ export const editorial = {
         "rejected. Differences between CNAs mostly follow the products they cover " +
         "and how they run their programs; they are not a measure of intent.",
       labels: {
+        slideCounts: "{low} under 5% · {full} on every record",
+        slideMedian: "median CNA {value}",
+        slideNote: "Each tick is one of the {n} CNAs with at least {min_published} records published {from}–{to}. Only fields in the CNA's own record count.",
+        slideAlt: "Three strips with one tick per CNA, for the {n} CNAs with at least 100 records in five years: the share of each CNA's records with a CWE, with a CVSS score and with usable affected-version data. Median CNA: {cwe}, {scored} and {affected}.",
         searchLabel: "Find a CNA",
         searchPlaceholder: "part of a name",
         selectLabel: "CNA",

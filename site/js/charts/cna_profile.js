@@ -16,7 +16,7 @@
 // text alternative giving the CNA's value, the median CNA and its rank.
 import { editorial, tpl } from "../editorial.js";
 import { el, clear } from "../dom.js";
-import { fmtInt, fmtPct } from "../theme.js";
+import { C, MONO, fmtInt, fmtPct } from "../theme.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const VB_W = 1000; // viewBox width; the SVG stretches to its cell
@@ -428,4 +428,73 @@ export function render(slots, data) {
   if (fromHash && byName.has(fromHash)) {
     requestAnimationFrame(() => slots.chart.closest(".chart-section")?.scrollIntoView());
   }
+}
+
+// ---- carousel slide ----------------------------------------------------------
+// The picker does not fit a 1080×1350 slide, so the slide draws the
+// headline's finding instead: three strips (CWE, CVSS score, affected-version
+// data), every listed CNA a tick, the median CNA dashed, with the counts at
+// the ends of the scale. Text lives inside the SVG because the carousel page
+// does not load this module's stylesheet.
+const SLIDE_METRICS = [["cwe_pct", "cwe"], ["scored_pct", "scored"], ["affected_pct", "affected"]];
+
+export function renderSlide(slots, data) {
+  const ed = editorial.sections.cna_profile;
+  const L = ed.labels;
+  const rows = data.cnas || [];
+  const w = data.window || {};
+  slots.chart.classList.remove("chart");
+  if (!rows.length) {
+    slots.chart.append(el("div", "nodata-card", ed.nodata || editorial.ui.nodata));
+    return;
+  }
+  const W = 1000, ROW = 214, TOP = 6, H = TOP + SLIDE_METRICS.length * ROW + 100;
+  const medians = {};
+  const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+    style: `font-family:${MONO};display:block` });
+  const text = (x, y, str, attrs = {}) => {
+    const t = svg("text", { x, y, fill: C.ink, "font-size": 24, ...attrs });
+    t.textContent = str;
+    root.append(t);
+  };
+  SLIDE_METRICS.forEach(([metric, countKey], k) => {
+    const y = TOP + k * ROW;
+    const vals = rows.map((r) => r.values?.[metric]).filter(Number.isFinite);
+    const median = data.summary?.[metric]?.median;
+    medians[metric] = median;
+    const low = vals.filter((v) => v < 5).length;
+    const full = rows.filter((r) => r.counts && r.published > 0 && r.counts[countKey] === r.published).length;
+    text(0, y + 30, L.metrics[metric], { "font-size": 27 });
+    text(0, y + 62, tpl(L.slideCounts, { low: fmtInt(low), full: fmtInt(full) }),
+      { fill: C.muted, "font-size": 21 });
+    const axisY = y + 134;
+    root.append(svg("line", { x1: 0, x2: W, y1: axisY, y2: axisY, stroke: C.rule, "stroke-width": 2 }));
+    for (const v of vals) {
+      const x = Math.max(2, Math.min(W - 2, (v / 100) * W));
+      root.append(svg("line", { x1: x, x2: x, y1: axisY - 36, y2: axisY + 36,
+        stroke: C.ink, "stroke-opacity": 0.45, "stroke-width": 3 }));
+    }
+    if (Number.isFinite(median)) {
+      const x = (median / 100) * W;
+      root.append(svg("line", { x1: x, x2: x, y1: axisY - 48, y2: axisY + 48,
+        stroke: C.accent, "stroke-width": 3, "stroke-dasharray": "8 6" }));
+      text(Math.min(x, W - 4), axisY - 56, tpl(L.slideMedian, { value: fmtPct(median) }),
+        { "text-anchor": x > W * 0.6 ? "end" : "start", fill: C.accent, "font-size": 21 });
+    }
+    text(0, axisY + 66, "0%", { fill: C.muted, "font-size": 19 });
+    text(W, axisY + 66, "100%", { fill: C.muted, "font-size": 19, "text-anchor": "end" });
+  });
+  const note = tpl(L.slideNote, {
+    n: fmtInt(rows.length), min_published: fmtInt(data.min_published),
+    from: w.from ?? "?", to: w.to ?? "?",
+  });
+  // wrap the note over two lines at the word nearest the middle
+  const words = note.split(" "), half = Math.ceil(words.length / 2);
+  text(0, H - 52, words.slice(0, half).join(" "), { fill: C.faint, "font-size": 21 });
+  text(0, H - 22, words.slice(half).join(" "), { fill: C.faint, "font-size": 21 });
+  root.setAttribute("aria-label", tpl(L.slideAlt, {
+    n: fmtInt(rows.length),
+    cwe: fmtPct(medians.cwe_pct), scored: fmtPct(medians.scored_pct), affected: fmtPct(medians.affected_pct),
+  }));
+  slots.chart.append(root);
 }

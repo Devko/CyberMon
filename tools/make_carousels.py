@@ -105,8 +105,10 @@ def load_carousel(page, base_url: str, query: str) -> list[str]:
     return problems
 
 
-def print_module(page, base_url: str, module_id: str, out_dir: Path) -> list[str]:
-    """Render one module and print its PDF; return problems (empty = ok)."""
+def print_module(page, base_url: str, module_id: str, out_dir: Path | None) -> list[str]:
+    """Render one module and print its PDF; return problems (empty = ok).
+    With ``out_dir`` None (``--check``) the module is rendered and measured
+    but nothing is printed."""
     problems = load_carousel(page, base_url, f"?page={module_id}")
 
     overflows = page.evaluate("window.__carouselOverflows || []")
@@ -114,6 +116,9 @@ def print_module(page, base_url: str, module_id: str, out_dir: Path) -> list[str
         problems.append(f"slide {o['slide']} overflows its sheet by {o['px']}px ({o['id']})")
 
     if problems:
+        return problems
+    if out_dir is None:
+        print(f"ok   {module_id} · {page.evaluate('window.__carouselSlideCount')} slides render, none overflow")
         return problems
 
     slide_count = page.evaluate("window.__carouselSlideCount")
@@ -147,9 +152,16 @@ def main() -> int:
         default="site/carousels",
         help="output directory for the PDFs (default: %(default)s)",
     )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="render and measure every module without printing PDFs; exit 1 "
+             "on any failure, console error or overflowing slide (the CI gate)",
+    )
     args = parser.parse_args()
-    out_dir = Path(args.out)
-    out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = None if args.check else Path(args.out)
+    if out_dir is not None:
+        out_dir.mkdir(parents=True, exist_ok=True)
 
     port = free_port()
     server = subprocess.Popen(
