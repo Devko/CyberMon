@@ -134,6 +134,19 @@ the two events is visible.
   the cvelistV5 release of 2026-11-05 06:00Z through `--cvelist-zip`,
   and live fetches for the rest.
 
+- First run on GitHub's runners: a manually started nightly (run 197, on
+  `c5647bc`) passed the pipeline and the claims gate and deployed the
+  2026-11-05 07:56Z edition. Every new source fetched fresh, none carried
+  forward stale:
+  - Support Windows: 489 products
+  - Sigma: 3,980 rules at 77145ed8
+  - Open-Source Maintainers: 1,867 lookups, 0 failed
+  - CSAF: 15 listed sources, 122,714 documents
+  - ATT&CK atlas and aliases refreshed
+  
+  The queue-wait exit log has started. All nine new pages, the preview
+  images and the ledger data serve 200.
+
 ## Merging
 Eleven branches touched the same shared lists: nav, home cards, sections,
 validators, the integrity and e2e lists, the smoke list, carousel,
