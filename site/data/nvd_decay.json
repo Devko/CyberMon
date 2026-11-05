@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-05T07:56:40Z",
+ "generated_at": "2026-11-05T09:50:11Z",
  "current": {
   "statuses": [
    {
@@ -24,14 +24,14 @@
    },
    {
     "status": "Received",
-    "n": 5054
+    "n": 5060
    },
    {
     "status": "Undergoing Analysis",
     "n": 904
    }
   ],
-  "backlog_total": 15647
+  "backlog_total": 15653
  },
  "history": [
   {
@@ -601,7 +601,7 @@
   },
   {
    "date": "2026-11-05",
-   "backlog_total": 15647,
+   "backlog_total": 15653,
    "awaiting_analysis": 9689
   }
  ]
