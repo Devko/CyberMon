@@ -408,6 +408,22 @@ def _validate_meta(obj: Any) -> None:
             _fail("meta.sources.osv",
                   "downloaded + not_modified must equal ecosystems")
 
+    # Optional (older committed meta files predate Detection Rules, and a
+    # SigmaHQ outage with no previous edition omits it). ``commit`` is the
+    # SigmaHQ/sigma head the rules were read at.
+    if "sigma" in src:
+        sg = src["sigma"]
+        _check_str(_get(sg, "fetched_at", "meta.sources.sigma"),
+                   "meta.sources.sigma.fetched_at", ISO_UTC_RE)
+        _check_str(_get(sg, "commit", "meta.sources.sigma"),
+                   "meta.sources.sigma.commit", re.compile(r"^[0-9a-f]{40}$"))
+        _check_str(_get(sg, "commit_date", "meta.sources.sigma"),
+                   "meta.sources.sigma.commit_date", DATE_RE)
+        _check_int(_get(sg, "rules", "meta.sources.sigma"),
+                   "meta.sources.sigma.rules", minimum=1)
+        _check_str(_get(sg, "attack_version", "meta.sources.sigma"),
+                   "meta.sources.sigma.attack_version")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -792,3 +808,7 @@ VALIDATORS.update(osv_contracts.VALIDATORS)
 from . import tags_contracts  # noqa: E402
 
 VALIDATORS.update(tags_contracts.VALIDATORS)
+
+from . import sigma_contracts  # noqa: E402
+
+VALIDATORS.update(sigma_contracts.VALIDATORS)

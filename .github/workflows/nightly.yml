@@ -199,6 +199,20 @@ jobs:
           restore-keys: |
             osv-state-
 
+      # Detection Rules state: the SigmaHQ rules parsed at the last head
+      # commit (so an unchanged head costs one ls-remote and no clone) and
+      # the ATT&CK technique timeline (each release's bundle read once). A
+      # miss costs one shallow clone (~10 MB); the timeline is rebuilt from
+      # the published site/data/sigma_coverage.json, so it never re-reads
+      # the ~40 ATT&CK bundles.
+      - name: Restore Detection Rules state
+        uses: actions/cache@v4
+        with:
+          path: .cache/sigma_state.json
+          key: sigma-state-${{ github.run_id }}
+          restore-keys: |
+            sigma-state-
+
       # NOTE: the silent-rescores diff state deliberately has NO cache
       # entry here — it is committed at site/data/history/rescore_state.json
       # next to its append-only log (an actions/cache copy once restored a

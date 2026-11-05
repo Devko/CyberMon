@@ -652,7 +652,40 @@ pattern — and MISP stays the optional broadening. See
   disclosure — bulk backfills spike 2022 and 2026 — so every series must key
   off the JSON date fields.
 
-### Detection-rule churn (Sigma)
+### Detection-rule churn (Sigma) — SHIPPED as module 28 (Detection Rules)
+- **Shipped 2026-11-05** (`sigma.html`, data `sigma_coverage.json`, stage
+  `pipeline/sigma_metrics.py`, fetcher `pipeline/fetch_sigma.py`, technique
+  timeline `pipeline/attack_techniques.py`). First edition at SigmaHQ commit
+  77145ed8 (2026-11-05): 3,980 rules (3,807 active, 173 deprecated; the 87
+  in `unsupported/` left out), 3,499 with a technique tag. Rules dated per
+  year peak at 1,023 in 2022, then 725, 284, 222 (2025). Coverage of
+  today's 227 ATT&CK v20.0 techniques: 75.3% (171), down from 82.8% in
+  2023Q1 (159 of 192): the list grew by 35, the covered count by 12. Median wait
+  from ATT&CK entry to a first rule: 275 days over the 124 techniques that
+  entered from v2.0 to 2024-11-05; 50 of them carry a tag on a rule older
+  than the technique. Of 21 techniques that entered in 2023–2025, none had a
+  rule within a year; of 115 from 2018–2022, 66 did.
+- **What the probe found.** GitHub's REST API and the codeload tarball are
+  403 from the build network; `git ls-remote` + `git clone --depth 1 --bare`
+  over https work (~10 MB, ~2 s), so the nightly speaks git: one ls-remote,
+  a clone only when the head moved. Module 07 keeps release dates and
+  counts but, by design, no technique ids, so the stage derives a technique
+  timeline (debut / retirement per ATT&CK id) by reading every enterprise
+  bundle once (42 bundles, ~1.5 GB, ~65 s, one time) and publishes it in
+  `sigma_coverage.json` so a lost cache rebuilds without re-reading them.
+  The rules' `modified` date is a rough deprecation date: against the git
+  commit that moved each file into `deprecated/` (a blob-less history
+  clone, not used by the nightly), the median gap was 46 days and 73% fell
+  within a quarter. Tags are read as they stand today: SigmaHQ relabels old
+  rules when ATT&CK reorganises (v19 split T1562 into T1685–T1690; 206
+  rules now tag T1685, the oldest dated 2017), so a technique's first rule
+  can predate its debut — counted as zero wait and shown separately. A
+  strict stdlib reader replaces PyYAML; it matched PyYAML on all 3,980
+  files.
+- **Open:** the rule `date` is an author date; a blob-less history clone
+  could date additions by commit instead (rename tracking needs blobs, so
+  it is not free). Techniques of v1.0 (77 today) are left out of the lag:
+  they existed before the first indexed release.
 - **Thesis:** detections chase last year's technique — Sigma coverage lags
   the ATT&CK catalog it claims to defend.
 - **Signals:** Sigma rules added vs. deprecated per quarter (`date`,

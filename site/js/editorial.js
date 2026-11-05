@@ -135,6 +135,7 @@ export const editorial = {
     { id: "incidents", href: "incidents.html", label: "SEC Incident Filings", group: "industry" },
     { id: "advisories", href: "advisories.html", label: "Advisories Without a CVE", group: "machine" },
     { id: "malware", href: "malware.html", label: "Malicious Packages", group: "attackmap" },
+    { id: "sigma", href: "sigma.html", label: "Detection Rules", group: "attackmap" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -526,6 +527,22 @@ export const editorial = {
           "Rebuilt nightly from OSV's ecosystem exports.",
         live: true,
       },
+      {
+        id: "sigma",
+        href: "sigma.html",
+        num: "28",
+        label: "Detection Rules",
+        headline:
+          "The share of ATT&CK techniques with at least one Sigma rule has fallen since " +
+          "2023, from more than four in five to about three in four.",
+        blurb:
+          "Sigma detection rules in SigmaHQ's public repository: rules added and " +
+          "deprecated per quarter, the share of MITRE ATT&CK techniques that at least one " +
+          "rule tags, how long techniques new to ATT&CK waited for a first rule, and " +
+          "coverage by tactic. Dates are the ones written in the rules, not commit dates, " +
+          "so they are approximate. Rebuilt nightly from the repository.",
+        live: true,
+      },
     ],
   },
 
@@ -670,6 +687,10 @@ export const editorial = {
     tags_trend: "tags_metrics.py",
     tags_board: "tags_metrics.py",
     tags_severity: "tags_metrics.py",
+    sigma_churn: "sigma_metrics.py",
+    sigma_coverage: "sigma_metrics.py",
+    sigma_lag: "sigma_metrics.py",
+    sigma_tactics: "sigma_metrics.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -4353,6 +4374,155 @@ export const editorial = {
         tipOf: "{row} of {total}",
       },
     },
+
+    // --------------------------------------------- sigma.html · 1 · hero
+    // {placeholders} fill from data/sigma_coverage.json at render time.
+    sigma_churn: {
+      num: "01",
+      kicker: "Rules added and deprecated",
+      source: "SigmaHQ/sigma rules (Detection Rule License 1.1)",
+      headline:
+        "The SigmaHQ repository holds about a fifth as many rules dated 2025 as rules " +
+        "dated 2022, its peak year.",
+      caption:
+        "Sigma is an open format for detection rules that search logs for attacker " +
+        "activity. SigmaHQ's public repository on GitHub holds {rules} of them in its rule " +
+        "and deprecated folders. Bars above the line count those rules by the quarter of " +
+        "the date written in each " +
+        "rule. Bars below the line count the rules moved to the repository's deprecated " +
+        "folder, by the quarter of their last edit.",
+      statLabel: "Rules dated {year}",
+      statWhen: "vs {peak_n} dated {peak_year}, the most of any year",
+      note: "Read at SigmaHQ/sigma commit {commit} of {commit_date}. * {quarter} is partial.",
+      nodata: "No edition yet. The nightly pipeline fills this page from the SigmaHQ repository.",
+      methodology:
+        "Each night the pipeline asks GitHub for the head commit of SigmaHQ/sigma (git " +
+        "ls-remote). When it has changed, the pipeline makes a shallow clone and reads " +
+        "every rule file. A rule is a .yml file in a folder whose name starts with " +
+        "“rules” (rules, rules-emerging-threats, rules-threat-hunting, rules-placeholder, " +
+        "rules-compliance) or in the deprecated folder. The unsupported folder, which " +
+        "holds rules that Sigma's converters cannot translate, is left out. A rule counts " +
+        "as added in the quarter of its date field, which its author sets when writing " +
+        "it. That is not the date the rule was merged, so every quarter's count is " +
+        "approximate. A rule in the deprecated folder counts as deprecated in the quarter " +
+        "of its modified field, normally the deprecation edit. Rules deleted outright, " +
+        "without passing through the deprecated folder, cannot be counted, so older " +
+        "quarters are lower bounds. The pipeline republishes no rule, only these counts.",
+      labels: {
+        legendAdded: "Added (date in the rule)",
+        legendDeprecated: "Deprecated (last edit)",
+        yAxis: "rules",
+        tipPartial: "partial quarter",
+      },
+    },
+
+    // --------------------------------------------- sigma.html · 2
+    sigma_coverage: {
+      num: "02",
+      kicker: "ATT&CK coverage over time",
+      source: "SigmaHQ/sigma rules (Detection Rule License 1.1) · MITRE ATT&CK® STIX bundles",
+      headline:
+        "The share of ATT&CK techniques with at least one Sigma rule has fallen since " +
+        "2023, from more than four in five to about three in four.",
+      caption:
+        "MITRE ATT&CK catalogues attacker behaviour as techniques, each with narrower " +
+        "sub-techniques. Rules name the techniques they detect in attack.tNNNN tags; a " +
+        "sub-technique tag counts for its parent technique. For each quarter end, the line " +
+        "shows the share of the techniques in today's ATT&CK enterprise matrix (v{version}) " +
+        "that had entered ATT&CK by then and were tagged by at least one rule dated on or " +
+        "before that day. The last point is the current quarter, up to {date}.",
+      statLabel: "ATT&CK techniques with at least one Sigma rule",
+      statWhen: "{covered} of {techniques} in ATT&CK v{version} · peak {peak_pct} in {peak_quarter}",
+      nodata: "No edition yet. The nightly pipeline fills this page from the SigmaHQ repository.",
+      methodology:
+        "The technique list is every active technique in the latest ATT&CK enterprise " +
+        "release, read from MITRE's STIX bundles (a JSON format for threat data): " +
+        "attack-pattern objects that are not sub-techniques and are neither revoked nor " +
+        "deprecated. A technique enters the chart on the release date of the first " +
+        "release that lists it. The earliest release in MITRE's index, v{first_version}, " +
+        "is dated {first_released}, so the line starts in that quarter. A technique counts " +
+        "as covered at a quarter end when a rule tagged with it or one of its " +
+        "sub-techniques is dated on or before that day and was not yet deprecated; a " +
+        "deprecated rule stops counting at its last edit. A tag naming a technique that " +
+        "ATT&CK has revoked follows MITRE's revoked-by link to the replacement. Tags are " +
+        "read as they stand today, so a tag added to an old rule counts from that rule's " +
+        "date. {untagged} of the {rules} rules carry no technique tag and cover nothing.",
+      labels: {
+        legendShare: "Share of techniques with a rule",
+        tipCovered: "{covered} of {techniques} techniques",
+        tipPartial: "partial quarter, up to {date}",
+      },
+    },
+
+    // --------------------------------------------- sigma.html · 3
+    sigma_lag: {
+      num: "03",
+      kicker: "Wait for a first rule",
+      source: "SigmaHQ/sigma rules (Detection Rule License 1.1) · MITRE ATT&CK® STIX bundles",
+      headline: "Most techniques ATT&CK added since 2023 have no Sigma rule.",
+      caption:
+        "Techniques that entered ATT&CK after its first indexed release, grouped by the " +
+        "year they entered and split by the date of the first rule that tags them. " +
+        "“Rule older than the technique” means a rule written for the behaviour before " +
+        "ATT&CK named it, or relabelled later, carries its tag. * Techniques that entered " +
+        "in {last_year} have had less than a year to gain a rule.",
+      statLabel: "Median wait from ATT&CK entry to a first Sigma rule",
+      statValue: "{n} days",
+      statValueAtLeast: "at least {n} days",
+      statWhen:
+        "{n} techniques that entered ATT&CK after v{first_version}, up to {through} · a rule " +
+        "older than the technique counts as 0 days",
+      note:
+        "Of the {early_n} techniques that entered from 2018 to 2022, {early_within} had a " +
+        "rule within a year of entry, counting older rules. Of the {recent_n} that entered " +
+        "from 2023 to {recent_to}, {recent_within} did.",
+      nodata: "No edition yet. The nightly pipeline fills this page from the SigmaHQ repository.",
+      methodology:
+        "Entry is the release date of the first ATT&CK enterprise release whose STIX bundle " +
+        "lists the technique as active. Techniques already in v{first_version} " +
+        "({first_released}), the earliest release in MITRE's index, existed before it and " +
+        "are left out. The wait is the number of days from entry to the date field of the " +
+        "first rule, active or deprecated, that tags the technique or one of its " +
+        "sub-techniques; a rule dated before entry counts as zero days. The median covers " +
+        "the {n} techniques that entered at least {follow_years} years before this edition, " +
+        "so each has had that long to gain a rule. Techniques still without a rule count " +
+        "as waiting longer than any measured wait. The median is exact when every one of " +
+        "them has waited longer than it, and is shown as a lower bound otherwise.",
+      labels: {
+        before_debut: "Rule older than the technique",
+        within_year: "First rule within a year",
+        later: "First rule after more than a year",
+        none: "No rule yet",
+        yAxis: "techniques",
+        tipTotal: "{n} techniques entered",
+      },
+    },
+
+    // --------------------------------------------- sigma.html · 4
+    sigma_tactics: {
+      num: "04",
+      kicker: "Coverage by tactic",
+      source: "SigmaHQ/sigma rules (Detection Rule License 1.1) · MITRE ATT&CK® STIX bundles",
+      headline:
+        "Reconnaissance and resource development, the two tactics ATT&CK lists before " +
+        "initial access, have among the lowest Sigma coverage.",
+      caption:
+        "ATT&CK groups techniques under tactics, the attacker's goal at each stage. For " +
+        "each tactic in ATT&CK v{version}, in ATT&CK's order, the share of its techniques " +
+        "tagged by at least one rule outside the deprecated folder today. A technique " +
+        "listed under two tactics counts in both.",
+      nodata: "No edition yet. The nightly pipeline fills this page from the SigmaHQ repository.",
+      methodology:
+        "Tactic membership comes from each technique's kill-chain phases in the latest " +
+        "ATT&CK enterprise bundle; tactic names and their order come from the bundle's " +
+        "matrix object. ATT&CK describes reconnaissance and resource development as " +
+        "activity before an intrusion, such as scanning a target or acquiring " +
+        "infrastructure.",
+      labels: {
+        xAxis: "% of techniques with a rule",
+        tipCovered: "{covered} of {techniques} techniques",
+      },
+    },
   },
 
   footer: {
@@ -4376,7 +4546,8 @@ export const editorial = {
       "fetched {feodo_fetched} · " +
       "SEC EDGAR 8-K incident filings: {sec_incidents} · " +
       "OSV exports: {osv_ghsa} reviewed advisories, {osv_mal} malicious-package " +
-      "reports fetched {osv_fetched}",
+      "reports fetched {osv_fetched} · " +
+      "SigmaHQ rules: {sigma_rules} at commit {sigma_commit} fetched {sigma_fetched}",
     // {sec_incidents} fill: counts once fetched; the pending line before the
     // first nightly EDGAR read (meta.sources.sec_incidents.status "empty").
     secFetched: "{filings_105} Item 1.05 / {filings_801} Item 8.01 fetched {fetched}",
@@ -4391,7 +4562,7 @@ export const editorial = {
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, GitHub, the OpenSSF, " +
-      "Google (OSV.dev) or the Internet Archive. Charts aggregate public data. The site " +
+      "Google (OSV.dev), the Internet Archive or SigmaHQ. Charts aggregate public data. The site " +
       "does not report individual CVEs as news and does not identify victims, with one " +
       "exception: the SEC Incident Filings page lists public companies' own SEC filings under the " +
       "filer's name as EDGAR records it. No attacker infrastructure is republished; C2 " +
@@ -4432,7 +4603,10 @@ export const editorial = {
       "attribution appreciated), " +
       "the GitHub Advisory Database (GitHub, CC-BY 4.0) and the OpenSSF malicious-packages " +
       "feed (Apache-2.0), both read from the OSV.dev ecosystem exports, " +
-      "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
+      "KEV catalog history reconstructed from Internet Archive Wayback Machine captures, " +
+      "and Sigma detection rules from the SigmaHQ repository (github.com/SigmaHQ/sigma, " +
+      "Detection Rule License 1.1; only counts derived from the rules' dates and ATT&CK " +
+      "tags are republished).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
     // deploy time by tools/make_carousels.py and ships only inside the Pages
@@ -4550,6 +4724,7 @@ export const editorial = {
       advisories: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
       malware: "OpenSSF malicious-packages via OSV.dev",
       tags: "CVE List V5 (MITRE)",
+      sigma: "SigmaHQ/sigma (Detection Rule License 1.1) · MITRE ATT&CK®",
     },
   },
 };

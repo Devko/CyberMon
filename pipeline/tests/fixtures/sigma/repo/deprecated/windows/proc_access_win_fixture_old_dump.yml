@@ -1,0 +1,17 @@
+title: Fixture Old Credential Dump
+id: 00000000-0000-4000-8000-000000000007
+status: deprecated # Deprecated in favor of the LSASS access fixture
+description: Fixture. Deprecated rule; covered T1003 from 2017-06-01 until 2019-08-01.
+author: CyberMon fixtures
+date: 2017-06-01
+modified: 2019-08-01
+tags:
+    - attack.t1003
+logsource:
+    category: process_access
+    product: windows
+detection:
+    selection:
+        TargetImage|endswith: '\lsass.exe'
+    condition: selection
+level: high

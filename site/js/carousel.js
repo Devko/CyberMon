@@ -104,6 +104,10 @@ import { render as renderCvss4 } from "./charts/cvss4.js";
 import { render as renderTagsTrend } from "./charts/tags_trend.js";
 import { render as renderTagsBoard } from "./charts/tags_board.js";
 import { render as renderTagsSeverity } from "./charts/tags_severity.js";
+import { render as renderSigmaChurn } from "./charts/sigma_churn.js";
+import { render as renderSigmaCoverage } from "./charts/sigma_coverage.js";
+import { render as renderSigmaLag } from "./charts/sigma_lag.js";
+import { render as renderSigmaTactics } from "./charts/sigma_tactics.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -331,6 +335,15 @@ const MODULES = {
       { id: "tags_trend", render: renderTagsTrend },
       { id: "tags_board", render: renderTagsBoard, table: true },
       { id: "tags_severity", render: renderTagsSeverity },
+    ],
+  },
+  sigma: {
+    file: "data/sigma_coverage.json",
+    sections: [
+      { id: "sigma_churn", render: renderSigmaChurn },
+      { id: "sigma_coverage", render: renderSigmaCoverage },
+      { id: "sigma_lag", render: renderSigmaLag },
+      { id: "sigma_tactics", render: renderSigmaTactics },
     ],
   },
 };

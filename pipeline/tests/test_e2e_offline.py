@@ -22,7 +22,8 @@ ALL_FILES = ["meta.json", "severity_inflation.json", "nine_eight_flood.json",
              "cna_roster.json", "time_to_poc.json", "botnet_weather.json",
              "sec_incidents.json",
              "observatory.json",
-             "advisory_gap.json", "registry_malware.json"]
+             "advisory_gap.json", "registry_malware.json",
+             "sigma_coverage.json"]
 
 
 def _load(out: Path, name: str) -> dict:
@@ -627,3 +628,97 @@ def test_osv_outage_carries_both_modules_forward(tmp_path, capsys,
     meta = _load(tmp_path, "meta.json")
     assert meta["sources"]["osv"]["stale"] is True
     assert meta["sources"]["osv"]["fetched_at"] == before["generated_at"]
+
+
+def test_offline_run_emits_detection_rules(tmp_path, capsys):
+    """Detection Rules from the fixture rule tree and the two fixture
+    ATT&CK bundles, joined to the fixture ATT&CK stage's release dates:
+    the unsupported/ and regression_data/ files are left out, the revoked
+    T1086 tag follows revoked-by to T1059, a sub-technique tag rolls up,
+    and a technique covered only by a deprecated rule is uncovered today."""
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    sigma = _load(tmp_path, "sigma_coverage.json")
+    contracts.validate("sigma_coverage.json", sigma)
+    cat = sigma["catalog"]
+    assert (cat["rules"], cat["active"], cat["deprecated"]) == (8, 6, 2)
+    assert cat["technique_tagged"] == 7 and cat["skipped"] == 0
+    assert sigma["coverage"]["techniques"] == 5
+    assert sigma["coverage"]["covered"] == 4
+    assert sigma["coverage"]["pct"] == 80.0
+    by_id = {t["id"]: t for t in sigma["techniques"]}
+    assert by_id["T1059"]["rules"] == 2           # T1086 tag + flow-list tag
+    assert by_id["T1059"]["first_rule"] == "2017-03-01"
+    assert by_id["T1595"]["rules"] == 0           # only a deprecated rule
+    assert by_id["T1595"]["first_rule"] == "2018-12-01"
+    assert [t["id"] for t in sigma["retired_techniques"]] == ["T1005",
+                                                              "T1086"]
+    assert sigma["attack"]["revoked_to"] == {"T1086": "T1059.001"}
+    lag = sigma["lag"]
+    assert (lag["n"], lag["before_debut"], lag["within_year"],
+            lag["later"], lag["none"]) == (3, 1, 1, 1, 0)
+    assert lag["median_days"] == 45 and lag["median_exact"] is True
+    years = {y["year"]: y for y in sigma["years"]}
+    assert years[2017]["added"] == 2 and years[2019]["deprecated"] == 1
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["sigma"] == {
+        "fetched_at": meta["generated_at"], "commit": "0" * 40,
+        "commit_date": meta["generated_at"][:10], "rules": 8,
+        "attack_version": "2.0"}
+
+
+def test_sigma_outage_carries_detection_rules_forward(tmp_path, capsys,
+                                                      monkeypatch):
+    """A SigmaHQ (or ATT&CK bundle) failure carries sigma_coverage.json
+    and its meta source forward stale; every other module still runs."""
+    from pipeline import sigma_metrics
+    from pipeline.fetch_sigma import SigmaFetchError
+
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    before = _load(tmp_path, "sigma_coverage.json")
+
+    def down(*args, **kwargs):
+        raise SigmaFetchError("ls-remote exited 128")
+
+    monkeypatch.setattr(sigma_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    carried = _load(tmp_path, "sigma_coverage.json")
+    assert carried["stale"] is True
+    contracts.validate("sigma_coverage.json", carried)
+    assert carried["coverage"] == before["coverage"]
+    meta = _load(tmp_path, "meta.json")
+    assert meta["sources"]["sigma"]["stale"] is True
+    assert meta["sources"]["sigma"]["fetched_at"] == before["generated_at"]
+
+
+def test_invalid_sigma_edition_degrades_instead_of_failing(tmp_path, capsys,
+                                                           monkeypatch):
+    """An upstream shape the builder did not foresee yields an edition that
+    fails its contract: the module carries last night's forward instead
+    of aborting the run (and every other module's refresh) at validation."""
+    from pipeline import sigma_metrics
+
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    real = sigma_metrics.run_stage
+
+    def broken(*args, **kwargs):
+        obj, src = real(*args, **kwargs)
+        obj["catalog"]["active"] += 1
+        return obj, src
+
+    monkeypatch.setattr(sigma_metrics, "run_stage", broken)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    assert _load(tmp_path, "sigma_coverage.json")["stale"] is True
+    assert _load(tmp_path, "meta.json")["sources"]["sigma"]["stale"] is True
+
+
+def test_sigma_outage_without_prior_edition_omits_it(tmp_path, capsys,
+                                                     monkeypatch):
+    from pipeline import sigma_metrics
+
+    def down(*args, **kwargs):
+        raise ValueError("sigma: only 3 rules parsed")
+
+    monkeypatch.setattr(sigma_metrics, "run_stage", down)
+    assert main(["--offline-fixtures", "--out", str(tmp_path)]) == 0
+    assert not (tmp_path / "sigma_coverage.json").exists()
+    assert "sigma" not in _load(tmp_path, "meta.json")["sources"]

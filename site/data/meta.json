@@ -113,6 +113,13 @@
    "ecosystems": 13,
    "downloaded": 9,
    "not_modified": 4
+  },
+  "sigma": {
+   "fetched_at": "2026-11-05T07:28:21Z",
+   "commit": "77145ed8fae37f06acefe3822317bd2a93e8a8c5",
+   "commit_date": "2026-11-05",
+   "rules": 3980,
+   "attack_version": "20.0"
   }
  }
 }

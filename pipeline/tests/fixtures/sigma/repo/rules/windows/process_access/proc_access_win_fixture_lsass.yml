@@ -1,0 +1,19 @@
+title: Fixture LSASS Access
+id: 00000000-0000-4000-8000-000000000002
+status: stable
+description: Fixture. A sub-technique tag that rolls up to T1003; a trailing comment on the date.
+author: CyberMon fixtures
+date: 2018-02-10 # first version
+modified: 2020-01-01
+tags:
+  - attack.credential-access
+  - attack.t1003.001
+  - attack.s0002
+logsource:
+    category: process_access
+    product: windows
+detection:
+    selection:
+        TargetImage|endswith: '\lsass.exe'
+    condition: selection
+level: high

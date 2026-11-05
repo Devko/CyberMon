@@ -1,0 +1,18 @@
+title: Fixture Old Scan Rule
+id: 00000000-0000-4000-8000-000000000008
+status: deprecated
+description: Fixture. The only rule for T1595 (debut v2.0); deprecated, so T1595 has a first rule but no rule today.
+author: CyberMon fixtures
+date: 2018-12-01
+modified: 2021-02-01
+tags:
+    - attack.reconnaissance
+    - attack.t1595.001
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        DestinationPort: 4444
+    condition: selection
+level: low

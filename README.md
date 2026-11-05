@@ -548,6 +548,27 @@ both modules. The nightly sends conditional GETs (ETag / Last-Modified),
 downloads only the changed zips and keeps a compact summary. An OSV outage
 carries both modules forward, marked stale. Stage `pipeline/osv_metrics.py`.
 
+### 28 · Detection Rules — [sigma.html](https://devko.github.io/CyberMon/sigma.html)
+
+*The share of ATT&CK techniques with at least one Sigma rule has fallen since 2023, from more than four in five to about three in four.*
+
+Sigma detection rules in SigmaHQ's public repository (Detection Rule
+License 1.1), joined to the ATT&CK enterprise release list and dates the
+ATT&CK Releases stage publishes. Four charts: rules added (by the `date`
+written in each rule) and deprecated (by the last edit of rules in
+`deprecated/`) per quarter; the share of today's ATT&CK techniques that
+had entered ATT&CK and carried at least one rule at each quarter end
+(sub-technique tags rolled up to the parent, revoked ids followed to their
+replacement); how long techniques new to ATT&CK waited for a first rule,
+with the median over those followed for two years; and coverage by
+tactic. Rule dates are the authors' own, not commit dates, so every date
+is approximate. Each night costs one `git ls-remote`; a shallow clone
+(~10 MB) happens only when the head moved, and each ATT&CK release's
+bundle is read once. A SigmaHQ or ATT&CK outage carries the module forward,
+marked stale. Only counts and ATT&CK ids are published, never rules.
+Fetcher `pipeline/fetch_sigma.py`, technique timeline
+`pipeline/attack_techniques.py`, stage `pipeline/sigma_metrics.py`.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
 
 *Every published CVE as one point in a 3D view.*
@@ -683,6 +704,7 @@ browser checks on every push and pull request, and deploys on pushes to main
 | [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template; the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
 | [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS, snapshotted nightly for Botnet C2 Servers; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 | [OSV.dev ecosystem exports](https://google.github.io/osv.dev/data/#data-dumps) (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`) | GitHub-reviewed advisories (GHSA ids: publication date, aliases, GitHub severity, withdrawn flag) and OpenSSF malicious-packages reports (MAL ids: publication date, withdrawn flag, contributing sources); aggregates only, no package names republished | GitHub Advisory Database: [CC-BY 4.0](https://github.com/github/advisory-database/blob/main/LICENSE.md); OpenSSF malicious-packages: [Apache-2.0](https://github.com/ossf/malicious-packages/blob/main/LICENSE); both credited in the site footer. No key |
+| [SigmaHQ/sigma](https://github.com/SigmaHQ/sigma) (SigmaHQ) | Sigma detection rules, read over the git protocol (`git ls-remote`, then a depth-1 clone only when the head moved): each rule's `date`, `modified`, `status` and `attack.tNNNN` tags under `rules*/` and `deprecated/`; only counts and ATT&CK ids are republished, never rules, titles or authors | [Detection Rule License (DRL) 1.1](https://github.com/SigmaHQ/Detection-Rule-License) (use, copy, publish and distribute permitted); SigmaHQ and the DRL credited on the page and in the site footer. No key |
 
 ## State and history
 
@@ -702,6 +724,7 @@ Losing a file never changes data already published; the table gives the cost.
 | `naming_state.json` | Threat Group Aliases | Rebuilt from `naming.json`, which is what CI does every night |
 | `poc/` | Time to PoC | Same-day cache only |
 | `kev_wayback/` | KEV Changelog backfill | Local only; CI never uses it |
+| `sigma_state.json` | Detection Rules | Kept by `actions/cache` in CI. The rules cost one shallow clone of SigmaHQ/sigma (~10 MB); the ATT&CK technique timeline is rebuilt from `sigma_coverage.json`, so the ~40 bundles are never re-read |
 
 **NVD sync.** The NVD stage keeps a per-CVE status map. Nightly runs fetch
 only records modified since the last sync, which takes seconds. A full
