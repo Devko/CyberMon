@@ -82,6 +82,7 @@ BY_SOURCE = {
     "registry_malware.json": "osv",
     "support_windows.json": "eol",
     "attack_atlas.json": "atlas",
+    "alias_graph.json": "naming",
 }
 
 # A degraded module may be carried forward for a few nights while an

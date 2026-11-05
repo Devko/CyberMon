@@ -99,6 +99,11 @@ jobs:
       # link at 390 px.
       - name: Check Claims Ledger interactions
         run: python tools/ledger_smoke.py
+      # Searches the group named by the most schemes and an alias from the
+      # committed alias_graph.json; checks hover, legend, table, keyboard and
+      # the #actor= deep link at 390 px.
+      - name: Check Alias Graph interactions
+        run: python tools/alias_smoke.py
 
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts

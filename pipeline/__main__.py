@@ -753,6 +753,10 @@ def run(args: argparse.Namespace) -> int:
                                  generated_at, atlas_failure)
         if carried is not None:
             outputs[attack_atlas.OUTPUT_NAME] = carried
+    # The Alias Graph (instrument): the same board, each name classified
+    # by the versioned rule table in naming_schemes. No fetch, no state.
+    outputs["alias_graph.json"] = naming_metrics.build_alias_graph(
+        naming_obj, generated_at)
     epss_report, epss_history_source = epss_report_metrics.run_stage(
         args.out, args.cache_dir, generated_at,
         kev_entries=kev.entries,

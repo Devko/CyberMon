@@ -249,6 +249,7 @@ const INSTRUMENT_LINKS = [
   ["observatory", "observatory.html", editorial.ui.navObservatory],
   ["atlas", "atlas.html", editorial.ui.navAtlas],
   ["ledger", "ledger.html", editorial.ui.navLedger],
+  ["alias", "alias.html", editorial.ui.navAlias],
 ];
 
 // Grouped nav. Phones: one row per group (label over its tabs) inside a

@@ -1,13 +1,45 @@
 /* ============================================================================
    CyberMon — alias.html-only styles (The Alias Graph instrument).
-   Rides css/field.css for the instrument shell; this file only adds the
-   pinned actor panel's name lists. No new colours.
+   Rides css/field.css for the instrument shell (bar, toolbar, rail, stage,
+   tooltip, table overlay); this file adds the canvas, the scheme legend, the
+   pinned group's name lists and the table's name column. No new colours: the
+   scheme dots take their colours from js/alias.js, which reuses the Field's
+   categorical order.
    ========================================================================== */
 
-#a-canvas { cursor: grab; touch-action: none; }
-#a-canvas.dragging { cursor: grabbing; }
+#a-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none; /* the page handles drag, pinch and wheel itself */
+}
 
-.alias-panel .sel-head b { font-size: 20px; }
+#a-canvas.dragging { cursor: grabbing; }
+#a-controls-toggle { display: none; }
+
+/* ---------------------------------------------------------------- legend -- */
+
+.alias-legend button {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  align-items: center;
+}
+
+.alias-legend i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.alias-legend em { font-style: normal; color: var(--muted); font-variant-numeric: tabular-nums; }
+.alias-legend button:disabled { cursor: default; opacity: 0.5; }
+
+/* --------------------------------------------------------- pinned panel -- */
+
+.alias-panel .sel-head b { font-size: 20px; overflow-wrap: anywhere; }
 
 .alias-panel .scheme {
   display: grid;
@@ -25,6 +57,8 @@
   margin-top: 4px;
 }
 
+.alias-panel .scheme i.none { border: 1px solid var(--muted); }
+
 .alias-panel .scheme b {
   display: block;
   font-weight: 500;
@@ -34,7 +68,36 @@
   color: var(--muted);
 }
 
-.alias-panel .scheme span { display: block; color: var(--ink); }
+.alias-panel .scheme span { display: block; color: var(--ink); overflow-wrap: anywhere; }
 
 .alias-panel .canon { color: var(--muted); font-size: 11.5px; margin: 0 0 4px; }
-.alias-panel .canon a { color: var(--ink); }
+
+/* ----------------------------------------------------------------- table -- */
+
+.alias-results table { min-width: 560px; }
+.alias-results td.names span { display: block; }
+.alias-results td.names b { font-weight: 500; color: var(--muted); }
+.alias-results tr.is-pinned td:first-child button { border-color: var(--accent); }
+.alias-results td { vertical-align: top; }
+.alias-results #a-table-summary { margin: 10px 0; color: var(--muted); }
+
+#a-canvas:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* ---------------------------------------------------------------- narrow -- */
+
+@media (max-width: 860px) {
+  #a-controls-toggle { display: block; }
+}
+
+/* A phone wraps the name lists instead of scrolling the table sideways. */
+@media (max-width: 600px) {
+  .alias-results { padding: 12px; }
+  .alias-results table { min-width: 0; }
+  .alias-results td, .alias-results th { padding: 6px 4px; }
+  .alias-results td.names { overflow-wrap: anywhere; }
+  .alias-results td:first-child { min-width: 96px; }
+  .alias-results td:first-child button { overflow-wrap: break-word; text-align: left; }
+}

@@ -3392,3 +3392,53 @@ only when none has a share), or is null. `summary.near` counts claims
 whose tightest share is under `near_share`. Numbers are rounded to four
 decimals. One line per page, section and claim keeps nightly diffs
 readable; about 125 KB for 262 claims.
+
+## site/data/alias_graph.json  (The Alias Graph instrument)
+
+```json
+{
+  "generated_at": "...", "version": "20.0", "released": "2026-10-13",
+  "rules_version": 1,
+  "schemes": [
+    {"id": "microsoft", "label": "Microsoft", "doc": "https://learn.microsoft.com/...",
+     "forms": "adjective + weather family (Forest Blizzard, ...); Storm-NNNN; ...",
+     "actors": 52, "names": 98},
+    "... the rule table's ten schemes, in table order ..."
+  ],
+  "exceptions": [{"name": "fox kitten", "scheme": "crowdstrike",
+                  "source": "ClearSky, Fox Kitten Campaign (2020)"}],
+  "coverage": {"names": 539, "classified": 297, "no_rule": 238,
+               "ambiguous": 1, "exception": 3},
+  "actors": [
+    {"name": "APT28", "schemes": ["microsoft", "crowdstrike", "mandiant", "secureworks"],
+     "names": [{"name": "APT28", "status": "classified", "scheme": "mandiant"},
+               {"name": "SNAKEMACKEREL", "status": "no_rule", "scheme": null},
+               "..."]},
+    {"name": "VOID MANTICORE", "schemes": ["microsoft", "crowdstrike", "secureworks"],
+     "names": [{"name": "VOID MANTICORE", "status": "ambiguous", "scheme": null,
+                "candidates": ["trendmicro", "checkpoint"]}, "..."]}
+  ],
+  "headline": {"actors": 109, "placed": 90, "two_plus": 62, "three_plus": 40,
+               "max_schemes": 8}
+}
+```
+
+Built by `naming_metrics.build_alias_graph` in the Threat Group Aliases
+stage, from the same board as `naming.json` (ATT&CK groups with at least
+one alias, in board order). No fetch, no state. Each group's ATT&CK name
+(`names[0]`) and each alias is classified by the versioned rule table in
+`pipeline/naming_schemes.py`: `classified` (the name has the documented
+form of exactly one scheme), `no_rule`, `ambiguous` (the form of two or
+more schemes; `candidates` lists them) or `exception` (a scheme's form, but
+a cited publication shows another organisation coined it; `candidates`
+names that scheme). `actors[].schemes` lists the schemes of a group's
+classified names in table order; empty means the page tables the group
+but cannot place it. `schemes[].actors` / `names` count groups and
+classified names per scheme.
+
+The validator (`pipeline/naming_contracts.py`) re-classifies every name
+with today's table and fails on any difference, requires `rules_version`,
+the scheme list (ids, labels, documentation links, forms) and
+`exceptions` to equal the table, and reconciles the per-scheme counts,
+`coverage` and `headline` with the names shipped. `headline` is null only
+when the board is empty. About 65 KB at `indent=1`.

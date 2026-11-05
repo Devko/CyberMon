@@ -31,8 +31,9 @@
 //   - developer error and console messages, and code comments;
 //   - the HTML shells (site/*.html): <title>, meta tags and <noscript> text;
 //   - the instruments, the Field (field.js), the Mutation Observatory
-//     (observatory.js), the Adversary Atlas (atlas.js) and the Claims Ledger
-//     (ledger.js), which keep their own copy in their own files.
+//     (observatory.js), the Adversary Atlas (atlas.js), the Claims Ledger
+//     (ledger.js) and the Alias Graph (alias.js, alias.html), which keep
+//     their own copy in their own files.
 //
 // Templates use {placeholders}; values are filled from site/data/*.json at
 // render time so the copy never carries stale numbers. tpl() below fills
@@ -209,6 +210,19 @@ export const editorial = {
             "result. Where the test records it, the ledger also gives the measured value, " +
             "the bound it is held to and the margin left. Sort by margin to see the claims " +
             "closest to failing. Rebuilt nightly with the data.",
+        },
+        {
+          id: "alias",
+          href: "alias.html",
+          num: "◎",
+          label: "Alias Graph",
+          headline: "ATT&CK threat groups placed between the vendor naming schemes their names follow.",
+          blurb:
+            "Each name in a group's MITRE ATT&CK entry is tested against the documented " +
+            "naming rules of vendors such as Microsoft (weather names) and CrowdStrike " +
+            "(animals). Hover or search a group to see its names by " +
+            "scheme, or list the groups as a table; the page address keeps the selection. " +
+            "Rebuilt nightly with Threat Group Aliases.",
         },
       ],
     },
@@ -628,6 +642,7 @@ export const editorial = {
     navField: "The Field →",
     navObservatory: "Observatory →",
     navAtlas: "Atlas →",
+    navAlias: "Alias Graph →",
     navInstruments: "Instruments",
     navLedger: "Claims Ledger →",
     // aria-label of the masthead wordmark, which links home on module pages.

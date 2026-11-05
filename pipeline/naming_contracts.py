@@ -1,4 +1,5 @@
-"""Contract for the naming.json output (Threat-actor naming chaos).
+"""Contracts for the naming.json output (Threat Group Aliases) and the
+alias_graph.json output built from it (the Alias Graph instrument).
 
 Same philosophy as pipeline/contracts.py — hand-rolled stdlib validators
 that fail loudly — kept in its own module so the naming stage lands without
@@ -13,6 +14,7 @@ from __future__ import annotations
 import re
 from typing import Any, Callable
 
+from . import naming_schemes as ns
 from .contracts import (DATE_RE, _check_generated_at, _check_int, _check_list,
                         _check_sorted, _check_str, _fail, _get)
 
@@ -92,8 +94,104 @@ def _validate_naming(obj: Any) -> None:
               "cannot be smaller than groups_with_aliases")
 
 
+# ---------------------------------------------------------- alias_graph.json
+
+def _validate_alias_graph(obj: Any) -> None:
+    """The Alias Graph's data: every name classified by the current rule
+    table, and every count reconciled with the names actually shipped."""
+    root = "alias_graph"
+    _check_generated_at(obj, root)
+    _check_str(_get(obj, "version", root), f"{root}.version", VERSION_RE)
+    _check_str(_get(obj, "released", root), f"{root}.released", DATE_RE)
+    if _get(obj, "rules_version", root) != ns.RULES_VERSION:
+        _fail(f"{root}.rules_version",
+              f"must equal naming_schemes.RULES_VERSION ({ns.RULES_VERSION})")
+
+    # schemes: the rule table, in table order, with its own counts.
+    schemes = _check_list(_get(obj, "schemes", root), f"{root}.schemes")
+    if [s.get("id") if isinstance(s, dict) else None for s in schemes] \
+            != list(ns.SCHEME_IDS):
+        _fail(f"{root}.schemes", "must list the rule table's schemes in order")
+    for i, s in enumerate(schemes):
+        path = f"{root}.schemes[{i}]"
+        spec = ns.SCHEME_BY_ID[s["id"]]
+        for key in ("label", "doc", "forms"):
+            if _get(s, key, path) != getattr(spec, key):
+                _fail(f"{path}.{key}", "must equal the rule table's value")
+        _check_int(_get(s, "actors", path), f"{path}.actors")
+        _check_int(_get(s, "names", path), f"{path}.names")
+
+    exceptions = [{"name": name, "scheme": scheme, "source": source}
+                  for name, (scheme, source) in sorted(ns.EXCEPTIONS.items())]
+    if _get(obj, "exceptions", root) != exceptions:
+        _fail(f"{root}.exceptions", "must equal the rule table's exceptions")
+
+    actors = _check_list(_get(obj, "actors", root), f"{root}.actors")
+    tally = dict.fromkeys(ns.STATUSES, 0)
+    per_actors = dict.fromkeys(ns.SCHEME_IDS, 0)
+    per_names = dict.fromkeys(ns.SCHEME_IDS, 0)
+    seen: set[str] = set()
+    for i, a in enumerate(actors):
+        path = f"{root}.actors[{i}]"
+        name = _get(a, "name", path)
+        _check_str(name, f"{path}.name")
+        if name in seen:
+            _fail(f"{path}.name", f"duplicate actor {name!r}")
+        seen.add(name)
+        names = _check_list(_get(a, "names", path), f"{path}.names")
+        if len(names) < 2:
+            _fail(f"{path}.names", "needs the ATT&CK name and an alias")
+        hit: set[str] = set()
+        for j, n in enumerate(names):
+            npath = f"{path}.names[{j}]"
+            _check_str(_get(n, "name", npath), f"{npath}.name")
+            # Recomputed, not trusted: the shipped label must be what the
+            # versioned rule table says today.
+            c = ns.classify(n["name"])
+            if _get(n, "status", npath) != c.status \
+                    or _get(n, "scheme", npath) != c.scheme:
+                _fail(npath, f"{n['name']!r} classifies as "
+                             f"{c.status}/{c.scheme}, not "
+                             f"{n['status']}/{n['scheme']}")
+            if list(n.get("candidates", [])) != list(c.candidates):
+                _fail(f"{npath}.candidates", "must list the matching schemes")
+            tally[c.status] += 1
+            if c.scheme is not None:
+                per_names[c.scheme] += 1
+                hit.add(c.scheme)
+        if names[0]["name"] != name:
+            _fail(f"{path}.names[0]", "must be the actor's ATT&CK name")
+        if _get(a, "schemes", path) != [s for s in ns.SCHEME_IDS if s in hit]:
+            _fail(f"{path}.schemes",
+                  "must list the schemes of its classified names, in order")
+        for s in hit:
+            per_actors[s] += 1
+    for s in schemes:
+        if s["actors"] != per_actors[s["id"]] or s["names"] != per_names[s["id"]]:
+            _fail(f"{root}.schemes[{s['id']}]",
+                  "actors/names must count the classified names shipped")
+
+    coverage = _get(obj, "coverage", root)
+    expected = {"names": sum(tally.values()), **tally}
+    if coverage != expected:
+        _fail(f"{root}.coverage", f"must equal {expected}, got {coverage}")
+
+    headline = _get(obj, "headline", root)
+    if not actors:
+        if headline is not None:
+            _fail(f"{root}.headline", "must be null when actors is empty")
+        return
+    k = [len(a["schemes"]) for a in actors]
+    expected_h = {"actors": len(actors), "placed": sum(n >= 1 for n in k),
+                  "two_plus": sum(n >= 2 for n in k),
+                  "three_plus": sum(n >= 3 for n in k), "max_schemes": max(k)}
+    if headline != expected_h:
+        _fail(f"{root}.headline", f"must equal {expected_h}, got {headline}")
+
+
 VALIDATORS: dict[str, Callable[[Any], None]] = {
     "naming.json": _validate_naming,
+    "alias_graph.json": _validate_alias_graph,
 }
 
 
