@@ -13910,6 +13910,17 @@
    "ransom": "Unknown",
    "vendor": "Synacor"
   },
+  "CVE-2024-27834": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-04",
+   "desc": "c79da8ca3299",
+   "due": "2026-11-18",
+   "name": "Apple Multiple Products Improper Authentication Vulnerability",
+   "notes": "a4639a02c193",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Apple"
+  },
   "CVE-2024-28986": {
    "action": "af6aa6680722",
    "added": "2024-08-15",
@@ -19444,7 +19455,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-04",
+ "last_observed": "2026-11-05",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

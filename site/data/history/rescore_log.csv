@@ -5756,3 +5756,14 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-11-04,CVE-2026-77879,VulnCheck,rescore,v4.0,8.5,v4.0,8.4
 2026-11-04,CVE-2026-77880,VulnCheck,rescore,v4.0,8.6,v4.0,8.5
 2026-11-04,CVE-2026-77881,VulnCheck,rescore,v4.0,6.9,v4.0,6.8
+2026-11-05,CVE-2026-0637,WSO2,rescore,v3.1,4.4,v3.1,5.4
+2026-11-05,CVE-2026-102711,eclipse,rescore,v4.0,5.6,v4.0,6.9
+2026-11-05,CVE-2026-102712,eclipse,rescore,v4.0,8.8,v4.0,6.3
+2026-11-05,CVE-2026-102713,eclipse,rescore,v4.0,8.8,v4.0,8.3
+2026-11-05,CVE-2026-102723,eclipse,rescore,v4.0,6.0,v4.0,7.1
+2026-11-05,CVE-2026-102724,eclipse,rescore,v4.0,6.0,v4.0,7.1
+2026-11-05,CVE-2026-102725,eclipse,rescore,v4.0,6.0,v4.0,7.1
+2026-11-05,CVE-2026-102726,eclipse,rescore,v4.0,6.0,v4.0,7.1
+2026-11-05,CVE-2026-102728,eclipse,first_score,,,v4.0,6.3
+2026-11-05,CVE-2026-10642,zephyr,rescore,v3.1,4.6,v3.1,6.5
+2026-11-05,CVE-2026-106465,eclipse,rescore,v4.0,8.7,v4.0,6.9

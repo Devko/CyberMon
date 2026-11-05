@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-04T09:49:50Z",
+ "generated_at": "2026-11-05T07:56:40Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -9128,6 +9128,11 @@
       "month": "2026-09",
       "n": 1127,
       "index": 88.7
+     },
+     {
+      "month": "2026-10",
+      "n": 478,
+      "index": 37.6
      }
     ],
     "hn": [
@@ -10320,7 +10325,12 @@
     ]
    },
    "yoy": {
-    "gdelt": null,
+    "gdelt": {
+     "latest_month": "2026-10",
+     "pct_change": 91.9,
+     "n_latest_12m": 10429,
+     "n_prior_12m": 5436
+    },
     "hn": {
      "latest_month": "2026-10",
      "pct_change": 242.3,
@@ -10346,7 +10356,12 @@
      "n_prior_12m": 193
     }
    },
-   "divergence": null
+   "divergence": {
+    "gdelt_index_avg3m": 75.1,
+    "arxiv_index_avg3m": 59.3,
+    "research_vs_media_index": -15.8,
+    "direction": "media_leads"
+   }
   },
   {
    "id": "agentic_ai",

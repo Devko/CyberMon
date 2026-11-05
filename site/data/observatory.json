@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-04T09:49:50Z",
+ "generated_at": "2026-11-05T07:56:40Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-11-04",
+ "last_observed": "2026-11-05",
  "missed_nights": [
   "2026-08-02",
   "2026-08-28",
@@ -46,16 +46,16 @@
    "first_observed": "2021-12-23",
    "capture_until": "2026-06-30",
    "nightly_from": "2026-07-11",
-   "events": 4414
+   "events": 4415
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5757
+   "events": 5768
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 91,
-   "nights": 101,
+   "events": 92,
+   "nights": 102,
    "excluded_reset": 0,
    "excluded_anomaly": 10,
    "excluded": [
@@ -83,19 +83,19 @@
   }
  },
  "counts": {
-  "kev_added": 1465,
+  "kev_added": 1466,
   "kev_removed": 9,
   "kev_flag": 317,
   "kev_due": 22,
   "kev_field": 785,
   "kev_text": 1816,
-  "rescore": 148,
+  "rescore": 158,
   "version_shift": 29,
-  "first_score": 5575,
+  "first_score": 5576,
   "score_removed": 5,
-  "epss_move": 91
+  "epss_move": 92
  },
- "cves": 7561,
+ "cves": 7572,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10358,6 +10358,19 @@
   "1777|CVE-2026-77878|6|v4.0 8.6->v4.0 8.5 (VulnCheck)|0",
   "1777|CVE-2026-77879|6|v4.0 8.5->v4.0 8.4 (VulnCheck)|0",
   "1777|CVE-2026-77880|6|v4.0 8.6->v4.0 8.5 (VulnCheck)|0",
-  "1777|CVE-2026-77881|6|v4.0 6.9->v4.0 6.8 (VulnCheck)|0"
+  "1777|CVE-2026-77881|6|v4.0 6.9->v4.0 6.8 (VulnCheck)|0",
+  "1777|CVE-2026-102764|10|0.18950->0.77994|0",
+  "1778|CVE-2024-27834|0||0",
+  "1778|CVE-2026-0637|6|v3.1 4.4->v3.1 5.4 (WSO2)|0",
+  "1778|CVE-2026-102711|6|v4.0 5.6->v4.0 6.9 (eclipse)|0",
+  "1778|CVE-2026-102712|6|v4.0 8.8->v4.0 6.3 (eclipse)|0",
+  "1778|CVE-2026-102713|6|v4.0 8.8->v4.0 8.3 (eclipse)|0",
+  "1778|CVE-2026-102723|6|v4.0 6.0->v4.0 7.1 (eclipse)|0",
+  "1778|CVE-2026-102724|6|v4.0 6.0->v4.0 7.1 (eclipse)|0",
+  "1778|CVE-2026-102725|6|v4.0 6.0->v4.0 7.1 (eclipse)|0",
+  "1778|CVE-2026-102726|6|v4.0 6.0->v4.0 7.1 (eclipse)|0",
+  "1778|CVE-2026-10642|6|v3.1 4.6->v3.1 6.5 (zephyr)|0",
+  "1778|CVE-2026-106465|6|v4.0 8.7->v4.0 6.9 (eclipse)|0",
+  "1778|CVE-2026-102728|8|v4.0 6.3 (eclipse)|0"
  ]
 }

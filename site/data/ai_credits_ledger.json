@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-04T09:49:50Z",
+ "generated_at": "2026-11-05T07:56:40Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -20857,6 +20857,251 @@
     {
      "finder": "fluid",
      "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-102703",
+   "published": "2026-11-04",
+   "cna": "XEN",
+   "counts_for": [
+    "llm",
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "codeant",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-102704",
+   "published": "2026-11-04",
+   "cna": "XEN",
+   "counts_for": [
+    "llm",
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    },
+    {
+     "finder": "codeant",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-119776",
+   "published": "2026-11-04",
+   "cna": "NetDEF",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121745",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121746",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121747",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121748",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121749",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121750",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-121751",
+   "published": "2026-11-04",
+   "cna": "harborist",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-59267",
+   "published": "2026-11-04",
+   "cna": "apache",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-90624",
+   "published": "2026-11-04",
+   "cna": "apache",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-90626",
+   "published": "2026-11-04",
+   "cna": "apache",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-90628",
+   "published": "2026-11-04",
+   "cna": "apache",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-90629",
+   "published": "2026-11-04",
+   "cna": "apache",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
      "roles": [
       "finder"
      ]

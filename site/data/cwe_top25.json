@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-04T09:49:50Z",
+ "generated_at": "2026-11-05T07:56:40Z",
  "official_year": 2025,
  "official_years": [
   2023,
@@ -12,8 +12,8 @@
  },
  "window_years": 5,
  "min_n": 2000,
- "measured_total": 120195,
- "kev_total": 1552,
+ "measured_total": 120196,
+ "kev_total": 1553,
  "ranks": [
   {
    "cwe": "CWE-79",
@@ -56,7 +56,7 @@
    "name": "Out-of-bounds write",
    "official_rank": 5,
    "measured_rank": 5,
-   "measured_n": 3418,
+   "measured_n": 3419,
    "measured_share": 2.8,
    "kev_n": 128
   },
@@ -250,6 +250,6 @@
   "in_measured_top25": 22,
   "outside_measured_top25": 3,
   "in_kev": 24,
-  "kev_coverage_pct": 64.4
+  "kev_coverage_pct": 64.3
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-04T09:49:50Z",
+ "generated_at": "2026-11-05T07:56:40Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,7 +35,7 @@
   },
   {
    "year": 2026,
-   "total": 283,
+   "total": 284,
    "security": 51,
    "pct_security": 18.0
   }
@@ -63,12 +63,12 @@
   },
   {
    "vendor": "Apple",
-   "entries": 95,
-   "dated_entries": 95,
+   "entries": 96,
+   "dated_entries": 96,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-29",
+   "last_added": "2026-11-04",
    "median_gap_days": 0.0
   },
   {
@@ -579,13 +579,13 @@
    "pct_known": 35.7
   },
   "other": {
-   "total": 1546,
+   "total": 1547,
    "known": 282,
    "pct_known": 18.2
   }
  },
  "catalog": {
-  "total": 1767,
+  "total": 1768,
   "security": 221,
   "pct_security": 12.5,
   "classifier_version": 2,
