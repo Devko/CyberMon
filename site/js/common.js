@@ -274,7 +274,9 @@ function renderNav(activeId) {
   // line of groups and opens ONE group's pages beneath it — the current
   // page's group by default, none on the landing page, whose cards are the
   // directory. The rows are the same either way; CSS picks the layout.
-  const activeGroup = groups.find((g) => g.tabs.some((t) => t.id === activeId))?.id ?? null;
+  const onInstrument = INSTRUMENT_LINKS.some(([id]) => id === activeId);
+  const activeGroup = onInstrument ? "instruments"
+    : groups.find((g) => g.tabs.some((t) => t.id === activeId))?.id ?? null;
   const groupBar = el("div", "site-nav-row site-nav-groups");
   for (const tab of leading) groupBar.append(tabEl(tab));
   const buttons = new Map();
@@ -295,18 +297,27 @@ function renderNav(activeId) {
     buttons.set(g.id, btn);
     groupBar.append(btn);
   }
-  // Instruments (not modules, so not in editorial.nav): after the groups on
-  // desktop, their own row on phones.
-  const instrumentLinks = (first) => INSTRUMENT_LINKS.map(([id, href, label], i) => {
-    const a = link(href, label, "site-nav-tab" + (i === 0 && first ? ` ${first}` : "") +
-      (id === activeId ? " is-active" : ""), { sameTab: true });
-    if (id === activeId) a.setAttribute("aria-current", "page");
-    return a;
-  });
-  groupBar.append(...instrumentLinks("site-nav-field"));
+  // Instruments (not modules, so not in editorial.nav) are one more group:
+  // a button after the module groups on desktop, set off by a rule, whose
+  // row opens beneath it like theirs (open by default on an instrument
+  // page); their own labelled row on phones.
+  const ibtn = el("button", "site-nav-group-btn site-nav-field" + (onInstrument ? " is-current" : ""), editorial.ui.navInstruments);
+  ibtn.type = "button";
+  ibtn.setAttribute("aria-controls", "site-nav-row-instruments");
+  ibtn.addEventListener("click", () =>
+    showGroup(ibtn.getAttribute("aria-expanded") === "true" ? null : "instruments"));
+  buttons.set("instruments", ibtn);
+  groupBar.append(ibtn);
 
-  const instruments = el("div", "site-nav-row site-nav-row-instruments");
-  instruments.append(el("span", "site-nav-group-label", editorial.ui.navInstruments), ...instrumentLinks(null));
+  const instruments = el("div", "site-nav-row site-nav-group-row site-nav-row-instruments" + (onInstrument ? " is-active" : ""));
+  instruments.id = "site-nav-row-instruments";
+  instruments.append(el("span", "site-nav-group-label", editorial.ui.navInstruments),
+    ...INSTRUMENT_LINKS.map(([id, href, label]) => {
+      const a = link(href, label, "site-nav-tab" + (id === activeId ? " is-active" : ""), { sameTab: true });
+      if (id === activeId) a.setAttribute("aria-current", "page");
+      return a;
+    }));
+  rows.set("instruments", instruments);
   nav.append(groupBar, instruments);
 
   if (leading.length) {

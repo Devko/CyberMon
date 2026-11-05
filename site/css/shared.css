@@ -206,7 +206,6 @@ code {
 .site-nav-groups + .site-nav-row-instruments { border-top: none; }
 
 @media (min-width: 721px) {
-  .site-nav-row-instruments,
   .site-nav-row-lead,
   .site-nav-group-row:not(.is-shown) { display: none; }
   .site-nav-group-row .site-nav-group-label { display: none; }
