@@ -548,6 +548,40 @@ both modules. The nightly sends conditional GETs (ETag / Last-Modified),
 downloads only the changed zips and keeps a compact summary. An OSV outage
 carries both modules forward, marked stale. Stage `pipeline/osv_metrics.py`.
 
+### 31 · Machine-Readable Advisories — [csaf.html](https://devko.github.io/CyberMon/csaf.html)
+
+*Most documents in the listed CSAF feeds are VEX documents, and Red Hat publishes nearly all of them.*
+
+Security advisories published as CSAF (Common Security Advisory Framework,
+the OASIS JSON format) by the providers and publishers on the
+[BSI CSAF Lister](https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json),
+the lister csaf.io links to. That list is the universe: vendors that publish
+CSAF without being listed (Microsoft, Cisco and SUSE serve provider-metadata
+too) are not counted. Three sections:
+
+- each provider's documents split by type (VEX, security advisory, other),
+  with the listed sources that could not be counted and why (robots.txt,
+  HTTP 403, an empty feed);
+- documents per provider per year of first release (the CSAF year folder or
+  the ROLIE publication date), which for converted older advisories predates
+  the CSAF file;
+- the share of sampled documents that give every vulnerability a CVSS
+  vector, a CWE and a remediation, and that name a product in the product
+  tree, per provider and pooled by document type.
+
+Each night reads the lister, each provider-metadata.json and one document
+list per public distribution (`changes.csv`, or the ROLIE feed where no
+`changes.csv` sits beside it; TLP:WHITE/CLEAR only): about 60 requests and
+10–15 MB, mostly Red Hat's two `changes.csv` files and Siemens' feed. Document types and field completeness come from a fixed sample: in
+each distribution, the 30 documents whose file names have the lowest
+SHA-256. A sampled document is fetched once and its field summary cached in
+`.cache/csaf_state.json.gz`; it is fetched again only when its change time
+in `changes.csv` moves (at most 40 a night). robots.txt and crawl delays are
+obeyed. A lister outage carries the module forward stale; a single provider
+that fails keeps its last counts for up to 14 days. Only counts and
+field-presence shares are published, never document text. Fetcher
+`pipeline/fetch_csaf.py`, stage `pipeline/csaf_metrics.py`.
+
 ## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
 
 *Every published CVE as one point in a 3D view.*
@@ -683,6 +717,7 @@ browser checks on every push and pull request, and deploys on pushes to main
 | [Nuclei templates](https://github.com/projectdiscovery/nuclei-templates) (ProjectDiscovery) | The CVE template index (`cves.json`): which CVEs have a detection template; the index publishes no dates | [MIT](https://github.com/projectdiscovery/nuclei-templates/blob/main/LICENSE.md) (credited in the site footer) |
 | [abuse.ch Feodo Tracker](https://feodotracker.abuse.ch/) | Botnet C2 IP blocklist (`downloads/ipblocklist.json`): per-C2 status, malware family, first-seen date, country and AS, snapshotted nightly for Botnet C2 Servers; only aggregates are republished, never addresses | [CC0 per the blocklist page's Terms of Services](https://feodotracker.abuse.ch/blocklist/) ("commercial and non-commercial purpose without any limitations"); attribution appreciated. Public endpoint, no auth-key (verified 2026-07-21) |
 | [OSV.dev ecosystem exports](https://google.github.io/osv.dev/data/#data-dumps) (`osv-vulnerabilities.storage.googleapis.com/<ecosystem>/all.zip`) | GitHub-reviewed advisories (GHSA ids: publication date, aliases, GitHub severity, withdrawn flag) and OpenSSF malicious-packages reports (MAL ids: publication date, withdrawn flag, contributing sources); aggregates only, no package names republished | GitHub Advisory Database: [CC-BY 4.0](https://github.com/github/advisory-database/blob/main/LICENSE.md); OpenSSF malicious-packages: [Apache-2.0](https://github.com/ossf/malicious-packages/blob/main/LICENSE); both credited in the site footer. No key |
+| [BSI CSAF Lister](https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json) and the CSAF feeds of the providers it lists | The lister's provider and publisher list; each provider-metadata.json; one document list per public distribution (`changes.csv` or ROLIE feed, TLP:WHITE/CLEAR only); a fixed hash-ranked sample of documents, read for document category and the presence of CVSS vectors, CWEs, remediations and a product tree | The lister is published by the BSI "as is" for automated retrieval (CSAF 2.0, section 7); each provider's documents carry that provider's own terms (for example CC BY 4.0 at Red Hat, Siemens' advisory terms of use). Only counts and field-presence shares are republished, never document text; robots.txt and crawl delays are obeyed (credited in the site footer) |
 
 ## State and history
 
@@ -702,6 +737,7 @@ Losing a file never changes data already published; the table gives the cost.
 | `naming_state.json` | Threat Group Aliases | Rebuilt from `naming.json`, which is what CI does every night |
 | `poc/` | Time to PoC | Same-day cache only |
 | `kev_wayback/` | KEV Changelog backfill | Local only; CI never uses it |
+| `csaf_state.json.gz` | Machine-Readable Advisories | Cached in CI like the first six. One cold sample: up to 450 CSAF document fetches that night; a provider down that night has no earlier counts to carry |
 
 **NVD sync.** The NVD stage keeps a per-CVE status map. Nightly runs fetch
 only records modified since the last sync, which takes seconds. A full

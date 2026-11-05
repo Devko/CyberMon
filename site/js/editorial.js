@@ -135,6 +135,7 @@ export const editorial = {
     { id: "incidents", href: "incidents.html", label: "SEC Incident Filings", group: "industry" },
     { id: "advisories", href: "advisories.html", label: "Advisories Without a CVE", group: "machine" },
     { id: "malware", href: "malware.html", label: "Malicious Packages", group: "attackmap" },
+    { id: "csaf", href: "csaf.html", label: "Machine-Readable Advisories", group: "machine" },
   ],
 
   // ------------------------------------------------- index.html (landing)
@@ -526,6 +527,20 @@ export const editorial = {
           "Rebuilt nightly from OSV's ecosystem exports.",
         live: true,
       },
+      {
+        id: "csaf",
+        href: "csaf.html",
+        num: "31",
+        label: "Machine-Readable Advisories",
+        headline: "Most documents in the listed CSAF feeds are VEX documents, and Red Hat publishes nearly all of them.",
+        blurb:
+          "Security advisories published as CSAF, the OASIS JSON format, by the providers " +
+          "on the BSI CSAF Lister: documents per provider and year of release, the share " +
+          "that are VEX documents, and how often a sample of documents carries a CVSS " +
+          "vector, a CWE, a product tree and a remediation. Vendors that are not on the " +
+          "list are not counted. Rebuilt nightly from the providers' own feeds.",
+        live: true,
+      },
     ],
   },
 
@@ -670,6 +685,9 @@ export const editorial = {
     tags_trend: "tags_metrics.py",
     tags_board: "tags_metrics.py",
     tags_severity: "tags_metrics.py",
+    csaf_sources: "csaf_metrics.py",
+    csaf_years: "csaf_metrics.py",
+    csaf_fields: "csaf_metrics.py",
   },
 
   // Display names for OSV ecosystem ids (advisories.html, malware.html).
@@ -4353,6 +4371,146 @@ export const editorial = {
         tipOf: "{row} of {total}",
       },
     },
+
+    // --------------------------------------------- csaf.html · 1 (hero)
+    csaf_sources: {
+      num: "01",
+      kicker: "Document types",
+      source: "BSI CSAF Lister · the listed providers' CSAF feeds",
+      headline: "Most documents in the listed CSAF feeds are VEX documents, and Red Hat publishes nearly all of them.",
+      caption:
+        "CSAF (Common Security Advisory Framework) is the OASIS standard for publishing " +
+        "security advisories as JSON files. This page covers the {listed} providers and " +
+        "publishers on the BSI CSAF Lister, the list the standard's website csaf.io links " +
+        "to. Vendors that publish CSAF without being on the list are not counted. Each bar " +
+        "splits one provider's documents by type. A security advisory announces " +
+        "vulnerabilities and their fixes. A VEX (Vulnerability Exploitability eXchange) " +
+        "document states whether products are affected by a vulnerability. Other documents " +
+        "use the base profile or a category the provider defined. The number after each " +
+        "bar is the provider's document count; {top_name} publishes {top_share} of all " +
+        "{documents}.",
+      statLabel: "VEX documents, share of all listed documents",
+      statWhen: "{vex} of {documents} · {vex_top_share} of them from {vex_top_name}",
+      allRow: "All documents",
+      xAxis: "share of documents",
+      legend: {
+        vex: "VEX",
+        advisory: "Security advisory",
+        other: "Other",
+        unsampled: "Not sampled",
+      },
+      notCounted: "Listed but not counted: {list}.",
+      carried: "Not counted tonight, counts from an earlier night: {list}.",
+      statusLabels: {
+        robots: "robots.txt disallows the document host",
+        denied: "access refused, {detail}",
+        empty: "no documents listed",
+        error: "unreachable",
+      },
+      nodata: "No provider on the lister could be counted in this edition.",
+      // Display names for the lister's publisher names (the full name stays
+      // the data key). A name missing here is shown as the lister gives it.
+      shortNames: {
+        "Red Hat Product Security": "Red Hat",
+        "Bundesamt für Sicherheit in der Informationstechnik": "BSI",
+        "Siemens ProductCERT": "Siemens",
+        "Schneider Electric CPCERT": "Schneider Electric",
+        "ABB Product Security Incident Response Team (PSIRT)": "ABB",
+        "SICK PSIRT": "SICK",
+        "Stackable Product Security Team": "Stackable",
+        "Open-Xchange GmbH": "Open-Xchange",
+        "KUNBUS PSIRT": "KUNBUS",
+        "Intevation GmbH": "Intevation",
+        "IDS Innomic Schwingungsmesstechnik GmbH": "IDS Innomic",
+        "Huawei PSIRT": "Huawei",
+        "Hitachi Energy PSIRT": "Hitachi Energy",
+      },
+      methodology:
+        "Each night the pipeline reads the lister's aggregator.json at wid.cert-bund.de, " +
+        "each listed provider-metadata.json, and one list of documents per public " +
+        "distribution: the changes.csv of a CSAF directory, or for a ROLIE feed (a JSON " +
+        "list of documents) the changes.csv in the feed's folder if there is one and the " +
+        "feed otherwise. Only feeds labelled TLP:WHITE or TLP:CLEAR are read; these " +
+        "Traffic Light Protocol labels allow unrestricted sharing. A document listed twice " +
+        "counts once. Document types are estimated from a sample: in each distribution, " +
+        "the {k} documents whose file names have the lowest SHA-256 hash. A distribution's " +
+        "VEX count is its document count times the VEX share of its sample; a distribution " +
+        "with {k} or fewer documents is read in full. The pipeline obeys robots.txt and its " +
+        "crawl delays. A provider that fails on a night keeps its last counts for up to " +
+        "14 days and is marked; after that it shows as not counted.",
+      labels: {
+        tipDocs: "{n} documents",
+        tipSample: "type estimated from {n} sampled",
+        tipShare: "{label}: {n} ({pct})",
+      },
+    },
+
+    // --------------------------------------------- csaf.html · 2
+    csaf_years: {
+      num: "02",
+      kicker: "Documents per year",
+      source: "BSI CSAF Lister · the listed providers' CSAF feeds",
+      headline: "More documents in the listed feeds were first released in 2026 than in 2024 and 2025 combined.",
+      caption:
+        "Each provider's documents by the year the advisory was first released, {from} to " +
+        "{to}, with earlier years in the first column. The year comes from the CSAF year " +
+        "folder or the feed's publication date. It can predate the CSAF file, because " +
+        "providers have converted older advisories to CSAF. {top_name} accounts for " +
+        "{top_current} of the {current} documents dated {current_year}. Stronger shading " +
+        "means more documents; an empty cell means none.",
+      note: "{current_year}* is partial; its column fills as the year goes on.",
+      colSource: "Provider",
+      colBefore: "before {year}",
+      colTotal: "All years",
+      rowTotal: "All counted providers",
+      rowProviders: "Providers with a document",
+      nodata: "No documents were counted in this edition.",
+      methodology:
+        "A CSAF directory files each document under the year of its initial release date, " +
+        "and a ROLIE feed entry carries that date as its publication date; the counts here " +
+        "use one or the other. Documents whose path has no year folder are counted in the " +
+        "provider's total but not in any year ({undated} tonight). The lister records no " +
+        "date for when a provider joined it, so the table cannot show when providers " +
+        "adopted CSAF.",
+    },
+
+    // --------------------------------------------- csaf.html · 3
+    csaf_fields: {
+      num: "03",
+      kicker: "Field completeness",
+      source: "BSI CSAF Lister · the listed providers' CSAF feeds",
+      headline: "In the sample, security advisories carry a CVSS vector, a CWE and a remediation more often than VEX documents do.",
+      caption:
+        "For each provider, the estimated share of its documents that give every " +
+        "vulnerability a CVSS vector (the full severity-score string), a CWE (the weakness " +
+        "class) and a remediation, and that name at least one product in a product tree. " +
+        "The estimate rests on up to {k} sampled documents per feed or directory; the second " +
+        "column gives the number sampled. The bottom rows pool all {sample_n} sampled " +
+        "documents by type. CSAF's VEX profile does not require a CVSS vector or a CWE, and " +
+        "requires a remediation only for products marked affected.",
+      colSource: "Provider",
+      colSample: "Sampled",
+      cols: {
+        cvss: "CVSS vector",
+        cwe: "CWE",
+        product_tree: "Product tree",
+        remediation: "Remediation",
+      },
+      pooledLabel: "All sampled: {label}",
+      sampleOf: "{n} of {total}",
+      nodata: "No documents were sampled in this edition.",
+      methodology:
+        "A sampled document is fetched once and a summary of its fields is cached. It is " +
+        "fetched again when its change time in the list moves, at most {refresh} documents " +
+        "a night; the others keep their earlier summary until a later night. A document " +
+        "counts as having a CVSS vector, a CWE or a remediation only if every vulnerability " +
+        "entry in it has one; a document with no vulnerability entries has none of the " +
+        "three. A product tree counts if it names at least one product. A provider's share " +
+        "is the mean of the sample shares of its feeds and directories, weighted by their " +
+        "document counts. The pooled rows weight every sampled document equally, so " +
+        "providers with several feeds or directories weigh more. Only the presence of fields " +
+        "is read; no document text is republished.",
+    },
   },
 
   footer: {
@@ -4376,7 +4534,9 @@ export const editorial = {
       "fetched {feodo_fetched} · " +
       "SEC EDGAR 8-K incident filings: {sec_incidents} · " +
       "OSV exports: {osv_ghsa} reviewed advisories, {osv_mal} malicious-package " +
-      "reports fetched {osv_fetched}",
+      "reports fetched {osv_fetched} · " +
+      "BSI CSAF Lister: {csaf_listed} sources, {csaf_documents} CSAF documents " +
+      "listed, fetched {csaf_fetched}",
     // {sec_incidents} fill: counts once fetched; the pending line before the
     // first nightly EDGAR read (meta.sources.sec_incidents.status "empty").
     secFetched: "{filings_105} Item 1.05 / {filings_801} Item 8.01 fetched {fetched}",
@@ -4391,7 +4551,8 @@ export const editorial = {
       "MITRE, NVD/NIST, CISA, FIRST, GDELT, Y Combinator/Algolia, arXiv, the Wikimedia " +
       "Foundation, the U.S. Securities and Exchange Commission, Have I Been Pwned, " +
       "Ransomwhere, APNIC, OffSec, Rapid7, ProjectDiscovery, abuse.ch, GitHub, the OpenSSF, " +
-      "Google (OSV.dev) or the Internet Archive. Charts aggregate public data. The site " +
+      "Google (OSV.dev), the Internet Archive, the BSI or the CSAF providers the BSI " +
+      "lists. Charts aggregate public data. The site " +
       "does not report individual CVEs as news and does not identify victims, with one " +
       "exception: the SEC Incident Filings page lists public companies' own SEC filings under the " +
       "filer's name as EDGAR records it. No attacker infrastructure is republished; C2 " +
@@ -4432,7 +4593,10 @@ export const editorial = {
       "attribution appreciated), " +
       "the GitHub Advisory Database (GitHub, CC-BY 4.0) and the OpenSSF malicious-packages " +
       "feed (Apache-2.0), both read from the OSV.dev ecosystem exports, " +
-      "and KEV catalog history reconstructed from Internet Archive Wayback Machine captures.",
+      "KEV catalog history reconstructed from Internet Archive Wayback Machine captures, " +
+      "and the BSI CSAF Lister (Bundesamt für Sicherheit in der Informationstechnik, " +
+      "wid.cert-bund.de) with the CSAF feeds of the providers it lists (counted, not " +
+      "republished).",
     repoLabel: "Pipeline, methodology & issues → github.com/Devko/CyberMon",
     // Module pages only (the Overview has no carousel). The PDF is built at
     // deploy time by tools/make_carousels.py and ships only inside the Pages
@@ -4550,6 +4714,7 @@ export const editorial = {
       advisories: "GitHub Advisory Database (CC-BY 4.0) via OSV.dev",
       malware: "OpenSSF malicious-packages via OSV.dev",
       tags: "CVE List V5 (MITRE)",
+      csaf: "BSI CSAF Lister · providers' CSAF feeds",
     },
   },
 };

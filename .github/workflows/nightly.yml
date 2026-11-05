@@ -199,6 +199,19 @@ jobs:
           restore-keys: |
             osv-state-
 
+      # CSAF crawl state (Machine-Readable Advisories): the field summaries
+      # of the sampled CSAF documents, keyed by URL and change time, plus
+      # each provider's last good row for the 14-day carry-forward
+      # (under 10 KB gzipped). A miss costs one cold sample: up to 450 document
+      # fetches that night, after which the nightly is back to a few dozen.
+      - name: Restore CSAF crawl state
+        uses: actions/cache@v4
+        with:
+          path: .cache/csaf_state.json.gz
+          key: csaf-state-${{ github.run_id }}
+          restore-keys: |
+            csaf-state-
+
       # NOTE: the silent-rescores diff state deliberately has NO cache
       # entry here — it is committed at site/data/history/rescore_state.json
       # next to its append-only log (an actions/cache copy once restored a

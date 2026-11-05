@@ -113,6 +113,14 @@
    "ecosystems": 13,
    "downloaded": 9,
    "not_modified": 4
+  },
+  "csaf": {
+   "fetched_at": "2026-11-05T07:47:31Z",
+   "listed": 15,
+   "measured": 12,
+   "documents": 122714,
+   "requests": 57,
+   "docs_fetched": 1
   }
  }
 }

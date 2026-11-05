@@ -1,0 +1,38 @@
+{
+ "feed": {
+  "id": "fv-white",
+  "title": "white",
+  "entry": [
+   {
+    "id": "FV-1",
+    "title": "a",
+    "published": "2023-02-01T00:00:00Z",
+    "updated": "2023-02-01T00:00:00Z",
+    "content": {
+     "src": "https://feed.example.test/csaf/fv-1.json"
+    }
+   },
+   {
+    "id": "FV-2",
+    "title": "b",
+    "published": "2026-02-01T00:00:00Z",
+    "updated": "2026-03-01T00:00:00Z",
+    "link": [
+     {
+      "rel": "self",
+      "href": "https://feed.example.test/csaf/fv-2.json"
+     }
+    ]
+   },
+   {
+    "id": "FV-3",
+    "title": "c",
+    "published": "2026-06-01T00:00:00Z",
+    "updated": "2026-06-01T00:00:00Z",
+    "content": {
+     "src": "https://feed.example.test/csaf/fv-3.json"
+    }
+   }
+  ]
+ }
+}

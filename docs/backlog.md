@@ -950,7 +950,7 @@ rate-limited, paid, or legally delicate.
 - **Feasibility:** medium — date-quality is the risk; needs a defensible
   "first known" definition per chart footnote.
 
-### Advisory quality index
+### Advisory quality index — SHIPPED as module 31 (Machine-Readable Advisories)
 - **Thesis:** "Security advisories are press releases with CVE numbers.
   Machine-readable ones are still the exception."
 - **Signals:** CSAF adoption per vendor over time; share of advisories with
@@ -960,6 +960,26 @@ rate-limited, paid, or legally delicate.
   ingested — field-completeness stats need no new fetching at all).
 - **Feasibility:** medium; the cvelistV5-only version is **easy** and could
   ship as a chart inside CVE Ecosystem first.
+- **Shipped 2026-11-05** (`csaf.html`, `pipeline/fetch_csaf.py`,
+  `pipeline/csaf_metrics.py`). Universe: the BSI CSAF Lister
+  (`wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json`), the
+  lister csaf.io links to: 14 providers + 1 publisher on 2026-11-05. BSI's
+  aggregator (`aggregator.cert-bund.de`) mirrors 10 of them. Not listed but
+  serving provider-metadata: Microsoft, Cisco, SUSE (not counted). Probe
+  findings: CISA's provider-metadata answers 403 from the build network
+  (Akamai; the KEV feed on the same host answers 200); Huawei's document
+  host `securitybulletin.huawei.com` has `Disallow: /` and its carrier
+  folders answer 401; Hitachi Energy's mirrored feed is empty; Siemens
+  disallows `*.txt` (index.txt) in robots.txt and 403s `changes.csv`, so
+  its ROLIE feed (1.25 MB) is read; BSI's own feed is 48 MB but its
+  `changes.csv` is 0.9 MB. 12 of 15 counted, 122,714 documents (Red Hat
+  106,765: 31,282 advisories + 75,483 VEX). Every sampled document's year
+  folder matched its `initial_release_date`. A warm night is ~60
+  requests and 10–15 MB; a cold sample ~310 document fetches (~31 MB).
+- **Not done:** affected-version ranges (Red Hat lists fixed product
+  versions, not ranges, so a "ranges" column would measure style, not
+  completeness); listing dates (the lister keeps none — a nightly record
+  of the list could start later).
 
 ### OSS supply-chain concentration
 - **Thesis:** "The software everyone depends on is maintained by almost

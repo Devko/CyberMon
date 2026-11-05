@@ -1,0 +1,18 @@
+{
+ "feed": {
+  "id": "dv-white",
+  "title": "white",
+  "entry": [
+   {
+    "id": "DV-2026-0002",
+    "title": "x",
+    "published": "2026-10-01T00:00:00Z",
+    "updated": "2026-10-02T00:00:00Z",
+    "content": {
+     "src": "https://dir.example.test/.well-known/csaf/white/2026/dv-2026-0002.json",
+     "type": "application/json"
+    }
+   }
+  ]
+ }
+}

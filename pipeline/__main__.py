@@ -42,6 +42,7 @@ from typing import Iterator
 
 from . import field_export
 from . import cvss_v4_metrics, tags_metrics
+from . import csaf_metrics
 from . import (adp_metrics, ai_credits_metrics, ai_metrics, attack_metrics,
                botnet_metrics, breach_metrics, calendar_metrics, cna_roster,
                concentration_metrics, contracts, cwe_top25_data,
@@ -803,6 +804,23 @@ def run(args: argparse.Namespace) -> int:
                                      osv_failure)
             if carried is not None:
                 outputs[name] = carried
+
+    # Machine-Readable Advisories: the BSI CSAF Lister's providers, their
+    # document lists and a cached, hash-ranked sample of documents
+    # (.cache/csaf_state.json.gz). A lister outage carries the module
+    # forward stale; one provider's outage is absorbed inside the stage.
+    csaf_source = None
+    try:
+        csaf_obj, csaf_source = csaf_metrics.run_stage(
+            args.cache_dir, generated_at,
+            offline_fixtures=args.offline_fixtures)
+        outputs["csaf_adoption.json"] = csaf_obj
+    except (OSError, ValueError) as exc:
+        carried = _carry_forward(args.out, "csaf_adoption.json",
+                                 generated_at,
+                                 f"CSAF lister fetch failed ({exc!r})")
+        if carried is not None:
+            outputs["csaf_adoption.json"] = carried
     outputs["meta.json"] = metrics.build_meta(
         generated_at,
         cvelist_release=release, cve_count=agg.cve_count,
@@ -879,6 +897,12 @@ def run(args: argparse.Namespace) -> int:
         carried_osv = _carry_forward_source(args.out, "osv")
         if carried_osv is not None:
             outputs["meta.json"]["sources"]["osv"] = carried_osv
+    if csaf_source is not None:
+        outputs["meta.json"]["sources"]["csaf"] = csaf_source
+    elif "csaf_adoption.json" in outputs:
+        carried_csaf = _carry_forward_source(args.out, "csaf")
+        if carried_csaf is not None:
+            outputs["meta.json"]["sources"]["csaf"] = carried_csaf
 
     # ---- validate everything, then write ----------------------------------
     for name, obj in outputs.items():

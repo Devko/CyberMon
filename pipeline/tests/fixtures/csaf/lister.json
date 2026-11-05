@@ -1,0 +1,76 @@
+{
+ "aggregator": {
+  "category": "lister",
+  "name": "CSAF Lister (fixture)",
+  "namespace": "https://example.test"
+ },
+ "aggregator_version": "2.0",
+ "canonical_url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
+ "last_updated": "2026-11-05T06:30:43.673+00:00",
+ "csaf_providers": [
+  {
+   "metadata": {
+    "last_updated": "2025-01-01T00:00:00Z",
+    "publisher": {
+     "category": "vendor",
+     "name": "Directory Vendor PSIRT",
+     "namespace": "https://dir.example.test"
+    },
+    "role": "csaf_trusted_provider",
+    "url": "https://dir.example.test/.well-known/csaf/provider-metadata.json"
+   }
+  },
+  {
+   "metadata": {
+    "last_updated": "2025-01-01T00:00:00Z",
+    "publisher": {
+     "category": "vendor",
+     "name": "Feed Vendor CERT",
+     "namespace": "https://feed.example.test"
+    },
+    "role": "csaf_trusted_provider",
+    "url": "https://feed.example.test/.well-known/csaf/provider-metadata.json"
+   }
+  },
+  {
+   "metadata": {
+    "last_updated": "2025-01-01T00:00:00Z",
+    "publisher": {
+     "category": "vendor",
+     "name": "Robots Vendor PSIRT",
+     "namespace": "https://robots.example.test"
+    },
+    "role": "csaf_trusted_provider",
+    "url": "https://robots.example.test/.well-known/csaf/provider-metadata.json"
+   }
+  },
+  {
+   "metadata": {
+    "last_updated": "2025-01-01T00:00:00Z",
+    "publisher": {
+     "category": "coordinator",
+     "name": "Denied Coordinator",
+     "namespace": "https://denied.example.test"
+    },
+    "role": "csaf_trusted_provider",
+    "url": "https://denied.example.test/csaf/provider-metadata.json"
+   }
+  }
+ ],
+ "csaf_publishers": [
+  {
+   "metadata": {
+    "last_updated": "2025-01-01T00:00:00Z",
+    "publisher": {
+     "category": "vendor",
+     "name": "Empty Publisher",
+     "namespace": "https://empty.example.test"
+    },
+    "role": "csaf_publisher",
+    "url": "https://empty.example.test/csaf/provider-metadata.json"
+   },
+   "mirrors": [],
+   "update_interval": "best effort"
+  }
+ ]
+}

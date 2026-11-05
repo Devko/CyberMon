@@ -78,6 +78,7 @@ BY_SOURCE = {
     "sec_incidents.json": "sec_incidents",
     "advisory_gap.json": "osv",
     "registry_malware.json": "osv",
+    "csaf_adoption.json": "csaf",
 }
 
 # A degraded module may be carried forward for a few nights while an

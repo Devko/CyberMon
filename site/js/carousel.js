@@ -104,6 +104,9 @@ import { render as renderCvss4 } from "./charts/cvss4.js";
 import { render as renderTagsTrend } from "./charts/tags_trend.js";
 import { render as renderTagsBoard } from "./charts/tags_board.js";
 import { render as renderTagsSeverity } from "./charts/tags_severity.js";
+import { render as renderCsafSources } from "./charts/csaf_sources.js";
+import { render as renderCsafYears } from "./charts/csaf_years.js";
+import { render as renderCsafFields } from "./charts/csaf_fields.js";
 
 // Section lists per module — the same ids, files, and renderers as the page
 // scripts (cve.js, market.js, …), which cannot be imported here because they
@@ -331,6 +334,14 @@ const MODULES = {
       { id: "tags_trend", render: renderTagsTrend },
       { id: "tags_board", render: renderTagsBoard, table: true },
       { id: "tags_severity", render: renderTagsSeverity },
+    ],
+  },
+  csaf: {
+    file: "data/csaf_adoption.json",
+    sections: [
+      { id: "csaf_sources", render: renderCsafSources },
+      { id: "csaf_years", render: renderCsafYears, table: true },
+      { id: "csaf_fields", render: renderCsafFields, table: true },
     ],
   },
 };

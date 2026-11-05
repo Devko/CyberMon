@@ -408,6 +408,20 @@ def _validate_meta(obj: Any) -> None:
             _fail("meta.sources.osv",
                   "downloaded + not_modified must equal ecosystems")
 
+    # Optional (older committed meta files predate the module, and a lister
+    # outage with no previous edition omits it): the BSI CSAF Lister crawl
+    # behind Machine-Readable Advisories.
+    if "csaf" in src:
+        cs = src["csaf"]
+        _check_str(_get(cs, "fetched_at", "meta.sources.csaf"),
+                   "meta.sources.csaf.fetched_at", ISO_UTC_RE)
+        for k in ("listed", "measured", "documents", "requests",
+                  "docs_fetched"):
+            _check_int(_get(cs, k, "meta.sources.csaf"),
+                       f"meta.sources.csaf.{k}")
+        if cs["measured"] > cs["listed"]:
+            _fail("meta.sources.csaf.measured", "exceeds listed")
+
 
 # -------------------------------------------------- severity_inflation.json
 
@@ -792,3 +806,7 @@ VALIDATORS.update(osv_contracts.VALIDATORS)
 from . import tags_contracts  # noqa: E402
 
 VALIDATORS.update(tags_contracts.VALIDATORS)
+
+from . import csaf_contracts  # noqa: E402
+
+VALIDATORS.update(csaf_contracts.VALIDATORS)

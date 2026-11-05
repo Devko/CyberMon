@@ -1,0 +1,14 @@
+{
+ "distributions": [
+  {
+   "rolie": {
+    "feeds": [
+     {
+      "tlp_label": "WHITE",
+      "url": "https://empty.example.test/csaf/white/empty.json"
+     }
+    ]
+   }
+  }
+ ]
+}
