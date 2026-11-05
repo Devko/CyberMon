@@ -112,6 +112,8 @@ def check_two_weeks_or_more_since_2022(d: dict) -> None:
         f"'Since 2021 the median has been positive' vs "
         f"{sorted(recent.items())}")
     since_2022 = {y: m for y, m in recent.items() if y >= 2022}
+    for y, m in sorted(since_2022.items()):
+        claims_support.record(m, lo=14, unit="days", note=str(y))
     assert all(m >= 14 for m in since_2022.values()), (
         f"'since 2022 it has been two weeks or more' needs every judged "
         f"median since 2022 at 14 days or more; data says "
@@ -153,6 +155,8 @@ def check_about_half_kev_preempted(d: dict) -> None:
     # 2026-11-04.
     pct = d["kev_preempt"]["trend"]["pct_preempted"]
     n = d["kev_preempt"]["trend"]["with_poc_date"]
+    claims_support.record(pct, lo=40, hi=60, unit="%",
+                          note=f"of {n} listings with a dated exploit")
     assert 40 <= pct <= 60, (
         f"'about half of KEV listings with a dated exploit' claims 40-60%; "
         f"data says {pct}% (over {n} entries)"
@@ -252,6 +256,10 @@ def check_highest_for_critical(d: dict) -> None:
     others = {b: _coverage_pct(r) for b, r in rows.items() if b != "9.0-10.0"}
     if cov["unscored"]["total"]:
         others["unscored"] = _coverage_pct(cov["unscored"])
+    if others:
+        nxt = max(others, key=others.get)
+        claims_support.record(_coverage_pct(critical), lo=others[nxt],
+                              unit="%", note=f"critical vs {nxt}")
     assert _coverage_pct(critical) > max(others.values()), (
         f"'highest for critical-rated records' vs critical "
         f"{_coverage_pct(critical):.2f}% and {others}")

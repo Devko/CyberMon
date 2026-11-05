@@ -91,6 +91,9 @@ def check_more_than_tripled_since_v1(d: dict) -> None:
         f"v{h['first_version']} of {h['released_first']}")
     first = h["techniques_first"] + h["subtechniques_first"]
     latest = h["techniques_latest"] + h["subtechniques_latest"]
+    claims_support.record(latest, lo=3 * first, unit="entries",
+                          note=f"v{h.get('latest_version')} vs 3 × v1.0's "
+                               f"{first}")
     assert latest > 3 * first, (
         f"'more than three times as many techniques and sub-techniques as "
         f"v1.0' — v{h['latest_version']} has {latest} against {first} "
@@ -143,6 +146,9 @@ def check_catalog_multiples(d: dict) -> None:
         "2018"), (first["version"], first["released"])
     groups = latest["groups"] / first["groups"]
     software = latest["software"] / first["software"]
+    claims_support.record(groups, lo=2.5, hi=3.5, unit="× v1.0",
+                          note="groups")
+    claims_support.record(software, lo=4, unit="× v1.0", note="software")
     assert 2.5 <= groups <= 3.5, (
         f"'about three times as many groups' — v{latest['version']} has "
         f"{latest['groups']} against {first['groups']} ({groups:.2f}x)")

@@ -3338,3 +3338,57 @@ with `"stale": true`. Validator: `pipeline/attack_atlas_contracts.py`
 blocks and per-direction counts reconcile). `meta.sources.atlas`
 (`{fetched_at, version, node_count, edge_count}`, plus `stale: true` when
 carried) records the release.
+
+## site/data/claims_ledger.json  (Claims Ledger instrument)
+
+```json
+{
+"schema_version": 1,
+"generated_at": "2026-11-05T07:00:27Z",
+"edition": "2026-11-04T09:49:50Z",
+"near_share": 0.1,
+"repo_blob": "https://github.com/Devko/CyberMon/blob/main/",
+"summary": {"claims": 262, "pass": 262, "fail": 0, "skip": 0,
+            "measured": 130, "near": 35, "exact": 2, "unlocated": 0},
+"pages": {"home": {"label": "Overview", "href": "index.html"}, "...": {}},
+"sections": {
+"c2_weather": {"page": "c2", "num": "01", "label": "C2 servers over time",
+               "href": "c2.html#s-c2_weather"},
+"card:c2": {"page": "home", "num": "20", "label": "Botnet C2 Servers card",
+            "href": "index.html"}},
+"claims": [
+{"quote": "Tonight's blocklist holds a handful of C2 servers.",
+ "where": [{"section": "c2_today", "field": "headline", "line": 3244}],
+ "file": "botnet_weather.json", "suite": "test_claims_c2",
+ "guard": "check_a_handful_listed", "line": 121, "status": "pass",
+ "measures": [{"value": 5, "lo": null, "hi": 10, "unit": "servers",
+               "margin": 5, "share": 1, "side": "hi"}],
+ "tightest": 0}]
+}
+```
+
+Written by `tools/claims_ledger.py` (not by the pipeline) in the nightly,
+right after the claims check, from the same `site/data`. One row per
+`CLAIMS` row of every claims suite, in suite order. `where` lists each
+editorial string that holds the quote (the anchor test's matching:
+`{placeholders}` are wildcards, case and whitespace ignored): its section
+key, the field under it (`headline`, `caption`, `stats[0].label`, …) and
+its line in `site/js/editorial.js`. Section keys are editorial section ids,
+`card:<module>` for a landing-page card, `motion:<scene>` for a clip, or a
+top-level editorial key. `status` is `pass`, `fail` or `skip`; `message`
+(fail and skip only) is the assertion message or the skip reason. `path`
+appears only when the guard is defined outside `pipeline/tests/<suite>.py`;
+`line` is its `def` line.
+
+`measures` holds what the guard passed to `claims_support.record()`, in
+call order: `value`, the bounds `lo`/`hi` (null when open), `unit`, an
+optional `note` (which year or series), and the margin to the nearest
+bound: `margin` in the value's unit, `share` = margin / |value| (or
+/ |bound| when the value is 0), `side` (`lo`/`hi`). A negative margin is a
+value past its bound. `exact: true` (omitted when false) marks a measure
+with no room, `lo == hi` or a value and bound both 0; its `share` is
+null. `tightest` indexes the measure with the smallest share (an exact one
+only when none has a share), or is null. `summary.near` counts claims
+whose tightest share is under `near_share`. Numbers are rounded to four
+decimals. One line per page, section and claim keeps nightly diffs
+readable; about 125 KB for 262 claims.

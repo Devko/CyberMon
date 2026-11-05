@@ -133,6 +133,8 @@ def check_most_scored_since_2023_below_1pct(d: dict) -> None:
     below = sum(r["n_below_1pct"] for r in rows)
     scored = sum(r["graded"] for r in rows)
     assert scored >= 200, f"'since 2023' rests on only {scored} scored entries"
+    claims_support.record(100 * below / scored, lo=50, unit="%",
+                          note=f"{below} of {scored} since 2023")
     assert below / scored > 0.5, (
         f"'More than half of scored KEV additions since 2023 had an EPSS "
         f"score under 1%' — {below} of {scored} ({100 * below / scored:.1f}%)")
@@ -155,6 +157,9 @@ def check_models_split_at_1pct(d: dict) -> None:
     v2, _, _ = _below_1pct(d, "v2")
     v3, _, _ = _below_1pct(d, "v3")
     v4, below4, n4 = _below_1pct(d, "v4")
+    claims_support.record(v2, hi=50, unit="%", note="v2 below 1%")
+    claims_support.record(v3, lo=50, unit="%", note="v3 below 1%")
+    claims_support.record(v4, lo=45, hi=55, unit="%", note="v4 below 1%")
     assert v2 < 50.0, f"'EPSS v2 scored most of these entries above 1%' — {100 - v2:.1f}% above"
     assert v3 > 50.0, f"'v3 scored most below' — {v3:.1f}% below 1%"
     assert 45.0 <= v4 <= 55.0, (
@@ -226,6 +231,7 @@ def check_bottom_half_share(d: dict) -> None:
     # the graded cohort sat in the bottom half" — live value at last copy
     # edit: 30.1% cohort-wide.
     pct = d["percentiles"]["bottom_half"]["pct"]
+    claims_support.record(pct, lo=25, hi=35, unit="%")
     assert 25.0 <= pct <= 35.0, (
         f"'about three in ten of the graded cohort sat in the bottom half' "
         f"needs the cohort-wide bottom-half share ({pct}%) to stay in "

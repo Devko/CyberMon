@@ -55,6 +55,8 @@ def check_mostly_vendors(d: dict) -> None:
     h = d["headline"]
     total = h["roster_total"]
     share = 100.0 * h["top_type_n"] / total if total else 0.0
+    claims_support.record(share, lo=50, unit="%",
+                          note=f"{h['top_type']}, of {total} organizations")
     assert h["top_type"] == "Vendor" and share >= 50.0, (
         f"'Mostly vendors' needs Vendor as the plurality type at >=50% of the "
         f"roster; top type is {h['top_type']!r} at {share:.0f}%"
@@ -94,6 +96,9 @@ def check_roster_grew(d: dict) -> None:
     rs = d["roster_size"]
     series = rs["series"]
     assert series and series[0]["date"].startswith("2026-07"), series[:1]
+    claims_support.record(rs["current"], lo=series[0]["size"],
+                          unit="organizations",
+                          note=f"tonight vs {series[0]['date']}")
     assert rs["current"] > series[0]["size"] and rs["net_change"] > 0, (
         f"'has grown' vs {series[0]['size']} -> {rs['current']}")
 

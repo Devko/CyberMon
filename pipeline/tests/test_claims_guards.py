@@ -59,6 +59,9 @@ def check_one_in_nine_guard_share(d: dict) -> None:
     # 1,733); 11.9-12.3% since late August. "More than one in nine" needs
     # share > 11.1%, with headroom above.
     share = d["catalog"]["pct_security"]
+    claims_support.record(share, lo=11.2, hi=20, unit="%",
+                          note=f"{d['catalog'].get('security')} of "
+                               f"{d['catalog'].get('total')}")
     assert 11.2 <= share <= 20.0, (
         f"'more than one entry in nine ... is in a product sold to enforce "
         f"security' needs the catalog guard share in [11.2%, 20%]; data says "
@@ -76,6 +79,8 @@ def check_ransomware_roughly_twice(d: dict) -> None:
     rest = d["ransomware"]["other"]["pct_known"]
     assert rest > 0, "ratio claim needs a nonzero rest-of-catalog share"
     ratio = sec / rest
+    claims_support.record(ratio, lo=1.7, hi=2.3, unit="×",
+                          note=f"{sec}% vs {rest}% flagged")
     assert 1.7 <= ratio <= 2.3, (
         f"'roughly twice as often as the rest of the catalog' needs the "
         f"security/rest ransomware-flag ratio in [1.7, 2.3]; data says "
@@ -114,6 +119,9 @@ def check_top_security_vendors_gap_days_to_weeks(d: dict) -> None:
     flagged = [v for v in d["vendors"] if v["pct_security"] >= 50]
     top = sorted(flagged, key=lambda v: -v["entries"])[:5]
     assert len(top) == 5, [v["vendor"] for v in flagged]
+    for v in top:
+        claims_support.record(v["median_gap_days"], hi=60, unit="days",
+                              note=v["vendor"])
     slow = [(v["vendor"], v["median_gap_days"]) for v in top
             if v["median_gap_days"] is None or v["median_gap_days"] > 60]
     assert not slow, (

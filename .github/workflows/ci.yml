@@ -94,6 +94,11 @@ jobs:
       # closest-groups ranking, and the #g=…&vs=…&n=… deep link at 390 px.
       - name: Check Adversary Atlas interactions
         run: python tools/atlas_smoke.py
+      # Reads the committed claims_ledger.json and asserts the table's order,
+      # its page/result/margin filters, a section link and the #page= deep
+      # link at 390 px.
+      - name: Check Claims Ledger interactions
+        run: python tools/ledger_smoke.py
 
       # Pre-flight only (~4s): loads each motion scene, checks it reports no
       # failures and a sane frame count, then samples three frames and asserts

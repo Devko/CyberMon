@@ -74,6 +74,11 @@ def check_unsupported_climbing(d: dict) -> None:
     assert len(full) >= 2, "no complete years to judge"
     last, prev = full[-1]["counts"][UWA], full[-2]["counts"][UWA]
     h = d["headline"]
+    claims_support.record(last, lo=prev, unit="records",
+                          note=f"{full[-1]['year']} vs {full[-2]['year']}")
+    claims_support.record(h["unsupported_latest"],
+                          lo=5 * max(h["unsupported_first"], 1),
+                          unit="records", note="latest vs 5 × first year")
     assert last > prev, (
         f"'more CVEs are issued for unsupported products' needs growth: "
         f"{full[-1]['year']} has {last} vs {prev} the year before")
@@ -144,11 +149,17 @@ def check_most_cnas_never_tag(d: dict) -> None:
     counts = []
     for tag in (UWA, "disputed"):
         b = d["boards"][tag]
+        claims_support.record(b["cna_count"],
+                              hi=0.25 * (b["active_cnas"] or 0),
+                              unit="CNAs",
+                              note=f"{tag}, of {b['active_cnas']} active")
         assert b["active_cnas"] and b["cna_count"] <= 0.25 * b["active_cnas"], (
             f"{tag}: {b['cna_count']} of {b['active_cnas']} active CNAs set "
             f"it — 'most never do' needs rewording")
         counts.append(b["cna_count"])
     active = d["boards"][UWA]["active_cnas"]
+    claims_support.record(sum(counts), hi=0.5 * active, unit="CNAs",
+                          note=f"either tag, of {active} active")
     assert sum(counts) < 0.5 * active, (
         f"{sum(counts)} tag-setting CNAs of {active}: 'most set neither' is "
         f"no longer certain")
@@ -176,6 +187,11 @@ def check_unsupported_rated_critical_more(d: dict) -> None:
     tagged = crit(sev[UWA]["tagged"])
     same = crit(sev[UWA]["same_cnas_untagged"])
     everyone = crit(sev["all"])
+    claims_support.record(tagged, lo=same + 2.0, unit="%",
+                          note=f"Critical, tagged vs same CNAs' other "
+                               f"records ({same:.1f}%) + 2 points")
+    claims_support.record(tagged, lo=everyone, unit="%",
+                          note="Critical, tagged vs all records")
     assert tagged >= same + 2.0 and tagged > everyone, (
         f"tagged critical {tagged:.1f}% vs same-CNA {same:.1f}% / all "
         f"{everyone:.1f}% — the headline no longer holds")
@@ -211,6 +227,8 @@ def check_v4_minority(d: dict) -> None:
     else:
         row = by[max(y for y in by if y < GENERATION_YEAR)]
     share = _share(row["v4_only"] + row["both"], row["published"])
+    claims_support.record(share, hi=50, unit="%",
+                          note=f"with a CVSS 4.0 score, {row['year']}")
     assert share < 50.0, (
         f"v4.0 is on {share:.1f}% of {row['year']}'s new records — rewrite "
         f"the fallback headline")

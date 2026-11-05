@@ -81,6 +81,8 @@ def check_most_official_picks_in_the_measured_top25(d: dict) -> None:
     # most 12 of the 25 outside. (2026-10-03: 22 in, 3 outside.)
     h = _headline(d)
     total = h["in_measured_top25"] + h["outside_measured_top25"]
+    claims_support.record(h["in_measured_top25"], lo=total / 2,
+                          unit="classes", note=f"of {total}")
     assert h["in_measured_top25"] > total / 2, (
         f"'Most of MITRE's CWE Top 25 also rank among the 25 most frequent' "
         f"needs a majority inside the measured top 25; it is "
@@ -94,6 +96,7 @@ def check_almost_all_official_classes_are_exploited(d: dict) -> None:
     # entry.) Three or fewer missing still reads as "almost every".
     h = _headline(d)
     n = h["in_kev"]
+    claims_support.record(n, lo=22, unit="classes", note="of 25 in KEV")
     assert n >= 22, (
         f"'almost every one of the official Top 25 turns up in the exploited "
         f"set' needs at least 22 of the 25 to carry a KEV entry; it is {n}"
@@ -108,6 +111,11 @@ def check_kev_counts_are_uneven(d: dict) -> None:
     # 125, CWE-78 108, CWE-416 104; CWE-476 and CWE-639 1, CWE-770 0.
     # KEV counts only grow while the official list stays the same.)
     counts = sorted(r["kev_n"] for r in d["ranks"])
+    if len(counts) >= 2:
+        claims_support.record(counts[-2], lo=100, unit="KEV entries",
+                              note="second-largest class")
+        claims_support.record(counts[0], hi=1, unit="KEV entries",
+                              note="smallest class")
     assert sum(1 for n in counts if n > 100) >= 2, (
         f"'over a hundred entries for some classes' needs at least two "
         f"classes above 100 KEV entries; the largest are {counts[-3:]}"

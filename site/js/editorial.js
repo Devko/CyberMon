@@ -30,9 +30,9 @@
 //     in the masthead and on the carousel slides;
 //   - developer error and console messages, and code comments;
 //   - the HTML shells (site/*.html): <title>, meta tags and <noscript> text;
-//   - the two instruments, the Field (field.js) and the Mutation Observatory
-//     (observatory.js), which keep their own copy in their own files;
-//   - the Adversary Atlas instrument (atlas.js), which does the same.
+//   - the instruments, the Field (field.js), the Mutation Observatory
+//     (observatory.js), the Adversary Atlas (atlas.js) and the Claims Ledger
+//     (ledger.js), which keep their own copy in their own files.
 //
 // Templates use {placeholders}; values are filled from site/data/*.json at
 // render time so the copy never carries stale numbers. tpl() below fills
@@ -157,7 +157,7 @@ export const editorial = {
     // their own block under the module directory.
     instruments: {
       label: "Instruments",
-      lede: "Tools for looking up individual records in the data the modules summarize.",
+      lede: "Tools for looking up individual records in the data the modules summarize, and the claims checked against it.",
       status: "instrument",
       items: [
         {
@@ -196,6 +196,19 @@ export const editorial = {
             "the software and techniques they share and how far their sets overlap. Click any entry " +
             "for its ATT&CK page and counts, or list the view as a table. Built from the " +
             "current enterprise ATT&CK release; the page address keeps the selection.",
+        },
+        {
+          id: "ledger",
+          href: "ledger.html",
+          num: "±",
+          label: "Claims Ledger",
+          headline: "Every sentence the claims tests check, with tonight's result and margin.",
+          blurb:
+            "Each sentence on the site that a test checks against the data, with the page " +
+            "and section it appears on, the data file, the test's source line and tonight's " +
+            "result. Where the test records it, the ledger also gives the measured value, " +
+            "the bound it is held to and the margin left. Sort by margin to see the claims " +
+            "closest to failing. Rebuilt nightly with the data.",
         },
       ],
     },
@@ -616,6 +629,7 @@ export const editorial = {
     navObservatory: "Observatory →",
     navAtlas: "Atlas →",
     navInstruments: "Instruments",
+    navLedger: "Claims Ledger →",
     // aria-label of the masthead wordmark, which links home on module pages.
     homeLink: "CyberMon overview",
     // Tooltip on the empty slot a chart leaves for a date its nightly

@@ -54,6 +54,12 @@ def check_agentic_ai_steepest(d: dict) -> None:
         rows = [(y["pct_change"], term_id) for term_id, y in by_id.items()
                 if y and y.get("pct_change") is not None]
         top = max(rows)
+        runner_up = max((r for r in rows if r[1] != "agentic_ai"),
+                        default=None)
+        if runner_up:
+            claims_support.record(by_id["agentic_ai"]["pct_change"],
+                                  lo=runner_up[0], unit="% YoY",
+                                  note=f"{src}, next: {runner_up[1]}")
         assert top[1] == "agentic_ai", f"{src}: steepest riser is {top}"
 
 
@@ -131,6 +137,9 @@ def check_most_economies_half(d: dict) -> None:
     # spread headline: 115 of 202 at 50% or more on 2026-09-23.
     buckets = {b["bucket"]: b["n"] for b in d["spread"]["buckets"]}
     half_up = buckets["50-75%"] + buckets["75%+"]
+    claims_support.record(half_up, lo=d["spread"]["n_economies"] / 2,
+                          unit="economies",
+                          note=f"of {d['spread']['n_economies']}")
     assert half_up > d["spread"]["n_economies"] / 2, buckets
 
 
@@ -165,6 +174,12 @@ def check_fewer_larger_after_2021(d: dict) -> None:
     before = [by[y] for y in range(2016, 2022)]
     after = [r for y, r in by.items() if 2022 <= y < GENERATION_YEAR]
     assert after
+    claims_support.record(max(r["payments"] for r in after),
+                          hi=min(r["payments"] for r in before) / 2,
+                          unit="payments", note="busiest year after 2021")
+    claims_support.record(min(r["median_usd"] for r in after),
+                          lo=10 * max(r["median_usd"] for r in before),
+                          unit="USD", note="smallest median after 2021")
     assert max(r["payments"] for r in after) < min(r["payments"] for r in before) / 2
     assert min(r["median_usd"] for r in after) > 10 * max(r["median_usd"] for r in before)
 
@@ -180,6 +195,8 @@ def check_volume_rises_every_year(d: dict) -> None:
     # it complete.)
     by = {y["year"]: y["published"] for y in d["years"]}
     run = [(y, by[y]) for y in range(2016, GENERATION_YEAR)]
+    for (ya, a), (yb, b) in zip(run, run[1:]):
+        claims_support.record(b, lo=a, unit="CVEs", note=f"{yb} vs {ya}")
     assert all(b > a for (_, a), (_, b) in zip(run, run[1:])), run
 
 
@@ -200,11 +217,30 @@ def check_one_in_ten_lacks_cwe(d: dict) -> None:
         r = by.get(y)
         if r and claims_support.judged(y, r["n"],
                                        min_n=PARTIAL_YEAR_MIN_RECORDS):
+            claims_support.record(r["pct_missing_cwe"], lo=7, hi=14,
+                                  unit="%", note=str(y))
             assert 7 <= r["pct_missing_cwe"] <= 14, (y, r["pct_missing_cwe"])
     assert GENERATION_YEAR - 1 in by, "no row for the latest complete year"
 
 
 def check_xss_first(d: dict) -> None:
+    # cwe headline: CWE-79 leads the window's ranking. The ledger records
+    # its lead over the runner-up, estimated from the yearly shares.
+    w = d.get("window") or {}
+    tagged: dict[str, float] = {}
+    for y in d["years"]:
+        if w.get("start_year", 0) <= y["year"] <= w.get("end_year", 9999):
+            for c, s in (y.get("shares") or {}).items():
+                if c != "other":
+                    tagged[c] = tagged.get(c, 0) + \
+                        s * (y.get("n_tagged") or 0) / 100
+    runner_up = max((c for c in tagged if c != "CWE-79"),
+                    key=tagged.get, default=None)
+    if "CWE-79" in tagged and runner_up:
+        claims_support.record(round(tagged["CWE-79"]),
+                              lo=round(tagged[runner_up]),
+                              unit="tagged records",
+                              note=f"window total, next: {runner_up}")
     assert d["top_cwes"][0]["id"] == "CWE-79", d["top_cwes"][0]
 
 
@@ -247,6 +283,7 @@ def check_cwe_shares_2017_2025(d: dict) -> None:
 
 def check_ransomware_one_in_five(d: dict) -> None:
     pct = d["catalog"]["pct_known"]
+    claims_support.record(pct, lo=17, hi=24, unit="%")
     assert 17 <= pct <= 24, pct
 
 
@@ -260,13 +297,19 @@ def check_deadlines_fell(d: dict) -> None:
     # weeks while three quarters of the year's listings are at 14 days or
     # less.)
     by = {y["year"]: y for y in d["remediation_span_by_year"]}
+    claims_support.record(by[2021]["median_days"], lo=150, hi=200,
+                          unit="days", note="2021")
     assert 150 <= by[2021]["median_days"] <= 200, by[2021]
     for y in range(2022, 2026):
+        claims_support.record(by[y]["median_days"], lo=18, hi=24,
+                              unit="days", note=str(y))
         assert 18 <= by[y]["median_days"] <= 24, (
             f"'three weeks in 2022–2025' vs {by[y]['median_days']} d in {y}")
     r = by.get(2026)
     assert r, "no 2026 row: the headline names 2026"
     if claims_support.judged(2026, r["n"], min_n=100):
+        claims_support.record(r["median_days"], hi=14, unit="days",
+                              note="2026")
         assert r["median_days"] <= 14, (
             f"'two weeks or less in 2026' vs {r['median_days']} d "
             f"over {r['n']} listings")
@@ -275,11 +318,17 @@ def check_deadlines_fell(d: dict) -> None:
 def check_listing_takes_weeks(d: dict) -> None:
     # latency headline: medians 12–26 days for the complete trend years.
     rows = [y for y in d["latency_by_year"] if y["year"] < GENERATION_YEAR]
+    for y in rows:
+        claims_support.record(y["median_days"], lo=7, hi=60, unit="days",
+                              note=str(y["year"]))
     assert rows and all(7 <= y["median_days"] <= 60 for y in rows), rows
 
 
 def check_movers_exceed_25pp(d: dict) -> None:
     entries = d["movers"]["entries"]
+    if entries:
+        claims_support.record(min(abs(e["delta"]) for e in entries) * 100,
+                              lo=25, unit="pp", note="smallest of the 20")
     assert len(entries) == 20 and min(abs(e["delta"]) for e in entries) > 0.25
 
 
@@ -289,6 +338,10 @@ def check_percentiles_vs_probabilities(d: dict) -> None:
     # clean night (2026-10-03: 97.2% and 1.0% over 58 nights; single nights
     # run 83.5-99.8% and 0.7-2.9%, which is why the copy says "average").
     g = d["gap"]
+    claims_support.record(g["pct_moved_pct"], lo=90, unit="%",
+                          note="percentile changed")
+    claims_support.record(g["prob_moved_pct"], lo=0.5, hi=1.5, unit="%",
+                          note="probability changed")
     assert g["pct_moved_pct"] >= 90 and 0.5 <= g["prob_moved_pct"] <= 1.5, g
 
 
@@ -305,6 +358,12 @@ def check_churn_in_major_releases(d: dict) -> None:
     major = [v for v in vs if v["version"].endswith(".0")]
     add_m = sum(v["churn"]["added"] for v in major)
     ret_m = sum(v["churn"]["deprecated"] + v["churn"]["revoked"] for v in major)
+    if add:
+        claims_support.record(100 * add_m / add, lo=95, unit="%",
+                              note="additions in .0 releases")
+    if ret:
+        claims_support.record(100 * ret_m / ret, lo=95, unit="%",
+                              note="retirements in .0 releases")
     assert add_m >= 0.95 * add and ret_m >= 0.95 * ret, (add_m, add, ret_m, ret)
 
 
@@ -312,10 +371,14 @@ def check_most_three_or_fewer(d: dict) -> None:
     dist = d["distribution"]
     total = sum(b["n"] for b in dist)
     le3 = sum(b["n"] for b in dist if b["alt_count"] <= 3)
+    claims_support.record(le3, lo=total / 2, unit="groups",
+                          note=f"of {total}")
     assert le3 > total / 2, (le3, total)
 
 
 def check_handful_of_c2s(d: dict) -> None:
+    claims_support.record(d["c2_today"]["listed_total"], hi=10,
+                          unit="servers")
     assert d["c2_today"]["listed_total"] <= 10, d["c2_today"]["listed_total"]
 
 
@@ -325,16 +388,29 @@ def check_rescores_mostly_down_and_small(d: dict) -> None:
     m = d["magnitude"]
     small = sum(b["n"] for b in m["buckets"]
                 if b["bucket"] in ("-1.9..-0.1", "+0.1..+1.9"))
+    claims_support.record(m["down"], lo=m["n"] / 2, unit="rescores",
+                          note=f"lowered, of {m['n']}")
+    claims_support.record(small, lo=m["n"] / 2, unit="rescores",
+                          note=f"under two points, of {m['n']}")
     assert m["down"] > m["n"] / 2 and small > m["n"] / 2, m
 
 
 def check_handful_made_most(d: dict) -> None:
     top = sorted((c["rescores"] for c in d["cna_board"]["cnas"]), reverse=True)
+    claims_support.record(sum(top[:5]),
+                          lo=d["catalog"]["totals"]["rescore"] / 2,
+                          unit="rescores",
+                          note=f"five largest CNAs, of "
+                               f"{d['catalog']['totals']['rescore']}")
     assert sum(top[:5]) > d["catalog"]["totals"]["rescore"] / 2, top[:5]
 
 
 def check_joined_outnumber_left(d: dict) -> None:
     t = d["roster_flux"]["totals"]
+    claims_support.record(t["onboarded"], lo=t["departed"],
+                          unit="organizations", note="joined vs left")
+    claims_support.record(d["roster_size"]["net_change"], lo=0,
+                          unit="organizations", note="net change")
     assert t["onboarded"] > t["departed"], t
     assert d["roster_size"]["net_change"] > 0, d["roster_size"]["net_change"]
 
@@ -347,12 +423,17 @@ def check_cisa_more_than_half(d: dict) -> None:
     # rising toward 55% within weeks. "More than half" understates the
     # share past two thirds; reword then.
     pct = d["headline"]["pct_cisa"]
+    claims_support.record(pct, lo=50, hi=200 / 3, unit="%")
     assert 50 < pct < 200 / 3, pct
     assert d["headline"]["first_month"] >= "2024-01", d["headline"]["first_month"]
 
 
 def check_rejection_tenfold(d: dict) -> None:
     rates = sorted(c["rejected_rate_pct"] for c in d["rejection_leaderboard"]["cnas"])
+    if rates:
+        claims_support.record(
+            rates[-1] / max(rates[len(rates) // 2], 1.0), lo=10,
+            unit="× median", note=f"highest rate {rates[-1]}%")
     assert rates[-1] >= 10 * max(rates[len(rates) // 2], 1.0), rates[-5:]
 
 
@@ -370,6 +451,9 @@ def check_four_to_six_in_ten_since_2020(d: dict) -> None:
     assert rows and min(y["year"] for y in rows) == 2020, (
         f"the card says 'since 2020'; the blended line starts in "
         f"{min((y['year'] for y in rows), default=None)}")
+    for y in rows:
+        claims_support.record(y["pct_high_critical"], lo=40, hi=60,
+                              unit="%", note=str(y["year"]))
     off = [(y["year"], y["pct_high_critical"]) for y in rows
            if not 40 <= y["pct_high_critical"] <= 60]
     assert not off, f"'between four and six in ten … each year' vs {off}"
@@ -381,6 +465,8 @@ def check_hundreds_of_cnas(d: dict) -> None:
     # 367 in 2025; 386 in 2026 so far.)
     rows = [y for y in d["years"] if y["year"] < GENERATION_YEAR]
     latest = max(rows, key=lambda y: y["year"])
+    claims_support.record(latest["cna_count"], lo=200, hi=1000,
+                          unit="CNAs", note=str(latest["year"]))
     assert 200 <= latest["cna_count"] < 1000, (
         f"'Hundreds of CNAs' vs {latest['cna_count']} in {latest['year']}")
 
@@ -388,11 +474,15 @@ def check_hundreds_of_cnas(d: dict) -> None:
 def check_kev_mostly_a_week_or_more(d: dict) -> None:
     late = sum(b["pct"] for b in d["latency_buckets"]
                if b["bucket"] not in ("before_publish", "0-7d"))
+    claims_support.record(late, lo=50, unit="%")
     assert late > 50, late
 
 
 def check_top5_about_half_since_2021(d: dict) -> None:
     rows = [y for y in d["years"] if 2021 <= y["year"] < GENERATION_YEAR]
+    for y in rows:
+        claims_support.record(y["top5_share"], lo=40, hi=62, unit="%",
+                              note=str(y["year"]))
     assert rows and all(40 <= y["top5_share"] <= 62 for y in rows), \
         [(y["year"], y["top5_share"]) for y in rows]
 
@@ -407,6 +497,9 @@ def check_exploit_two_weeks_or_more_since_2022(d: dict) -> None:
     # records, each with only days to attract code, set the median.
     rows = [r for r in d["hero"]["years"] if r["year"] >= 2022
             and claims_support.judged(r["year"], r["n"], min_n=100)]
+    for r in rows:
+        claims_support.record(r["median_days"], lo=14, unit="days",
+                              note=str(r["year"]))
     assert len(rows) >= 4 and all(r["median_days"] >= 14 for r in rows), \
         [(r["year"], r["median_days"]) for r in rows]
 
@@ -418,6 +511,8 @@ def check_rescores_mostly_first_scores(d: dict) -> None:
     counts = d["counts"] if "counts" in d else d["catalog"]["totals"]
     kinds = ("rescore", "version_shift", "first_score", "score_removed")
     total = sum(counts[k] for k in kinds)
+    claims_support.record(counts["first_score"], lo=total / 2,
+                          unit="events", note=f"first scores, of {total}")
     assert total and counts["first_score"] > total / 2, counts
 
 
@@ -431,6 +526,9 @@ def check_card_scored_since_2023_below_1pct(d: dict) -> None:
     below = sum(r["n_below_1pct"] for r in rows)
     scored = sum(r["graded"] for r in rows)
     assert rows and min(r["year"] for r in rows) == 2023, rows
+    if scored:
+        claims_support.record(100 * below / scored, lo=50, unit="%",
+                              note=f"{below} of {scored} since 2023")
     assert scored and below > scored / 2, (below, scored)
 
 
@@ -447,12 +545,16 @@ def check_card_largest_announcement_exceeds_credited(d: dict) -> None:
                   default=0)
     credited = sum(d["kinds"][k]["funnel"]["credited"]
                    for k in ("llm", "vendor"))
+    claims_support.record(biggest, lo=credited, unit="vulnerabilities",
+                          note="largest announcement vs credited records")
     assert biggest > credited, (biggest, credited)
 
 
 def check_dozens_of_incident_filings(d: dict) -> None:
     if d["status"] != "ok":
         return
+    claims_support.record(d["totals"]["originals"], lo=24, hi=200,
+                          unit="filings")
     assert 24 <= d["totals"]["originals"] < 200, d["totals"]["originals"]
 
 
@@ -463,6 +565,8 @@ def check_public_code_not_sooner(d: dict) -> None:
     # cutoff did not move earlier. (2026-09-23: 2.0 d -> 9.0 d, "later".)
     lfl = next(m for m in d["banked"]["metrics"] if m["id"] == "poc_like_for_like")
     era = next(e for e in lfl["eras"] if e["era"] == "chatgpt")
+    claims_support.record(era["post"]["value"], lo=era["pre"]["value"],
+                          unit="days", note="after vs before ChatGPT")
     assert era["verdict"] != "accelerated" and era["post"]["value"] >= era["pre"]["value"], era
 
 
@@ -512,6 +616,7 @@ def check_most_news_peaks_over_two_years_old(d: dict) -> None:
         peak = max(pts, key=lambda p: p["index"])["month"]
         old += _months_apart(peak, latest) > 24
     assert n >= 10, f"only {n} terms carry a GDELT series"
+    claims_support.record(old, lo=n / 2, unit="terms", note=f"of {n}")
     assert old > n / 2, f"{old} of {n} terms peaked in news more than two years ago"
 
 
@@ -524,6 +629,8 @@ def check_more_terms_research_nearer_peak(d: dict) -> None:
     # has sat below. After a month rollover as few as two terms plot.)
     dirs = [(t.get("divergence") or {}).get("direction") for t in d["terms"]]
     above, below = dirs.count("research_leads"), dirs.count("media_leads")
+    claims_support.record(above, lo=below, unit="terms",
+                          note="above vs below the diagonal")
     assert above > below, f"{above} terms above the diagonal, {below} below"
 
 
