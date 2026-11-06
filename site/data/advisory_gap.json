@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
- "as_of": "2026-11-05",
+ "generated_at": "2026-11-06T09:52:06Z",
+ "as_of": "2026-11-06",
  "ecosystems_read": [
   "GitHub Actions",
   "Go",
@@ -16,15 +16,15 @@
   "npm"
  ],
  "young_days": 90,
- "young_since": "2026-08-07",
+ "young_since": "2026-08-08",
  "min_n": 50,
  "catalog": {
-  "advisories": 36299,
-  "with_cve": 33399,
+  "advisories": 36307,
+  "with_cve": 33407,
   "without_cve": 2900,
   "without_cve_young": 152,
   "without_cve_pct": 8.0,
-  "withdrawn_excluded": 1262,
+  "withdrawn_excluded": 1264,
   "not_reviewed": 0,
   "multi_ecosystem": 310,
   "first_year": 2017,
@@ -114,8 +114,8 @@
   },
   {
    "year": 2026,
-   "total": 11638,
-   "with_cve": 10919,
+   "total": 11646,
+   "with_cve": 10927,
    "without_cve": 719,
    "without_cve_young": 152,
    "without_cve_pct": 6.2,
@@ -125,8 +125,8 @@
  "ecosystems": [
   {
    "ecosystem": "npm",
-   "total": 7668,
-   "with_cve": 6581,
+   "total": 7669,
+   "with_cve": 6582,
    "without_cve": 1087,
    "without_cve_young": 51,
    "without_cve_pct": 14.2,
@@ -205,8 +205,8 @@
     },
     {
      "year": 2026,
-     "total": 3418,
-     "with_cve": 3185,
+     "total": 3419,
+     "with_cve": 3186,
      "without_cve": 233,
      "without_cve_young": 51,
      "without_cve_pct": 6.8
@@ -215,8 +215,8 @@
   },
   {
    "ecosystem": "Maven",
-   "total": 7124,
-   "with_cve": 7028,
+   "total": 7128,
+   "with_cve": 7032,
    "without_cve": 96,
    "without_cve_young": 0,
    "without_cve_pct": 1.3,
@@ -295,8 +295,8 @@
     },
     {
      "year": 2026,
-     "total": 1038,
-     "with_cve": 1017,
+     "total": 1042,
+     "with_cve": 1021,
      "without_cve": 21,
      "without_cve_young": 0,
      "without_cve_pct": 2.0
@@ -305,8 +305,8 @@
   },
   {
    "ecosystem": "PyPI",
-   "total": 6563,
-   "with_cve": 6301,
+   "total": 6564,
+   "with_cve": 6302,
    "without_cve": 262,
    "without_cve_young": 44,
    "without_cve_pct": 4.0,
@@ -385,8 +385,8 @@
     },
     {
      "year": 2026,
-     "total": 2470,
-     "with_cve": 2354,
+     "total": 2471,
+     "with_cve": 2355,
      "without_cve": 116,
      "without_cve_young": 44,
      "without_cve_pct": 4.7
@@ -485,8 +485,8 @@
   },
   {
    "ecosystem": "Go",
-   "total": 4926,
-   "with_cve": 4570,
+   "total": 4928,
+   "with_cve": 4572,
    "without_cve": 356,
    "without_cve_young": 22,
    "without_cve_pct": 7.2,
@@ -565,8 +565,8 @@
     },
     {
      "year": 2026,
-     "total": 2174,
-     "with_cve": 2040,
+     "total": 2176,
+     "with_cve": 2042,
      "without_cve": 134,
      "without_cve_young": 22,
      "without_cve_pct": 6.2
@@ -1207,21 +1207,21 @@
  "severity": [
   {
    "level": "CRITICAL",
-   "with_cve": 4074,
+   "with_cve": 4075,
    "without_cve": 645,
    "with_cve_pct": 12.2,
    "without_cve_pct": 22.2
   },
   {
    "level": "HIGH",
-   "with_cve": 12365,
+   "with_cve": 12369,
    "without_cve": 854,
    "with_cve_pct": 37.0,
    "without_cve_pct": 29.4
   },
   {
    "level": "MODERATE",
-   "with_cve": 14700,
+   "with_cve": 14703,
    "without_cve": 1031,
    "with_cve_pct": 44.0,
    "without_cve_pct": 35.6
@@ -1242,8 +1242,8 @@
   }
  ],
  "cve_lag": {
-  "n": 27837,
-  "later_30d": 225,
+  "n": 27855,
+  "later_30d": 233,
   "later_90d": 114,
   "later_365d": 32
  }

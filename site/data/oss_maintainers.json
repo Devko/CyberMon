@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
+ "generated_at": "2026-11-06T09:52:06Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,14 +9,14 @@
  },
  "observed": {
   "first": "2026-11-05",
-  "last": "2026-11-05",
+  "last": "2026-11-06",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-05"
+  "last": "2026-11-06"
  },
  "ecosystems": [
   {
@@ -128,7 +128,7 @@
       },
       {
        "label": "0",
-       "n": 26
+       "n": 25
       },
       {
        "label": "1\u20134",
@@ -140,7 +140,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 29
+       "n": 30
       }
      ],
      "Branch-Protection": [

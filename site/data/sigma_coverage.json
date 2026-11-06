@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
- "as_of": "2026-11-05",
+ "generated_at": "2026-11-06T09:52:06Z",
+ "as_of": "2026-11-06",
  "source": {
-  "commit": "b5101297e45be7ddf6c4177558890be27ae82c92",
+  "commit": "52f81d60d5ea122e49a34b2289ea0c2a7bb0b113",
   "commit_date": "2026-11-05"
  },
  "catalog": {
@@ -536,7 +536,7 @@
  "lag": {
   "follow_up_days": 730,
   "debut_after": "1.0",
-  "debut_through": "2024-11-05",
+  "debut_through": "2024-11-06",
   "n": 124,
   "before_debut": 50,
   "within_year": 16,
@@ -554,7 +554,7 @@
    "within_year": 5,
    "later": 7,
    "none": 1,
-   "min_follow_up_days": 2935,
+   "min_follow_up_days": 2936,
    "full_year": true
   },
   {
@@ -564,7 +564,7 @@
    "within_year": 4,
    "later": 9,
    "none": 5,
-   "min_follow_up_days": 2570,
+   "min_follow_up_days": 2571,
    "full_year": true
   },
   {
@@ -574,7 +574,7 @@
    "within_year": 4,
    "later": 10,
    "none": 8,
-   "min_follow_up_days": 2200,
+   "min_follow_up_days": 2201,
    "full_year": true
   },
   {
@@ -584,7 +584,7 @@
    "within_year": 2,
    "later": 5,
    "none": 2,
-   "min_follow_up_days": 1841,
+   "min_follow_up_days": 1842,
    "full_year": true
   },
   {
@@ -594,7 +594,7 @@
    "within_year": 1,
    "later": 0,
    "none": 2,
-   "min_follow_up_days": 1472,
+   "min_follow_up_days": 1473,
    "full_year": true
   },
   {
@@ -604,7 +604,7 @@
    "within_year": 0,
    "later": 1,
    "none": 6,
-   "min_follow_up_days": 1101,
+   "min_follow_up_days": 1102,
    "full_year": true
   },
   {
@@ -614,7 +614,7 @@
    "within_year": 0,
    "later": 0,
    "none": 2,
-   "min_follow_up_days": 735,
+   "min_follow_up_days": 736,
    "full_year": true
   },
   {
@@ -624,7 +624,7 @@
    "within_year": 0,
    "later": 0,
    "none": 12,
-   "min_follow_up_days": 373,
+   "min_follow_up_days": 374,
    "full_year": true
   },
   {
@@ -634,7 +634,7 @@
    "within_year": 0,
    "later": 0,
    "none": 10,
-   "min_follow_up_days": 23,
+   "min_follow_up_days": 24,
    "full_year": false
   }
  ],
@@ -746,8 +746,8 @@
   }
  ],
  "attack": {
-  "version": "20.0",
-  "released": "2026-10-13",
+  "version": "20.1",
+  "released": "2026-11-05",
   "first_version": "1.0",
   "first_released": "2018-01-17",
   "synced": [
@@ -792,7 +792,8 @@
    "19.0",
    "19.1",
    "19.2",
-   "20.0"
+   "20.0",
+   "20.1"
   ],
   "tactics": [
    {

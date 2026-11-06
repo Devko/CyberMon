@@ -19455,7 +19455,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-05",
+ "last_observed": "2026-11-06",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

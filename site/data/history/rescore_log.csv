@@ -5767,3 +5767,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-11-05,CVE-2026-102728,eclipse,first_score,,,v4.0,6.3
 2026-11-05,CVE-2026-10642,zephyr,rescore,v3.1,4.6,v3.1,6.5
 2026-11-05,CVE-2026-106465,eclipse,rescore,v4.0,8.7,v4.0,6.9
+2026-11-06,CVE-2026-115828,Delinea,rescore,v4.0,5.1,v4.0,9.4
+2026-11-06,CVE-2026-115829,Delinea,rescore,v4.0,8.7,v4.0,9.9

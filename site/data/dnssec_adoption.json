@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
+ "generated_at": "2026-11-06T09:52:06Z",
  "window": "30_day",
  "world": {
   "cc": "XA",
@@ -634,14 +634,14 @@
    },
    {
     "month": "2026-11",
-    "validating_pc": 40.2
+    "validating_pc": 40.3
    }
   ],
   "latest": {
-   "date": "2026-11-03",
-   "validating_pc": 40.2,
+   "date": "2026-11-04",
+   "validating_pc": 40.3,
    "partial_pc": 8.6,
-   "seen": 536243041
+   "seen": 536245385
   },
   "baseline": {
    "month": "2016-11",
@@ -652,7 +652,7 @@
   {
    "cc": "PH",
    "name": "Philippines",
-   "latest_pc": 93.7,
+   "latest_pc": 93.6,
    "series": [
     {
      "month": "2013-12",
@@ -864,14 +864,14 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 93.7
+     "validating_pc": 93.6
     }
    ]
   },
   {
    "cc": "NG",
    "name": "Nigeria",
-   "latest_pc": 59.9,
+   "latest_pc": 59.8,
    "series": [
     {
      "month": "2013-12",
@@ -1083,14 +1083,14 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 59.9
+     "validating_pc": 59.8
     }
    ]
   },
   {
    "cc": "IN",
    "name": "India",
-   "latest_pc": 58.4,
+   "latest_pc": 58.7,
    "series": [
     {
      "month": "2013-12",
@@ -1302,14 +1302,14 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 58.4
+     "validating_pc": 58.7
     }
    ]
   },
   {
    "cc": "BR",
    "name": "Brazil",
-   "latest_pc": 50.9,
+   "latest_pc": 50.8,
    "series": [
     {
      "month": "2013-12",
@@ -1521,14 +1521,14 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 50.9
+     "validating_pc": 50.8
     }
    ]
   },
   {
    "cc": "RU",
    "name": "Russia",
-   "latest_pc": 45.2,
+   "latest_pc": 44.7,
    "series": [
     {
      "month": "2013-12",
@@ -1740,7 +1740,7 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 45.2
+     "validating_pc": 44.7
     }
    ]
   },
@@ -1966,7 +1966,7 @@
   {
    "cc": "US",
    "name": "United States",
-   "latest_pc": 35.6,
+   "latest_pc": 35.5,
    "series": [
     {
      "month": "2013-12",
@@ -2178,14 +2178,14 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 35.6
+     "validating_pc": 35.5
     }
    ]
   },
   {
    "cc": "MX",
    "name": "Mexico",
-   "latest_pc": 21.7,
+   "latest_pc": 21.8,
    "series": [
     {
      "month": "2013-12",
@@ -2397,7 +2397,7 @@
     },
     {
      "month": "2026-11",
-     "validating_pc": 21.7
+     "validating_pc": 21.8
     }
    ]
   },

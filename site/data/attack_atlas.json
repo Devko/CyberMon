@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
- "version": "20.0",
- "released": "2026-10-13",
- "bundle": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-20.0.json",
+ "generated_at": "2026-11-06T09:52:06Z",
+ "version": "20.1",
+ "released": "2026-11-05",
+ "bundle": "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/enterprise-attack/enterprise-attack-20.1.json",
  "counts": {
   "groups": 178,
   "software": 842,

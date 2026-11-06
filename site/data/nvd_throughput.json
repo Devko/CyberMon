@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
+ "generated_at": "2026-11-06T09:52:06Z",
  "min_known_duration": 30,
  "queue": {
   "median_days": 5.0,
-  "n_known_duration": 15718
+  "n_known_duration": 15939
  },
  "history": [
   {
@@ -1004,27 +1004,55 @@
    "deferred_from_awaiting": 62,
    "resweep": false,
    "after_resweep": false
+  },
+  {
+   "date": "2026-11-06",
+   "received_new": 231,
+   "entered_awaiting": 80,
+   "analyzed_from_awaiting": 221,
+   "deferred_from_awaiting": 40,
+   "resweep": false,
+   "after_resweep": false
   }
  ],
  "queue_survival": {
   "log_start": "2026-11-05",
-  "log_days": 0,
+  "log_days": 1,
   "min_exits": 30,
   "min_log_days": 28,
   "min_at_risk": 30,
   "ready": false,
   "exits": {
-   "analyzed": 0,
+   "analyzed": 221,
    "deferred": 0,
-   "other": 0
+   "other": 4
   },
   "censored": {
-   "waiting": 0,
+   "waiting": 9093,
    "requeued": 0
   },
-  "horizon_days": 0,
+  "horizon_days": 3,
   "median_days": null,
   "checkpoints": [],
-  "curve": []
+  "curve": [
+   {
+    "day": 1,
+    "pct_waiting": 74.1,
+    "at_risk": 81,
+    "exits": 21
+   },
+   {
+    "day": 2,
+    "pct_waiting": 62.0,
+    "at_risk": 585,
+    "exits": 95
+   },
+   {
+    "day": 3,
+    "pct_waiting": 62.0,
+    "at_risk": 190,
+    "exits": 0
+   }
+  ]
  }
 }

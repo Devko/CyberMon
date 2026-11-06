@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-05T09:50:11Z",
+ "generated_at": "2026-11-06T09:52:06Z",
  "current_year": 2026,
  "lister": {
   "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
   "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
-  "last_updated": "2026-11-05T10:26:32.154+00:00",
+  "last_updated": "2026-11-06T10:00:42.328+00:00",
   "listed": 15,
   "providers": 14,
   "publishers": 1
@@ -23,8 +23,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
-   "documents": 106764,
+   "measured_on": "2026-11-06",
+   "documents": 107766,
    "undated": 0,
    "by_year": [
     {
@@ -73,11 +73,11 @@
     },
     {
      "year": 2010,
-     "n": 1550
+     "n": 1551
     },
     {
      "year": 2011,
-     "n": 1600
+     "n": 1601
     },
     {
      "year": 2012,
@@ -101,7 +101,7 @@
     },
     {
      "year": 2017,
-     "n": 3959
+     "n": 3960
     },
     {
      "year": 2018,
@@ -117,41 +117,41 @@
     },
     {
      "year": 2021,
-     "n": 4978
+     "n": 4979
     },
     {
      "year": 2022,
-     "n": 6744
+     "n": 6743
     },
     {
      "year": 2023,
-     "n": 6756
+     "n": 6755
     },
     {
      "year": 2024,
-     "n": 8727
+     "n": 8720
     },
     {
      "year": 2025,
-     "n": 9339
+     "n": 9344
     },
     {
      "year": 2026,
-     "n": 31823
+     "n": 32825
     }
    ],
    "first_year": 1999,
    "last_year": 2026,
    "mix": {
-    "vex": 75486,
-    "advisory": 31278,
+    "vex": 76394,
+    "advisory": 31372,
     "other": 0,
     "unsampled": 0
    },
    "sample_n": 60,
    "fields": {
     "cvss": 96.7,
-    "cwe": 76.3,
+    "cwe": 76.2,
     "product_tree": 100.0,
     "remediation": 76.4
    },
@@ -179,8 +179,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
-   "documents": 14500,
+   "measured_on": "2026-11-06",
+   "documents": 14525,
    "undated": 0,
    "by_year": [
     {
@@ -237,7 +237,7 @@
     },
     {
      "year": 2026,
-     "n": 4251
+     "n": 4276
     }
    ],
    "first_year": 2013,
@@ -245,7 +245,7 @@
    "mix": {
     "vex": 0,
     "advisory": 0,
-    "other": 14500,
+    "other": 14525,
     "unsampled": 0
    },
    "sample_n": 30,
@@ -266,13 +266,125 @@
    }
   },
   {
+   "name": "CISA",
+   "category": "coordinator",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-06",
+   "documents": 4103,
+   "undated": 0,
+   "by_year": [
+    {
+     "year": 2010,
+     "n": 6
+    },
+    {
+     "year": 2011,
+     "n": 46
+    },
+    {
+     "year": 2012,
+     "n": 79
+    },
+    {
+     "year": 2013,
+     "n": 80
+    },
+    {
+     "year": 2014,
+     "n": 95
+    },
+    {
+     "year": 2015,
+     "n": 137
+    },
+    {
+     "year": 2016,
+     "n": 128
+    },
+    {
+     "year": 2017,
+     "n": 187
+    },
+    {
+     "year": 2018,
+     "n": 222
+    },
+    {
+     "year": 2019,
+     "n": 224
+    },
+    {
+     "year": 2020,
+     "n": 249
+    },
+    {
+     "year": 2021,
+     "n": 388
+    },
+    {
+     "year": 2022,
+     "n": 385
+    },
+    {
+     "year": 2023,
+     "n": 380
+    },
+    {
+     "year": 2024,
+     "n": 429
+    },
+    {
+     "year": 2025,
+     "n": 538
+    },
+    {
+     "year": 2026,
+     "n": 530
+    }
+   ],
+   "first_year": 2010,
+   "last_year": 2026,
+   "mix": {
+    "vex": 108,
+    "advisory": 3995,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 64,
+   "fields": {
+    "cvss": 100.0,
+    "cwe": 99.9,
+    "product_tree": 100.0,
+    "remediation": 100.0
+   },
+   "sample_groups": {
+    "vex": {
+     "n": 34,
+     "cvss": 34,
+     "cwe": 33,
+     "product_tree": 34,
+     "remediation": 34
+    },
+    "advisory": {
+     "n": 30,
+     "cvss": 30,
+     "cwe": 30,
+     "product_tree": 30,
+     "remediation": 30
+    }
+   }
+  },
+  {
    "name": "Siemens ProductCERT",
    "category": "vendor",
    "role": "csaf_trusted_provider",
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 865,
    "undated": 0,
    "by_year": [
@@ -372,7 +484,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 293,
    "undated": 0,
    "by_year": [
@@ -449,7 +561,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 82,
    "undated": 0,
    "by_year": [
@@ -498,7 +610,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 74,
    "undated": 0,
    "by_year": [
@@ -567,7 +679,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 67,
    "undated": 0,
    "by_year": [
@@ -636,7 +748,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 26,
    "undated": 0,
    "by_year": [
@@ -681,7 +793,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 24,
    "undated": 0,
    "by_year": [
@@ -738,7 +850,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 11,
    "undated": 0,
    "by_year": [
@@ -798,7 +910,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 6,
    "undated": 0,
    "by_year": [
@@ -854,7 +966,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-05",
+   "measured_on": "2026-11-06",
    "documents": 1,
    "undated": 0,
    "by_year": [
@@ -887,29 +999,6 @@
      "remediation": 1
     }
    }
-  },
-  {
-   "name": "CISA",
-   "category": "coordinator",
-   "role": "csaf_trusted_provider",
-   "kind": "provider",
-   "status": "denied",
-   "detail": "HTTP 403",
-   "measured_on": null,
-   "documents": 0,
-   "undated": 0,
-   "by_year": [],
-   "first_year": null,
-   "last_year": null,
-   "mix": {
-    "vex": 0,
-    "advisory": 0,
-    "other": 0,
-    "unsampled": 0
-   },
-   "sample_n": 0,
-   "fields": null,
-   "sample_groups": {}
   },
   {
    "name": "Hitachi Energy PSIRT",
@@ -1016,143 +1105,143 @@
   },
   {
    "year": 2010,
-   "n": 1550,
-   "providers": 1
+   "n": 1557,
+   "providers": 2
   },
   {
    "year": 2011,
-   "n": 1601,
-   "providers": 2
+   "n": 1648,
+   "providers": 3
   },
   {
    "year": 2012,
-   "n": 1938,
-   "providers": 2
+   "n": 2017,
+   "providers": 3
   },
   {
    "year": 2013,
-   "n": 2508,
-   "providers": 2
+   "n": 2588,
+   "providers": 3
   },
   {
    "year": 2014,
-   "n": 2609,
-   "providers": 2
+   "n": 2704,
+   "providers": 3
   },
   {
    "year": 2015,
-   "n": 2959,
-   "providers": 4
+   "n": 3096,
+   "providers": 5
   },
   {
    "year": 2016,
-   "n": 3556,
-   "providers": 3
-  },
-  {
-   "year": 2017,
-   "n": 4084,
-   "providers": 3
-  },
-  {
-   "year": 2018,
-   "n": 3739,
+   "n": 3684,
    "providers": 4
   },
   {
+   "year": 2017,
+   "n": 4272,
+   "providers": 4
+  },
+  {
+   "year": 2018,
+   "n": 3961,
+   "providers": 5
+  },
+  {
    "year": 2019,
-   "n": 3998,
-   "providers": 6
-  },
-  {
-   "year": 2020,
-   "n": 4776,
-   "providers": 6
-  },
-  {
-   "year": 2021,
-   "n": 5560,
-   "providers": 6
-  },
-  {
-   "year": 2022,
-   "n": 7884,
-   "providers": 8
-  },
-  {
-   "year": 2023,
-   "n": 9554,
+   "n": 4222,
    "providers": 7
   },
   {
+   "year": 2020,
+   "n": 5025,
+   "providers": 7
+  },
+  {
+   "year": 2021,
+   "n": 5949,
+   "providers": 7
+  },
+  {
+   "year": 2022,
+   "n": 8268,
+   "providers": 9
+  },
+  {
+   "year": 2023,
+   "n": 9933,
+   "providers": 8
+  },
+  {
    "year": 2024,
-   "n": 11620,
-   "providers": 11
+   "n": 12042,
+   "providers": 12
   },
   {
    "year": 2025,
-   "n": 12338,
-   "providers": 10
+   "n": 12881,
+   "providers": 11
   },
   {
    "year": 2026,
-   "n": 36324,
-   "providers": 12
+   "n": 37881,
+   "providers": 13
   }
  ],
  "totals": {
   "listed": 15,
-  "measured": 12,
+  "measured": 13,
   "carried": 0,
-  "unmeasured": 3,
-  "documents": 122713,
+  "unmeasured": 2,
+  "documents": 127843,
   "undated": 0,
   "mix": {
-   "vex": 75587,
-   "advisory": 32395,
-   "other": 14731,
+   "vex": 76603,
+   "advisory": 36484,
+   "other": 14756,
    "unsampled": 0
   },
-  "vex_pct": 61.6,
+  "vex_pct": 59.9,
   "top_name": "Red Hat Product Security",
-  "top_share_pct": 87.0,
+  "top_share_pct": 84.3,
   "vex_top_name": "Red Hat Product Security",
-  "vex_top_share_pct": 99.9,
-  "providers_with_vex": 5,
-  "sampled_providers": 12,
-  "sample_n": 308,
+  "vex_top_share_pct": 99.7,
+  "providers_with_vex": 6,
+  "sampled_providers": 13,
+  "sample_n": 372,
   "fields": {
    "cvss": {
-    "nearly_all": 9,
+    "nearly_all": 10,
     "none": 2
    },
    "cwe": {
-    "nearly_all": 8,
+    "nearly_all": 9,
     "none": 3
    },
    "product_tree": {
-    "nearly_all": 12,
+    "nearly_all": 13,
     "none": 0
    },
    "remediation": {
-    "nearly_all": 6,
+    "nearly_all": 7,
     "none": 1
    }
   },
   "by_group": {
    "vex": {
-    "n": 94,
-    "cvss": 64.9,
-    "cwe": 57.4,
+    "n": 128,
+    "cvss": 74.2,
+    "cwe": 68.0,
     "product_tree": 100.0,
-    "remediation": 60.6
+    "remediation": 71.1
    },
    "advisory": {
-    "n": 176,
-    "cvss": 97.7,
-    "cwe": 93.8,
+    "n": 206,
+    "cvss": 98.1,
+    "cwe": 94.7,
     "product_tree": 100.0,
-    "remediation": 96.6
+    "remediation": 97.1
    },
    "other": {
     "n": 38,
@@ -1162,6 +1251,6 @@
     "remediation": 21.1
    }
   },
-  "all_three_nearly_all": 6
+  "all_three_nearly_all": 7
  }
 }
