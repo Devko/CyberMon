@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T09:52:06Z",
+ "generated_at": "2026-11-07T09:14:55Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -16867,23 +16867,6 @@
    ]
   },
   {
-   "cve": "CVE-2026-104040",
-   "published": "2026-10-06",
-   "cna": "redhat",
-   "counts_for": [
-    "vendor"
-   ],
-   "matches": [
-    {
-     "finder": "aisle",
-     "tier": "system",
-     "roles": [
-      "unspecified"
-     ]
-    }
-   ]
-  },
-  {
    "cve": "CVE-2026-104041",
    "published": "2026-10-06",
    "cna": "redhat",
@@ -21332,6 +21315,51 @@
   {
    "cve": "CVE-2026-96453",
    "published": "2026-11-05",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-107124",
+   "published": "2026-11-06",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-123660",
+   "published": "2026-11-06",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-96447",
+   "published": "2026-11-06",
    "cna": "redhat",
    "counts_for": [],
    "matches": [

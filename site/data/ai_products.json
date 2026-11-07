@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T09:52:06Z",
+ "generated_at": "2026-11-07T09:14:55Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,14 +159,14 @@
   },
   {
    "year": 2026,
-   "published": 92016,
-   "named": 88705,
-   "ai": 3187,
+   "published": 92457,
+   "named": 89144,
+   "ai": 3192,
    "by_category": {
-    "frameworks": 198,
+    "frameworks": 199,
     "serving": 371,
-    "platforms": 179,
-    "apps": 2439
+    "platforms": 181,
+    "apps": 2441
    },
    "top_product": {
     "label": "OpenClaw",
@@ -193,15 +193,15 @@
    },
    {
     "year": 2026,
-    "pct": 72.2
+    "pct": 72.3
    }
   ]
  },
  "cwe": {
-  "n": 4412,
-  "no_cwe": 11,
+  "n": 4417,
+  "no_cwe": 10,
   "no_cwe_pct": 0.2,
-  "baseline_no_cwe_pct": 10.1,
+  "baseline_no_cwe_pct": 10.0,
   "top": [
    {
     "cwe": "CWE-22",
@@ -213,7 +213,7 @@
    {
     "cwe": "CWE-918",
     "name": "Server-side request forgery (SSRF)",
-    "n": 352,
+    "n": 355,
     "pct": 8.0,
     "baseline_pct": 1.6
    },
@@ -250,7 +250,7 @@
     "name": "Cross-site scripting",
     "n": 150,
     "pct": 3.4,
-    "baseline_pct": 10.9
+    "baseline_pct": 11.0
    },
    {
     "cwe": "CWE-639",
@@ -285,8 +285,8 @@
   }
  },
  "exploited": {
-  "n": 4412,
-  "baseline_n": 204525,
+  "n": 4417,
+  "baseline_n": 204961,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
@@ -296,9 +296,9 @@
   "poc_baseline_pct": 0.4,
   "poc_expected": 17.1,
   "nuclei": 117,
-  "nuclei_pct": 2.7,
+  "nuclei_pct": 2.6,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 34.3,
+  "nuclei_expected": 34.2,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -530,8 +530,8 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4412,
-  "cna_count": 40,
+  "n": 4417,
+  "cna_count": 41,
   "top": [
    {
     "cna": "GitHub_M",
@@ -540,7 +540,7 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 1099,
+    "n": 1101,
     "pct": 24.9
    },
    {
@@ -559,14 +559,14 @@
     "pct": 5.1
    }
   ],
-  "top3_pct": 69.1
+  "top3_pct": 69.0
  },
  "headline": {
   "latest_year": 2025,
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3187,
+  "current_ai": 3192,
   "current_share_pct": 3.5,
   "lead_label": "OpenClaw",
   "lead_n": 677,

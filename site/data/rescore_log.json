@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T09:52:06Z",
+ "generated_at": "2026-11-07T09:14:55Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -131,8 +131,8 @@
   },
   {
    "week": "2026-W45",
-   "rescore_up": 12,
-   "rescore_down": 12,
+   "rescore_up": 14,
+   "rescore_down": 13,
    "first_score": 2,
    "version_shift": 0,
    "score_removed": 0
@@ -140,9 +140,9 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 160,
-  "up": 67,
-  "down": 93,
+  "n": 163,
+  "up": 69,
+  "down": 94,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -154,15 +154,15 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 73
+    "n": 74
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 47
+    "n": 48
    },
    {
     "bucket": "+2.0..+3.9",
-    "n": 12
+    "n": 13
    },
    {
     "bucket": ">=+4.0",
@@ -176,8 +176,8 @@
   "cnas": [
    {
     "cna": "VulnCheck",
-    "rescores": 54,
-    "up": 13,
+    "rescores": 55,
+    "up": 14,
     "down": 41
    },
    {
@@ -206,9 +206,9 @@
    },
    {
     "cna": "fortinet",
-    "rescores": 7,
+    "rescores": 8,
     "up": 0,
-    "down": 7
+    "down": 8
    },
    {
     "cna": "ENISA",
@@ -225,15 +225,15 @@
   ]
  },
  "catalog": {
-  "state_size": 400893,
-  "corpus_release": "cve_2026-11-06_0900Z",
+  "state_size": 401334,
+  "corpus_release": "cve_2026-11-07_0800Z",
   "totals": {
-   "rescore": 160,
+   "rescore": 163,
    "version_shift": 29,
    "first_score": 5576,
    "score_removed": 5
   },
-  "events_total": 5770,
+  "events_total": 5773,
   "first_observed": "2026-07-15"
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T09:52:06Z",
+ "generated_at": "2026-11-07T09:14:55Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 284,
-   "security": 51,
-   "pct_security": 18.0
+   "total": 285,
+   "security": 52,
+   "pct_security": 18.2
   }
  ],
  "vendors": [
@@ -173,13 +173,13 @@
   },
   {
    "vendor": "SonicWall",
-   "entries": 19,
-   "dated_entries": 19,
-   "security_entries": 19,
+   "entries": 20,
+   "dated_entries": 20,
+   "security_entries": 20,
    "pct_security": 100.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-09-02",
-   "median_gap_days": 20.0
+   "last_added": "2026-11-06",
+   "median_gap_days": 25.0
   },
   {
    "vendor": "Synacor",
@@ -574,9 +574,9 @@
  ],
  "ransomware": {
   "security": {
-   "total": 221,
+   "total": 222,
    "known": 79,
-   "pct_known": 35.7
+   "pct_known": 35.6
   },
   "other": {
    "total": 1547,
@@ -585,8 +585,8 @@
   }
  },
  "catalog": {
-  "total": 1768,
-  "security": 221,
+  "total": 1769,
+  "security": 222,
   "pct_security": 12.5,
   "classifier_version": 2,
   "classifier_rules": 35

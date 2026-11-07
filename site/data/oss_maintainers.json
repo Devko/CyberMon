@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T09:52:06Z",
+ "generated_at": "2026-11-07T09:14:55Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,7 +9,7 @@
  },
  "observed": {
   "first": "2026-11-05",
-  "last": "2026-11-06",
+  "last": "2026-11-07",
   "refresh_days": 7,
   "max_age_days": 14
  },

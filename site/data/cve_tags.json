@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T09:52:06Z",
+ "generated_at": "2026-11-07T09:14:55Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,11 +206,11 @@
   },
   {
    "year": 2026,
-   "published": 92016,
+   "published": 92457,
    "counts": {
-    "unsupported-when-assigned": 501,
+    "unsupported-when-assigned": 503,
     "disputed": 75,
-    "exclusively-hosted-service": 265
+    "exclusively-hosted-service": 266
    }
   }
  ],
@@ -221,60 +221,60 @@
  },
  "boards": {
   "unsupported-when-assigned": {
-   "total": 1274,
-   "cna_count": 52,
-   "active_cnas": 492,
-   "top1_share_pct": 38.3,
-   "top3_share_pct": 69.5,
+   "total": 1276,
+   "cna_count": 53,
+   "active_cnas": 495,
+   "top1_share_pct": 38.2,
+   "top3_share_pct": 69.4,
    "min_n": 5,
    "cnas": [
     {
      "cna": "VulDB",
      "n": 488,
-     "share_pct": 38.3,
-     "cna_published": 17865,
+     "share_pct": 38.2,
+     "cna_published": 17876,
      "rate_pct": 2.7
     },
     {
      "cna": "VulnCheck",
      "n": 282,
      "share_pct": 22.1,
-     "cna_published": 10745,
+     "cna_published": 10793,
      "rate_pct": 2.6
     },
     {
      "cna": "mitre",
      "n": 115,
      "share_pct": 9.0,
-     "cna_published": 28728,
+     "cna_published": 28730,
      "rate_pct": 0.4
     },
     {
      "cna": "apache",
-     "n": 44,
+     "n": 45,
      "share_pct": 3.5,
-     "cna_published": 2321,
+     "cna_published": 2329,
      "rate_pct": 1.9
     },
     {
      "cna": "CERT-PL",
      "n": 42,
      "share_pct": 3.3,
-     "cna_published": 597,
+     "cna_published": 598,
      "rate_pct": 7.0
     },
     {
      "cna": "icscert",
      "n": 42,
      "share_pct": 3.3,
-     "cna_published": 1941,
+     "cna_published": 1943,
      "rate_pct": 2.2
     },
     {
      "cna": "TR-CERT",
      "n": 31,
      "share_pct": 2.4,
-     "cna_published": 877,
+     "cna_published": 879,
      "rate_pct": 3.5
     },
     {
@@ -309,15 +309,15 @@
      "cna": "TPLink",
      "n": 13,
      "share_pct": 1.0,
-     "cna_published": 218,
-     "rate_pct": 6.0
+     "cna_published": 219,
+     "rate_pct": 5.9
     }
    ]
   },
   "disputed": {
    "total": 578,
    "cna_count": 13,
-   "active_cnas": 492,
+   "active_cnas": 495,
    "top1_share_pct": 81.3,
    "top3_share_pct": 97.8,
    "min_n": 5,
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 470,
      "share_pct": 81.3,
-     "cna_published": 28728,
+     "cna_published": 28730,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 92,
      "share_pct": 15.9,
-     "cna_published": 17865,
+     "cna_published": 17876,
      "rate_pct": 0.5
     }
    ]
@@ -341,26 +341,26 @@
  },
  "severity": {
   "all": {
-   "critical": 22095,
-   "high": 80423,
-   "medium": 96021,
-   "low": 8939,
-   "unscored": 26458
+   "critical": 22156,
+   "high": 80622,
+   "medium": 96342,
+   "low": 8998,
+   "unscored": 26259
   },
   "unsupported-when-assigned": {
    "tagged": {
     "critical": 226,
-    "high": 474,
-    "medium": 487,
+    "high": 476,
+    "medium": 488,
     "low": 41,
-    "unscored": 46
+    "unscored": 45
    },
    "same_cnas_untagged": {
-    "critical": 10864,
-    "high": 28718,
-    "medium": 43596,
-    "low": 3127,
-    "unscored": 10129
+    "critical": 10884,
+    "high": 28766,
+    "medium": 43650,
+    "low": 3129,
+    "unscored": 10112
    }
   },
   "disputed": {
@@ -372,11 +372,11 @@
     "unscored": 161
    },
    "same_cnas_untagged": {
-    "critical": 6748,
-    "high": 15484,
-    "medium": 26803,
-    "low": 2416,
-    "unscored": 9143
+    "critical": 6753,
+    "high": 15518,
+    "medium": 26840,
+    "low": 2418,
+    "unscored": 9134
    }
   }
  },
@@ -384,7 +384,7 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 3650
+    "n": 3680
    },
    {
     "tag": "x_freeware",
@@ -415,9 +415,9 @@
    }
   ],
   "schema_totals": {
-   "unsupported-when-assigned": 1365,
+   "unsupported-when-assigned": 1367,
    "disputed": 1517,
-   "exclusively-hosted-service": 444
+   "exclusively-hosted-service": 445
   }
  },
  "headline": {
@@ -427,7 +427,7 @@
   "unsupported_latest": 423,
   "unsupported_latest_share_pct": 0.9,
   "current_year": 2026,
-  "unsupported_current": 501,
+  "unsupported_current": 503,
   "disputed_from": 2020,
   "disputed_to": 2025,
   "disputed_min": 85,

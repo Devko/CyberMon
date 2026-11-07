@@ -17683,6 +17683,17 @@
    "ransom": "Unknown",
    "vendor": "Citrix"
   },
+  "CVE-2026-19868": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-06",
+   "desc": "d495e2966269",
+   "due": "2026-11-20",
+   "name": "SonicWall SonicOS SSLVPN Use of Single-factor Authentication Vulnerability",
+   "notes": "0587636ddb38",
+   "product": "SonicOS SSLVPN",
+   "ransom": "Unknown",
+   "vendor": "SonicWall"
+  },
   "CVE-2026-20045": {
    "action": "f09df147152e",
    "added": "2026-01-21",
@@ -19455,7 +19466,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-06",
+ "last_observed": "2026-11-07",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
