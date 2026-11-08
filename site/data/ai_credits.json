@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -390,19 +390,19 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 67868,
-  "scored": 67813,
-  "high_or_critical": 28920,
+  "credited": 68115,
+  "scored": 68060,
+  "high_or_critical": 28992,
   "high_or_critical_pct": 42.6,
-  "poc": 1020,
+  "poc": 1021,
   "poc_pct": 1.5,
   "kev": 92,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6589,
-   "high": 22331,
-   "medium": 36758,
-   "low": 2135,
+   "critical": 6608,
+   "high": 22384,
+   "medium": 36927,
+   "low": 2141,
    "unscored": 55
   }
  },
@@ -410,7 +410,7 @@
   "llm": {
    "n": 371,
    "median_cvss": 7.5,
-   "median_epss_pctile": 34.1,
+   "median_epss_pctile": 34.2,
    "epss_scored": 371,
    "recent_days": 90,
    "recent_pct": 63.9,
@@ -442,19 +442,19 @@
    }
   },
   "baseline": {
-   "n": 67868,
+   "n": 68115,
    "median_cvss": 6.9,
-   "median_epss_pctile": 27.9,
-   "epss_scored": 67720,
+   "median_epss_pctile": 28.0,
+   "epss_scored": 68115,
    "recent_days": 90,
-   "recent_pct": 28.3,
+   "recent_pct": 28.4,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
-   "memory_pct": 9.6,
+   "memory_pct": 9.5,
    "cna_scored_pct": 90.7,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 12805,
+    "n": 12895,
     "pct": 18.9
    }
   }
@@ -473,8 +473,8 @@
      "pct": 25.3
     },
     "baseline": {
-     "n": 6486,
-     "pct": 9.6
+     "n": 6503,
+     "pct": 9.5
     }
    },
    {
@@ -489,8 +489,8 @@
      "pct": 24.7
     },
     "baseline": {
-     "n": 24579,
-     "pct": 36.2
+     "n": 24701,
+     "pct": 36.3
     }
    },
    {
@@ -505,8 +505,8 @@
      "pct": 11.6
     },
     "baseline": {
-     "n": 17394,
-     "pct": 25.6
+     "n": 17479,
+     "pct": 25.7
     }
    },
    {
@@ -521,8 +521,8 @@
      "pct": 10.5
     },
     "baseline": {
-     "n": 6077,
-     "pct": 9.0
+     "n": 6086,
+     "pct": 8.9
     }
    },
    {
@@ -538,7 +538,7 @@
     },
     "baseline": {
      "n": 1259,
-     "pct": 1.9
+     "pct": 1.8
     }
    },
    {
@@ -553,7 +553,7 @@
      "pct": 10.0
     },
     "baseline": {
-     "n": 4421,
+     "n": 4425,
      "pct": 6.5
     }
    },
@@ -569,7 +569,7 @@
      "pct": 13.0
     },
     "baseline": {
-     "n": 6713,
+     "n": 6723,
      "pct": 9.9
     }
    },
@@ -762,9 +762,9 @@
   },
   {
    "year": 2026,
-   "published": 92457,
-   "with_credits": 40336,
-   "pct": 43.6
+   "published": 92930,
+   "with_credits": 40583,
+   "pct": 43.7
   }
  ],
  "board": [

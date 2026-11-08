@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,13 +159,13 @@
   },
   {
    "year": 2026,
-   "published": 92457,
-   "named": 89144,
-   "ai": 3192,
+   "published": 92930,
+   "named": 89615,
+   "ai": 3193,
    "by_category": {
     "frameworks": 199,
     "serving": 371,
-    "platforms": 181,
+    "platforms": 182,
     "apps": 2441
    },
    "top_product": {
@@ -198,7 +198,7 @@
   ]
  },
  "cwe": {
-  "n": 4417,
+  "n": 4418,
   "no_cwe": 10,
   "no_cwe_pct": 0.2,
   "baseline_no_cwe_pct": 10.0,
@@ -207,7 +207,7 @@
     "cwe": "CWE-22",
     "name": "Path traversal",
     "n": 360,
-    "pct": 8.2,
+    "pct": 8.1,
     "baseline_pct": 2.8
    },
    {
@@ -215,7 +215,7 @@
     "name": "Server-side request forgery (SSRF)",
     "n": 355,
     "pct": 8.0,
-    "baseline_pct": 1.6
+    "baseline_pct": 1.7
    },
    {
     "cwe": "CWE-502",
@@ -242,7 +242,7 @@
     "cwe": "CWE-862",
     "name": "Missing authorization",
     "n": 201,
-    "pct": 4.6,
+    "pct": 4.5,
     "baseline_pct": 4.9
    },
    {
@@ -285,12 +285,12 @@
   }
  },
  "exploited": {
-  "n": 4417,
-  "baseline_n": 204961,
+  "n": 4418,
+  "baseline_n": 205433,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
-  "kev_expected": 12.3,
+  "kev_expected": 12.2,
   "poc": 32,
   "poc_pct": 0.7,
   "poc_baseline_pct": 0.4,
@@ -298,7 +298,7 @@
   "nuclei": 117,
   "nuclei_pct": 2.6,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 34.2,
+  "nuclei_expected": 34.1,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -530,7 +530,7 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4417,
+  "n": 4418,
   "cna_count": 41,
   "top": [
    {
@@ -566,8 +566,8 @@
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3192,
-  "current_share_pct": 3.5,
+  "current_ai": 3193,
+  "current_share_pct": 3.4,
   "lead_label": "OpenClaw",
   "lead_n": 677,
   "lead_pct": 15.3

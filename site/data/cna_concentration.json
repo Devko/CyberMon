@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "years": [
   {
    "year": 1999,
@@ -221,9 +221,9 @@
    "year": 2026,
    "cna_count": 411,
    "newcomer_count": 72,
-   "top5_share": 45.6,
-   "top10_share": 67.3,
-   "hhi": 572.8
+   "top5_share": 45.5,
+   "top10_share": 67.2,
+   "hhi": 570.7
   }
  ],
  "rejection_leaderboard": {
@@ -274,7 +274,7 @@
    },
    {
     "cna": "redhat",
-    "total": 3212,
+    "total": 3214,
     "rejected": 199,
     "rejected_rate_pct": 6.2
    },
@@ -340,7 +340,7 @@
    },
    {
     "cna": "Linux",
-    "total": 18541,
+    "total": 18555,
     "rejected": 336,
     "rejected_rate_pct": 1.8
    },
@@ -388,7 +388,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 10910,
+    "total": 10922,
     "rejected": 117,
     "rejected_rate_pct": 1.1
    },
@@ -502,7 +502,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 11894,
+    "total": 12001,
     "rejected": 51,
     "rejected_rate_pct": 0.4
    },
@@ -580,13 +580,13 @@
    },
    {
     "cna": "Patchstack",
-    "total": 19320,
+    "total": 19406,
     "rejected": 31,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "VulDB",
-    "total": 17920,
+    "total": 17938,
     "rejected": 44,
     "rejected_rate_pct": 0.2
    },
@@ -682,7 +682,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5569,
+    "total": 5592,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -694,7 +694,7 @@
    },
    {
     "cna": "ibm",
-    "total": 3482,
+    "total": 3691,
     "rejected": 1,
     "rejected_rate_pct": 0.0
    },
@@ -784,7 +784,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 469,
+    "total": 471,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1618,15 +1618,15 @@
    {
     "year": 2026,
     "cna_count": 410,
-    "top5_share": 45.5,
-    "top10_share": 66.6,
-    "hhi": 594.6
+    "top5_share": 45.4,
+    "top10_share": 66.5,
+    "hhi": 592.4
    }
   ]
  },
  "projection": {
   "year": 2026,
-  "newcomers": 85,
-  "elapsed": 0.852
+  "newcomers": 84,
+  "elapsed": 0.855
  }
 }

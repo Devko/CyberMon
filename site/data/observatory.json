@@ -1,7 +1,7 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "base_date": "2021-12-23",
- "last_observed": "2026-11-07",
+ "last_observed": "2026-11-08",
  "missed_nights": [
   "2026-08-02",
   "2026-08-28",
@@ -50,12 +50,12 @@
   },
   "rescore": {
    "first_observed": "2026-07-15",
-   "events": 5773
+   "events": 5774
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 94,
-   "nights": 104,
+   "events": 95,
+   "nights": 105,
    "excluded_reset": 0,
    "excluded_anomaly": 10,
    "excluded": [
@@ -78,7 +78,8 @@
     "2026-09-29",
     "2026-09-30",
     "2026-10-01",
-    "2026-10-22"
+    "2026-10-22",
+    "2026-11-07"
    ]
   }
  },
@@ -89,13 +90,13 @@
   "kev_due": 22,
   "kev_field": 785,
   "kev_text": 1816,
-  "rescore": 163,
+  "rescore": 164,
   "version_shift": 29,
   "first_score": 5576,
   "score_removed": 5,
-  "epss_move": 94
+  "epss_move": 95
  },
- "cves": 7579,
+ "cves": 7580,
  "events": [
   "26|CVE-2013-3900|0||1",
   "26|CVE-2015-7450|0||1",
@@ -10379,6 +10380,8 @@
   "1780|CVE-2026-19868|0||0",
   "1780|CVE-2026-25088|6|v3.1 5.1->v3.1 4.9 (fortinet)|0",
   "1780|CVE-2026-65941|6|v3.1 8.8->v3.1 9.8 (ProgressSoftware)|0",
-  "1780|CVE-2026-89020|6|v4.0 5.3->v4.0 8.7 (VulnCheck)|0"
+  "1780|CVE-2026-89020|6|v4.0 5.3->v4.0 8.7 (VulnCheck)|0",
+  "1781|CVE-2026-83844|6|v3.1 8.1->v3.1 7.0 (microsoft)|0",
+  "1781|CVE-2026-75650|10|0.34741->0.99376|2"
  ]
 }

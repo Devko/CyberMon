@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -267,7 +267,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 10761,
+   "n": 10773,
    "avg_cvss": 7.3,
    "median_cvss": 7.2,
    "pct_geq_9": 13.0,
@@ -472,13 +472,22 @@
    "pct_geq_7": 34.4
   },
   {
+   "cna": "ibm",
+   "org": "ibm",
+   "n": 2847,
+   "avg_cvss": 6.6,
+   "median_cvss": 6.5,
+   "pct_geq_9": 9.0,
+   "pct_geq_7": 42.7
+  },
+  {
    "cna": "Patchstack",
    "org": "Patchstack",
-   "n": 16760,
+   "n": 16846,
    "avg_cvss": 6.7,
    "median_cvss": 6.5,
    "pct_geq_9": 8.8,
-   "pct_geq_7": 48.2
+   "pct_geq_7": 47.9
   },
   {
    "cna": "synology",
@@ -524,15 +533,6 @@
    "median_cvss": 5.3,
    "pct_geq_9": 8.2,
    "pct_geq_7": 16.3
-  },
-  {
-   "cna": "ibm",
-   "org": "ibm",
-   "n": 2638,
-   "avg_cvss": 6.6,
-   "median_cvss": 6.5,
-   "pct_geq_9": 7.9,
-   "pct_geq_7": 40.7
   },
   {
    "cna": "fortinet",
@@ -600,11 +600,11 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10794,
+   "n": 10901,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.5,
-   "pct_geq_7": 27.7
+   "pct_geq_7": 27.9
   },
   {
    "cna": "WPScan",
@@ -715,6 +715,15 @@
    "pct_geq_7": 30.3
   },
   {
+   "cna": "redhat",
+   "org": "redhat",
+   "n": 1929,
+   "avg_cvss": 6.4,
+   "median_cvss": 6.5,
+   "pct_geq_9": 4.1,
+   "pct_geq_7": 40.5
+  },
+  {
    "cna": "Zoom",
    "org": "Zoom",
    "n": 123,
@@ -722,15 +731,6 @@
    "median_cvss": 6.5,
    "pct_geq_9": 4.1,
    "pct_geq_7": 35.8
-  },
-  {
-   "cna": "redhat",
-   "org": "redhat",
-   "n": 1928,
-   "avg_cvss": 6.4,
-   "median_cvss": 6.5,
-   "pct_geq_9": 4.0,
-   "pct_geq_7": 40.5
   },
   {
    "cna": "GitLab",
@@ -753,11 +753,11 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 15092,
+   "n": 15110,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
-   "pct_geq_9": 2.9,
-   "pct_geq_7": 14.2
+   "pct_geq_9": 3.0,
+   "pct_geq_7": 14.3
   },
   {
    "cna": "Silabs",

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "matched": {
   "total_kev": 1769,
   "matched_cve": 1769,
@@ -211,8 +211,8 @@
  ],
  "oldest_recent": {
   "window_days": 365,
-  "since": "2025-11-08",
-  "until": "2026-11-07",
+  "since": "2025-11-09",
+  "until": "2026-11-08",
   "n_listed": 314,
   "n_over_10y": 15,
   "entries": [

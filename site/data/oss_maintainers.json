@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,14 +9,14 @@
  },
  "observed": {
   "first": "2026-11-05",
-  "last": "2026-11-07",
+  "last": "2026-11-08",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-06"
+  "last": "2026-11-08"
  },
  "ecosystems": [
   {
@@ -699,11 +699,11 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 174
+       "n": 173
       },
       {
        "label": "0",
-       "n": 13
+       "n": 14
       },
       {
        "label": "1\u20134",

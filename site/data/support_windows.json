@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
- "as_of": "2026-11-07",
+ "generated_at": "2026-11-08T15:35:35Z",
+ "as_of": "2026-11-08",
  "upstream": {
-  "generated_at": "2026-11-07T02:38:40+00:00",
+  "generated_at": "2026-11-08T00:08:08+00:00",
   "schema_version": "1.2.1"
  },
  "provisional_open_pct": 20.0,
@@ -12,8 +12,8 @@
   "products": 489,
   "categories": 9,
   "lines": 9374,
-  "ended": 6887,
-  "scheduled": 1199,
+  "ended": 6886,
+  "scheduled": 1200,
   "open": 737,
   "ended_undated": 551,
   "unreleased": 0,
@@ -68,10 +68,10 @@
     "to": 2024,
     "lines": 1033,
     "products": 195,
-    "median_days": 853,
+    "median_days": 847,
     "median_at_least": null
    },
-   "change_pct": -19.9
+   "change_pct": -20.5
   }
  },
  "years": [
@@ -351,8 +351,8 @@
    "products": 339,
    "median_days": 569,
    "median_at_least": null,
-   "ended": 697,
-   "scheduled": 190,
+   "ended": 696,
+   "scheduled": 191,
    "open": 88,
    "ended_undated": 7,
    "open_pct": 15.6,
@@ -385,7 +385,7 @@
    "year": 2026,
    "lines": 908,
    "products": 307,
-   "median_days": 454,
+   "median_days": 455,
    "median_at_least": null,
    "ended": 295,
    "scheduled": 348,
@@ -394,7 +394,7 @@
    "open_pct": 41.6,
    "panel_lines": 273,
    "panel_products": 112,
-   "panel_median_days": 641,
+   "panel_median_days": 582,
    "panel_median_at_least": null,
    "partial": true,
    "provisional": true
@@ -654,8 +654,8 @@
    "open_pct": 12.7,
    "no_supported_line": 4,
    "newest_line_ended": 5,
-   "ended": 2840,
-   "scheduled": 276,
+   "ended": 2839,
+   "scheduled": 277,
    "open": 211,
    "ended_undated": 136
   },

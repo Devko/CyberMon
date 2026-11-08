@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T09:14:55Z",
+ "generated_at": "2026-11-08T15:35:35Z",
  "years": [
   {
    "year": 1999,
@@ -138,15 +138,15 @@
   },
   {
    "year": 2026,
-   "published": 92457,
+   "published": 92930,
    "rejected": 343
   }
  ],
  "projection": {
   "year": 2026,
-  "published": 108511,
-  "rejected": 403,
-  "elapsed": 0.852
+  "published": 108716,
+  "rejected": 401,
+  "elapsed": 0.855
  },
  "without_linux": {
   "cna": "Linux",
@@ -288,15 +288,15 @@
    },
    {
     "year": 2026,
-    "published": 84213,
+    "published": 84672,
     "rejected": 291
    }
   ],
   "projection": {
    "year": 2026,
-   "published": 98835,
-   "rejected": 342,
-   "elapsed": 0.852
+   "published": 99055,
+   "rejected": 340,
+   "elapsed": 0.855
   }
  }
 }
