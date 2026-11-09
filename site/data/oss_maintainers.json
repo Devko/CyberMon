@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
+ "generated_at": "2026-11-09T10:19:27Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,14 +9,14 @@
  },
  "observed": {
   "first": "2026-11-05",
-  "last": "2026-11-08",
+  "last": "2026-11-09",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-08"
+  "last": "2026-11-09"
  },
  "ecosystems": [
   {
@@ -449,7 +449,7 @@
    "scorecard": {
     "github_packages": 246,
     "repos": 216,
-    "scored": 178,
+    "scored": 179,
     "old_results": 3,
     "median_score": 4.5,
     "checks": {
@@ -460,7 +460,7 @@
       },
       {
        "label": "0",
-       "n": 75
+       "n": 76
       },
       {
        "label": "1\u20134",
@@ -490,7 +490,7 @@
       },
       {
        "label": "5\u20137",
-       "n": 43
+       "n": 44
       },
       {
        "label": "8\u201310",
@@ -504,7 +504,7 @@
       },
       {
        "label": "0",
-       "n": 77
+       "n": 78
       },
       {
        "label": "1\u20134",
@@ -522,7 +522,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 176
+       "n": 177
       },
       {
        "label": "0",
@@ -626,7 +626,7 @@
    "scorecard": {
     "github_packages": 241,
     "repos": 226,
-    "scored": 189,
+    "scored": 188,
     "old_results": 3,
     "median_score": 4.0,
     "checks": {
@@ -637,7 +637,7 @@
       },
       {
        "label": "0",
-       "n": 82
+       "n": 81
       },
       {
        "label": "1\u20134",
@@ -663,7 +663,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 95
+       "n": 94
       },
       {
        "label": "5\u20137",
@@ -681,7 +681,7 @@
       },
       {
        "label": "0",
-       "n": 99
+       "n": 98
       },
       {
        "label": "1\u20134",
@@ -699,7 +699,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 173
+       "n": 172
       },
       {
        "label": "0",

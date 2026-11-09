@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
+ "generated_at": "2026-11-09T10:19:27Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,14 +159,14 @@
   },
   {
    "year": 2026,
-   "published": 92930,
-   "named": 89615,
-   "ai": 3193,
+   "published": 93254,
+   "named": 89939,
+   "ai": 3195,
    "by_category": {
     "frameworks": 199,
     "serving": 371,
     "platforms": 182,
-    "apps": 2441
+    "apps": 2443
    },
    "top_product": {
     "label": "OpenClaw",
@@ -198,16 +198,16 @@
   ]
  },
  "cwe": {
-  "n": 4418,
+  "n": 4420,
   "no_cwe": 10,
   "no_cwe_pct": 0.2,
-  "baseline_no_cwe_pct": 10.0,
+  "baseline_no_cwe_pct": 9.9,
   "top": [
    {
     "cwe": "CWE-22",
     "name": "Path traversal",
-    "n": 360,
-    "pct": 8.1,
+    "n": 361,
+    "pct": 8.2,
     "baseline_pct": 2.8
    },
    {
@@ -257,7 +257,7 @@
     "name": "Authz bypass via user-controlled key",
     "n": 145,
     "pct": 3.3,
-    "baseline_pct": 1.7
+    "baseline_pct": 1.8
    },
    {
     "cwe": "CWE-78",
@@ -285,8 +285,8 @@
   }
  },
  "exploited": {
-  "n": 4418,
-  "baseline_n": 205433,
+  "n": 4420,
+  "baseline_n": 205755,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
@@ -298,7 +298,7 @@
   "nuclei": 117,
   "nuclei_pct": 2.6,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 34.1,
+  "nuclei_expected": 34.3,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -363,13 +363,13 @@
    "key": "langflow",
    "label": "Langflow",
    "category": "apps",
-   "n": 233,
-   "all_years": 233,
+   "n": 234,
+   "all_years": 234,
    "first_year": 2024,
    "kev": 6,
    "poc": 13,
    "top_cna": "ibm",
-   "top_cna_pct": 79.0
+   "top_cna_pct": 79.1
   },
   {
    "key": "praison",
@@ -459,13 +459,13 @@
    "key": "mcp_sdk",
    "label": "Model Context Protocol SDKs and tools",
    "category": "apps",
-   "n": 85,
-   "all_years": 85,
+   "n": 86,
+   "all_years": 86,
    "first_year": 2025,
    "kev": 0,
    "poc": 0,
    "top_cna": "GitHub_M",
-   "top_cna_pct": 85.9
+   "top_cna_pct": 84.9
   },
   {
    "key": "lollms",
@@ -530,7 +530,7 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4418,
+  "n": 4420,
   "cna_count": 41,
   "top": [
    {
@@ -566,7 +566,7 @@
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3193,
+  "current_ai": 3195,
   "current_share_pct": 3.4,
   "lead_label": "OpenClaw",
   "lead_n": 677,

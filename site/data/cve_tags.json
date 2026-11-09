@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
+ "generated_at": "2026-11-09T10:19:27Z",
  "schema_tags": [
   "unsupported-when-assigned",
   "disputed",
@@ -206,7 +206,7 @@
   },
   {
    "year": 2026,
-   "published": 92930,
+   "published": 93254,
    "counts": {
     "unsupported-when-assigned": 504,
     "disputed": 75,
@@ -232,21 +232,21 @@
      "cna": "VulDB",
      "n": 488,
      "share_pct": 38.2,
-     "cna_published": 17894,
+     "cna_published": 17904,
      "rate_pct": 2.7
     },
     {
      "cna": "VulnCheck",
      "n": 283,
      "share_pct": 22.2,
-     "cna_published": 10805,
+     "cna_published": 11003,
      "rate_pct": 2.6
     },
     {
      "cna": "mitre",
      "n": 115,
      "share_pct": 9.0,
-     "cna_published": 28730,
+     "cna_published": 28731,
      "rate_pct": 0.4
     },
     {
@@ -326,14 +326,14 @@
      "cna": "mitre",
      "n": 470,
      "share_pct": 81.3,
-     "cna_published": 28730,
+     "cna_published": 28731,
      "rate_pct": 1.6
     },
     {
      "cna": "VulDB",
      "n": 92,
      "share_pct": 15.9,
-     "cna_published": 17894,
+     "cna_published": 17904,
      "rate_pct": 0.5
     }
    ]
@@ -341,10 +341,10 @@
  },
  "severity": {
   "all": {
-   "critical": 22223,
-   "high": 80769,
-   "medium": 96575,
-   "low": 9007,
+   "critical": 22246,
+   "high": 80897,
+   "medium": 96725,
+   "low": 9030,
    "unscored": 26276
   },
   "unsupported-when-assigned": {
@@ -356,10 +356,10 @@
     "unscored": 45
    },
    "same_cnas_untagged": {
-    "critical": 10942,
-    "high": 28867,
-    "medium": 43812,
-    "low": 3132,
+    "critical": 10963,
+    "high": 28992,
+    "medium": 43951,
+    "low": 3149,
     "unscored": 10112
    }
   },
@@ -372,10 +372,10 @@
     "unscored": 161
    },
    "same_cnas_untagged": {
-    "critical": 6763,
-    "high": 15521,
-    "medium": 26857,
-    "low": 2418,
+    "critical": 6777,
+    "high": 15629,
+    "medium": 26933,
+    "low": 2429,
     "unscored": 9134
    }
   }
@@ -384,7 +384,7 @@
   "private_tags": [
    {
     "tag": "x_open-source",
-    "n": 3769
+    "n": 3779
    },
    {
     "tag": "x_freeware",
@@ -392,7 +392,7 @@
    },
    {
     "tag": "x_known-exploited-vulnerability",
-    "n": 248
+    "n": 250
    },
    {
     "tag": "x_Charger",

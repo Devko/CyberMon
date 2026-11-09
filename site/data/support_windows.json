@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
- "as_of": "2026-11-08",
+ "generated_at": "2026-11-09T10:19:27Z",
+ "as_of": "2026-11-09",
  "upstream": {
-  "generated_at": "2026-11-08T00:08:08+00:00",
+  "generated_at": "2026-11-09T00:10:09+00:00",
   "schema_version": "1.2.1"
  },
  "provisional_open_pct": 20.0,
@@ -11,9 +11,9 @@
  "catalog": {
   "products": 489,
   "categories": 9,
-  "lines": 9374,
+  "lines": 9375,
   "ended": 6886,
-  "scheduled": 1200,
+  "scheduled": 1201,
   "open": 737,
   "ended_undated": 551,
   "unreleased": 0,
@@ -21,7 +21,7 @@
   "first_year": 1991,
   "last_year": 2026,
   "no_supported_line": 16,
-  "newest_line_ended": 20
+  "newest_line_ended": 19
  },
  "panel": {
   "early": [
@@ -68,10 +68,10 @@
     "to": 2024,
     "lines": 1033,
     "products": 195,
-    "median_days": 847,
+    "median_days": 853,
     "median_at_least": null
    },
-   "change_pct": -20.5
+   "change_pct": -19.9
   }
  },
  "years": [
@@ -383,18 +383,18 @@
   },
   {
    "year": 2026,
-   "lines": 908,
+   "lines": 909,
    "products": 307,
    "median_days": 455,
    "median_at_least": null,
    "ended": 295,
-   "scheduled": 348,
+   "scheduled": 349,
    "open": 265,
    "ended_undated": 0,
    "open_pct": 41.6,
    "panel_lines": 273,
    "panel_products": 112,
-   "panel_median_days": 582,
+   "panel_median_days": 641,
    "panel_median_at_least": null,
    "partial": true,
    "provisional": true
@@ -648,14 +648,14 @@
   {
    "category": "server-app",
    "products": 176,
-   "lines": 3463,
+   "lines": 3464,
    "median_days": 543,
    "median_at_least": null,
    "open_pct": 12.7,
    "no_supported_line": 4,
-   "newest_line_ended": 5,
+   "newest_line_ended": 4,
    "ended": 2839,
-   "scheduled": 277,
+   "scheduled": 278,
    "open": 211,
    "ended_undated": 136
   },

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
+ "generated_at": "2026-11-09T10:19:27Z",
  "since_month": "2023-11",
  "container": "cna",
  "classes": [
@@ -299,11 +299,11 @@
   },
   {
    "month": "2026-11",
-   "published": 3084,
-   "v4_only": 322,
-   "both": 650,
-   "v3_only": 1301,
-   "neither": 811
+   "published": 3408,
+   "v4_only": 324,
+   "both": 856,
+   "v3_only": 1395,
+   "neither": 833
   }
  ],
  "years": [
@@ -339,38 +339,38 @@
   },
   {
    "year": 2026,
-   "published": 92930,
-   "v4_only": 10925,
-   "both": 18339,
-   "v3_only": 43894,
-   "neither": 19772,
-   "neither_adp": 14574,
+   "published": 93254,
+   "v4_only": 10927,
+   "both": 18545,
+   "v3_only": 43988,
+   "neither": 19794,
+   "neither_adp": 14596,
    "v4_cnas": 278
   }
  ],
  "adopters": {
   "window_from": "2023-11",
   "min_v4": 50,
-  "window_published": 186120,
-  "window_v4": 45272,
+  "window_published": 186444,
+  "window_v4": 45480,
   "adopter_count": 321,
-  "top_share_pct": 80.4,
+  "top_share_pct": 80.5,
   "cnas": [
    {
     "cna": "VulDB",
-    "published": 15375,
-    "v4": 13988,
+    "published": 15385,
+    "v4": 13998,
     "v4_only": 2,
     "v4_share_pct": 91.0,
     "v4_only_share_pct": 0.0
    },
    {
     "cna": "VulnCheck",
-    "published": 10795,
-    "v4": 10716,
-    "v4_only": 1157,
+    "published": 10993,
+    "v4": 10914,
+    "v4_only": 1159,
     "v4_share_pct": 99.3,
-    "v4_only_share_pct": 10.7
+    "v4_only_share_pct": 10.5
    },
    {
     "cna": "GitHub_M",
@@ -479,13 +479,13 @@
   ]
  },
  "compare": {
-  "n": 28878,
+  "n": 29084,
   "median_delta": -0.1,
-  "same_band": 20127,
-  "v4_higher": 4408,
-  "v4_lower": 4343,
+  "same_band": 20265,
+  "v4_higher": 4465,
+  "v4_lower": 4354,
   "same_band_pct": 69.7,
-  "v4_higher_pct": 15.3,
+  "v4_higher_pct": 15.4,
   "v4_lower_pct": 15.0,
   "bins": [
    {
@@ -498,80 +498,80 @@
     "center": -2.5,
     "lo": -2.7,
     "hi": -2.3,
-    "n": 219
+    "n": 225
    },
    {
     "center": -2.0,
     "lo": -2.2,
     "hi": -1.8,
-    "n": 285
+    "n": 287
    },
    {
     "center": -1.5,
     "lo": -1.7,
     "hi": -1.3,
-    "n": 524
+    "n": 525
    },
    {
     "center": -1.0,
     "lo": -1.2,
     "hi": -0.8,
-    "n": 4607
+    "n": 4614
    },
    {
     "center": -0.5,
     "lo": -0.7,
     "hi": -0.3,
-    "n": 6136
+    "n": 6151
    },
    {
     "center": 0.0,
     "lo": -0.2,
     "hi": 0.2,
-    "n": 3848
+    "n": 3888
    },
    {
     "center": 0.5,
     "lo": 0.3,
     "hi": 0.7,
-    "n": 4344
+    "n": 4388
    },
    {
     "center": 1.0,
     "lo": 0.8,
     "hi": 1.2,
-    "n": 3857
+    "n": 3907
    },
    {
     "center": 1.5,
     "lo": 1.3,
     "hi": 1.7,
-    "n": 3126
+    "n": 3143
    },
    {
     "center": 2.0,
     "lo": 1.8,
     "hi": 2.2,
-    "n": 536
+    "n": 539
    },
    {
     "center": 2.5,
     "lo": 2.3,
     "hi": 2.7,
-    "n": 1163
+    "n": 1182
    },
    {
     "center": 3.0,
     "lo": 2.8,
     "hi": 10.0,
-    "n": 70
+    "n": 72
    }
   ],
   "min_n": 100,
   "cnas": [
    {
     "cna": "VulDB",
-    "n": 14010,
+    "n": 14020,
     "median_delta": -0.4,
     "same_band_pct": 60.8,
     "v4_higher_pct": 14.5,
@@ -579,11 +579,11 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 9560,
+    "n": 9756,
     "median_delta": 0.6,
-    "same_band_pct": 77.8,
-    "v4_higher_pct": 15.9,
-    "v4_lower_pct": 6.3
+    "same_band_pct": 77.6,
+    "v4_higher_pct": 16.2,
+    "v4_lower_pct": 6.2
    },
    {
     "cna": "icscert",
@@ -638,9 +638,9 @@
  "headline": {
   "current_year": 2026,
   "current_month": "2026-11",
-  "v4_share_current_pct": 31.5,
-  "v4_current": 29264,
-  "published_current": 92930,
+  "v4_share_current_pct": 31.6,
+  "v4_current": 29472,
+  "published_current": 93254,
   "latest_year": 2025,
   "v4_share_latest_pct": 25.8,
   "v4_cnas_current": 278

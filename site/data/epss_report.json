@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
+ "generated_at": "2026-11-09T10:19:27Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -103,8 +103,8 @@
    "pct_below_1pct": 51.5,
    "pct_1_to_10pct": 20.9,
    "pct_above_10pct": 27.7,
-   "ungradeable": 78,
-   "pending": 1
+   "ungradeable": 79,
+   "pending": 0
   }
  ],
  "distribution": {
@@ -212,10 +212,10 @@
   "graded": 1440,
   "ungradeable": {
    "pre_epss": 0,
-   "listed_before_publication": 232,
+   "listed_before_publication": 233,
    "no_prior_score": 96
   },
-  "pending_backfill": 1
+  "pending_backfill": 0
  },
  "headline": {
   "graded": 1440,
@@ -16136,6 +16136,15 @@
    "percentile": 0.48678,
    "model": "v5",
    "reason": null
+  },
+  {
+   "cve": "CVE-2026-19868",
+   "date_added": "2026-11-06",
+   "score_date": "2026-11-05",
+   "epss": null,
+   "percentile": null,
+   "model": null,
+   "reason": "no_score_for_date"
   }
  ]
 }

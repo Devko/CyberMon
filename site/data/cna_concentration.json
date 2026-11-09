@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-08T15:35:35Z",
+ "generated_at": "2026-11-09T10:19:27Z",
  "years": [
   {
    "year": 1999,
@@ -223,7 +223,7 @@
    "newcomer_count": 72,
    "top5_share": 45.5,
    "top10_share": 67.2,
-   "hhi": 570.7
+   "hhi": 571.9
   }
  ],
  "rejection_leaderboard": {
@@ -388,7 +388,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 10922,
+    "total": 11120,
     "rejected": 117,
     "rejected_rate_pct": 1.1
    },
@@ -418,7 +418,7 @@
    },
    {
     "cna": "mitre",
-    "total": 29010,
+    "total": 29011,
     "rejected": 280,
     "rejected_rate_pct": 1.0
    },
@@ -580,13 +580,13 @@
    },
    {
     "cna": "Patchstack",
-    "total": 19406,
+    "total": 19413,
     "rejected": 31,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "VulDB",
-    "total": 17938,
+    "total": 17948,
     "rejected": 44,
     "rejected_rate_pct": 0.2
    },
@@ -682,7 +682,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5592,
+    "total": 5614,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -694,7 +694,7 @@
    },
    {
     "cna": "ibm",
-    "total": 3691,
+    "total": 3777,
     "rejected": 1,
     "rejected_rate_pct": 0.0
    },
@@ -1618,15 +1618,15 @@
    {
     "year": 2026,
     "cna_count": 410,
-    "top5_share": 45.4,
+    "top5_share": 45.5,
     "top10_share": 66.5,
-    "hhi": 592.4
+    "hhi": 594.1
    }
   ]
  },
  "projection": {
   "year": 2026,
   "newcomers": 84,
-  "elapsed": 0.855
+  "elapsed": 0.858
  }
 }
