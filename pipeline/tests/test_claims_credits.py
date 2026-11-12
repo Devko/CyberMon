@@ -443,56 +443,61 @@ def check_vendors_between_on_injection_above_baseline_on_memory(
 
 # ------------------------------------------------------------ 06 · targets
 
-def check_lab_list_more_concentrated(d: dict) -> None:
-    # editorial.js (credits.html 06 headline): "Lab-credited CVEs are more
-    # concentrated by affected product than vendor-credited CVEs." The
-    # caption's measure: the share the top five rows hold. (2026-10-03: labs
-    # 42.0%, vendors 26.6%; 46.3–47.7% vs 26.2–27.0% from 09-23 to 09-29.)
-    # Two batches of 50 lab CVEs spread over products outside the top five
-    # would take the lab share to about 30%, still above.
-    # Replaced on 2026-10-03, the day it was written: "Two products account
-    # for about a quarter" (24.6%, floor 20%, gone at ~316 lab CVEs).
-    lab, vendor = d["targets"]["llm"], d["targets"]["vendor"]
-    assert lab["top_share_n"] == vendor["top_share_n"], (
-        f"the comparison needs the same top-N for both kinds; "
-        f"{lab['top_share_n']} vs {vendor['top_share_n']}"
-    )
-    claims_support.record(lab["top_share_pct"], lo=vendor["top_share_pct"],
-                          unit="%", note=f"top-{lab['top_share_n']} share, "
-                                         f"labs vs vendors")
-    assert lab["top_share_pct"] > vendor["top_share_pct"], (
-        f"'more concentrated by affected product' needs the lab top-"
-        f"{lab['top_share_n']} share above the vendor one; "
-        f"{lab['top_share_pct']}% vs {vendor['top_share_pct']}%"
+def check_firefox_leads_lab_list(d: dict) -> None:
+    # editorial.js (credits.html 06 headline): "Firefox leads the
+    # lab-credited list" (2026-11-12: Mozilla / Firefox 90 CVEs, Apache
+    # TomEE next at 38).
+    # Replaced on 2026-11-12: "Lab-credited CVEs are more concentrated by
+    # affected product than vendor-credited CVEs." The top-five shares
+    # crossed on 2026-11-10 (labs 41.6%, vendors 42.7%) when VulnCheck
+    # published 121 FFmpeg records crediting AISLE on 11-09, and stood at
+    # 45.6% vs 42.8% two days later: a coin toss, decided by the next
+    # batch. The share line under each list prints the value.
+    rows = d["targets"]["llm"]["projects"]
+    first = rows[0]["label"]
+    if len(rows) > 1:
+        claims_support.record(rows[0]["n"], lo=rows[1]["n"], unit=" CVEs",
+                              note="lab list, first row vs second")
+    assert "firefox" in first.lower(), (
+        f"'Firefox leads the lab-credited list' — the first row is now "
+        f"{first!r}"
     )
 
 
-def check_bc_java_and_firefox_in_lab_top_five(d: dict) -> None:
+def check_bc_java_in_lab_top_five(d: dict) -> None:
     # editorial.js (credits.html 06): "Bouncy Castle's Java crypto library
-    # and the Firefox browser are both in the top five" (2026-10-03: first
-    # and second, 32 and 31 CVEs; the fifth row has 13). Replaced "a Java
-    # crypto library and a browser lead the list, each well ahead of the
-    # third row": Bouncy Castle's C# edition arrived at 18 in one batch, and
-    # the order of the leading rows can change with the next one.
-    t = d["targets"]["llm"]
-    top = [p["label"].lower() for p in t["projects"][:5]]
-    assert any("bouncy castle" in lab and "bc-java" in lab for lab in top) \
-        and any("firefox" in lab for lab in top), (
-            f"'Bouncy Castle's Java crypto library and the Firefox browser "
-            f"are both in the top five' — the top five are now {top}"
-        )
-
-
-def check_vendor_first_row_red_hat(d: dict) -> None:
-    # editorial.js (credits.html 06): "The vendor-credited list's first row
-    # is Red Hat Enterprise Linux" (2026-11-04: 100 CVEs; curl next at 35).
-    # The caption's "with its top five holding about a quarter" was cut on
-    # 2026-11-04: the share rose from 26.2% to 31.3% in October against a
-    # cap of 33, and the share line under the list prints the value.
-    first = d["targets"]["vendor"]["projects"][0]["label"]
-    assert "red hat enterprise linux" in first.lower(), (
-        f"'first row is Red Hat Enterprise Linux' — it is now {first!r}"
+    # is also in the top five" (2026-11-12: third, 32 CVEs; the fifth row
+    # has 18, the sixth 17). Until 2026-11-12 the sentence also named
+    # Firefox, which the headline now carries. Earlier: "a Java crypto
+    # library and a browser lead the list, each well ahead of the third
+    # row" — Bouncy Castle's C# edition arrived at 18 in one batch.
+    top = [p["label"].lower() for p in d["targets"]["llm"]["projects"][:5]]
+    assert any("bouncy castle" in lab and "bc-java" in lab for lab in top), (
+        f"'Bouncy Castle's Java crypto library is also in the top five' — "
+        f"the top five are now {top}"
     )
+
+
+def check_vendor_list_led_by_ffmpeg_and_rhel(d: dict) -> None:
+    # editorial.js (credits.html 06 headline): "FFmpeg and Red Hat
+    # Enterprise Linux lead the vendor-credited list" — the first two rows,
+    # in either order (2026-11-12: FFmpeg 141, Red Hat Enterprise Linux 10
+    # 115, curl third at 35). FFmpeg rose from 18 on 2026-11-09, when
+    # VulnCheck published 121 FFmpeg records crediting AISLE; most of the
+    # Red Hat rows credit AISLE too, so the next AISLE batch can swap the
+    # two, which this sentence survives.
+    # Replaced on 2026-11-12: "The vendor-credited list's first row is Red
+    # Hat Enterprise Linux" (2026-11-04: 100 CVEs; curl next at 35).
+    rows = d["targets"]["vendor"]["projects"]
+    top = [p["label"].lower() for p in rows[:2]]
+    if len(rows) > 2:
+        claims_support.record(rows[1]["n"], lo=rows[2]["n"], unit=" CVEs",
+                              note="vendor list, second row vs third")
+    assert any("ffmpeg" in lab for lab in top) \
+        and any("red hat enterprise linux" in lab for lab in top), (
+            f"'FFmpeg and Red Hat Enterprise Linux lead the vendor-credited "
+            f"list' — the first two rows are now {top}"
+        )
 
 
 # ----------------------------------------------------------- 07 · coverage
@@ -590,14 +595,12 @@ CLAIMS = [
      "has a larger memory-safety share than the baseline.",
      "ai_credits.json",
      check_vendors_between_on_injection_above_baseline_on_memory),
-    ("Lab-credited CVEs are more concentrated by affected product than "
-     "vendor-credited CVEs.",
-     "ai_credits.json", check_lab_list_more_concentrated),
-    ("Bouncy Castle's Java crypto library and the Firefox browser are both in "
-     "the top five.",
-     "ai_credits.json", check_bc_java_and_firefox_in_lab_top_five),
-    ("The vendor-credited list's first row is Red Hat Enterprise Linux",
-     "ai_credits.json", check_vendor_first_row_red_hat),
+    ("Firefox leads the lab-credited list",
+     "ai_credits.json", check_firefox_leads_lab_list),
+    ("Bouncy Castle's Java crypto library is also in the top five.",
+     "ai_credits.json", check_bc_java_in_lab_top_five),
+    ("FFmpeg and Red Hat Enterprise Linux lead the vendor-credited list.",
+     "ai_credits.json", check_vendor_list_led_by_ffmpeg_and_rhel),
     ("Fewer than half of published CVEs carry any credit.",
      "ai_credits.json", check_fewer_than_half_carry_a_credit),
     ("It has risen from almost none in 2018 to more than four in ten.",

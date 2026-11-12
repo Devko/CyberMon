@@ -4185,13 +4185,12 @@ export const editorial = {
       num: "06",
       kicker: "Affected products",
       source: "CVE List V5 (MITRE)",
-      headline: "Lab-credited CVEs are more concentrated by affected product than vendor-credited CVEs.",
+      headline: "Firefox leads the lab-credited list; FFmpeg and Red Hat Enterprise Linux lead the vendor-credited list.",
       caption:
         "The affected product each record lists first, ranked per kind. In the " +
-        "lab-credited list, Bouncy Castle's Java crypto library and the Firefox " +
-        "browser are both in the top five. The record does not say how those " +
-        "targets were chosen. The vendor-credited list's first row is Red Hat " +
-        "Enterprise Linux, which Red Hat, as CNA, lists first in its records, " +
+        "lab-credited list, Bouncy Castle's Java crypto library is also in the " +
+        "top five. The record does not say how those targets were chosen. Red " +
+        "Hat, as CNA, lists Red Hat Enterprise Linux first in its records, " +
         "including records for flaws in upstream packages.",
       shareTemplate:
         "top {top_n} hold {share} of the {named} CVEs naming a product · " +
