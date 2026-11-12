@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "matched": {
-  "total_kev": 1769,
-  "matched_cve": 1769,
+  "total_kev": 1779,
+  "matched_cve": 1779,
   "unmatched_cve": 0
  },
  "launch_backfill": {
@@ -40,49 +40,49 @@
   },
   {
    "year": 2026,
-   "n": 285,
-   "median_days": 14.0,
+   "n": 295,
+   "median_days": 12.0,
    "p25_days": 1.0,
-   "p75_days": 163.0,
+   "p75_days": 139.5,
    "pct_negative": 1.4,
-   "pct_over_365d": 17.9
+   "pct_over_365d": 17.3
   }
  ],
  "latency_buckets": [
   {
    "bucket": "before_publish",
    "n": 26,
-   "pct": 2.9
+   "pct": 2.8
   },
   {
    "bucket": "0-7d",
-   "n": 356,
-   "pct": 39.4
+   "n": 362,
+   "pct": 39.6
   },
   {
    "bucket": "8-30d",
-   "n": 110,
-   "pct": 12.2
+   "n": 113,
+   "pct": 12.4
   },
   {
    "bucket": "31-90d",
-   "n": 94,
+   "n": 95,
    "pct": 10.4
   },
   {
    "bucket": "91-365d",
    "n": 119,
-   "pct": 13.2
+   "pct": 13.0
   },
   {
    "bucket": "1-3y",
    "n": 75,
-   "pct": 8.3
+   "pct": 8.2
   },
   {
    "bucket": "3-5y",
    "n": 44,
-   "pct": 4.9
+   "pct": 4.8
   },
   {
    "bucket": "5-10y",
@@ -182,38 +182,38 @@
   },
   {
    "year": 2026,
-   "n": 285,
+   "n": 295,
    "over_1y": 51,
-   "pct_over_1y": 17.9,
+   "pct_over_1y": 17.3,
    "buckets": [
     {
      "bucket": "1-3y",
      "n": 17,
-     "pct": 6.0
+     "pct": 5.8
     },
     {
      "bucket": "3-5y",
      "n": 11,
-     "pct": 3.9
+     "pct": 3.7
     },
     {
      "bucket": "5-10y",
      "n": 8,
-     "pct": 2.8
+     "pct": 2.7
     },
     {
      "bucket": "10y+",
      "n": 15,
-     "pct": 5.3
+     "pct": 5.1
     }
    ]
   }
  ],
  "oldest_recent": {
   "window_days": 365,
-  "since": "2025-11-10",
-  "until": "2026-11-09",
-  "n_listed": 314,
+  "since": "2025-11-13",
+  "until": "2026-11-12",
+  "n_listed": 320,
   "n_over_10y": 15,
   "entries": [
    {
@@ -316,7 +316,7 @@
   },
   {
    "year": 2026,
-   "n": 285,
+   "n": 295,
    "median_days": 3.0,
    "p25_days": 3.0,
    "p75_days": 14.0

@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "hero": {
   "matched": {
-   "dated_cves": 25094,
-   "matched_cves": 25050,
-   "unmatched_cves": 44
+   "dated_cves": 25095,
+   "matched_cves": 25052,
+   "unmatched_cves": 43
   },
   "years": [
    {
@@ -252,12 +252,12 @@
    },
    {
     "year": 2026,
-    "n": 122,
+    "n": 124,
     "median_days": 41.0,
     "p25_days": 16.0,
-    "p75_days": 79.8,
-    "pct_negative": 13.1,
-    "pct_within_week": 16.4
+    "p75_days": 80.8,
+    "pct_negative": 13.7,
+    "pct_within_week": 16.9
    }
   ],
   "headline": {
@@ -271,7 +271,7 @@
  "arming": {
   "horizon_days": 90,
   "ingestion_allowance_days": 365,
-  "observed_through": "2026-08-11",
+  "observed_through": "2026-08-14",
   "min_n": 30,
   "years": [
    {
@@ -494,7 +494,7 @@
  },
  "kev_preempt": {
   "cutoff": "2023-01-01",
-  "total_kev": 1769,
+  "total_kev": 1779,
   "trend": {
    "with_poc_date": 128,
    "preempted": 72,
@@ -543,7 +543,7 @@
    },
    {
     "year": 2026,
-    "total_added": 285,
+    "total_added": 295,
     "with_poc_date": 29,
     "preempted": 16,
     "pct_preempted": 55.2
@@ -572,14 +572,14 @@
     "total": 15761,
     "with_poc": 182,
     "pct": 1.2,
-    "with_detection": 144
+    "with_detection": 145
    },
    {
     "bucket": "9.0-10.0",
     "total": 4112,
     "with_poc": 206,
     "pct": 5.0,
-    "with_detection": 185
+    "with_detection": 187
    }
   ],
   "unscored": {
@@ -591,27 +591,27 @@
  },
  "catalog": {
   "exploitdb": {
-   "entries": 47181,
-   "with_cve": 27433,
-   "cves": 25094,
-   "dated_cves": 25094
+   "entries": 47182,
+   "with_cve": 27434,
+   "cves": 25095,
+   "dated_cves": 25095
   },
   "metasploit": {
-   "modules": 7264,
-   "with_cve": 3142,
-   "exploit_modules_with_cve": 2430,
-   "cves": 2599,
+   "modules": 7265,
+   "with_cve": 3143,
+   "exploit_modules_with_cve": 2431,
+   "cves": 2601,
    "other_cves": 643,
    "dated_cves": 0,
-   "disclosure_dated_cves": 3079
+   "disclosure_dated_cves": 3081
   },
   "nuclei": {
-   "templates": 4585,
-   "cves": 4585
+   "templates": 4606,
+   "cves": 4606
   },
-  "exploit_cves": 26011,
-  "union_cves": 29780,
-  "dated_cves": 25094,
-  "matched_in_corpus": 25964
+  "exploit_cves": 26014,
+  "union_cves": 29801,
+  "dated_cves": 25095,
+  "matched_in_corpus": 25968
  }
 }

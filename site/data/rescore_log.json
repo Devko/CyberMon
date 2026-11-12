@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -136,13 +136,21 @@
    "first_score": 2,
    "version_shift": 0,
    "score_removed": 0
+  },
+  {
+   "week": "2026-W46",
+   "rescore_up": 3,
+   "rescore_down": 1,
+   "first_score": 3,
+   "version_shift": 1,
+   "score_removed": 0
   }
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 164,
-  "up": 69,
-  "down": 95,
+  "n": 168,
+  "up": 72,
+  "down": 96,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -154,11 +162,11 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 75
+    "n": 76
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 48
+    "n": 51
    },
    {
     "bucket": "+2.0..+3.9",
@@ -176,8 +184,8 @@
   "cnas": [
    {
     "cna": "VulnCheck",
-    "rescores": 55,
-    "up": 14,
+    "rescores": 56,
+    "up": 15,
     "down": 41
    },
    {
@@ -188,9 +196,9 @@
    },
    {
     "cna": "microsoft",
-    "rescores": 16,
-    "up": 11,
-    "down": 5
+    "rescores": 18,
+    "up": 12,
+    "down": 6
    },
    {
     "cna": "adobe",
@@ -225,15 +233,15 @@
   ]
  },
  "catalog": {
-  "state_size": 402131,
-  "corpus_release": "cve_2026-11-09_0900Z",
+  "state_size": 405375,
+  "corpus_release": "cve_2026-11-12_1100Z",
   "totals": {
-   "rescore": 164,
-   "version_shift": 29,
-   "first_score": 5576,
+   "rescore": 168,
+   "version_shift": 30,
+   "first_score": 5579,
    "score_removed": 5
   },
-  "events_total": 5774,
+  "events_total": 5782,
   "first_observed": "2026-07-15"
  }
 }

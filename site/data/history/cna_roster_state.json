@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-11-09",
+ "last_observed": "2026-11-12",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -491,6 +491,13 @@
    "org": "CTOne Inc.",
    "scope": "c4b1ead53e8a",
    "type": "Bug Bounty Provider + Researcher + Vendor"
+  },
+  "CYVIATION": {
+   "cna_id": "CNA-2026-0085",
+   "country": "Israel",
+   "org": "CYVIATION Ltd.",
+   "scope": "f25e4f2979f8",
+   "type": "Researcher"
   },
   "Caliptra": {
    "cna_id": "CNA-2023-0065",
@@ -1429,6 +1436,13 @@
    "org": "Keeper Security, Inc.",
    "scope": "a826fa5760f8",
    "type": "Vendor"
+  },
+  "Kludex": {
+   "cna_id": "CNA-2026-0084",
+   "country": "Netherlands",
+   "org": "Marcelo Trylesinski",
+   "scope": "172e534273b4",
+   "type": "Open Source"
   },
   "Kong": {
    "cna_id": "CNA-2024-0042",
@@ -3092,8 +3106,8 @@
   "ca": {
    "cna_id": "CNA-2017-0013",
    "country": "USA",
-   "org": "CA Technologies - A Broadcom Company",
-   "scope": "0b82224c6b46",
+   "org": "Broadcom",
+   "scope": "c34ba5a7d0cc",
    "type": "Vendor"
   },
   "canonical": {
@@ -3368,6 +3382,13 @@
    "org": "Huawei Technologies",
    "scope": "b19cfd2ab13d",
    "type": "Vendor"
+  },
+  "iFAX": {
+   "cna_id": "CNA-2026-0086",
+   "country": "USA",
+   "org": "iFAX Solutions, Inc.",
+   "scope": "2aba11432ef4",
+   "type": "Open Source + Researcher + Vendor"
   },
   "iManage": {
    "cna_id": "CNA-2024-0084",
@@ -4387,6 +4408,10 @@
   [
    "2026-11-09",
    564
+  ],
+  [
+   "2026-11-12",
+   567
   ]
  ],
  "version": 1

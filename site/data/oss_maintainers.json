@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,14 +9,14 @@
  },
  "observed": {
   "first": "2026-11-05",
-  "last": "2026-11-09",
+  "last": "2026-11-12",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-09"
+  "last": "2026-11-12"
  },
  "ecosystems": [
   {
@@ -106,11 +106,11 @@
       },
       {
        "label": "0",
-       "n": 52
+       "n": 51
       },
       {
        "label": "1\u20134",
-       "n": 15
+       "n": 16
       },
       {
        "label": "5\u20137",
@@ -132,15 +132,15 @@
       },
       {
        "label": "1\u20134",
-       "n": 76
+       "n": 75
       },
       {
        "label": "5\u20137",
-       "n": 38
+       "n": 40
       },
       {
        "label": "8\u201310",
-       "n": 30
+       "n": 29
       }
      ],
      "Branch-Protection": [
@@ -272,7 +272,7 @@
    "scorecard": {
     "github_packages": 237,
     "repos": 234,
-    "scored": 213,
+    "scored": 211,
     "old_results": 3,
     "median_score": 5.8,
     "checks": {
@@ -295,7 +295,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 155
+       "n": 153
       }
      ],
      "Code-Review": [
@@ -313,11 +313,11 @@
       },
       {
        "label": "5\u20137",
-       "n": 53
+       "n": 52
       },
       {
        "label": "8\u201310",
-       "n": 60
+       "n": 59
       }
      ],
      "Branch-Protection": [
@@ -331,7 +331,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 48
+       "n": 46
       },
       {
        "label": "5\u20137",
@@ -345,11 +345,11 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 142
+       "n": 141
       },
       {
        "label": "0",
-       "n": 51
+       "n": 50
       },
       {
        "label": "1\u20134",
@@ -386,7 +386,7 @@
      },
      {
       "label": "1",
-      "n": 155
+      "n": 156
      },
      {
       "label": "2",
@@ -394,7 +394,7 @@
      },
      {
       "label": "3",
-      "n": 23
+      "n": 22
      },
      {
       "label": "4\u20135",
@@ -412,17 +412,17 @@
     "median": 1.0
    },
    "single_account": {
-    "n": 103,
-    "pct": 41.2,
+    "n": 104,
+    "pct": 41.6,
     "accounts": 56,
-    "largest": 19
+    "largest": 20
    },
    "team_or_org": {
     "n": 93,
     "pct": 37.2
    },
    "shared": {
-    "distinct_accounts": 206,
+    "distinct_accounts": 205,
     "top": [
      {
       "k": 1,
@@ -464,7 +464,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 18
+       "n": 19
       },
       {
        "label": "5\u20137",
@@ -472,7 +472,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 72
+       "n": 71
       }
      ],
      "Code-Review": [
@@ -641,7 +641,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 22
+       "n": 21
       },
       {
        "label": "5\u20137",
@@ -649,7 +649,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 70
+       "n": 71
       }
      ],
      "Code-Review": [
@@ -659,7 +659,7 @@
       },
       {
        "label": "0",
-       "n": 35
+       "n": 36
       },
       {
        "label": "1\u20134",
@@ -667,7 +667,7 @@
       },
       {
        "label": "5\u20137",
-       "n": 35
+       "n": 34
       },
       {
        "label": "8\u201310",

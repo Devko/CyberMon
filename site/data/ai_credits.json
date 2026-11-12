@@ -1,11 +1,11 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "kinds": {
   "llm": {
    "headline": {
-    "cves": 371,
+    "cves": 450,
     "this_year": 2026,
-    "cves_this_year": 353,
+    "cves_this_year": 432,
     "finders": 4,
     "first_month": "2024-10"
    },
@@ -218,29 +218,29 @@
     },
     {
      "month": "2026-11",
-     "anthropic": 6,
-     "openai": 0,
+     "anthropic": 60,
+     "openai": 25,
      "google": 0,
      "other_llm": 0,
-     "total": 6
+     "total": 85
     }
    ],
    "severity": {
     "critical": 39,
-    "high": 192,
-    "medium": 129,
-    "low": 8,
-    "unscored": 3
+    "high": 221,
+    "medium": 133,
+    "low": 9,
+    "unscored": 48
    },
    "funnel": {
-    "credited": 371,
-    "scored": 368,
-    "high_or_critical": 231,
-    "high_or_critical_pct": 62.3,
+    "credited": 450,
+    "scored": 402,
+    "high_or_critical": 260,
+    "high_or_critical_pct": 57.8,
     "poc": 1,
-    "poc_pct": 0.3,
+    "poc_pct": 0.2,
     "kev": 1,
-    "kev_pct": 0.3
+    "kev_pct": 0.2
    },
    "kev_cves": [
     "CVE-2026-111497"
@@ -248,9 +248,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 640,
+    "cves": 781,
     "this_year": 2026,
-    "cves_this_year": 515,
+    "cves_this_year": 656,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -360,26 +360,26 @@
     },
     {
      "month": "2026-11",
-     "vendor": 12,
-     "total": 12
+     "vendor": 153,
+     "total": 153
     }
    ],
    "severity": {
-    "critical": 44,
-    "high": 197,
-    "medium": 375,
-    "low": 22,
-    "unscored": 2
+    "critical": 45,
+    "high": 244,
+    "medium": 465,
+    "low": 26,
+    "unscored": 1
    },
    "funnel": {
-    "credited": 640,
-    "scored": 638,
-    "high_or_critical": 241,
-    "high_or_critical_pct": 37.7,
+    "credited": 781,
+    "scored": 780,
+    "high_or_critical": 289,
+    "high_or_critical_pct": 37.0,
     "poc": 16,
-    "poc_pct": 2.5,
+    "poc_pct": 2.0,
     "kev": 3,
-    "kev_pct": 0.5
+    "kev_pct": 0.4
    },
    "kev_cves": [
     "CVE-2025-5086",
@@ -390,72 +390,72 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 68317,
-  "scored": 68262,
-  "high_or_critical": 29107,
+  "credited": 69392,
+  "scored": 69259,
+  "high_or_critical": 29565,
   "high_or_critical_pct": 42.6,
-  "poc": 1026,
+  "poc": 1033,
   "poc_pct": 1.5,
   "kev": 92,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6623,
-   "high": 22484,
-   "medium": 37000,
-   "low": 2155,
-   "unscored": 55
+   "critical": 6691,
+   "high": 22874,
+   "medium": 37495,
+   "low": 2199,
+   "unscored": 133
   }
  },
  "profile": {
   "llm": {
-   "n": 371,
+   "n": 450,
    "median_cvss": 7.5,
-   "median_epss_pctile": 34.2,
-   "epss_scored": 371,
+   "median_epss_pctile": 31.6,
+   "epss_scored": 445,
    "recent_days": 90,
-   "recent_pct": 63.9,
-   "poc_pct": 0.3,
-   "kev_pct": 0.3,
-   "memory_pct": 39.9,
-   "cna_scored_pct": 57.7,
+   "recent_pct": 66.7,
+   "poc_pct": 0.2,
+   "kev_pct": 0.2,
+   "memory_pct": 39.3,
+   "cna_scored_pct": 49.6,
    "top_cwe": {
     "cwe": "CWE-416",
-    "n": 51,
-    "pct": 13.7
+    "n": 72,
+    "pct": 16.0
    }
   },
   "vendor": {
-   "n": 640,
-   "median_cvss": 6.3,
-   "median_epss_pctile": 32.1,
-   "epss_scored": 640,
+   "n": 781,
+   "median_cvss": 6.5,
+   "median_epss_pctile": 26.7,
+   "epss_scored": 778,
    "recent_days": 90,
-   "recent_pct": 39.4,
-   "poc_pct": 2.5,
-   "kev_pct": 0.5,
-   "memory_pct": 25.3,
-   "cna_scored_pct": 80.6,
+   "recent_pct": 48.8,
+   "poc_pct": 2.0,
+   "kev_pct": 0.4,
+   "memory_pct": 31.4,
+   "cna_scored_pct": 83.9,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 102,
-    "pct": 15.9
+    "n": 104,
+    "pct": 13.3
    }
   },
   "baseline": {
-   "n": 68317,
+   "n": 69392,
    "median_cvss": 6.9,
-   "median_epss_pctile": 27.9,
-   "epss_scored": 68233,
+   "median_epss_pctile": 28.0,
+   "epss_scored": 69158,
    "recent_days": 90,
-   "recent_pct": 28.4,
+   "recent_pct": 28.5,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
-   "memory_pct": 9.5,
-   "cna_scored_pct": 90.7,
+   "memory_pct": 9.7,
+   "cna_scored_pct": 90.5,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 12913,
-    "pct": 18.9
+    "n": 13028,
+    "pct": 18.8
    }
   }
  },
@@ -465,47 +465,47 @@
     "key": "memory",
     "label": "Memory safety",
     "llm": {
-     "n": 148,
-     "pct": 39.9
+     "n": 177,
+     "pct": 39.3
     },
     "vendor": {
-     "n": 162,
-     "pct": 25.3
+     "n": 245,
+     "pct": 31.4
     },
     "baseline": {
-     "n": 6509,
-     "pct": 9.5
+     "n": 6705,
+     "pct": 9.7
     }
    },
    {
     "key": "injection",
     "label": "Injection (XSS, SQL, command)",
     "llm": {
-     "n": 16,
-     "pct": 4.3
+     "n": 17,
+     "pct": 3.8
     },
     "vendor": {
-     "n": 158,
-     "pct": 24.7
+     "n": 161,
+     "pct": 20.6
     },
     "baseline": {
-     "n": 24731,
-     "pct": 36.2
+     "n": 24915,
+     "pct": 35.9
     }
    },
    {
     "key": "access",
     "label": "Access control and auth",
     "llm": {
-     "n": 39,
-     "pct": 10.5
+     "n": 57,
+     "pct": 12.7
     },
     "vendor": {
      "n": 74,
-     "pct": 11.6
+     "pct": 9.5
     },
     "baseline": {
-     "n": 17545,
+     "n": 17842,
      "pct": 25.7
     }
    },
@@ -513,15 +513,15 @@
     "key": "path",
     "label": "Files, paths and requests",
     "llm": {
-     "n": 11,
-     "pct": 3.0
+     "n": 13,
+     "pct": 2.9
     },
     "vendor": {
-     "n": 67,
-     "pct": 10.5
+     "n": 68,
+     "pct": 8.7
     },
     "baseline": {
-     "n": 6108,
+     "n": 6189,
      "pct": 8.9
     }
    },
@@ -529,15 +529,15 @@
     "key": "crypto",
     "label": "Crypto and certificate checks",
     "llm": {
-     "n": 36,
-     "pct": 9.7
+     "n": 39,
+     "pct": 8.7
     },
     "vendor": {
      "n": 30,
-     "pct": 4.7
+     "pct": 3.8
     },
     "baseline": {
-     "n": 1270,
+     "n": 1307,
      "pct": 1.9
     }
    },
@@ -545,47 +545,47 @@
     "key": "logic",
     "label": "Input, state and resource handling",
     "llm": {
-     "n": 58,
-     "pct": 15.6
+     "n": 64,
+     "pct": 14.2
     },
     "vendor": {
-     "n": 64,
-     "pct": 10.0
+     "n": 112,
+     "pct": 14.3
     },
     "baseline": {
-     "n": 4454,
-     "pct": 6.5
+     "n": 4553,
+     "pct": 6.6
     }
    },
    {
     "key": "other",
     "label": "Other CWE",
     "llm": {
-     "n": 63,
-     "pct": 17.0
+     "n": 80,
+     "pct": 17.8
     },
     "vendor": {
-     "n": 83,
-     "pct": 13.0
+     "n": 89,
+     "pct": 11.4
     },
     "baseline": {
-     "n": 6760,
-     "pct": 9.9
+     "n": 6928,
+     "pct": 10.0
     }
    },
    {
     "key": "none",
     "label": "No CWE listed",
     "llm": {
-     "n": 0,
-     "pct": 0.0
+     "n": 3,
+     "pct": 0.7
     },
     "vendor": {
      "n": 2,
      "pct": 0.3
     },
     "baseline": {
-     "n": 940,
+     "n": 953,
      "pct": 1.4
     }
    }
@@ -593,120 +593,120 @@
  },
  "targets": {
   "llm": {
-   "cves": 371,
-   "named": 371,
-   "distinct": 77,
+   "cves": 450,
+   "named": 450,
+   "distinct": 80,
    "top_share_n": 5,
-   "top_share_pct": 42.9,
+   "top_share_pct": 45.6,
    "projects": [
     {
      "label": "Mozilla / Firefox",
-     "n": 65,
-     "pct": 17.5
+     "n": 90,
+     "pct": 20.0
+    },
+    {
+     "label": "Apache Software Foundation / Apache TomEE",
+     "n": 38,
+     "pct": 8.4
     },
     {
      "label": "Legion of the Bouncy Castle Inc. / BC-JAVA",
      "n": 32,
-     "pct": 8.6
+     "pct": 7.1
     },
     {
      "label": "Apache Software Foundation / Apache Camel",
      "n": 27,
-     "pct": 7.3
+     "pct": 6.0
     },
     {
      "label": "Legion of the Bouncy Castle Inc. / bc-csharp",
      "n": 18,
-     "pct": 4.9
+     "pct": 4.0
     },
     {
      "label": "FreeBSD",
      "n": 17,
-     "pct": 4.6
+     "pct": 3.8
     },
     {
      "label": "Apache Software Foundation / Apache Thrift",
      "n": 14,
-     "pct": 3.8
+     "pct": 3.1
     },
     {
      "label": "The Document Foundation / LibreOffice",
      "n": 13,
-     "pct": 3.5
+     "pct": 2.9
     },
     {
      "label": "Wireshark Foundation / Wireshark",
      "n": 13,
-     "pct": 3.5
+     "pct": 2.9
     },
     {
      "label": "Apache Software Foundation / Apache bRPC",
      "n": 12,
-     "pct": 3.2
-    },
-    {
-     "label": "misp",
-     "n": 9,
-     "pct": 2.4
+     "pct": 2.7
     }
    ]
   },
   "vendor": {
-   "cves": 640,
-   "named": 640,
+   "cves": 781,
+   "named": 781,
    "distinct": 173,
    "top_share_n": 5,
-   "top_share_pct": 30.6,
+   "top_share_pct": 42.8,
    "projects": [
     {
+     "label": "FFmpeg",
+     "n": 141,
+     "pct": 18.1
+    },
+    {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 101,
-     "pct": 15.8
+     "n": 115,
+     "pct": 14.7
     },
     {
      "label": "curl",
      "n": 35,
-     "pct": 5.5
+     "pct": 4.5
     },
     {
      "label": "OpenSSL",
      "n": 25,
-     "pct": 3.9
-    },
-    {
-     "label": "FFmpeg",
-     "n": 18,
-     "pct": 2.8
+     "pct": 3.2
     },
     {
      "label": "Apache Software Foundation / Apache HTTP Server",
-     "n": 17,
-     "pct": 2.7
+     "n": 18,
+     "pct": 2.3
     },
     {
      "label": "Wireshark Foundation / Wireshark",
      "n": 17,
-     "pct": 2.7
+     "pct": 2.2
     },
     {
      "label": "OpenClaw",
      "n": 16,
-     "pct": 2.5
+     "pct": 2.0
     },
     {
      "label": "SohuTV / CacheCloud",
      "n": 15,
-     "pct": 2.3
+     "pct": 1.9
     },
     {
      "label": "atjiu / pybbs",
      "n": 13,
-     "pct": 2.0
+     "pct": 1.7
     },
     {
      "label": "Frappe Framework",
      "n": 12,
-     "pct": 1.9
+     "pct": 1.5
     }
    ]
   }
@@ -762,9 +762,9 @@
   },
   {
    "year": 2026,
-   "published": 93254,
-   "with_credits": 40785,
-   "pct": 43.7
+   "published": 96498,
+   "with_credits": 41860,
+   "pct": 43.4
   }
  ],
  "board": [
@@ -773,17 +773,17 @@
    "label": "AISLE",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 310,
-   "counted": 310,
-   "system": 82,
-   "org": 228,
+   "cves": 446,
+   "counted": 446,
+   "system": 95,
+   "org": 351,
    "fix": 0,
    "severity": {
-    "critical": 21,
-    "high": 119,
-    "medium": 151,
-    "low": 18,
-    "unscored": 1
+    "critical": 22,
+    "high": 161,
+    "medium": 241,
+    "low": 22,
+    "unscored": 0
    },
    "poc": 0,
    "kev": 0,
@@ -791,12 +791,12 @@
    "last_month": "2026-11",
    "top_cnas": [
     {
-     "cna": "redhat",
-     "n": 121
+     "cna": "VulnCheck",
+     "n": 175
     },
     {
-     "cna": "VulnCheck",
-     "n": 52
+     "cna": "redhat",
+     "n": 134
     },
     {
      "cna": "curl",
@@ -809,17 +809,17 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 455,
-   "counted": 291,
-   "system": 291,
-   "org": 76,
-   "fix": 88,
+   "cves": 511,
+   "counted": 345,
+   "system": 345,
+   "org": 77,
+   "fix": 89,
    "severity": {
     "critical": 36,
-    "high": 139,
-    "medium": 108,
-    "low": 5,
-    "unscored": 3
+    "high": 146,
+    "medium": 112,
+    "low": 6,
+    "unscored": 45
    },
    "poc": 0,
    "kev": 0,
@@ -828,7 +828,7 @@
    "top_cnas": [
     {
      "cna": "apache",
-     "n": 113
+     "n": 158
     },
     {
      "cna": "bcorg",
@@ -877,17 +877,17 @@
    "label": "OpenAI (Codex / GPT)",
    "group": "openai",
    "kind": "llm",
-   "cves": 163,
-   "counted": 49,
-   "system": 49,
-   "org": 114,
+   "cves": 196,
+   "counted": 74,
+   "system": 74,
+   "org": 122,
    "fix": 0,
    "severity": {
     "critical": 3,
-    "high": 31,
+    "high": 53,
     "medium": 15,
     "low": 0,
-    "unscored": 0
+    "unscored": 3
    },
    "poc": 0,
    "kev": 1,
@@ -896,7 +896,7 @@
    "top_cnas": [
     {
      "cna": "mozilla",
-     "n": 34
+     "n": 59
     },
     {
      "cna": "CIRCL",
@@ -913,14 +913,14 @@
    "label": "Fluid Attacks AI SAST",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 42,
-   "counted": 42,
-   "system": 42,
+   "cves": 45,
+   "counted": 45,
+   "system": 45,
    "org": 0,
    "fix": 0,
    "severity": {
     "critical": 0,
-    "high": 15,
+    "high": 18,
     "medium": 27,
     "low": 0,
     "unscored": 0
@@ -932,7 +932,7 @@
    "top_cnas": [
     {
      "cna": "Fluid Attacks",
-     "n": 42
+     "n": 45
     }
    ]
   },
@@ -941,14 +941,14 @@
    "label": "striga.ai",
    "group": "vendor",
    "kind": "vendor",
-   "cves": 27,
-   "counted": 27,
+   "cves": 28,
+   "counted": 28,
    "system": 0,
-   "org": 27,
+   "org": 28,
    "fix": 0,
    "severity": {
     "critical": 1,
-    "high": 19,
+    "high": 20,
     "medium": 5,
     "low": 1,
     "unscored": 1
@@ -960,11 +960,47 @@
    "top_cnas": [
     {
      "cna": "apache",
-     "n": 18
+     "n": 19
     },
     {
      "cna": "CERT-PL",
      "n": 9
+    }
+   ]
+  },
+  {
+   "key": "depthfirst",
+   "label": "depthfirst",
+   "group": "vendor",
+   "kind": "vendor",
+   "cves": 22,
+   "counted": 22,
+   "system": 0,
+   "org": 22,
+   "fix": 0,
+   "severity": {
+    "critical": 5,
+    "high": 9,
+    "medium": 6,
+    "low": 2,
+    "unscored": 0
+   },
+   "poc": 0,
+   "kev": 0,
+   "first_month": "2026-05",
+   "last_month": "2026-11",
+   "top_cnas": [
+    {
+     "cna": "apache",
+     "n": 9
+    },
+    {
+     "cna": "VulnCheck",
+     "n": 6
+    },
+    {
+     "cna": "f5",
+     "n": 6
     }
    ]
   },
@@ -1032,42 +1068,6 @@
     },
     {
      "cna": "curl",
-     "n": 1
-    }
-   ]
-  },
-  {
-   "key": "depthfirst",
-   "label": "depthfirst",
-   "group": "vendor",
-   "kind": "vendor",
-   "cves": 15,
-   "counted": 15,
-   "system": 0,
-   "org": 15,
-   "fix": 0,
-   "severity": {
-    "critical": 5,
-    "high": 6,
-    "medium": 4,
-    "low": 0,
-    "unscored": 0
-   },
-   "poc": 0,
-   "kev": 0,
-   "first_month": "2026-05",
-   "last_month": "2026-10",
-   "top_cnas": [
-    {
-     "cna": "apache",
-     "n": 8
-    },
-    {
-     "cna": "f5",
-     "n": 6
-    },
-    {
-     "cna": "PostgreSQL",
      "n": 1
     }
    ]
@@ -1493,7 +1493,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/zero-days",
    "note": "Claude Opus 4.6, open-source code; the post gives no CVE count.",
-   "credited": 291
+   "credited": 345
   },
   {
    "finder": "anthropic",
@@ -1507,7 +1507,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
    "note": "Total for Anthropic and about 50 Project Glasswing partners, whose scans cover their own software as well as open source; some findings may never receive a public CVE.",
-   "credited": 291
+   "credited": 345
   },
   {
    "finder": "anthropic",
@@ -1521,7 +1521,7 @@
    "live": false,
    "source": "https://www.anthropic.com/research/glasswing-initial-update",
    "note": "",
-   "credited": 291
+   "credited": 345
   },
   {
    "finder": "openai",
@@ -1535,7 +1535,7 @@
    "live": false,
    "source": "https://openai.com/index/codex-security-now-in-research-preview/",
    "note": "Codex Security; the post lists the CVE ids.",
-   "credited": 49
+   "credited": 74
   },
   {
    "finder": "google",
@@ -1577,7 +1577,7 @@
    "live": true,
    "source": "https://aisle.com/cve-discoveries",
    "note": "",
-   "credited": 310
+   "credited": 446
   },
   {
    "finder": "zeropath",
@@ -1605,7 +1605,7 @@
    "live": false,
    "source": "https://depthfirst.com/research/21-zero-days-in-ffmpeg",
    "note": "",
-   "credited": 15
+   "credited": 22
   }
  ]
 }

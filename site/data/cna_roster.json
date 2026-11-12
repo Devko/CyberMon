@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "roster_size": {
   "min_n": 2,
-  "current": 564,
-  "net_change": 34,
+  "current": 567,
+  "net_change": 37,
   "first_observed": "2026-07-18",
   "series": [
    {
@@ -441,6 +441,10 @@
    {
     "date": "2026-11-09",
     "size": 564
+   },
+   {
+    "date": "2026-11-12",
+    "size": 567
    }
   ]
  },
@@ -476,35 +480,35 @@
    },
    {
     "month": "2026-11",
-    "onboarded": 1,
+    "onboarded": 4,
     "departed": 0,
     "renamed": 0,
-    "scope_changed": 1
+    "scope_changed": 2
    }
   ],
   "totals": {
-   "onboarded": 35,
+   "onboarded": 38,
    "departed": 1,
    "renamed": 2,
-   "scope_changed": 14
+   "scope_changed": 15
   },
-  "events_total": 52,
+  "events_total": 56,
   "first_observed": "2026-07-21"
  },
  "roster_mix": {
-  "total": 564,
+  "total": 567,
   "by_type": [
    {
     "label": "Vendor",
-    "n": 459
+    "n": 460
    },
    {
     "label": "Open Source",
-    "n": 150
+    "n": 152
    },
    {
     "label": "Researcher",
-    "n": 124
+    "n": 126
    },
    {
     "label": "Hosted Service",
@@ -534,7 +538,7 @@
   "by_role": [
    {
     "label": "CNA",
-    "n": 561
+    "n": 564
    },
    {
     "label": "Root",
@@ -560,11 +564,11 @@
   "by_tlr": [
    {
     "label": "mitre",
-    "n": 471
+    "n": 473
    },
    {
     "label": "CISA",
-    "n": 91
+    "n": 92
    },
    {
     "label": "n/a",
@@ -574,11 +578,11 @@
   "by_root": [
    {
     "label": "n/a",
-    "n": 393
+    "n": 394
    },
    {
     "label": "icscert",
-    "n": 89
+    "n": 90
    },
    {
     "label": "ENISA",
@@ -586,7 +590,7 @@
    },
    {
     "label": "redhat",
-    "n": 18
+    "n": 19
    },
    {
     "label": "INCIBE",
@@ -608,7 +612,7 @@
   "by_country": [
    {
     "label": "USA",
-    "n": 294
+    "n": 295
    },
    {
     "label": "Germany",
@@ -651,16 +655,16 @@
     "n": 10
    },
    {
-    "label": "Sweden",
+    "label": "Israel",
     "n": 10
    },
    {
-    "label": "Israel",
-    "n": 9
+    "label": "Netherlands",
+    "n": 10
    },
    {
-    "label": "Netherlands",
-    "n": 9
+    "label": "Sweden",
+    "n": 10
    },
    {
     "label": "South Korea",
@@ -785,13 +789,13 @@
   ]
  },
  "headline": {
-  "roster_total": 564,
+  "roster_total": 567,
   "top_type": "Vendor",
-  "top_type_n": 459,
+  "top_type_n": 460,
   "country_count": 43,
   "root_count": 7,
-  "mitre_n": 471,
-  "cisa_n": 91,
-  "assigning_n": 563
+  "mitre_n": 473,
+  "cisa_n": 92,
+  "assigning_n": 566
  }
 }

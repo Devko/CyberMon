@@ -51,3 +51,7 @@ observed_date,short_name,change_type,org,country,type,from_short_name
 2026-10-29,OpenBMC,departed,The OpenBMC Project,USA,Open Source + Vendor,
 2026-11-04,Paessler,onboarded,Paessler GmbH,Germany,Vendor,
 2026-11-04,Wordfence,scope_changed,Wordfence,USA,Researcher + Vendor,
+2026-11-12,CYVIATION,onboarded,CYVIATION Ltd.,Israel,Researcher,
+2026-11-12,Kludex,onboarded,Marcelo Trylesinski,Netherlands,Open Source,
+2026-11-12,iFAX,onboarded,"iFAX Solutions, Inc.",USA,Open Source + Researcher + Vendor,
+2026-11-12,ca,scope_changed,Broadcom,USA,Vendor,

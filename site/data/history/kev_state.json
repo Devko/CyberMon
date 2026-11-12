@@ -17375,6 +17375,17 @@
    "ransom": "Unknown",
    "vendor": "BeyondTrust"
   },
+  "CVE-2026-102895": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-09",
+   "desc": "c79da1d207fd",
+   "due": "2026-11-12",
+   "name": "GPUStack Improper Authentication Vulnerability",
+   "notes": "2164f7b7ea8c",
+   "product": "GPUStack",
+   "ransom": "Unknown",
+   "vendor": "GPUStack"
+  },
   "CVE-2026-104286": {
    "action": "ba0d649eb29b",
    "added": "2026-10-01",
@@ -17507,6 +17518,28 @@
    "ransom": "Unknown",
    "vendor": "Google"
   },
+  "CVE-2026-111560": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-10",
+   "desc": "a156a3571ceb",
+   "due": "2026-11-13",
+   "name": "Barracuda Networks Multiple Products OS Command Injection Vulnerability",
+   "notes": "09fc5c955fde",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Barracuda Networks"
+  },
+  "CVE-2026-111793": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-10",
+   "desc": "ea0b3d1044b4",
+   "due": "2026-11-24",
+   "name": "Openwave Messaging Limited Webtop Media Transcoder Incorrect Resource Transfer Between Spheres Vulnerability",
+   "notes": "34b278dd147c",
+   "product": "Webtop Media Transcoder",
+   "ransom": "Unknown",
+   "vendor": "Openwave Messaging Limited"
+  },
   "CVE-2026-114625": {
    "action": "ba0d649eb29b",
    "added": "2026-10-23",
@@ -17529,6 +17562,28 @@
    "ransom": "Unknown",
    "vendor": "Google"
   },
+  "CVE-2026-116606": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-10",
+   "desc": "08736423f478",
+   "due": "2026-11-13",
+   "name": "Barracuda Networks Email Security Gateway (ESG) Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+   "notes": "247c666b8b6b",
+   "product": "Barracuda Email Security Gateway (ESG)",
+   "ransom": "Unknown",
+   "vendor": "Barracuda Networks"
+  },
+  "CVE-2026-116779": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-09",
+   "desc": "8755d62deaf3",
+   "due": "2026-11-12",
+   "name": "SignalWire FreeSwitch Code Injection Vulnerability",
+   "notes": "7b054d81c509",
+   "product": "FreeSwitch",
+   "ransom": "Unknown",
+   "vendor": "SignalWire"
+  },
   "CVE-2026-118527": {
    "action": "ba0d649eb29b",
    "added": "2026-10-30",
@@ -17550,6 +17605,50 @@
    "product": "WordPress Core",
    "ransom": "Unknown",
    "vendor": "WordPress"
+  },
+  "CVE-2026-123158": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-09",
+   "desc": "55c7635bcaff",
+   "due": "2026-11-12",
+   "name": "OpenBSD OpenSSH Unexpected Status Code or Return Value Vulnerability",
+   "notes": "48a419d925d8",
+   "product": "OpenSSH",
+   "ransom": "Unknown",
+   "vendor": "OpenBSD"
+  },
+  "CVE-2026-123218": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-09",
+   "desc": "6f57ee8cc9f0",
+   "due": "2026-11-12",
+   "name": "IBM Aspera Faspex Incorrect Authorization Vulnerability",
+   "notes": "10fe38ad16f5",
+   "product": "Aspera Faspex",
+   "ransom": "Unknown",
+   "vendor": "IBM"
+  },
+  "CVE-2026-124194": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-10",
+   "desc": "27de55525222",
+   "due": "2026-11-24",
+   "name": "Microsoft Office Outlook Missing User Interaction for Potentially Unsafe Action Vulnerability",
+   "notes": "dc72973ced77",
+   "product": "Office",
+   "ransom": "Unknown",
+   "vendor": "Microsoft"
+  },
+  "CVE-2026-125350": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-10",
+   "desc": "dbbf47829e23",
+   "due": "2026-11-24",
+   "name": "Google Chromium Use-After-Free Vulnerability",
+   "notes": "a9001efbb31b",
+   "product": "Chromium",
+   "ransom": "Unknown",
+   "vendor": "Google"
   },
   "CVE-2026-12569": {
    "action": "ba0d649eb29b",
@@ -17835,6 +17934,17 @@
    "notes": "46d478666c6f",
    "product": "Secure Firewall Management Center (FMC)",
    "ransom": "Known",
+   "vendor": "Cisco"
+  },
+  "CVE-2026-20320": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-10",
+   "desc": "e07c7bfdc11a",
+   "due": "2026-11-24",
+   "name": "Cisco BroadWorks Improper Restriction of XML External Entity Reference Vulnerability",
+   "notes": "0fa34d2ba8b5",
+   "product": "BroadWorks",
+   "ransom": "Unknown",
    "vendor": "Cisco"
   },
   "CVE-2026-20349": {
@@ -19466,7 +19576,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-09",
+ "last_observed": "2026-11-12",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

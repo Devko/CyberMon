@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-09T10:19:27Z",
+ "generated_at": "2026-11-12T11:45:27Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -3940,8 +3940,8 @@
      },
      {
       "month": "2026-07",
-      "n": 20,
-      "index": 47.6
+      "n": 21,
+      "index": 50.0
      },
      {
       "month": "2026-08",
@@ -4569,8 +4569,8 @@
     },
     "arxiv": {
      "latest_month": "2026-10",
-     "pct_change": 61.5,
-     "n_latest_12m": 294,
+     "pct_change": 62.1,
+     "n_latest_12m": 295,
      "n_prior_12m": 182
     },
     "wiki": {
@@ -13252,7 +13252,7 @@
      },
      {
       "month": "2026-09",
-      "n": 723,
+      "n": 724,
       "index": 31.3
      },
      {
@@ -13290,7 +13290,7 @@
     "edgar": {
      "latest_month": "2026-10",
      "pct_change": 15.7,
-     "n_latest_12m": 14453,
+     "n_latest_12m": 14454,
      "n_prior_12m": 12492
     }
    },
