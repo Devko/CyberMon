@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T09:58:14Z",
+ "generated_at": "2026-11-13T16:44:06Z",
  "as_of": "2026-11-13",
  "ecosystems_read": [
   "GitHub Actions",
@@ -19,8 +19,8 @@
  "young_since": "2026-08-15",
  "min_n": 50,
  "catalog": {
-  "advisories": 36505,
-  "with_cve": 33645,
+  "advisories": 36508,
+  "with_cve": 33648,
   "without_cve": 2860,
   "without_cve_young": 126,
   "without_cve_pct": 7.8,
@@ -114,8 +114,8 @@
   },
   {
    "year": 2026,
-   "total": 11844,
-   "with_cve": 11165,
+   "total": 11847,
+   "with_cve": 11168,
    "without_cve": 679,
    "without_cve_young": 126,
    "without_cve_pct": 5.7,
@@ -305,8 +305,8 @@
   },
   {
    "ecosystem": "PyPI",
-   "total": 6599,
-   "with_cve": 6350,
+   "total": 6602,
+   "with_cve": 6353,
    "without_cve": 249,
    "without_cve_young": 33,
    "without_cve_pct": 3.8,
@@ -385,8 +385,8 @@
     },
     {
      "year": 2026,
-     "total": 2506,
-     "with_cve": 2403,
+     "total": 2509,
+     "with_cve": 2406,
      "without_cve": 103,
      "without_cve_young": 33,
      "without_cve_pct": 4.1
@@ -1214,14 +1214,14 @@
   },
   {
    "level": "HIGH",
-   "with_cve": 12440,
+   "with_cve": 12441,
    "without_cve": 838,
    "with_cve_pct": 37.0,
    "without_cve_pct": 29.3
   },
   {
    "level": "MODERATE",
-   "with_cve": 14821,
+   "with_cve": 14823,
    "without_cve": 1013,
    "with_cve_pct": 44.1,
    "without_cve_pct": 35.4
@@ -1242,7 +1242,7 @@
   }
  ],
  "cve_lag": {
-  "n": 27977,
+  "n": 27980,
   "later_30d": 237,
   "later_90d": 114,
   "later_365d": 32

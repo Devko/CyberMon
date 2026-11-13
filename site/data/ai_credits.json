@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T09:58:14Z",
+ "generated_at": "2026-11-13T16:44:06Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -394,7 +394,7 @@
   "scored": 69521,
   "high_or_critical": 29709,
   "high_or_critical_pct": 42.7,
-  "poc": 1036,
+  "poc": 1042,
   "poc_pct": 1.5,
   "kev": 92,
   "kev_pct": 0.1,
@@ -410,8 +410,8 @@
   "llm": {
    "n": 455,
    "median_cvss": 7.5,
-   "median_epss_pctile": 31.8,
-   "epss_scored": 450,
+   "median_epss_pctile": 32.5,
+   "epss_scored": 455,
    "recent_days": 90,
    "recent_pct": 67.0,
    "poc_pct": 0.2,
@@ -427,8 +427,8 @@
   "vendor": {
    "n": 784,
    "median_cvss": 6.5,
-   "median_epss_pctile": 26.4,
-   "epss_scored": 783,
+   "median_epss_pctile": 26.1,
+   "epss_scored": 784,
    "recent_days": 90,
    "recent_pct": 48.7,
    "poc_pct": 2.0,
@@ -444,8 +444,8 @@
   "baseline": {
    "n": 69624,
    "median_cvss": 6.9,
-   "median_epss_pctile": 28.0,
-   "epss_scored": 69465,
+   "median_epss_pctile": 28.1,
+   "epss_scored": 69624,
    "recent_days": 90,
    "recent_pct": 28.5,
    "poc_pct": 1.5,

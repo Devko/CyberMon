@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-13T09:58:14Z",
+ "generated_at": "2026-11-13T16:44:06Z",
  "current_year": 2026,
  "lister": {
   "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
   "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
-  "last_updated": "2026-11-13T10:33:34.054+00:00",
+  "last_updated": "2026-11-13T17:00:35.008+00:00",
   "listed": 15,
   "providers": 14,
   "publishers": 1
@@ -24,7 +24,7 @@
    "status": "measured",
    "detail": "",
    "measured_on": "2026-11-13",
-   "documents": 108713,
+   "documents": 108860,
    "undated": 0,
    "by_year": [
     {
@@ -137,14 +137,14 @@
     },
     {
      "year": 2026,
-     "n": 33797
+     "n": 33944
     }
    ],
    "first_year": 1999,
    "last_year": 2026,
    "mix": {
-    "vex": 76759,
-    "advisory": 31954,
+    "vex": 76757,
+    "advisory": 32103,
     "other": 0,
     "unsampled": 0
    },
@@ -180,7 +180,7 @@
    "status": "measured",
    "detail": "",
    "measured_on": "2026-11-13",
-   "documents": 14704,
+   "documents": 14732,
    "undated": 0,
    "by_year": [
     {
@@ -237,7 +237,7 @@
     },
     {
      "year": 2026,
-     "n": 4451
+     "n": 4479
     }
    ],
    "first_year": 2013,
@@ -245,7 +245,7 @@
    "mix": {
     "vex": 0,
     "advisory": 0,
-    "other": 14704,
+    "other": 14732,
     "unsampled": 0
    },
    "sample_n": 30,
@@ -273,7 +273,7 @@
    "status": "measured",
    "detail": "",
    "measured_on": "2026-11-13",
-   "documents": 4115,
+   "documents": 4118,
    "undated": 0,
    "by_year": [
     {
@@ -342,13 +342,13 @@
     },
     {
      "year": 2026,
-     "n": 542
+     "n": 545
     }
    ],
    "first_year": 2010,
    "last_year": 2026,
    "mix": {
-    "vex": 115,
+    "vex": 118,
     "advisory": 4000,
     "other": 0,
     "unsampled": 0
@@ -1028,8 +1028,8 @@
    "category": "vendor",
    "role": "csaf_trusted_provider",
    "kind": "provider",
-   "status": "robots",
-   "detail": "robots.txt",
+   "status": "error",
+   "detail": "HTTP 503",
    "measured_on": null,
    "documents": 0,
    "undated": 0,
@@ -1185,7 +1185,7 @@
   },
   {
    "year": 2026,
-   "n": 39056,
+   "n": 39234,
    "providers": 13
   }
  ],
@@ -1194,15 +1194,15 @@
   "measured": 13,
   "carried": 0,
   "unmeasured": 2,
-  "documents": 128997,
+  "documents": 129175,
   "undated": 0,
   "mix": {
-   "vex": 76975,
-   "advisory": 37085,
-   "other": 14937,
+   "vex": 76976,
+   "advisory": 37234,
+   "other": 14965,
    "unsampled": 0
   },
-  "vex_pct": 59.7,
+  "vex_pct": 59.6,
   "top_name": "Red Hat Product Security",
   "top_share_pct": 84.3,
   "vex_top_name": "Red Hat Product Security",

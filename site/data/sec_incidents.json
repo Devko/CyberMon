@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T09:58:14Z",
+ "generated_at": "2026-11-13T16:44:06Z",
  "status": "ok",
  "window": {
   "start": "2023-12-18",
@@ -647,9 +647,9 @@
  ],
  "diagnostics": {
   "hits_105": 97,
-  "hits_801": 1246,
+  "hits_801": 1247,
   "filings_105": 97,
-  "filings_801": 1092,
+  "filings_801": 1093,
   "dropped_105": 0,
   "dropped_801": 0,
   "phrase_fallback_105": 0,
