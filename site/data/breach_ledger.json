@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-11-12T11:45:27Z",
+ "generated_at": "2026-11-13T09:58:14Z",
  "min_n": 10,
  "catalog": {
-  "total": 1051,
+  "total": 1052,
   "cohort": 1018,
   "excluded": {
    "fabricated": 3,
    "spam_list": 16,
-   "malware": 8,
+   "malware": 9,
    "stealer_log": 6
   }
  },
@@ -384,7 +384,7 @@
  },
  "projection": {
   "year": 2026,
-  "breaches": 132,
-  "elapsed": 0.866
+  "breaches": 131,
+  "elapsed": 0.868
  }
 }

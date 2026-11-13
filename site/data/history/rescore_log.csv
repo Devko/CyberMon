@@ -5781,3 +5781,9 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-11-12,CVE-2026-50301,microsoft,rescore,v3.1,7.8,v3.1,8.4
 2026-11-12,CVE-2026-99277,Linux,first_score,,,v3.1,7.5
 2026-11-12,CVE-2026-99281,Linux,first_score,,,v3.1,7.8
+2026-11-13,CVE-2026-119398,microsoft,rescore,v3.1,7.0,v3.1,7.8
+2026-11-13,CVE-2026-123867,openjs,version_shift,v3.0,4.2,v3.1,4.2
+2026-11-13,CVE-2026-125703,redhat,rescore,v3.1,5.5,v3.1,6.5
+2026-11-13,CVE-2026-125706,redhat,rescore,v3.1,5.5,v3.1,6.5
+2026-11-13,CVE-2026-125707,redhat,rescore,v3.1,6.1,v3.1,7.1
+2026-11-13,CVE-2026-56712,VulnCheck,rescore,v4.0,6.3,v4.0,7.8

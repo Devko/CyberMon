@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-12T11:45:27Z",
+ "generated_at": "2026-11-13T09:58:14Z",
  "current_year": 2026,
  "lister": {
   "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
   "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
-  "last_updated": "2026-11-12T12:18:28.764+00:00",
+  "last_updated": "2026-11-13T10:33:34.054+00:00",
   "listed": 15,
   "providers": 14,
   "publishers": 1
@@ -23,8 +23,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
-   "documents": 108540,
+   "measured_on": "2026-11-13",
+   "documents": 108713,
    "undated": 0,
    "by_year": [
     {
@@ -89,19 +89,19 @@
     },
     {
      "year": 2014,
-     "n": 2570
+     "n": 2572
     },
     {
      "year": 2015,
-     "n": 2899
+     "n": 2910
     },
     {
      "year": 2016,
-     "n": 3473
+     "n": 3474
     },
     {
      "year": 2017,
-     "n": 3960
+     "n": 3959
     },
     {
      "year": 2018,
@@ -133,25 +133,25 @@
     },
     {
      "year": 2025,
-     "n": 9339
+     "n": 9338
     },
     {
      "year": 2026,
-     "n": 33636
+     "n": 33797
     }
    ],
    "first_year": 1999,
    "last_year": 2026,
    "mix": {
-    "vex": 76675,
-    "advisory": 31865,
+    "vex": 76759,
+    "advisory": 31954,
     "other": 0,
     "unsampled": 0
    },
    "sample_n": 60,
    "fields": {
     "cvss": 96.7,
-    "cwe": 81.0,
+    "cwe": 83.3,
     "product_tree": 100.0,
     "remediation": 76.5
    },
@@ -159,7 +159,7 @@
     "vex": {
      "n": 30,
      "cvss": 29,
-     "cwe": 24,
+     "cwe": 25,
      "product_tree": 30,
      "remediation": 20
     },
@@ -179,8 +179,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
-   "documents": 14694,
+   "measured_on": "2026-11-13",
+   "documents": 14704,
    "undated": 0,
    "by_year": [
     {
@@ -213,7 +213,7 @@
     },
     {
      "year": 2020,
-     "n": 262
+     "n": 263
     },
     {
      "year": 2021,
@@ -237,7 +237,7 @@
     },
     {
      "year": 2026,
-     "n": 4442
+     "n": 4451
     }
    ],
    "first_year": 2013,
@@ -245,7 +245,7 @@
    "mix": {
     "vex": 0,
     "advisory": 0,
-    "other": 14694,
+    "other": 14704,
     "unsampled": 0
    },
    "sample_n": 30,
@@ -272,8 +272,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
-   "documents": 4106,
+   "measured_on": "2026-11-13",
+   "documents": 4115,
    "undated": 0,
    "by_year": [
     {
@@ -342,14 +342,14 @@
     },
     {
      "year": 2026,
-     "n": 533
+     "n": 542
     }
    ],
    "first_year": 2010,
    "last_year": 2026,
    "mix": {
-    "vex": 111,
-    "advisory": 3995,
+    "vex": 115,
+    "advisory": 4000,
     "other": 0,
     "unsampled": 0
    },
@@ -384,7 +384,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 874,
    "undated": 0,
    "by_year": [
@@ -484,7 +484,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 294,
    "undated": 0,
    "by_year": [
@@ -561,8 +561,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
-   "documents": 86,
+   "measured_on": "2026-11-13",
+   "documents": 87,
    "undated": 0,
    "by_year": [
     {
@@ -575,14 +575,14 @@
     },
     {
      "year": 2026,
-     "n": 48
+     "n": 49
     }
    ],
    "first_year": 2024,
    "last_year": 2026,
    "mix": {
     "vex": 0,
-    "advisory": 86,
+    "advisory": 87,
     "other": 0,
     "unsampled": 0
    },
@@ -610,7 +610,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 75,
    "undated": 0,
    "by_year": [
@@ -679,7 +679,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 67,
    "undated": 0,
    "by_year": [
@@ -748,7 +748,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 26,
    "undated": 0,
    "by_year": [
@@ -793,7 +793,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 24,
    "undated": 0,
    "by_year": [
@@ -850,7 +850,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 11,
    "undated": 0,
    "by_year": [
@@ -910,7 +910,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 6,
    "undated": 0,
    "by_year": [
@@ -966,7 +966,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-12",
+   "measured_on": "2026-11-13",
    "documents": 1,
    "undated": 0,
    "by_year": [
@@ -1125,22 +1125,22 @@
   },
   {
    "year": 2014,
-   "n": 2702,
+   "n": 2704,
    "providers": 3
   },
   {
    "year": 2015,
-   "n": 3085,
+   "n": 3096,
    "providers": 5
   },
   {
    "year": 2016,
-   "n": 3683,
+   "n": 3684,
    "providers": 4
   },
   {
    "year": 2017,
-   "n": 4272,
+   "n": 4271,
    "providers": 4
   },
   {
@@ -1155,7 +1155,7 @@
   },
   {
    "year": 2020,
-   "n": 5026,
+   "n": 5027,
    "providers": 7
   },
   {
@@ -1180,12 +1180,12 @@
   },
   {
    "year": 2025,
-   "n": 12876,
+   "n": 12875,
    "providers": 11
   },
   {
    "year": 2026,
-   "n": 38876,
+   "n": 39056,
    "providers": 13
   }
  ],
@@ -1194,12 +1194,12 @@
   "measured": 13,
   "carried": 0,
   "unmeasured": 2,
-  "documents": 128804,
+  "documents": 128997,
   "undated": 0,
   "mix": {
-   "vex": 76887,
-   "advisory": 36990,
-   "other": 14927,
+   "vex": 76975,
+   "advisory": 37085,
+   "other": 14937,
    "unsampled": 0
   },
   "vex_pct": 59.7,
@@ -1232,7 +1232,7 @@
    "vex": {
     "n": 131,
     "cvss": 74.8,
-    "cwe": 70.2,
+    "cwe": 71.0,
     "product_tree": 100.0,
     "remediation": 71.8
    },

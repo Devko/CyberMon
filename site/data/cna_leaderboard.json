@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T11:45:27Z",
+ "generated_at": "2026-11-13T09:58:14Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -42,19 +42,19 @@
   {
    "cna": "TR-CERT",
    "org": "TR-CERT",
-   "n": 697,
+   "n": 701,
    "avg_cvss": 7.6,
    "median_cvss": 7.5,
-   "pct_geq_9": 26.1,
-   "pct_geq_7": 63.6
+   "pct_geq_9": 26.0,
+   "pct_geq_7": 63.8
   },
   {
    "cna": "Joomla",
    "org": "Joomla",
-   "n": 352,
-   "avg_cvss": 7.7,
+   "n": 364,
+   "avg_cvss": 7.6,
    "median_cvss": 8.2,
-   "pct_geq_9": 25.6,
+   "pct_geq_9": 25.0,
    "pct_geq_7": 59.1
   },
   {
@@ -69,11 +69,11 @@
   {
    "cna": "hackerone",
    "org": "hackerone",
-   "n": 511,
+   "n": 512,
    "avg_cvss": 7.4,
    "median_cvss": 7.7,
-   "pct_geq_9": 23.7,
-   "pct_geq_7": 66.5
+   "pct_geq_9": 23.6,
+   "pct_geq_7": 66.6
   },
   {
    "cna": "icscert",
@@ -96,7 +96,7 @@
   {
    "cna": "INCIBE",
    "org": "INCIBE",
-   "n": 1008,
+   "n": 1009,
    "avg_cvss": 7.1,
    "median_cvss": 7.1,
    "pct_geq_9": 20.5,
@@ -204,11 +204,11 @@
   {
    "cna": "ProgressSoftware",
    "org": "ProgressSoftware",
-   "n": 334,
+   "n": 350,
    "avg_cvss": 7.5,
    "median_cvss": 7.5,
-   "pct_geq_9": 15.0,
-   "pct_geq_7": 73.4
+   "pct_geq_9": 14.3,
+   "pct_geq_7": 74.3
   },
   {
    "cna": "rapid7",
@@ -227,15 +227,6 @@
    "median_cvss": 7.5,
    "pct_geq_9": 14.0,
    "pct_geq_7": 60.0
-  },
-  {
-   "cna": "Fluid Attacks",
-   "org": "Fluid Attacks",
-   "n": 157,
-   "avg_cvss": 6.9,
-   "median_cvss": 7.0,
-   "pct_geq_9": 14.0,
-   "pct_geq_7": 51.6
   },
   {
    "cna": "snyk",
@@ -258,11 +249,20 @@
   {
    "cna": "CERTVDE",
    "org": "CERTVDE",
-   "n": 449,
+   "n": 450,
    "avg_cvss": 7.6,
    "median_cvss": 7.5,
    "pct_geq_9": 13.8,
-   "pct_geq_7": 75.5
+   "pct_geq_7": 75.3
+  },
+  {
+   "cna": "Fluid Attacks",
+   "org": "Fluid Attacks",
+   "n": 160,
+   "avg_cvss": 6.9,
+   "median_cvss": 7.0,
+   "pct_geq_9": 13.8,
+   "pct_geq_7": 52.5
   },
   {
    "cna": "Arista",
@@ -294,7 +294,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 11240,
+   "n": 11275,
    "avg_cvss": 7.3,
    "median_cvss": 7.1,
    "pct_geq_9": 12.7,
@@ -310,18 +310,9 @@
    "pct_geq_7": 98.0
   },
   {
-   "cna": "AMZN",
-   "org": "AMZN",
-   "n": 253,
-   "avg_cvss": 7.5,
-   "median_cvss": 7.7,
-   "pct_geq_9": 11.9,
-   "pct_geq_7": 63.6
-  },
-  {
    "cna": "GitHub_M",
    "org": "GitHub_M",
-   "n": 17919,
+   "n": 17976,
    "avg_cvss": 6.9,
    "median_cvss": 7.1,
    "pct_geq_9": 11.8,
@@ -335,6 +326,15 @@
    "median_cvss": 7.2,
    "pct_geq_9": 11.8,
    "pct_geq_7": 54.2
+  },
+  {
+   "cna": "AMZN",
+   "org": "AMZN",
+   "n": 255,
+   "avg_cvss": 7.5,
+   "median_cvss": 7.7,
+   "pct_geq_9": 11.8,
+   "pct_geq_7": 63.5
   },
   {
    "cna": "suse",
@@ -391,6 +391,15 @@
    "pct_geq_7": 55.4
   },
   {
+   "cna": "Zohocorp",
+   "org": "Zohocorp",
+   "n": 122,
+   "avg_cvss": 7.6,
+   "median_cvss": 8.1,
+   "pct_geq_9": 10.7,
+   "pct_geq_7": 79.5
+  },
+  {
    "cna": "eclipse",
    "org": "eclipse",
    "n": 295,
@@ -407,15 +416,6 @@
    "median_cvss": 7.5,
    "pct_geq_9": 10.2,
    "pct_geq_7": 72.6
-  },
-  {
-   "cna": "PostgreSQL",
-   "org": "PostgreSQL",
-   "n": 170,
-   "avg_cvss": 7.0,
-   "median_cvss": 7.4,
-   "pct_geq_9": 10.0,
-   "pct_geq_7": 60.0
   },
   {
    "cna": "Esri",
@@ -481,6 +481,15 @@
    "pct_geq_7": 42.2
   },
   {
+   "cna": "CIRCL",
+   "org": "CIRCL",
+   "n": 255,
+   "avg_cvss": 6.8,
+   "median_cvss": 6.9,
+   "pct_geq_9": 9.0,
+   "pct_geq_7": 44.3
+  },
+  {
    "cna": "palo_alto",
    "org": "palo_alto",
    "n": 250,
@@ -490,27 +499,9 @@
    "pct_geq_7": 33.2
   },
   {
-   "cna": "synology",
-   "org": "synology",
-   "n": 125,
-   "avg_cvss": 6.3,
-   "median_cvss": 5.9,
-   "pct_geq_9": 8.8,
-   "pct_geq_7": 34.4
-  },
-  {
-   "cna": "Zohocorp",
-   "org": "Zohocorp",
-   "n": 114,
-   "avg_cvss": 7.6,
-   "median_cvss": 7.7,
-   "pct_geq_9": 8.8,
-   "pct_geq_7": 78.1
-  },
-  {
    "cna": "Patchstack",
    "org": "Patchstack",
-   "n": 16970,
+   "n": 16974,
    "avg_cvss": 6.7,
    "median_cvss": 6.5,
    "pct_geq_9": 8.7,
@@ -519,20 +510,11 @@
   {
    "cna": "vmware",
    "org": "vmware",
-   "n": 419,
+   "n": 420,
    "avg_cvss": 6.6,
    "median_cvss": 6.8,
    "pct_geq_9": 8.6,
-   "pct_geq_7": 47.7
-  },
-  {
-   "cna": "CIRCL",
-   "org": "CIRCL",
-   "n": 252,
-   "avg_cvss": 6.8,
-   "median_cvss": 6.9,
-   "pct_geq_9": 8.3,
-   "pct_geq_7": 44.0
+   "pct_geq_7": 47.9
   },
   {
    "cna": "Liferay",
@@ -544,6 +526,15 @@
    "pct_geq_7": 16.3
   },
   {
+   "cna": "synology",
+   "org": "synology",
+   "n": 152,
+   "avg_cvss": 6.3,
+   "median_cvss": 5.9,
+   "pct_geq_9": 7.9,
+   "pct_geq_7": 34.9
+  },
+  {
    "cna": "openjs",
    "org": "openjs",
    "n": 179,
@@ -553,12 +544,21 @@
    "pct_geq_7": 52.5
   },
   {
+   "cna": "PostgreSQL",
+   "org": "PostgreSQL",
+   "n": 222,
+   "avg_cvss": 7.1,
+   "median_cvss": 7.5,
+   "pct_geq_9": 7.7,
+   "pct_geq_7": 63.1
+  },
+  {
    "cna": "jpcert",
    "org": "jpcert",
-   "n": 652,
+   "n": 654,
    "avg_cvss": 6.9,
    "median_cvss": 6.9,
-   "pct_geq_9": 7.4,
+   "pct_geq_9": 7.3,
    "pct_geq_7": 49.4
   },
   {
@@ -582,11 +582,11 @@
   {
    "cna": "GRAFANA",
    "org": "GRAFANA",
-   "n": 113,
+   "n": 117,
    "avg_cvss": 6.4,
    "median_cvss": 6.5,
-   "pct_geq_9": 7.1,
-   "pct_geq_7": 38.1
+   "pct_geq_9": 6.8,
+   "pct_geq_7": 37.6
   },
   {
    "cna": "wolfSSL",
@@ -598,18 +598,9 @@
    "pct_geq_7": 27.7
   },
   {
-   "cna": "OpenText",
-   "org": "OpenText",
-   "n": 167,
-   "avg_cvss": 6.5,
-   "median_cvss": 6.5,
-   "pct_geq_9": 6.6,
-   "pct_geq_7": 46.1
-  },
-  {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10918,
+   "n": 10922,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.5,
@@ -623,6 +614,15 @@
    "median_cvss": 5.5,
    "pct_geq_9": 6.5,
    "pct_geq_7": 44.4
+  },
+  {
+   "cna": "OpenText",
+   "org": "OpenText",
+   "n": 168,
+   "avg_cvss": 6.5,
+   "median_cvss": 6.5,
+   "pct_geq_9": 6.5,
+   "pct_geq_7": 45.8
   },
   {
    "cna": "WPScan",
@@ -663,11 +663,11 @@
   {
    "cna": "HashiCorp",
    "org": "HashiCorp",
-   "n": 106,
+   "n": 109,
    "avg_cvss": 6.8,
-   "median_cvss": 7.2,
-   "pct_geq_9": 5.7,
-   "pct_geq_7": 52.8
+   "median_cvss": 7.1,
+   "pct_geq_9": 5.5,
+   "pct_geq_7": 51.4
   },
   {
    "cna": "dell",
@@ -717,11 +717,11 @@
   {
    "cna": "zdi",
    "org": "zdi",
-   "n": 2051,
+   "n": 2076,
    "avg_cvss": 7.4,
    "median_cvss": 7.8,
-   "pct_geq_9": 4.6,
-   "pct_geq_7": 78.9
+   "pct_geq_9": 4.5,
+   "pct_geq_7": 79.1
   },
   {
    "cna": "nvidia",
@@ -744,20 +744,20 @@
   {
    "cna": "redhat",
    "org": "redhat",
-   "n": 1982,
+   "n": 2002,
    "avg_cvss": 6.4,
    "median_cvss": 6.5,
    "pct_geq_9": 4.1,
-   "pct_geq_7": 40.7
+   "pct_geq_7": 40.8
   },
   {
    "cna": "GitLab",
    "org": "GitLab",
-   "n": 821,
+   "n": 825,
    "avg_cvss": 6.0,
-   "median_cvss": 5.6,
+   "median_cvss": 5.5,
    "pct_geq_9": 3.2,
-   "pct_geq_7": 30.9
+   "pct_geq_7": 30.8
   },
   {
    "cna": "qualcomm",
@@ -771,11 +771,20 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 15189,
+   "n": 15201,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 3.0,
    "pct_geq_7": 14.2
+  },
+  {
+   "cna": "mongodb",
+   "org": "mongodb",
+   "n": 344,
+   "avg_cvss": 6.7,
+   "median_cvss": 7.1,
+   "pct_geq_9": 2.9,
+   "pct_geq_7": 55.2
   },
   {
    "cna": "Silabs",
@@ -785,15 +794,6 @@
    "median_cvss": 7.1,
    "pct_geq_9": 2.9,
    "pct_geq_7": 53.3
-  },
-  {
-   "cna": "mongodb",
-   "org": "mongodb",
-   "n": 337,
-   "avg_cvss": 6.7,
-   "median_cvss": 7.1,
-   "pct_geq_9": 2.7,
-   "pct_geq_7": 55.5
   },
   {
    "cna": "elastic",
@@ -807,7 +807,7 @@
   {
    "cna": "zephyr",
    "org": "zephyr",
-   "n": 266,
+   "n": 269,
    "avg_cvss": 6.3,
    "median_cvss": 6.5,
    "pct_geq_9": 1.9,
@@ -924,11 +924,11 @@
   {
    "cna": "AMD",
    "org": "AMD",
-   "n": 279,
+   "n": 290,
    "avg_cvss": 6.1,
    "median_cvss": 6.4,
-   "pct_geq_9": 0.4,
-   "pct_geq_7": 41.2
+   "pct_geq_9": 0.3,
+   "pct_geq_7": 40.3
   },
   {
    "cna": "OpenHarmony",

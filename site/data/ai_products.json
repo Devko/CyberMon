@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T11:45:27Z",
+ "generated_at": "2026-11-13T09:58:14Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,13 +159,13 @@
   },
   {
    "year": 2026,
-   "published": 96498,
-   "named": 93178,
-   "ai": 3212,
+   "published": 96879,
+   "named": 93558,
+   "ai": 3213,
    "by_category": {
     "frameworks": 208,
     "serving": 372,
-    "platforms": 183,
+    "platforms": 184,
     "apps": 2449
    },
    "top_product": {
@@ -198,7 +198,7 @@
   ]
  },
  "cwe": {
-  "n": 4437,
+  "n": 4438,
   "no_cwe": 10,
   "no_cwe_pct": 0.2,
   "baseline_no_cwe_pct": 9.8,
@@ -206,7 +206,7 @@
    {
     "cwe": "CWE-22",
     "name": "Path traversal",
-    "n": 362,
+    "n": 363,
     "pct": 8.2,
     "baseline_pct": 2.8
    },
@@ -285,8 +285,8 @@
   }
  },
  "exploited": {
-  "n": 4437,
-  "baseline_n": 208982,
+  "n": 4438,
+  "baseline_n": 209362,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
@@ -294,11 +294,11 @@
   "poc": 32,
   "poc_pct": 0.7,
   "poc_baseline_pct": 0.4,
-  "poc_expected": 17.0,
+  "poc_expected": 16.9,
   "nuclei": 119,
   "nuclei_pct": 2.7,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 34.1,
+  "nuclei_expected": 34.3,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -447,13 +447,13 @@
    "key": "mlflow",
    "label": "MLflow",
    "category": "platforms",
-   "n": 91,
-   "all_years": 92,
+   "n": 92,
+   "all_years": 93,
    "first_year": 2022,
    "kev": 1,
    "poc": 0,
    "top_cna": "@huntr_ai",
-   "top_cna_pct": 52.7
+   "top_cna_pct": 52.2
   },
   {
    "key": "mcp_sdk",
@@ -530,7 +530,7 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4437,
+  "n": 4438,
   "cna_count": 41,
   "top": [
    {
@@ -540,7 +540,7 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 1101,
+    "n": 1102,
     "pct": 24.8
    },
    {
@@ -566,7 +566,7 @@
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3212,
+  "current_ai": 3213,
   "current_share_pct": 3.3,
   "lead_label": "OpenClaw",
   "lead_n": 677,

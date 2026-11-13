@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T11:45:27Z",
+ "generated_at": "2026-11-13T09:58:14Z",
  "window": {
   "from": 2021,
   "to": 2025,
@@ -49,8 +49,8 @@
  },
  "rescore_log": {
   "first_observed": "2026-07-15",
-  "last_observed": "2026-11-12",
-  "rescores": 168
+  "last_observed": "2026-11-13",
+  "rescores": 173
  },
  "summary": {
   "score_median": {
@@ -99,7 +99,7 @@
    "p25": 0.0,
    "p75": 0.0,
    "min": 0.0,
-   "max": 56.0
+   "max": 57.0
   },
   "kev_pct": {
    "n": 107,
@@ -412,7 +412,7 @@
     "scored_pct": 100.0,
     "affected_pct": 97.6,
     "rejected_pct": 0.0,
-    "rescores": 18,
+    "rescores": 19,
     "kev_pct": 3.2,
     "exploit_pct": 1.6
    },
@@ -720,7 +720,7 @@
     "scored_pct": 40.2,
     "affected_pct": 97.3,
     "rejected_pct": 11.4,
-    "rescores": 22,
+    "rescores": 25,
     "kev_pct": 0.4,
     "exploit_pct": 0.8
    },
@@ -1292,7 +1292,7 @@
     "scored_pct": 98.0,
     "affected_pct": 99.6,
     "rejected_pct": 1.9,
-    "rescores": 56,
+    "rescores": 57,
     "kev_pct": 1.2,
     "exploit_pct": 18.5
    },
