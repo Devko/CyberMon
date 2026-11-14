@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-14T09:23:50Z",
+ "generated_at": "2026-11-14T15:20:20Z",
  "current_year": 2026,
  "lister": {
   "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
   "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
-  "last_updated": "2026-11-14T09:00:32.537+00:00",
+  "last_updated": "2026-11-14T15:00:34.451+00:00",
   "listed": 15,
   "providers": 14,
   "publishers": 1
@@ -24,7 +24,7 @@
    "status": "measured",
    "detail": "",
    "measured_on": "2026-11-14",
-   "documents": 108776,
+   "documents": 108775,
    "undated": 0,
    "by_year": [
     {
@@ -137,13 +137,13 @@
     },
     {
      "year": 2026,
-     "n": 33868
+     "n": 33867
     }
    ],
    "first_year": 1999,
    "last_year": 2026,
    "mix": {
-    "vex": 76672,
+    "vex": 76671,
     "advisory": 32104,
     "other": 0,
     "unsampled": 0
@@ -1185,7 +1185,7 @@
   },
   {
    "year": 2026,
-   "n": 39158,
+   "n": 39157,
    "providers": 13
   }
  ],
@@ -1194,10 +1194,10 @@
   "measured": 13,
   "carried": 0,
   "unmeasured": 2,
-  "documents": 129091,
+  "documents": 129090,
   "undated": 0,
   "mix": {
-   "vex": 76891,
+   "vex": 76890,
    "advisory": 37235,
    "other": 14965,
    "unsampled": 0
