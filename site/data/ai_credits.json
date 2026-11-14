@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -248,9 +248,9 @@
   },
   "vendor": {
    "headline": {
-    "cves": 784,
+    "cves": 787,
     "this_year": 2026,
-    "cves_this_year": 659,
+    "cves_this_year": 662,
     "finders": 17,
     "first_month": "2025-03"
    },
@@ -360,22 +360,22 @@
     },
     {
      "month": "2026-11",
-     "vendor": 156,
-     "total": 156
+     "vendor": 159,
+     "total": 159
     }
    ],
    "severity": {
     "critical": 45,
-    "high": 247,
+    "high": 250,
     "medium": 465,
     "low": 26,
     "unscored": 1
    },
    "funnel": {
-    "credited": 784,
-    "scored": 783,
-    "high_or_critical": 292,
-    "high_or_critical_pct": 37.2,
+    "credited": 787,
+    "scored": 786,
+    "high_or_critical": 295,
+    "high_or_critical_pct": 37.5,
     "poc": 16,
     "poc_pct": 2.0,
     "kev": 3,
@@ -390,20 +390,20 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 69624,
-  "scored": 69521,
-  "high_or_critical": 29709,
+  "credited": 70168,
+  "scored": 70066,
+  "high_or_critical": 29990,
   "high_or_critical_pct": 42.7,
-  "poc": 1042,
+  "poc": 1043,
   "poc_pct": 1.5,
   "kev": 92,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6717,
-   "high": 22992,
-   "medium": 37602,
-   "low": 2210,
-   "unscored": 103
+   "critical": 6770,
+   "high": 23220,
+   "medium": 37844,
+   "low": 2232,
+   "unscored": 102
   }
  },
  "profile": {
@@ -425,36 +425,36 @@
    }
   },
   "vendor": {
-   "n": 784,
+   "n": 787,
    "median_cvss": 6.5,
    "median_epss_pctile": 26.1,
-   "epss_scored": 784,
+   "epss_scored": 785,
    "recent_days": 90,
-   "recent_pct": 48.7,
+   "recent_pct": 48.4,
    "poc_pct": 2.0,
    "kev_pct": 0.4,
-   "memory_pct": 31.2,
-   "cna_scored_pct": 83.9,
+   "memory_pct": 31.1,
+   "cna_scored_pct": 84.0,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 107,
-    "pct": 13.6
+    "n": 108,
+    "pct": 13.7
    }
   },
   "baseline": {
-   "n": 69624,
+   "n": 70168,
    "median_cvss": 6.9,
    "median_epss_pctile": 28.1,
-   "epss_scored": 69624,
+   "epss_scored": 69966,
    "recent_days": 90,
-   "recent_pct": 28.5,
+   "recent_pct": 29.0,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
    "memory_pct": 9.7,
    "cna_scored_pct": 90.5,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 13048,
+    "n": 13128,
     "pct": 18.7
    }
   }
@@ -470,10 +470,10 @@
     },
     "vendor": {
      "n": 245,
-     "pct": 31.2
+     "pct": 31.1
     },
     "baseline": {
-     "n": 6749,
+     "n": 6773,
      "pct": 9.7
     }
    },
@@ -485,11 +485,11 @@
      "pct": 3.7
     },
     "vendor": {
-     "n": 164,
-     "pct": 20.9
+     "n": 165,
+     "pct": 21.0
     },
     "baseline": {
-     "n": 24959,
+     "n": 25096,
      "pct": 35.8
     }
    },
@@ -501,12 +501,12 @@
      "pct": 12.5
     },
     "vendor": {
-     "n": 74,
-     "pct": 9.4
+     "n": 76,
+     "pct": 9.7
     },
     "baseline": {
-     "n": 17918,
-     "pct": 25.7
+     "n": 18097,
+     "pct": 25.8
     }
    },
    {
@@ -518,10 +518,10 @@
     },
     "vendor": {
      "n": 68,
-     "pct": 8.7
+     "pct": 8.6
     },
     "baseline": {
-     "n": 6215,
+     "n": 6276,
      "pct": 8.9
     }
    },
@@ -537,7 +537,7 @@
      "pct": 3.8
     },
     "baseline": {
-     "n": 1313,
+     "n": 1322,
      "pct": 1.9
     }
    },
@@ -550,10 +550,10 @@
     },
     "vendor": {
      "n": 112,
-     "pct": 14.3
+     "pct": 14.2
     },
     "baseline": {
-     "n": 4561,
+     "n": 4614,
      "pct": 6.6
     }
    },
@@ -566,10 +566,10 @@
     },
     "vendor": {
      "n": 89,
-     "pct": 11.4
+     "pct": 11.3
     },
     "baseline": {
-     "n": 6962,
+     "n": 7043,
      "pct": 10.0
     }
    },
@@ -586,7 +586,7 @@
     },
     "baseline": {
      "n": 947,
-     "pct": 1.4
+     "pct": 1.3
     }
    }
   ]
@@ -652,26 +652,26 @@
    ]
   },
   "vendor": {
-   "cves": 784,
-   "named": 784,
-   "distinct": 173,
+   "cves": 787,
+   "named": 787,
+   "distinct": 175,
    "top_share_n": 5,
-   "top_share_pct": 43.0,
+   "top_share_pct": 42.4,
    "projects": [
     {
      "label": "FFmpeg",
      "n": 141,
-     "pct": 18.0
+     "pct": 17.9
     },
     {
      "label": "Red Hat Enterprise Linux 10",
-     "n": 118,
-     "pct": 15.1
+     "n": 115,
+     "pct": 14.6
     },
     {
      "label": "curl",
      "n": 35,
-     "pct": 4.5
+     "pct": 4.4
     },
     {
      "label": "OpenSSL",
@@ -762,9 +762,9 @@
   },
   {
    "year": 2026,
-   "published": 96879,
-   "with_credits": 42092,
-   "pct": 43.4
+   "published": 97644,
+   "with_credits": 42636,
+   "pct": 43.7
   }
  ],
  "board": [
@@ -809,10 +809,10 @@
    "label": "Anthropic (Claude)",
    "group": "anthropic",
    "kind": "llm",
-   "cves": 532,
+   "cves": 533,
    "counted": 349,
    "system": 349,
-   "org": 94,
+   "org": 95,
    "fix": 89,
    "severity": {
     "critical": 37,
@@ -969,6 +969,38 @@
    ]
   },
   {
+   "key": "codeant",
+   "label": "CodeAnt AI",
+   "group": "vendor",
+   "kind": "vendor",
+   "cves": 22,
+   "counted": 22,
+   "system": 22,
+   "org": 0,
+   "fix": 0,
+   "severity": {
+    "critical": 3,
+    "high": 13,
+    "medium": 6,
+    "low": 0,
+    "unscored": 0
+   },
+   "poc": 0,
+   "kev": 0,
+   "first_month": "2026-03",
+   "last_month": "2026-11",
+   "top_cnas": [
+    {
+     "cna": "VulnCheck",
+     "n": 20
+    },
+    {
+     "cna": "XEN",
+     "n": 2
+    }
+   ]
+  },
+  {
    "key": "depthfirst",
    "label": "depthfirst",
    "group": "vendor",
@@ -1001,38 +1033,6 @@
     {
      "cna": "f5",
      "n": 6
-    }
-   ]
-  },
-  {
-   "key": "codeant",
-   "label": "CodeAnt AI",
-   "group": "vendor",
-   "kind": "vendor",
-   "cves": 20,
-   "counted": 20,
-   "system": 20,
-   "org": 0,
-   "fix": 0,
-   "severity": {
-    "critical": 3,
-    "high": 11,
-    "medium": 6,
-    "low": 0,
-    "unscored": 0
-   },
-   "poc": 0,
-   "kev": 0,
-   "first_month": "2026-03",
-   "last_month": "2026-11",
-   "top_cnas": [
-    {
-     "cna": "VulnCheck",
-     "n": 18
-    },
-    {
-     "cna": "XEN",
-     "n": 2
     }
    ]
   },
@@ -1073,6 +1073,42 @@
    ]
   },
   {
+   "key": "bugbunny",
+   "label": "bugbunny.ai",
+   "group": "vendor",
+   "kind": "vendor",
+   "cves": 13,
+   "counted": 13,
+   "system": 0,
+   "org": 13,
+   "fix": 0,
+   "severity": {
+    "critical": 3,
+    "high": 8,
+    "medium": 2,
+    "low": 0,
+    "unscored": 0
+   },
+   "poc": 1,
+   "kev": 0,
+   "first_month": "2026-05",
+   "last_month": "2026-11",
+   "top_cnas": [
+    {
+     "cna": "apache",
+     "n": 7
+    },
+    {
+     "cna": "ProgressSoftware",
+     "n": 3
+    },
+    {
+     "cna": "VulnCheck",
+     "n": 1
+    }
+   ]
+  },
+  {
    "key": "zai",
    "label": "Z.ai (GLM)",
    "group": "other_llm",
@@ -1097,42 +1133,6 @@
     {
      "cna": "freebsd",
      "n": 12
-    }
-   ]
-  },
-  {
-   "key": "bugbunny",
-   "label": "bugbunny.ai",
-   "group": "vendor",
-   "kind": "vendor",
-   "cves": 12,
-   "counted": 12,
-   "system": 0,
-   "org": 12,
-   "fix": 0,
-   "severity": {
-    "critical": 3,
-    "high": 7,
-    "medium": 2,
-    "low": 0,
-    "unscored": 0
-   },
-   "poc": 1,
-   "kev": 0,
-   "first_month": "2026-05",
-   "last_month": "2026-10",
-   "top_cnas": [
-    {
-     "cna": "apache",
-     "n": 7
-    },
-    {
-     "cna": "ProgressSoftware",
-     "n": 3
-    },
-    {
-     "cna": "eclipse",
-     "n": 1
     }
    ]
   },

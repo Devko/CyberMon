@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "window": {
   "from": 2021,
   "to": 2025,
@@ -49,7 +49,7 @@
  },
  "rescore_log": {
   "first_observed": "2026-07-15",
-  "last_observed": "2026-11-13",
+  "last_observed": "2026-11-14",
   "rescores": 173
  },
  "summary": {

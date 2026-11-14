@@ -17551,6 +17551,17 @@
    "ransom": "Unknown",
    "vendor": "Arista"
   },
+  "CVE-2026-114713": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-13",
+   "desc": "fd36cf2dd39d",
+   "due": "2026-11-16",
+   "name": "UnrealIRCd Improper Neutralization of Delimiters Vulnerability",
+   "notes": "a375e7a1eaaa",
+   "product": "UnrealIRCd",
+   "ransom": "Unknown",
+   "vendor": "UnrealIRCd"
+  },
   "CVE-2026-11645": {
    "action": "f09df147152e",
    "added": "2026-06-09",
@@ -17605,6 +17616,17 @@
    "product": "WordPress Core",
    "ransom": "Unknown",
    "vendor": "WordPress"
+  },
+  "CVE-2026-123039": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-13",
+   "desc": "b2d401614920",
+   "due": "2026-11-16",
+   "name": "Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability",
+   "notes": "64c45e519d31",
+   "product": "Multiple Products",
+   "ransom": "Unknown",
+   "vendor": "Check Point"
   },
   "CVE-2026-123158": {
    "action": "ba0d649eb29b",
@@ -19576,7 +19598,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-13",
+ "last_observed": "2026-11-14",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

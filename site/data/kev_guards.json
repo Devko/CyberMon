@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 295,
-   "security": 54,
-   "pct_security": 18.3
+   "total": 297,
+   "security": 55,
+   "pct_security": 18.5
   }
  ],
  "vendors": [
@@ -432,6 +432,16 @@
    "median_gap_days": 85.0
   },
   {
+   "vendor": "Check Point",
+   "entries": 6,
+   "dated_entries": 6,
+   "security_entries": 6,
+   "pct_security": 100.0,
+   "first_added": "2024-05-30",
+   "last_added": "2026-11-13",
+   "median_gap_days": 52.0
+  },
+  {
    "vendor": "GitLab",
    "entries": 6,
    "dated_entries": 6,
@@ -460,16 +470,6 @@
    "first_added": "2022-03-25",
    "last_added": "2025-09-03",
    "median_gap_days": 78.0
-  },
-  {
-   "vendor": "Check Point",
-   "entries": 5,
-   "dated_entries": 5,
-   "security_entries": 5,
-   "pct_security": 100.0,
-   "first_added": "2024-05-30",
-   "last_added": "2026-09-22",
-   "median_gap_days": 53.0
   },
   {
    "vendor": "DrayTek",
@@ -574,19 +574,19 @@
  ],
  "ransomware": {
   "security": {
-   "total": 224,
+   "total": 225,
    "known": 79,
-   "pct_known": 35.3
+   "pct_known": 35.1
   },
   "other": {
-   "total": 1555,
+   "total": 1556,
    "known": 282,
    "pct_known": 18.1
   }
  },
  "catalog": {
-  "total": 1779,
-  "security": 224,
+  "total": 1781,
+  "security": 225,
   "pct_security": 12.6,
   "classifier_version": 2,
   "classifier_rules": 35

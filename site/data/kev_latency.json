@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "matched": {
-  "total_kev": 1779,
-  "matched_cve": 1779,
+  "total_kev": 1781,
+  "matched_cve": 1781,
   "unmatched_cve": 0
  },
  "launch_backfill": {
@@ -40,12 +40,12 @@
   },
   {
    "year": 2026,
-   "n": 295,
+   "n": 297,
    "median_days": 12.0,
    "p25_days": 1.0,
-   "p75_days": 139.5,
-   "pct_negative": 1.4,
-   "pct_over_365d": 17.3
+   "p75_days": 126.0,
+   "pct_negative": 1.3,
+   "pct_over_365d": 17.2
   }
  ],
  "latency_buckets": [
@@ -56,13 +56,13 @@
   },
   {
    "bucket": "0-7d",
-   "n": 362,
-   "pct": 39.6
+   "n": 364,
+   "pct": 39.8
   },
   {
    "bucket": "8-30d",
    "n": 113,
-   "pct": 12.4
+   "pct": 12.3
   },
   {
    "bucket": "31-90d",
@@ -182,14 +182,14 @@
   },
   {
    "year": 2026,
-   "n": 295,
+   "n": 297,
    "over_1y": 51,
-   "pct_over_1y": 17.3,
+   "pct_over_1y": 17.2,
    "buckets": [
     {
      "bucket": "1-3y",
      "n": 17,
-     "pct": 5.8
+     "pct": 5.7
     },
     {
      "bucket": "3-5y",
@@ -211,9 +211,9 @@
  ],
  "oldest_recent": {
   "window_days": 365,
-  "since": "2025-11-14",
-  "until": "2026-11-13",
-  "n_listed": 320,
+  "since": "2025-11-15",
+  "until": "2026-11-14",
+  "n_listed": 321,
   "n_over_10y": 15,
   "entries": [
    {
@@ -316,7 +316,7 @@
   },
   {
    "year": 2026,
-   "n": 295,
+   "n": 297,
    "median_days": 3.0,
    "p25_days": 3.0,
    "p75_days": 14.0

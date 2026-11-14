@@ -5787,3 +5787,4 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-11-13,CVE-2026-125706,redhat,rescore,v3.1,5.5,v3.1,6.5
 2026-11-13,CVE-2026-125707,redhat,rescore,v3.1,6.1,v3.1,7.1
 2026-11-13,CVE-2026-56712,VulnCheck,rescore,v4.0,6.3,v4.0,7.8
+2026-11-14,CVE-2026-9271,WPScan,first_score,,,v3.1,6.8

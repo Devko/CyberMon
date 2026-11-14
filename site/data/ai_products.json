@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,14 +159,14 @@
   },
   {
    "year": 2026,
-   "published": 96879,
-   "named": 93558,
-   "ai": 3213,
+   "published": 97644,
+   "named": 94323,
+   "ai": 3239,
    "by_category": {
-    "frameworks": 208,
-    "serving": 372,
+    "frameworks": 219,
+    "serving": 378,
     "platforms": 184,
-    "apps": 2449
+    "apps": 2458
    },
    "top_product": {
     "label": "OpenClaw",
@@ -189,31 +189,31 @@
    },
    {
     "year": 2025,
-    "pct": 15.6
+    "pct": 15.5
    },
    {
     "year": 2026,
-    "pct": 72.4
+    "pct": 72.6
    }
   ]
  },
  "cwe": {
-  "n": 4438,
+  "n": 4464,
   "no_cwe": 10,
   "no_cwe_pct": 0.2,
-  "baseline_no_cwe_pct": 9.8,
+  "baseline_no_cwe_pct": 9.7,
   "top": [
    {
     "cwe": "CWE-22",
     "name": "Path traversal",
-    "n": 363,
+    "n": 364,
     "pct": 8.2,
     "baseline_pct": 2.8
    },
    {
     "cwe": "CWE-918",
     "name": "Server-side request forgery (SSRF)",
-    "n": 358,
+    "n": 360,
     "pct": 8.1,
     "baseline_pct": 1.6
    },
@@ -242,13 +242,13 @@
     "cwe": "CWE-862",
     "name": "Missing authorization",
     "n": 202,
-    "pct": 4.6,
+    "pct": 4.5,
     "baseline_pct": 4.9
    },
    {
     "cwe": "CWE-79",
     "name": "Cross-site scripting",
-    "n": 150,
+    "n": 151,
     "pct": 3.4,
     "baseline_pct": 10.9
    },
@@ -256,14 +256,14 @@
     "cwe": "CWE-639",
     "name": "Authz bypass via user-controlled key",
     "n": 145,
-    "pct": 3.3,
+    "pct": 3.2,
     "baseline_pct": 1.8
    },
    {
     "cwe": "CWE-78",
     "name": "OS command injection",
     "n": 145,
-    "pct": 3.3,
+    "pct": 3.2,
     "baseline_pct": 2.1
    },
    {
@@ -274,7 +274,7 @@
     "baseline_pct": 1.5
    }
   ],
-  "top_share_pct": 48.3,
+  "top_share_pct": 48.1,
   "ai_specific": {
    "ids": [
     "CWE-1039",
@@ -285,12 +285,12 @@
   }
  },
  "exploited": {
-  "n": 4438,
-  "baseline_n": 209362,
+  "n": 4464,
+  "baseline_n": 210101,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
-  "kev_expected": 12.3,
+  "kev_expected": 12.4,
   "poc": 32,
   "poc_pct": 0.7,
   "poc_baseline_pct": 0.4,
@@ -411,25 +411,25 @@
    "key": "flowise",
    "label": "Flowise",
    "category": "apps",
-   "n": 145,
-   "all_years": 145,
+   "n": 146,
+   "all_years": 146,
    "first_year": 2024,
    "kev": 0,
    "poc": 5,
    "top_cna": "GitHub_M",
-   "top_cna_pct": 51.0
+   "top_cna_pct": 50.7
   },
   {
    "key": "vllm",
    "label": "vLLM",
    "category": "serving",
-   "n": 129,
-   "all_years": 129,
+   "n": 135,
+   "all_years": 135,
    "first_year": 2025,
    "kev": 0,
    "poc": 0,
    "top_cna": "GitHub_M",
-   "top_cna_pct": 55.0
+   "top_cna_pct": 52.6
   },
   {
    "key": "nvidia_nemo",
@@ -444,6 +444,18 @@
    "top_cna_pct": 100.0
   },
   {
+   "key": "mcp_sdk",
+   "label": "Model Context Protocol SDKs and tools",
+   "category": "apps",
+   "n": 94,
+   "all_years": 94,
+   "first_year": 2025,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "GitHub_M",
+   "top_cna_pct": 77.7
+  },
+  {
    "key": "mlflow",
    "label": "MLflow",
    "category": "platforms",
@@ -454,18 +466,6 @@
    "poc": 0,
    "top_cna": "@huntr_ai",
    "top_cna_pct": 52.2
-  },
-  {
-   "key": "mcp_sdk",
-   "label": "Model Context Protocol SDKs and tools",
-   "category": "apps",
-   "n": 86,
-   "all_years": 86,
-   "first_year": 2025,
-   "kev": 0,
-   "poc": 0,
-   "top_cna": "GitHub_M",
-   "top_cna_pct": 84.9
   },
   {
    "key": "lollms",
@@ -530,28 +530,28 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4438,
+  "n": 4464,
   "cna_count": 41,
   "top": [
    {
     "cna": "GitHub_M",
-    "n": 1246,
-    "pct": 28.1
+    "n": 1247,
+    "pct": 27.9
    },
    {
     "cna": "VulnCheck",
-    "n": 1102,
-    "pct": 24.8
+    "n": 1119,
+    "pct": 25.1
    },
    {
     "cna": "@huntr_ai",
     "n": 703,
-    "pct": 15.8
+    "pct": 15.7
    },
    {
     "cna": "VulDB",
     "n": 444,
-    "pct": 10.0
+    "pct": 9.9
    },
    {
     "cna": "nvidia",
@@ -559,17 +559,17 @@
     "pct": 5.1
    }
   ],
-  "top3_pct": 68.7
+  "top3_pct": 68.8
  },
  "headline": {
   "latest_year": 2025,
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3213,
+  "current_ai": 3239,
   "current_share_pct": 3.3,
   "lead_label": "OpenClaw",
   "lead_n": 677,
-  "lead_pct": 15.3
+  "lead_pct": 15.2
  }
 }

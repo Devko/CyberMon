@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -8,15 +8,15 @@
   "download_floor": 5000
  },
  "observed": {
-  "first": "2026-11-07",
-  "last": "2026-11-13",
+  "first": "2026-11-08",
+  "last": "2026-11-14",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-13"
+  "last": "2026-11-14"
  },
  "ecosystems": [
   {
@@ -132,11 +132,11 @@
       },
       {
        "label": "1\u20134",
-       "n": 74
+       "n": 75
       },
       {
        "label": "5\u20137",
-       "n": 38
+       "n": 37
       },
       {
        "label": "8\u201310",
@@ -272,7 +272,7 @@
    "scorecard": {
     "github_packages": 237,
     "repos": 234,
-    "scored": 208,
+    "scored": 210,
     "old_results": 3,
     "median_score": 5.8,
     "checks": {
@@ -283,11 +283,11 @@
       },
       {
        "label": "0",
-       "n": 35
+       "n": 36
       },
       {
        "label": "1\u20134",
-       "n": 12
+       "n": 11
       },
       {
        "label": "5\u20137",
@@ -295,7 +295,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 152
+       "n": 154
       }
      ],
      "Code-Review": [
@@ -305,7 +305,7 @@
       },
       {
        "label": "0",
-       "n": 33
+       "n": 34
       },
       {
        "label": "1\u20134",
@@ -313,17 +313,17 @@
       },
       {
        "label": "5\u20137",
-       "n": 54
+       "n": 53
       },
       {
        "label": "8\u201310",
-       "n": 57
+       "n": 59
       }
      ],
      "Branch-Protection": [
       {
        "label": "inconclusive",
-       "n": 91
+       "n": 92
       },
       {
        "label": "0",
@@ -339,7 +339,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 8
+       "n": 9
       }
      ],
      "Signed-Releases": [
@@ -349,7 +349,7 @@
       },
       {
        "label": "0",
-       "n": 49
+       "n": 50
       },
       {
        "label": "1\u20134",
@@ -361,7 +361,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 15
+       "n": 16
       }
      ]
     },
@@ -449,7 +449,7 @@
    "scorecard": {
     "github_packages": 246,
     "repos": 216,
-    "scored": 179,
+    "scored": 178,
     "old_results": 3,
     "median_score": 4.5,
     "checks": {
@@ -460,7 +460,7 @@
       },
       {
        "label": "0",
-       "n": 76
+       "n": 75
       },
       {
        "label": "1\u20134",
@@ -482,11 +482,11 @@
       },
       {
        "label": "0",
-       "n": 28
+       "n": 27
       },
       {
        "label": "1\u20134",
-       "n": 72
+       "n": 73
       },
       {
        "label": "5\u20137",
@@ -494,7 +494,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 35
+       "n": 34
       }
      ],
      "Branch-Protection": [
@@ -504,7 +504,7 @@
       },
       {
        "label": "0",
-       "n": 78
+       "n": 77
       },
       {
        "label": "1\u20134",
@@ -522,7 +522,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 177
+       "n": 176
       },
       {
        "label": "0",
@@ -626,7 +626,7 @@
    "scorecard": {
     "github_packages": 241,
     "repos": 226,
-    "scored": 182,
+    "scored": 183,
     "old_results": 3,
     "median_score": 4.0,
     "checks": {
@@ -649,7 +649,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 72
+       "n": 73
       }
      ],
      "Code-Review": [
@@ -659,19 +659,19 @@
       },
       {
        "label": "0",
-       "n": 34
+       "n": 32
       },
       {
        "label": "1\u20134",
-       "n": 88
+       "n": 90
       },
       {
        "label": "5\u20137",
-       "n": 37
+       "n": 39
       },
       {
        "label": "8\u201310",
-       "n": 22
+       "n": 21
       }
      ],
      "Branch-Protection": [
@@ -681,7 +681,7 @@
       },
       {
        "label": "0",
-       "n": 93
+       "n": 94
       },
       {
        "label": "1\u20134",
@@ -699,7 +699,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 166
+       "n": 167
       },
       {
        "label": "0",

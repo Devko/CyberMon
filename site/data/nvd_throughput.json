@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-11-13T16:44:06Z",
+ "generated_at": "2026-11-14T09:23:50Z",
  "min_known_duration": 30,
  "queue": {
   "median_days": 5.0,
-  "n_known_duration": 16919
+  "n_known_duration": 17008
  },
  "history": [
   {
@@ -1058,263 +1058,278 @@
    "deferred_from_awaiting": 1366,
    "resweep": false,
    "after_resweep": false
+  },
+  {
+   "date": "2026-11-14",
+   "received_new": 289,
+   "entered_awaiting": 1143,
+   "analyzed_from_awaiting": 326,
+   "deferred_from_awaiting": 683,
+   "resweep": false,
+   "after_resweep": false
   }
  ],
  "queue_survival": {
   "log_start": "2026-11-05",
-  "log_days": 8,
+  "log_days": 9,
   "min_exits": 30,
   "min_log_days": 28,
   "min_at_risk": 30,
   "ready": false,
   "exits": {
-   "analyzed": 1201,
+   "analyzed": 1290,
    "deferred": 0,
    "other": 11
   },
   "censored": {
-   "waiting": 10754,
+   "waiting": 10665,
    "requeued": 0
   },
-  "horizon_days": 120,
-  "median_days": 21,
+  "horizon_days": 121,
+  "median_days": 24,
   "checkpoints": [
    {
     "day": 7,
-    "pct_waiting": 72.4,
-    "at_risk": 1241
+    "pct_waiting": 75.1,
+    "at_risk": 1583
    },
    {
     "day": 30,
-    "pct_waiting": 46.0,
-    "at_risk": 830
+    "pct_waiting": 48.5,
+    "at_risk": 970
    },
    {
     "day": 90,
-    "pct_waiting": 41.6,
-    "at_risk": 146
+    "pct_waiting": 45.0,
+    "at_risk": 156
    }
   ],
   "curve": [
    {
     "day": 1,
-    "pct_waiting": 97.3,
+    "pct_waiting": 99.2,
     "at_risk": 2729,
-    "exits": 74
+    "exits": 21
    },
    {
     "day": 2,
-    "pct_waiting": 90.5,
-    "at_risk": 1367,
-    "exits": 95
+    "pct_waiting": 93.4,
+    "at_risk": 3293,
+    "exits": 195
    },
    {
     "day": 3,
-    "pct_waiting": 88.0,
+    "pct_waiting": 90.7,
     "at_risk": 1462,
     "exits": 41
    },
    {
     "day": 5,
-    "pct_waiting": 79.4,
-    "at_risk": 1347,
+    "pct_waiting": 82.4,
+    "at_risk": 1424,
     "exits": 131
    },
    {
     "day": 6,
-    "pct_waiting": 72.8,
-    "at_risk": 1480,
-    "exits": 124
+    "pct_waiting": 76.7,
+    "at_risk": 1483,
+    "exits": 102
    },
    {
     "day": 7,
-    "pct_waiting": 72.4,
-    "at_risk": 1241,
-    "exits": 7
+    "pct_waiting": 75.1,
+    "at_risk": 1583,
+    "exits": 34
    },
    {
     "day": 8,
-    "pct_waiting": 64.3,
-    "at_risk": 1410,
-    "exits": 158
+    "pct_waiting": 67.6,
+    "at_risk": 1462,
+    "exits": 146
    },
    {
     "day": 9,
-    "pct_waiting": 58.8,
-    "at_risk": 1384,
-    "exits": 117
+    "pct_waiting": 64.3,
+    "at_risk": 1439,
+    "exits": 70
    },
    {
     "day": 10,
-    "pct_waiting": 56.6,
-    "at_risk": 1210,
-    "exits": 45
+    "pct_waiting": 60.1,
+    "at_risk": 1534,
+    "exits": 99
    },
    {
     "day": 11,
-    "pct_waiting": 56.5,
-    "at_risk": 1228,
-    "exits": 4
+    "pct_waiting": 58.6,
+    "at_risk": 1413,
+    "exits": 36
    },
    {
     "day": 12,
-    "pct_waiting": 55.6,
-    "at_risk": 1223,
+    "pct_waiting": 57.7,
+    "at_risk": 1224,
     "exits": 19
    },
    {
     "day": 13,
-    "pct_waiting": 55.5,
-    "at_risk": 1305,
+    "pct_waiting": 57.6,
+    "at_risk": 1307,
     "exits": 2
    },
    {
     "day": 14,
-    "pct_waiting": 54.9,
-    "at_risk": 1435,
-    "exits": 15
+    "pct_waiting": 57.4,
+    "at_risk": 1679,
+    "exits": 5
    },
    {
     "day": 15,
-    "pct_waiting": 53.4,
-    "at_risk": 1968,
-    "exits": 55
+    "pct_waiting": 55.9,
+    "at_risk": 2171,
+    "exits": 59
    },
    {
     "day": 16,
-    "pct_waiting": 53.3,
-    "at_risk": 1850,
-    "exits": 4
+    "pct_waiting": 55.6,
+    "at_risk": 2076,
+    "exits": 10
    },
    {
     "day": 17,
-    "pct_waiting": 53.2,
-    "at_risk": 1911,
+    "pct_waiting": 55.6,
+    "at_risk": 2013,
     "exits": 1
    },
    {
     "day": 18,
-    "pct_waiting": 53.1,
-    "at_risk": 1710,
+    "pct_waiting": 55.5,
+    "at_risk": 1912,
     "exits": 4
    },
    {
     "day": 21,
-    "pct_waiting": 48.5,
-    "at_risk": 1839,
+    "pct_waiting": 50.9,
+    "at_risk": 1942,
     "exits": 159
    },
    {
     "day": 22,
-    "pct_waiting": 47.9,
-    "at_risk": 1466,
-    "exits": 19
+    "pct_waiting": 50.5,
+    "at_risk": 1837,
+    "exits": 15
+   },
+   {
+    "day": 23,
+    "pct_waiting": 50.1,
+    "at_risk": 1720,
+    "exits": 14
    },
    {
     "day": 24,
-    "pct_waiting": 47.7,
-    "at_risk": 1046,
+    "pct_waiting": 49.9,
+    "at_risk": 1186,
     "exits": 4
    },
    {
     "day": 27,
-    "pct_waiting": 47.5,
+    "pct_waiting": 49.7,
     "at_risk": 981,
     "exits": 4
    },
    {
     "day": 28,
-    "pct_waiting": 46.7,
+    "pct_waiting": 48.9,
     "at_risk": 1140,
-    "exits": 19
+    "exits": 18
    },
    {
     "day": 29,
-    "pct_waiting": 46.0,
-    "at_risk": 692,
-    "exits": 10
+    "pct_waiting": 48.5,
+    "at_risk": 1143,
+    "exits": 11
    },
    {
     "day": 35,
-    "pct_waiting": 45.9,
-    "at_risk": 1101,
+    "pct_waiting": 48.3,
+    "at_risk": 1186,
     "exits": 4
    },
    {
     "day": 40,
-    "pct_waiting": 45.8,
+    "pct_waiting": 48.2,
     "at_risk": 677,
     "exits": 1
    },
    {
-    "day": 41,
-    "pct_waiting": 45.6,
-    "at_risk": 726,
+    "day": 42,
+    "pct_waiting": 48.0,
+    "at_risk": 1011,
     "exits": 4
    },
    {
     "day": 49,
-    "pct_waiting": 45.4,
-    "at_risk": 999,
+    "pct_waiting": 47.9,
+    "at_risk": 1049,
     "exits": 3
    },
    {
     "day": 54,
-    "pct_waiting": 45.4,
+    "pct_waiting": 47.8,
     "at_risk": 715,
     "exits": 1
    },
    {
     "day": 56,
-    "pct_waiting": 43.0,
-    "at_risk": 587,
+    "pct_waiting": 46.2,
+    "at_risk": 889,
     "exits": 30
    },
    {
     "day": 58,
-    "pct_waiting": 42.3,
-    "at_risk": 731,
+    "pct_waiting": 45.7,
+    "at_risk": 1077,
     "exits": 13
    },
    {
-    "day": 64,
-    "pct_waiting": 42.0,
-    "at_risk": 690,
+    "day": 65,
+    "pct_waiting": 45.4,
+    "at_risk": 859,
     "exits": 5
    },
    {
     "day": 69,
-    "pct_waiting": 41.8,
+    "pct_waiting": 45.2,
     "at_risk": 540,
     "exits": 2
    },
    {
     "day": 83,
-    "pct_waiting": 41.6,
+    "pct_waiting": 45.0,
     "at_risk": 194,
     "exits": 1
    },
    {
-    "day": 104,
-    "pct_waiting": 38.9,
-    "at_risk": 170,
+    "day": 105,
+    "pct_waiting": 42.1,
+    "at_risk": 172,
     "exits": 11
    },
    {
     "day": 107,
-    "pct_waiting": 36.5,
+    "pct_waiting": 39.5,
     "at_risk": 144,
     "exits": 9
    },
    {
-    "day": 108,
-    "pct_waiting": 31.7,
+    "day": 109,
+    "pct_waiting": 34.3,
     "at_risk": 130,
     "exits": 17
    },
    {
-    "day": 120,
-    "pct_waiting": 31.7,
+    "day": 121,
+    "pct_waiting": 34.3,
     "at_risk": 84,
     "exits": 0
    }

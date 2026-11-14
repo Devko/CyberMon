@@ -4425,3 +4425,5 @@ observed_date,cve,change_type,field,old,new,granularity
 2026-11-12,CVE-2026-124194,added,,,,daily
 2026-11-12,CVE-2026-125350,added,,,,daily
 2026-11-12,CVE-2026-20320,added,,,,daily
+2026-11-14,CVE-2026-114713,added,,,,daily
+2026-11-14,CVE-2026-123039,added,,,,daily
