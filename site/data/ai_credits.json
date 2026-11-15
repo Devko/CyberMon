@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T09:54:17Z",
+ "generated_at": "2026-11-15T15:53:04Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -427,7 +427,7 @@
   "vendor": {
    "n": 787,
    "median_cvss": 6.5,
-   "median_epss_pctile": 26.5,
+   "median_epss_pctile": 26.4,
    "epss_scored": 787,
    "recent_days": 90,
    "recent_pct": 48.4,
@@ -445,7 +445,7 @@
    "n": 70228,
    "median_cvss": 6.9,
    "median_epss_pctile": 28.1,
-   "epss_scored": 70190,
+   "epss_scored": 70228,
    "recent_days": 90,
    "recent_pct": 28.9,
    "poc_pct": 1.5,

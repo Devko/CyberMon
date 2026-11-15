@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T09:54:17Z",
+ "generated_at": "2026-11-15T15:53:04Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -234,7 +234,7 @@
  },
  "catalog": {
   "state_size": 406586,
-  "corpus_release": "cve_2026-11-15_0900Z",
+  "corpus_release": "cve_2026-11-15_1500Z",
   "totals": {
    "rescore": 173,
    "version_shift": 31,

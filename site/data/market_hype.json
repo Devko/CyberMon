@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T09:54:17Z",
+ "generated_at": "2026-11-15T15:53:04Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -1189,8 +1189,8 @@
      },
      {
       "month": "2026-08",
-      "n": 6601,
-      "index": 6.5
+      "n": 5690,
+      "index": 5.6
      },
      {
       "month": "2026-09",
@@ -1522,8 +1522,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -31.6,
-     "n_latest_12m": 90957,
+     "pct_change": -32.3,
+     "n_latest_12m": 90046,
      "n_prior_12m": 133042
     },
     "edgar": {
@@ -2718,8 +2718,8 @@
      },
      {
       "month": "2026-08",
-      "n": 1986,
-      "index": 18.6
+      "n": 1661,
+      "index": 15.6
      },
      {
       "month": "2026-09",
@@ -3051,8 +3051,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -61.1,
-     "n_latest_12m": 30786,
+     "pct_change": -61.6,
+     "n_latest_12m": 30461,
      "n_prior_12m": 79241
     },
     "edgar": {
@@ -4242,8 +4242,8 @@
      },
      {
       "month": "2026-08",
-      "n": 15865,
-      "index": 42.3
+      "n": 15528,
+      "index": 41.4
      },
      {
       "month": "2026-09",
@@ -4575,8 +4575,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -19.2,
-     "n_latest_12m": 237405,
+     "pct_change": -19.4,
+     "n_latest_12m": 237068,
      "n_prior_12m": 293983
     },
     "edgar": {
@@ -5771,8 +5771,8 @@
      },
      {
       "month": "2026-08",
-      "n": 635,
-      "index": 22.6
+      "n": 626,
+      "index": 22.3
      },
      {
       "month": "2026-09",
@@ -6094,8 +6094,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -35.2,
-     "n_latest_12m": 9858,
+     "pct_change": -35.3,
+     "n_latest_12m": 9849,
      "n_prior_12m": 15217
     },
     "edgar": {
@@ -7285,8 +7285,8 @@
      },
      {
       "month": "2026-08",
-      "n": 1255,
-      "index": 25.1
+      "n": 1212,
+      "index": 24.2
      },
      {
       "month": "2026-09",
@@ -7608,8 +7608,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -30.1,
-     "n_latest_12m": 20652,
+     "pct_change": -30.3,
+     "n_latest_12m": 20609,
      "n_prior_12m": 29557
     },
     "edgar": {
@@ -10012,8 +10012,8 @@
      },
      {
       "month": "2026-08",
-      "n": 2703,
-      "index": 32.8
+      "n": 2640,
+      "index": 32.0
      },
      {
       "month": "2026-09",
@@ -10345,8 +10345,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -27.6,
-     "n_latest_12m": 39899,
+     "pct_change": -27.7,
+     "n_latest_12m": 39836,
      "n_prior_12m": 55088
     },
     "edgar": {
@@ -11421,8 +11421,8 @@
      },
      {
       "month": "2026-08",
-      "n": 19651,
-      "index": 47.6
+      "n": 19055,
+      "index": 46.2
      },
      {
       "month": "2026-09",
@@ -11754,8 +11754,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": 61.4,
-     "n_latest_12m": 329959,
+     "pct_change": 61.1,
+     "n_latest_12m": 329363,
      "n_prior_12m": 204448
     },
     "edgar": {
@@ -12950,8 +12950,8 @@
      },
      {
       "month": "2026-08",
-      "n": 10076,
-      "index": 35.1
+      "n": 9582,
+      "index": 33.3
      },
      {
       "month": "2026-09",
@@ -13283,8 +13283,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -20.2,
-     "n_latest_12m": 146251,
+     "pct_change": -20.4,
+     "n_latest_12m": 145757,
      "n_prior_12m": 183213
     },
     "edgar": {
@@ -14479,8 +14479,8 @@
      },
      {
       "month": "2026-08",
-      "n": 2432,
-      "index": 23.7
+      "n": 2256,
+      "index": 22.0
      },
      {
       "month": "2026-09",
@@ -14812,8 +14812,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -0.8,
-     "n_latest_12m": 37587,
+     "pct_change": -1.3,
+     "n_latest_12m": 37411,
      "n_prior_12m": 37909
     },
     "edgar": {
@@ -16003,8 +16003,8 @@
      },
      {
       "month": "2026-08",
-      "n": 812,
-      "index": 35.1
+      "n": 809,
+      "index": 35.0
      },
      {
       "month": "2026-09",
@@ -16332,7 +16332,7 @@
     "wiki": {
      "latest_month": "2026-10",
      "pct_change": -23.4,
-     "n_latest_12m": 10374,
+     "n_latest_12m": 10371,
      "n_prior_12m": 13535
     },
     "edgar": {
@@ -17522,8 +17522,8 @@
      },
      {
       "month": "2026-08",
-      "n": 29959,
-      "index": 8.6
+      "n": 29835,
+      "index": 8.5
      },
      {
       "month": "2026-09",
@@ -17855,8 +17855,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -19.5,
-     "n_latest_12m": 529057,
+     "pct_change": -19.6,
+     "n_latest_12m": 528933,
      "n_prior_12m": 657621
     },
     "edgar": {
@@ -18971,8 +18971,8 @@
      },
      {
       "month": "2026-08",
-      "n": 1105,
-      "index": 45.8
+      "n": 1082,
+      "index": 44.9
      },
      {
       "month": "2026-09",
@@ -19304,8 +19304,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -22.6,
-     "n_latest_12m": 16903,
+     "pct_change": -22.7,
+     "n_latest_12m": 16880,
      "n_prior_12m": 21849
     },
     "edgar": {
@@ -20370,8 +20370,8 @@
      },
      {
       "month": "2026-08",
-      "n": 273,
-      "index": 39.4
+      "n": 257,
+      "index": 37.1
      },
      {
       "month": "2026-09",
@@ -20693,8 +20693,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -11.8,
-     "n_latest_12m": 5449,
+     "pct_change": -12.0,
+     "n_latest_12m": 5433,
      "n_prior_12m": 6175
     },
     "edgar": {
@@ -20718,7 +20718,7 @@
    "term_id": "sbom",
    "label": "SBOM",
    "source": "wiki",
-   "pct_change": -61.1
+   "pct_change": -61.6
   },
   "top_divergence": {
    "term_id": "deepfake",
