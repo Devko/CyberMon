@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T15:20:20Z",
+ "generated_at": "2026-11-15T09:54:17Z",
  "years": [
   {
    "year": 1999,
@@ -223,7 +223,7 @@
    "newcomer_count": 74,
    "top5_share": 44.9,
    "top10_share": 66.7,
-   "hhi": 562.7
+   "hhi": 562.6
   }
  ],
  "rejection_leaderboard": {
@@ -418,7 +418,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 11815,
+    "total": 11824,
     "rejected": 119,
     "rejected_rate_pct": 1.0
    },
@@ -496,7 +496,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 12042,
+    "total": 12052,
     "rejected": 51,
     "rejected_rate_pct": 0.4
    },
@@ -586,7 +586,7 @@
    },
    {
     "cna": "VulDB",
-    "total": 18041,
+    "total": 18058,
     "rejected": 44,
     "rejected_rate_pct": 0.2
    },
@@ -688,7 +688,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5746,
+    "total": 5763,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -790,7 +790,7 @@
    },
    {
     "cna": "CPANSec",
-    "total": 475,
+    "total": 484,
     "rejected": 0,
     "rejected_rate_pct": 0.0
    },
@@ -1620,13 +1620,13 @@
     "cna_count": 417,
     "top5_share": 45.9,
     "top10_share": 66.2,
-    "hhi": 586.1
+    "hhi": 586.0
    }
   ]
  },
  "projection": {
   "year": 2026,
   "newcomers": 85,
-  "elapsed": 0.871
+  "elapsed": 0.874
  }
 }

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T15:20:20Z",
+ "generated_at": "2026-11-15T09:54:17Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -294,7 +294,7 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 11664,
+   "n": 11673,
    "avg_cvss": 7.3,
    "median_cvss": 7.1,
    "pct_geq_9": 12.7,
@@ -600,10 +600,10 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10942,
+   "n": 10952,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
-   "pct_geq_9": 6.5,
+   "pct_geq_9": 6.6,
    "pct_geq_7": 28.0
   },
   {
@@ -771,11 +771,11 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 15213,
+   "n": 15230,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
    "pct_geq_9": 3.0,
-   "pct_geq_7": 14.2
+   "pct_geq_7": 14.3
   },
   {
    "cna": "mongodb",

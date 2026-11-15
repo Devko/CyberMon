@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T15:20:20Z",
+ "generated_at": "2026-11-15T09:54:17Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-08-16",
+  "observed_through": "2026-08-17",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -1463,12 +1463,12 @@
      },
      {
       "month": "2026-07",
-      "index": 52.9,
+      "index": 52.8,
       "sources": 5
      },
      {
       "month": "2026-08",
-      "index": 48.6,
+      "index": 48.2,
       "sources": 5
      },
      {
@@ -1764,12 +1764,12 @@
      },
      {
       "month": "2026-07",
-      "index": 63.1,
+      "index": 62.9,
       "sources": 5
      },
      {
       "month": "2026-08",
-      "index": 66.1,
+      "index": 65.5,
       "sources": 5
      },
      {

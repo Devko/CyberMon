@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T15:20:20Z",
+ "generated_at": "2026-11-15T09:54:17Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,8 +159,8 @@
   },
   {
    "year": 2026,
-   "published": 97644,
-   "named": 94323,
+   "published": 97709,
+   "named": 94379,
    "ai": 3239,
    "by_category": {
     "frameworks": 219,
@@ -286,7 +286,7 @@
  },
  "exploited": {
   "n": 4464,
-  "baseline_n": 210101,
+  "baseline_n": 210166,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
