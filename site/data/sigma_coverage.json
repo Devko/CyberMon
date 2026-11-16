@@ -1,6 +1,6 @@
 {
- "generated_at": "2026-11-15T15:53:04Z",
- "as_of": "2026-11-15",
+ "generated_at": "2026-11-16T10:09:56Z",
+ "as_of": "2026-11-16",
  "source": {
   "commit": "54967d64e6dda2b4daa81f47f7a8bf1f591b68a0",
   "commit_date": "2026-11-13"
@@ -536,7 +536,7 @@
  "lag": {
   "follow_up_days": 730,
   "debut_after": "1.0",
-  "debut_through": "2024-11-15",
+  "debut_through": "2024-11-16",
   "n": 124,
   "before_debut": 50,
   "within_year": 16,
@@ -554,7 +554,7 @@
    "within_year": 5,
    "later": 7,
    "none": 1,
-   "min_follow_up_days": 2945,
+   "min_follow_up_days": 2946,
    "full_year": true
   },
   {
@@ -564,7 +564,7 @@
    "within_year": 4,
    "later": 9,
    "none": 5,
-   "min_follow_up_days": 2580,
+   "min_follow_up_days": 2581,
    "full_year": true
   },
   {
@@ -574,7 +574,7 @@
    "within_year": 4,
    "later": 10,
    "none": 8,
-   "min_follow_up_days": 2210,
+   "min_follow_up_days": 2211,
    "full_year": true
   },
   {
@@ -584,7 +584,7 @@
    "within_year": 2,
    "later": 5,
    "none": 2,
-   "min_follow_up_days": 1851,
+   "min_follow_up_days": 1852,
    "full_year": true
   },
   {
@@ -594,7 +594,7 @@
    "within_year": 1,
    "later": 0,
    "none": 2,
-   "min_follow_up_days": 1482,
+   "min_follow_up_days": 1483,
    "full_year": true
   },
   {
@@ -604,7 +604,7 @@
    "within_year": 0,
    "later": 1,
    "none": 6,
-   "min_follow_up_days": 1111,
+   "min_follow_up_days": 1112,
    "full_year": true
   },
   {
@@ -614,7 +614,7 @@
    "within_year": 0,
    "later": 0,
    "none": 2,
-   "min_follow_up_days": 745,
+   "min_follow_up_days": 746,
    "full_year": true
   },
   {
@@ -624,7 +624,7 @@
    "within_year": 0,
    "later": 0,
    "none": 12,
-   "min_follow_up_days": 383,
+   "min_follow_up_days": 384,
    "full_year": true
   },
   {
@@ -634,7 +634,7 @@
    "within_year": 0,
    "later": 0,
    "none": 10,
-   "min_follow_up_days": 33,
+   "min_follow_up_days": 34,
    "full_year": false
   }
  ],

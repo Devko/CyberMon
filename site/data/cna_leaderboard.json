@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T15:53:04Z",
+ "generated_at": "2026-11-16T10:09:56Z",
  "window_years": 3,
  "min_cves": 100,
  "cnas": [
@@ -294,11 +294,11 @@
   {
    "cna": "VulnCheck",
    "org": "VulnCheck",
-   "n": 11673,
+   "n": 11699,
    "avg_cvss": 7.3,
    "median_cvss": 7.1,
-   "pct_geq_9": 12.7,
-   "pct_geq_7": 59.3
+   "pct_geq_9": 12.6,
+   "pct_geq_7": 59.2
   },
   {
    "cna": "3DS",
@@ -308,6 +308,15 @@
    "median_cvss": 8.7,
    "pct_geq_9": 12.0,
    "pct_geq_7": 98.0
+  },
+  {
+   "cna": "apache",
+   "org": "apache",
+   "n": 499,
+   "avg_cvss": 6.9,
+   "median_cvss": 7.2,
+   "pct_geq_9": 11.8,
+   "pct_geq_7": 53.9
   },
   {
    "cna": "AMZN",
@@ -335,15 +344,6 @@
    "median_cvss": 5.9,
    "pct_geq_9": 11.7,
    "pct_geq_7": 26.7
-  },
-  {
-   "cna": "apache",
-   "org": "apache",
-   "n": 498,
-   "avg_cvss": 6.9,
-   "median_cvss": 7.2,
-   "pct_geq_9": 11.6,
-   "pct_geq_7": 53.8
   },
   {
    "cna": "Rockwell",
@@ -501,11 +501,11 @@
   {
    "cna": "Patchstack",
    "org": "Patchstack",
-   "n": 17032,
+   "n": 17071,
    "avg_cvss": 6.7,
    "median_cvss": 6.5,
    "pct_geq_9": 8.7,
-   "pct_geq_7": 47.8
+   "pct_geq_7": 47.9
   },
   {
    "cna": "vmware",
@@ -600,7 +600,7 @@
   {
    "cna": "Wordfence",
    "org": "Wordfence",
-   "n": 10952,
+   "n": 10954,
    "avg_cvss": 6.4,
    "median_cvss": 6.4,
    "pct_geq_9": 6.6,
@@ -771,10 +771,10 @@
   {
    "cna": "VulDB",
    "org": "VulDB",
-   "n": 15230,
+   "n": 15245,
    "avg_cvss": 6.1,
    "median_cvss": 5.3,
-   "pct_geq_9": 3.0,
+   "pct_geq_9": 3.1,
    "pct_geq_7": 14.3
   },
   {

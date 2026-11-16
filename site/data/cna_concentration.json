@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T15:53:04Z",
+ "generated_at": "2026-11-16T10:09:56Z",
  "years": [
   {
    "year": 1999,
@@ -221,7 +221,7 @@
    "year": 2026,
    "cna_count": 418,
    "newcomer_count": 74,
-   "top5_share": 44.9,
+   "top5_share": 44.8,
    "top10_share": 66.7,
    "hhi": 562.6
   }
@@ -418,7 +418,7 @@
    },
    {
     "cna": "VulnCheck",
-    "total": 11824,
+    "total": 11850,
     "rejected": 119,
     "rejected_rate_pct": 1.0
    },
@@ -496,7 +496,7 @@
    },
    {
     "cna": "Wordfence",
-    "total": 12052,
+    "total": 12054,
     "rejected": 51,
     "rejected_rate_pct": 0.4
    },
@@ -538,7 +538,7 @@
    },
    {
     "cna": "apache",
-    "total": 2446,
+    "total": 2447,
     "rejected": 8,
     "rejected_rate_pct": 0.3
    },
@@ -580,13 +580,13 @@
    },
    {
     "cna": "Patchstack",
-    "total": 19592,
+    "total": 19631,
     "rejected": 31,
     "rejected_rate_pct": 0.2
    },
    {
     "cna": "VulDB",
-    "total": 18058,
+    "total": 18073,
     "rejected": 44,
     "rejected_rate_pct": 0.2
    },
@@ -688,7 +688,7 @@
    },
    {
     "cna": "WPScan",
-    "total": 5763,
+    "total": 5775,
     "rejected": 2,
     "rejected_rate_pct": 0.0
    },
@@ -915,6 +915,12 @@
     "rejected_rate_pct": 0.0
    },
    {
+    "cna": "Gitea",
+    "total": 215,
+    "rejected": 0,
+    "rejected_rate_pct": 0.0
+   },
+   {
     "cna": "DEVOLUTIONS",
     "total": 205,
     "rejected": 0,
@@ -928,12 +934,6 @@
    },
    {
     "cna": "Acronis",
-    "total": 195,
-    "rejected": 0,
-    "rejected_rate_pct": 0.0
-   },
-   {
-    "cna": "Gitea",
     "total": 195,
     "rejected": 0,
     "rejected_rate_pct": 0.0
@@ -1620,13 +1620,13 @@
     "cna_count": 417,
     "top5_share": 45.9,
     "top10_share": 66.2,
-    "hhi": 586.0
+    "hhi": 586.1
    }
   ]
  },
  "projection": {
   "year": 2026,
-  "newcomers": 85,
-  "elapsed": 0.874
+  "newcomers": 84,
+  "elapsed": 0.877
  }
 }

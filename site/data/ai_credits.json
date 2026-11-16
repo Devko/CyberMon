@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T15:53:04Z",
+ "generated_at": "2026-11-16T10:09:56Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -376,8 +376,8 @@
     "scored": 786,
     "high_or_critical": 295,
     "high_or_critical_pct": 37.5,
-    "poc": 16,
-    "poc_pct": 2.0,
+    "poc": 17,
+    "poc_pct": 2.2,
     "kev": 3,
     "kev_pct": 0.4
    },
@@ -390,20 +390,20 @@
  },
  "baseline": {
   "from_month": "2024-10",
-  "credited": 70228,
-  "scored": 70105,
-  "high_or_critical": 30011,
+  "credited": 70343,
+  "scored": 70188,
+  "high_or_critical": 30062,
   "high_or_critical_pct": 42.7,
-  "poc": 1043,
+  "poc": 1051,
   "poc_pct": 1.5,
   "kev": 92,
   "kev_pct": 0.1,
   "severity": {
-   "critical": 6781,
-   "high": 23230,
-   "medium": 37862,
-   "low": 2232,
-   "unscored": 123
+   "critical": 6794,
+   "high": 23268,
+   "medium": 37893,
+   "low": 2233,
+   "unscored": 155
   }
  },
  "profile": {
@@ -431,7 +431,7 @@
    "epss_scored": 787,
    "recent_days": 90,
    "recent_pct": 48.4,
-   "poc_pct": 2.0,
+   "poc_pct": 2.2,
    "kev_pct": 0.4,
    "memory_pct": 31.1,
    "cna_scored_pct": 84.0,
@@ -442,19 +442,19 @@
    }
   },
   "baseline": {
-   "n": 70228,
+   "n": 70343,
    "median_cvss": 6.9,
    "median_epss_pctile": 28.1,
-   "epss_scored": 70228,
+   "epss_scored": 70257,
    "recent_days": 90,
-   "recent_pct": 28.9,
+   "recent_pct": 28.8,
    "poc_pct": 1.5,
    "kev_pct": 0.1,
    "memory_pct": 9.7,
    "cna_scored_pct": 90.5,
    "top_cwe": {
     "cwe": "CWE-79",
-    "n": 13142,
+    "n": 13174,
     "pct": 18.7
    }
   }
@@ -473,7 +473,7 @@
      "pct": 31.1
     },
     "baseline": {
-     "n": 6783,
+     "n": 6794,
      "pct": 9.7
     }
    },
@@ -489,7 +489,7 @@
      "pct": 21.0
     },
     "baseline": {
-     "n": 25113,
+     "n": 25153,
      "pct": 35.8
     }
    },
@@ -505,7 +505,7 @@
      "pct": 9.7
     },
     "baseline": {
-     "n": 18103,
+     "n": 18133,
      "pct": 25.8
     }
    },
@@ -521,7 +521,7 @@
      "pct": 8.6
     },
     "baseline": {
-     "n": 6280,
+     "n": 6289,
      "pct": 8.9
     }
    },
@@ -537,7 +537,7 @@
      "pct": 3.8
     },
     "baseline": {
-     "n": 1323,
+     "n": 1324,
      "pct": 1.9
     }
    },
@@ -553,7 +553,7 @@
      "pct": 14.2
     },
     "baseline": {
-     "n": 4616,
+     "n": 4620,
      "pct": 6.6
     }
    },
@@ -569,7 +569,7 @@
      "pct": 11.3
     },
     "baseline": {
-     "n": 7046,
+     "n": 7053,
      "pct": 10.0
     }
    },
@@ -585,7 +585,7 @@
      "pct": 0.3
     },
     "baseline": {
-     "n": 964,
+     "n": 977,
      "pct": 1.4
     }
    }
@@ -762,9 +762,9 @@
   },
   {
    "year": 2026,
-   "published": 97709,
-   "with_credits": 42696,
-   "pct": 43.7
+   "published": 97824,
+   "with_credits": 42811,
+   "pct": 43.8
   }
  ],
  "board": [
@@ -1257,7 +1257,7 @@
     "low": 0,
     "unscored": 0
    },
-   "poc": 2,
+   "poc": 3,
    "kev": 2,
    "first_month": "2025-06",
    "last_month": "2026-08",
