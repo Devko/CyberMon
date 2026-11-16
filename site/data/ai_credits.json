@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-16T10:09:56Z",
+ "generated_at": "2026-11-16T18:55:33Z",
  "kinds": {
   "llm": {
    "headline": {
@@ -445,7 +445,7 @@
    "n": 70343,
    "median_cvss": 6.9,
    "median_epss_pctile": 28.1,
-   "epss_scored": 70257,
+   "epss_scored": 70343,
    "recent_days": 90,
    "recent_pct": 28.8,
    "poc_pct": 1.5,

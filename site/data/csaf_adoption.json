@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-16T10:09:56Z",
+ "generated_at": "2026-11-16T18:55:33Z",
  "current_year": 2026,
  "lister": {
   "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
   "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
-  "last_updated": "2026-11-16T10:00:31.320+00:00",
+  "last_updated": "2026-11-16T19:00:34.742+00:00",
   "listed": 15,
   "providers": 14,
   "publishers": 1
@@ -24,7 +24,7 @@
    "status": "measured",
    "detail": "",
    "measured_on": "2026-11-16",
-   "documents": 108773,
+   "documents": 108771,
    "undated": 0,
    "by_year": [
     {
@@ -137,13 +137,13 @@
     },
     {
      "year": 2026,
-     "n": 33867
+     "n": 33865
     }
    ],
    "first_year": 1999,
    "last_year": 2026,
    "mix": {
-    "vex": 76669,
+    "vex": 76667,
     "advisory": 32104,
     "other": 0,
     "unsampled": 0
@@ -180,7 +180,7 @@
    "status": "measured",
    "detail": "",
    "measured_on": "2026-11-16",
-   "documents": 14732,
+   "documents": 14751,
    "undated": 0,
    "by_year": [
     {
@@ -237,7 +237,7 @@
     },
     {
      "year": 2026,
-     "n": 4479
+     "n": 4498
     }
    ],
    "first_year": 2013,
@@ -245,7 +245,7 @@
    "mix": {
     "vex": 0,
     "advisory": 0,
-    "other": 14732,
+    "other": 14751,
     "unsampled": 0
    },
    "sample_n": 30,
@@ -478,81 +478,81 @@
    }
   },
   {
-   "name": "Schneider Electric CPCERT",
-   "category": "vendor",
-   "role": "csaf_trusted_provider",
-   "kind": "provider",
-   "status": "measured",
-   "detail": "",
-   "measured_on": "2026-11-16",
-   "documents": 294,
-   "undated": 0,
    "by_year": [
     {
-     "year": 2015,
-     "n": 1
+     "n": 1,
+     "year": 2015
     },
     {
-     "year": 2018,
-     "n": 2
+     "n": 2,
+     "year": 2018
     },
     {
-     "year": 2019,
-     "n": 4
+     "n": 4,
+     "year": 2019
     },
     {
-     "year": 2020,
-     "n": 49
+     "n": 49,
+     "year": 2020
     },
     {
-     "year": 2021,
-     "n": 41
+     "n": 41,
+     "year": 2021
     },
     {
-     "year": 2022,
-     "n": 47
+     "n": 47,
+     "year": 2022
     },
     {
-     "year": 2023,
-     "n": 40
+     "n": 40,
+     "year": 2023
     },
     {
-     "year": 2024,
-     "n": 35
+     "n": 35,
+     "year": 2024
     },
     {
-     "year": 2025,
-     "n": 42
+     "n": 42,
+     "year": 2025
     },
     {
-     "year": 2026,
-     "n": 33
+     "n": 33,
+     "year": 2026
     }
    ],
-   "first_year": 2015,
-   "last_year": 2026,
-   "mix": {
-    "vex": 0,
-    "advisory": 294,
-    "other": 0,
-    "unsampled": 0
-   },
-   "sample_n": 30,
+   "category": "vendor",
+   "detail": "HTTP 403",
+   "documents": 294,
    "fields": {
     "cvss": 93.3,
     "cwe": 90.0,
     "product_tree": 100.0,
     "remediation": 100.0
    },
+   "first_year": 2015,
+   "kind": "provider",
+   "last_year": 2026,
+   "measured_on": "2026-11-12",
+   "mix": {
+    "advisory": 294,
+    "other": 0,
+    "unsampled": 0,
+    "vex": 0
+   },
+   "name": "Schneider Electric CPCERT",
+   "role": "csaf_trusted_provider",
    "sample_groups": {
     "advisory": {
-     "n": 30,
      "cvss": 28,
      "cwe": 27,
+     "n": 30,
      "product_tree": 30,
      "remediation": 30
     }
-   }
+   },
+   "sample_n": 30,
+   "status": "carried",
+   "undated": 0
   },
   {
    "name": "ABB Product Security Incident Response Team (PSIRT)",
@@ -1185,21 +1185,21 @@
   },
   {
    "year": 2026,
-   "n": 39157,
+   "n": 39174,
    "providers": 13
   }
  ],
  "totals": {
   "listed": 15,
   "measured": 13,
-  "carried": 0,
+  "carried": 1,
   "unmeasured": 2,
-  "documents": 129088,
+  "documents": 129105,
   "undated": 0,
   "mix": {
-   "vex": 76888,
+   "vex": 76886,
    "advisory": 37235,
-   "other": 14965,
+   "other": 14984,
    "unsampled": 0
   },
   "vex_pct": 59.6,

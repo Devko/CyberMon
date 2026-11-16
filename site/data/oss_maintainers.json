@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-16T10:09:56Z",
+ "generated_at": "2026-11-16T18:55:33Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -95,7 +95,7 @@
    "scorecard": {
     "github_packages": 248,
     "repos": 192,
-    "scored": 166,
+    "scored": 168,
     "old_results": 5,
     "median_score": 5.4,
     "checks": {
@@ -106,7 +106,7 @@
       },
       {
        "label": "0",
-       "n": 48
+       "n": 51
       },
       {
        "label": "1\u20134",
@@ -118,7 +118,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 94
+       "n": 93
       }
      ],
      "Code-Review": [
@@ -132,7 +132,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 75
+       "n": 76
       },
       {
        "label": "5\u20137",
@@ -140,17 +140,17 @@
       },
       {
        "label": "8\u201310",
-       "n": 31
+       "n": 32
       }
      ],
      "Branch-Protection": [
       {
        "label": "inconclusive",
-       "n": 72
+       "n": 73
       },
       {
        "label": "0",
-       "n": 54
+       "n": 55
       },
       {
        "label": "1\u20134",
@@ -168,7 +168,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 158
+       "n": 160
       },
       {
        "label": "0",
@@ -272,7 +272,7 @@
    "scorecard": {
     "github_packages": 237,
     "repos": 234,
-    "scored": 204,
+    "scored": 206,
     "old_results": 3,
     "median_score": 5.8,
     "checks": {
@@ -287,7 +287,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 11
+       "n": 10
       },
       {
        "label": "5\u20137",
@@ -295,7 +295,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 148
+       "n": 151
       }
      ],
      "Code-Review": [
@@ -305,11 +305,11 @@
       },
       {
        "label": "0",
-       "n": 33
+       "n": 35
       },
       {
        "label": "1\u20134",
-       "n": 61
+       "n": 60
       },
       {
        "label": "5\u20137",
@@ -317,13 +317,13 @@
       },
       {
        "label": "8\u201310",
-       "n": 59
+       "n": 60
       }
      ],
      "Branch-Protection": [
       {
        "label": "inconclusive",
-       "n": 89
+       "n": 90
       },
       {
        "label": "0",
@@ -331,7 +331,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 44
+       "n": 45
       },
       {
        "label": "5\u20137",
@@ -345,7 +345,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 136
+       "n": 138
       },
       {
        "label": "0",
@@ -449,7 +449,7 @@
    "scorecard": {
     "github_packages": 246,
     "repos": 216,
-    "scored": 177,
+    "scored": 176,
     "old_results": 3,
     "median_score": 4.5,
     "checks": {
@@ -460,19 +460,19 @@
       },
       {
        "label": "0",
-       "n": 73
+       "n": 72
       },
       {
        "label": "1\u20134",
-       "n": 19
+       "n": 17
       },
       {
        "label": "5\u20137",
-       "n": 15
+       "n": 16
       },
       {
        "label": "8\u201310",
-       "n": 70
+       "n": 71
       }
      ],
      "Code-Review": [
@@ -490,7 +490,7 @@
       },
       {
        "label": "5\u20137",
-       "n": 44
+       "n": 43
       },
       {
        "label": "8\u201310",
@@ -504,7 +504,7 @@
       },
       {
        "label": "0",
-       "n": 76
+       "n": 75
       },
       {
        "label": "1\u20134",
@@ -522,7 +522,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 175
+       "n": 174
       },
       {
        "label": "0",
@@ -626,7 +626,7 @@
    "scorecard": {
     "github_packages": 241,
     "repos": 226,
-    "scored": 180,
+    "scored": 179,
     "old_results": 3,
     "median_score": 4.0,
     "checks": {
@@ -637,11 +637,11 @@
       },
       {
        "label": "0",
-       "n": 74
+       "n": 73
       },
       {
        "label": "1\u20134",
-       "n": 20
+       "n": 19
       },
       {
        "label": "5\u20137",
@@ -649,7 +649,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 71
+       "n": 72
       }
      ],
      "Code-Review": [
@@ -659,11 +659,11 @@
       },
       {
        "label": "0",
-       "n": 32
+       "n": 31
       },
       {
        "label": "1\u20134",
-       "n": 88
+       "n": 89
       },
       {
        "label": "5\u20137",
@@ -671,7 +671,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 21
+       "n": 20
       }
      ],
      "Branch-Protection": [
@@ -681,7 +681,7 @@
       },
       {
        "label": "0",
-       "n": 92
+       "n": 91
       },
       {
        "label": "1\u20134",
@@ -699,7 +699,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 164
+       "n": 163
       },
       {
        "label": "0",

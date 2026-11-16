@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-16T10:09:56Z",
+ "generated_at": "2026-11-16T18:55:33Z",
  "base_date": "2021-12-23",
  "last_observed": "2026-11-16",
  "missed_nights": [
@@ -56,8 +56,8 @@
   },
   "epss": {
    "first_observed": "2026-07-18",
-   "events": 100,
-   "nights": 110,
+   "events": 101,
+   "nights": 111,
    "excluded_reset": 0,
    "excluded_anomaly": 10,
    "excluded": [
@@ -98,7 +98,7 @@
   "version_shift": 31,
   "first_score": 5580,
   "score_removed": 5,
-  "epss_move": 100
+  "epss_move": 101
  },
  "cves": 7610,
  "events": [
@@ -10419,6 +10419,7 @@
   "1787|CVE-2026-9271|8|v3.1 6.8 (WPScan)|0",
   "1787|CVE-2026-61511|10|0.05607->0.74266|0",
   "1788|CVE-2026-6875|10|0.01426->0.78461|0",
-  "1789|CVE-2026-124684|6|v3.1 5.1->v3.1 5.7 (samsung.tv_appliance)|0"
+  "1789|CVE-2026-124684|6|v3.1 5.1->v3.1 5.7 (samsung.tv_appliance)|0",
+  "1789|CVE-2026-50522|10|0.03042->0.81870|0"
  ]
 }
