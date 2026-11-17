@@ -28,6 +28,9 @@ concurrency:
   group: cybermon-nightly
   cancel-in-progress: false
 
+# Every job runs on a pinned image, never ubuntu-latest: see the note
+# above `jobs:` in ci.yml (ubuntu-latest became 26.04 on 2026-11-13 and
+# Playwright 1.59 cannot install Chromium there).
 jobs:
   # Third parties have bad mornings. On 2026-08-30 abuse.ch served an
   # expired certificate at 02:46 UTC and was healthy again by 10:00, but
@@ -38,7 +41,7 @@ jobs:
   # deploys, and a night that is genuinely broken still ends red twice.
   gate:
     name: Decide whether this attempt is needed
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       actions: read
@@ -84,7 +87,7 @@ jobs:
     # what lets a failed gate still reach this job.
     if: ${{ !cancelled() && needs.gate.outputs.should_run != 'false' }}
     name: Run pipeline and commit data
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Slow upstreams (GDELT pacing, keyless NVD paging); allow headroom.
     timeout-minutes: 120
     permissions:
@@ -503,7 +506,7 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: refresh
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
       contents: read
@@ -529,7 +532,7 @@ jobs:
     name: Report a failed Pages deploy
     needs: [refresh, deploy]
     if: ${{ always() && needs.deploy.result == 'failure' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       issues: write
@@ -564,7 +567,7 @@ jobs:
   resolve:
     name: Close the failure issue on a green run
     needs: [refresh, deploy]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       issues: write
