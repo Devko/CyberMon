@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-17T11:07:38Z",
+ "generated_at": "2026-11-17T14:11:05Z",
  "base_date": "2021-12-23",
  "last_observed": "2026-11-17",
  "missed_nights": [
@@ -57,9 +57,9 @@
   "epss": {
    "first_observed": "2026-07-18",
    "events": 101,
-   "nights": 111,
+   "nights": 112,
    "excluded_reset": 0,
-   "excluded_anomaly": 10,
+   "excluded_anomaly": 11,
    "excluded": [
     "2026-08-23",
     "2026-08-24",
@@ -70,7 +70,8 @@
     "2026-09-21",
     "2026-09-22",
     "2026-09-24",
-    "2026-10-25"
+    "2026-10-25",
+    "2026-11-17"
    ],
    "missed": [
     "2026-08-01",
