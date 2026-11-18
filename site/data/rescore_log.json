@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-17T14:11:05Z",
+ "generated_at": "2026-11-18T10:43:04Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -148,7 +148,7 @@
   {
    "week": "2026-W47",
    "rescore_up": 1,
-   "rescore_down": 1,
+   "rescore_down": 2,
    "first_score": 0,
    "version_shift": 0,
    "score_removed": 0
@@ -156,9 +156,9 @@
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 175,
+  "n": 176,
   "up": 78,
-  "down": 97,
+  "down": 98,
   "buckets": [
    {
     "bucket": "<=-4.0",
@@ -170,7 +170,7 @@
    },
    {
     "bucket": "-1.9..-0.1",
-    "n": 77
+    "n": 78
    },
    {
     "bucket": "+0.1..+1.9",
@@ -222,9 +222,9 @@
    },
    {
     "cna": "fortinet",
-    "rescores": 8,
+    "rescores": 9,
     "up": 0,
-    "down": 8
+    "down": 9
    },
    {
     "cna": "ENISA",
@@ -241,15 +241,15 @@
   ]
  },
  "catalog": {
-  "state_size": 407052,
-  "corpus_release": "cve_2026-11-17_1300Z",
+  "state_size": 408322,
+  "corpus_release": "cve_2026-11-18_1000Z",
   "totals": {
-   "rescore": 175,
+   "rescore": 176,
    "version_shift": 31,
    "first_score": 5580,
    "score_removed": 5
   },
-  "events_total": 5791,
+  "events_total": 5792,
   "first_observed": "2026-07-15"
  }
 }

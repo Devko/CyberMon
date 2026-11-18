@@ -17562,6 +17562,17 @@
    "ransom": "Unknown",
    "vendor": "UnrealIRCd"
   },
+  "CVE-2026-115731": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-17",
+   "desc": "114be63b7066",
+   "due": "2026-12-01",
+   "name": "Perforce Puppet Enterprise Deserialization of Untrusted Data Vulnerability",
+   "notes": "f7299bcd9640",
+   "product": "Puppet Enterprise",
+   "ransom": "Unknown",
+   "vendor": "Perforce"
+  },
   "CVE-2026-11645": {
    "action": "f09df147152e",
    "added": "2026-06-09",
@@ -19598,7 +19609,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-17",
+ "last_observed": "2026-11-18",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

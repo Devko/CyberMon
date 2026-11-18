@@ -1,6 +1,6 @@
 {
  "baseline_date": "2026-07-18",
- "last_observed": "2026-11-17",
+ "last_observed": "2026-11-18",
  "orgs": {
   "2N": {
    "cna_id": "CNA-2025-0060",
@@ -398,7 +398,7 @@
    "cna_id": "CNA-2026-0045",
    "country": "France",
    "org": "Bull SAS",
-   "scope": "111e4a228a7e",
+   "scope": "1e5d8e5f2e25",
    "type": "Vendor"
   },
   "ByteDance": {
@@ -433,7 +433,7 @@
    "cna_id": "CNA-2020-0010",
    "country": "Germany",
    "org": "CERT@VDE",
-   "scope": "d00addb71365",
+   "scope": "016516f78e32",
    "type": "CERT"
   },
   "CIRCL": {
@@ -1423,6 +1423,13 @@
    "scope": "c9d2c6dac238",
    "type": "Vendor"
   },
+  "KSAcademy": {
+   "cna_id": "CNA-2026-0089",
+   "country": "Bangladesh",
+   "org": "Knight Squad Academy",
+   "scope": "73fc548fcc8e",
+   "type": "Researcher"
+  },
   "Kaspersky": {
    "cna_id": "CNA-2017-0027",
    "country": "Russia",
@@ -1674,6 +1681,13 @@
    "org": "National Cyber Security Centre Netherlands (NCSC-NL)",
    "scope": "12b3fbd43472",
    "type": "Vendor"
+  },
+  "NCSC-UK": {
+   "cna_id": "CNA-2026-0090",
+   "country": "UK",
+   "org": "National Cyber Security Centre - United Kingdom",
+   "scope": "e28298fadcf1",
+   "type": "CERT + Researcher"
   },
   "NCSC.ch": {
    "cna_id": "CNA-2021-0040",
@@ -2137,6 +2151,13 @@
    "scope": "0972cde835f6",
    "type": "Vendor"
   },
+  "Pydantic": {
+   "cna_id": "CNA-2026-0088",
+   "country": "USA",
+   "org": "Pydantic Services Inc.",
+   "scope": "6465be1e294c",
+   "type": "Open Source + Vendor"
+  },
   "QCI": {
    "cna_id": "CNA-2026-0020",
    "country": "Taiwan",
@@ -2515,6 +2536,13 @@
    "scope": "875a942d5ef8",
    "type": "Open Source + Vendor"
   },
+  "Symfony": {
+   "cna_id": "CNA-2026-0087",
+   "country": "France",
+   "org": "Symfony",
+   "scope": "4d3e0c534111",
+   "type": "Open Source + Vendor"
+  },
   "Synaptics": {
    "cna_id": "CNA-2020-0021",
    "country": "USA",
@@ -2624,7 +2652,7 @@
    "cna_id": "CNA-2020-0003",
    "country": "Canada",
    "org": "Tcpdump Group",
-   "scope": "fa6de4d20972",
+   "scope": "1f04986d58ed",
    "type": "Open Source + Vendor"
   },
   "TeamViewer": {
@@ -4432,6 +4460,10 @@
   [
    "2026-11-17",
    567
+  ],
+  [
+   "2026-11-18",
+   571
   ]
  ],
  "version": 1

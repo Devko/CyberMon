@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-17T14:11:05Z",
+ "generated_at": "2026-11-18T10:43:04Z",
  "eras": [
   {
    "id": "chatgpt",
@@ -680,7 +680,7 @@
   "unit": "days",
   "faster": "down",
   "horizon_days": 90,
-  "observed_through": "2026-08-19",
+  "observed_through": "2026-08-20",
   "first_year": 2000,
   "last_year": 2026,
   "years": [
@@ -1473,7 +1473,7 @@
      },
      {
       "month": "2026-09",
-      "index": 64.4,
+      "index": 63.8,
       "sources": 5
      },
      {
@@ -1689,87 +1689,87 @@
      },
      {
       "month": "2025-04",
-      "index": 19.3,
+      "index": 19.4,
       "sources": 5
      },
      {
       "month": "2025-05",
-      "index": 34.3,
+      "index": 34.7,
       "sources": 5
      },
      {
       "month": "2025-06",
-      "index": 29.7,
+      "index": 30.2,
       "sources": 5
      },
      {
       "month": "2025-07",
-      "index": 47.8,
+      "index": 48.4,
       "sources": 5
      },
      {
       "month": "2025-08",
-      "index": 54.0,
+      "index": 54.6,
       "sources": 5
      },
      {
       "month": "2025-09",
-      "index": 43.2,
+      "index": 43.7,
       "sources": 5
      },
      {
       "month": "2025-10",
-      "index": 56.7,
+      "index": 57.3,
       "sources": 5
      },
      {
       "month": "2025-11",
-      "index": 54.4,
+      "index": 54.9,
       "sources": 5
      },
      {
       "month": "2025-12",
-      "index": 63.5,
+      "index": 64.1,
       "sources": 5
      },
      {
       "month": "2026-01",
-      "index": 54.0,
+      "index": 54.4,
       "sources": 5
      },
      {
       "month": "2026-02",
-      "index": 79.2,
+      "index": 79.7,
       "sources": 5
      },
      {
       "month": "2026-03",
-      "index": 85.3,
+      "index": 85.8,
       "sources": 5
      },
      {
       "month": "2026-04",
-      "index": 78.8,
+      "index": 79.2,
       "sources": 5
      },
      {
       "month": "2026-05",
-      "index": 86.5,
+      "index": 86.9,
       "sources": 5
      },
      {
       "month": "2026-06",
-      "index": 75.8,
+      "index": 76.1,
       "sources": 5
      },
      {
       "month": "2026-07",
-      "index": 63.1,
+      "index": 63.3,
       "sources": 5
      },
      {
       "month": "2026-08",
-      "index": 64.9,
+      "index": 65.2,
       "sources": 5
      },
      {
@@ -1779,7 +1779,7 @@
      },
      {
       "month": "2026-10",
-      "index": 58.6,
+      "index": 59.2,
       "sources": 5
      }
     ]
@@ -1809,7 +1809,7 @@
    "term_id": "agentic_ai",
    "label": "Agentic AI",
    "index_first": 0.0,
-   "index_last": 58.6,
+   "index_last": 59.2,
    "month_first": "2021-12",
    "month_last": "2026-10",
    "clock_min": 4.5,

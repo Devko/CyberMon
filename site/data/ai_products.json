@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-17T14:11:05Z",
+ "generated_at": "2026-11-18T10:43:04Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,14 +159,14 @@
   },
   {
    "year": 2026,
-   "published": 98175,
-   "named": 94845,
-   "ai": 3243,
+   "published": 99445,
+   "named": 96113,
+   "ai": 3255,
    "by_category": {
-    "frameworks": 219,
-    "serving": 379,
+    "frameworks": 222,
+    "serving": 384,
     "platforms": 184,
-    "apps": 2461
+    "apps": 2465
    },
    "top_product": {
     "label": "OpenClaw",
@@ -185,43 +185,43 @@
    },
    {
     "year": 2024,
-    "pct": 10.0
+    "pct": 9.9
    },
    {
     "year": 2025,
-    "pct": 15.5
+    "pct": 15.4
    },
    {
     "year": 2026,
-    "pct": 72.6
+    "pct": 72.7
    }
   ]
  },
  "cwe": {
-  "n": 4468,
+  "n": 4480,
   "no_cwe": 9,
   "no_cwe_pct": 0.2,
-  "baseline_no_cwe_pct": 9.6,
+  "baseline_no_cwe_pct": 9.9,
   "top": [
    {
     "cwe": "CWE-22",
     "name": "Path traversal",
     "n": 365,
-    "pct": 8.2,
+    "pct": 8.1,
     "baseline_pct": 2.8
    },
    {
     "cwe": "CWE-918",
     "name": "Server-side request forgery (SSRF)",
     "n": 360,
-    "pct": 8.1,
+    "pct": 8.0,
     "baseline_pct": 1.6
    },
    {
     "cwe": "CWE-502",
     "name": "Deserialization of untrusted data",
-    "n": 230,
-    "pct": 5.1,
+    "n": 233,
+    "pct": 5.2,
     "baseline_pct": 1.2
    },
    {
@@ -234,7 +234,7 @@
    {
     "cwe": "CWE-863",
     "name": "Incorrect authorization",
-    "n": 204,
+    "n": 205,
     "pct": 4.6,
     "baseline_pct": 1.8
    },
@@ -274,7 +274,7 @@
     "baseline_pct": 1.5
    }
   ],
-  "top_share_pct": 48.1,
+  "top_share_pct": 48.0,
   "ai_specific": {
    "ids": [
     "CWE-1039",
@@ -285,20 +285,20 @@
   }
  },
  "exploited": {
-  "n": 4468,
-  "baseline_n": 210628,
+  "n": 4480,
+  "baseline_n": 211886,
   "kev": 11,
   "kev_pct": 0.2,
   "kev_baseline_pct": 0.3,
-  "kev_expected": 12.4,
+  "kev_expected": 12.3,
   "poc": 32,
   "poc_pct": 0.7,
   "poc_baseline_pct": 0.4,
   "poc_expected": 16.9,
-  "nuclei": 119,
+  "nuclei": 120,
   "nuclei_pct": 2.7,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 35.4,
+  "nuclei_expected": 35.7,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -411,13 +411,13 @@
    "key": "flowise",
    "label": "Flowise",
    "category": "apps",
-   "n": 146,
-   "all_years": 146,
+   "n": 148,
+   "all_years": 148,
    "first_year": 2024,
    "kev": 0,
    "poc": 5,
    "top_cna": "GitHub_M",
-   "top_cna_pct": 50.7
+   "top_cna_pct": 50.0
   },
   {
    "key": "vllm",
@@ -435,8 +435,8 @@
    "key": "nvidia_nemo",
    "label": "NVIDIA NeMo, Megatron and Merlin",
    "category": "frameworks",
-   "n": 117,
-   "all_years": 118,
+   "n": 120,
+   "all_years": 121,
    "first_year": 2021,
    "kev": 0,
    "poc": 0,
@@ -530,7 +530,7 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4468,
+  "n": 4480,
   "cna_count": 41,
   "top": [
    {
@@ -540,7 +540,7 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 1119,
+    "n": 1121,
     "pct": 25.0
    },
    {
@@ -551,25 +551,25 @@
    {
     "cna": "VulDB",
     "n": 445,
-    "pct": 10.0
+    "pct": 9.9
    },
    {
     "cna": "nvidia",
-    "n": 228,
-    "pct": 5.1
+    "n": 233,
+    "pct": 5.2
    }
   ],
-  "top3_pct": 68.7
+  "top3_pct": 68.6
  },
  "headline": {
   "latest_year": 2025,
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3243,
+  "current_ai": 3255,
   "current_share_pct": 3.3,
   "lead_label": "OpenClaw",
   "lead_n": 677,
-  "lead_pct": 15.2
+  "lead_pct": 15.1
  }
 }

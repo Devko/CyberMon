@@ -1,8 +1,8 @@
 {
- "generated_at": "2026-11-17T14:11:05Z",
- "as_of": "2026-11-17",
+ "generated_at": "2026-11-18T10:43:04Z",
+ "as_of": "2026-11-18",
  "upstream": {
-  "generated_at": "2026-11-17T03:28:48+00:00",
+  "generated_at": "2026-11-18T09:37:30+00:00",
   "schema_version": "1.2.1"
  },
  "provisional_open_pct": 20.0,
@@ -11,8 +11,8 @@
  "catalog": {
   "products": 489,
   "categories": 9,
-  "lines": 9417,
-  "ended": 6927,
+  "lines": 9419,
+  "ended": 6929,
   "scheduled": 1202,
   "open": 735,
   "ended_undated": 553,
@@ -383,11 +383,11 @@
   },
   {
    "year": 2026,
-   "lines": 920,
+   "lines": 922,
    "products": 309,
    "median_days": 459,
    "median_at_least": null,
-   "ended": 299,
+   "ended": 301,
    "scheduled": 356,
    "open": 265,
    "ended_undated": 0,
@@ -634,13 +634,13 @@
   {
    "category": "app",
    "products": 62,
-   "lines": 1138,
-   "median_days": 730,
+   "lines": 1139,
+   "median_days": 729,
    "median_at_least": null,
    "open_pct": 15.2,
    "no_supported_line": 2,
    "newest_line_ended": 3,
-   "ended": 963,
+   "ended": 964,
    "scheduled": 86,
    "open": 69,
    "ended_undated": 20
@@ -648,13 +648,13 @@
   {
    "category": "server-app",
    "products": 176,
-   "lines": 3474,
+   "lines": 3475,
    "median_days": 543,
    "median_at_least": null,
    "open_pct": 12.6,
    "no_supported_line": 4,
    "newest_line_ended": 4,
-   "ended": 2848,
+   "ended": 2849,
    "scheduled": 279,
    "open": 211,
    "ended_undated": 136

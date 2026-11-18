@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-17T14:11:05Z",
+ "generated_at": "2026-11-18T10:43:04Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,7 +35,7 @@
   },
   {
    "year": 2026,
-   "total": 297,
+   "total": 298,
    "security": 55,
    "pct_security": 18.5
   }
@@ -579,13 +579,13 @@
    "pct_known": 35.1
   },
   "other": {
-   "total": 1556,
+   "total": 1557,
    "known": 282,
    "pct_known": 18.1
   }
  },
  "catalog": {
-  "total": 1781,
+  "total": 1782,
   "security": 225,
   "pct_security": 12.6,
   "classifier_version": 2,
