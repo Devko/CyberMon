@@ -5,7 +5,7 @@ method behind every number. It covers scoring systems, institutions and the
 market rather than individual vulnerabilities. Everything is rebuilt nightly
 from open data by the pipeline in this repo.
 
-**Live site:** https://devko.github.io/CyberMon/
+**Live site:** https://cybermon.einblick.dev/
 
 Every chart has a caption and an expandable "How this is computed" note that
 links to the pipeline source.
@@ -19,7 +19,7 @@ the site nav (CVE records, Exploitation, Industry, Threats); both are built
 from the `group` tags in `site/js/editorial.js`. The italic line under each
 heading is the module's headline on the landing page.
 
-### 01 · CVE Ecosystem — [cve.html](https://devko.github.io/CyberMon/cve.html)
+### 01 · CVE Ecosystem — [cve.html](https://cybermon.einblick.dev/cve.html)
 
 *Between four and six in ten scored CVEs have been rated High or Critical each year since 2020.*
 
@@ -66,7 +66,7 @@ Stages: `pipeline/metrics.py` (the shared streaming pass over the corpus
 that later modules reuse), `quality_metrics.py`, `nvd_throughput.py`,
 `cvss_v4_metrics.py`.
 
-### 02 · Buzzword Attention — [market.html](https://devko.github.io/CyberMon/market.html)
+### 02 · Buzzword Attention — [market.html](https://cybermon.einblick.dev/market.html)
 
 *Attention to security buzzwords is tracked monthly in five public sources.*
 
@@ -79,7 +79,7 @@ quadrant (arXiv against GDELT). Terms and their Wikipedia articles are in
 `pipeline/market_terms.py`. Fetcher `pipeline/fetch_market.py`, stage
 `pipeline/market_metrics.py`.
 
-### 03 · KEV Latency — [kev.html](https://devko.github.io/CyberMon/kev.html)
+### 03 · KEV Latency — [kev.html](https://cybermon.einblick.dev/kev.html)
 
 *Most KEV entries were listed a week or more after their CVE was published.*
 
@@ -94,7 +94,7 @@ separately; the deadline and ransomware charts include them. Negative
 latencies (listed before the CVE record was published) are kept. Stage
 `pipeline/kev_metrics.py`.
 
-### 04 · CNA Concentration — [concentration.html](https://devko.github.io/CyberMon/concentration.html)
+### 04 · CNA Concentration — [concentration.html](https://cybermon.einblick.dev/concentration.html)
 
 *Hundreds of CNAs assign CVEs; since 2021 the five largest have issued about half.*
 
@@ -109,7 +109,7 @@ scores, CWE, score and affected-version coverage, rejection rate, logged
 rescores, KEV share and public-exploit share, each with the median CNA and
 its rank. Stage `pipeline/cna_profile_metrics.py`.
 
-### 05 · Breach Catalog — [breaches.html](https://devko.github.io/CyberMon/breaches.html)
+### 05 · Breach Catalog — [breaches.html](https://cybermon.einblick.dev/breaches.html)
 
 *Breaches typically reach Have I Been Pwned months after their recorded breach date.*
 
@@ -125,7 +125,7 @@ Fabricated entries, spam lists, malware corpora and stealer logs are
 excluded, and the data file counts each exclusion. Stage
 `pipeline/breach_metrics.py`.
 
-### 06 · Ransom Payments — [extortion.html](https://devko.github.io/CyberMon/extortion.html)
+### 06 · Ransom Payments — [extortion.html](https://cybermon.einblick.dev/extortion.html)
 
 *Ransomware payments recorded by Ransomwhere total more than a billion dollars.*
 
@@ -137,7 +137,7 @@ not ranked. A payment counts only after someone reported the receiving
 address, so every figure is a lower bound. Stage
 `pipeline/extortion_metrics.py`.
 
-### 07 · ATT&CK Releases — [attack.html](https://devko.github.io/CyberMon/attack.html)
+### 07 · ATT&CK Releases — [attack.html](https://cybermon.einblick.dev/attack.html)
 
 *Active ATT&CK techniques and sub-techniques have more than tripled since v1.0 in 2018.*
 
@@ -149,7 +149,7 @@ each version's stats are computed once and cached; a normal night fetches
 only `index.json`. Stage `pipeline/attack_metrics.py`, fetcher
 `pipeline/fetch_attack.py`.
 
-### 08 · DNSSEC Validation — [hygiene.html](https://devko.github.io/CyberMon/hygiene.html)
+### 08 · DNSSEC Validation — [hygiene.html](https://cybermon.einblick.dev/hygiene.html)
 
 *About four in ten internet users sit behind resolvers that fully validate DNSSEC.*
 
@@ -160,7 +160,7 @@ by APNIC's user weighting in July 2026. APNIC publishes its full daily history,
 so the stage refetches it every night and keeps no state. Stage
 `pipeline/hygiene_metrics.py`.
 
-### 09 · Security Products in KEV — [guards.html](https://devko.github.io/CyberMon/guards.html)
+### 09 · Security Products in KEV — [guards.html](https://cybermon.einblick.dev/guards.html)
 
 *More than one in nine KEV entries is in a security product.*
 
@@ -179,7 +179,7 @@ classifier version). Three charts:
 It reads the KEV feed the pipeline already fetches. Stage
 `pipeline/guards_metrics.py`.
 
-### 10 · EPSS Before KEV — [epss.html](https://devko.github.io/CyberMon/epss.html)
+### 10 · EPSS Before KEV — [epss.html](https://cybermon.einblick.dev/epss.html)
 
 *More than half of scored KEV additions since 2023 had an EPSS score under 1% the day before listing.*
 
@@ -197,7 +197,7 @@ from FIRST's API once; a normal night makes 1–2 requests.
 historical backfill so CI cannot run it. Fetcher
 `pipeline/fetch_epss_history.py`, stage `pipeline/epss_report_metrics.py`.
 
-### 11 · CVE Calendar — [calendar.html](https://devko.github.io/CyberMon/calendar.html)
+### 11 · CVE Calendar — [calendar.html](https://cybermon.einblick.dev/calendar.html)
 
 *Since 2022, more CVEs have been published on Tuesday than on any other day.*
 
@@ -213,7 +213,7 @@ Three charts on publication timing from the cvelistV5 corpus, all dates in UTC:
 
 Stage `pipeline/calendar_metrics.py`.
 
-### 12 · KEV Changelog — [changelog.html](https://devko.github.io/CyberMon/changelog.html)
+### 12 · KEV Changelog — [changelog.html](https://cybermon.einblick.dev/changelog.html)
 
 *CISA changes KEV entries after listing them, including due dates and ransomware flags.*
 
@@ -236,7 +236,7 @@ N`, cached in `.cache/kev_wayback/`; CI never runs it). Backfilled events
 carry `granularity: "capture"` and are dated to the first capture showing the
 change; nightly events carry `"daily"`. Stage `pipeline/kev_changelog.py`.
 
-### 13 · CVSS Score Changes — [rescores.html](https://devko.github.io/CyberMon/rescores.html)
+### 13 · CVSS Score Changes — [rescores.html](https://cybermon.einblick.dev/rescores.html)
 
 *CNAs change CVSS scores on published CVE records, mostly by adding a missing score.*
 
@@ -257,7 +257,7 @@ edits; this log starts on 2026-07-15. A lost state rebuilds from that night's
 corpus, so that night logs nothing. A re-run on the same corpus release is
 detected and not counted twice. Stage `pipeline/rescore_tracker.py`.
 
-### 14 · Threat Group Aliases — [naming.html](https://devko.github.io/CyberMon/naming.html)
+### 14 · Threat Group Aliases — [naming.html](https://cybermon.einblick.dev/naming.html)
 
 *The ATT&CK groups with the most aliases carry more than a dozen other names each.*
 
@@ -271,7 +271,7 @@ downloads the bundle only when a new release appears. Aliases per release is
 a follow-up in [docs/backlog.md](docs/backlog.md). Stage
 `pipeline/naming_metrics.py`, reusing the fetch code in `fetch_attack.py`.
 
-### 15 · CWE Top 25 — [top25.html](https://devko.github.io/CyberMon/top25.html)
+### 15 · CWE Top 25 — [top25.html](https://cybermon.einblick.dev/top25.html)
 
 *Most of MITRE's CWE Top 25 also rank among the 25 most frequent weaknesses in CVEs.*
 
@@ -286,7 +286,7 @@ and KEV is not an input, so the two ranks measure different things. Both
 charts read the shared corpus pass (`agg.cwe_year_counts`,
 `agg.kev_cwe_counts`). Stage `pipeline/top25_metrics.py`.
 
-### 16 · Vulnrichment — [adp.html](https://devko.github.io/CyberMon/adp.html)
+### 16 · Vulnrichment — [adp.html](https://cybermon.einblick.dev/adp.html)
 
 *CISA's Vulnrichment program has added data to more than half of all published CVEs.*
 
@@ -309,7 +309,7 @@ draw beside these. The page quotes the current NVD backlog from
 `nvd_decay.json` and leaves it out when that file was carried forward. Stage
 `pipeline/adp_metrics.py`.
 
-### 17 · EPSS Volatility — [epssvol.html](https://devko.github.io/CyberMon/epssvol.html)
+### 17 · EPSS Volatility — [epssvol.html](https://cybermon.einblick.dev/epssvol.html)
 
 *On an average night, EPSS percentiles change for nearly all CVEs and probabilities for about 1%.*
 
@@ -334,7 +334,7 @@ this log starts on 2026-07-18. EPSS Before KEV (module 10) shows where scores
 stood before a listing; this module measures how often they change. Neither
 measures accuracy. Stage `pipeline/epss_volatility.py`.
 
-### 18 · CNA Roster — [roster.html](https://devko.github.io/CyberMon/roster.html)
+### 18 · CNA Roster — [roster.html](https://cybermon.einblick.dev/roster.html)
 
 *Organizations joining the CVE roster have outnumbered those leaving since July 2026.*
 
@@ -353,7 +353,7 @@ accreditation date. State and log are written only after every output
 validates, in the same nightly commit. Fetcher `pipeline/fetch_cna_roster.py`,
 stage `pipeline/cna_roster.py`.
 
-### 19 · Time to PoC — [exploits.html](https://devko.github.io/CyberMon/exploits.html)
+### 19 · Time to PoC — [exploits.html](https://cybermon.einblick.dev/exploits.html)
 
 *Since 2022 the median public exploit has appeared two weeks or more after the CVE.*
 
@@ -379,7 +379,7 @@ All three publish their full history, so the stage refetches them every night
 and keeps no state (`pipeline/fetch_poc.py`, cached per UTC day in
 `.cache/poc/`). Stage `pipeline/poc_metrics.py`.
 
-### 20 · Botnet C2 Servers — [c2.html](https://devko.github.io/CyberMon/c2.html)
+### 20 · Botnet C2 Servers — [c2.html](https://cybermon.einblick.dev/c2.html)
 
 *Feodo Tracker's botnet C2 blocklist holds a handful of servers.*
 
@@ -395,7 +395,7 @@ by family, country and AS are published; the output contract rejects IP
 addresses, ports and hostnames. Fetcher `pipeline/fetch_feodo.py`, stage
 `pipeline/botnet_metrics.py`.
 
-### 21 · AI and PoC Timing — [ai.html](https://devko.github.io/CyberMon/ai.html)
+### 21 · AI and PoC Timing — [ai.html](https://cybermon.einblick.dev/ai.html)
 
 *Public exploit code in Exploit-DB has not appeared sooner since ChatGPT's release.*
 
@@ -428,7 +428,7 @@ data (Mandiant, the DBIR's edge-device share) are quoted with attribution and
 never plotted (`ai_timeline_data.EXTERNAL_CONTEXT`; a unit test keeps them
 out of the payload). Stage `pipeline/ai_metrics.py`.
 
-### 22 · AI Credits — [credits.html](https://devko.github.io/CyberMon/credits.html)
+### 22 · AI Credits — [credits.html](https://cybermon.einblick.dev/credits.html)
 
 *The largest single AI finder announcement counts more vulnerabilities than CVE records credit to all AI labs and vendors combined.*
 
@@ -477,7 +477,7 @@ and the role handling fixed on 2026-09-20 after an outside review. The page
 methodology discloses that the registry and copy were drafted with Claude, an
 Anthropic model. Stage `pipeline/ai_credits_metrics.py`.
 
-### 23 · Record Tags — [tags.html](https://devko.github.io/CyberMon/tags.html)
+### 23 · Record Tags — [tags.html](https://cybermon.einblick.dev/tags.html)
 
 *More CVEs are tagged as issued for products the vendor no longer supports.*
 
@@ -497,7 +497,7 @@ what the CNA stated and is not checked; an untagged record is not
 year. No fetch of its own: the tallies come from the shared corpus pass
 (`Aggregator._add_tags`). Stage `pipeline/tags_metrics.py`.
 
-### 24 · SEC Incident Filings — [incidents.html](https://devko.github.io/CyberMon/incidents.html)
+### 24 · SEC Incident Filings — [incidents.html](https://cybermon.einblick.dev/incidents.html)
 
 *US public companies have filed dozens of material-incident 8-Ks since December 2023.*
 
@@ -529,7 +529,7 @@ outage carries the last edition forward, marked stale; before the first
 nightly read the output is an empty edition (`status: "empty"`). Fetcher
 `pipeline/fetch_sec_incidents.py`, stage `pipeline/sec_incidents_metrics.py`.
 
-### 25 · Advisories Without a CVE — [advisories.html](https://devko.github.io/CyberMon/advisories.html)
+### 25 · Advisories Without a CVE — [advisories.html](https://cybermon.einblick.dev/advisories.html)
 
 *Most GitHub-reviewed advisories carry a CVE id; Rust's lack one more often than those of any other large registry.*
 
@@ -549,7 +549,7 @@ flag on every record and a claims test guards it. Fetcher
 `pipeline/fetch_osv.py` (shared with module 26), stage
 `pipeline/osv_metrics.py`.
 
-### 26 · Malicious Packages — [malware.html](https://devko.github.io/CyberMon/malware.html)
+### 26 · Malicious Packages — [malware.html](https://cybermon.einblick.dev/malware.html)
 
 *More than half of the reports in the OpenSSF malicious-packages feed were published in a single month.*
 
@@ -562,7 +562,7 @@ both modules. The nightly sends conditional GETs (ETag / Last-Modified),
 downloads only the changed zips and keeps a compact summary. An OSV outage
 carries both modules forward, marked stale. Stage `pipeline/osv_metrics.py`.
 
-### 27 · AI Product CVEs — [aisurface.html](https://devko.github.io/CyberMon/aisurface.html)
+### 27 · AI Product CVEs — [aisurface.html](https://cybermon.einblick.dev/aisurface.html)
 
 *AI products' share of published CVEs has risen in every complete year since 2023.*
 
@@ -593,7 +593,7 @@ version and review date. This module counts CVEs *in* AI software; module 22
 counts CVEs credited to AI finders and module 21 measures exploit timing. No
 fetch of its own: `AiProductCollector` is a third observer on the shared
 corpus pass. Stage `pipeline/ai_products_metrics.py`.
-### 28 · Detection Rules — [sigma.html](https://devko.github.io/CyberMon/sigma.html)
+### 28 · Detection Rules — [sigma.html](https://cybermon.einblick.dev/sigma.html)
 
 *The share of ATT&CK techniques with at least one Sigma rule has fallen since 2023, from more than four in five to about three in four.*
 
@@ -613,7 +613,7 @@ bundle is read once. A SigmaHQ or ATT&CK outage carries the module forward,
 marked stale. Only counts and ATT&CK ids are published, never rules.
 Fetcher `pipeline/fetch_sigma.py`, technique timeline
 `pipeline/attack_techniques.py`, stage `pipeline/sigma_metrics.py`.
-### 29 · Support Windows — [eol.html](https://devko.github.io/CyberMon/eol.html)
+### 29 · Support Windows — [eol.html](https://cybermon.einblick.dev/eol.html)
 
 *For the same products, release lines from 2022–2024 have a median support window about a fifth shorter than lines from 2014–2016.*
 
@@ -643,7 +643,7 @@ products; the two are not joined. The nightly sends one conditional GET for
 the API's bulk dump; an endoflife.date outage carries the last edition
 forward, marked stale. Fetcher `pipeline/fetch_eol.py`, stage
 `pipeline/eol_metrics.py`.
-### 30 · Open-Source Maintainers — [oss.html](https://devko.github.io/CyberMon/oss.html)
+### 30 · Open-Source Maintainers — [oss.html](https://cybermon.einblick.dev/oss.html)
 
 *In each of four registries, more than one in five of the 250 most-depended-on packages have only one account that can publish them.*
 
@@ -677,7 +677,7 @@ repository name is published. The package list and the module's figures
 derive from ecosyste.ms data and are shared under CC BY-SA 4.0. Universe
 `pipeline/oss_universe.py`, fetcher `pipeline/fetch_oss.py`, stage
 `pipeline/oss_metrics.py`.
-### 31 · Machine-Readable Advisories — [csaf.html](https://devko.github.io/CyberMon/csaf.html)
+### 31 · Machine-Readable Advisories — [csaf.html](https://cybermon.einblick.dev/csaf.html)
 
 *Most documents in the listed CSAF feeds are VEX documents, and Red Hat publishes nearly all of them.*
 
@@ -711,7 +711,7 @@ that fails keeps its last counts for up to 14 days. Only counts and
 field-presence shares are published, never document text. Fetcher
 `pipeline/fetch_csaf.py`, stage `pipeline/csaf_metrics.py`.
 
-## The Field — [field.html](https://devko.github.io/CyberMon/field.html)
+## The Field — [field.html](https://cybermon.einblick.dev/field.html)
 
 *Every published CVE as one point in a 3D view.*
 
@@ -753,7 +753,7 @@ so after a layout change, run the nightly before a push can deploy.
 `python tools/field_smoke.py --site site` checks an assembled real build;
 without `--site` it uses an isolated synthetic fixture.
 
-## Mutation Observatory — [observatory.html](https://devko.github.io/CyberMon/observatory.html)
+## Mutation Observatory — [observatory.html](https://cybermon.einblick.dev/observatory.html)
 
 *The Observatory puts CyberMon's CVE-level change logs on one timeline.*
 
@@ -783,7 +783,7 @@ claims audit (its copy has no hard-coded numbers). Browser check:
 `python tools/observatory_smoke.py` (searches a real CVE from the data,
 checks its timeline, the deep link at 390 px and the CSV download).
 
-## Adversary Atlas — [atlas.html](https://devko.github.io/CyberMon/atlas.html)
+## Adversary Atlas — [atlas.html](https://cybermon.einblick.dev/atlas.html)
 
 *The Atlas links each MITRE ATT&CK group to the software and techniques ATT&CK records it using.*
 
@@ -819,7 +819,7 @@ stale. Like the Field and the Observatory it keeps its own copy, in
 `python tools/atlas_smoke.py` (recomputes counts and Jaccard from the data
 and checks the picker, the comparison, the table and CSV, click and
 keyboard selection, and the deep link at 390 px).
-## Claims Ledger — [ledger.html](https://devko.github.io/CyberMon/ledger.html)
+## Claims Ledger — [ledger.html](https://cybermon.einblick.dev/ledger.html)
 
 *Every sentence the claims tests check, with tonight's result and margin.*
 
@@ -845,7 +845,7 @@ under pytest and locates each quote the way `test_claims_anchors.py` does.
 Like the Field and the Observatory it is an instrument, with no carousel
 and no claims of its own. Tests: `pipeline/tests/test_ledger_build.py`;
 browser check: `python tools/ledger_smoke.py`.
-## The Alias Graph — [alias.html](https://devko.github.io/CyberMon/alias.html)
+## The Alias Graph — [alias.html](https://cybermon.einblick.dev/alias.html)
 
 *ATT&CK threat groups placed between the vendor naming schemes their names follow.*
 
@@ -905,7 +905,7 @@ pre-aggregated JSON; there are no runtime queries.
                      ├─ Wikipedia · EDGAR      ▼
                      ├─ Exploit-DB · Metasploit · Nuclei
                      ├─ CVE.org roster     site/ ──▶ GitHub Pages
-                     ├─ Feodo Tracker      https://devko.github.io/CyberMon/
+                     ├─ Feodo Tracker      https://cybermon.einblick.dev/
                      ├─ OSV.dev exports
                      └─ npm · PyPI · crates.io · RubyGems · OpenSSF Scorecard
 ```

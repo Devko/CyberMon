@@ -5679,8 +5679,8 @@ export const editorial = {
     edition: "Edition {generated_at}",
     // The cover's module line, from the module's home.modules entry.
     coverModule: "Module {num} — {label}",
-    slideFooter: "CyberMon · devko.github.io/CyberMon · data: {sources}",
-    siteUrl: "devko.github.io/CyberMon",
+    slideFooter: "CyberMon · cybermon.einblick.dev · data: {sources}",
+    siteUrl: "cybermon.einblick.dev",
     closingSources: "Data: {sources}",
     // Printed under a board the fit pass had to cut — a truncated table
     // must say so (the full ranking lives on the site).

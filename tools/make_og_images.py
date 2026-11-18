@@ -25,7 +25,7 @@ A card fails on any of:
 
 --check runs the same render into a temporary directory and also checks the
 page shells: every reader page must carry
-  <meta property="og:image" content="https://devko.github.io/CyberMon/og/<id>.png">
+  <meta property="og:image" content="https://cybermon.einblick.dev/og/<id>.png">
   <meta name="twitter:image" content="(the same URL)">
   <meta name="twitter:card" content="summary_large_image">
 with <id> its own file name (index for index.html), and every such image
@@ -54,7 +54,7 @@ from playwright.sync_api import sync_playwright
 SITE_DIR = Path(__file__).resolve().parents[1] / "site"
 
 # The public site, as the page shells' og:url values spell it.
-SITE_URL = "https://devko.github.io/CyberMon/"
+SITE_URL = "https://cybermon.einblick.dev/"
 
 WIDTH, HEIGHT = 1200, 630
 
