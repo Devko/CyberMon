@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18T10:43:04Z",
+ "generated_at": "2026-11-19T10:44:40Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -8,15 +8,15 @@
   "download_floor": 5000
  },
  "observed": {
-  "first": "2026-11-12",
-  "last": "2026-11-18",
+  "first": "2026-11-17",
+  "last": "2026-11-19",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-18"
+  "last": "2026-11-19"
  },
  "ecosystems": [
   {
@@ -114,11 +114,11 @@
       },
       {
        "label": "5\u20137",
-       "n": 9
+       "n": 8
       },
       {
        "label": "8\u201310",
-       "n": 91
+       "n": 92
       }
      ],
      "Code-Review": [
@@ -136,11 +136,11 @@
       },
       {
        "label": "5\u20137",
-       "n": 36
+       "n": 34
       },
       {
        "label": "8\u201310",
-       "n": 29
+       "n": 31
       }
      ],
      "Branch-Protection": [
@@ -272,7 +272,7 @@
    "scorecard": {
     "github_packages": 237,
     "repos": 234,
-    "scored": 200,
+    "scored": 201,
     "old_results": 3,
     "median_score": 5.8,
     "checks": {
@@ -287,7 +287,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 12
+       "n": 11
       },
       {
        "label": "5\u20137",
@@ -295,7 +295,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 147
+       "n": 149
       }
      ],
      "Code-Review": [
@@ -305,11 +305,11 @@
       },
       {
        "label": "0",
-       "n": 32
+       "n": 31
       },
       {
        "label": "1\u20134",
-       "n": 59
+       "n": 60
       },
       {
        "label": "5\u20137",
@@ -317,7 +317,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 59
+       "n": 60
       }
      ],
      "Branch-Protection": [
@@ -331,7 +331,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 45
+       "n": 46
       },
       {
        "label": "5\u20137",
@@ -345,7 +345,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 134
+       "n": 135
       },
       {
        "label": "0",
@@ -386,11 +386,11 @@
      },
      {
       "label": "1",
-      "n": 157
+      "n": 158
      },
      {
       "label": "2",
-      "n": 63
+      "n": 62
      },
      {
       "label": "3",
@@ -412,8 +412,8 @@
     "median": 1.0
    },
    "single_account": {
-    "n": 107,
-    "pct": 42.8,
+    "n": 108,
+    "pct": 43.2,
     "accounts": 57,
     "largest": 22
    },
@@ -426,30 +426,30 @@
     "top": [
      {
       "k": 1,
-      "n": 24,
-      "pct": 9.6
+      "n": 23,
+      "pct": 9.2
      },
      {
       "k": 5,
-      "n": 72,
-      "pct": 28.8
+      "n": 71,
+      "pct": 28.4
      },
      {
       "k": 10,
-      "n": 103,
-      "pct": 41.2
+      "n": 102,
+      "pct": 40.8
      },
      {
       "k": 25,
-      "n": 143,
-      "pct": 57.2
+      "n": 142,
+      "pct": 56.8
      }
     ]
    },
    "scorecard": {
     "github_packages": 246,
     "repos": 216,
-    "scored": 176,
+    "scored": 174,
     "old_results": 3,
     "median_score": 4.5,
     "checks": {
@@ -460,7 +460,7 @@
       },
       {
        "label": "0",
-       "n": 72
+       "n": 71
       },
       {
        "label": "1\u20134",
@@ -472,7 +472,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 72
+       "n": 71
       }
      ],
      "Code-Review": [
@@ -482,25 +482,25 @@
       },
       {
        "label": "0",
-       "n": 28
+       "n": 27
       },
       {
        "label": "1\u20134",
-       "n": 71
+       "n": 72
       },
       {
        "label": "5\u20137",
-       "n": 44
+       "n": 43
       },
       {
        "label": "8\u201310",
-       "n": 33
+       "n": 32
       }
      ],
      "Branch-Protection": [
       {
        "label": "inconclusive",
-       "n": 74
+       "n": 72
       },
       {
        "label": "0",
@@ -522,7 +522,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 174
+       "n": 172
       },
       {
        "label": "0",
@@ -641,11 +641,11 @@
       },
       {
        "label": "1\u20134",
-       "n": 19
+       "n": 20
       },
       {
        "label": "5\u20137",
-       "n": 15
+       "n": 14
       },
       {
        "label": "8\u201310",

@@ -13437,6 +13437,17 @@
    "ransom": "Unknown",
    "vendor": "D-Link"
   },
+  "CVE-2024-10441": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-18",
+   "desc": "5e4341b33127",
+   "due": "2026-11-21",
+   "name": "Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability",
+   "notes": "303cee15be8a",
+   "product": "DiskStation Manager (DSM)",
+   "ransom": "Unknown",
+   "vendor": "Synology"
+  },
   "CVE-2024-1086": {
    "action": "af6aa6680722",
    "added": "2024-05-30",
@@ -18497,6 +18508,17 @@
    "ransom": "Unknown",
    "vendor": "Marimo"
   },
+  "CVE-2026-40217": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-18",
+   "desc": "19d020716496",
+   "due": "2026-12-02",
+   "name": "BerriAI LiteLLM Unprotected Alternate Channel Vulnerability",
+   "notes": "07b06a813d0a",
+   "product": "LiteLLM",
+   "ransom": "Unknown",
+   "vendor": "BerriAI"
+  },
   "CVE-2026-41091": {
    "action": "f09df147152e",
    "added": "2026-05-20",
@@ -19476,6 +19498,28 @@
    "ransom": "Unknown",
    "vendor": "Citrix"
   },
+  "CVE-2026-90436": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-18",
+   "desc": "2bab76f4aeb1",
+   "due": "2026-11-21",
+   "name": "Apache Axis Unsafe Reflection Vulnerability",
+   "notes": "f9761ab4a479",
+   "product": "Axis",
+   "ransom": "Unknown",
+   "vendor": "Apache"
+  },
+  "CVE-2026-90817": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-18",
+   "desc": "305ef5fe5b7c",
+   "due": "2026-11-21",
+   "name": "Vanderbilt University Research Electronic Data Capture (REDCap) Code Injection Vulnerability",
+   "notes": "cba2b99dc405",
+   "product": "Research Electronic Data Capture (REDCap)",
+   "ransom": "Unknown",
+   "vendor": "Vanderbilt University"
+  },
   "CVE-2026-9082": {
    "action": "f09df147152e",
    "added": "2026-05-22",
@@ -19609,7 +19653,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-18",
+ "last_observed": "2026-11-19",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",
