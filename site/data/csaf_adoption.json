@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-11-19T10:44:40Z",
+ "generated_at": "2026-11-20T10:28:45Z",
  "current_year": 2026,
  "lister": {
   "name": "CSAF Lister des Bundesamts f\u00fcr Sicherheit in der Informationstechnik",
   "url": "https://wid.cert-bund.de/.well-known/csaf-aggregator/aggregator.json",
-  "last_updated": "2026-11-19T11:13:14.674+00:00",
+  "last_updated": "2026-11-20T10:00:37.520+00:00",
   "listed": 15,
   "providers": 14,
   "publishers": 1
@@ -23,8 +23,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
-   "documents": 109254,
+   "measured_on": "2026-11-20",
+   "documents": 109763,
    "undated": 0,
    "by_year": [
     {
@@ -129,7 +129,7 @@
     },
     {
      "year": 2024,
-     "n": 8706
+     "n": 8704
     },
     {
      "year": 2025,
@@ -137,14 +137,14 @@
     },
     {
      "year": 2026,
-     "n": 34338
+     "n": 34849
     }
    ],
    "first_year": 1999,
    "last_year": 2026,
    "mix": {
-    "vex": 77094,
-    "advisory": 32160,
+    "vex": 77541,
+    "advisory": 32222,
     "other": 0,
     "unsampled": 0
    },
@@ -179,8 +179,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
-   "documents": 14823,
+   "measured_on": "2026-11-20",
+   "documents": 14850,
    "undated": 0,
    "by_year": [
     {
@@ -237,7 +237,7 @@
     },
     {
      "year": 2026,
-     "n": 4566
+     "n": 4593
     }
    ],
    "first_year": 2013,
@@ -245,7 +245,7 @@
    "mix": {
     "vex": 0,
     "advisory": 0,
-    "other": 14823,
+    "other": 14850,
     "unsampled": 0
    },
    "sample_n": 30,
@@ -272,8 +272,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
-   "documents": 4129,
+   "measured_on": "2026-11-20",
+   "documents": 4132,
    "undated": 0,
    "by_year": [
     {
@@ -342,14 +342,14 @@
     },
     {
      "year": 2026,
-     "n": 556
+     "n": 559
     }
    ],
    "first_year": 2010,
    "last_year": 2026,
    "mix": {
     "vex": 118,
-    "advisory": 4011,
+    "advisory": 4014,
     "other": 0,
     "unsampled": 0
    },
@@ -384,8 +384,8 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
-   "documents": 875,
+   "measured_on": "2026-11-20",
+   "documents": 876,
    "undated": 0,
    "by_year": [
     {
@@ -442,7 +442,7 @@
     },
     {
      "year": 2026,
-     "n": 115
+     "n": 116
     }
    ],
    "first_year": 2011,
@@ -450,7 +450,7 @@
    "mix": {
     "vex": 0,
     "advisory": 642,
-    "other": 233,
+    "other": 234,
     "unsampled": 0
    },
    "sample_n": 30,
@@ -478,81 +478,81 @@
    }
   },
   {
+   "name": "Schneider Electric CPCERT",
+   "category": "vendor",
+   "role": "csaf_trusted_provider",
+   "kind": "provider",
+   "status": "measured",
+   "detail": "",
+   "measured_on": "2026-11-20",
+   "documents": 294,
+   "undated": 0,
    "by_year": [
     {
-     "n": 1,
-     "year": 2015
+     "year": 2015,
+     "n": 1
     },
     {
-     "n": 2,
-     "year": 2018
+     "year": 2018,
+     "n": 2
     },
     {
-     "n": 4,
-     "year": 2019
+     "year": 2019,
+     "n": 4
     },
     {
-     "n": 49,
-     "year": 2020
+     "year": 2020,
+     "n": 49
     },
     {
-     "n": 41,
-     "year": 2021
+     "year": 2021,
+     "n": 41
     },
     {
-     "n": 47,
-     "year": 2022
+     "year": 2022,
+     "n": 47
     },
     {
-     "n": 40,
-     "year": 2023
+     "year": 2023,
+     "n": 40
     },
     {
-     "n": 35,
-     "year": 2024
+     "year": 2024,
+     "n": 35
     },
     {
-     "n": 42,
-     "year": 2025
+     "year": 2025,
+     "n": 42
     },
     {
-     "n": 33,
-     "year": 2026
+     "year": 2026,
+     "n": 33
     }
    ],
-   "category": "vendor",
-   "detail": "HTTP 403",
-   "documents": 294,
+   "first_year": 2015,
+   "last_year": 2026,
+   "mix": {
+    "vex": 0,
+    "advisory": 294,
+    "other": 0,
+    "unsampled": 0
+   },
+   "sample_n": 30,
    "fields": {
     "cvss": 93.3,
     "cwe": 90.0,
     "product_tree": 100.0,
     "remediation": 100.0
    },
-   "first_year": 2015,
-   "kind": "provider",
-   "last_year": 2026,
-   "measured_on": "2026-11-18",
-   "mix": {
-    "advisory": 294,
-    "other": 0,
-    "unsampled": 0,
-    "vex": 0
-   },
-   "name": "Schneider Electric CPCERT",
-   "role": "csaf_trusted_provider",
    "sample_groups": {
     "advisory": {
+     "n": 30,
      "cvss": 28,
      "cwe": 27,
-     "n": 30,
      "product_tree": 30,
      "remediation": 30
     }
-   },
-   "sample_n": 30,
-   "status": "carried",
-   "undated": 0
+   }
   },
   {
    "name": "ABB Product Security Incident Response Team (PSIRT)",
@@ -561,7 +561,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 87,
    "undated": 0,
    "by_year": [
@@ -610,7 +610,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 76,
    "undated": 0,
    "by_year": [
@@ -679,7 +679,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 67,
    "undated": 0,
    "by_year": [
@@ -748,7 +748,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 26,
    "undated": 0,
    "by_year": [
@@ -793,7 +793,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 24,
    "undated": 0,
    "by_year": [
@@ -850,7 +850,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 11,
    "undated": 0,
    "by_year": [
@@ -910,7 +910,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 6,
    "undated": 0,
    "by_year": [
@@ -966,7 +966,7 @@
    "kind": "provider",
    "status": "measured",
    "detail": "",
-   "measured_on": "2026-11-19",
+   "measured_on": "2026-11-20",
    "documents": 1,
    "undated": 0,
    "by_year": [
@@ -1175,7 +1175,7 @@
   },
   {
    "year": 2024,
-   "n": 12028,
+   "n": 12026,
    "providers": 12
   },
   {
@@ -1185,24 +1185,24 @@
   },
   {
    "year": 2026,
-   "n": 39728,
+   "n": 40270,
    "providers": 13
   }
  ],
  "totals": {
   "listed": 15,
   "measured": 13,
-  "carried": 1,
+  "carried": 0,
   "unmeasured": 2,
-  "documents": 129673,
+  "documents": 130213,
   "undated": 0,
   "mix": {
-   "vex": 77313,
-   "advisory": 37304,
-   "other": 15056,
+   "vex": 77760,
+   "advisory": 37369,
+   "other": 15084,
    "unsampled": 0
   },
-  "vex_pct": 59.6,
+  "vex_pct": 59.7,
   "top_name": "Red Hat Product Security",
   "top_share_pct": 84.3,
   "vex_top_name": "Red Hat Product Security",

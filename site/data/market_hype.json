@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T10:44:40Z",
+ "generated_at": "2026-11-20T10:28:45Z",
  "window_months": 60,
  "sources": [
   "gdelt",
@@ -1199,8 +1199,8 @@
      },
      {
       "month": "2026-10",
-      "n": 6961,
-      "index": 6.9
+      "n": 4651,
+      "index": 4.6
      }
     ],
     "edgar": [
@@ -1522,8 +1522,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -37.3,
-     "n_latest_12m": 83365,
+     "pct_change": -39.1,
+     "n_latest_12m": 81055,
      "n_prior_12m": 133042
     },
     "edgar": {
@@ -2728,8 +2728,8 @@
      },
      {
       "month": "2026-10",
-      "n": 2898,
-      "index": 27.2
+      "n": 1531,
+      "index": 14.4
      }
     ],
     "edgar": [
@@ -3051,8 +3051,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -64.8,
-     "n_latest_12m": 27869,
+     "pct_change": -66.6,
+     "n_latest_12m": 26502,
      "n_prior_12m": 79241
     },
     "edgar": {
@@ -3666,296 +3666,296 @@
      {
       "month": "2021-12",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2022-01",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2022-02",
       "n": 8,
-      "index": 19.0
+      "index": 18.6
      },
      {
       "month": "2022-03",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2022-04",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2022-05",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2022-06",
       "n": 6,
-      "index": 14.3
+      "index": 14.0
      },
      {
       "month": "2022-07",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2022-08",
       "n": 3,
-      "index": 7.1
+      "index": 7.0
      },
      {
       "month": "2022-09",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2022-10",
       "n": 2,
-      "index": 4.8
+      "index": 4.7
      },
      {
       "month": "2022-11",
       "n": 6,
-      "index": 14.3
+      "index": 14.0
      },
      {
       "month": "2022-12",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2023-01",
       "n": 3,
-      "index": 7.1
+      "index": 7.0
      },
      {
       "month": "2023-02",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2023-03",
       "n": 9,
-      "index": 21.4
+      "index": 20.9
      },
      {
       "month": "2023-04",
       "n": 6,
-      "index": 14.3
+      "index": 14.0
      },
      {
       "month": "2023-05",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2023-06",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2023-07",
       "n": 3,
-      "index": 7.1
+      "index": 7.0
      },
      {
       "month": "2023-08",
       "n": 7,
-      "index": 16.7
+      "index": 16.3
      },
      {
       "month": "2023-09",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2023-10",
       "n": 4,
-      "index": 9.5
+      "index": 9.3
      },
      {
       "month": "2023-11",
       "n": 16,
-      "index": 38.1
+      "index": 37.2
      },
      {
       "month": "2023-12",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2024-01",
       "n": 10,
-      "index": 23.8
+      "index": 23.3
      },
      {
       "month": "2024-02",
       "n": 11,
-      "index": 26.2
+      "index": 25.6
      },
      {
       "month": "2024-03",
       "n": 9,
-      "index": 21.4
+      "index": 20.9
      },
      {
       "month": "2024-04",
       "n": 8,
-      "index": 19.0
+      "index": 18.6
      },
      {
       "month": "2024-05",
       "n": 3,
-      "index": 7.1
+      "index": 7.0
      },
      {
       "month": "2024-06",
       "n": 5,
-      "index": 11.9
+      "index": 11.6
      },
      {
       "month": "2024-07",
       "n": 6,
-      "index": 14.3
+      "index": 14.0
      },
      {
       "month": "2024-08",
       "n": 6,
-      "index": 14.3
+      "index": 14.0
      },
      {
       "month": "2024-09",
       "n": 13,
-      "index": 31.0
+      "index": 30.2
      },
      {
       "month": "2024-10",
       "n": 6,
-      "index": 14.3
+      "index": 14.0
      },
      {
       "month": "2024-11",
       "n": 11,
-      "index": 26.2
+      "index": 25.6
      },
      {
       "month": "2024-12",
       "n": 8,
-      "index": 19.0
+      "index": 18.6
      },
      {
       "month": "2025-01",
       "n": 11,
-      "index": 26.2
+      "index": 25.6
      },
      {
       "month": "2025-02",
       "n": 12,
-      "index": 28.6
+      "index": 27.9
      },
      {
       "month": "2025-03",
       "n": 12,
-      "index": 28.6
+      "index": 27.9
      },
      {
       "month": "2025-04",
       "n": 20,
-      "index": 47.6
+      "index": 46.5
      },
      {
       "month": "2025-05",
       "n": 20,
-      "index": 47.6
+      "index": 46.5
      },
      {
       "month": "2025-06",
       "n": 11,
-      "index": 26.2
+      "index": 25.6
      },
      {
       "month": "2025-07",
       "n": 19,
-      "index": 45.2
+      "index": 44.2
      },
      {
       "month": "2025-08",
       "n": 15,
-      "index": 35.7
+      "index": 34.9
      },
      {
       "month": "2025-09",
       "n": 20,
-      "index": 47.6
+      "index": 46.5
      },
      {
       "month": "2025-10",
       "n": 23,
-      "index": 54.8
+      "index": 53.5
      },
      {
       "month": "2025-11",
       "n": 12,
-      "index": 28.6
+      "index": 27.9
      },
      {
       "month": "2025-12",
       "n": 14,
-      "index": 33.3
+      "index": 32.6
      },
      {
       "month": "2026-01",
       "n": 26,
-      "index": 61.9
+      "index": 60.5
      },
      {
       "month": "2026-02",
       "n": 21,
-      "index": 50.0
+      "index": 48.8
      },
      {
       "month": "2026-03",
       "n": 28,
-      "index": 66.7
+      "index": 65.1
      },
      {
       "month": "2026-04",
       "n": 27,
-      "index": 64.3
+      "index": 62.8
      },
      {
       "month": "2026-05",
       "n": 23,
-      "index": 54.8
+      "index": 53.5
      },
      {
       "month": "2026-06",
       "n": 23,
-      "index": 54.8
+      "index": 53.5
      },
      {
       "month": "2026-07",
       "n": 21,
-      "index": 50.0
+      "index": 48.8
      },
      {
       "month": "2026-08",
       "n": 30,
-      "index": 71.4
+      "index": 69.8
      },
      {
       "month": "2026-09",
       "n": 28,
-      "index": 66.7
+      "index": 65.1
      },
      {
       "month": "2026-10",
-      "n": 42,
+      "n": 43,
       "index": 100.0
      }
     ],
@@ -4252,8 +4252,8 @@
      },
      {
       "month": "2026-10",
-      "n": 16340,
-      "index": 43.6
+      "n": 15656,
+      "index": 41.8
      }
     ],
     "edgar": [
@@ -4569,14 +4569,14 @@
     },
     "arxiv": {
      "latest_month": "2026-10",
-     "pct_change": 62.1,
-     "n_latest_12m": 295,
+     "pct_change": 62.6,
+     "n_latest_12m": 296,
      "n_prior_12m": 182
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -20.3,
-     "n_latest_12m": 234380,
+     "pct_change": -20.5,
+     "n_latest_12m": 233696,
      "n_prior_12m": 293983
     },
     "edgar": {
@@ -4588,8 +4588,8 @@
    },
    "divergence": {
     "gdelt_index_avg3m": 50.8,
-    "arxiv_index_avg3m": 79.4,
-    "research_vs_media_index": 28.6,
+    "arxiv_index_avg3m": 78.3,
+    "research_vs_media_index": 27.5,
     "direction": "research_leads"
    }
   },
@@ -5781,8 +5781,8 @@
      },
      {
       "month": "2026-10",
-      "n": 672,
-      "index": 23.9
+      "n": 625,
+      "index": 22.2
      }
     ],
     "edgar": [
@@ -6094,8 +6094,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -36.1,
-     "n_latest_12m": 9717,
+     "pct_change": -36.5,
+     "n_latest_12m": 9670,
      "n_prior_12m": 15217
     },
     "edgar": {
@@ -7295,8 +7295,8 @@
      },
      {
       "month": "2026-10",
-      "n": 1295,
-      "index": 25.9
+      "n": 1159,
+      "index": 23.2
      }
     ],
     "edgar": [
@@ -7608,8 +7608,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -31.6,
-     "n_latest_12m": 20215,
+     "pct_change": -32.1,
+     "n_latest_12m": 20079,
      "n_prior_12m": 29557
     },
     "edgar": {
@@ -10022,8 +10022,8 @@
      },
      {
       "month": "2026-10",
-      "n": 2521,
-      "index": 30.6
+      "n": 2272,
+      "index": 27.6
      }
     ],
     "edgar": [
@@ -10345,8 +10345,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -29.1,
-     "n_latest_12m": 39030,
+     "pct_change": -29.6,
+     "n_latest_12m": 38781,
      "n_prior_12m": 55088
     },
     "edgar": {
@@ -11431,8 +11431,8 @@
      },
      {
       "month": "2026-10",
-      "n": 34244,
-      "index": 89.2
+      "n": 32353,
+      "index": 84.3
      }
     ],
     "edgar": [
@@ -11754,8 +11754,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": 58.9,
-     "n_latest_12m": 324805,
+     "pct_change": 57.9,
+     "n_latest_12m": 322914,
      "n_prior_12m": 204448
     },
     "edgar": {
@@ -12960,8 +12960,8 @@
      },
      {
       "month": "2026-10",
-      "n": 12629,
-      "index": 43.9
+      "n": 11477,
+      "index": 39.9
      }
     ],
     "edgar": [
@@ -13283,8 +13283,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -21.9,
-     "n_latest_12m": 143001,
+     "pct_change": -22.6,
+     "n_latest_12m": 141849,
      "n_prior_12m": 183213
     },
     "edgar": {
@@ -14489,8 +14489,8 @@
      },
      {
       "month": "2026-10",
-      "n": 3152,
-      "index": 30.7
+      "n": 2418,
+      "index": 23.6
      }
     ],
     "edgar": [
@@ -14812,8 +14812,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -5.0,
-     "n_latest_12m": 36020,
+     "pct_change": -6.9,
+     "n_latest_12m": 35286,
      "n_prior_12m": 37909
     },
     "edgar": {
@@ -16013,8 +16013,8 @@
      },
      {
       "month": "2026-10",
-      "n": 626,
-      "index": 27.1
+      "n": 560,
+      "index": 24.2
      }
     ],
     "edgar": [
@@ -16331,8 +16331,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -24.8,
-     "n_latest_12m": 10179,
+     "pct_change": -25.3,
+     "n_latest_12m": 10113,
      "n_prior_12m": 13535
     },
     "edgar": {
@@ -17532,8 +17532,8 @@
      },
      {
       "month": "2026-10",
-      "n": 34215,
-      "index": 9.8
+      "n": 34029,
+      "index": 9.7
      }
     ],
     "edgar": [
@@ -17855,8 +17855,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -19.7,
-     "n_latest_12m": 527912,
+     "pct_change": -19.8,
+     "n_latest_12m": 527726,
      "n_prior_12m": 657621
     },
     "edgar": {
@@ -18981,8 +18981,8 @@
      },
      {
       "month": "2026-10",
-      "n": 1265,
-      "index": 52.5
+      "n": 1172,
+      "index": 48.6
      }
     ],
     "edgar": [
@@ -19304,8 +19304,8 @@
     },
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -24.0,
-     "n_latest_12m": 16607,
+     "pct_change": -24.4,
+     "n_latest_12m": 16514,
      "n_prior_12m": 21849
     },
     "edgar": {
@@ -20380,8 +20380,8 @@
      },
      {
       "month": "2026-10",
-      "n": 329,
-      "index": 47.5
+      "n": 253,
+      "index": 36.5
      }
     ],
     "edgar": [
@@ -20693,8 +20693,8 @@
     "arxiv": null,
     "wiki": {
      "latest_month": "2026-10",
-     "pct_change": -14.3,
-     "n_latest_12m": 5295,
+     "pct_change": -15.5,
+     "n_latest_12m": 5219,
      "n_prior_12m": 6175
     },
     "edgar": {
@@ -20718,7 +20718,7 @@
    "term_id": "sbom",
    "label": "SBOM",
    "source": "wiki",
-   "pct_change": -64.8
+   "pct_change": -66.6
   },
   "top_divergence": {
    "term_id": "deepfake",

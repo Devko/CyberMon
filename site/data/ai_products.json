@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T10:44:40Z",
+ "generated_at": "2026-11-20T10:28:45Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,14 +159,14 @@
   },
   {
    "year": 2026,
-   "published": 100159,
-   "named": 96814,
-   "ai": 3264,
+   "published": 101179,
+   "named": 97817,
+   "ai": 3286,
    "by_category": {
-    "frameworks": 222,
+    "frameworks": 243,
     "serving": 388,
     "platforms": 188,
-    "apps": 2466
+    "apps": 2467
    },
    "top_product": {
     "label": "OpenClaw",
@@ -189,16 +189,16 @@
    },
    {
     "year": 2025,
-    "pct": 15.4
+    "pct": 15.3
    },
    {
     "year": 2026,
-    "pct": 72.7
+    "pct": 72.8
    }
   ]
  },
  "cwe": {
-  "n": 4489,
+  "n": 4511,
   "no_cwe": 9,
   "no_cwe_pct": 0.2,
   "baseline_no_cwe_pct": 9.7,
@@ -207,7 +207,7 @@
     "cwe": "CWE-22",
     "name": "Path traversal",
     "n": 366,
-    "pct": 8.2,
+    "pct": 8.1,
     "baseline_pct": 2.8
    },
    {
@@ -220,7 +220,7 @@
    {
     "cwe": "CWE-502",
     "name": "Deserialization of untrusted data",
-    "n": 233,
+    "n": 234,
     "pct": 5.2,
     "baseline_pct": 1.2
    },
@@ -235,7 +235,7 @@
     "cwe": "CWE-863",
     "name": "Incorrect authorization",
     "n": 205,
-    "pct": 4.6,
+    "pct": 4.5,
     "baseline_pct": 1.8
    },
    {
@@ -270,11 +270,11 @@
     "cwe": "CWE-306",
     "name": "Missing authentication",
     "n": 124,
-    "pct": 2.8,
+    "pct": 2.7,
     "baseline_pct": 1.6
    }
   ],
-  "top_share_pct": 48.0,
+  "top_share_pct": 47.8,
   "ai_specific": {
    "ids": [
     "CWE-1039",
@@ -285,12 +285,12 @@
   }
  },
  "exploited": {
-  "n": 4489,
-  "baseline_n": 212591,
+  "n": 4511,
+  "baseline_n": 213589,
   "kev": 12,
   "kev_pct": 0.3,
   "kev_baseline_pct": 0.3,
-  "kev_expected": 12.4,
+  "kev_expected": 12.3,
   "poc": 32,
   "poc_pct": 0.7,
   "poc_baseline_pct": 0.4,
@@ -298,7 +298,7 @@
   "nuclei": 120,
   "nuclei_pct": 2.7,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 35.8,
+  "nuclei_expected": 35.9,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -508,6 +508,18 @@
    "top_cna_pct": 67.5
   },
   {
+   "key": "nltk",
+   "label": "NLTK",
+   "category": "frameworks",
+   "n": 73,
+   "all_years": 76,
+   "first_year": 2021,
+   "kev": 0,
+   "poc": 0,
+   "top_cna": "VulnCheck",
+   "top_cna_pct": 53.4
+  },
+  {
    "key": "lunary",
    "label": "Lunary",
    "category": "platforms",
@@ -518,39 +530,27 @@
    "poc": 0,
    "top_cna": "@huntr_ai",
    "top_cna_pct": 100.0
-  },
-  {
-   "key": "triton",
-   "label": "NVIDIA Triton Inference Server",
-   "category": "serving",
-   "n": 66,
-   "all_years": 66,
-   "first_year": 2024,
-   "kev": 0,
-   "poc": 0,
-   "top_cna": "nvidia",
-   "top_cna_pct": 100.0
   }
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4489,
-  "cna_count": 41,
+  "n": 4511,
+  "cna_count": 42,
   "top": [
    {
     "cna": "GitHub_M",
-    "n": 1248,
-    "pct": 27.8
+    "n": 1268,
+    "pct": 28.1
    },
    {
     "cna": "VulnCheck",
     "n": 1126,
-    "pct": 25.1
+    "pct": 25.0
    },
    {
     "cna": "@huntr_ai",
     "n": 703,
-    "pct": 15.7
+    "pct": 15.6
    },
    {
     "cna": "VulDB",
@@ -563,17 +563,17 @@
     "pct": 5.2
    }
   ],
-  "top3_pct": 68.5
+  "top3_pct": 68.7
  },
  "headline": {
   "latest_year": 2025,
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3264,
-  "current_share_pct": 3.3,
+  "current_ai": 3286,
+  "current_share_pct": 3.2,
   "lead_label": "OpenClaw",
   "lead_n": 677,
-  "lead_pct": 15.1
+  "lead_pct": 15.0
  }
 }

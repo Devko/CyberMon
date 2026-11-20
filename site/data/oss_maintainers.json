@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T10:44:40Z",
+ "generated_at": "2026-11-20T10:28:45Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,14 +9,14 @@
  },
  "observed": {
   "first": "2026-11-17",
-  "last": "2026-11-19",
+  "last": "2026-11-20",
   "refresh_days": 7,
   "max_age_days": 14
  },
  "scorecard_dates": {
   "max_age_days": 45,
   "first": "2026-10-19",
-  "last": "2026-11-19"
+  "last": "2026-11-20"
  },
  "ecosystems": [
   {
@@ -97,7 +97,7 @@
     "repos": 192,
     "scored": 164,
     "old_results": 5,
-    "median_score": 5.5,
+    "median_score": 5.4,
     "checks": {
      "Maintained": [
       {
@@ -128,15 +128,15 @@
       },
       {
        "label": "0",
-       "n": 24
+       "n": 25
       },
       {
        "label": "1\u20134",
-       "n": 75
+       "n": 73
       },
       {
        "label": "5\u20137",
-       "n": 34
+       "n": 35
       },
       {
        "label": "8\u201310",
@@ -272,7 +272,7 @@
    "scorecard": {
     "github_packages": 237,
     "repos": 234,
-    "scored": 201,
+    "scored": 203,
     "old_results": 3,
     "median_score": 5.8,
     "checks": {
@@ -295,7 +295,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 149
+       "n": 151
       }
      ],
      "Code-Review": [
@@ -305,7 +305,7 @@
       },
       {
        "label": "0",
-       "n": 31
+       "n": 33
       },
       {
        "label": "1\u20134",
@@ -313,17 +313,17 @@
       },
       {
        "label": "5\u20137",
-       "n": 49
+       "n": 50
       },
       {
        "label": "8\u201310",
-       "n": 60
+       "n": 59
       }
      ],
      "Branch-Protection": [
       {
        "label": "inconclusive",
-       "n": 86
+       "n": 88
       },
       {
        "label": "0",
@@ -349,7 +349,7 @@
       },
       {
        "label": "0",
-       "n": 47
+       "n": 49
       },
       {
        "label": "1\u20134",
@@ -449,7 +449,7 @@
    "scorecard": {
     "github_packages": 246,
     "repos": 216,
-    "scored": 174,
+    "scored": 172,
     "old_results": 3,
     "median_score": 4.5,
     "checks": {
@@ -472,7 +472,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 71
+       "n": 69
       }
      ],
      "Code-Review": [
@@ -486,25 +486,25 @@
       },
       {
        "label": "1\u20134",
-       "n": 72
+       "n": 71
       },
       {
        "label": "5\u20137",
-       "n": 43
+       "n": 44
       },
       {
        "label": "8\u201310",
-       "n": 32
+       "n": 30
       }
      ],
      "Branch-Protection": [
       {
        "label": "inconclusive",
-       "n": 72
+       "n": 71
       },
       {
        "label": "0",
-       "n": 75
+       "n": 74
       },
       {
        "label": "1\u20134",
@@ -522,7 +522,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 172
+       "n": 170
       },
       {
        "label": "0",
@@ -641,11 +641,11 @@
       },
       {
        "label": "1\u20134",
-       "n": 20
+       "n": 19
       },
       {
        "label": "5\u20137",
-       "n": 14
+       "n": 15
       },
       {
        "label": "8\u201310",
@@ -663,11 +663,11 @@
       },
       {
        "label": "1\u20134",
-       "n": 85
+       "n": 84
       },
       {
        "label": "5\u20137",
-       "n": 35
+       "n": 36
       },
       {
        "label": "8\u201310",

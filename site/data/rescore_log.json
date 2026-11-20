@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T10:44:40Z",
+ "generated_at": "2026-11-20T10:28:45Z",
  "weeks": [
   {
    "week": "2026-W29",
@@ -147,17 +147,17 @@
   },
   {
    "week": "2026-W47",
-   "rescore_up": 2,
+   "rescore_up": 3,
    "rescore_down": 2,
-   "first_score": 0,
+   "first_score": 17,
    "version_shift": 0,
-   "score_removed": 0
+   "score_removed": 1
   }
  ],
  "magnitude": {
   "min_n": 30,
-  "n": 177,
-  "up": 79,
+  "n": 178,
+  "up": 80,
   "down": 98,
   "buckets": [
    {
@@ -174,7 +174,7 @@
    },
    {
     "bucket": "+0.1..+1.9",
-    "n": 58
+    "n": 59
    },
    {
     "bucket": "+2.0..+3.9",
@@ -204,8 +204,8 @@
    },
    {
     "cna": "microsoft",
-    "rescores": 20,
-    "up": 14,
+    "rescores": 21,
+    "up": 15,
     "down": 6
    },
    {
@@ -241,15 +241,15 @@
   ]
  },
  "catalog": {
-  "state_size": 409036,
-  "corpus_release": "cve_2026-11-19_1000Z",
+  "state_size": 410056,
+  "corpus_release": "cve_2026-11-20_1000Z",
   "totals": {
-   "rescore": 177,
+   "rescore": 178,
    "version_shift": 31,
-   "first_score": 5580,
-   "score_removed": 5
+   "first_score": 5597,
+   "score_removed": 6
   },
-  "events_total": 5793,
+  "events_total": 5812,
   "first_observed": "2026-07-15"
  }
 }

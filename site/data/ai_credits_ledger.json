@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T10:44:40Z",
+ "generated_at": "2026-11-20T10:28:45Z",
  "rows": [
   {
    "cve": "CVE-2024-9143",
@@ -26329,6 +26329,256 @@
      "roles": [
       "remediation developer",
       "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-104357",
+   "published": "2026-11-19",
+   "cna": "redhat",
+   "counts_for": [
+    "vendor"
+   ],
+   "matches": [
+    {
+     "finder": "aisle",
+     "tier": "org",
+     "roles": [
+      "unspecified"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-127960",
+   "published": "2026-11-19",
+   "cna": "php",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-129289",
+   "published": "2026-11-19",
+   "cna": "php",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-129474",
+   "published": "2026-11-19",
+   "cna": "php",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "reporter"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-132129",
+   "published": "2026-11-19",
+   "cna": "apache",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133163",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "remediation developer",
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133165",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133175",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133177",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133183",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133184",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133188",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "fix",
+     "roles": [
+      "remediation developer"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133190",
+   "published": "2026-11-19",
+   "cna": "CIRCL",
+   "counts_for": [
+    "llm"
+   ],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "system",
+     "roles": [
+      "remediation developer",
+      "tool"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133244",
+   "published": "2026-11-19",
+   "cna": "VulnCheck",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133245",
+   "published": "2026-11-19",
+   "cna": "VulnCheck",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "anthropic",
+     "tier": "org",
+     "roles": [
+      "finder"
+     ]
+    }
+   ]
+  },
+  {
+   "cve": "CVE-2026-133430",
+   "published": "2026-11-19",
+   "cna": "redhat",
+   "counts_for": [],
+   "matches": [
+    {
+     "finder": "openai",
+     "tier": "org",
+     "roles": [
+      "unspecified"
      ]
     }
    ]
