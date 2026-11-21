@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T10:28:45Z",
+ "generated_at": "2026-11-21T10:11:29Z",
  "min_n": 10,
  "min_vendor_entries": 5,
  "years": [
@@ -35,9 +35,9 @@
   },
   {
    "year": 2026,
-   "total": 302,
+   "total": 306,
    "security": 55,
-   "pct_security": 18.2
+   "pct_security": 18.0
   }
  ],
  "vendors": [
@@ -53,12 +53,12 @@
   },
   {
    "vendor": "Cisco",
-   "entries": 103,
-   "dated_entries": 103,
+   "entries": 104,
+   "dated_entries": 104,
    "security_entries": 24,
-   "pct_security": 23.3,
+   "pct_security": 23.1,
    "first_added": "2021-11-03",
-   "last_added": "2026-11-10",
+   "last_added": "2026-11-20",
    "median_gap_days": 0.0
   },
   {
@@ -103,12 +103,12 @@
   },
   {
    "vendor": "Apache",
-   "entries": 42,
-   "dated_entries": 42,
+   "entries": 43,
+   "dated_entries": 43,
    "security_entries": 0,
    "pct_security": 0.0,
    "first_added": "2021-11-03",
-   "last_added": "2026-11-18",
+   "last_added": "2026-11-20",
    "median_gap_days": 20.0
   },
   {
@@ -222,6 +222,16 @@
    "median_gap_days": 19.5
   },
   {
+   "vendor": "SAP",
+   "entries": 15,
+   "dated_entries": 15,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2021-11-03",
+   "last_added": "2026-11-20",
+   "median_gap_days": 8.0
+  },
+  {
    "vendor": "Atlassian",
    "entries": 14,
    "dated_entries": 14,
@@ -230,16 +240,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-10-15",
    "median_gap_days": 63.0
-  },
-  {
-   "vendor": "SAP",
-   "entries": 14,
-   "dated_entries": 14,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2021-11-03",
-   "last_added": "2025-05-15",
-   "median_gap_days": 0.0
   },
   {
    "vendor": "Mozilla",
@@ -392,6 +392,16 @@
    "median_gap_days": 18.0
   },
   {
+   "vendor": "Broadcom",
+   "entries": 7,
+   "dated_entries": 7,
+   "security_entries": 0,
+   "pct_security": 0.0,
+   "first_added": "2025-04-28",
+   "last_added": "2026-11-20",
+   "median_gap_days": 78.0
+  },
+  {
    "vendor": "Mitel",
    "entries": 7,
    "dated_entries": 7,
@@ -420,16 +430,6 @@
    "first_added": "2021-11-03",
    "last_added": "2026-11-03",
    "median_gap_days": 19.5
-  },
-  {
-   "vendor": "Broadcom",
-   "entries": 6,
-   "dated_entries": 6,
-   "security_entries": 0,
-   "pct_security": 0.0,
-   "first_added": "2025-04-28",
-   "last_added": "2026-10-28",
-   "median_gap_days": 85.0
   },
   {
    "vendor": "Check Point",
@@ -579,13 +579,13 @@
    "pct_known": 35.1
   },
   "other": {
-   "total": 1561,
+   "total": 1565,
    "known": 282,
-   "pct_known": 18.1
+   "pct_known": 18.0
   }
  },
  "catalog": {
-  "total": 1786,
+  "total": 1790,
   "security": 225,
   "pct_security": 12.6,
   "classifier_version": 2,

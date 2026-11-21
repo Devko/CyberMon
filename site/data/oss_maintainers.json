@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T10:28:45Z",
+ "generated_at": "2026-11-21T10:11:29Z",
  "universe": {
   "edition": "2026-11",
   "rule_version": 1,
@@ -9,7 +9,7 @@
  },
  "observed": {
   "first": "2026-11-17",
-  "last": "2026-11-20",
+  "last": "2026-11-21",
   "refresh_days": 7,
   "max_age_days": 14
  },
@@ -95,7 +95,7 @@
    "scorecard": {
     "github_packages": 248,
     "repos": 192,
-    "scored": 164,
+    "scored": 163,
     "old_results": 5,
     "median_score": 5.4,
     "checks": {
@@ -118,7 +118,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 92
+       "n": 91
       }
      ],
      "Code-Review": [
@@ -132,7 +132,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 73
+       "n": 72
       },
       {
        "label": "5\u20137",
@@ -154,7 +154,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 19
+       "n": 18
       },
       {
        "label": "5\u20137",
@@ -168,7 +168,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 156
+       "n": 155
       },
       {
        "label": "0",
@@ -272,7 +272,7 @@
    "scorecard": {
     "github_packages": 237,
     "repos": 234,
-    "scored": 203,
+    "scored": 204,
     "old_results": 3,
     "median_score": 5.8,
     "checks": {
@@ -295,7 +295,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 151
+       "n": 152
       }
      ],
      "Code-Review": [
@@ -313,11 +313,11 @@
       },
       {
        "label": "5\u20137",
-       "n": 50
+       "n": 49
       },
       {
        "label": "8\u201310",
-       "n": 59
+       "n": 61
       }
      ],
      "Branch-Protection": [
@@ -339,7 +339,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 8
+       "n": 9
       }
      ],
      "Signed-Releases": [
@@ -361,7 +361,7 @@
       },
       {
        "label": "8\u201310",
-       "n": 15
+       "n": 16
       }
      ]
     },
@@ -449,7 +449,7 @@
    "scorecard": {
     "github_packages": 246,
     "repos": 216,
-    "scored": 172,
+    "scored": 171,
     "old_results": 3,
     "median_score": 4.5,
     "checks": {
@@ -460,15 +460,15 @@
       },
       {
        "label": "0",
-       "n": 71
+       "n": 69
       },
       {
        "label": "1\u20134",
-       "n": 17
+       "n": 19
       },
       {
        "label": "5\u20137",
-       "n": 15
+       "n": 14
       },
       {
        "label": "8\u201310",
@@ -486,15 +486,15 @@
       },
       {
        "label": "1\u20134",
-       "n": 71
+       "n": 70
       },
       {
        "label": "5\u20137",
-       "n": 44
+       "n": 42
       },
       {
        "label": "8\u201310",
-       "n": 30
+       "n": 32
       }
      ],
      "Branch-Protection": [
@@ -504,7 +504,7 @@
       },
       {
        "label": "0",
-       "n": 74
+       "n": 73
       },
       {
        "label": "1\u20134",
@@ -522,7 +522,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 170
+       "n": 169
       },
       {
        "label": "0",
@@ -626,7 +626,7 @@
    "scorecard": {
     "github_packages": 241,
     "repos": 226,
-    "scored": 171,
+    "scored": 172,
     "old_results": 3,
     "median_score": 4.0,
     "checks": {
@@ -637,7 +637,7 @@
       },
       {
        "label": "0",
-       "n": 68
+       "n": 69
       },
       {
        "label": "1\u20134",
@@ -663,7 +663,7 @@
       },
       {
        "label": "1\u20134",
-       "n": 84
+       "n": 85
       },
       {
        "label": "5\u20137",
@@ -681,7 +681,7 @@
       },
       {
        "label": "0",
-       "n": 84
+       "n": 85
       },
       {
        "label": "1\u20134",
@@ -699,7 +699,7 @@
      "Signed-Releases": [
       {
        "label": "inconclusive",
-       "n": 155
+       "n": 156
       },
       {
        "label": "0",

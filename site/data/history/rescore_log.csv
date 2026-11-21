@@ -5811,3 +5811,5 @@ observed_date,cve,cna,change_type,version_old,score_old,version_new,score_new
 2026-11-20,CVE-2026-99313,Linux,first_score,,,v3.1,8.8
 2026-11-20,CVE-2026-99316,Linux,first_score,,,v3.1,7.0
 2026-11-20,CVE-2026-99317,Linux,first_score,,,v3.1,7.8
+2026-11-21,CVE-2026-101107,jpcert,rescore,v4.0,8.6,v4.0,8.7
+2026-11-21,CVE-2026-123866,openjs,version_shift,v3.0,7.5,v3.1,7.5

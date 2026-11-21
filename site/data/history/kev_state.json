@@ -16440,6 +16440,17 @@
    "ransom": "Unknown",
    "vendor": "Qualitia"
   },
+  "CVE-2025-42884": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-20",
+   "desc": "916fd0c9f126",
+   "due": "2026-11-23",
+   "name": "SAP NetWeaver Improper Neutralization of Special Elements in Data Query Logic Vulnerability",
+   "notes": "25eb3bfae532",
+   "product": "NetWeaver",
+   "ransom": "Unknown",
+   "vendor": "SAP"
+  },
   "CVE-2025-42999": {
    "action": "f09df147152e",
    "added": "2025-05-15",
@@ -17672,6 +17683,17 @@
    "ransom": "Unknown",
    "vendor": "IBM"
   },
+  "CVE-2026-123890": {
+   "action": "1bfae1299a34",
+   "added": "2026-11-20",
+   "desc": "d88d6ce78347",
+   "due": "2026-11-23",
+   "name": "VMWare vCenter Authentication Bypass Using an Alternate Path or Channel Vulnerability",
+   "notes": "26ec3c56317c",
+   "product": "VMware vCenter",
+   "ransom": "Unknown",
+   "vendor": "Broadcom"
+  },
   "CVE-2026-124194": {
    "action": "ba0d649eb29b",
    "added": "2026-11-10",
@@ -17715,6 +17737,17 @@
    "product": "Endpoint Manager Mobile (EPMM)",
    "ransom": "Unknown",
    "vendor": "Ivanti"
+  },
+  "CVE-2026-129448": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-20",
+   "desc": "ad1459632892",
+   "due": "2026-11-23",
+   "name": "Apache Roller Deserialization of Untrusted Data Vulnerability",
+   "notes": "e88bb85c83f4",
+   "product": "Roller",
+   "ransom": "Unknown",
+   "vendor": "Apache"
   },
   "CVE-2026-1340": {
    "action": "f09df147152e",
@@ -19223,6 +19256,17 @@
    "ransom": "Unknown",
    "vendor": "Cisco"
   },
+  "CVE-2026-76466": {
+   "action": "ba0d649eb29b",
+   "added": "2026-11-20",
+   "desc": "db3e1be7be52",
+   "due": "2026-11-23",
+   "name": "Cisco Expressway Series Use of Hard-coded Credentials Vulnerability",
+   "notes": "91cca0073490",
+   "product": "Expressway Series",
+   "ransom": "Unknown",
+   "vendor": "Cisco"
+  },
   "CVE-2026-76504": {
    "action": "ba0d649eb29b",
    "added": "2026-09-30",
@@ -19653,7 +19697,7 @@
    "vendor": "GitLab"
   }
  },
- "last_observed": "2026-11-20",
+ "last_observed": "2026-11-21",
  "removed": {
   "CVE-2021-4043": {
    "added": "2024-09-30",

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T10:28:45Z",
+ "generated_at": "2026-11-21T10:11:29Z",
  "classifier": {
   "version": 1,
   "reviewed": "2026-11-05",
@@ -159,14 +159,14 @@
   },
   {
    "year": 2026,
-   "published": 101179,
-   "named": 97817,
-   "ai": 3286,
+   "published": 101946,
+   "named": 98576,
+   "ai": 3290,
    "by_category": {
     "frameworks": 243,
-    "serving": 388,
+    "serving": 390,
     "platforms": 188,
-    "apps": 2467
+    "apps": 2469
    },
    "top_product": {
     "label": "OpenClaw",
@@ -181,7 +181,7 @@
   "weights": [
    {
     "year": 2023,
-    "pct": 2.0
+    "pct": 1.9
    },
    {
     "year": 2024,
@@ -193,12 +193,12 @@
    },
    {
     "year": 2026,
-    "pct": 72.8
+    "pct": 72.9
    }
   ]
  },
  "cwe": {
-  "n": 4511,
+  "n": 4515,
   "no_cwe": 9,
   "no_cwe_pct": 0.2,
   "baseline_no_cwe_pct": 9.7,
@@ -206,7 +206,7 @@
    {
     "cwe": "CWE-22",
     "name": "Path traversal",
-    "n": 366,
+    "n": 367,
     "pct": 8.1,
     "baseline_pct": 2.8
    },
@@ -229,7 +229,7 @@
     "name": "Code injection",
     "n": 222,
     "pct": 4.9,
-    "baseline_pct": 1.3
+    "baseline_pct": 1.2
    },
    {
     "cwe": "CWE-863",
@@ -243,7 +243,7 @@
     "name": "Missing authorization",
     "n": 203,
     "pct": 4.5,
-    "baseline_pct": 4.9
+    "baseline_pct": 5.0
    },
    {
     "cwe": "CWE-79",
@@ -271,7 +271,7 @@
     "name": "Missing authentication",
     "n": 124,
     "pct": 2.7,
-    "baseline_pct": 1.6
+    "baseline_pct": 1.5
    }
   ],
   "top_share_pct": 47.8,
@@ -285,20 +285,20 @@
   }
  },
  "exploited": {
-  "n": 4511,
-  "baseline_n": 213589,
+  "n": 4515,
+  "baseline_n": 214352,
   "kev": 12,
   "kev_pct": 0.3,
   "kev_baseline_pct": 0.3,
-  "kev_expected": 12.3,
+  "kev_expected": 12.4,
   "poc": 32,
   "poc_pct": 0.7,
   "poc_baseline_pct": 0.4,
-  "poc_expected": 16.9,
+  "poc_expected": 16.8,
   "nuclei": 120,
   "nuclei_pct": 2.7,
   "nuclei_baseline_pct": 0.8,
-  "nuclei_expected": 35.9,
+  "nuclei_expected": 35.8,
   "kev_cves": [
    {
     "cve": "CVE-2025-3248",
@@ -403,13 +403,13 @@
    "key": "mcp_servers",
    "label": "Named MCP servers",
    "category": "apps",
-   "n": 157,
-   "all_years": 157,
+   "n": 158,
+   "all_years": 158,
    "first_year": 2025,
    "kev": 0,
    "poc": 1,
    "top_cna": "GitHub_M",
-   "top_cna_pct": 54.1
+   "top_cna_pct": 53.8
   },
   {
    "key": "flowise",
@@ -534,7 +534,7 @@
  ],
  "product_count": 151,
  "cnas": {
-  "n": 4511,
+  "n": 4515,
   "cna_count": 42,
   "top": [
    {
@@ -544,7 +544,7 @@
    },
    {
     "cna": "VulnCheck",
-    "n": 1126,
+    "n": 1127,
     "pct": 25.0
    },
    {
@@ -559,18 +559,18 @@
    },
    {
     "cna": "nvidia",
-    "n": 233,
+    "n": 234,
     "pct": 5.2
    }
   ],
-  "top3_pct": 68.7
+  "top3_pct": 68.6
  },
  "headline": {
   "latest_year": 2025,
   "latest_ai": 692,
   "latest_share_pct": 1.4,
   "current_year": 2026,
-  "current_ai": 3286,
+  "current_ai": 3290,
   "current_share_pct": 3.2,
   "lead_label": "OpenClaw",
   "lead_n": 677,

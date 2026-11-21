@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T10:28:45Z",
+ "generated_at": "2026-11-21T10:11:29Z",
  "min_n": 10,
  "model_eras": [
   {
@@ -96,15 +96,15 @@
   },
   {
    "year": 2026,
-   "graded": 220,
-   "n_below_1pct": 112,
-   "n_1_to_10pct": 50,
+   "graded": 223,
+   "n_below_1pct": 114,
+   "n_1_to_10pct": 51,
    "n_above_10pct": 58,
-   "pct_below_1pct": 50.9,
-   "pct_1_to_10pct": 22.7,
-   "pct_above_10pct": 26.4,
+   "pct_below_1pct": 51.1,
+   "pct_1_to_10pct": 22.9,
+   "pct_above_10pct": 26.0,
    "ungradeable": 82,
-   "pending": 0
+   "pending": 1
   }
  ],
  "distribution": {
@@ -157,11 +157,11 @@
    },
    {
     "model": "v5",
-    "n": 117,
+    "n": 120,
     "counts": {
      "<0.1%": 0,
-     "0.1-1%": 61,
-     "1-10%": 32,
+     "0.1-1%": 63,
+     "1-10%": 33,
      "\u226510%": 24
     }
    }
@@ -171,17 +171,17 @@
   "buckets": [
    {
     "bucket": "0-25",
-    "n": 206,
+    "n": 207,
     "pct": 14.2
    },
    {
     "bucket": "25-50",
-    "n": 237,
+    "n": 238,
     "pct": 16.3
    },
    {
     "bucket": "50-75",
-    "n": 199,
+    "n": 200,
     "pct": 13.7
    },
    {
@@ -192,7 +192,7 @@
    {
     "bucket": "90-99",
     "n": 337,
-    "pct": 23.2
+    "pct": 23.1
    },
    {
     "bucket": "99-100",
@@ -200,26 +200,26 @@
     "pct": 19.3
    }
   ],
-  "n": 1454,
+  "n": 1457,
   "bottom_half": {
-   "n": 443,
+   "n": 445,
    "pct": 30.5
   },
   "median_percentile": 82.9
  },
  "catalog": {
-  "total": 1786,
-  "graded": 1454,
+  "total": 1790,
+  "graded": 1457,
   "ungradeable": {
    "pre_epss": 0,
    "listed_before_publication": 235,
    "no_prior_score": 97
   },
-  "pending_backfill": 0
+  "pending_backfill": 1
  },
  "headline": {
-  "graded": 1454,
-  "pct_below_1pct": 33.0,
+  "graded": 1457,
+  "pct_below_1pct": 33.1,
   "latest_year": 2025,
   "graded_latest": 184,
   "pct_below_1pct_latest": 59.2
@@ -16296,6 +16296,33 @@
    "score_date": "2026-11-17",
    "epss": 0.03749,
    "percentile": 0.90063,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2025-42884",
+   "date_added": "2026-11-20",
+   "score_date": "2026-11-19",
+   "epss": 0.00276,
+   "percentile": 0.20355,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-129448",
+   "date_added": "2026-11-20",
+   "score_date": "2026-11-19",
+   "epss": 0.01191,
+   "percentile": 0.68625,
+   "model": "v5",
+   "reason": null
+  },
+  {
+   "cve": "CVE-2026-76466",
+   "date_added": "2026-11-20",
+   "score_date": "2026-11-19",
+   "epss": 0.00417,
+   "percentile": 0.36701,
    "model": "v5",
    "reason": null
   }
